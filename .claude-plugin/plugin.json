@@ -1,7 +1,7 @@
 {
   "name": "autonomous-agent",
-  "version": "1.0.0",
-  "description": "Autonomous Claude agent with pattern learning, skill auto-selection, background tasks, and quality control",
+  "version": "1.1.0",
+  "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, background tasks, and quality control",
   "author": "Claude Code",
   "components": {
     "agents": [
@@ -9,8 +9,9 @@
       "agents/code-analyzer.md",
       "agents/quality-controller.md",
       "agents/background-task-manager.md",
+      "agents/test-engineer.md",
       "agents/documentation-generator.md",
-      "agents/test-engineer.md"
+      "agents/learning-engine.md"
     ],
     "skills": [
       "skills/pattern-learning",
