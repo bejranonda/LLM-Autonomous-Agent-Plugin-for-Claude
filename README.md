@@ -88,46 +88,71 @@ Task 3 (similar) → Even better → Faster → Higher quality
 
 ## Installation
 
-### For Linux/Mac Users
+### Method 1: Via GitHub (Manual Installation)
+
+**For Linux/Mac Users:**
 
 ```bash
 # Clone the repository
-git clone https://github.com/bejranonda/Claude-Autonomous-Agent.git
+git clone https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude.git
 
 # Copy to Claude Code plugins directory
 mkdir -p ~/.config/claude/plugins
-cp -r Claude-Autonomous-Agent ~/.config/claude/plugins/autonomous-agent
+cp -r LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/autonomous-agent
 
 # Verify installation
 ls ~/.config/claude/plugins/autonomous-agent
 ```
 
-### For Windows Users
+**For Windows Users (PowerShell):**
 
 ```powershell
 # Clone the repository
-git clone https://github.com/bejranonda/Claude-Autonomous-Agent.git
+git clone https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude.git
 
-# Copy to Claude Code plugins directory (PowerShell)
+# Copy to Claude Code plugins directory
 $pluginPath = "$env:USERPROFILE\.config\claude\plugins"
 New-Item -ItemType Directory -Force -Path $pluginPath
-Copy-Item -Recurse -Force "Claude-Autonomous-Agent" "$pluginPath\autonomous-agent"
+Copy-Item -Recurse -Force "LLM-Autonomous-Agent-Plugin-for-Claude" "$pluginPath\autonomous-agent"
 
 # Verify installation
 dir $env:USERPROFILE\.config\claude\plugins\autonomous-agent
 ```
 
-**Alternative for Windows (Command Prompt)**:
+**For Windows Users (Command Prompt):**
 ```cmd
-git clone https://github.com/bejranonda/Claude-Autonomous-Agent.git
+git clone https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude.git
 mkdir %USERPROFILE%\.config\claude\plugins
-xcopy /E /I /Y Claude-Autonomous-Agent %USERPROFILE%\.config\claude\plugins\autonomous-agent
+xcopy /E /I /Y LLM-Autonomous-Agent-Plugin-for-Claude %USERPROFILE%\.config\claude\plugins\autonomous-agent
 dir %USERPROFILE%\.config\claude\plugins\autonomous-agent
 ```
 
-### Restart Claude Code
+### Method 2: Via Claude Code Plugin System (Recommended)
 
-After installation, restart Claude Code CLI to load the plugin.
+Once this plugin is available in a marketplace:
+
+```bash
+# Add the marketplace (if not already added)
+/plugin marketplace add [marketplace-url]
+
+# Install the plugin
+/plugin install autonomous-agent
+
+# Verify installation
+/help
+```
+
+**Note**: The plugin system is currently in public beta. Manual installation (Method 1) is required until the plugin is published to a marketplace.
+
+### After Installation
+
+Restart Claude Code CLI to load the plugin:
+
+```bash
+# Exit Claude Code (Ctrl+D or type 'exit')
+# Then restart
+claude
+```
 
 ---
 
@@ -813,10 +838,12 @@ Created to demonstrate true AI autonomy with automatic continuous learning. The 
 ### Installation
 ```bash
 # Linux/Mac
-cp -r Claude-Autonomous-Agent ~/.config/claude/plugins/autonomous-agent
+git clone https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude.git
+cp -r LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/autonomous-agent
 
 # Windows PowerShell
-Copy-Item -Recurse "Claude-Autonomous-Agent" "$env:USERPROFILE\.config\claude\plugins\autonomous-agent"
+git clone https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude.git
+Copy-Item -Recurse "LLM-Autonomous-Agent-Plugin-for-Claude" "$env:USERPROFILE\.config\claude\plugins\autonomous-agent"
 ```
 
 ### First Use

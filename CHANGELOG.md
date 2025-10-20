@@ -225,6 +225,6 @@ Windows PowerShell:
 
 ## Support
 
-- Issues: https://github.com/bejranonda/Claude-Autonomous-Agent/issues
-- Discussions: https://github.com/bejranonda/Claude-Autonomous-Agent/discussions
+- Issues: https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/issues
+- Discussions: https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/discussions
 - Documentation: See README.md and USAGE_GUIDE.md

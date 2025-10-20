@@ -21,9 +21,9 @@ Complete guide to using the autonomous Claude agent plugin with automatic learni
 **Linux/Mac**:
 ```bash
 # Clone and install
-git clone https://github.com/bejranonda/Claude-Autonomous-Agent.git
+git clone https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude.git
 mkdir -p ~/.config/claude/plugins
-cp -r Claude-Autonomous-Agent ~/.config/claude/plugins/autonomous-agent
+cp -r LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/autonomous-agent
 
 # Restart Claude Code
 claude
@@ -32,10 +32,10 @@ claude
 **Windows PowerShell**:
 ```powershell
 # Clone and install
-git clone https://github.com/bejranonda/Claude-Autonomous-Agent.git
+git clone https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude.git
 $pluginPath = "$env:USERPROFILE\.config\claude\plugins"
 New-Item -ItemType Directory -Force -Path $pluginPath
-Copy-Item -Recurse -Force "Claude-Autonomous-Agent" "$pluginPath\autonomous-agent"
+Copy-Item -Recurse -Force "LLM-Autonomous-Agent-Plugin-for-Claude" "$pluginPath\autonomous-agent"
 
 # Restart Claude Code
 claude
