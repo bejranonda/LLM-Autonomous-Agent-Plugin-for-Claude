@@ -1,4 +1,7 @@
 # Autonomous Claude Agent Plugin
+> What if your AI agent got smarter with every task?
+
+🧠 Self-learning Claude plugin that automatically improves quality 15-20% through pattern recognition. Watch it learn in real-time.
 
 A comprehensive Claude Code plugin that implements **true autonomous agent behavior** with **automatic continuous learning**, pattern recognition, skill auto-selection, background task execution, and comprehensive quality control.
 
