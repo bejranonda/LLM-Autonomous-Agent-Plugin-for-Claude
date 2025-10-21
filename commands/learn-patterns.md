@@ -25,6 +25,8 @@ Use this command when starting with a new project to build the autonomous learni
 5. **Context Recording**: Stores project metadata
 6. **Baseline Setup**: Establishes initial skill metrics
 
+**IMPORTANT**: When delegating this command to the orchestrator agent, the agent MUST present initialization results showing what was detected, created, and the next steps. Silent completion is not acceptable.
+
 ## Usage
 
 ```bash
@@ -45,24 +47,64 @@ The command creates the `.claude-patterns/` directory with:
 
 ## Example Output
 
+The orchestrator MUST present results in this format:
+
 ```
-Pattern Learning Initialization Started
-├── Project Analysis
-│   ├── Detected: Python project with FastAPI
-│   ├── Languages: Python 3.9+
-│   ├── Frameworks: FastAPI, SQLAlchemy, Pydantic
-│   └── Files analyzed: 127 files
-├── Pattern Database
-│   ├── Created .claude-patterns/ directory
-│   ├── Initialized patterns.json (empty)
-│   ├── Initialized task_queue.json (empty)
-│   ├── Initialized quality_history.json (empty)
-│   └── Initialized config.json
-├── Baseline Metrics
-│   ├── Skill effectiveness baseline established
-│   ├── Quality baseline: TBD (will update after first task)
-│   └── Coverage baseline: TBD
-└── Pattern learning ready for autonomous operation
+═══════════════════════════════════════════════════════
+  PATTERN LEARNING INITIALIZED
+═══════════════════════════════════════════════════════
+
+┌─ Project Analysis ───────────────────────────────────┐
+│ Type: Python project with FastAPI framework          │
+│ Languages: Python 3.9+                                │
+│ Frameworks: FastAPI, SQLAlchemy, Pydantic            │
+│ Total Files: 127                                      │
+│ Project Structure: Backend API with modular design   │
+└───────────────────────────────────────────────────────┘
+
+┌─ Pattern Database Created ───────────────────────────┐
+│ Location: .claude-patterns/                          │
+│                                                       │
+│ Files Created:                                        │
+│ ✓ patterns.json          (pattern storage)           │
+│ ✓ task_queue.json        (task management)           │
+│ ✓ quality_history.json   (quality tracking)          │
+│ ✓ config.json            (configuration)             │
+│                                                       │
+│ Status: Ready for pattern capture                     │
+└───────────────────────────────────────────────────────┘
+
+┌─ Initial Patterns Detected ──────────────────────────┐
+│ • RESTful API endpoint pattern (23 instances)        │
+│ • Database model pattern (15 models)                  │
+│ • Pydantic schema pattern (18 schemas)               │
+│ • Error handling pattern (consistent across modules) │
+│ • Authentication decorator pattern                    │
+└───────────────────────────────────────────────────────┘
+
+┌─ Baseline Metrics ───────────────────────────────────┐
+│ Skill Effectiveness: Baseline established            │
+│ Quality Baseline: Will update after first task       │
+│ Coverage Baseline: Will update after first task      │
+│ Agent Performance: Will track from first delegation  │
+└───────────────────────────────────────────────────────┘
+
+┌─ Next Steps ─────────────────────────────────────────┐
+│ 1. Run /auto-analyze to analyze project quality      │
+│ 2. Run /quality-check to establish quality baseline  │
+│ 3. Start working on tasks - learning begins!         │
+│ 4. Each task improves the system automatically       │
+└───────────────────────────────────────────────────────┘
+
+Skills Loaded: pattern-learning, code-analysis
+Agents Used: code-analyzer, learning-engine
+Pattern Database: .claude-patterns/ (initialized)
+Initialization Time: 0.8 minutes
+
+═══════════════════════════════════════════════════════
+  Pattern learning is ready. The system will learn
+  and improve automatically with every task you perform.
+═══════════════════════════════════════════════════════
 ```
 
 ## Pattern Database Structure

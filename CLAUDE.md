@@ -407,8 +407,34 @@ All Python scripts in `lib/` directory feature Windows compatibility (v1.4):
 - Each script has a complete CLI interface accessible via `python lib/<script>.py --help`
 - Scripts are designed to be used both programmatically and via command line
 
+## Result Presentation Requirements
+
+**CRITICAL**: Use **two-tier presentation strategy** for slash commands. Follow the guidelines in `RESULT_PRESENTATION_GUIDELINES.md`.
+
+**Tier 1: Concise Terminal Output (15-20 lines max)**:
+- Status line with key metric
+- Top 3 findings only
+- Top 3 recommendations only
+- File path to detailed report
+- Execution time
+
+**Tier 2: Detailed File Report (comprehensive)**:
+- Save to `.claude/reports/[command]-YYYY-MM-DD.md`
+- Include ALL findings, metrics, charts, visualizations
+- Complete recommendations and analysis
+- Full formatting with boxes and sections
+
+**Critical Rules**:
+- Terminal = Quick summary only (15-20 lines max)
+- File = Complete details with all findings
+- Always include file path in terminal output
+- Never complete silently, never show 50+ lines in terminal
+
+**See**: `RESULT_PRESENTATION_GUIDELINES.md` for complete formatting standards and examples.
+
 ## Notes for Future Claude Instances
 
+- **Result presentation**: ALWAYS show formatted results after slash commands - see `RESULT_PRESENTATION_GUIDELINES.md`
 - **Pattern database location**: Always `.claude/patterns/` in user projects, NEVER in this plugin repo
 - **Auto-creation**: Orchestrator creates pattern directory automatically on first use
 - **Automatic learning**: learning-engine runs SILENTLY after every task - never show "learning..." messages to user

@@ -11,6 +11,8 @@ Generate comprehensive performance analytics report showing learning effectivene
 5. **Recommendations**: Provides actionable optimization suggestions
 6. **Report Generation**: Outputs comprehensive analytics report
 
+**IMPORTANT**: When delegating this command to the orchestrator agent, the agent MUST present the complete performance report with charts, metrics, and prioritized recommendations. This command is specifically designed to show comprehensive results to the user. Silent completion is not acceptable.
+
 ## Usage
 
 ```bash
@@ -55,6 +57,8 @@ Generate comprehensive performance analytics report showing learning effectivene
 - Efficiency improvements (parallelization opportunities)
 
 ## Example Output
+
+The orchestrator MUST present the full performance report. The example output in this file demonstrates the EXACT format expected. Do NOT summarize - show the complete report:
 
 ```
 ═══════════════════════════════════════════════════════

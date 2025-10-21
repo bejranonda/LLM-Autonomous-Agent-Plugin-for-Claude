@@ -24,6 +24,8 @@ Run comprehensive quality control check with autonomous fixing. This will:
 6. **Quality Assessment**: Calculates overall quality score (0-100)
 7. **Trend Analysis**: Compares against historical data
 
+**IMPORTANT**: When delegating this command to the orchestrator agent, the agent MUST present a detailed quality report to the user showing scores, test results, auto-fix actions, and specific recommendations. Silent completion is not acceptable.
+
 ## Usage
 
 ```bash
@@ -44,16 +46,70 @@ If score < 70, auto-fix loop is triggered automatically.
 
 ## Example Output
 
+The orchestrator MUST present results in this format:
+
 ```
-Quality Control Check Started
-├── Tests: 45 passed, 2 failed → 88% coverage (26/30 points)
-├── Standards: 18 violations found → 18/25 points
-├── Documentation: Complete (19/20 points)
-├── Patterns: Adheres to 8/8 patterns (15/15 points)
-├── Metrics: Acceptable complexity (10/10 points)
-├── Current Score: 88/100 ✓ PASS
-├── Quality Trend: ↑ +5 from last check
-└── Check complete in 1.8 minutes
+═══════════════════════════════════════════════════════
+  QUALITY CHECK COMPLETED
+═══════════════════════════════════════════════════════
+
+┌─ Overall Quality Score ──────────────────────────────┐
+│ Current Score: 88/100 ✓ PASS                         │
+│ Previous Score: 83/100                                │
+│ Trend: ↑ +5 points (improving)                       │
+│ Status: Above threshold (70+)                         │
+└───────────────────────────────────────────────────────┘
+
+┌─ Quality Breakdown ──────────────────────────────────┐
+│ Tests (30 pts):         26/30 ✓                      │
+│   45 passed, 2 failed | 88% coverage                 │
+│                                                       │
+│ Standards (25 pts):     18/25 ⚠                      │
+│   18 style violations found                           │
+│                                                       │
+│ Documentation (20 pts): 19/20 ✓                      │
+│   97% of public APIs documented                       │
+│                                                       │
+│ Patterns (15 pts):      15/15 ✓                      │
+│   Adheres to 8/8 learned patterns                     │
+│                                                       │
+│ Metrics (10 pts):       10/10 ✓                      │
+│   Acceptable complexity levels                        │
+└───────────────────────────────────────────────────────┘
+
+┌─ Auto-Fix Actions Taken ─────────────────────────────┐
+│ • Fixed 12 style violations (auto-formatted)         │
+│ • Added 3 missing docstrings                          │
+│ • Updated 1 outdated dependency                       │
+│ • Quality improved from 83 → 88 (+5 points)          │
+└───────────────────────────────────────────────────────┘
+
+┌─ Remaining Issues ───────────────────────────────────┐
+│ Tests:                                                │
+│ • test_user_login() - AssertionError (auth.py:45)   │
+│ • test_token_refresh() - Timeout (auth.py:89)       │
+│                                                       │
+│ Standards:                                            │
+│ • 6 violations require manual review                  │
+│   (complex refactoring needed)                        │
+└───────────────────────────────────────────────────────┘
+
+┌─ Recommendations ────────────────────────────────────┐
+│ 1. [HIGH] Fix 2 failing tests in auth module         │
+│    → Expected +4 quality points                       │
+│ 2. [MED] Refactor complex functions flagged          │
+│    → Expected +2 quality points                       │
+│ 3. [LOW] Review 6 manual style violations            │
+│    → Expected +1 quality point                        │
+└───────────────────────────────────────────────────────┘
+
+Skills Loaded: quality-standards, testing-strategies
+Agents Used: quality-controller, test-engineer
+Auto-Fix Iterations: 2 (converged)
+Patterns Stored: Quality pattern updated in .claude/patterns/
+Check Time: 1.8 minutes
+
+═══════════════════════════════════════════════════════
 ```
 
 ## Auto-Fix Details

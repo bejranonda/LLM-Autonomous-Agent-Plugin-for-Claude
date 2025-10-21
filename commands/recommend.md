@@ -11,6 +11,8 @@ Get intelligent recommendations for optimal workflows, skill combinations, and a
 5. **Recommendation Generation**: Provides top 3 approaches with detailed trade-offs
 6. **Risk Assessment**: Identifies potential issues and mitigation strategies
 
+**IMPORTANT**: When delegating this command to the orchestrator agent, the agent MUST present comprehensive recommendations with expected outcomes, confidence levels, alternatives, and risk assessments. Silent completion is not acceptable.
+
 ## Usage
 
 ```bash
@@ -63,6 +65,8 @@ Get intelligent recommendations for optimal workflows, skill combinations, and a
 - Adjusted predictions accounting for risks
 
 ## Example Output
+
+The orchestrator MUST present the full recommendation report. The example output in this file demonstrates the EXACT format expected. Do NOT summarize - show the complete recommendations:
 
 ```
 ════════════════════════════════════════════════════════

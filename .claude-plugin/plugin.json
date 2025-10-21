@@ -1,6 +1,6 @@
 {
   "name": "autonomous-agent",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, advanced background task execution, quality control, performance analytics, and intelligent recommendations",
   "author": {
     "name": "Werapol Bejranonda",

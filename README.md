@@ -991,6 +991,29 @@ A: Yes! The pattern storage, task queue, and quality tracker scripts (`lib/*.py`
 
 ---
 
+## Developer Documentation
+
+### Key Documentation Files
+
+- **`CLAUDE.md`**: Complete plugin architecture and guidance for Claude Code integration
+- **`RESULT_PRESENTATION_GUIDELINES.md`**: Standards for presenting results after slash commands
+- **`USAGE_GUIDE.md`**: Comprehensive usage guide with cross-platform examples
+- **`CHANGELOG.md`**: Version history and release notes
+- **`IMPROVEMENTS_SUMMARY.md`**: Detailed analysis of improvements across versions
+
+### Result Presentation
+
+The plugin enforces strict **result presentation guidelines** to ensure users always receive clear, actionable feedback:
+
+- **Never Silent**: Every slash command presents formatted results
+- **Consistent Format**: Box-drawing characters, sections, visual indicators
+- **Actionable Insights**: Recommendations with expected impact
+- **Comprehensive Metrics**: Quality scores, trends, and breakdowns
+
+See `RESULT_PRESENTATION_GUIDELINES.md` for complete formatting standards.
+
+---
+
 ## Contributing
 
 Want to enhance the learning capabilities? Contributions welcome!
@@ -1006,6 +1029,7 @@ Want to enhance the learning capabilities? Contributions welcome!
 - Better pattern matching
 - Cross-project learning improvements
 - Performance optimizations
+- Result presentation enhancements
 
 ---
 

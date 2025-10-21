@@ -306,24 +306,143 @@ User: "Refactor the authentication module"
 - Quality check results
 - Recommendations for future improvements
 
-**Format**:
+**CRITICAL: Two-Tier Result Presentation**
+
+After completing any task (especially slash commands), you MUST use the two-tier presentation strategy:
+
+**Tier 1: Concise Terminal Output (15-20 lines max)**
+1. **Status line** with key metric (e.g., "✓ Quality Check Complete - Score: 88/100")
+2. **Top 3 findings** only (most important results)
+3. **Top 3 recommendations** only (highest priority actions)
+4. **File path** to detailed report (e.g., "📄 Full report: .claude/reports/...")
+5. **Execution time** (e.g., "⏱ Completed in 2.3 minutes")
+
+**Tier 2: Detailed File Report (comprehensive)**
+- Save complete results to `.claude/reports/[command]-YYYY-MM-DD.md`
+- Include ALL findings, metrics, charts, visualizations
+- Use full formatting with boxes and sections
+- Provide comprehensive recommendations and analysis
+
+**Never**:
+- Complete silently without terminal output
+- Show 50+ lines of detailed results in terminal
+- Skip creating the detailed report file
+- Omit the file path from terminal output
+
+**Terminal Output Format** (15-20 lines max):
 ```
-TASK COMPLETED AUTONOMOUSLY
+✓ [TASK NAME] Complete - [Key Metric]
 
-Quality Score: XX/100
-Agents Used: [agent1, agent2, ...]
-Skills Loaded: [skill1, skill2, ...]
-Patterns Stored: X new patterns
+Key Results:
+• [Most important finding #1]
+• [Most important finding #2]
+• [Most important finding #3]
 
-Results:
-- <Primary deliverable>
-- <Quality metrics>
-- <Background findings>
+Top Recommendations:
+1. [HIGH] [Critical action] → [Expected impact]
+2. [MED]  [Important action] → [Expected impact]
+3. [LOW]  [Optional action]
 
-Pattern Learning:
-- Stored in: .claude/patterns/learned-patterns.json
-- Future recommendations: <insights>
+📄 Full report: .claude/reports/[task-name]-YYYY-MM-DD.md
+⏱ Completed in X.X minutes
 ```
+
+**File Report Format** (.claude/reports/[task-name]-YYYY-MM-DD.md):
+```
+═══════════════════════════════════════════════════════
+  [TASK NAME] DETAILED REPORT
+═══════════════════════════════════════════════════════
+Generated: YYYY-MM-DD HH:MM:SS
+
+┌─ Complete Results ───────────────────────────────────┐
+│ [All metrics, findings, and analysis]                 │
+│ [Charts and visualizations]                           │
+└───────────────────────────────────────────────────────┘
+
+┌─ All Recommendations ────────────────────────────────┐
+│ [All recommendations with full details]               │
+└───────────────────────────────────────────────────────┘
+
+Agents Used: [agent1, agent2]
+Skills Loaded: [skill1, skill2]
+Patterns Stored: X new patterns in .claude/patterns/
+
+═══════════════════════════════════════════════════════
+```
+
+**Examples by Command Type**:
+
+**/auto-analyze Terminal Output** (concise):
+- Status + quality score
+- Top 3 findings (e.g., failing tests, missing docs)
+- Top 3 recommendations with impact
+- File path to detailed report
+- Execution time
+
+**/auto-analyze File Report** (detailed):
+- Complete project context
+- Full quality assessment breakdown
+- All findings with file/line references
+- All recommendations prioritized
+- Pattern learning status
+- Charts and metrics
+
+**/quality-check Terminal Output** (concise):
+- Status + score + trend
+- Quality breakdown summary (tests, standards, docs)
+- Auto-fix actions summary
+- Top 3 remaining issues
+- File path to detailed report
+
+**/quality-check File Report** (detailed):
+- Complete quality breakdown
+- All auto-fix actions taken
+- All remaining issues with details
+- Trend analysis with charts
+- Full recommendations
+
+**/learn-patterns Terminal Output** (concise):
+- Project type detected
+- Number of patterns identified
+- Database location
+- Top 3 next steps
+- File path to detailed report
+
+**/learn-patterns File Report** (detailed):
+- Complete project analysis
+- All detected patterns
+- Framework and technology details
+- Baseline metrics
+- Comprehensive next steps
+
+**/performance-report Terminal Output** (concise):
+- Executive summary (patterns, trend, top skill)
+- Top 3 recommendations with impact
+- File path (includes charts, trends, complete metrics)
+
+**/performance-report File Report** (detailed):
+- Complete analytics dashboard
+- ASCII charts for trends
+- All skill/agent performance metrics
+- All recommendations
+- Full analysis
+
+**/recommend Terminal Output** (concise):
+- Recommended approach + confidence
+- Expected quality/time
+- Skills and agents to use
+- Alternative approaches summary
+- Risk level + mitigation
+- File path to detailed report
+
+**/recommend File Report** (detailed):
+- Complete approach details
+- All alternatives compared
+- Full risk assessment
+- Confidence analysis
+- Skill synergies
+
+**Critical Rule**: Terminal = 15-20 lines max. File = Complete details. Always include file path.
 
 ## Automatic Learning Integration
 
