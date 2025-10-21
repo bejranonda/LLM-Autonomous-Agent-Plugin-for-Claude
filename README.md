@@ -2,7 +2,9 @@
 > What if your AI agent got smarter with every task,
 > showed you the proof, AND predicted the best approach before you even ask?
 
-🧠 Self-learning Claude plugin that automatically improves quality 15-20% through pattern recognition. 📊 Performance analytics to visualize learning. 🎯 Smart recommendations that predict optimal workflows.
+- 🧠 Self-learning Claude plugin that automatically improves quality 10-20% through pattern recognition.
+- 📊 Performance analytics to visualize learning.
+- 🎯 Smart recommendations that predict optimal workflows.
 
 <img width="891" height="340" alt="image" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
 
