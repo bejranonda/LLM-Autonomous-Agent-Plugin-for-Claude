@@ -1,0 +1,85 @@
+{
+  "project_context": {
+    "detected_languages": ["markdown", "json"],
+    "frameworks": ["Claude Code Plugin System"],
+    "project_type": "claude-code-plugin",
+    "description": "Autonomous Claude agent plugin with pattern learning, skill auto-selection, and quality control",
+    "version": "1.1.0",
+    "analysis_date": "2025-10-21"
+  },
+  "patterns": [],
+  "skill_effectiveness": {
+    "pattern-learning": {
+      "success_rate": null,
+      "total_uses": 0,
+      "recommended_for": [],
+      "avoid_for": []
+    },
+    "code-analysis": {
+      "success_rate": null,
+      "total_uses": 0,
+      "recommended_for": [],
+      "avoid_for": []
+    },
+    "quality-standards": {
+      "success_rate": null,
+      "total_uses": 0,
+      "recommended_for": [],
+      "avoid_for": []
+    },
+    "testing-strategies": {
+      "success_rate": null,
+      "total_uses": 0,
+      "recommended_for": [],
+      "avoid_for": []
+    },
+    "documentation-best-practices": {
+      "success_rate": null,
+      "total_uses": 0,
+      "recommended_for": [],
+      "avoid_for": []
+    }
+  },
+  "agent_effectiveness": {
+    "orchestrator": {
+      "success_rate": null,
+      "total_uses": 0,
+      "avg_quality_score": null
+    },
+    "code-analyzer": {
+      "success_rate": null,
+      "total_uses": 0,
+      "avg_quality_score": null
+    },
+    "quality-controller": {
+      "success_rate": null,
+      "total_uses": 0,
+      "avg_quality_score": null
+    },
+    "test-engineer": {
+      "success_rate": null,
+      "total_uses": 0,
+      "avg_quality_score": null
+    },
+    "documentation-generator": {
+      "success_rate": null,
+      "total_uses": 0,
+      "avg_quality_score": null
+    },
+    "background-task-manager": {
+      "success_rate": null,
+      "total_uses": 0,
+      "avg_quality_score": null
+    },
+    "learning-engine": {
+      "success_rate": null,
+      "total_uses": 0,
+      "avg_quality_score": null
+    }
+  },
+  "metadata": {
+    "total_patterns": 0,
+    "last_updated": "2025-10-21",
+    "version": "2.0.0"
+  }
+}

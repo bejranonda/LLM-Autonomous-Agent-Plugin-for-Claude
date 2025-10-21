@@ -1,0 +1,19 @@
+{
+  "quality_assessments": [],
+  "statistics": {
+    "avg_quality_score": null,
+    "total_assessments": 0,
+    "passing_rate": null,
+    "trend": "stable"
+  },
+  "baselines": {
+    "test_coverage": null,
+    "code_quality": null,
+    "documentation_coverage": null,
+    "pattern_adherence": null
+  },
+  "metadata": {
+    "last_assessment": null,
+    "version": "1.0.0"
+  }
+}

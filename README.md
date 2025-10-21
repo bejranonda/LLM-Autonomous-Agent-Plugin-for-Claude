@@ -114,7 +114,7 @@ Alternatively, add as a marketplace:
 ```
 
 <img width="647" height="276" alt="image" src="https://github.com/user-attachments/assets/f10ae5f2-a60e-4e56-af19-0c6335d54f86" />
-*Alternative : Adding the plugin step by step via menu "/plugin list"*
+*Alternative : Adding the plugin step by step via menu "/plugin"*
 
 
 ### Method 2: Via GitHub (Manual Installation)
