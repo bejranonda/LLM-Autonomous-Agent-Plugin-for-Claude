@@ -1,7 +1,7 @@
 # Autonomous Claude Agent Plugin
 > What if your AI agent got smarter with every task AND showed you the proof?
 
-🧠 Self-learning Claude plugin that automatically improves quality 15-20% through pattern recognition. 📊 Now with performance analytics to visualize and measure learning effectiveness.
+🧠 Self-learning Claude plugin that automatically improves quality 10-20% through pattern recognition. 📊 Now with performance analytics to visualize and measure learning effectiveness.
 
 <img width="1114" height="347" alt="image" src="https://github.com/user-attachments/assets/50a1d88a-f049-4982-86b5-7986d4467b0d" />
 
