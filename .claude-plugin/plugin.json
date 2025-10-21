@@ -2,13 +2,14 @@
   "name": "autonomous-agent",
   "version": "1.1.0",
   "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, background tasks, and quality control",
-  "author": "Werapol Bejranonda",
-  "homepage": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude"
+  "author": {
+    "name": "Werapol Bejranonda",
+    "email": "contact@werapol.dev",
+    "url": "https://github.com/bejranonda"
   },
+  "repository": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
   "license": "MIT",
+  "homepage": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
   "keywords": [
     "autonomous",
     "agent",
@@ -20,46 +21,5 @@
     "documentation",
     "refactoring",
     "ai-assistant"
-  ],
-  "category": "development",
-  "tags": [
-    "autonomous-operation",
-    "pattern-learning",
-    "quality-assurance",
-    "code-optimization",
-    "adaptive-ai"
-  ],
-  "components": {
-    "agents": [
-      "agents/orchestrator.md",
-      "agents/code-analyzer.md",
-      "agents/quality-controller.md",
-      "agents/background-task-manager.md",
-      "agents/test-engineer.md",
-      "agents/documentation-generator.md",
-      "agents/learning-engine.md"
-    ],
-    "skills": [
-      "skills/pattern-learning",
-      "skills/code-analysis",
-      "skills/quality-standards",
-      "skills/testing-strategies",
-      "skills/documentation-best-practices"
-    ],
-    "commands": [
-      "commands/auto-analyze.md",
-      "commands/quality-check.md",
-      "commands/learn-patterns.md"
-    ]
-  },
-  "dependencies": {},
-  "engines": {
-    "claude-code": ">=1.0.0"
-  },
-  "icon": "assets/icon.png",
-  "screenshots": [
-    "assets/screenshots/autonomous-analysis.png",
-    "assets/screenshots/quality-control.png",
-    "assets/screenshots/pattern-learning.png"
   ]
 }
