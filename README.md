@@ -3,6 +3,10 @@
 
 🧠 Self-learning Claude plugin that automatically improves quality 15-20% through pattern recognition. 📊 Now with performance analytics to visualize and measure learning effectiveness.
 
+<img width="1114" height="347" alt="image" src="https://github.com/user-attachments/assets/50a1d88a-f049-4982-86b5-7986d4467b0d" />
+
+*Demonstration of the plugin's autonomous learning capabilities*
+
 A comprehensive Claude Code plugin that implements **true autonomous agent behavior** with **automatic continuous learning**, pattern recognition, skill auto-selection, background task execution, comprehensive quality control, and **performance analytics dashboard**.
 
 ## 🎯 Key Innovation: Automatic Learning
@@ -31,6 +35,11 @@ Task 3 (similar) → Even better → Faster → Higher quality
 - **Performance Optimization**: Learns which approaches work best and automatically uses them
 - **Cross-Task Intelligence**: Each task benefits from all previous tasks
 - **Trend Analysis**: Automatically detects improving/declining patterns and adapts
+
+<img width="575" height="243" alt="image" src="https://github.com/user-attachments/assets/4616bc54-8396-4e35-9ff9-b0739cfbc484" />
+
+*Core learning pattern enabling project enhancement via an autonomous approach*
+
 
 ### 📊 Performance Analytics Dashboard (NEW in v1.2!)
 - **Learning Effectiveness Tracking**: Visualize pattern growth, reuse rates, and knowledge coverage
