@@ -852,6 +852,114 @@ Task 15: Quality 94, Time 115s
 
 ---
 
+## Technical Implementation
+
+### Python Library Utilities (v1.4)
+
+The plugin includes enhanced Python scripts for data management and analysis, now with full Windows compatibility:
+
+#### Pattern Storage (`lib/pattern_storage.py`)
+Manages pattern learning data with thread-safe operations:
+
+**Features**:
+- Cross-platform file locking (Windows msvcrt + Unix fcntl)
+- JSON-based pattern storage with validation
+- Pattern retrieval with relevance scoring
+- Usage statistics and success rate tracking
+- Automatic schema validation
+
+**Usage**:
+```bash
+# Store a new pattern (Linux/Mac/Windows)
+python lib/pattern_storage.py --dir .claude-patterns store \
+  --pattern '{"task_type":"refactoring","context":"auth module","skills_used":["code-analysis"],"approach":"modular refactor","quality_score":0.92}'
+
+# Retrieve similar patterns
+python lib/pattern_storage.py --dir .claude-patterns retrieve \
+  --context "authentication security" \
+  --task-type refactoring \
+  --min-quality 0.8
+
+# Get statistics
+python lib/pattern_storage.py --dir .claude-patterns stats
+```
+
+#### Task Queue (`lib/task_queue.py`)
+Priority-based task management system:
+
+**Features**:
+- Priority levels (high/medium/low) with automatic sorting
+- Task status tracking (pending/running/completed/failed)
+- Timestamps for creation, start, and completion
+- Windows-compatible file locking
+- Bulk operations (list, clear, status)
+
+**Usage**:
+```bash
+# Add a high-priority task
+python lib/task_queue.py --dir .claude-patterns add \
+  --name "Security Scan" \
+  --description "Run security vulnerability scan" \
+  --priority high \
+  --skills "code-analysis,quality-standards"
+
+# Get next task to execute
+python lib/task_queue.py --dir .claude-patterns execute-next
+
+# Update task status
+python lib/task_queue.py --dir .claude-patterns update \
+  --task-id task_20251021_120000 \
+  --status completed \
+  --result "Scan complete: 0 critical, 2 medium issues"
+```
+
+#### Quality Tracker (`lib/quality_tracker.py`)
+Tracks quality metrics and trends over time:
+
+**Features**:
+- Multi-metric quality recording (code, tests, docs, patterns)
+- Trend analysis (improving/stable/declining)
+- Low-quality task identification
+- Time-series data with configurable periods
+- Statistical aggregations
+
+**Usage**:
+```bash
+# Record quality assessment
+python lib/quality_tracker.py --dir .claude-patterns record \
+  --task-id task_20251021_120000 \
+  --score 0.92 \
+  --metrics '{"code_quality":0.95,"test_quality":0.88,"doc_quality":0.93}'
+
+# Get quality trends (last 30 days)
+python lib/quality_tracker.py --dir .claude-patterns trends --days 30
+
+# Find low-quality tasks for review
+python lib/quality_tracker.py --dir .claude-patterns low-quality --threshold 0.7
+```
+
+#### Windows Compatibility Improvements (v1.4)
+All Python scripts now feature:
+- **Dual File Locking**: Uses `msvcrt` on Windows, `fcntl` on Unix/Linux/Mac
+- **Path Handling**: Automatic Windows backslash conversion
+- **Error Handling**: Enhanced exception catching for OS-specific issues
+- **Platform Detection**: Automatic OS detection via `platform.system()`
+
+**Technical Details**:
+```python
+# Automatic platform-specific file locking
+if platform.system() == 'Windows':
+    import msvcrt
+    # Uses msvcrt.locking() for Windows
+else:
+    import fcntl
+    # Uses fcntl.flock() for Unix-like systems
+```
+
+This ensures seamless operation across all operating systems without requiring users to modify any code or configuration.
+
+---
+
 ## FAQ
 
 **Q: Does learning happen automatically?**
@@ -873,7 +981,10 @@ A: Yes! Failed tasks teach the system what approaches to avoid, making future at
 A: Yes! Commit `.claude/patterns/` to your repository. All team members will benefit from shared learnings.
 
 **Q: Does it work on Windows?**
-A: Yes! All features work identically on Windows, Linux, and Mac. See Windows-specific examples above.
+A: Yes! All features work identically on Windows, Linux, and Mac. V1.4 adds enhanced Windows compatibility for all Python utilities with automatic platform detection and proper file locking. See Windows-specific examples above.
+
+**Q: Can I use the Python utilities standalone?**
+A: Yes! The pattern storage, task queue, and quality tracker scripts (`lib/*.py`) can be used independently for custom workflows. They're fully documented with CLI interfaces and work cross-platform.
 
 ---
 

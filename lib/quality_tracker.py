@@ -12,8 +12,31 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Any
-import fcntl
+import platform
 from collections import defaultdict
+
+# Handle Windows compatibility for file locking
+if platform.system() == 'Windows':
+    import msvcrt
+    def lock_file(f, exclusive=False):
+        """Windows file locking using msvcrt."""
+        msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
+
+    def unlock_file(f):
+        """Windows file unlocking."""
+        try:
+            msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+        except:
+            pass
+else:
+    import fcntl
+    def lock_file(f, exclusive=False):
+        """Unix file locking using fcntl."""
+        fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
+
+    def unlock_file(f):
+        """Unix file unlocking."""
+        fcntl.flock(f.fileno(), fcntl.LOCK_UN)
 
 
 class QualityTracker:
@@ -46,18 +69,21 @@ class QualityTracker:
         try:
             with open(self.quality_file, 'r', encoding='utf-8') as f:
                 # Acquire shared lock for reading
-                fcntl.flock(f.fileno(), fcntl.LOCK_SH)
+                lock_file(f, exclusive=False)
                 try:
                     content = f.read()
                     if not content.strip():
                         return []
                     return json.loads(content)
                 finally:
-                    fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+                    unlock_file(f)
         except FileNotFoundError:
             return []
         except json.JSONDecodeError as e:
             print(f"Error: Malformed JSON in {self.quality_file}: {e}", file=sys.stderr)
+            return []
+        except Exception as e:
+            print(f"Error reading quality records: {e}", file=sys.stderr)
             return []
 
     def _write_quality_records(self, records: List[Dict[str, Any]]):
@@ -67,13 +93,17 @@ class QualityTracker:
         Args:
             records: List of quality record dictionaries to write
         """
-        with open(self.quality_file, 'w', encoding='utf-8') as f:
-            # Acquire exclusive lock for writing
-            fcntl.flock(f.fileno(), fcntl.LOCK_EX)
-            try:
-                json.dump(records, f, indent=2, ensure_ascii=False)
-            finally:
-                fcntl.flock(f.fileno(), fcntl.LOCK_UN)
+        try:
+            with open(self.quality_file, 'w', encoding='utf-8') as f:
+                # Acquire exclusive lock for writing
+                lock_file(f, exclusive=True)
+                try:
+                    json.dump(records, f, indent=2, ensure_ascii=False)
+                finally:
+                    unlock_file(f)
+        except Exception as e:
+            print(f"Error writing quality records: {e}", file=sys.stderr)
+            raise
 
     def record_quality(
         self,
