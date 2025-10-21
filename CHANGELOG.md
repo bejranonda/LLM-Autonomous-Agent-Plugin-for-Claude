@@ -2,6 +2,50 @@
 
 All notable changes to the Autonomous Claude Agent Plugin will be documented in this file.
 
+## [1.6.1] - 2025-10-21
+
+### 🔧 Bug Fix: Pattern Directory Path Consistency
+
+Fixed documentation inconsistency where pattern storage directory was referenced with two different paths.
+
+### Fixed
+
+#### Documentation Corrections
+- **CLAUDE.md**: Standardized all pattern directory references to `.claude-patterns/`
+  - Line 17: Pattern learning location corrected
+  - Line 63: Pattern database location corrected
+  - Line 99: Skill auto-selection query path corrected
+  - Line 161: Pattern verification command corrected
+  - Line 269: Pattern storage location corrected
+  - Line 438: Notes for future instances corrected
+
+### Details
+
+**Issue**: CLAUDE.md contained conflicting references to pattern storage:
+- Some sections referenced `.claude/patterns/learned-patterns.json` (incorrect, doesn't exist)
+- Other sections referenced `.claude-patterns/patterns.json` (correct, actual implementation)
+
+**Root Cause**: Documentation written before Python utilities (v1.4) were implemented. The utilities use `.claude-patterns/` as the default directory, but earlier documentation assumed `.claude/patterns/`.
+
+**Resolution**: All references now consistently point to `.claude-patterns/patterns.json`, matching the actual implementation in:
+- `lib/pattern_storage.py` (default: `.claude-patterns/`)
+- `lib/task_queue.py` (default: `.claude-patterns/`)
+- `lib/quality_tracker.py` (default: `.claude-patterns/`)
+
+### Files Modified
+- `CLAUDE.md`: 6 path corrections for consistency
+- `.claude-plugin/plugin.json`: Version bumped to 1.6.1
+
+### Backward Compatibility
+Fully backward compatible with v1.6.0. This is purely a documentation fix with no functional changes.
+
+### Impact
+- **Users**: Clearer, consistent documentation
+- **Developers**: No confusion about pattern storage location
+- **Future Claude instances**: Correct path references in CLAUDE.md
+
+---
+
 ## [1.6.0] - 2025-10-21
 
 ### 📋 Major Enhancement: Two-Tier Result Presentation

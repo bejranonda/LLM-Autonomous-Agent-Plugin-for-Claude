@@ -14,7 +14,7 @@ This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous 
 
 - **Brain (Orchestrator)**: `agents/orchestrator.md` - Makes all strategic decisions autonomously, delegates to specialized agents, manages quality assessment, and handles pattern learning
 - **Hand (Skills + Specialized Agents)**: Provide domain expertise and execute focused tasks
-- **Pattern Learning**: Project-level pattern database stores successful approaches in `.claude/patterns/learned-patterns.json`
+- **Pattern Learning**: Project-level pattern database stores successful approaches in `.claude-patterns/patterns.json`
 
 ### Component Structure
 
@@ -60,7 +60,7 @@ The orchestrator agent operates **without human approval** at each step:
 
 ### 2. Pattern Learning (Project Level)
 
-**Location**: `.claude/patterns/` (auto-created in user projects, NOT in this repo)
+**Location**: `.claude-patterns/` (auto-created in user projects, NOT in this repo)
 
 **Pattern Database Schema**:
 ```json
@@ -96,7 +96,7 @@ The orchestrator agent operates **without human approval** at each step:
 
 **Decision Process**:
 1. Analyze task → Extract type, context, complexity
-2. Query `.claude/patterns/learned-patterns.json` for similar past tasks
+2. Query `.claude-patterns/patterns.json` for similar past tasks
 3. Rank patterns by `success_rate * reuse_count`
 4. Extract skills from top 3 patterns
 5. Weight by skill effectiveness scores
@@ -158,7 +158,7 @@ Since this is a plugin definition (not executable code), testing involves:
 3. **Verify pattern storage**:
    ```bash
    # Check pattern database was created
-   cat .claude/patterns/learned-patterns.json
+   cat .claude-patterns/patterns.json
    ```
 
 ### Modifying Plugin Components
@@ -266,7 +266,7 @@ Orchestrator (autonomous execution):
 1. Monitors skills loaded and agents delegated
 2. Records execution approach and duration
 3. Calculates quality score after completion
-4. Stores pattern to `.claude/patterns/learned-patterns.json`
+4. Stores pattern to `.claude-patterns/patterns.json`
 5. Updates skill effectiveness metrics
 6. Updates agent effectiveness metrics
 
@@ -435,7 +435,7 @@ All Python scripts in `lib/` directory feature Windows compatibility (v1.4):
 ## Notes for Future Claude Instances
 
 - **Result presentation**: ALWAYS show formatted results after slash commands - see `RESULT_PRESENTATION_GUIDELINES.md`
-- **Pattern database location**: Always `.claude/patterns/` in user projects, NEVER in this plugin repo
+- **Pattern database location**: Always `.claude-patterns/` in user projects, NEVER in this plugin repo
 - **Auto-creation**: Orchestrator creates pattern directory automatically on first use
 - **Automatic learning**: learning-engine runs SILENTLY after every task - never show "learning..." messages to user
 - **Autonomy is key**: Never ask for confirmation at each step - make decisions independently
