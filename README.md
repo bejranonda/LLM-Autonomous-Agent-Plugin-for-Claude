@@ -41,9 +41,9 @@ Task 3 (similar) → Even better → Faster → Higher quality
 - **Cross-Task Intelligence**: Each task benefits from all previous tasks
 - **Trend Analysis**: Automatically detects improving/declining patterns and adapts
 
-<img width="551" height="177" alt="image" src="https://github.com/user-attachments/assets/f780e262-cd33-4570-8b8b-cfb54c951cb4" />
+<img width="506" height="394" alt="image" src="https://github.com/user-attachments/assets/5f794b7b-6649-405f-97e1-fc297b74ef62" />
 
-*Results of a pattern learning quality check at the first use (baseline)*
+*Evolution of the system from v1.0.0 to v1.5.0 along with the core continuous-learning architecture*
 
 ### 📊 Performance Analytics Dashboard (v1.2)
 - **Learning Effectiveness Tracking**: Visualize pattern growth, reuse rates, and knowledge coverage
