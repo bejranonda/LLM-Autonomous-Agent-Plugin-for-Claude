@@ -20,7 +20,7 @@ This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous 
 
 ```
 .claude-plugin/plugin.json          # Plugin manifest
-agents/                              # 8 specialized subagents
+agents/                              # 9 specialized subagents
 ├── orchestrator.md                 # Main autonomous controller
 ├── code-analyzer.md                # Code structure analysis
 ├── quality-controller.md           # Quality assurance with auto-fix
@@ -28,7 +28,8 @@ agents/                              # 8 specialized subagents
 ├── test-engineer.md                # Test generation and fixing
 ├── documentation-generator.md      # Documentation maintenance
 ├── learning-engine.md              # Automatic learning (v1.1+)
-└── performance-analytics.md        # Performance insights (v1.2+)
+├── performance-analytics.md        # Performance insights (v1.2+)
+└── smart-recommender.md            # Intelligent recommendations (v1.3+)
 
 skills/                              # 5 knowledge packages
 ├── pattern-learning/               # Pattern recognition system
@@ -37,11 +38,12 @@ skills/                              # 5 knowledge packages
 ├── testing-strategies/             # Test design patterns
 └── documentation-best-practices/   # Documentation standards
 
-commands/                            # 4 slash commands
+commands/                            # 5 slash commands
 ├── auto-analyze.md                 # Autonomous project analysis
 ├── quality-check.md                # Comprehensive quality control
 ├── learn-patterns.md               # Initialize pattern learning
-└── performance-report.md           # Performance analytics dashboard (v1.2+)
+├── performance-report.md           # Performance analytics dashboard (v1.2+)
+└── recommend.md                    # Smart workflow recommendations (v1.3+)
 ```
 
 ## Key Architectural Principles
