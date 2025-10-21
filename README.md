@@ -15,6 +15,10 @@ Task 2 (similar) → Auto-applies learned approach → Better quality → Learns
 Task 3 (similar) → Even better → Faster → Higher quality
 ```
 
+<img width="551" height="177" alt="image" src="https://github.com/user-attachments/assets/f780e262-cd33-4570-8b8b-cfb54c951cb4" />
+
+*results of a pattern learning quality check at the first use (baseline)*
+
 **No configuration required. No manual training. Just automatic continuous improvement.**
 
 ---
@@ -114,6 +118,7 @@ Alternatively, add as a marketplace:
 ```
 
 <img width="647" height="276" alt="image" src="https://github.com/user-attachments/assets/f10ae5f2-a60e-4e56-af19-0c6335d54f86" />
+
 *Alternative : Adding the plugin step by step via menu "/plugin"*
 
 
@@ -192,6 +197,11 @@ Then in Claude Code:
 ```
 
 This creates `.claude/patterns/` directory with the learning database.
+
+<img width="979" height="177" alt="image" src="https://github.com/user-attachments/assets/0a62d1d0-ed11-4b23-a8a1-fbbeb72da739" />
+
+*Execution of the “/learn-patterns” slash command to initialize the project database*
+
 
 ### Step 2: Let It Learn From Your Tasks
 
@@ -487,6 +497,11 @@ Then:
 - **Learns project structure and patterns**
 - **Stores baseline for future comparisons**
 
+- <img width="1115" height="892" alt="image" src="https://github.com/user-attachments/assets/b2e532d1-bbf1-4a4c-8c4b-9e54ca47c959" />
+
+*Results from the “/auto-analyze” slash command using the orchestrator approach for comprehensive project analysis*
+
+
 ### `/quality-check` - Comprehensive Quality Control
 
 Validates all quality dimensions with auto-fix:
@@ -502,6 +517,11 @@ Validates all quality dimensions with auto-fix:
 - Verifies pattern adherence
 - **If quality < 70**: Auto-fixes issues
 - **Learns quality patterns** for future tasks
+
+<img width="1552" height="830" alt="image" src="https://github.com/user-attachments/assets/1e8337d5-132e-4206-a0f3-53bdbbf2b76d" />
+
+*Results from the “/quality-check” slash command performing a comprehensive quality control check.*
+
 
 ### `/learn-patterns` - Initialize Learning
 
