@@ -1,0 +1,44 @@
+{
+  "name": "Werapol's Claude Plugins",
+  "owner": {
+    "name": "Werapol",
+    "email": "contact@werapol.dev",
+    "url": "https://github.com/bejranonda"
+  },
+  "plugins": [
+    {
+      "name": "autonomous-agent",
+      "source": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
+      "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, background tasks, and quality control. Features 7 specialized agents, 5 knowledge skills, and 3 slash commands for true autonomous AI development assistance.",
+      "version": "1.1.0",
+      "author": "Werapol",
+      "homepage": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude"
+      },
+      "license": "MIT",
+      "keywords": [
+        "autonomous",
+        "agent",
+        "learning",
+        "patterns",
+        "quality-control",
+        "code-analysis",
+        "testing",
+        "documentation",
+        "refactoring",
+        "ai-assistant"
+      ],
+      "category": "development",
+      "tags": [
+        "autonomous-operation",
+        "pattern-learning",
+        "quality-assurance",
+        "code-optimization",
+        "adaptive-ai"
+      ],
+      "strict": true
+    }
+  ]
+}

@@ -129,11 +129,9 @@ dir %USERPROFILE%\.config\claude\plugins\autonomous-agent
 
 ### Method 2: Via Claude Code Plugin System (Recommended)
 
-Once this plugin is available in a marketplace:
-
 ```bash
-# Add the marketplace (if not already added)
-/plugin marketplace add [marketplace-url]
+# Add the marketplace
+/plugin marketplace add https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
 
 # Install the plugin
 /plugin install autonomous-agent
@@ -142,7 +140,15 @@ Once this plugin is available in a marketplace:
 /help
 ```
 
-**Note**: The plugin system is currently in public beta. Manual installation (Method 1) is required until the plugin is published to a marketplace.
+Alternatively, install directly from GitHub:
+
+```bash
+# Install directly from repository
+/plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
+
+# Verify installation
+/plugin list
+```
 
 ### After Installation
 
