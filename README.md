@@ -88,7 +88,32 @@ Task 3 (similar) → Even better → Faster → Higher quality
 
 ## Installation
 
-### Method 1: Via GitHub (Manual Installation)
+### Method 1: Via Claude Code Plugin System (Recommended)
+
+Install directly from GitHub repository:
+
+```bash
+# Install directly from repository
+/plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
+
+# Verify installation
+/plugin list
+```
+
+Alternatively, add as a marketplace:
+
+```bash
+# Add the marketplace
+/plugin marketplace add https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
+
+# Install the plugin
+/plugin install autonomous-agent
+
+# Verify installation
+/help
+```
+
+### Method 2: Via GitHub (Manual Installation)
 
 **For Linux/Mac Users:**
 
@@ -127,30 +152,7 @@ xcopy /E /I /Y LLM-Autonomous-Agent-Plugin-for-Claude %USERPROFILE%\.config\clau
 dir %USERPROFILE%\.config\claude\plugins\autonomous-agent
 ```
 
-### Method 2: Via Claude Code Plugin System (Recommended)
 
-Install directly from GitHub repository:
-
-```bash
-# Install directly from repository
-/plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
-
-# Verify installation
-/plugin list
-```
-
-Alternatively, add as a marketplace:
-
-```bash
-# Add the marketplace
-/plugin marketplace add https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
-
-# Install the plugin
-/plugin install autonomous-agent
-
-# Verify installation
-/help
-```
 
 ### After Installation
 

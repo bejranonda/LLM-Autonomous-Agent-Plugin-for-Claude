@@ -1,0 +1,8 @@
+# Ignore claude AI files
+.claude/
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore OS generated files
