@@ -1,7 +1,7 @@
 {
   "name": "autonomous-agent",
-  "version": "1.1.0",
-  "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, background tasks, and quality control",
+  "version": "1.2.0",
+  "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, background tasks, quality control, and performance analytics",
   "author": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
@@ -20,6 +20,8 @@
     "testing",
     "documentation",
     "refactoring",
-    "ai-assistant"
+    "ai-assistant",
+    "performance-analytics",
+    "metrics"
   ]
 }

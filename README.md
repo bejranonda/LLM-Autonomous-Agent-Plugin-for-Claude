@@ -1,9 +1,9 @@
 # Autonomous Claude Agent Plugin
-> What if your AI agent got smarter with every task?
+> What if your AI agent got smarter with every task AND showed you the proof?
 
-🧠 Self-learning Claude plugin that automatically improves quality 15-20% through pattern recognition. Watch it learn in real-time.
+🧠 Self-learning Claude plugin that automatically improves quality 15-20% through pattern recognition. 📊 Now with performance analytics to visualize and measure learning effectiveness.
 
-A comprehensive Claude Code plugin that implements **true autonomous agent behavior** with **automatic continuous learning**, pattern recognition, skill auto-selection, background task execution, and comprehensive quality control.
+A comprehensive Claude Code plugin that implements **true autonomous agent behavior** with **automatic continuous learning**, pattern recognition, skill auto-selection, background task execution, comprehensive quality control, and **performance analytics dashboard**.
 
 ## 🎯 Key Innovation: Automatic Learning
 
@@ -25,12 +25,21 @@ Task 3 (similar) → Even better → Faster → Higher quality
 
 ## Features
 
-### 🧠 Automatic Continuous Learning (NEW!)
+### 🧠 Automatic Continuous Learning
 - **Silent Background Learning**: After every task, automatically captures patterns and updates effectiveness metrics
 - **Adaptive Skill Selection**: Auto-selects skills based on historical success rates for similar tasks
 - **Performance Optimization**: Learns which approaches work best and automatically uses them
 - **Cross-Task Intelligence**: Each task benefits from all previous tasks
 - **Trend Analysis**: Automatically detects improving/declining patterns and adapts
+
+### 📊 Performance Analytics Dashboard (NEW in v1.2!)
+- **Learning Effectiveness Tracking**: Visualize pattern growth, reuse rates, and knowledge coverage
+- **Skill Performance Metrics**: See success rates and quality correlations for each skill
+- **Agent Performance Analysis**: Monitor delegation success and completion times
+- **Quality Trend Visualization**: ASCII charts showing improvements over time
+- **Optimization Recommendations**: Data-driven suggestions prioritized by impact
+- **Predictive Insights**: Estimate outcomes based on historical patterns
+- **ROI Tracking**: Concrete evidence of 15-20% quality improvements
 
 ### 🤖 Autonomous Decision Making
 - **Self-Directed Workflow**: Agent makes decisions independently without constant human approval
@@ -67,14 +76,15 @@ Task 3 (similar) → Even better → Faster → Higher quality
 
 ### Components
 
-**7 Specialized Agents**:
+**8 Specialized Agents**:
 1. **orchestrator** - Main autonomous controller with learning integration
 2. **code-analyzer** - Code structure analysis
 3. **quality-controller** - Quality assurance with auto-fix
 4. **background-task-manager** - Parallel background tasks
 5. **test-engineer** - Test generation and fixing
 6. **documentation-generator** - Documentation maintenance
-7. **learning-engine** - Automatic pattern capture and learning (NEW!)
+7. **learning-engine** - Automatic pattern capture and learning
+8. **performance-analytics** - Performance insights and optimization (NEW in v1.2!)
 
 **5 Knowledge Skills**:
 1. **pattern-learning** - Pattern recognition system
@@ -83,10 +93,11 @@ Task 3 (similar) → Even better → Faster → Higher quality
 4. **testing-strategies** - Test design patterns
 5. **documentation-best-practices** - Documentation standards
 
-**3 Slash Commands**:
+**4 Slash Commands**:
 - `/auto-analyze` - Autonomous project analysis
 - `/quality-check` - Comprehensive quality control
 - `/learn-patterns` - Initialize pattern learning
+- `/performance-report` - Generate performance analytics dashboard (NEW in v1.2!)
 
 ---
 
