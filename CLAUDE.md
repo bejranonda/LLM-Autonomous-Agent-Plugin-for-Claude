@@ -371,6 +371,42 @@ With learning enabled:
 - Skill selection accuracy increases from 70% to 92%
 - Auto-fix success rate improves from 65% to 85%
 
+## Python Utility Libraries (v1.4+)
+
+### Cross-Platform Compatibility
+
+All Python scripts in `lib/` directory feature Windows compatibility (v1.4):
+- **File Locking**: Automatic platform detection uses `msvcrt` on Windows, `fcntl` on Unix/Linux/Mac
+- **Error Handling**: Enhanced exception catching for platform-specific issues
+- **Path Handling**: Works with both forward slashes and backslashes
+
+### Available Utilities
+
+**pattern_storage.py**:
+- Manages learned patterns in `.claude-patterns/patterns.json`
+- Thread-safe read/write with file locking
+- Pattern retrieval with relevance scoring
+- Used by learning-engine agent
+
+**task_queue.py**:
+- Priority-based task management
+- Status tracking (pending/running/completed/failed)
+- Used for coordinating background tasks
+- CLI interface for manual task management
+
+**quality_tracker.py**:
+- Records quality metrics over time
+- Trend analysis (improving/stable/declining)
+- Multi-metric tracking (code, tests, docs, patterns)
+- Used by quality-controller agent
+
+### Integration Notes
+
+- All scripts use `--dir` parameter to specify data directory (default: `.claude-patterns`)
+- JSON-based data storage for easy inspection and debugging
+- Each script has a complete CLI interface accessible via `python lib/<script>.py --help`
+- Scripts are designed to be used both programmatically and via command line
+
 ## Notes for Future Claude Instances
 
 - **Pattern database location**: Always `.claude/patterns/` in user projects, NEVER in this plugin repo
