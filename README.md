@@ -129,6 +129,18 @@ dir %USERPROFILE%\.config\claude\plugins\autonomous-agent
 
 ### Method 2: Via Claude Code Plugin System (Recommended)
 
+Install directly from GitHub repository:
+
+```bash
+# Install directly from repository
+/plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
+
+# Verify installation
+/plugin list
+```
+
+Alternatively, add as a marketplace:
+
 ```bash
 # Add the marketplace
 /plugin marketplace add https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
@@ -138,16 +150,6 @@ dir %USERPROFILE%\.config\claude\plugins\autonomous-agent
 
 # Verify installation
 /help
-```
-
-Alternatively, install directly from GitHub:
-
-```bash
-# Install directly from repository
-/plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
-
-# Verify installation
-/plugin list
 ```
 
 ### After Installation

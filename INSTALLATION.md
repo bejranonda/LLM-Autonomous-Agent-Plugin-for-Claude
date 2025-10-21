@@ -1,8 +1,17 @@
 # Installation Guide
 
-## Quick Install via Marketplace
+## Quick Install (Recommended)
 
-The easiest way to install the Autonomous Agent Plugin is through Claude Code's plugin marketplace:
+Install directly from GitHub repository:
+
+```bash
+# Install directly from GitHub repository
+/plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
+```
+
+## Alternative Installation Methods
+
+### Via Marketplace
 
 ```bash
 # Add the plugin marketplace
@@ -12,16 +21,7 @@ The easiest way to install the Autonomous Agent Plugin is through Claude Code's 
 /plugin install autonomous-agent
 ```
 
-## Manual Installation
-
-### Option 1: Install from GitHub
-
-```bash
-# Install directly from GitHub repository
-/plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
-```
-
-### Option 2: Clone and Install Locally
+### Manual Installation
 
 ```bash
 # Clone the repository
