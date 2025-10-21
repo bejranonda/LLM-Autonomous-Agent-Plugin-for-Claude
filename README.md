@@ -1,9 +1,9 @@
-# AI Autonomous Learning Assistant for Claude Code Plugin
+# AI Autonomous Self-Learning for Claude Code Plugin
 > What if your AI agent got smarter with every task
 
 Self-Learning AI Agent with Automatic Pattern Recognition, Quality Control & Performance Analytics
 
-🧠 Autonomous AI Agent • 📊 Quality Automation • 🎯 Smart Code Assistant • 🔧 Cross-Platform Python Utilities
+Assistant for 🧠 Autonomous AI Agent • 📊 Quality Automation • 🎯 Smart Code Assistant • 🔧 Cross-Platform Python Utilities
 
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
