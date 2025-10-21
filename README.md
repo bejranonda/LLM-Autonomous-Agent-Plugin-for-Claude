@@ -54,7 +54,7 @@ Task 3 (similar) → Even better → Faster → Higher quality
 - **Predictive Insights**: Estimate outcomes based on historical patterns
 - **ROI Tracking**: Concrete evidence of 15-20% quality improvements
 
-<img width="1764" height="294" alt="image" src="https://github.com/user-attachments/assets/bbe4b7c8-825d-47b8-a638-737fa1847430" />
+<img width="473" height="183" alt="image" src="https://github.com/user-attachments/assets/60fe4403-ee82-4ea2-9718-fefe04ac2016" />
 
 *Evidence of the plugin's self-improvement, comparing version v1.2.0 to v1.3.0, which shows successful pattern reuse*
 
@@ -68,6 +68,10 @@ Task 3 (similar) → Even better → Faster → Higher quality
 - **Self-Healing**: Detects failures, learns from them, and prevents recurrence automatically
 - **Manual Validation**: `/validate` command for comprehensive audit on demand
 - **Zero Configuration**: Runs automatically - no setup needed
+
+<img width="500" height="364" alt="image" src="https://github.com/user-attachments/assets/53ffa4cc-ad76-43c5-a004-52744b908952" />
+
+*The system explains how this plugin V 1.7 helps speed up the development process.*
 
 ### 🎯 Smart Recommendation Engine (v1.3)
 - **Predictive Workflow Suggestions**: Best approach recommended before task starts
@@ -111,10 +115,6 @@ Task 3 (similar) → Even better → Faster → Higher quality
 - **Documentation Verification**: Ensures complete documentation coverage
 - **Pattern Adherence**: Validates code follows established patterns
 - **Auto-Correction**: Fixes issues automatically when quality score < 70/100
-
-<img width="500" height="364" alt="image" src="https://github.com/user-attachments/assets/53ffa4cc-ad76-43c5-a004-52744b908952" />
-
-*The system explains how this plugin V 1.7 helps speed up the development process.*
 
 
 ---
