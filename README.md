@@ -112,6 +112,11 @@ Task 3 (similar) → Even better → Faster → Higher quality
 - **Pattern Adherence**: Validates code follows established patterns
 - **Auto-Correction**: Fixes issues automatically when quality score < 70/100
 
+<img width="500" height="364" alt="image" src="https://github.com/user-attachments/assets/53ffa4cc-ad76-43c5-a004-52744b908952" />
+
+*The system explains how this plugin V 1.7 helps speed up the development process.*
+
+
 ---
 
 ## Architecture
