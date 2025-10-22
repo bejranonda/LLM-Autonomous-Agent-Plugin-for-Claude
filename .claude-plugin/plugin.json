@@ -1,7 +1,7 @@
 {
   "name": "autonomous-agent",
-  "version": "2.0.0",
-  "description": "Autonomous Claude agent with full-stack validation, automatic pattern learning, intelligent auto-fix capabilities, API contract synchronization, and comprehensive quality control. Automatically validates backend, frontend, database, and infrastructure while learning from every task to continuously improve performance.",
+  "version": "2.1.0",
+  "description": "Universal autonomous agent with cross-model compatibility, full-stack validation, automatic pattern learning, intelligent auto-fix capabilities, API contract synchronization, and comprehensive quality control. Optimized for Claude Sonnet, Claude 4.5, and GLM models with adaptive execution strategies.",
   "author": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
@@ -33,6 +33,123 @@
     "api-contract",
     "typescript",
     "sqlalchemy",
-    "build-validation"
-  ]
+    "build-validation",
+    "cross-model",
+    "model-detection",
+    "claude-sonnet-4.5",
+    "claude-haiku-4.5",
+    "claude-opus-4.1",
+    "glm-4.6",
+    "universal-compatibility"
+  ],
+  "model_compatibility": {
+    "claude-sonnet-4.5": {
+      "optimal": true,
+      "features": ["nuanced_reasoning", "adaptive_context", "parallel_delegation"],
+      "performance_multiplier": 1.0,
+      "quality_target": 90
+    },
+    "claude-haiku-4.5": {
+      "optimal": true,
+      "features": ["fast_execution", "efficient_processing", "focused_reasoning"],
+      "performance_multiplier": 0.8,
+      "quality_target": 88
+    },
+    "claude-opus-4.1": {
+      "optimal": true,
+      "features": ["enhanced_autonomy", "predictive_execution", "complex_patterns"],
+      "performance_multiplier": 0.9,
+      "quality_target": 95
+    },
+    "glm-4.6": {
+      "optimal": true,
+      "features": ["structured_execution", "literal_interpretation", "sequential_processing"],
+      "performance_multiplier": 1.25,
+      "quality_target": 88
+    },
+    "claude-haiku": {
+      "optimal": false,
+      "features": ["basic_execution"],
+      "performance_multiplier": 1.5,
+      "quality_target": 80
+    }
+  },
+  "adaptive_features": {
+    "model_detection": true,
+    "performance_scaling": true,
+    "communication_adaptation": true,
+    "skill_loading_optimization": true,
+    "error_recovery_adaptation": true
+  },
+  "components": {
+    "agents": [
+      {
+        "name": "orchestrator",
+        "path": "agents/orchestrator.md",
+        "description": "Universal autonomous orchestrator with cross-model compatibility",
+        "tools": ["Task", "Read", "Write", "Edit", "Bash", "Grep", "Glob", "TodoWrite"]
+      },
+      {
+        "name": "validation-controller",
+        "path": "agents/validation-controller.md",
+        "description": "Universal validation controller with cross-model compatibility and model-adaptive error recovery",
+        "tools": ["Read", "Grep", "Glob", "Bash"]
+      },
+      {
+        "name": "learning-engine",
+        "path": "agents/learning-engine.md",
+        "description": "Universal learning engine with cross-model compatibility for automatic pattern capture and model adaptation",
+        "tools": ["Read", "Write", "Edit", "Grep", "Glob"]
+      }
+    ],
+    "skills": [
+      {
+        "name": "model-detection",
+        "path": "skills/model-detection/SKILL.md",
+        "description": "Universal model detection and capability assessment for optimal cross-model compatibility"
+      },
+      {
+        "name": "performance-scaling",
+        "path": "skills/performance-scaling/SKILL.md",
+        "description": "Cross-model performance optimization and scaling configurations for autonomous agents"
+      }
+    ],
+    "commands": [
+      {
+        "name": "auto-analyze",
+        "path": "commands/auto-analyze.md",
+        "description": "Autonomous project analysis with cross-model compatibility"
+      },
+      {
+        "name": "quality-check",
+        "path": "commands/quality-check.md",
+        "description": "Comprehensive quality control with model-adaptive validation"
+      },
+      {
+        "name": "learn-patterns",
+        "path": "commands/learn-patterns.md",
+        "description": "Initialize cross-model pattern learning database"
+      },
+      {
+        "name": "validate-fullstack",
+        "path": "commands/validate-fullstack.md",
+        "description": "Full-stack validation with cross-model compatibility"
+      },
+      {
+        "name": "validate",
+        "path": "commands/validate.md",
+        "description": "Comprehensive validation audit with model-adaptive checking"
+      },
+      {
+        "name": "performance-report",
+        "path": "commands/performance-report.md",
+        "description": "Performance analytics dashboard with cross-model metrics"
+      },
+      {
+        "name": "recommend",
+        "path": "commands/recommend.md",
+        "description": "Smart workflow recommendations with model-specific optimization"
+      }
+    ]
+  }
 }
