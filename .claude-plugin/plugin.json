@@ -1,7 +1,7 @@
 {
   "name": "autonomous-agent",
-  "version": "1.7.0",
-  "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, advanced background task execution, quality control, performance analytics, intelligent recommendations, and proactive validation to prevent errors",
+  "version": "2.0.0",
+  "description": "Autonomous Claude agent with full-stack validation, automatic pattern learning, intelligent auto-fix capabilities, API contract synchronization, and comprehensive quality control. Automatically validates backend, frontend, database, and infrastructure while learning from every task to continuously improve performance.",
   "author": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
@@ -27,6 +27,12 @@
     "predictive-intelligence",
     "validation",
     "error-prevention",
-    "consistency-checking"
+    "consistency-checking",
+    "fullstack-validation",
+    "auto-fix",
+    "api-contract",
+    "typescript",
+    "sqlalchemy",
+    "build-validation"
   ]
 }
