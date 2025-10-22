@@ -4,20 +4,17 @@
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20Sonnet%204.5%20%7C%20Claude%20Haiku%204.5%20%7C%20Claude%20Opus%204.1%20%7C%20GLM-4.6-orange.svg)]()
 
-> What if your AI agent got smarter with every task AND worked optimally across all models?
+> What if your AI agent got smarter with every task?
 
 **Universal** Self-Learning AI Agent with Cross-Model Compatibility, Automatic Pattern Recognition, and Intelligent Auto-Fix
 
 🧠 Universal AI Agent • 🌐 Cross-Model Compatible • 🚀 Full-Stack Validation • 🔧 Auto-Fix • 📊 Quality Automation • 🎯 Smart Assistant
-- **NEW v2.1**: Universal cross-model compatibility (Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, GLM-4.6)
-- **NEW v2.1**: Automatic model detection with 95%+ accuracy
+- **NEW v2.1**: Universal cross-model compatibility (Claude Sonnet 4.5, Haiku 4.5, Opus 4.1 and GLM-4.6)
 - **NEW v2.1**: Model-adaptive communication and performance scaling
 - +15–20% quality improvement through autonomous pattern recognition
 - 25% faster execution via smart pattern reuse
-- Zero configuration required — plug in and start learning
 - Full-stack validation in 10-20 minutes (vs 45-60 min manual)
-- API contract synchronization between frontend & backend
-- Auto-fix 80-90% of common issues in backend and frontend
+- Zero configuration required — plug in and start learning
 
 <img width="891" height="340" alt="image" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
 
