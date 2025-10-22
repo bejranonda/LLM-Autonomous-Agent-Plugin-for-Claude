@@ -13,7 +13,7 @@ Self-Learning AI Agent with Automatic Pattern Recognition, Intelligent Auto-Fix 
 - Zero configuration required — plug in and start learning
 - **NEW v2.0**: Full-stack validation in 10-20 minutes (vs 45-60 min manual)
 - **NEW v2.0**: API contract synchronization between frontend & backend
-- **NEW v2.0**: Auto-fix 80-90% of common issues (TypeScript, SQLAlchemy, Build configs)
+- **NEW v2.0**: Auto-fix 80-90% of common issues in Full-Stack
 
 <img width="891" height="340" alt="image" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
 
