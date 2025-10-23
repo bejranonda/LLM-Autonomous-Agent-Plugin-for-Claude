@@ -243,52 +243,83 @@ This creates `.claude/patterns/` directory with the learning database.
 
 ### Basic Commands
 
+**📚 Most Common Commands (start here):**
+
 ```bash
-# CodeRabbit-level PR review
+# Initialize learning system (one-time setup)
+/learn-patterns
+
+# Comprehensive project analysis (all-in-one)
+/auto-analyze
+
+# Quality control with auto-fix
+/quality-check
+
+# General validation check
+/validate
+```
+
+**🔍 Specialized Analysis Commands:**
+
+```bash
+# PR review and analysis
 /pr-review 123
 
-# Comprehensive static analysis
+# Static analysis (40+ linters)
 /static-analysis src/
 
-# Scan all dependencies for vulnerabilities
+# Dependency vulnerability scanning
 /scan-dependencies
 
+# Full-stack validation
+/validate-fullstack
+```
+
+**📊 Monitoring & Insights:**
+
+```bash
 # Launch real-time dashboard
 /dashboard
 
 # View learning analytics
 /learning-analytics
+
+# Performance analytics report
+/performance-report
+
+# Get smart recommendations
+/recommend
 ```
 
 ---
 
-## 📚 Complete Command Reference
+## 📚 Complete Command Reference (15 Commands Total)
 
-### 📝 **Code Review Commands**
+### 🚀 **Getting Started (Basic)**
+- `/learn-patterns` - Initialize pattern learning system (one-time setup)
+- `/auto-analyze` - Comprehensive project analysis with automatic learning
+- `/quality-check` - Quality control with autonomous auto-fixing
+- `/validate` - General validation of tools, docs, and execution flow
+- `/dashboard` - Launch real-time monitoring web interface
+
+### 🔍 **Analysis & Review (Intermediate)**
 - `/pr-review [PR_NUMBER]` - CodeRabbit-style comprehensive PR reviews
-- `/apply-pr-fixes [PR_NUMBER]` - Apply all auto-fixable issues
-- `/apply-fix [ISSUE_ID]` - Apply specific fix
-
-### 🔍 **Static Analysis Commands**
 - `/static-analysis [PATH]` - Run 40+ linters with intelligent synthesis
-- `/apply-static-analysis-fixes` - Apply all auto-fixable static analysis issues
-
-### 🔒 **Security Commands**
 - `/scan-dependencies [PATH]` - Multi-ecosystem dependency vulnerability scanning
 - `/validate-fullstack` - Full-stack validation with OWASP coverage
-
-### 📊 **Analytics Commands**
-- `/dashboard` - Launch real-time monitoring web interface
 - `/learning-analytics` - View comprehensive learning progress and trends
+
+### 📊 **Advanced & Specialized (Expert)**
 - `/performance-report` - Generate performance analytics dashboard
+- `/recommend` - Get intelligent workflow recommendations
+- `/organize-reports` - Intelligent report organization and archival
+- `/git-release-workflow` - Automated Git release workflow with semantic versioning
+- `/validate-claude-plugin` - Comprehensive Claude Code plugin validation
 
-### 🧠 **Learning Commands**
-- `/learn-patterns` - Initialize pattern learning system
-- `/auto-analyze` - Autonomous project analysis with learning
-
-### ✅ **Quality Commands**
-- `/quality-check` - Comprehensive quality control with auto-fix
-- `/validate` - Comprehensive validation audit
+### 🔧 **Helper Commands (Sub-commands)**
+- `/apply-pr-fixes [PR_NUMBER]` - Apply all auto-fixable PR issues
+- `/apply-static-analysis-fixes` - Apply all auto-fixable static analysis issues
+- `/apply-fix [ISSUE_ID]` - Apply specific fix from analysis results
 
 <img width="1552" height="830" alt="Quality Check Results" src="https://github.com/user-attachments/assets/1e8337d5-132e-4206-a0f3-53bdbbf2b76d" />
 
