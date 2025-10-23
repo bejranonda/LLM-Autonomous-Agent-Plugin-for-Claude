@@ -74,7 +74,7 @@ The plugin automatically learns from successes and failures, continuously improv
 - OWASP Top 10 security vulnerability scanning
 - Multi-ecosystem dependency analysis (11 package managers)
 - Real-time monitoring dashboard with live metrics
-- **Automatic learning that improves performance over time**
+- **Automatic learning**: Improves performance over time
 
 ### 🚀 **Lightning-Fast Analysis**
 
@@ -227,8 +227,8 @@ You can find the instruction at the following link: [Set up Claude Code](https:/
 
 This creates `.claude/patterns/` directory with the learning database.
 
-- **Learns project structure and patterns**
-- **Stores baseline for future comparisons**
+- **Learns project structure**: Analyzes codebase patterns
+- **Stores baseline**: Creates baseline for future comparisons
 
 ```bash
 # Initialize learning system

@@ -2,7 +2,13 @@
 
 ## Command: `/git-release-workflow`
 
-Automated Git release workflow that handles version bumping, changelog generation, release creation, and multi-platform publishing with intelligent semantic versioning and comprehensive validation.
+Enhanced Git release workflow with robust GitHub publishing that fixes common release issues. Handles version bumping, changelog generation, release creation, and multi-platform publishing with intelligent semantic versioning and comprehensive validation.
+
+**🔧 Enhanced GitHub Release Features:**
+- **Multiple authentication methods**: GitHub CLI + API fallback
+- **Robust error handling**: Auto-retry and error recovery
+- **Release verification**: Confirms releases are published correctly
+- **Auto-detection**: Intelligent version and changelog generation
 
 ## How It Works
 
@@ -16,6 +22,18 @@ Automated Git release workflow that handles version bumping, changelog generatio
 
 ## Usage
 
+### Quick Start (Recommended)
+```bash
+# Fully automated release with auto-detection
+/git-release-workflow --auto
+
+# This will:
+# - Auto-detect version bump needed
+# - Generate changelog from commits
+# - Create GitHub release with verification
+# - Handle authentication automatically
+```
+
 ### Basic Release Workflow
 ```bash
 # Automated release with intelligent version bumping
@@ -26,6 +44,21 @@ Automated Git release workflow that handles version bumping, changelog generatio
 /git-release-workflow --version-type minor
 /git-release-workflow --version-type major
 /git-release-workflow --version 1.2.3
+```
+
+### Enhanced GitHub Publishing
+```bash
+# Release with enhanced GitHub publishing (fixes common issues)
+/git-release-workflow --enhanced-github
+
+# Force GitHub CLI authentication
+/git-release-workflow --force-gh-auth
+
+# Use API fallback if GitHub CLI fails
+/git-release-workflow --use-api-fallback
+
+# Skip verification (faster but less safe)
+/git-release-workflow --no-verify
 ```
 
 ### Advanced Release Options

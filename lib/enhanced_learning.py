@@ -183,6 +183,87 @@ class EnhancedLearningEngine:
         fingerprint_str = json.dumps(fingerprint_data, sort_keys=True)
         return hashlib.sha256(fingerprint_str.encode()).hexdigest()[:16]
 
+    def enhance_project_context_for_modern_stacks(self, project_context: Dict[str, Any], project_path: str = ".") -> Dict[str, Any]:
+        """
+        Enhance project context with specific detection for NextJS, Supabase, and other modern stacks.
+
+        Args:
+            project_context: Existing project context
+            project_path: Path to the project root
+
+        Returns:
+            Enhanced project context with modern framework detection
+        """
+        enhanced_context = project_context.copy()
+        path = Path(project_path)
+
+        # NextJS Detection
+        nextjs_indicators = [
+            "next.config.js", "next.config.mjs", "next.config.ts",
+            "pages/", "app/", ".next/"
+        ]
+
+        if any((path / indicator).exists() for indicator in nextjs_indicators):
+            enhanced_context.setdefault("frameworks", []).append("nextjs")
+
+            # Detect NextJS features
+            if (path / "app").exists():
+                enhanced_context.setdefault("features", []).append("nextjs-app-router")
+            if (path / "pages").exists():
+                enhanced_context.setdefault("features", []).append("nextjs-pages-router")
+            if (path / "next.config.js").exists():
+                enhanced_context.setdefault("features", []).append("nextjs-configuration")
+
+        # Supabase Detection
+        supabase_indicators = [
+            "supabase/", "lib/supabase", "utils/supabase",
+            "supabase.js", "supabase.ts"
+        ]
+
+        if any((path / indicator).exists() for indicator in supabase_indicators):
+            enhanced_context.setdefault("frameworks", []).append("supabase")
+            enhanced_context.setdefault("features", []).append("database-as-a-service")
+
+            # Detect Supabase configuration
+            if (path / "supabase/migrations").exists():
+                enhanced_context.setdefault("features", []).append("supabase-migrations")
+            if (path / "supabase/functions").exists():
+                enhanced_context.setdefault("features", []).append("supabase-edge-functions")
+
+        # Modern React Stack Detection
+        package_json_path = path / "package.json"
+        if package_json_path.exists():
+            try:
+                import json as json_module
+                with open(package_json_path, 'r') as f:
+                    package_data = json_module.load(f)
+
+                dependencies = {**package_data.get("dependencies", {}),
+                              **package_data.get("devDependencies", {})}
+
+                # React ecosystem detection
+                if "react" in dependencies:
+                    enhanced_context.setdefault("frameworks", []).append("react")
+
+                    if "next" in dependencies:
+                        enhanced_context.setdefault("frameworks", []).append("nextjs")
+                    if "@supabase/supabase-js" in dependencies:
+                        enhanced_context.setdefault("frameworks", []).append("supabase")
+                    if "tailwindcss" in dependencies:
+                        enhanced_context.setdefault("frameworks", []).append("tailwindcss")
+                    if "typescript" in dependencies:
+                        enhanced_context.setdefault("languages", []).append("typescript")
+
+            except Exception:
+                pass  # Ignore JSON parsing errors
+
+        # Remove duplicates and sort
+        enhanced_context["frameworks"] = sorted(list(set(enhanced_context.get("frameworks", []))))
+        enhanced_context["languages"] = sorted(list(set(enhanced_context.get("languages", []))))
+        enhanced_context["features"] = sorted(list(set(enhanced_context.get("features", []))))
+
+        return enhanced_context
+
     def calculate_context_similarity(self, context1: Dict[str, Any], context2: Dict[str, Any]) -> float:
         """
         Calculate similarity between two contexts (0.0 to 1.0).
@@ -630,7 +711,7 @@ class EnhancedLearningEngine:
 
         # Common tech stacks get higher transferability
         common_languages = {"python", "javascript", "typescript", "java", "go", "rust"}
-        common_frameworks = {"react", "vue", "angular", "flask", "django", "express", "fastapi"}
+        common_frameworks = {"react", "vue", "angular", "nextjs", "nuxt", "flask", "django", "express", "fastapi", "supabase"}
 
         language_score = len([l for l in languages if l in common_languages]) / max(len(languages), 1)
         framework_score = len([f for f in frameworks if f in common_frameworks]) / max(len(frameworks), 1)
