@@ -2,7 +2,8 @@
 [![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v2.1.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
-[![Models](https://img.shields.io/badge/models-Claude%20Sonnet%204.5%20%7C%20Claude%20Haiku%204.5%20%7C%20Claude%20Opus%204.1%20%7C%20GLM-4.6-orange.svg)]()
+[![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
+
 
 > What if your AI agent got smarter and faster with every task?
 
