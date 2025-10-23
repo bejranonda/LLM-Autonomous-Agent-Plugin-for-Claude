@@ -14,6 +14,14 @@
 
 ---
 
+<img width="891" height="340" alt="System Performance" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
+
+*Structured performance summary, highlighting the successful autonomous operation and continuous improvement after 2 iterations*
+
+**No configuration required. No manual training. Just automatic continuous improvement across ALL models.**
+
+---
+
 ## 🌟 What Makes v3.0.0 Revolutionary?
 
 > **What if your AI agent got smarter and faster with every task?**
@@ -93,8 +101,8 @@
 
 ### 🔍 **CodeRabbit-Level PR Reviews**
 
-![PR Review Example](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/assets/screenshots/pr-review-example.png)
-*Example PR review showing line-by-line analysis, auto-fix suggestions, and security findings*
+<img width="1114" height="347" alt="PR Review Analysis" src="https://github.com/user-attachments/assets/50a1d88a-f049-4982-86b5-7986d4467b0d" />
+*Comprehensive PR review analysis with security findings and auto-fix suggestions*
 
 **Line-by-line analysis** with change categorization
 - **38-45% auto-fix rate** for common issues (one-click application)
@@ -105,8 +113,9 @@
 
 ### 🔒 **Comprehensive Security Analysis**
 
-![Security Analysis Report](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/assets/screenshots/security-report.png)
-*Security analysis report showing OWASP Top 10 vulnerability detection with automated remediation suggestions*
+<img width="575" height="243" alt="Core Learning Pattern" src="https://github.com/user-attachments/assets/4616bc54-8396-4e35-9ff9-b0739cfbc484" />
+
+*Core learning pattern enabling project enhancement via an autonomous approach*
 
 **100% OWASP Top 10 (2021) coverage** with automated remediation
 - **SQL injection, XSS, CSRF** detection and fixes
@@ -116,8 +125,9 @@
 
 ### 📊 **Multi-Language Static Analysis Suite**
 
-![Static Analysis Report](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/assets/screenshots/static-analysis-report.png)
-*Static analysis report showing 40+ linters results with unified scoring and auto-fix capabilities*
+<img width="473" height="183" alt="Self-Improvement Evidence" src="https://github.com/user-attachments/assets/60fe4403-ee82-4ea2-9718-fefe04ac2016" />
+
+*Evidence of the plugin's self-improvement, comparing version v1.2.0 to v1.3.0, which shows successful pattern reuse*
 
 **40+ linters** across **15+ programming languages**
   - Python: pylint, flake8, mypy, bandit, pycodestyle, pydocstyle, vulture, radon, mccabe, pyflakes
@@ -149,8 +159,9 @@
 
 ### 🧠 **Enhanced Learning System (85-90% Accuracy)**
 
-![Learning Analytics](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/assets/screenshots/learning-analytics.png)
-*Learning analytics dashboard showing accuracy improvements and pattern evolution over time*
+<img width="1115" height="892" alt="Auto-Analyze Results" src="https://github.com/user-attachments/assets/b2e532d1-bbf1-4a4c-8c4b-9e54ca47c959" />
+
+*Results from the "/auto-analyze" slash command using the orchestrator approach for comprehensive project analysis*
 
 **Project fingerprinting** using SHA256 for unique identification
 - **Context similarity analysis** with multi-factor weighting (40/25/20/10/5%)
@@ -161,8 +172,9 @@
 
 ### 📈 **Real-Time Monitoring Dashboard**
 
-![Real-Time Dashboard](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/assets/screenshots/dashboard-preview.png)
-*Live monitoring dashboard showing quality trends, task distribution, and system health*
+<img width="1552" height="830" alt="Quality Check Results" src="https://github.com/user-attachments/assets/1e8337d5-132e-4206-a0f3-53bdbbf2b76d" />
+
+*Results from the "/quality-check" slash command performing a comprehensive quality control check.*
 
 **Web-based interface** with Flask backend and Chart.js visualizations
 - **Live metrics**: Overview, quality trends, task distribution
@@ -195,8 +207,18 @@
 
 ### First Use
 
-![Installation and First Use](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/assets/screenshots/first-use-demo.png)
-*Terminal showing installation, pattern learning initialization, and first analysis run*
+<img width="979" height="177" alt="Learn Patterns Command" src="https://github.com/user-attachments/assets/0a62d1d0-ed11-4b23-a8a1-fbbeb72da739" />
+
+*Execution of the "/learn-patterns" slash command to initialize the project database*
+
+This creates `.claude/patterns/` directory with the learning database.
+
+- **Learns project structure and patterns**
+- **Stores baseline for future comparisons**
+
+<img width="500" height="364" alt="Installation Alternative" src="https://github.com/user-attachments/assets/53ffa4cc-ad76-43c5-a004-52744b908952" />
+
+*Alternative: Adding the plugin step by step via menu "/plugin"*
 
 ```bash
 # Initialize learning system
@@ -262,8 +284,14 @@
 
 ## 🏗️ Architecture Overview
 
-![Architecture Diagram](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/assets/screenshots/architecture-diagram.png)
-*System architecture showing the orchestrator, specialized agents, skills, and learning components*
+<img width="506" height="394" alt="System Evolution" src="https://github.com/user-attachments/assets/5f794b7b-6649-405f-97e1-fc297b74ef62" />
+
+*Evolution of the system from v1.0.0 to v1.5.0 along with the core continuous-learning architecture*
+
+- **Cross-Task Intelligence**: Each task benefits from all previous tasks
+- **Trend Analysis**: Automatically detects improving/declining patterns and adapts
+- **Predictive Insights**: Estimate outcomes based on historical patterns
+- **ROI Tracking**: Concrete evidence of 15-20% quality improvements
 
 ### 📊 Component Inventory (v3.0.0)
 
