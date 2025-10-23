@@ -4,11 +4,11 @@
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20Sonnet%204.5%20%7C%20Claude%20Haiku%204.5%20%7C%20Claude%20Opus%204.1%20%7C%20GLM-4.6-orange.svg)]()
 
-> What if your AI agent got smarter with every task?
+> What if your AI agent got smarter and faster with every task?
 
-**Universal** Self-Learning AI Agent with Cross-Model Compatibility, Automatic Pattern Recognition, and Intelligent Auto-Fix
+Self-Learning AI Agent with Multi-Model Compatibility, Automatic Pattern Recognition, and Intelligent Auto-Fix
 
-🧠 Universal AI Agent • 🌐 Cross-Model Compatible • 🚀 Full-Stack Validation • 🔧 Auto-Fix • 📊 Quality Automation • 🎯 Smart Assistant
+🧠 Universal AI Agent • 🌐 Cross-Model • 🚀 Full-Stack Validation • 🔧 Auto-Fix • 📊 Quality Automation • 🎯 Smart Assistant
 - **NEW v2.1**: Universal cross-model compatibility (Claude Sonnet 4.5, Haiku 4.5, Opus 4.1 and GLM-4.6)
 - **NEW v2.1**: Model-adaptive communication and performance scaling
 - +15–20% quality improvement through autonomous pattern recognition
