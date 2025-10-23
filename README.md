@@ -1,5 +1,5 @@
 # AI Autonomous Self-Learning for Claude Code Plugin
-[![Version](https://img.shields.io/badge/version-2.1.2-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v2.1.2)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v2.2.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -12,9 +12,7 @@ Self-Learning AI Agent with Multi-Model Compatibility, Automatic Pattern Recogni
 🧠 Universal AI Agent • 🌐 Cross-Model • 🚀 Full-Stack Validation • 🔧 Auto-Fix • 📊 Quality Automation • 🎯 Smart Assistant • 🔄 Git Automation • 📦 Release Management • 📁 Report Organization
 - **NEW v2.1**: Universal cross-model compatibility (Claude Sonnet 4.5, Haiku 4.5, Opus 4.1 and GLM-4.6)
 - **NEW v2.1**: Model-adaptive communication and performance scaling
-- **NEW v2.2**: Advanced Git/repository management with intelligent automation
 - **NEW v2.2**: Automated release workflows with semantic versioning
-- **NEW v2.2**: Intelligent report organization and archival system
 - +15–20% quality improvement through autonomous pattern recognition
 - 25% faster execution via smart pattern reuse
 - Full-stack validation in 10-20 minutes (vs 45-60 min manual)
