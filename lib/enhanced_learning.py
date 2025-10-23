@@ -257,6 +257,114 @@ class EnhancedLearningEngine:
             except Exception:
                 pass  # Ignore JSON parsing errors
 
+        # Swift/iOS Detection (Enhanced v3.2.0)
+        swift_indicators = [
+            "Package.swift", "Package.resolved", "Sources/", "Tests/",
+            "*.xcodeproj", "*.xcworkspace", "Info.plist", "ContentView.swift"
+        ]
+
+        if any((path / indicator).exists() for indicator in swift_indicators) or \
+           any(path.glob("*.swift")) for indicator in range(1):
+            enhanced_context.setdefault("languages", []).append("swift")
+
+            # Detect Swift frameworks
+            if (path / "Package.swift").exists():
+                enhanced_context.setdefault("frameworks", []).append("swift-package-manager")
+                enhanced_context.setdefault("features", []).append("swiftpm-project")
+
+            if (path / "*.xcodeproj").exists() or (path / "*.xcworkspace").exists():
+                enhanced_context.setdefault("frameworks", []).append("xcode")
+                enhanced_context.setdefault("features", []).append("ios-project")
+
+            # Detect iOS-specific features
+            if any(path.glob("*.storyboard")) or any(path.glob("*.xib")):
+                enhanced_context.setdefault("features", []).append("ios-interface-builder")
+            if (path / "Info.plist").exists():
+                enhanced_context.setdefault("features", []).append("ios-app-configuration")
+
+        # Kotlin/Android Detection (Enhanced v3.2.0)
+        kotlin_indicators = [
+            "build.gradle.kts", "build.gradle", "settings.gradle.kts",
+            "src/main/kotlin", "src/test/kotlin", "gradle.properties"
+        ]
+
+        if any((path / indicator).exists() for indicator in kotlin_indicators) or \
+           any(path.glob("**/*.kt")) for indicator in range(1):
+            enhanced_context.setdefault("languages", []).append("kotlin")
+
+            # Detect Kotlin frameworks
+            if (path / "build.gradle.kts").exists() or (path / "build.gradle").exists():
+                enhanced_context.setdefault("frameworks", []).append("gradle")
+
+            # Check for Android-specific files
+            android_indicators = ["AndroidManifest.xml", "app/src/main", "res/layout"]
+            if any((path / indicator).exists() for indicator in android_indicators):
+                enhanced_context.setdefault("frameworks", []).append("android")
+                enhanced_context.setdefault("features", []).append("android-app")
+
+            # Check for Spring Boot with Kotlin
+            if (path / "build.gradle.kts").exists():
+                try:
+                    with open(path / "build.gradle.kts", 'r') as f:
+                        gradle_content = f.read()
+                        if "spring-boot" in gradle_content or "org.springframework.boot" in gradle_content:
+                            enhanced_context.setdefault("frameworks", []).append("spring-boot")
+                            enhanced_context.setdefault("features", []).append("kotlin-spring-boot")
+                except Exception:
+                    pass
+
+            # Check for Ktor
+            if (path / "build.gradle.kts").exists():
+                try:
+                    with open(path / "build.gradle.kts", 'r') as f:
+                        gradle_content = f.read()
+                        if "ktor" in gradle_content or "io.ktor" in gradle_content:
+                            enhanced_context.setdefault("frameworks", []).append("ktor")
+                            enhanced_context.setdefault("features").append("kotlin-web-framework")
+                except Exception:
+                    pass
+
+        # Scala Detection (Enhanced v3.2.0)
+        scala_indicators = [
+            "build.sbt", "project/", "src/main/scala", "src/test/scala",
+            "pom.xml", "*.scala"
+        ]
+
+        if any((path / indicator).exists() for indicator in scala_indicators) or \
+           any(path.glob("**/*.scala")) for indicator in range(1):
+            enhanced_context.setdefault("languages", []).append("scala")
+
+            # Detect Scala frameworks
+            if (path / "build.sbt").exists():
+                enhanced_context.setdefault("frameworks", []).append("sbt")
+
+            # Check for Play Framework
+            if (path / "app").exists() and (path / "conf").exists():
+                enhanced_context.setdefault("frameworks", []).append("play")
+                enhanced_context.setdefault("features", []).append("play-web-framework")
+
+            # Check for Akka
+            if (path / "build.sbt").exists():
+                try:
+                    with open(path / "build.sbt", 'r') as f:
+                        sbt_content = f.read()
+                        if "akka" in sbt_content or "com.typesafe.akka" in sbt_content:
+                            enhanced_context.setdefault("frameworks", []).append("akka")
+                            enhanced_context.setdefault("features").append("akka-actor-system")
+                except Exception:
+                    pass
+
+            # Check for Apache Spark
+            if (path / "build.sbt").exists():
+                try:
+                    with open(path / "build.sbt", 'r') as f:
+                        sbt_content = f.read()
+                        if "spark" in sbt_content or "org.apache.spark" in sbt_content:
+                            enhanced_context.setdefault("frameworks", []).append("spark")
+                            enhanced_context.setdefault("features").append("big-data-processing")
+                except Exception:
+                    pass
+
         # Remove duplicates and sort
         enhanced_context["frameworks"] = sorted(list(set(enhanced_context.get("frameworks", []))))
         enhanced_context["languages"] = sorted(list(set(enhanced_context.get("languages", []))))
@@ -709,9 +817,10 @@ class EnhancedLearningEngine:
         project_type = pattern["context"]["project_type"]
         quality = pattern["outcome"]["quality_score"]
 
-        # Common tech stacks get higher transferability
-        common_languages = {"python", "javascript", "typescript", "java", "go", "rust"}
-        common_frameworks = {"react", "vue", "angular", "nextjs", "nuxt", "flask", "django", "express", "fastapi", "supabase"}
+        # Common tech stacks get higher transferability (enhanced v3.2.0)
+        common_languages = {"python", "javascript", "typescript", "java", "go", "rust", "swift", "kotlin", "scala"}
+        common_frameworks = {"react", "vue", "angular", "nextjs", "nuxt", "flask", "django", "express", "fastapi", "supabase",
+                            "spring", "spring-boot", "vapor", "ktor", "play", "akka", "spark", "android", "ios"}
 
         language_score = len([l for l in languages if l in common_languages]) / max(len(languages), 1)
         framework_score = len([f for f in frameworks if f in common_frameworks]) / max(len(frameworks), 1)

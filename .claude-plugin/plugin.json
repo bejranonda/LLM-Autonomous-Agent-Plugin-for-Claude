@@ -1,6 +1,6 @@
 {
   "name": "autonomous-agent",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Production-ready autonomous agent with CodeRabbit-level capabilities, enhanced learning system (85-90% accuracy), comprehensive static analysis (40+ linters), OWASP Top 10 security coverage, multi-ecosystem dependency scanning (11 package managers), real-time monitoring dashboard, and 100% local processing. Features 19 agents, 14 skills, and 15 commands with automatic pattern learning and cross-project knowledge transfer. Zero cost, open source, privacy-first.",
   "author": {
     "name": "Werapol Bejranonda",
