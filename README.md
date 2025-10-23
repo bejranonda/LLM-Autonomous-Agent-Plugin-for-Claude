@@ -10,15 +10,14 @@
 
 🧠 **Automatic Learning System** • 🔒 **Privacy-First** • 💰 **Free Forever** • 🚀 **Production-Ready Analysis** • 📊 **Real-Time Monitoring** • 🛡️ **OWASP Security**
 
-🎯 Every Task Makes It Smarter | Production-Ready Analysis** | Comprehensive Coverage
-
-No configuration required. No manual training. Just automatic continuous improvement across ALL models.
+- Every Task Makes It **Smarter** - Production-Ready **Analysis** - Comprehensive **Coverage**
+- **No configuration** required. No manual training. Just automatic continuous improvement across ALL models.
 
 ---
 
 <img width="891" height="340" alt="System Performance" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
 
-*Structured performance summary, highlighting the successful autonomous operation and continuous improvement after 2 iterations*
+*Structured performance summary, highlighting the successful autonomous operation and continuous improvement after 2 iterations of Autonomous Agent Version 1.3*
 
 ---
 
@@ -39,7 +38,7 @@ No configuration required. No manual training. Just automatic continuous improve
 
 <img width="575" height="243" alt="Core Learning Pattern" src="https://github.com/user-attachments/assets/4616bc54-8396-4e35-9ff9-b0739cfbc484" />
 
-*Core learning pattern enabling project enhancement via an autonomous approach*
+*Core learning pattern enabling project enhancement via an autonomous approach in Version 1.2*
 
 ### 📊 **Brief Advantages Matrix**
 
@@ -85,7 +84,7 @@ No configuration required. No manual training. Just automatic continuous improve
 
 <img width="1115" height="892" alt="Auto-Analyze Results" src="https://github.com/user-attachments/assets/b2e532d1-bbf1-4a4c-8c4b-9e54ca47c959" />
 
-*Results from the "/auto-analyze" slash command using the orchestrator approach for comprehensive project analysis*
+*Results from the "/auto-analyze" slash command using the orchestrator approach for comprehensive project analysis in Version 1.1*
 
 ### 🎯 **Key Benefits**
 
@@ -190,6 +189,11 @@ No configuration required. No manual training. Just automatic continuous improve
 ## 🎯 Quick Start
 
 **These commands are used within Claude Code CLI** after installing the plugin:
+
+<img width="1049" height="313" alt="image" src="https://github.com/user-attachments/assets/87a7c87f-f16a-437f-9369-daa794eecba6" />
+
+*Claude CLI in command line terminal*
+
 
 ### Installation
 
