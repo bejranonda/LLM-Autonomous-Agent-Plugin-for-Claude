@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v3
+# 🚀 Autonomous Agent for Claude Code v3.1.0
 
-[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.0.0)
+[![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.1.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Validation](https://img.shields.io/badge/validation-99%2F100-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/blob/main/VALIDATION_COMPLETE.md)
@@ -338,7 +338,7 @@ This creates `.claude/patterns/` directory with the learning database.
 - **Predictive Insights**: Estimate outcomes based on historical patterns
 - **ROI Tracking**: Concrete evidence of 15-20% quality improvements
 
-### 📊 Component Inventory (v3.0.0)
+### 📊 Component Inventory (v3.1.0)
 
 | Component Type | Count | Status | Description |
 |----------------|-------|--------|-------------|
@@ -470,11 +470,11 @@ This creates `.claude/patterns/` directory with the learning database.
 
 ## 📚 Documentation
 
-v3.0.0 includes **430+ pages** of comprehensive documentation:
+v3.1.0 includes **430+ pages** of comprehensive documentation:
 
 ### 📖 **Key Documentation Files**
 
-- **[RELEASE_NOTES_V3.0.0.md](RELEASE_NOTES_V3.0.0.md)** - Comprehensive release notes
+- **[RELEASE_NOTES_V3.1.0.md](RELEASE_NOTES_V3.1.0.md)** - Comprehensive release notes (Enhanced Learning & Modern Stack Support)
 - **[V3_RELEASE_MATRIX.md](V3_RELEASE_MATRIX.md)** - Feature matrix and achievements
 - **[VALIDATION_COMPLETE.md](VALIDATION_COMPLETE.md)** - Production certification report
 - **[ENHANCED_LEARNING_SYSTEM.md](ENHANCED_LEARNING_SYSTEM.md)** - Learning system technical docs
@@ -633,6 +633,14 @@ claude
 - Real-time monitoring dashboard
 - Production certification (99/100)
 
+### ✅ **Enhanced in v3.1.0**
+- **NextJS Integration**: Intelligent detection of NextJS projects (App Router, Pages Router)
+- **Supabase Support**: Automatic Supabase project recognition and pattern learning
+- **Modern React Stack**: Enhanced detection for TypeScript, Tailwind CSS, modern build tools
+- **GitHub Release Fixes**: Robust release workflow with multiple authentication methods
+- **Enhanced Learning**: Better pattern recognition for modern web development stacks
+- **Documentation Improvements**: Fixed formatting and enhanced user experience
+
 ### 🔮 **Future Enhancements (v4.0.0)**
 - IDE integration (VS Code, IntelliJ)
 - Multi-language expansion (Swift, Kotlin, Scala)
@@ -697,7 +705,7 @@ claude
 
 ## 🎉 Conclusion
 
-**Autonomous Agent v3.0.0** represents a paradigm shift in intelligent code analysis:
+**Autonomous Agent v3.1.0** represents a paradigm shift in intelligent code analysis:
 
 ✅ **Automatic Learning** - Every task makes the agent smarter (85-90% accuracy)
 ✅ **Free Forever** - Complete access to all features without subscription
