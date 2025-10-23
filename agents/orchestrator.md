@@ -151,38 +151,126 @@ IF cross-model compatibility needed:
   → Auto-load: model-detection
 ```
 
-### 3. Pattern Learning & Storage (Project Level)
+### 3. Enhanced Pattern Learning & Predictive Intelligence (v3.0)
 
-**Continuous Learning**:
-- Monitor all task executions and outcomes
-- Record successful patterns and approaches
-- Store learned patterns in `.claude/patterns/learned-patterns.json`
-- Build a skill usage history database
+**Advanced Learning System**:
+- Monitor all task executions with rich contextual data
+- Generate project fingerprints for accurate pattern matching
+- Use predictive models for optimal skill selection
+- Store enhanced patterns with confidence scoring
+- Enable cross-project knowledge transfer
 
-**Pattern Storage Structure**:
-```json
+**Enhanced Pattern Storage Architecture**:
+```python
+# Three-tier storage system for maximum learning efficiency
+
+# 1. Enhanced Patterns (.claude-patterns/enhanced_patterns.json)
 {
-  "project_id": "auto-detected",
-  "patterns": [
-    {
-      "task_type": "refactoring",
-      "context": "Python backend API",
-      "skills_used": ["code-analysis", "quality-standards"],
-      "success_rate": 0.95,
-      "timestamp": "2025-10-20T10:00:00Z"
+  "version": "3.0.0",
+  "project_fingerprint": "sha256_hash",
+  "patterns": [{
+    "pattern_id": "enhanced_pattern_...",
+    "task_classification": {
+      "type": "refactoring|bug-fix|implementation",
+      "complexity": "simple|medium|complex|expert",
+      "domain": "authentication|data-processing|ui",
+      "security_critical": true|false
+    },
+    "context": {
+      "project_fingerprint": "unique_hash",
+      "languages": ["python", "javascript"],
+      "frameworks": ["flask", "react"],
+      "file_patterns": ["backend/", "frontend/"]
+    },
+    "execution": {
+      "skills_loaded": ["code-analysis", "security-patterns"],
+      "skill_loading_strategy": "predictive",
+      "agents_delegated": ["code-analyzer"],
+      "model_detected": "claude-sonnet-4.5"
+    },
+    "outcome": {
+      "success": true,
+      "quality_score": 94,
+      "performance_impact": "positive"
+    },
+    "prediction_data": {
+      "predicted_quality": 90,
+      "prediction_accuracy": 0.96,
+      "skill_effectiveness_scores": {...}
+    },
+    "reuse_analytics": {
+      "reuse_count": 5,
+      "reuse_success_rate": 1.0,
+      "confidence_boost": 0.15
     }
-  ],
-  "skill_effectiveness": {
-    "code-analysis": {"usage_count": 45, "success_rate": 0.92},
-    "testing-strategies": {"usage_count": 30, "success_rate": 0.88}
+  }]
+}
+
+# 2. Skill Metrics (.claude-patterns/skill_metrics.json)
+{
+  "skill-name": {
+    "total_uses": 87,
+    "success_rate": 0.943,
+    "confidence_score": 0.89,
+    "performance_trend": "improving",
+    "by_task_type": {...},
+    "recommended_for": ["refactoring"],
+    "not_recommended_for": ["documentation"]
+  }
+}
+
+# 3. Predictive Models (.claude-patterns/skill_predictions.json)
+{
+  "performance_models": {
+    "status": "trained",
+    "prediction_accuracy": 0.87,
+    "models": {...}  # Trained classifiers per skill
   }
 }
 ```
 
-**Auto-Creation of Pattern Files**:
-- Create `.claude/patterns/` directory if not exists
-- Automatically store new patterns after task completion
-- Update skill effectiveness metrics continuously
+**Predictive Skill Selection Process**:
+```javascript
+async function select_skills_intelligently(task_context) {
+  // 1. Generate project fingerprint
+  const fingerprint = generate_project_fingerprint({
+    languages: detect_languages(),
+    frameworks: detect_frameworks(),
+    project_type: classify_project_type(),
+    file_structure_patterns: analyze_file_structure()
+  })
+
+  // 2. Extract task features
+  const features = extract_context_features({
+    task_type: task_context.type,
+    complexity: estimate_complexity(task_context),
+    security_critical: is_security_critical(task_context),
+    technology_stack: detect_tech_stack()
+  })
+
+  // 3. Query predictive system
+  const predictions = await predict_optimal_skills({
+    context_features: features,
+    project_fingerprint: fingerprint,
+    task_type: task_context.type
+  })
+
+  // 4. Filter by confidence threshold
+  const high_confidence_skills = predictions
+    .filter(p => p.confidence > 0.8)
+    .sort((a, b) => b.probability - a.probability)
+
+  // 5. Load top skills
+  return high_confidence_skills.slice(0, 5)
+}
+```
+
+**Auto-Creation and Maintenance**:
+- Automatically create `.claude-patterns/` directory structure
+- Initialize enhanced pattern database on first use
+- Train prediction models after 20+ patterns captured
+- Update skill effectiveness metrics in real-time
+- Contribute anonymized patterns to cross-project learning
 
 ### 4. Multi-Agent Delegation
 
@@ -217,12 +305,17 @@ Delegate to specialized agents autonomously:
 - **Post-error analysis** when tool failures occur
 - Has access to: validation-standards skill
 
-**Automatic Learning** → `learning-engine` agent
-- **AUTOMATICALLY triggered after EVERY task completion**
-- Captures patterns silently in background
-- Updates skill/agent effectiveness metrics
-- Learns for continuous improvement
+**Enhanced Automatic Learning** → `learning-engine` agent
+- **AUTOMATICALLY triggered after EVERY task completion** (v3.0 enhanced)
+- Captures rich contextual patterns with project fingerprinting
+- Updates skill effectiveness metrics with confidence scoring
+- Updates agent performance metrics with reliability tracking
+- Trains predictive models for skill selection (after 20+ patterns)
+- Contributes to cross-project knowledge base
+- Analyzes learning velocity and improvement trends
+- Generates actionable insights from pattern data
 - **NO user-facing output** - pure background learning
+- **Exponential improvement** through predictive intelligence
 
 ### 5. Self-Assessment & Quality Control
 
