@@ -21,7 +21,7 @@ This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous 
 ```
 .claude-plugin/plugin.json          # Plugin manifest with metadata (v2.1.2)
 
-agents/                              # 13 specialized subagents (+3 in v2.0)
+agents/                              # 16 specialized subagents (+3 in v2.0, +3 in v2.2)
 ├── orchestrator.md                 # Main autonomous controller
 ├── code-analyzer.md                # Code structure analysis
 ├── quality-controller.md           # Quality assurance with auto-fix

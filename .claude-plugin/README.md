@@ -29,9 +29,9 @@ While the manifest only contains metadata, the plugin still maintains its full s
 autonomous-agent/
 ├── .claude-plugin/
 │   └── plugin.json          # Simplified manifest
-├── agents/                  # 13 specialized agents
-├── skills/                  # 8 skill packages
-├── commands/                # 8 slash commands
+├── agents/                  # 16 specialized agents
+├── skills/                  # 11 skill packages
+├── commands/                # 10 slash commands
 ├── patterns/                # Auto-fix patterns
 └── lib/                     # Python utilities
 ```

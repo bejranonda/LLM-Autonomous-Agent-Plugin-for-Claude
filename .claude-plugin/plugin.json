@@ -1,7 +1,7 @@
 {
   "name": "autonomous-agent",
   "version": "2.1.2",
-  "description": "Universal autonomous agent with cross-model compatibility, full-stack validation, automatic pattern learning, intelligent auto-fix capabilities, API contract synchronization, and comprehensive quality control. Optimized for Claude Sonnet, Claude 4.5, and GLM models with adaptive execution strategies.",
+  "description": "Universal autonomous agent with cross-model compatibility, full-stack validation, automatic pattern learning, intelligent auto-fix capabilities, advanced Git/repository management, automated release workflows, intelligent report organization, and comprehensive quality control. Optimized for Claude Sonnet, Claude 4.5, and GLM models with adaptive execution strategies.",
   "author": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
@@ -40,6 +40,15 @@
     "claude-haiku-4.5",
     "claude-opus-4.1",
     "glm-4.6",
-    "universal-compatibility"
+    "universal-compatibility",
+    "git-automation",
+    "version-management",
+    "release-automation",
+    "repository-management",
+    "report-organization",
+    "github-integration",
+    "gitlab-integration",
+    "semantic-versioning",
+    "changelog-generation"
   ]
 }
