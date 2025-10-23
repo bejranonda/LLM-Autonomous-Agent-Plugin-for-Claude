@@ -241,7 +241,7 @@ See [RELEASE_NOTES_v2.0.md](RELEASE_NOTES_v2.0.md) for complete details.
 - `CROSS_MODEL_IMPROVEMENTS.md` - Comprehensive improvement analysis
 
 **Technical Enhancements**:
-- Model compatibility matrix in `plugin.json`
+- Model compatibility handled automatically (no manifest configuration needed)
 - Universal pattern storage schema v2.1.0
 - Model-aware skill loading strategies
 - Cross-model optimization algorithms

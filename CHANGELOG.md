@@ -2,6 +2,18 @@
 
 All notable changes to the Autonomous Claude Agent Plugin will be documented in this file.
 
+## [2.1.1] - 2025-10-23
+
+### 🔧 Fixed
+
+#### Plugin Manifest Compatibility
+- **Removed unsupported keys**: `model_compatibility`, `adaptive_features`, `components` from `plugin.json`
+- **Simplified manifest**: Now contains only metadata supported by Claude Code
+- **Auto-discovery**: Components are automatically discovered by Claude Code via directory structure
+- **Documentation updates**: Corrected all references to manifest structure throughout the project
+
+**Error Fixed**: "Unrecognized key(s) in object: 'model_compatibility', 'adaptive_features', 'components'"
+
 ## [2.0.0] - 2025-10-22
 
 ### 🚀 Major New Release: Full-Stack Validation & Intelligent Auto-Fix

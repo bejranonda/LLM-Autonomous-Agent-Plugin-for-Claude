@@ -19,7 +19,7 @@ This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous 
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest (v2.0.0)
+.claude-plugin/plugin.json          # Plugin manifest with metadata (v2.1.0)
 
 agents/                              # 13 specialized subagents (+3 in v2.0)
 ├── orchestrator.md                 # Main autonomous controller
@@ -175,19 +175,21 @@ Since this is a plugin definition (not executable code), testing involves:
 
 ### Modifying Plugin Components
 
+**IMPORTANT**: Claude Code uses convention-based discovery. The `plugin.json` manifest only contains metadata and does NOT explicitly list components.
+
 **Adding a new agent**:
 1. Create `agents/new-agent.md` following the YAML frontmatter format
-2. Add to `.claude-plugin/plugin.json` components.agents array
+2. Claude Code automatically discovers it from the `agents/` directory
 3. Reference relevant skills in the agent's system prompt
 
 **Adding a new skill**:
 1. Create `skills/new-skill/SKILL.md` with YAML frontmatter
-2. Add to `.claude-plugin/plugin.json` components.skills array
+2. Claude Code automatically discovers it from `skills/*/SKILL.md`
 3. Reference from agent system prompts using skill name
 
 **Adding a new command**:
 1. Create `commands/new-command.md` with command description
-2. Add to `.claude-plugin/plugin.json` components.commands array
+2. Claude Code automatically discovers it from the `commands/` directory
 
 ## Important Patterns and Conventions
 
@@ -290,19 +292,19 @@ Orchestrator (autonomous execution):
 
 ## File Organization Rules
 
-- **Agents**: One file per agent in `agents/` directory
-- **Skills**: One directory per skill in `skills/` with `SKILL.md` inside
-- **Commands**: One file per command in `commands/` directory
-- **Plugin manifest**: `.claude-plugin/plugin.json` lists all components
+- **Agents**: One file per agent in `agents/` directory (auto-discovered)
+- **Skills**: One directory per skill in `skills/` with `SKILL.md` inside (auto-discovered)
+- **Commands**: One file per command in `commands/` directory (auto-discovered)
+- **Plugin manifest**: `.claude-plugin/plugin.json` contains metadata only
 - **Documentation**: Keep README.md, STRUCTURE.md, IMPLEMENTATION_SUMMARY.md up to date
 
 ## Testing and Validation
 
 When modifying this plugin:
 
-1. **Validate JSON syntax**: `plugin.json` must be valid JSON
+1. **Validate JSON syntax**: `plugin.json` must be valid JSON with recognized keys only
 2. **Check YAML frontmatter**: All agents/skills must have valid YAML
-3. **Verify file paths**: All paths in `plugin.json` must exist
+3. **Verify file structure**: Ensure agents/, skills/, and commands/ directories are properly organized
 4. **Test agent descriptions**: Descriptions should be action-oriented for auto-delegation
 5. **Verify skill references**: Ensure agents reference existing skills correctly
 
@@ -619,7 +621,7 @@ Thresholds:
 - **Autonomy is key**: Never ask for confirmation at each step - make decisions independently
 - **Quality threshold**: 70/100 is the minimum acceptable quality score
 - **Validation threshold**: 70/100 is the minimum acceptable validation score
-- **Skill references**: Use skill names from `plugin.json`, not file paths
+- **Skill references**: Use skill directory names (e.g., "code-analysis"), not file paths
 - **Agent tools**: If tools not specified in frontmatter, agent inherits all tools from main thread
 - **Learning improves over time**: First 3-5 similar tasks build baseline, performance improves significantly from task 5+
 - **Validation prevents errors**: Pre-flight checks catch 87% of errors before they occur - always validate before Edit/Write
