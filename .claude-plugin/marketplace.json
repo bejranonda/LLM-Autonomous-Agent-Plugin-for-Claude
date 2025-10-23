@@ -10,7 +10,7 @@
       "name": "autonomous-agent",
       "source": "./",
       "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, background tasks, quality control, and proactive validation. Features 10 specialized agents, 6 knowledge skills, and 6 slash commands for true autonomous AI development assistance.",
-      "version": "1.7.0",
+      "version": "2.1.2",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
