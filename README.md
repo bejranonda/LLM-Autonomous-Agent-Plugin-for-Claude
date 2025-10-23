@@ -3,6 +3,7 @@
 [![Version](https://img.shields.io/badge/version-3.3.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.3.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
+[![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
 [![Validation](https://img.shields.io/badge/validation-85%2F100-yellow.svg)](docs/reports/VALIDATION_COMPLETE.md)
 [![Production Ready](https://img.shields.io/badge/production%20ready-ff69b4.svg)]()
 
@@ -15,11 +16,10 @@
 - **No manual** training.
 - Just automatic continuous improvement across ALL models.
 
+<img width="1464" height="552" alt="image" src="https://github.com/user-attachments/assets/a4f84e19-1fa7-4f97-ab3e-9366bb1adaf3" />
 
+*Autonomous Agent Dashboard check-in! 🤖 7 Active Agents, 5 Skills, and a 93.7 Quality Score. The trend is clear: Learning Velocity is Improving!*
 
-<img width="891" height="340" alt="System Performance" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
-
-*Structured performance summary, highlighting the successful autonomous operation and continuous improvement after 2 iterations of Autonomous Agent Version 1.3*
 
 ---
 
@@ -75,6 +75,11 @@ The plugin automatically learns from successes and failures, continuously improv
 - Multi-ecosystem dependency analysis (11 package managers)
 - Real-time monitoring dashboard with live metrics
 - **Automatic learning**: Improves performance over time
+
+<img width="891" height="340" alt="System Performance" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
+
+*Structured performance summary, highlighting the successful autonomous operation and continuous improvement after 2 iterations of Autonomous Agent Version 1.3*
+
 
 ### 🚀 **Lightning-Fast Analysis**
 
@@ -319,6 +324,12 @@ This creates `.claude/patterns/` directory with the learning database.
 - **Recent Activity**: Latest assessments with task types and scores
 - **Learning Velocity**: Shows improvement rate (accelerating 🚀, stable →, or declining ↓)
 - **Skills & Agents Effectiveness**: Success rates and usage statistics
+
+
+<img width="1136" height="867" alt="image" src="https://github.com/user-attachments/assets/4b2908c8-e616-422d-8d2b-8d3a9b2bd8b3" />
+
+*Skills and tasks used in development of this plugin in version 2.0 to 3.0*
+
 
 ### How Assessments Are Added:
 Assessments are **automatically created** when you use plugin commands:
