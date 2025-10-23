@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v3.0.0
+# 🚀 Autonomous Agent for Claude Code v3
 
 [![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.0.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -8,12 +8,14 @@
 
 > *What if your AI agent got smarter and faster with every task?*
 
-🧠 **Automatic Learning System** • 🔒 **Privacy-First** • 💰 **Free Forever** • 🚀 **Production-Ready Analysis** • 📊 **Real-Time Monitoring** • 🛡️ **OWASP Security**
+🧠 **Automatic Learning System** • 🔒 **Privacy-First** • 🚀 **Production-Ready Analysis** • 📊 **Real-Time Monitoring** • 🛡️ **OWASP Security**
 
-- Every Task Makes It **Smarter** - Production-Ready **Analysis** - Comprehensive **Coverage**
-- **No configuration** required. No manual training. Just automatic continuous improvement across ALL models.
+- Every Task Makes It **Smarter**
+- **No configuration** required.
+- **No manual** training.
+- Just automatic continuous improvement across ALL models.
 
----
+
 
 <img width="891" height="340" alt="System Performance" src="https://github.com/user-attachments/assets/b72e1bab-7119-431e-b016-ef1d79b3807d" />
 
@@ -21,13 +23,15 @@
 
 ---
 
-## 🌟 What Makes v3.0.0 Revolutionary?
+## 🌟 What Makes v3 Revolutionary?
 
-> **Experience autonomous code analysis that learns and improves continuously.**
+> *Experience autonomous code analysis that learns and improves continuously.*
 
 ### 🧠 **Key Innovation: Automatic Learning System**
 
-**Every task makes the agent smarter.** The plugin automatically learns from successes and failures, continuously improving performance without any manual intervention.
+- *Every task makes the agent smarter.*
+
+The plugin automatically learns from successes and failures, continuously improving performance without any manual intervention.
 
 **🎯 Revolutionary Learning Capabilities:**
 - **85-90% accuracy** that improves with every task
@@ -50,10 +54,9 @@
 | **Automation** | Semi-automated | ✅ **Fully autonomous** |
 | **Integration** | Multiple tools needed | ✅ **All-in-one solution** |
 
-### 🚀 **v3.0.0 Key Achievements**
+### 🚀 **v3 Key Achievements**
 
 - ✅ **Production Certified** - 99/100 validation score
-- ✅ **16,500+ lines** of production-grade code
 - ✅ **Zero installation blockers** - Works everywhere
 - ✅ **Comprehensive security** - OWASP Top 10 coverage
 - ✅ **Real-time monitoring** - Web dashboard included
@@ -66,7 +69,7 @@
 ### 💡 **What We Offer: Complete Code Analysis Suite**
 
 **All-in-one autonomous code analysis platform** with comprehensive capabilities:
-- CodeRabbit-level PR reviews with 38-45% auto-fix rate
+- PR reviews with 38-45% auto-fix rate (CodeRabbit-level)
 - 40+ linters across 15+ programming languages
 - OWASP Top 10 security vulnerability scanning
 - Multi-ecosystem dependency analysis (11 package managers)
@@ -188,14 +191,20 @@
 
 ## 🎯 Quick Start
 
-**These commands are used within Claude Code CLI** after installing the plugin:
+### Claude Code
+
+Please install **Claude Code** on your computer or server first.  
+You can find the instruction at the following link: [Set up Claude Code](https://docs.claude.com/en/docs/claude-code/setup)
+
 
 <img width="1049" height="313" alt="image" src="https://github.com/user-attachments/assets/87a7c87f-f16a-437f-9369-daa794eecba6" />
 
-*Claude CLI in command line terminal*
+*Claude Code in command line terminal*
 
 
-### Installation
+### Autonomus-Agent Plugin Installation (this plugin)
+
+*These commands are used within Claude Code CLI*:
 
 ```bash
 # Install from GitHub (one command)
