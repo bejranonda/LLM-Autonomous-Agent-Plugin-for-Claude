@@ -310,11 +310,55 @@ This creates `.claude/patterns/` directory with the learning database.
 - **Auto-refresh**: Data updates every 30 seconds
 - **Interactive charts**: Quality trends, task distribution, performance analytics
 - **Live monitoring**: Track recent activity and agent performance
+- **Period filtering**: Select time ranges (24 hours, 7 days, 30 days, 90 days, 1 year, all time)
+
+**📊 Understanding the Dashboard:**
+
+### What You'll See:
+- **Quality Score Trends**: Line chart showing assessment scores over time with exact timestamps
+- **Recent Activity**: Latest assessments with task types and scores
+- **Learning Velocity**: Shows improvement rate (accelerating 🚀, stable →, or declining ↓)
+- **Skills & Agents Effectiveness**: Success rates and usage statistics
+
+### How Assessments Are Added:
+Assessments are **automatically created** when you use plugin commands:
+
+```bash
+# These commands automatically create new assessments:
+/quality-check          # Creates quality-control assessment
+/auto-analyze          # Creates project-analysis assessment
+/validate-fullstack    # Creates validation assessment
+/performance-report    # Creates performance assessment
+```
+
+**Manual Assessment Creation** (for testing/demonstration):
+```bash
+# Add a custom assessment to .claude-patterns/quality_history.json
+# Format:
+{
+  "assessment_id": "task-name-YYYYMMDD-###",
+  "timestamp": "2025-10-23T21:15:00Z",  # Current time
+  "task_type": "quality-control",
+  "overall_score": 95,
+  "breakdown": {
+    "tests_passing": 28,
+    "standards_compliance": 25,
+    "documentation": 20,
+    "pattern_adherence": 15,
+    "code_metrics": 10
+  },
+  "details": { /* task-specific details */ },
+  "issues_found": [],  /* issues identified */
+  "recommendations": [], /* recommendations made */
+  "pass": true
+}
+```
 
 **🔧 Troubleshooting:**
 - If port 5000 is busy: `/dashboard --port 8080`
 - Dashboard not reachable: Run `pip install flask flask-cors` first
 - Stop dashboard: Press `Ctrl+C` in the terminal where it's running
+- No data showing: Run `/learn-patterns` or `/quality-check` first to generate assessment data
 
 ---
 
@@ -326,6 +370,7 @@ This creates `.claude/patterns/` directory with the learning database.
 - `/quality-check` - Quality control with autonomous auto-fixing
 - `/validate` - General validation of tools, docs, and execution flow
 - `/dashboard` - Launch real-time monitoring web interface
+- `/dashboard-debug` - Comprehensive dashboard validation and debugging
 
 ### 🔍 **Analysis & Review (Intermediate)**
 - `/pr-review [PR_NUMBER]` - CodeRabbit-style comprehensive PR reviews

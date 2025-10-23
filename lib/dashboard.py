@@ -72,13 +72,11 @@ class DashboardDataCollector:
 
     def get_overview_metrics(self) -> Dict[str, Any]:
         """Get high-level overview metrics."""
-        patterns = self._load_json_file("enhanced_patterns.json", "patterns")
-        skill_metrics = self._load_json_file("skill_metrics.json", "skills")
-        agent_metrics = self._load_json_file("agent_metrics.json", "agents")
+        patterns = self._load_json_file("patterns.json", "patterns")
 
         total_patterns = len(patterns.get("patterns", []))
-        total_skills = len(skill_metrics.get("skills", {}))
-        total_agents = len(agent_metrics.get("agents", {}))
+        total_skills = len(patterns.get("skill_effectiveness", {}))
+        total_agents = len(patterns.get("agent_effectiveness", {}))
 
         # Calculate average quality score
         quality_scores = [
@@ -88,9 +86,14 @@ class DashboardDataCollector:
         ]
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
-        # Calculate learning velocity
-        recent_patterns = patterns.get("patterns", [])[-20:] if patterns.get("patterns") else []
-        learning_velocity = self._calculate_learning_velocity(recent_patterns)
+        # Calculate learning velocity from quality history (preferred)
+        quality_history = self._load_json_file("quality_history.json", "quality")
+        learning_velocity = self._calculate_learning_velocity_from_quality(quality_history)
+
+        # Fallback to pattern-based calculation if quality history is insufficient
+        if learning_velocity == "insufficient_data":
+            recent_patterns = patterns.get("patterns", [])[-20:] if patterns.get("patterns") else []
+            learning_velocity = self._calculate_learning_velocity(recent_patterns)
 
         return {
             "total_patterns": total_patterns,
@@ -103,7 +106,7 @@ class DashboardDataCollector:
 
     def _calculate_learning_velocity(self, patterns: List[Dict]) -> str:
         """Calculate learning velocity (accelerating/stable/declining)."""
-        if len(patterns) < 10:
+        if len(patterns) < 3:
             return "insufficient_data"
 
         # Split into halves
@@ -133,55 +136,94 @@ class DashboardDataCollector:
         else:
             return "declining"
 
-    def get_quality_trends(self, days: int = 30) -> Dict[str, Any]:
-        """Get quality score trends over time."""
-        patterns = self._load_json_file("enhanced_patterns.json", "patterns")
+    def _calculate_learning_velocity_from_quality(self, quality_history: Dict) -> str:
+        """Calculate learning velocity from quality assessments."""
+        assessments = quality_history.get("quality_assessments", [])
 
-        # Group by date
-        quality_by_date = defaultdict(list)
+        if len(assessments) < 3:
+            return "insufficient_data"
+
+        # Sort assessments by timestamp
+        assessments.sort(key=lambda x: x.get("timestamp", ""))
+
+        # Split into halves
+        mid = len(assessments) // 2
+        first_half = assessments[:mid]
+        second_half = assessments[mid:]
+
+        # Calculate average quality scores
+        first_avg = statistics.mean([
+            a.get("overall_score", 0)
+            for a in first_half
+            if a.get("overall_score") is not None
+        ]) if first_half else 0
+
+        second_avg = statistics.mean([
+            a.get("overall_score", 0)
+            for a in second_half
+            if a.get("overall_score") is not None
+        ]) if second_half else 0
+
+        improvement = second_avg - first_avg
+
+        # Calculate velocity based on improvement rate
+        if improvement > 3:
+            return "accelerating 🚀"
+        elif improvement > 0:
+            return "improving 📈"
+        elif improvement > -3:
+            return "stable 📊"
+        else:
+            return "declining 📉"
+
+    def get_quality_trends(self, days: int = 30) -> Dict[str, Any]:
+        """Get quality score trends over time with exact timestamps."""
+        quality_history = self._load_json_file("quality_history.json", "quality")
+
+        # Get individual assessments with exact timestamps
+        trend_data = []
         cutoff_date = datetime.now() - timedelta(days=days)
 
-        for pattern in patterns.get("patterns", []):
-            timestamp = pattern.get("timestamp")
-            quality_score = pattern.get("outcome", {}).get("quality_score")
+        for assessment in quality_history.get("quality_assessments", []):
+            timestamp = assessment.get("timestamp")
+            quality_score = assessment.get("overall_score")
+            task_type = assessment.get("task_type", "unknown")
 
             if timestamp and quality_score is not None:
                 try:
-                    pattern_date = datetime.fromisoformat(timestamp)
-                    if pattern_date >= cutoff_date:
-                        date_key = pattern_date.strftime("%Y-%m-%d")
-                        quality_by_date[date_key].append(quality_score)
+                    # Parse timestamp and remove timezone for comparison
+                    assessment_date = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
+                    if assessment_date >= cutoff_date:
+                        # Format timestamp for display
+                        display_time = assessment_date.strftime("%m/%d %H:%M")
+                        trend_data.append({
+                            "timestamp": timestamp,
+                            "display_time": display_time,
+                            "score": quality_score,
+                            "task_type": task_type
+                        })
                 except:
                     continue
 
-        # Calculate daily averages
-        trend_data = []
-        for date_str in sorted(quality_by_date.keys()):
-            scores = quality_by_date[date_str]
-            trend_data.append({
-                "date": date_str,
-                "average": round(statistics.mean(scores), 1),
-                "min": min(scores),
-                "max": max(scores),
-                "count": len(scores)
-            })
+        # Sort by timestamp
+        trend_data.sort(key=lambda x: x["timestamp"])
 
         return {
             "trend_data": trend_data,
             "overall_average": round(statistics.mean([
-                d["average"] for d in trend_data
+                d["score"] for d in trend_data
             ]), 1) if trend_data else 0,
             "days": days
         }
 
     def get_skill_performance(self, top_k: int = 10) -> Dict[str, Any]:
         """Get top performing skills."""
-        skill_metrics = self._load_json_file("skill_metrics.json", "skills")
+        patterns = self._load_json_file("patterns.json", "patterns")
 
         skills_data = []
-        for skill_name, metrics in skill_metrics.get("skills", {}).items():
-            success_rate = metrics.get("success_rate", 0)
-            usage_count = metrics.get("usage_count", 0)
+        for skill_name, metrics in patterns.get("skill_effectiveness", {}).items():
+            success_rate = metrics.get("success_rate", 0) or 0
+            usage_count = metrics.get("total_uses", 0) or 0
             avg_quality = metrics.get("avg_quality_impact", 0)
 
             skills_data.append({
@@ -202,12 +244,12 @@ class DashboardDataCollector:
 
     def get_agent_performance(self, top_k: int = 10) -> Dict[str, Any]:
         """Get top performing agents."""
-        agent_metrics = self._load_json_file("agent_metrics.json", "agents")
+        patterns = self._load_json_file("patterns.json", "patterns")
 
         agents_data = []
-        for agent_name, metrics in agent_metrics.get("agents", {}).items():
-            success_rate = metrics.get("success_rate", 0)
-            usage_count = metrics.get("usage_count", 0)
+        for agent_name, metrics in patterns.get("agent_effectiveness", {}).items():
+            success_rate = metrics.get("success_rate", 0) or 0
+            usage_count = metrics.get("total_uses", 0) or 0
             avg_duration = metrics.get("avg_duration", 0)
             reliability = metrics.get("reliability_score", 0)
 
@@ -229,7 +271,7 @@ class DashboardDataCollector:
 
     def get_task_distribution(self) -> Dict[str, Any]:
         """Get distribution of task types."""
-        patterns = self._load_json_file("enhanced_patterns.json", "patterns")
+        patterns = self._load_json_file("patterns.json", "patterns")
 
         task_counts = defaultdict(int)
         success_by_task = defaultdict(list)
@@ -261,7 +303,7 @@ class DashboardDataCollector:
 
     def get_recent_activity(self, limit: int = 20) -> Dict[str, Any]:
         """Get recent task activity."""
-        patterns = self._load_json_file("enhanced_patterns.json", "patterns")
+        patterns = self._load_json_file("patterns.json", "patterns")
 
         recent = patterns.get("patterns", [])[-limit:]
         recent.reverse()  # Most recent first
@@ -284,7 +326,7 @@ class DashboardDataCollector:
 
     def get_system_health(self) -> Dict[str, Any]:
         """Get system health metrics."""
-        patterns = self._load_json_file("enhanced_patterns.json", "patterns")
+        patterns = self._load_json_file("patterns.json", "patterns")
 
         # Calculate error rate (last 50 tasks)
         recent_tasks = patterns.get("patterns", [])[-50:]
@@ -300,7 +342,7 @@ class DashboardDataCollector:
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
         # Storage size
-        patterns_size = os.path.getsize(self.patterns_dir / "enhanced_patterns.json") if (self.patterns_dir / "enhanced_patterns.json").exists() else 0
+        patterns_size = os.path.getsize(self.patterns_dir / "patterns.json") if (self.patterns_dir / "patterns.json").exists() else 0
 
         health_status = "excellent"
         if error_rate > 20 or avg_quality < 60:
@@ -532,7 +574,21 @@ DASHBOARD_HTML = """
 
             <!-- Quality Trends Chart -->
             <div class="chart-container">
-                <div class="chart-title">Quality Score Trends (Last 30 Days)</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div class="chart-title">Quality Score Trends</div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label for="quality-period" style="font-size: 14px; color: #666;">Period:</label>
+                        <select id="quality-period" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ddd; background: white; font-size: 14px;">
+                            <option value="1">Last 24 Hours</option>
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last Year</option>
+                            <option value="all">All Time</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="quality-debug" style="background: rgba(0,0,0,0.1); padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px; color: #666;"></div>
                 <canvas id="qualityChart"></canvas>
             </div>
 
@@ -611,6 +667,16 @@ DASHBOARD_HTML = """
         let qualityChart = null;
         let taskChart = null;
 
+        async function fetchQualityData(days = 30) {
+            try {
+                const response = await fetch(`/api/quality-trends?days=${days}`);
+                const quality = await response.json();
+                updateQualityChart(quality);
+            } catch (error) {
+                console.error('Error fetching quality data:', error);
+            }
+        }
+
         async function fetchDashboardData() {
             try {
                 const [overview, quality, skills, agents, tasks, activity, health] = await Promise.all([
@@ -643,6 +709,10 @@ DASHBOARD_HTML = """
         function updateOverviewMetrics(data) {
             const container = document.getElementById('overview-metrics');
             const velocityBadge = {
+                'accelerating 🚀': '🚀 Accelerating',
+                'improving 📈': '📈 Improving',
+                'stable 📊': '📊 Stable',
+                'declining 📉': '📉 Declining',
                 'accelerating': '📈 Accelerating',
                 'stable': '➡️ Stable',
                 'declining': '📉 Declining',
@@ -674,19 +744,39 @@ DASHBOARD_HTML = """
         }
 
         function updateQualityChart(data) {
+            const debugDiv = document.getElementById('quality-debug');
+
+            if (!data || !data.trend_data || data.trend_data.length === 0) {
+                debugDiv.innerHTML = '❌ No quality trend data available';
+                return;
+            }
+
+            const periodText = data.days === 1 ? '24 Hours' :
+                        data.days === 7 ? '7 Days' :
+                        data.days === 30 ? '30 Days' :
+                        data.days === 90 ? '90 Days' :
+                        data.days === 365 ? 'Year' :
+                        data.days >= 3650 ? 'All Time' : `${data.days} Days`;
+
+            const latestPoint = data.trend_data[data.trend_data.length - 1];
+            debugDiv.innerHTML = `✅ Quality data (${periodText}): ${data.trend_data.length} assessments | Overall avg: ${data.overall_average} | Latest: ${latestPoint.score} (${latestPoint.display_time})`;
+
             const ctx = document.getElementById('qualityChart').getContext('2d');
 
             if (qualityChart) {
                 qualityChart.destroy();
             }
 
+            // Use bar chart for single data point, line chart for multiple
+            const chartType = data.trend_data.length === 1 ? 'bar' : 'line';
+
             qualityChart = new Chart(ctx, {
-                type: 'line',
+                type: chartType,
                 data: {
-                    labels: data.trend_data.map(d => d.date),
+                    labels: data.trend_data.map(d => d.display_time),
                     datasets: [{
-                        label: 'Average Quality Score',
-                        data: data.trend_data.map(d => d.average),
+                        label: 'Quality Score',
+                        data: data.trend_data.map(d => d.score),
                         borderColor: '#667eea',
                         backgroundColor: 'rgba(102, 126, 234, 0.1)',
                         tension: 0.4,
@@ -823,6 +913,17 @@ DASHBOARD_HTML = """
                 </table>
             `;
         }
+
+        // Add event listener for quality period selector
+        document.getElementById('quality-period').addEventListener('change', function(e) {
+            const period = e.target.value;
+            if (period === 'all') {
+                // Fetch all data by using a very large number
+                fetchQualityData(3650); // 10 years
+            } else {
+                fetchQualityData(parseInt(period));
+            }
+        });
 
         // Initial load
         fetchDashboardData();
