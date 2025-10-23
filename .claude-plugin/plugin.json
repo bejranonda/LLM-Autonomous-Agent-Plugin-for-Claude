@@ -1,6 +1,6 @@
 {
   "name": "autonomous-agent",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Universal autonomous agent with cross-model compatibility, full-stack validation, automatic pattern learning, intelligent auto-fix capabilities, API contract synchronization, and comprehensive quality control. Optimized for Claude Sonnet, Claude 4.5, and GLM models with adaptive execution strategies.",
   "author": {
     "name": "Werapol Bejranonda",

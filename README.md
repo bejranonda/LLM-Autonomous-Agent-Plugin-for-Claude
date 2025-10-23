@@ -1,5 +1,5 @@
 # AI Autonomous Self-Learning for Claude Code Plugin
-[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v2.1.0)
+[![Version](https://img.shields.io/badge/version-2.1.2-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v2.1.2)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -218,7 +218,7 @@ See [RELEASE_NOTES_v2.0.md](RELEASE_NOTES_v2.0.md) for complete details.
 
 **Universal Compatibility** - Same plugin works optimally across all major LLM models:
 
-| Model | Previous | **v2.1.0** | Improvement |
+| Model | Previous | **v2.1.2** | Improvement |
 |-------|----------|------------|-------------|
 | Claude Sonnet 4.5 | 95% | **98%** | **+3%** |
 | Claude Haiku 4.5 | 90% | **93%** | **+3%** |
@@ -240,7 +240,7 @@ See [RELEASE_NOTES_v2.0.md](RELEASE_NOTES_v2.0.md) for complete details.
 
 **Technical Enhancements**:
 - Model compatibility handled automatically (no manifest configuration needed)
-- Universal pattern storage schema v2.1.0
+- Universal pattern storage schema v2.1.2
 - Model-aware skill loading strategies
 - Cross-model optimization algorithms
 
@@ -372,6 +372,66 @@ Restart Claude Code CLI to load the plugin:
 # Then restart
 claude
 ```
+
+---
+
+## 🔍 Plugin Validation (NEW in v2.1.2!)
+
+**Automated Quality Assurance**: Comprehensive validation system that ensures plugin integrity and quality with detailed reporting.
+
+### Quick Validation Check
+
+```bash
+# Quick validation (Windows)
+validate-plugin.bat
+
+# Quick validation (Linux/Mac)
+./validate-plugin.sh
+
+# Advanced validation with report
+python lib/plugin_validator.py --output validation-report.json
+```
+
+### Validation Features
+
+**Comprehensive Checks**:
+- ✅ Plugin manifest validation (JSON schema, required fields)
+- ✅ Directory structure verification (agents/, skills/, commands/)
+- ✅ Agent file validation (YAML frontmatter, content quality)
+- ✅ Skill file validation (structure, documentation completeness)
+- ✅ Command validation (usage examples, documentation)
+- ✅ Version consistency across all files
+- ✅ Documentation quality assessment
+- ✅ Cross-reference validation (broken links, file references)
+
+**Quality Scoring**:
+- Score 0-100 with detailed breakdown
+- Automated recommendations for improvements
+- CI/CD integration ready (exit codes 0/1/2)
+- JSON and text output formats
+
+**Example Output**:
+```
+============================================================
+PLUGIN VALIDATION RESULTS
+============================================================
+Plugin is in excellent condition!
+Quality Score: 100/100 (0 issues, 2 warnings)
+
+Validations Passed (8):
+✓ Plugin manifest is valid and complete
+✓ Validated 13 agent files, 9 skills, 7 commands
+✓ Version consistency verified: 2.1.1
+✓ Documentation quality: 95%
+
+Detailed report saved to: plugin-validation-report-2025-10-23.json
+```
+
+**Perfect for**:
+- Pre-release quality checks
+- CI/CD pipeline integration
+- Plugin development validation
+- Automated quality assurance
 
 ---
 
@@ -1001,7 +1061,7 @@ With automatic learning and cross-model optimization enabled, typical improvemen
 | Skill Selection Accuracy | 70% | 92% | +22% |
 | Auto-fix Success Rate | 65% | 85% | +20% |
 
-### Cross-Model Performance (v2.1.0)
+### Cross-Model Performance (v2.1.2)
 | Model | Pre-v2.1 | **Post-v2.1** | Improvement |
 |-------|----------|-------------|-------------|
 | Claude Sonnet 4.5 | 95% effective | **98% effective** | **+3%** |

@@ -853,13 +853,13 @@ This agent leverages:
 - **performance-scaling** - Model-specific performance optimization
 - **validation-standards** - Cross-model quality assurance
 
-### Enhanced Pattern Storage Schema (v2.1.0)
+### Enhanced Pattern Storage Schema (v2.1.2)
 
 **Updated Location**: `.claude/patterns/cross-model-patterns.json`
 
 ```json
 {
-  "version": "2.1.0",
+  "version": "2.1.2",
   "cross_model_compatibility": true,
   "metadata": {
     "supported_models": ["claude-sonnet", "claude-4.5", "glm-4.6"],

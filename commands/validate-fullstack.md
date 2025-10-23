@@ -289,7 +289,7 @@ Auto-fix adds 10-30 seconds depending on issue count.
 ## Version History
 
 - **v2.0.0**: Full-stack validation with auto-fix capabilities
-- **v2.1.0** (planned): Docker container validation
+- **v2.2.0** (planned): Docker container validation
 - **v2.2.0** (planned): Security vulnerability scanning
 - **v2.3.0** (planned): Performance profiling integration
 
