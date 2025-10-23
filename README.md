@@ -278,7 +278,7 @@ This creates `.claude/patterns/` directory with the learning database.
 **📊 Monitoring & Insights:**
 
 ```bash
-# Launch real-time dashboard
+# Launch real-time dashboard (monitoring)
 /dashboard
 
 # View learning analytics
@@ -290,6 +290,28 @@ This creates `.claude/patterns/` directory with the learning database.
 # Get smart recommendations
 /recommend
 ```
+
+### 🌐 **Access the Dashboard**
+
+**📱 How to reach the monitoring dashboard:**
+
+```bash
+# Launch the dashboard
+/dashboard
+```
+
+**🌍 Access URL**: http://127.0.0.1:5000
+
+**💡 Dashboard Features:**
+- **Real-time metrics**: Learning progress, quality trends, system health
+- **Auto-refresh**: Data updates every 30 seconds
+- **Interactive charts**: Quality trends, task distribution, performance analytics
+- **Live monitoring**: Track recent activity and agent performance
+
+**🔧 Troubleshooting:**
+- If port 5000 is busy: `/dashboard --port 8080`
+- Dashboard not reachable: Run `pip install flask flask-cors` first
+- Stop dashboard: Press `Ctrl+C` in the terminal where it's running
 
 ---
 
