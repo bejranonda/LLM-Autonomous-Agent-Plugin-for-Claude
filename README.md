@@ -1,9 +1,9 @@
-# 🚀 Autonomous Agent for Claude Code v3.2.0
+# 🚀 Autonomous Agent for Claude Code v3.3.0
 
-[![Version](https://img.shields.io/badge/version-3.2.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.2.0)
+[![Version](https://img.shields.io/badge/version-3.3.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.3.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
-[![Validation](https://img.shields.io/badge/validation-99%2F100-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/blob/main/VALIDATION_COMPLETE.md)
+[![Validation](https://img.shields.io/badge/validation-85%2F100-yellow.svg)](docs/reports/VALIDATION_COMPLETE.md)
 [![Production Ready](https://img.shields.io/badge/production%20ready-ff69b4.svg)]()
 
 > *What if your AI agent got smarter and faster with every task?*
@@ -331,34 +331,13 @@ Assessments are **automatically created** when you use plugin commands:
 /performance-report    # Creates performance assessment
 ```
 
-**Manual Assessment Creation** (for testing/demonstration):
-```bash
-# Add a custom assessment to .claude-patterns/quality_history.json
-# Format:
-{
-  "assessment_id": "task-name-YYYYMMDD-###",
-  "timestamp": "2025-10-23T21:15:00Z",  # Current time
-  "task_type": "quality-control",
-  "overall_score": 95,
-  "breakdown": {
-    "tests_passing": 28,
-    "standards_compliance": 25,
-    "documentation": 20,
-    "pattern_adherence": 15,
-    "code_metrics": 10
-  },
-  "details": { /* task-specific details */ },
-  "issues_found": [],  /* issues identified */
-  "recommendations": [], /* recommendations made */
-  "pass": true
-}
-```
 
 **🔧 Troubleshooting:**
 - If port 5000 is busy: `/dashboard --port 8080`
 - Dashboard not reachable: Run `pip install flask flask-cors` first
 - Stop dashboard: Press `Ctrl+C` in the terminal where it's running
 - No data showing: Run `/learn-patterns` or `/quality-check` first to generate assessment data
+
 
 ---
 
@@ -395,6 +374,190 @@ Assessments are **automatically created** when you use plugin commands:
 <img width="1552" height="830" alt="Quality Check Results" src="https://github.com/user-attachments/assets/1e8337d5-132e-4206-a0f3-53bdbbf2b76d" />
 
 *Results from the "/quality-check" slash command performing a comprehensive quality control check.*
+
+---
+
+## 📁 Project Directory Structure
+
+When you use this plugin in your projects, it creates a `.claude-patterns/` directory to store learning data and generated reports:
+
+```
+your-project/                          # YOUR PROJECT DIRECTORY
+├── .claude-patterns/                  # 🔵 AUTO-CREATED: Plugin data directory
+│   ├── patterns.json                 # 🧠 Learned patterns & skill effectiveness
+│   ├── quality_history.json          # 📊 Quality assessment history & trends
+│   ├── agent_effectiveness.json      # 🤖 Agent performance metrics
+│   ├── skill_effectiveness.json      # 🛠️ Skill usage statistics
+│   ├── task_queue.json              # 📋 Background task management
+│   ├── recent_patterns.json         # 🔄 Recent successful approaches
+│   └── reports/                      # 📄 Auto-generated analysis reports
+│       ├── quality-check-2025-10-23.md
+│       ├── auto-analyze-2025-10-23.md
+│       ├── validation-2025-10-23.md
+│       ├── learning-analytics-2025-10-23.md
+│       ├── performance-report-2025-10-23.md
+│       ├── fullstack-validation-2025-10-23.md
+│       └── gui-validation-2025-10-23.md
+├── src/                              # 💼 Your source code
+│   ├── main.py
+│   ├── components/
+│   └── utils/
+├── tests/                            # 🧪 Your test files
+├── docs/                             # 📖 Your project documentation
+├── node_modules/                     # 📦 Dependencies (if Node.js project)
+├── .git/                            # 📂 Git version control
+├── .gitignore                        # 🚫 Git ignore rules
+├── package.json                      # 📦 Node.js dependencies (if applicable)
+├── requirements.txt                  # 🐍 Python dependencies (if applicable)
+└── README.md                         # 📋 Your project README
+```
+
+### 🗂️ **Complete Directory Breakdown**
+
+#### 🔵 **`.claude-patterns/` - Plugin Data (Auto-Created)**
+
+| File/Directory | Purpose | When Created | What It Contains |
+|----------------|---------|--------------|------------------|
+| **`patterns.json`** | 🧠 **Pattern Learning** | First task completion | Successful task approaches, skill combinations, agent effectiveness |
+| **`quality_history.json`** | 📊 **Quality Tracking** | First quality check | Assessment scores, issue trends, improvement metrics |
+| **`agent_effectiveness.json`** | 🤖 **Agent Performance** | First agent delegation | Success rates, execution times, optimal task types |
+| **`skill_effectiveness.json`** | 🛠️ **Skill Analytics** | First skill use | Usage frequency, success rates, recommended contexts |
+| **`task_queue.json`** | 📋 **Background Tasks** | First background task | Pending/running/completed task status |
+| **`recent_patterns.json`** | 🔄 **Quick Access Patterns** | Ongoing | Recently successful approaches for fast lookup |
+| **`reports/`** | 📄 **Analysis Reports** | First command execution | Detailed markdown reports from each command |
+
+#### 📄 **`reports/` Subdirectory Details**
+
+| Report Type | Command That Creates | Example Filename | What It Contains |
+|-------------|----------------------|------------------|------------------|
+| **Quality Control** | `/quality-check` | `quality-check-2025-10-23.md` | Code quality analysis, auto-fixes applied, recommendations |
+| **Autonomous Analysis** | `/auto-analyze` | `auto-analyze-2025-10-23.md` | Comprehensive project analysis, patterns found |
+| **Validation Audit** | `/validate` | `validation-2025-10-23.md` | Tool validation, compliance checks, issues found |
+| **Learning Analytics** | `/learning-analytics` | `learning-analytics-2025-10-23.md` | Learning progress, skill effectiveness trends |
+| **Performance Report** | `/performance-report` | `performance-report-2025-10-23.md` | System performance, bottlenecks, optimizations |
+| **Full-Stack Validation** | `/validate-fullstack` | `fullstack-validation-2025-10-23.md` | Backend/frontend/database validation |
+| **GUI Validation** | `/gui-debug` | `gui-validation-2025-10-23.md` | Dashboard and interface validation |
+
+#### 🔄 **What Happens Where - Complete Comparison**
+
+| Directory Type | Location | Purpose | Created By | Access Level |
+|----------------|----------|---------|------------|--------------|
+| **`.claude-patterns/`** | **Your Project** | 🧠 **User Data (Runtime)** | Auto-created by plugin | **User** (full control) |
+| **`docs/`** | **Plugin Repo** | 📖 **Plugin Documentation** | Plugin developers | **Read-only** (users) |
+| **`src/`** | **Your Project** | 💼 **Your Source Code** | You/Your team | **User** (your code) |
+| **`tests/`** | **Your Project** | 🧪 **Your Test Files** | You/Your team | **User** (your tests) |
+
+### 📊 **File Content Examples**
+
+#### **`patterns.json` Structure**
+```json
+{
+  "version": "1.1.0",
+  "project_context": {
+    "detected_languages": ["python", "javascript"],
+    "frameworks": ["flask", "react"],
+    "project_type": "web-application"
+  },
+  "patterns": [
+    {
+      "task_type": "refactoring",
+      "context": {"language": "python", "complexity": "medium"},
+      "execution": {
+        "skills_used": ["code-analysis", "quality-standards"],
+        "agents_delegated": ["code-analyzer"]
+      },
+      "outcome": {"success": true, "quality_score": 96},
+      "reuse_count": 5
+    }
+  ]
+}
+```
+
+#### **`quality_history.json` Structure**
+```json
+{
+  "assessments": [
+    {
+      "assessment_id": "quality-check-20251023-001",
+      "timestamp": "2025-10-23T14:30:00Z",
+      "task_type": "quality-control",
+      "overall_score": 94,
+      "breakdown": {
+        "tests_passing": 28,
+        "standards_compliance": 23,
+        "documentation": 18,
+        "pattern_adherence": 15,
+        "code_metrics": 10
+      }
+    }
+  ]
+}
+```
+
+### 🔄 **Data Flow Diagram**
+
+```
+You Run Command → Plugin Analyzes → Stores Results in .claude-patterns/ → Dashboard Reads Files
+       ↓                    ↓                      ↓                           ↓
+  /quality-check     →  quality-controller  →  quality_history.json  →  Real-time charts
+  /auto-analyze      →  orchestrator        →  patterns.json         →  Learning trends
+  /dashboard         →  dashboard.py        →  reads all files       →  Live metrics
+```
+
+### 🔒 **Privacy & Control - Complete Details**
+
+#### **Data Storage Principles**
+- **100% Local Storage**: All files in YOUR project directory
+- **No Cloud Sync**: Never uploads to external servers
+- **No Telemetry**: No usage data sent to plugin developers
+- **Git Integration**: Files can be committed to version control
+- **Cross-Platform**: Works on Windows, macOS, Linux identically
+
+#### **User Control Options**
+```bash
+# View all plugin data
+cat .claude-patterns/patterns.json
+
+# Reset learning (delete all patterns)
+rm -rf .claude-patterns/
+
+# Backup learning data
+cp -r .claude-patterns/ backup-patterns/
+
+# Share patterns between projects
+cp other-project/.claude-patterns/patterns.json .claude-patterns/
+```
+
+#### **File Sizes & Growth**
+| File Type | Typical Size | Growth Rate | When to Clean |
+|-----------|--------------|-------------|---------------|
+| `patterns.json` | 5-50 KB | Slow (1KB/month) | Rarely needed |
+| `quality_history.json` | 10-100 KB | Medium (5KB/month) | After 100+ assessments |
+| `reports/` | 1-5 MB total | Fast (500KB/month) | Delete old reports |
+| **Total** | **~5-10 MB** | **~1 MB/month** | **Review yearly** |
+
+### 🚀 **Advanced Usage**
+
+#### **Pattern Sharing Across Projects**
+```bash
+# Export successful patterns from a completed project
+cp project-a/.claude-patterns/patterns.json successful-patterns.json
+
+# Import to new project (jumpstart learning)
+cp successful-patterns.json project-b/.claude-patterns/patterns.json
+```
+
+#### **Report Analysis**
+```bash
+# Find your best quality scores
+grep "overall_score" .claude-patterns/quality_history.json
+
+# View recent patterns
+jq '.patterns[-5:]' .claude-patterns/patterns.json
+
+# Count total reports generated
+ls .claude-patterns/reports/ | wc -l
+```
 
 ---
 
@@ -541,16 +704,19 @@ Assessments are **automatically created** when you use plugin commands:
 
 ## 📚 Documentation
 
-v3.2.0 includes **460+ pages** of comprehensive documentation:
+v3.3.0 includes **40+ organized documentation files** across multiple directories:
+
+### 📁 **Documentation Navigation**
+- **[📋 Documentation Index](docs/index.md)** - Complete guide to all organized documentation
 
 ### 📖 **Key Documentation Files**
 
 - **[RELEASE_NOTES_V3.1.0.md](RELEASE_NOTES_V3.1.0.md)** - Comprehensive release notes (Enhanced Learning & Modern Stack Support)
 - **[V3_RELEASE_MATRIX.md](V3_RELEASE_MATRIX.md)** - Feature matrix and achievements
-- **[VALIDATION_COMPLETE.md](VALIDATION_COMPLETE.md)** - Production certification report
+- **[VALIDATION_COMPLETE.md](docs/reports/VALIDATION_COMPLETE.md)** - Production certification report
 - **[ENHANCED_LEARNING_SYSTEM.md](ENHANCED_LEARNING_SYSTEM.md)** - Learning system technical docs
 - **[PR_REVIEW_SYSTEM.md](PR_REVIEW_SYSTEM.md)** - PR review capabilities guide
-- **[COMPLETE_IMPLEMENTATION_SUMMARY.md](COMPLETE_IMPLEMENTATION_SUMMARY.md)** - Full implementation guide
+- **[COMPLETE_IMPLEMENTATION_SUMMARY.md](docs/implementation/IMPLEMENTATION_SUMMARY.md)** - Full implementation guide
 - **[CLAUDE.md](CLAUDE.md)** - Architecture and usage guidance
 
 ### 📊 **Command Documentation**

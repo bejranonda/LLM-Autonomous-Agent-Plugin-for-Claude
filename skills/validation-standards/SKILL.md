@@ -176,7 +176,7 @@ Create consistency report
 **Rule**: Use consistent paths across documentation
 ```
 COMMON INCONSISTENCIES:
-- .claude/patterns/ vs .claude-patterns/
+- Standardize to .claude-patterns/ throughout
 - learned-patterns.json vs patterns.json
 - relative vs absolute paths
 

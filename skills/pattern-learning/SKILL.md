@@ -37,11 +37,10 @@ Automatically extract context from:
 
 **Directory Setup**:
 ```
-.claude/
-└── patterns/
-    ├── learned-patterns.json       # Main pattern database
-    ├── skill-effectiveness.json    # Skill performance metrics
-    └── task-history.json           # Complete task execution log
+.claude-patterns/
+├── patterns.json                   # Main pattern database
+├── skill-effectiveness.json       # Skill performance metrics
+└── task-history.json              # Complete task execution log
 ```
 
 **Pattern Data Model**:
@@ -131,7 +130,7 @@ Input: Task type, context
 Output: Recommended skills, agents, approach
 
 Process:
-1. Load learned-patterns.json
+1. Load patterns.json
 2. Filter patterns by task_type match
 3. Filter patterns by context similarity
 4. Rank by success_rate * reuse_count
@@ -221,11 +220,11 @@ Auto-Load: testing-strategies, quality-standards, pattern-learning
 **Auto-Create Pattern Directory**:
 ```javascript
 // Executed automatically by orchestrator
-if (!exists('.claude/patterns/')) {
-  create_directory('.claude/patterns/')
-  create_file('.claude/patterns/learned-patterns.json', initial_structure)
-  create_file('.claude/patterns/skill-effectiveness.json', {})
-  create_file('.claude/patterns/task-history.json', [])
+if (!exists('.claude-patterns/')) {
+  create_directory('.claude-patterns/')
+  create_file('.claude-patterns/patterns.json', initial_structure)
+  create_file('.claude-patterns/skill-effectiveness.json', {})
+  create_file('.claude-patterns/task-history.json', [])
 }
 ```
 
@@ -246,7 +245,7 @@ function store_pattern(task_data, execution_data, outcome_data) {
   }
 
   // Load existing patterns
-  const db = load('.claude/patterns/learned-patterns.json')
+  const db = load('.claude-patterns/patterns.json')
 
   // Check for similar patterns
   const similar = find_similar_patterns(db.patterns, pattern)
@@ -264,7 +263,7 @@ function store_pattern(task_data, execution_data, outcome_data) {
   update_skill_metrics(db, execution_data.skills_used, outcome_data)
 
   // Save
-  save('.claude/patterns/learned-patterns.json', db)
+  save('.claude-patterns/patterns.json', db)
 }
 ```
 
@@ -338,7 +337,7 @@ Adjust Skill Selection
 **Find Similar Patterns**:
 ```javascript
 function find_similar_tasks(current_task) {
-  const db = load('.claude/patterns/learned-patterns.json')
+  const db = load('.claude-patterns/patterns.json')
 
   return db.patterns
     .filter(p => p.task_type === current_task.type)
@@ -351,7 +350,7 @@ function find_similar_tasks(current_task) {
 **Recommend Skills**:
 ```javascript
 function recommend_skills(task_type, context) {
-  const db = load('.claude/patterns/learned-patterns.json')
+  const db = load('.claude-patterns/patterns.json')
 
   // Get skills with highest success rate for this task type
   const skills = Object.entries(db.skill_effectiveness)
@@ -367,7 +366,7 @@ function recommend_skills(task_type, context) {
 
 **Maintain Complete History**:
 ```json
-// .claude/patterns/task-history.json
+// .claude-patterns/task-history.json
 [
   {
     "timestamp": "2025-10-20T10:00:00Z",
@@ -420,6 +419,6 @@ Use this skill when:
 - quality-metrics-guide.md: In-depth quality assessment guide
 
 **Auto-Generated Files** (in project):
-- .claude/patterns/learned-patterns.json
-- .claude/patterns/skill-effectiveness.json
-- .claude/patterns/task-history.json
+- .claude-patterns/patterns.json
+- .claude-patterns/skill-effectiveness.json
+- .claude-patterns/task-history.json

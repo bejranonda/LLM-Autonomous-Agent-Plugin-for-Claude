@@ -106,7 +106,7 @@ The orchestrator MUST present results in this format:
 Skills Loaded: quality-standards, testing-strategies
 Agents Used: quality-controller, test-engineer
 Auto-Fix Iterations: 2 (converged)
-Patterns Stored: Quality pattern updated in .claude/patterns/
+Patterns Stored: Quality pattern updated in .claude-patterns/
 Check Time: 1.8 minutes
 
 ═══════════════════════════════════════════════════════

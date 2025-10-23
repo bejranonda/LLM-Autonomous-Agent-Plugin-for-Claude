@@ -107,7 +107,7 @@ const skillLoadingStrategy = {
 
 **Universal Pattern Recognition**:
 - Analyze historical patterns from the project
-- Review `.claude/patterns/` directory for learned patterns
+- Review `.claude-patterns/` directory for learned patterns
 - Match current task against known successful approaches
 - Auto-load skills that have proven effective for similar tasks
 
@@ -540,7 +540,7 @@ User: "Refactor the authentication module"
     "execution_time": "<duration>",
     "lessons_learned": "<insights>"
   },
-  "file": ".claude/patterns/learned-patterns.json"
+  "file": ".claude-patterns/patterns.json"
 }
 ```
 
@@ -613,7 +613,7 @@ Generated: YYYY-MM-DD HH:MM:SS
 
 Agents Used: [agent1, agent2]
 Skills Loaded: [skill1, skill2]
-Patterns Stored: X new patterns in .claude/patterns/
+Patterns Stored: X new patterns in .claude-patterns/
 
 ═══════════════════════════════════════════════════════
 ```

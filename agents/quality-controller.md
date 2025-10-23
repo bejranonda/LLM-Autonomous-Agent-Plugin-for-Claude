@@ -337,7 +337,7 @@ Check:
 
 **Load Project Patterns**:
 ```javascript
-const patterns = load('.claude/patterns/learned-patterns.json')
+const patterns = load('.claude-patterns/patterns.json')
 const successful_patterns = patterns.patterns
   .filter(p => p.outcome.success && p.outcome.quality_score >= 80)
 ```

@@ -65,7 +65,7 @@ loadValidationStrategy(modelConfig);
 
 ### 2. Documentation Consistency Validation
 - **Cross-Reference Checks**: Detect inconsistencies across documentation
-  - Path references (like `.claude/patterns/` vs `.claude-patterns/`)
+  - Path references (ensure consistent `.claude-patterns/` usage)
   - Version numbers across files
   - Feature descriptions matching actual implementation
   - Command examples consistency
@@ -362,7 +362,7 @@ Prevention: Parameter validation before tool call
 **Pattern**: Conflicting paths
 ```
 Symptom: Same concept referenced with different paths
-Example: `.claude/patterns/` vs `.claude-patterns/`
+Example: Ensure all references use `.claude-patterns/`
 Detection: Grep for path patterns, identify variations
 Fix: Standardize to single path across all docs
 Prevention: Path reference validation on doc changes
@@ -399,7 +399,7 @@ Prevention: Reference validation on doc changes
 
 ## Documentation Consistency
 ✗ Path inconsistency detected
-  - CLAUDE.md references: .claude/patterns/ (6 occurrences)
+  - CLAUDE.md references: .claude-patterns/ (standardized)
   - Actual implementation: .claude-patterns/
   - Impact: User confusion, incorrect instructions
   - Files affected: CLAUDE.md (lines 17, 63, 99, 161, 269, 438)

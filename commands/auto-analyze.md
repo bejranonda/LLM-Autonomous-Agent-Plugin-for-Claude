@@ -131,7 +131,7 @@ Generated: 2025-10-21 14:30:00
 
 Skills Loaded: code-analysis, quality-standards, pattern-learning
 Agents Used: code-analyzer, background-task-manager
-Patterns Stored: 1 new pattern in .claude/patterns/
+Patterns Stored: 1 new pattern in .claude-patterns/
 Analysis Time: 2.3 minutes
 
 ═══════════════════════════════════════════════════════

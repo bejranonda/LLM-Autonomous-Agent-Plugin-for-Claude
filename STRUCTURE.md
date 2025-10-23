@@ -188,7 +188,7 @@ If score ≥ 70: Task marked complete
 
 ## Pattern Database Schema
 
-Located at: `.claude/patterns/learned-patterns.json` (auto-created)
+Located at: `.claude-patterns/patterns.json` (auto-created)
 
 ```json
 {

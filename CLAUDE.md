@@ -296,7 +296,7 @@ Orchestrator (autonomous execution):
 - **Skills**: One directory per skill in `skills/` with `SKILL.md` inside (auto-discovered)
 - **Commands**: One file per command in `commands/` directory (auto-discovered)
 - **Plugin manifest**: `.claude-plugin/plugin.json` contains metadata only
-- **Documentation**: Keep README.md, STRUCTURE.md, IMPLEMENTATION_SUMMARY.md up to date
+- **Documentation**: Keep README.md, STRUCTURE.md, docs/implementation/IMPLEMENTATION_SUMMARY.md up to date
 
 ## Testing and Validation
 
@@ -423,7 +423,7 @@ All Python scripts in `lib/` directory feature Windows compatibility (v1.4):
 
 ## Result Presentation Requirements
 
-**CRITICAL**: Use **two-tier presentation strategy** for slash commands. Follow the guidelines in `RESULT_PRESENTATION_GUIDELINES.md`.
+**CRITICAL**: Use **two-tier presentation strategy** for slash commands. Follow the guidelines in `docs/guidelines/RESULT_PRESENTATION_GUIDELINES.md`.
 
 **Tier 1: Concise Terminal Output (15-20 lines max)**:
 - Status line with key metric
@@ -444,7 +444,7 @@ All Python scripts in `lib/` directory feature Windows compatibility (v1.4):
 - Always include file path in terminal output
 - Never complete silently, never show 50+ lines in terminal
 
-**See**: `RESULT_PRESENTATION_GUIDELINES.md` for complete formatting standards and examples.
+**See**: `docs/guidelines/RESULT_PRESENTATION_GUIDELINES.md` for complete formatting standards and examples.
 
 ## Validation System (v1.7+)
 
@@ -613,7 +613,7 @@ Thresholds:
 
 ## Notes for Future Claude Instances
 
-- **Result presentation**: ALWAYS show formatted results after slash commands - see `RESULT_PRESENTATION_GUIDELINES.md`
+- **Result presentation**: ALWAYS show formatted results after slash commands - see `docs/guidelines/RESULT_PRESENTATION_GUIDELINES.md`
 - **Pattern database location**: Always `.claude-patterns/` in user projects, NEVER in this plugin repo
 - **Auto-creation**: Orchestrator creates pattern directory automatically on first use
 - **Automatic learning**: learning-engine runs SILENTLY after every task - never show "learning..." messages to user

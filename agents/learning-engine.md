@@ -379,7 +379,7 @@ async function analyze_trends(time_window_days = 30) {
 // Store patterns in both project-local and global locations
 async function store_pattern_cross_project(pattern) {
   // Project-local storage
-  const local_path = '.claude/patterns/learned-patterns.json'
+  const local_path = '.claude-patterns/patterns.json'
   await append_pattern(local_path, pattern)
 
   // Global storage (if enabled)
@@ -493,7 +493,7 @@ async function optimize_configurations() {
 
 ## Pattern Storage Schema (Enhanced)
 
-**Location**: `.claude/patterns/learned-patterns.json`
+**Location**: `.claude-patterns/patterns.json`
 
 ```json
 {
@@ -855,7 +855,7 @@ This agent leverages:
 
 ### Enhanced Pattern Storage Schema (v2.1.2)
 
-**Updated Location**: `.claude/patterns/cross-model-patterns.json`
+**Updated Location**: `.claude-patterns/patterns.json`
 
 ```json
 {

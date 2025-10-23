@@ -84,7 +84,7 @@ Validation Score: 85/100 (Good)
 **Details**:
 - File: CLAUDE.md
 - Inconsistent path references detected:
-  - `.claude/patterns/learned-patterns.json` (6 occurrences)
+  - `.claude-patterns/patterns.json` (standardized)
     - Line 17: Pattern learning location
     - Line 63: Pattern database location
     - Line 99: Skill auto-selection query
@@ -100,7 +100,7 @@ Validation Score: 85/100 (Good)
 **Auto-Fix Available**: Yes
 ```bash
 # Automated fix command
-sed -i 's|\.claude/patterns/learned-patterns\.json|.claude-patterns/patterns.json|g' CLAUDE.md
+sed -i 's|\.claude/patterns/|\.claude-patterns/|g' **/*.md
 ```
 
 #### 2. Write Without Prior Read
