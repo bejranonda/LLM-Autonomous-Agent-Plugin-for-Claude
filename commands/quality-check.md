@@ -1,6 +1,7 @@
 ---
-name: quality-check
+command: /quality-check
 description: Run comprehensive quality control with autonomous auto-fixing
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Quality Check Command
@@ -24,7 +25,7 @@ Run comprehensive quality control check with autonomous fixing. This will:
 6. **Quality Assessment**: Calculates overall quality score (0-100)
 7. **Trend Analysis**: Compares against historical data
 
-**IMPORTANT**: When delegating this command to the orchestrator agent, the agent MUST present a detailed quality report to the user showing scores, test results, auto-fix actions, and specific recommendations. Silent completion is not acceptable.
+**IMPORTANT**: This command delegates to `autonomous-agent:orchestrator` which MUST present a detailed quality report to the user showing scores, test results, auto-fix actions, and specific recommendations. Silent completion is not acceptable.
 
 ## Usage
 

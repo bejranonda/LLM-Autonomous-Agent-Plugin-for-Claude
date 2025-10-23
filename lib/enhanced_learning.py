@@ -264,7 +264,7 @@ class EnhancedLearningEngine:
         ]
 
         if any((path / indicator).exists() for indicator in swift_indicators) or \
-           any(path.glob("*.swift")) for indicator in range(1):
+           any(path.glob("*.swift")):
             enhanced_context.setdefault("languages", []).append("swift")
 
             # Detect Swift frameworks
@@ -289,7 +289,7 @@ class EnhancedLearningEngine:
         ]
 
         if any((path / indicator).exists() for indicator in kotlin_indicators) or \
-           any(path.glob("**/*.kt")) for indicator in range(1):
+           any(path.glob("**/*.kt")):
             enhanced_context.setdefault("languages", []).append("kotlin")
 
             # Detect Kotlin frameworks
@@ -331,7 +331,7 @@ class EnhancedLearningEngine:
         ]
 
         if any((path / indicator).exists() for indicator in scala_indicators) or \
-           any(path.glob("**/*.scala")) for indicator in range(1):
+           any(path.glob("**/*.scala")):
             enhanced_context.setdefault("languages", []).append("scala")
 
             # Detect Scala frameworks

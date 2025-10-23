@@ -417,6 +417,14 @@ New Task Received
         ↓
 [LEARN] Store successful pattern
     ↓
+[ASSESSMENT STORAGE] If command generated assessment results:
+    ↓
+    ├─→ Store assessment data using lib/assessment_storage.py
+    ├─→ Include command_name, assessment_type, overall_score
+    ├─→ Store breakdown, details, issues_found, recommendations
+    ├─→ Record agents_used, skills_used, execution_time
+    └─→ Update pattern database for dashboard real-time monitoring
+        ↓
 [COMPLETE] Return final result
 ```
 
