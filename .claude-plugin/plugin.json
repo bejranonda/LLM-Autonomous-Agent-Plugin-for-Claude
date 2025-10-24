@@ -1,6 +1,6 @@
 {
   "name": "autonomous-agent",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "Production-ready autonomous agent with CodeRabbit-level capabilities, enhanced learning system (85-90% accuracy), comprehensive static analysis (40+ linters), OWASP Top 10 security coverage, multi-ecosystem dependency scanning (11 package managers), real-time monitoring dashboard with advanced debugging, validation, and interactive model performance charts, and 100% local processing. Features 22 agents, 15 skills, and 20 commands including autonomous development (/dev-auto) from requirements to release, streamlined release automation (/release-dev), interactive suggestions system, smart .gitignore management, workspace organization (/organize-workspace), and pattern learning validation (/validate-patterns). Full automation with automatic pattern learning, cross-project knowledge transfer, comprehensive dashboard diagnostics with model performance tracking, temporal analysis, and workspace health monitoring. Zero cost, open source, privacy-first.",
   "author": {
     "name": "Werapol Bejranonda",
