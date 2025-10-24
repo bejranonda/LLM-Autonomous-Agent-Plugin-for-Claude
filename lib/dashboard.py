@@ -1340,7 +1340,7 @@ DASHBOARD_HTML = """
 
         async function fetchDashboardData() {
             try {
-                const [overview, quality, skills, agents, tasks, activity, health, timeline, debuggingPerf] = await Promise.all([
+                const [overview, quality, skills, agents, tasks, activity, health, timeline, debuggingPerf, performanceRecords] = await Promise.all([
                     fetch('/api/overview').then(r => r.json()),
                     fetch('/api/quality-trends').then(r => r.json()),
                     fetch('/api/skills').then(r => r.json()),
