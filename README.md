@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v3.4.0
+# 🚀 Autonomous Agent for Claude Code v3.4.1
 
-[![Version](https://img.shields.io/badge/version-3.4.0-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.4.0)
+[![Version](https://img.shields.io/badge/version-3.4.1-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.4.1)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -64,7 +64,7 @@ The plugin automatically learns from successes and failures, continuously improv
 - ✅ **Critical Integration Fixes** - All assessment commands now store results
 - ✅ **Closed-loop Learning** - Complete data capture across all commands
 
-### 🌟 **NEW in v3.4: Full Development Automation**
+### 🌟 **NEW in v3.4.1: Workspace Organization & Pattern Validation**
 
 **🤖 Autonomous Development (`/dev-auto`)**
 - **Zero to Production**: From simple requirement to release-ready code
@@ -86,6 +86,31 @@ The plugin automatically learns from successes and failures, continuously improv
 - Multi-platform publishing (GitHub, GitLab, npm, PyPI, Docker)
 - **2-3 minutes** from code complete to released
 - 💡 **Need more thorough validation?** Use `/git-release-workflow` for enterprise-grade releases with comprehensive testing, security scans, and post-release monitoring (3-8 min)
+
+### 🌟 **NEW in v3.4.1: Workspace Organization & Pattern Validation**
+
+**🧹 Workspace Organization (`/organize-workspace`)**
+- **Automated Cleanup**: Moves scattered files to proper directories
+- **Report Consolidation**: Organizes `*.md` reports into `docs/reports/generated/`
+- **Link Validation**: Fixes broken links after file moves
+- **Health Monitoring**: Tracks workspace organization score (0-100)
+- **Smart Suggestions**: Automatically suggests cleanup when health < 70
+- **1-2 minutes** to transform messy workspace to professional structure
+
+**📊 Pattern Learning Validation (`/validate-patterns`)**
+- **System Health Check**: Validates pattern learning across all commands
+- **Coverage Analysis**: Ensures 100% of analysis commands store patterns
+- **Effectiveness Metrics**: Tracks learning improvement over time
+- **Analytics Dashboard**: Comprehensive learning performance report
+- **Auto-Fix Detection**: Identifies and fixes pattern storage issues
+- **1-2 minutes** for complete learning system validation
+
+**🏥 Workspace Health Monitoring**
+- **Automatic Tracking**: Monitors workspace organization in real-time
+- **Health Scoring**: 0-100 score based on 4 factors (root cleanliness, report organization, pattern storage, link health)
+- **Smart Triggers**: Suggests cleanup when health drops below 70
+- **Trend Analysis**: Tracks improvement or degradation over time
+- **Integration**: Works seamlessly with all commands for continuous monitoring
 
 **💡 Interactive Suggestions**
 - Context-aware next action recommendations
@@ -743,9 +768,9 @@ ls .claude-patterns/reports/ | wc -l
 
 | Component Type | Count | Status | Description |
 |----------------|-------|--------|-------------|
-| **Agents** | **20** | ✅ Validated | Specialized autonomous agents |
-| **Skills** | **14** | ✅ Validated | Domain knowledge packages |
-| **Commands** | **17** | ✅ Validated | User-facing slash commands |
+| **Agents** | **22** | ✅ Validated | Specialized autonomous agents |
+| **Skills** | **15** | ✅ Validated | Domain knowledge packages |
+| **Commands** | **20** | ✅ Validated | User-facing slash commands |
 | **Python Libraries** | **15** | ✅ Validated | Utility and analysis tools |
 | **Documentation** | **40+** | ✅ Validated | Comprehensive guides |
 | **Total Lines of Code** | **18,000+** | ✅ Production | Enterprise-grade |
@@ -770,6 +795,7 @@ ls .claude-patterns/reports/ | wc -l
 - **git-repository-manager** - Advanced Git automation
 - **version-release-manager** - Automated release workflows
 - **report-management-organizer** - Intelligent report organization
+- **workspace-organizer** - Workspace file organization and health monitoring
 
 ### 🧠 **Knowledge Skills**
 
@@ -787,6 +813,7 @@ ls .claude-patterns/reports/ | wc -l
 - **documentation-best-practices** - Documentation (enhanced)
 - **quality-standards** - Quality (enhanced)
 - **testing-strategies** - Testing (enhanced)
+- **autonomous-development** - Development lifecycle strategies
 
 ---
 

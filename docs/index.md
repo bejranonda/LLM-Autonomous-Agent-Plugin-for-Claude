@@ -6,7 +6,7 @@ This directory contains organized documentation for the Autonomous Agent Plugin.
 
 ### 📊 **docs/reports/** - Generated Reports and Validation Results
 - [`VALIDATION_COMPLETE.md`](reports/VALIDATION_COMPLETE.md) - Plugin validation complete report
-- [`PLUGIN_VALIDATION_REPORT.md`](reports/PLUGIN_VALIDATION_REPORT.md) - Comprehensive plugin validation analysis
+- [`PLUGIN_VALIDATION_REPORT.md`](reports/generated/PLUGIN_VALIDATION_REPORT.md) - Comprehensive plugin validation analysis
 - [`FULL_STACK_VALIDATION_REPORT.md`](reports/FULL_STACK_VALIDATION_REPORT.md) - Full-stack validation example report
 - [`GUI_VALIDATION_REPORT.md`](reports/GUI_VALIDATION_REPORT.md) - GUI validation and debugging report
 - [`LEARNING_ANALYTICS_REPORT.md`](reports/LEARNING_ANALYTICS_REPORT.md) - Learning analytics example
@@ -14,6 +14,7 @@ This directory contains organized documentation for the Autonomous Agent Plugin.
 - `auto-analyze-*.md` - Autonomous analysis reports (auto-generated)
 - `quality-check-*.md` - Quality control reports (auto-generated)
 - `validation-*.md` - Validation audit reports (auto-generated)
+- **generated/** - Historical validation and analysis reports
 
 ### 🔧 **docs/implementation/** - Implementation Documentation
 - [`IMPLEMENTATION_SUMMARY.md`](implementation/IMPLEMENTATION_SUMMARY.md) - Complete implementation overview and architecture

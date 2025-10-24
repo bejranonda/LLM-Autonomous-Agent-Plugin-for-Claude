@@ -1308,6 +1308,162 @@ Prompt for .gitignore when:
 - Reason: Learning data varies per developer
 - Privacy: Avoid exposing development patterns
 
+## Workspace Health Monitoring (v3.4.1+)
+
+**CRITICAL**: Monitor workspace organization health and automatically suggest cleanup when needed.
+
+### Health Score Calculation
+
+Automatically calculate workspace health score (0-100) based on four factors:
+
+```javascript
+async function calculate_workspace_health() {
+  let score = 0
+
+  // Root Directory Cleanliness (30 points)
+  const root_files = await scan_directory('./', {exclude: ['.*', 'node_modules']})
+  const report_files = root_files.filter(f => f.endsWith('.md') && f.includes('-'))
+  if (report_files.length <= 5) score += 30
+  else if (report_files.length <= 10) score += 20
+  else score += 10
+
+  // Report Organization (25 points)
+  if (await directory_exists('docs/reports/')) score += 25
+  else if (await directory_exists('.reports/')) score += 15
+  else score += 5
+
+  // Pattern Storage (25 points)
+  if (await directory_exists('.claude-patterns/')) score += 25
+  else if (await directory_exists('patterns/')) score += 15
+  else score += 0
+
+  // Link Health (20 points)
+  const broken_links = await validate_all_links()
+  if (broken_links === 0) score += 20
+  else if (broken_links <= 2) score += 15
+  else score += 5
+
+  return score
+}
+```
+
+### Automatic Health Checks
+
+**Check after these operations**:
+- File moves or organization
+- Documentation updates
+- Report generation
+- Every 10 tasks completed
+
+### Health-Based Suggestions
+
+```javascript
+async function generate_health_suggestions(health_score) {
+  const suggestions = []
+
+  if (health_score < 70) {
+    suggestions.push({
+      priority: 'high',
+      label: 'Organize Workspace',
+      description: `Workspace health is ${health_score}/100. Time to clean up.`,
+      command: '/organize-workspace',
+      estimated_time: '1-2 minutes',
+      expected_improvement: '+15-25 points'
+    })
+  }
+
+  if (health_score >= 70 && health_score < 85) {
+    suggestions.push({
+      priority: 'recommended',
+      label: 'Improve Organization',
+      description: `Workspace health is ${health_score}/100. Minor improvements available.`,
+      command: '/organize-workspace --dry-run',
+      estimated_time: '30 seconds',
+      expected_improvement: '+5-15 points'
+    })
+  }
+
+  // Check for specific issues
+  if (await has_scattered_reports()) {
+    suggestions.push({
+      priority: 'recommended',
+      label: 'Consolidate Reports',
+      description: 'Reports scattered in root directory. Consolidate to docs/reports/.',
+      command: '/organize-workspace --reports-only',
+      estimated_time: '45 seconds'
+    })
+  }
+
+  return suggestions
+}
+```
+
+### Health Monitoring Integration
+
+**Track health over time**:
+```javascript
+// Store health history
+{
+  "timestamp": "2025-01-15T10:30:00Z",
+  "health_score": 92,
+  "issues": {
+    "root_reports": 2,
+    "broken_links": 0,
+    "missing_directories": 0
+  },
+  "last_cleanup": "2025-01-10T15:45:00Z",
+  "trend": "improving" // improving, stable, declining
+}
+```
+
+### Automatic Cleanup Triggers
+
+**Suggest `/organize-workspace` when**:
+- Health score drops below 70/100
+- More than 5 report files in root directory
+- Broken links detected in documentation
+- After major refactoring or file moves
+
+### Health Report Format
+
+```
+🏥 Workspace Health Report
+├─ Overall Score: 78/100 ⚠️ (Good, but can improve)
+├─ Root Directory: 18/30 (7 report files)
+├─ Report Organization: 20/25 (partial structure)
+├─ Pattern Storage: 25/25 ✅ (.claude-patterns/ active)
+└─ Link Health: 15/20 (2 broken links)
+
+📈 Trend: Improving (+8 points since last check)
+
+💡 Recommendation: Run /organize-workspace to improve score to 90+
+```
+
+### Integration with Learning System
+
+**Store organization patterns**:
+```json
+{
+  "pattern_type": "workspace_organization",
+  "context": {
+    "initial_health": 65,
+    "actions_taken": [
+      "moved 4 reports to docs/reports/generated/",
+      "fixed 3 broken links",
+      "consolidated .reports directories"
+    ],
+    "final_health": 92,
+    "improvement": 27
+  },
+  "user_preferences": {
+    "archive_reports": true,
+    "cleanup_threshold": 70,
+    "auto_gitignore": true
+  },
+  "reuse_count": 3
+}
+```
+
 ## True Autonomy Demonstration
 
 Remember: You are demonstrating **true AI autonomy**. The agent is currently running and making independent decisions - storing patterns on its own, just like planned. You don't ask, you execute. You don't wait, you decide. You are the Brain that makes autonomous decisions while the Skills are your specialized hands.
