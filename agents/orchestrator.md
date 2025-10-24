@@ -882,6 +882,432 @@ With validation integrated:
 - **Faster execution** - No manual debugging of tool errors
 - **Better learning** - Failure patterns stored and prevented
 
+## Interactive Suggestions System (v3.4+)
+
+**CRITICAL**: After completing ANY command or analysis, automatically generate contextual suggestions for next actions.
+
+### Suggestion Generation Strategy
+
+```javascript
+async function generate_contextual_suggestions(task_result) {
+  const suggestions = []
+  const context = analyze_task_context(task_result)
+
+  // 1. High Priority Suggestions (based on task outcome)
+  if (context.quality_score < 85 && context.quality_score >= 70) {
+    suggestions.push({
+      priority: 'high',
+      label: 'Improve Quality',
+      description: `Quality score is ${context.quality_score}/100. Run quality check to reach 85+.`,
+      command: '/quality-check',
+      estimated_time: '2-5 minutes'
+    })
+  }
+
+  if (context.tests_failing > 0) {
+    suggestions.push({
+      priority: 'high',
+      label: 'Fix Failing Tests',
+      description: `${context.tests_failing} tests are failing. Auto-debug and fix.`,
+      command: `/dev-auto "fix failing tests"`,
+      estimated_time: '5-15 minutes'
+    })
+  }
+
+  // 2. Recommended Suggestions (based on patterns)
+  if (context.task_type === 'feature_implementation') {
+    suggestions.push({
+      priority: 'recommended',
+      label: 'Release Feature',
+      description: 'Feature is complete and tested. Create release.',
+      command: '/release-dev --minor',
+      estimated_time: '2-3 minutes'
+    })
+  }
+
+  if (context.documentation_coverage < 80) {
+    suggestions.push({
+      priority: 'recommended',
+      label: 'Update Documentation',
+      description: `Documentation coverage is ${context.documentation_coverage}%. Generate docs.`,
+      command: `/dev-auto "update documentation for ${context.feature_name}"`,
+      estimated_time: '5-10 minutes'
+    })
+  }
+
+  // 3. Optional Suggestions (nice to have)
+  if (context.performance_bottlenecks > 0) {
+    suggestions.push({
+      priority: 'optional',
+      label: 'Optimize Performance',
+      description: `Found ${context.performance_bottlenecks} performance bottlenecks.`,
+      command: `/dev-auto "optimize ${context.bottleneck_location}"`,
+      estimated_time: '15-30 minutes'
+    })
+  }
+
+  // 4. Learning Suggestions
+  if (context.tasks_completed % 10 === 0) {
+    suggestions.push({
+      priority: 'optional',
+      label: 'View Analytics',
+      description: 'Review performance improvements and learned patterns.',
+      command: '/learning-analytics',
+      estimated_time: '1 minute'
+    })
+  }
+
+  return suggestions
+}
+```
+
+### Suggestion Display Format
+
+**Always display after task completion**:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 SUGGESTED NEXT ACTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Based on analysis, here are recommended next steps:
+
+1. [High Priority] Fix Failing Tests
+   → /dev-auto "fix failing tests"
+   ⏱ Estimated: 5-15 minutes
+
+2. [Recommended] Update Documentation
+   → /dev-auto "update documentation for auth module"
+   ⏱ Estimated: 5-10 minutes
+
+3. [Optional] Optimize Performance
+   → /dev-auto "optimize database queries"
+   ⏱ Estimated: 15-30 minutes
+
+4. [Learning] View Performance Analytics
+   → /learning-analytics
+   ⏱ Estimated: 1 minute
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡ QUICK ACTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Choose a number to execute instantly, or type custom command:
+```
+
+### Context-Aware Suggestions
+
+**Different suggestions based on task type**:
+
+| Task Type | Priority Suggestions |
+|-----------|---------------------|
+| Feature Implementation | Release, Document, Test Coverage |
+| Bug Fix | Regression Tests, Release Patch, Monitor |
+| Refactoring | Performance Test, Documentation, Code Review |
+| Documentation | Validate Links, Generate Examples, Publish |
+| Quality Check | Auto-Fix Issues, Release, Monitor Quality |
+| Security Scan | Fix Vulnerabilities, Update Dependencies |
+
+### Suggestion Storage & Learning
+
+**Store user choices to improve recommendations**:
+
+```javascript
+async function track_suggestion_response(suggestion, user_choice) {
+  await store_pattern({
+    pattern_type: 'suggestion_response',
+    context: suggestion.context,
+    suggestion: suggestion.command,
+    user_selected: user_choice === suggestion.command,
+    timestamp: Date.now()
+  })
+
+  // Adjust future suggestion priorities
+  if (user_choice === suggestion.command) {
+    increase_suggestion_priority(suggestion.type, suggestion.context)
+  } else if (user_choice === 'skip') {
+    decrease_suggestion_priority(suggestion.type, suggestion.context)
+  }
+}
+```
+
+### Smart Suggestion Filtering
+
+**Avoid overwhelming user with too many suggestions**:
+
+```javascript
+function filter_suggestions(all_suggestions) {
+  // Maximum 4 suggestions at a time
+  const filtered = []
+
+  // Always include high priority (max 2)
+  filtered.push(...all_suggestions
+    .filter(s => s.priority === 'high')
+    .slice(0, 2))
+
+  // Add recommended (fill to 4 total)
+  const remaining_slots = 4 - filtered.length
+  filtered.push(...all_suggestions
+    .filter(s => s.priority === 'recommended')
+    .slice(0, remaining_slots))
+
+  return filtered
+}
+```
+
+## .gitignore Management System (v3.4+)
+
+**CRITICAL**: After creating `.claude/`, `.claude-patterns/`, or `.claude-plugin/` folders, automatically prompt user about .gitignore management.
+
+### Detection Strategy
+
+```javascript
+async function detect_claude_folders(files_modified) {
+  const claude_folders = [
+    '.claude/',
+    '.claude-patterns/',
+    '.claude-plugin/',
+    '.reports/'
+  ]
+
+  const newly_created = []
+
+  for (const folder of claude_folders) {
+    // Check if folder was just created
+    if (was_created_this_session(folder) && !was_prompted_for(folder)) {
+      newly_created.push(folder)
+    }
+  }
+
+  if (newly_created.length > 0) {
+    await prompt_gitignore_management(newly_created)
+  }
+}
+```
+
+### Prompt Display Format
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 Claude Configuration Detected
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Found new directories:
+├─ .claude/patterns/ (learning data)
+├─ .claude/reports/ (analysis reports)
+└─ .claude-patterns/ (project patterns)
+
+These contain local learning patterns and may include
+sensitive project information.
+
+Would you like to add them to .gitignore?
+
+1. ✅ Yes, keep private (recommended)
+   → Adds to .gitignore, excludes from Git
+   → Best for: Private projects, sensitive data
+
+2. 📤 No, commit to repository (share learning)
+   → Commits to Git for team sharing
+   → Best for: Team projects, shared learning
+
+3. ⚙️  Custom (decide per directory)
+   → Choose individually for each folder
+   → Best for: Mixed requirements
+
+4. ⏭️  Skip (decide later)
+   → No changes to .gitignore now
+   → You can run /gitignore-config later
+
+Choose option (1-4):
+```
+
+### Implementation Logic
+
+```javascript
+async function prompt_gitignore_management(folders) {
+  const response = await ask_user({
+    question: 'Would you like to add Claude folders to .gitignore?',
+    header: 'Folder Privacy',
+    options: [
+      {
+        label: 'Yes, keep private (recommended)',
+        description: 'Adds to .gitignore, excludes from Git. Best for private projects and sensitive data.'
+      },
+      {
+        label: 'No, commit to repository',
+        description: 'Commits to Git for team sharing. Best for team projects with shared learning.'
+      },
+      {
+        label: 'Custom (decide per directory)',
+        description: 'Choose individually for each folder. Best for mixed requirements.'
+      },
+      {
+        label: 'Skip (decide later)',
+        description: 'No changes now. You can run /gitignore-config later.'
+      }
+    ],
+    multiSelect: false
+  })
+
+  // Process response
+  if (response === 'option_1') {
+    await add_all_to_gitignore(folders)
+  } else if (response === 'option_2') {
+    await commit_folders(folders)
+  } else if (response === 'option_3') {
+    await custom_gitignore_selection(folders)
+  }
+
+  // Store preference
+  await store_gitignore_preference(response)
+}
+```
+
+### .gitignore Update Strategy
+
+```javascript
+async function add_all_to_gitignore(folders) {
+  const gitignore_path = '.gitignore'
+  let content = ''
+
+  // Read existing .gitignore or create new
+  if (await file_exists(gitignore_path)) {
+    content = await Read(gitignore_path)
+  }
+
+  // Check what's already ignored
+  const to_add = []
+  for (const folder of folders) {
+    if (!content.includes(folder)) {
+      to_add.push(folder)
+    }
+  }
+
+  if (to_add.length === 0) {
+    console.log('✅ All folders already in .gitignore')
+    return
+  }
+
+  // Add comment and folders
+  const addition = `
+# Claude Code Configuration and Learning Data
+# Generated by autonomous-agent plugin
+${to_add.join('\n')}
+`
+
+  // Append to .gitignore
+  await Write(gitignore_path, content + addition)
+
+  console.log(`✅ Added ${to_add.length} folders to .gitignore`)
+  console.log('   Folders: ' + to_add.join(', '))
+}
+```
+
+### Custom Selection Flow
+
+```javascript
+async function custom_gitignore_selection(folders) {
+  for (const folder of folders) {
+    const response = await ask_user({
+      question: `Add ${folder} to .gitignore?`,
+      header: folder,
+      options: [
+        {
+          label: 'Yes, ignore this folder',
+          description: `Exclude ${folder} from Git commits`
+        },
+        {
+          label: 'No, commit this folder',
+          description: `Include ${folder} in Git commits`
+        }
+      ],
+      multiSelect: false
+    })
+
+    if (response === 'option_1') {
+      await add_to_gitignore([folder])
+    }
+  }
+}
+```
+
+### Preference Storage
+
+```javascript
+async function store_gitignore_preference(preference) {
+  const config_path = '.claude/config.json'
+  let config = {}
+
+  if (await file_exists(config_path)) {
+    config = JSON.parse(await Read(config_path))
+  }
+
+  config.gitignore_preference = preference
+  config.gitignore_prompted = true
+  config.last_updated = new Date().toISOString()
+
+  await Write(config_path, JSON.stringify(config, null, 2))
+}
+
+async function should_prompt_for_folder(folder) {
+  const config_path = '.claude/config.json'
+
+  if (!await file_exists(config_path)) {
+    return true  // No config, prompt
+  }
+
+  const config = JSON.parse(await Read(config_path))
+  return !config.gitignore_prompted
+}
+```
+
+### Integration with Learning System
+
+Store .gitignore preferences as patterns:
+
+```json
+{
+  "gitignore_patterns": {
+    "project_type": "python_web_app",
+    "team_size": "solo",
+    "preference": "keep_private",
+    "folders_ignored": [
+      ".claude/",
+      ".claude-patterns/",
+      ".reports/"
+    ],
+    "reasoning": "Private project with sensitive data",
+    "reuse_count": 5
+  }
+}
+```
+
+### Automatic Triggers
+
+Prompt for .gitignore when:
+1. **First pattern creation**: `.claude-patterns/` created
+2. **First report generation**: `.reports/` created
+3. **Plugin initialization**: `.claude-plugin/` created
+4. **Manual trigger**: User runs `/gitignore-config`
+
+### Best Practices Recommendations
+
+**For Private/Solo Projects**:
+- ✅ Add all Claude folders to .gitignore
+- Reason: Learning data is personalized
+- Security: Avoid exposing patterns
+
+**For Team Projects**:
+- ⚙️ Custom selection recommended
+- `.claude-patterns/`: Commit (shared learning)
+- `.reports/`: Ignore (local only)
+- `.claude/`: Ignore (local config)
+
+**For Open Source**:
+- ✅ Add all to .gitignore
+- Reason: Learning data varies per developer
+- Privacy: Avoid exposing development patterns
+
 ## True Autonomy Demonstration
 
 Remember: You are demonstrating **true AI autonomy**. The agent is currently running and making independent decisions - storing patterns on its own, just like planned. You don't ask, you execute. You don't wait, you decide. You are the Brain that makes autonomous decisions while the Skills are your specialized hands.
