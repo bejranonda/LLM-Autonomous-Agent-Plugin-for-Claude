@@ -388,8 +388,16 @@ class DashboardDataCollector:
                     recent_scores.append(score_data)
 
             if recent_scores:
-                avg_score = statistics.mean(recent_scores)
-                trend = self._calculate_model_trend(recent_scores)
+                # Ensure recent_scores contains only numbers, not dictionaries
+                numeric_scores = []
+                for score in recent_scores:
+                    if isinstance(score, (int, float)):
+                        numeric_scores.append(score)
+                    elif isinstance(score, dict):
+                        numeric_scores.append(score.get("score", 0))
+
+                avg_score = statistics.mean(numeric_scores) if numeric_scores else 0
+                trend = self._calculate_model_trend(numeric_scores) if numeric_scores else "no_data"
                 contribution = model_data.get("contribution_to_project", 0)
             else:
                 avg_score = 0
@@ -795,28 +803,22 @@ DASHBOARD_HTML = """
                 <canvas id="qualityChart"></canvas>
             </div>
 
-            <!-- Model Performance Section -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                <!-- Model Quality Scores Bar Chart -->
-                <div class="chart-container">
-                    <div class="chart-title">Model Quality Scores</div>
-                    <canvas id="modelQualityChart"></canvas>
-                </div>
-
-                <!-- Temporal Performance Line Chart -->
-                <div class="chart-container">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <div class="chart-title">Temporal Performance Tracking</div>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <label for="temporal-period" style="font-size: 14px; color: #666;">Period:</label>
-                            <select id="temporal-period" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ddd; background: white; font-size: 14px;">
-                                <option value="7">Last 7 Days</option>
-                                <option value="30" selected>Last 30 Days</option>
-                                <option value="90">Last 90 Days</option>
-                            </select>
-                        </div>
+            <!-- Combined Model Performance & Quality Trends -->
+            <div class="chart-container" style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div class="chart-title">Model Performance & Quality Trends</div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label for="trend-period" style="font-size: 14px; color: #666;">Period:</label>
+                        <select id="trend-period" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ddd; background: white; font-size: 14px;">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
                     </div>
-                    <canvas id="temporalPerformanceChart"></canvas>
+                </div>
+                <canvas id="combinedPerformanceChart" style="max-height: 400px;"></canvas>
+                <div style="margin-top: 10px; font-size: 12px; color: #666; text-align: center;">
+                    📊 Bar charts show current model performance | 📈 Line chart shows quality score trends over time
                 </div>
             </div>
 
@@ -896,6 +898,7 @@ DASHBOARD_HTML = """
         let taskChart = null;
         let modelQualityChart = null;
         let temporalPerformanceChart = null;
+        let combinedPerformanceChart = null;
 
         async function fetchQualityData(days = 30) {
             try {
@@ -943,8 +946,7 @@ DASHBOARD_HTML = """
 
                 updateOverviewMetrics(overview);
                 updateQualityChart(quality);
-                updateModelQualityChart(modelQuality);
-                updateTemporalPerformanceChart(temporalPerf);
+                updateCombinedPerformanceChart(modelQuality, quality);
                 updateTaskChart(tasks);
                 updateSkillsTable(skills);
                 updateAgentsTable(agents);
@@ -1285,6 +1287,173 @@ DASHBOARD_HTML = """
             });
         }
 
+        function updateCombinedPerformanceChart(modelData, qualityData) {
+            const ctx = document.getElementById('combinedPerformanceChart').getContext('2d');
+
+            if (combinedPerformanceChart) {
+                combinedPerformanceChart.destroy();
+            }
+
+            // Model colors
+            const modelColors = {
+                'Claude': { bg: 'rgba(102, 126, 234, 0.8)', border: '#667eea' },
+                'OpenAI': { bg: 'rgba(16, 185, 129, 0.8)', border: '#10b981' },
+                'GLM': { bg: 'rgba(245, 158, 11, 0.8)', border: '#f59e0b' },
+                'Gemini': { bg: 'rgba(239, 68, 68, 0.8)', border: '#ef4444' }
+            };
+
+            // Prepare datasets for combined chart
+            const datasets = [];
+
+            // Add bar datasets for current model performance
+            modelData.models.forEach((model, index) => {
+                datasets.push({
+                    label: `${model} - Quality Score`,
+                    data: [{ x: model, y: modelData.quality_scores[index] }],
+                    backgroundColor: modelColors[model]?.bg || 'rgba(107, 114, 128, 0.8)',
+                    borderColor: modelColors[model]?.border || '#6b7280',
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    barPercentage: 0.5,
+                    order: 2  // Bars appear behind lines
+                });
+
+                datasets.push({
+                    label: `${model} - Success Rate`,
+                    data: [{ x: model, y: modelData.success_rates[index] }],
+                    backgroundColor: 'rgba(107, 114, 128, 0.3)',
+                    borderColor: 'rgba(107, 114, 128, 0.6)',
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    barPercentage: 0.5,
+                    order: 2  // Bars appear behind lines
+                });
+            });
+
+            // Add line dataset for quality trends
+            if (qualityData && qualityData.trend_data && qualityData.trend_data.length > 0) {
+                const trendPoints = qualityData.trend_data.map((point, index) => ({
+                    x: index === 0 ? 'Start' : index === qualityData.trend_data.length - 1 ? 'Current' : `T${index}`,
+                    y: point.score
+                }));
+
+                datasets.push({
+                    label: 'Quality Trend Over Time',
+                    data: trendPoints,
+                    type: 'line',
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.3,
+                    fill: false,
+                    order: 1,  // Lines appear on top
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                });
+            }
+
+            // Get all unique x-axis labels
+            const allLabels = [];
+            modelData.models.forEach(model => allLabels.push(model));
+            if (qualityData && qualityData.trend_data && qualityData.trend_data.length > 0) {
+                allLabels.push('Start');
+                if (qualityData.trend_data.length > 2) {
+                    allLabels.push('...');
+                }
+                allLabels.push('Current');
+            }
+
+            combinedPerformanceChart = new Chart(ctx, {
+                type: 'bar',  // Default type, individual datasets can override
+                data: {
+                    labels: allLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y.toFixed(1);
+
+                                    if (context.dataset.label.includes('Quality Score') ||
+                                        context.dataset.label.includes('Success Rate')) {
+                                        label += '%';
+                                    }
+
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Performance Score (%)',
+                                font: {
+                                    size: 13,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         function updateSkillsTable(data) {
             const tbody = document.getElementById('skills-tbody');
             tbody.innerHTML = data.top_skills.map(skill => `
@@ -1378,14 +1547,28 @@ DASHBOARD_HTML = """
             }
         });
 
-        // Add event listener for temporal performance period selector
-        document.getElementById('temporal-period').addEventListener('change', function(e) {
-            const period = parseInt(e.target.value);
-            fetchTemporalPerformanceData(period);
-        });
+        // Old temporal performance period selector (removed - now using combined chart)
+        // document.getElementById('temporal-period').addEventListener('change', function(e) {
+        //     const period = parseInt(e.target.value);
+        //     fetchTemporalPerformanceData(period);
+        // });
 
         // Initial load
         fetchDashboardData();
+
+        // Period selector for combined chart
+        document.getElementById('trend-period').addEventListener('change', async function(e) {
+            const days = parseInt(e.target.value);
+            try {
+                const [qualityData] = await Promise.all([
+                    fetch(`/api/quality-trends?days=${days}`).then(r => r.json())
+                ]);
+                const modelData = await fetch('/api/model-quality-scores').then(r => r.json());
+                updateCombinedPerformanceChart(modelData, qualityData);
+            } catch (error) {
+                console.error('Error updating chart with new period:', error);
+            }
+        });
 
         // Auto-refresh every 30 seconds
         setInterval(fetchDashboardData, 30000);
