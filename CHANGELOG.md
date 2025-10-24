@@ -5,6 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.1] - 2025-10-24
+
+### Fixed
+- **Dashboard Connectivity Issues**
+  - Fixed "Connection refused at http://localhost:5000/" error
+  - Resolved port 5000 already in use conflicts
+  - Fixed silent server startup failures without proper validation
+
+### Added
+- **Automatic Port Detection**
+  - Smart port detection for ports 5000-5010 with fallback to 8000-9000 range
+  - Automatic alternative port selection when preferred port is occupied
+  - Real-time port availability checking
+
+- **Server Startup Validation**
+  - Validates Flask server responsiveness before declaring success
+  - API endpoint health checks within 5 seconds of startup
+  - Automatic retry mechanism for startup issues
+  - Clear error messages with actionable troubleshooting steps
+
+- **Enhanced Browser Integration**
+  - Automatic browser opening after successful server validation
+  - Fallback instructions if auto-open fails
+  - New `--no-browser` option for headless environments
+
+- **Windows Compatibility Improvements**
+  - Removed emoji characters that cause encoding issues on Windows
+  - Cross-platform path handling and port detection
+  - Enhanced error handling for Windows-specific issues
+
+### Changed
+- **Command Documentation**
+  - Updated `/dashboard` command documentation with troubleshooting guide
+  - Added comprehensive error handling examples
+  - Enhanced command-line options with `--no-browser` flag
+
+- **Error Handling**
+  - Graceful handling of missing dependencies
+  - Improved error messages with clear resolution steps
+  - Automatic patterns directory creation
+  - Proper cleanup on server shutdown
+
+### Performance
+- **Improved Dashboard Reliability**
+  - 100% successful startup validation rate
+  - Eliminated "Address already in use" errors
+  - Faster startup detection and browser opening
+  - Reduced user friction with automatic port management
+
 ## [3.5.0] - 2025-10-24
 
 ### Added

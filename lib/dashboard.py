@@ -27,6 +27,7 @@ import time
 from collections import defaultdict
 import statistics
 import random
+import socket
 
 
 app = Flask(__name__)
@@ -2292,24 +2293,138 @@ def get_timeframe_label(days):
 
 
 
-def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str = ".claude-patterns"):
+def find_available_port(start_port: int = 5000, max_attempts: int = 10) -> int:
     """
-    Run the dashboard server.
+    Find an available port starting from start_port.
+
+    Args:
+        start_port: Port to start checking from
+        max_attempts: Maximum number of ports to try
+
+    Returns:
+        Available port number
+    """
+    import socket
+
+    for port in range(start_port, start_port + max_attempts):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(('127.0.0.1', port))
+                return port
+        except OSError:
+            continue
+
+    # If no port found, try a random port in the 8000-9000 range
+    import random
+    for _ in range(5):
+        port = random.randint(8000, 9000)
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(('127.0.0.1', port))
+                return port
+        except OSError:
+            continue
+
+    raise RuntimeError(f"Could not find an available port after {max_attempts + 5} attempts")
+
+
+def validate_server_startup(url: str, timeout: int = 5) -> bool:
+    """
+    Validate that the server has started successfully and is responding.
+
+    Args:
+        url: Server URL to check
+        timeout: Timeout in seconds
+
+    Returns:
+        True if server is responding, False otherwise
+    """
+    import requests
+    import time
+
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        try:
+            response = requests.get(url, timeout=1)
+            if response.status_code == 200:
+                return True
+        except requests.exceptions.RequestException:
+            pass
+        time.sleep(0.2)
+
+    return False
+
+
+def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True):
+    """
+    Run the dashboard server with robust error handling and port management.
 
     Args:
         host: Host to bind to
-        port: Port to bind to
+        port: Preferred port to bind to (will find alternative if occupied)
         patterns_dir: Directory containing pattern data
+        auto_open_browser: Whether to automatically open browser
     """
+    import sys
+    import webbrowser
+    import threading
+    import time
+    import requests
+
     global data_collector
     data_collector = DashboardDataCollector(patterns_dir)
 
-    print(f"Starting Autonomous Agent Dashboard...")
-    print(f"Dashboard URL: http://{host}:{port}")
-    print(f"Pattern directory: {patterns_dir}")
-    print(f"\nPress Ctrl+C to stop the server")
+    # Find available port if the requested port is occupied
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind((host, port))
+            available_port = port
+    except OSError:
+        print(f"Port {port} is already in use.")
+        available_port = find_available_port(port + 1)
+        print(f"Using alternative port: {available_port}")
 
-    app.run(host=host, port=port, debug=False)
+    # URL for the server
+    server_url = f"http://{host}:{available_port}"
+
+    print(f"Starting Autonomous Agent Dashboard...")
+    print(f"Dashboard URL: {server_url}")
+    print(f"Pattern directory: {patterns_dir}")
+
+    # Function to open browser after server starts
+    def open_browser_delayed():
+        time.sleep(1.5)  # Give server time to start
+        if validate_server_startup(f"{server_url}/api/overview"):
+            print(f"Dashboard is running at: {server_url}")
+            if auto_open_browser:
+                print(f"Opening browser automatically...")
+                try:
+                    webbrowser.open(server_url)
+                except Exception as e:
+                    print(f"Could not open browser automatically: {e}")
+                    print(f"   Please manually open: {server_url}")
+        else:
+            print(f"Server validation failed. Please check the logs.")
+            print(f"   Try accessing manually: {server_url}")
+
+    # Start browser opening in background thread
+    if auto_open_browser:
+        browser_thread = threading.Thread(target=open_browser_delayed, daemon=True)
+        browser_thread.start()
+
+    print(f"\nPress Ctrl+C to stop the server")
+    print(f"Tip: Use --port {port + 1} to avoid this port check next time")
+    print(f"   Or use --host 0.0.0.0 to allow external access")
+
+    try:
+        # Run the Flask app
+        app.run(host=host, port=available_port, debug=False, use_reloader=False)
+    except KeyboardInterrupt:
+        print(f"\nDashboard stopped by user")
+    except Exception as e:
+        print(f"\nError starting dashboard: {e}")
+        print(f"Try using a different port: --port {available_port + 1}")
+        sys.exit(1)
 
 
 def main():
@@ -2320,10 +2435,11 @@ def main():
     parser.add_argument('--host', default='127.0.0.1', help="Host to bind to")
     parser.add_argument('--port', type=int, default=5000, help="Port to bind to")
     parser.add_argument('--patterns-dir', default='.claude-patterns', help="Pattern directory")
+    parser.add_argument('--no-browser', action='store_true', help="Don't open browser automatically")
 
     args = parser.parse_args()
 
-    run_dashboard(args.host, args.port, args.patterns_dir)
+    run_dashboard(args.host, args.port, args.patterns_dir, auto_open_browser=not args.no_browser)
 
 
 if __name__ == '__main__':

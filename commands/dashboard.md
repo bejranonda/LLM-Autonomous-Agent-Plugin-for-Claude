@@ -1,11 +1,11 @@
 ---
 name: dashboard
-description: Launch real-time web dashboard for monitoring learning progress, quality metrics, skill/agent performance, and system health
+description: Launch improved real-time web dashboard with automatic port detection and robust error handling
 ---
 
 # Real-Time Monitoring Dashboard
 
-Launch an interactive web-based dashboard for comprehensive monitoring of the autonomous agent's learning progress, quality trends, and performance metrics.
+Launch an interactive web-based dashboard with automatic port detection, server validation, and robust error handling to prevent connectivity issues. The dashboard provides comprehensive monitoring of the autonomous agent's learning progress, quality trends, and performance metrics.
 
 ## Usage
 
@@ -15,11 +15,81 @@ Launch an interactive web-based dashboard for comprehensive monitoring of the au
 
 **Examples**:
 ```bash
-/dashboard                          # Launch on default port 5000
-/dashboard --port 8080              # Launch on custom port
+/dashboard                          # Launch with automatic port detection
+/dashboard --port 8080              # Launch on preferred port (finds alternative if occupied)
 /dashboard --host 0.0.0.0           # Allow external access
 /dashboard --patterns-dir ./patterns # Custom pattern directory
+/dashboard --no-browser             # Don't open browser automatically
 ```
+
+## Key Improvements
+
+### 1. Automatic Port Detection
+- Detects if port 5000 is in use
+- Automatically finds available alternative ports (5001-5010)
+- Falls back to random ports in 8000-9000 range if needed
+- No more "Address already in use" errors
+
+### 2. Server Startup Validation
+- Validates that the server is responding before declaring success
+- Checks API endpoint availability within 5 seconds
+- Provides clear feedback about server status
+- Automatic retry mechanism for startup issues
+
+### 3. Enhanced Error Handling
+- Graceful handling of missing dependencies
+- Clear error messages with actionable suggestions
+- Automatic patterns directory creation
+- Proper cleanup on server shutdown
+
+### 4. Browser Integration
+- Automatic browser opening after successful startup
+- Fallback instructions if auto-open fails
+- Option to disable auto-opening with --no-browser
+
+### 5. Windows Compatibility
+- Removed emoji characters that cause encoding issues
+- Full Windows support with proper path handling
+- Cross-platform port detection
+
+## Troubleshooting
+
+### Issue: Dashboard not reachable at localhost:5000
+
+**Previous Problem**:
+```
+Connection refused at http://localhost:5000/
+```
+
+**New Solution**: The dashboard automatically:
+1. Detects if port 5000 is occupied
+2. Finds an available port (e.g., 5001, 5002, etc.)
+3. Validates server startup
+4. Opens the correct URL automatically
+
+**Output Example**:
+```
+Port 5000 is already in use.
+Using alternative port: 5001
+Starting Autonomous Agent Dashboard...
+Dashboard URL: http://127.0.0.1:5001
+Dashboard is running at: http://127.0.0.1:5001
+Opening browser automatically...
+```
+
+### Issue: Server fails to start silently
+
+**New Solution**:
+- Server validation checks if Flask is responding
+- Clear error messages if startup fails
+- Suggestions for alternative ports
+
+### Issue: Browser doesn't open
+
+**New Solution**:
+- Automatic retry with delay
+- Manual URL provided if auto-open fails
+- --no-browser option for headless environments
 
 ## Features
 

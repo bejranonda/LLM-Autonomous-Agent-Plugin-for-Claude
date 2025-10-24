@@ -435,9 +435,9 @@ Triggering /release-dev...
 
 [Release workflow output here - see /release-dev docs]
 
-Release: v3.5.0 ✅
+Release: v3.5.1 ✅
 Links:
-├─ GitHub: https://github.com/user/repo/releases/tag/v3.5.0
+├─ GitHub: https://github.com/user/repo/releases/tag/v3.5.1
 └─ Changelog: https://github.com/user/repo/blob/main/CHANGELOG.md
 
 Total Time (dev + release): 51m 15s

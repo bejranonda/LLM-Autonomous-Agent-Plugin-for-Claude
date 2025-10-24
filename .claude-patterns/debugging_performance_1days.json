@@ -1,96 +1,161 @@
 {
-  "analysis_timestamp": "2025-10-24T21:29:42.202580",
+  "analysis_timestamp": "2025-10-24T23:11:04.100849",
   "timeframe_days": 1,
   "timeframe_label": "Today",
-  "total_debugging_assessments": 1,
+  "total_debugging_assessments": 3,
   "performance_rankings": [
     {
       "rank": 1,
-      "model": "Claude Sonnet 4.5",
-      "performance_index": 64.6,
-      "qis": 55.2,
-      "quality_improvement_score": 55.2,
-      "time_efficiency_score": 50,
+      "model": "GLM 4.6",
+      "performance_index": 83.4,
+      "qis": 58.4,
+      "quality_improvement_score": 58.4,
+      "time_efficiency_score": 100,
       "success_rate": 1.0,
-      "total_debugging_tasks": 1,
-      "regression_penalty": 0,
-      "efficiency_index": 55.2,
+      "total_debugging_tasks": 3,
+      "regression_penalty": 0.0,
+      "efficiency_index": 58.4,
       "relative_improvement": 1.0,
-      "initial_quality": 92,
-      "final_quality": 92,
+      "initial_quality": 97.3,
+      "final_quality": 97.3,
       "gap_closed_pct": 0.0
     }
   ],
   "detailed_metrics": {
-    "Claude Sonnet 4.5": {
+    "GLM 4.6": {
       "quality_metrics": {
-        "initial_quality": 92,
-        "final_quality": 92,
-        "quality_gap": 8,
+        "initial_quality": 97.3,
+        "final_quality": 97.3,
+        "quality_gap": 2.7,
         "gap_closed_pct": 0.0,
         "regressions_detected": 0,
-        "regression_rate": 0,
-        "regression_penalty": 0,
-        "qis": 55.2,
-        "efficiency_index": 55.2,
+        "regression_rate": 0.0,
+        "regression_penalty": 0.0,
+        "qis": 58.4,
+        "efficiency_index": 58.4,
         "relative_improvement": 1.0
       },
       "time_metrics": {
-        "total_tasks": 1,
-        "avg_time_minutes": 0,
-        "time_efficiency_score": 50,
-        "time_span_hours": 0
+        "total_tasks": 3,
+        "avg_time_minutes": 0.4,
+        "time_efficiency_score": 100,
+        "time_span_hours": 0.01
       },
       "success_rate": 1.0,
-      "performance_index": 64.6,
-      "total_debugging_tasks": 1,
+      "performance_index": 83.4,
+      "total_debugging_tasks": 3,
       "debugging_assessments": [
         {
-          "assessment_id": "quality-check-20251023-004",
-          "timestamp": "2025-10-23T21:58:00Z",
-          "task_type": "quality-assessment",
-          "overall_score": 92,
+          "assessment_id": "debug-eval-dashboard-20251024-214104",
+          "timestamp": "2025-10-24T21:41:04.668961Z",
+          "task_type": "debugging-evaluation",
+          "overall_score": 97,
           "breakdown": {
-            "tests_passing": 28,
+            "tests_passing": 29,
             "standards_compliance": 24,
-            "documentation": 18,
-            "pattern_adherence": 12,
-            "code_metrics": 10
+            "documentation": 19,
+            "pattern_adherence": 14,
+            "code_metrics": 9
           },
           "details": {
-            "assessment_type": "comprehensive_quality_check",
-            "components_analyzed": {
-              "agents": 19,
-              "skills": 14,
-              "commands": 16,
-              "python_utilities": 14,
-              "documentation_files": 68
-            },
-            "validation_results": {
-              "json_syntax": "perfect",
-              "yaml_frontmatter": "perfect",
-              "python_syntax": "perfect",
-              "documentation": "excellent",
-              "pattern_adherence": "good",
-              "code_quality": "excellent"
-            },
-            "quality_improvements": {
-              "previous_score": 87,
-              "current_score": 92,
-              "improvement": "+5 points"
-            }
+            "evaluation_target": "dashboard",
+            "initial_quality": 85,
+            "final_quality": 98,
+            "quality_improvement": 13,
+            "qis_score": 93.5,
+            "time_efficiency_score": 100,
+            "success_rate": 1.0,
+            "performance_index": 97.4,
+            "issues_found": 1,
+            "fixes_applied": 1,
+            "task_complexity": "medium",
+            "time_elapsed_minutes": 0.0
           },
           "issues_found": [
-            "Quality check results not automatically stored in pattern database",
-            "Dashboard showing stale data instead of current assessments"
+            "Random score generation without deterministic seeding"
           ],
           "recommendations": [
-            "Quality assessment successfully stored (92/100 score)",
-            "Dashboard integration fixed for real-time updates"
+            "Apply 1 recommended fixes",
+            "Monitor dashboard performance improvements",
+            "Validate fixes with comprehensive testing"
           ],
           "pass": true,
           "threshold_met": true,
-          "pattern_storage_integration": "fixed"
+          "assessment_type": "debugging-performance"
+        },
+        {
+          "assessment_id": "debug-eval-dashboard-20251024-214145",
+          "timestamp": "2025-10-24T21:41:45.190059Z",
+          "task_type": "debugging-evaluation",
+          "overall_score": 97,
+          "breakdown": {
+            "tests_passing": 29,
+            "standards_compliance": 24,
+            "documentation": 19,
+            "pattern_adherence": 14,
+            "code_metrics": 9
+          },
+          "details": {
+            "evaluation_target": "dashboard",
+            "initial_quality": 85,
+            "final_quality": 98,
+            "quality_improvement": 13,
+            "qis_score": 93.5,
+            "time_efficiency_score": 100,
+            "success_rate": 1.0,
+            "performance_index": 97.4,
+            "issues_found": 1,
+            "fixes_applied": 1,
+            "task_complexity": "medium",
+            "time_elapsed_minutes": 0.0
+          },
+          "issues_found": [
+            "Random score generation without deterministic seeding"
+          ],
+          "recommendations": [
+            "Apply 1 recommended fixes",
+            "Monitor dashboard performance improvements",
+            "Validate fixes with comprehensive testing"
+          ],
+          "pass": true,
+          "threshold_met": true,
+          "assessment_type": "debugging-performance"
+        },
+        {
+          "assessment_id": "debug-eval-performance-index-20251024-214156",
+          "timestamp": "2025-10-24T21:41:56.589504Z",
+          "task_type": "debugging-evaluation",
+          "overall_score": 98,
+          "breakdown": {
+            "tests_passing": 29,
+            "standards_compliance": 24,
+            "documentation": 19,
+            "pattern_adherence": 14,
+            "code_metrics": 9
+          },
+          "details": {
+            "evaluation_target": "performance-index",
+            "initial_quality": 88,
+            "final_quality": 99,
+            "quality_improvement": 11,
+            "qis_score": 96.1,
+            "time_efficiency_score": 100,
+            "success_rate": 1.0,
+            "performance_index": 98.4,
+            "issues_found": 0,
+            "fixes_applied": 0,
+            "task_complexity": "high",
+            "time_elapsed_minutes": 0.0
+          },
+          "issues_found": [],
+          "recommendations": [
+            "Apply 0 recommended fixes",
+            "Monitor performance-index performance improvements",
+            "Validate fixes with comprehensive testing"
+          ],
+          "pass": true,
+          "threshold_met": true,
+          "assessment_type": "debugging-performance"
         }
       ]
     }

@@ -360,7 +360,7 @@ Links:
    → Draft announcement with highlights
 
 3. Create next milestone
-   → Plan features for v3.5.0
+   → Plan features for v3.5.2
 
 4. Update project board
    → Close completed issues
