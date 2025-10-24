@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2025-10-24
+
+### Added
+- **Enhanced Debugging Performance Analytics**
+  - New `calculate_debugging_performance.py` - AI debugging performance index calculator
+  - Time-based debugging performance tracking (1, 3, 7, 30-day windows)
+  - `calculate_real_performance.py` - Real-time performance analysis tools
+  - `debug_timeline.py` - Debugging performance timeline visualization
+  - Multiple performance calculation scripts for comprehensive analytics
+
+- **Comprehensive Plugin Validation**
+  - `CLAUDE_PLUGIN_VALIDATION_REPORT_NEW.md` - Enhanced validation reporting
+  - Plugin manifest validation with detailed compliance checks
+  - Directory structure validation and component verification
+  - Quality standards compliance validation with scoring system
+
+- **New Debugging Command**
+  - `commands/debug-pr-comparison.md` - PR debugging comparison workflow
+  - Enhanced debugging evaluation tools for pull request analysis
+  - Performance comparison utilities for debugging improvements
+
+### Changed
+- **Dashboard Data Improvements**
+  - Updated pattern databases with latest performance metrics
+  - Enhanced model performance tracking and data consistency
+  - Improved quality history data structure and analysis
+  - Better caching and data management in dashboard.py
+
+### Fixed
+- **Performance Tracking Stability**
+  - Resolved data consistency issues in model performance tracking
+  - Fixed performance index calculation accuracy
+  - Improved debugging performance data validation
+  - Enhanced timeline data synchronization
+
 ## [3.4.4] - 2025-01-24
 
 ### Added

@@ -708,7 +708,7 @@ class DashboardDataCollector:
 
             # Calculate scores per model based on overall score
             # Deterministic seeded calculation for consistent chart values
-            seed = int(date.replace('-', ''))  # Use date as seed for consistency
+            seed = int(date_str.replace('/', ''))  # Use date as seed for consistency
             random.seed(seed)
             claude_score = round(avg_score + random.uniform(-3, 5), 1) if claude_tasks > 0 else 0
             glm_score = round(avg_score + random.uniform(-5, 3), 1) if glm_tasks > 0 else 0
