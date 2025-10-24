@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.3] - 2025-10-24
+
+### Added
+- **Dashboard Model Consistency Improvements**
+  - Unified model sequence ordering across Quality Score Timeline and AI Debugging Performance Index charts
+  - Implemented performance-based model ranking for consistent visualization
+  - Added `get_unified_model_order()` function to ensure consistent model ordering across all charts
+
+- **24-Hour Period Support**
+  - Changed default period for both Quality Score Timeline and AI Debugging Performance Index to 24 hours
+  - Updated timeframe labels from "Today" to "24 Hours" for clarity
+  - Enhanced API endpoints to default to 1-day periods instead of 30 days
+
+- **Recent Performance Records Table**
+  - Added comprehensive performance records table at bottom of dashboard
+  - Displays detailed metrics: timestamp, model, target, score, performance index, quality improvement
+  - Shows issues found, fixes applied, success rate, and pass/fail status
+  - Auto-populates from debugging assessment data across all timeframes
+  - Shows latest 50 records with total count information
+
+- **Enhanced API Endpoints**
+  - `/api/recent-performance-records` - Comprehensive performance records from all debugging assessments
+  - Enhanced `/api/quality-timeline` and `/api/debugging-performance` with unified model ordering
+  - Improved data consistency across all chart endpoints
+
+### Changed
+- **Dashboard Data Consistency**
+  - Applied unified model ordering based on performance rankings across all visualizations
+  - Improved data synchronization between quality timeline and debugging performance charts
+  - Enhanced cross-component data integrity validation
+
+- **Time Period Defaults**
+  - Changed chart defaults from 30 days to 24 hours for more relevant recent performance data
+  - Updated period selectors to emphasize recent performance monitoring
+
+### Fixed
+- **Model Sequence Inconsistency**
+  - Fixed mismatched model ordering between different charts
+  - Ensured consistent model representation across all dashboard visualizations
+  - Applied performance-based ranking for model display order
+
 ## [3.5.2] - 2025-10-24
 
 ### Removed

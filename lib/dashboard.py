@@ -636,7 +636,7 @@ class DashboardDataCollector:
             "days": days
         }
 
-    def get_quality_timeline_with_model_events(self, days: int = 4) -> Dict[str, Any]:
+    def get_quality_timeline_with_model_events(self, days: int = 1) -> Dict[str, Any]:
         """
         Get quality timeline using REAL assessment data from quality_history.json.
         Shows actual quality scores from real tasks performed during the project.
@@ -728,19 +728,40 @@ class DashboardDataCollector:
         total_assessments = len(real_assessments)
         avg_quality = statistics.mean([a.get("overall_score", 0) for a in real_assessments])
 
-        return {
-            "timeline_data": timeline_data,
-            "implemented_models": ["Claude Sonnet 4.5", "GLM 4.6"],
-            "model_info": {
-                "Claude Sonnet 4.5": {
-                    "total_tasks": sum(day["Claude Sonnet 4.5"] > 0 for day in timeline_data),
-                    "data_source": "Based on real quality assessments"
-                },
-                "GLM 4.6": {
-                    "total_tasks": sum(day["GLM 4.6"] > 0 for day in timeline_data),
+        # Get unified model order by checking debugging performance data
+        debugging_data = None
+        try:
+            debugging_file = os.path.join('.claude-patterns', 'debugging_performance_1days.json')
+            if os.path.exists(debugging_file):
+                with open(debugging_file, 'r', encoding='utf-8') as f:
+                    debugging_data = json.load(f)
+        except:
+            pass  # Fallback to default order if debugging data unavailable
+
+        unified_order = get_unified_model_order(debugging_data)
+
+        # Reorder timeline data and model info based on unified order
+        reordered_timeline_data = []
+        for day_data in timeline_data:
+            reordered_day = {"date": day_data["date"], "timestamp": day_data["timestamp"], "Assessments Count": day_data["Assessments Count"], "Task Types": day_data["Task Types"]}
+            for model in unified_order:
+                if model in day_data:
+                    reordered_day[model] = day_data[model]
+            reordered_timeline_data.append(reordered_day)
+
+        # Reorder model info
+        reordered_model_info = {}
+        for model in unified_order:
+            if model in ["Claude Sonnet 4.5", "GLM 4.6"]:
+                reordered_model_info[model] = {
+                    "total_tasks": sum(day[model] > 0 for day in timeline_data),
                     "data_source": "Based on real quality assessments"
                 }
-            },
+
+        return {
+            "timeline_data": reordered_timeline_data,
+            "implemented_models": unified_order,
+            "model_info": reordered_model_info,
             "days": len(timeline_data),
             "chart_type": "bar_by_time",
             "data_source": "real_assessments_with_model_distribution"
@@ -1248,6 +1269,31 @@ DASHBOARD_HTML = """
                 </table>
             </div>
 
+            <!-- Recent Performance Records -->
+            <div class="table-container">
+                <div class="chart-title">Recent Performance Records</div>
+                <div id="performance-records-summary" style="margin-bottom: 10px; color: #666; font-size: 0.9em;"></div>
+                <div id="performance-records-container">
+                    <table id="performance-records-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Model</th>
+                                <th>Target</th>
+                                <th>Score</th>
+                                <th>Perf Index</th>
+                                <th>Quality Δ</th>
+                                <th>Issues</th>
+                                <th>Fixes</th>
+                                <th>Success Rate</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="performance-records-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="refresh-info">
                 Dashboard auto-refreshes every 30 seconds • Last updated: <span id="last-update"></span>
             </div>
@@ -1302,8 +1348,9 @@ DASHBOARD_HTML = """
                     fetch('/api/task-distribution').then(r => r.json()),
                     fetch('/api/recent-activity').then(r => r.json()),
                     fetch('/api/system-health').then(r => r.json()),
-                    fetch('/api/quality-timeline?days=30').then(r => r.json()),
-                    fetch('/api/debugging-performance?days=30').then(r => r.json())
+                    fetch('/api/quality-timeline?days=1').then(r => r.json()),
+                    fetch('/api/debugging-performance?days=1').then(r => r.json()),
+                    fetch('/api/recent-performance-records').then(r => r.json())
                 ]);
 
                 updateOverviewMetrics(overview);
@@ -1315,6 +1362,7 @@ DASHBOARD_HTML = """
                 updateAgentsTable(agents);
                 updateActivityTable(activity);
                 updateSystemHealth(health);
+                updatePerformanceRecordsTable(performanceRecords);
 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
@@ -2086,6 +2134,46 @@ DASHBOARD_HTML = """
             `;
         }
 
+        function updatePerformanceRecordsTable(data) {
+            const tbody = document.getElementById('performance-records-tbody');
+            const container = document.getElementById('performance-records-container');
+
+            if (!data.records || data.records.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No performance records available</div>';
+                return;
+            }
+
+            tbody.innerHTML = data.records.map(record => {
+                const timestamp = new Date(record.timestamp).toLocaleString();
+                const passBadge = record.pass
+                    ? '<span class="badge badge-success">✓ Pass</span>'
+                    : '<span class="badge badge-danger">✗ Fail</span>';
+
+                const performanceIndex = record.performance_index ? record.performance_index.toFixed(1) : 'N/A';
+                const qualityImprovement = record.quality_improvement > 0 ? `+${record.quality_improvement}` : record.quality_improvement;
+                const improvementColor = record.quality_improvement > 0 ? 'green' : (record.quality_improvement < 0 ? 'red' : '#666');
+
+                return `
+                    <tr>
+                        <td>${timestamp}</td>
+                        <td><strong>${record.model}</strong></td>
+                        <td>${record.evaluation_target}</td>
+                        <td><strong>${record.overall_score}</strong></td>
+                        <td><strong>${performanceIndex}</strong></td>
+                        <td style="color: ${improvementColor};">${qualityImprovement}</td>
+                        <td>${record.issues_found}</td>
+                        <td>${record.fixes_applied}</td>
+                        <td>${(record.success_rate * 100).toFixed(1)}%</td>
+                        <td>${passBadge}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Update summary info
+            document.getElementById('performance-records-summary').innerHTML =
+                `Showing ${data.showing_records} of ${data.total_records} recent performance records`;
+        }
+
         // Add event listener for quality period selector
         document.getElementById('quality-period').addEventListener('change', function(e) {
             const period = e.target.value;
@@ -2209,13 +2297,13 @@ def api_temporal_performance():
 @app.route('/api/quality-timeline')
 def api_quality_timeline():
     """Get quality timeline with model performance events."""
-    days = request.args.get('days', 30, type=int)
+    days = request.args.get('days', 1, type=int)  # Default to 1 day (24 hours)
     return jsonify(data_collector.get_quality_timeline_with_model_events(days))
 
 @app.route('/api/debugging-performance')
 def api_debugging_performance():
     """Get AI Debugging Performance Index data for specific timeframe."""
-    days = request.args.get('days', 30, type=int)  # Default to last 30 days
+    days = request.args.get('days', 1, type=int)  # Default to 1 day (24 hours)
 
     # Determine which file to read based on timeframe
     timeframe_files = {
@@ -2244,6 +2332,17 @@ def api_debugging_performance():
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
+        # Apply unified model ordering to performance rankings
+        if 'performance_rankings' in data:
+            unified_order = get_unified_model_order(data)
+            # Reorder performance rankings based on unified order
+            ranked_models = {ranking['model']: ranking for ranking in data['performance_rankings']}
+            reordered_rankings = []
+            for model in unified_order:
+                if model in ranked_models:
+                    reordered_rankings.append(ranked_models[model])
+            data['performance_rankings'] = reordered_rankings
+
         return jsonify(data)
     except FileNotFoundError:
         # If timeframe file doesn't exist, try to generate it
@@ -2262,6 +2361,18 @@ def api_debugging_performance():
                 # Try reading the generated file again
                 with open(filepath, 'r', encoding='utf-8') as f:
                     data = json.load(f)
+
+                # Apply unified model ordering to performance rankings
+                if 'performance_rankings' in data:
+                    unified_order = get_unified_model_order(data)
+                    # Reorder performance rankings based on unified order
+                    ranked_models = {ranking['model']: ranking for ranking in data['performance_rankings']}
+                    reordered_rankings = []
+                    for model in unified_order:
+                        if model in ranked_models:
+                            reordered_rankings.append(ranked_models[model])
+                    data['performance_rankings'] = reordered_rankings
+
                 return jsonify(data)
             else:
                 raise FileNotFoundError(f"Could not generate timeframe data: {result.stderr}")
@@ -2277,10 +2388,93 @@ def api_debugging_performance():
                 'error': f"Could not load or generate data for {get_timeframe_label(days)}"
             })
 
+def get_unified_model_order(debugging_data=None):
+    """
+    Get unified model ordering based on performance rankings.
+    Uses debugging performance data to determine consistent order across all charts.
+    """
+    # Default order if no debugging data available
+    default_order = ["Claude Sonnet 4.5", "GLM 4.6"]
+
+    if not debugging_data or 'performance_rankings' not in debugging_data:
+        return default_order
+
+    # Extract model order from performance rankings
+    ranked_models = []
+    for ranking in debugging_data['performance_rankings']:
+        ranked_models.append(ranking['model'])
+
+    # Ensure both expected models are included
+    for model in default_order:
+        if model not in ranked_models:
+            ranked_models.append(model)
+
+    return ranked_models
+
+@app.route('/api/recent-performance-records')
+def api_recent_performance_records():
+    """Get recent performance records from all debugging assessments."""
+    try:
+        all_records = []
+
+        # Check all available timeframe files
+        timeframe_files = [
+            'debugging_performance_1days.json',
+            'debugging_performance_3days.json',
+            'debugging_performance_7days.json',
+            'debugging_performance_30days.json'
+        ]
+
+        for filename in timeframe_files:
+            filepath = os.path.join('.claude-patterns', filename)
+            if os.path.exists(filepath):
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+
+                # Extract debugging assessments from detailed metrics
+                for model_name, model_data in data.get('detailed_metrics', {}).items():
+                    for assessment in model_data.get('debugging_assessments', []):
+                        record = {
+                            'timestamp': assessment.get('timestamp'),
+                            'model': model_name,
+                            'assessment_id': assessment.get('assessment_id'),
+                            'task_type': assessment.get('task_type'),
+                            'overall_score': assessment.get('overall_score'),
+                            'performance_index': assessment.get('details', {}).get('performance_index', 0),
+                            'evaluation_target': assessment.get('details', {}).get('evaluation_target', 'Unknown'),
+                            'quality_improvement': assessment.get('details', {}).get('quality_improvement', 0),
+                            'issues_found': len(assessment.get('issues_found', [])),
+                            'fixes_applied': assessment.get('details', {}).get('fixes_applied', 0),
+                            'time_elapsed_minutes': assessment.get('details', {}).get('time_elapsed_minutes', 0),
+                            'success_rate': assessment.get('details', {}).get('success_rate', 0),
+                            'pass': assessment.get('pass', False)
+                        }
+                        all_records.append(record)
+
+        # Sort by timestamp (most recent first) and limit to 50 records
+        all_records.sort(key=lambda x: x['timestamp'], reverse=True)
+        recent_records = all_records[:50]
+
+        return jsonify({
+            'records': recent_records,
+            'total_records': len(all_records),
+            'showing_records': len(recent_records),
+            'last_updated': datetime.now().isoformat()
+        })
+
+    except Exception as e:
+        return jsonify({
+            'records': [],
+            'total_records': 0,
+            'showing_records': 0,
+            'error': str(e),
+            'last_updated': datetime.now().isoformat()
+        })
+
 def get_timeframe_label(days):
     """Get human-readable label for timeframe."""
     if days == 1:
-        return "Today"
+        return "24 Hours"
     elif days == 3:
         return "Last 3 Days"
     elif days == 7:
