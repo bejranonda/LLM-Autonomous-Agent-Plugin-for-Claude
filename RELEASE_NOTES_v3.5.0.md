@@ -43,10 +43,7 @@ Version 3.5.0 introduces **enhanced debugging performance analytics** and **comp
 ### 🛠️ New Debugging Command
 
 **PR Debugging Comparison**:
-- `commands/debug-pr-comparison.md` - Pull request debugging workflow
-- Enhanced debugging evaluation tools for PR analysis
-- Performance comparison utilities for debugging improvements
-- Systematic debugging effectiveness assessment
+- Removed `commands/debug-pr-comparison.md` - Pull request debugging workflow (no longer needed)
 
 ## 📊 Performance Improvements
 

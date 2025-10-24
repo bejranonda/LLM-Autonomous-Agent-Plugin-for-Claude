@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.2] - 2025-10-24
+
+### Removed
+- **Debug PR Comparison Command**
+  - Removed `commands/debug-pr-comparison.md` - Pull request debugging comparison workflow (no longer needed)
+  - Simplified command structure by removing redundant debugging workflow
+
 ## [3.5.1] - 2025-10-24
 
 ### Fixed
@@ -70,10 +77,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Directory structure validation and component verification
   - Quality standards compliance validation with scoring system
 
-- **New Debugging Command**
-  - `commands/debug-pr-comparison.md` - PR debugging comparison workflow
-  - Enhanced debugging evaluation tools for pull request analysis
-  - Performance comparison utilities for debugging improvements
+- **Removed Debugging Command**
+  - Removed `commands/debug-pr-comparison.md` - PR debugging comparison workflow (no longer needed)
 
 ### Changed
 - **Dashboard Data Improvements**
