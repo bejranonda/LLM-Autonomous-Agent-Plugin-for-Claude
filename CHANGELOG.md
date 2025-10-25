@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2025-10-25
+
+### Added
+- **Continuous Plugin Improvement System (`/improve-plugin`)**
+  - Revolutionary command that analyzes user experience and generates structured improvement prompts
+  - Implements key innovation: automatic learning from every user interaction
+  - Creates unified improvements folder with JSON format for Claude Code integration
+  - Enables autonomous plugin development based on real usage patterns
+  - Evidence-based improvement suggestions with priority scoring
+  - Pattern recognition for successful approaches and optimization opportunities
+
+- **Unified Improvements Storage System**
+  - `./improvements/unified-improvements.json` - Standardized improvement prompts storage
+  - Structured JSON format with evidence, priority, and implementation complexity
+  - Ready for consumption by Claude Code for continuous development
+  - Includes analysis metadata, key findings, and actionable next steps
+
+- **Experience Analysis Framework**
+  - Analyzes pattern database, performance metrics, usage statistics, and error logs
+  - Identifies top success patterns and improvement opportunities
+  - Tracks learning trends and velocity improvements over time
+  - Generates categorized improvement prompts (performance, quality, UX, learning)
+
+- **Claude Code Integration Ready**
+  - Structured improvements that can be automatically consumed for development
+  - Data-driven development priorities based on actual user experience
+  - Evidence-based suggestions with confidence scores and implementation guidance
+  - Creates continuous feedback loop: user experience → improvements → plugin evolution
+
+### Enhanced
+- **Command Count**: Increased from 19 to 20 commands with the addition of `/improve-plugin`
+- **Plugin Description**: Updated to reflect new continuous improvement capabilities
+- **Development Workflow**: Now supports autonomous plugin development cycle
+
+### Key Innovation Delivered
+- **Automatic Learning**: Every user interaction makes the plugin smarter
+- **Continuous Improvement Loop**: User experience drives plugin evolution without manual intervention
+- **Evidence-Based Development**: All improvements backed by actual usage data and performance metrics
+- **Autonomous Evolution**: Plugin learns, analyzes, suggests, and implements improvements automatically
+
 ## [3.5.4] - 2025-10-24
 
 ### Fixed
