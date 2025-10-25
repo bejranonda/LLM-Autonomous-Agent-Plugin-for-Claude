@@ -762,7 +762,7 @@ class DashboardDataCollector:
             "timeline_data": reordered_timeline_data,
             "implemented_models": unified_order,
             "model_info": reordered_model_info,
-            "days": len(timeline_data),
+            "days": days,
             "chart_type": "bar_by_time",
             "data_source": "real_assessments_with_model_distribution"
         }
@@ -1158,8 +1158,10 @@ DASHBOARD_HTML = """
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <label for="timeline-period" style="font-size: 14px; color: #666;">Period:</label>
                         <select id="timeline-period" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ddd; background: white; font-size: 14px;">
-                            <option value="7">Last 7 Days</option>
-                            <option value="30" selected>Last 30 Days</option>
+                            <option value="1">Last 24 Hours</option>
+                            <option value="3">Last 3 Days</option>
+                            <option value="7">Last Week</option>
+                            <option value="30" selected>Last Month</option>
                             <option value="90">Last 90 Days</option>
                         </select>
                     </div>
@@ -1178,7 +1180,7 @@ DASHBOARD_HTML = """
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <label for="debugging-timeframe" style="font-size: 12px; color: #666;">Time Frame:</label>
                         <select id="debugging-timeframe" style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
-                            <option value="1">Today</option>
+                            <option value="1">Last 24 Hours</option>
                             <option value="3">Last 3 Days</option>
                             <option value="7">Last Week</option>
                             <option value="30" selected>Last Month</option>
@@ -1191,15 +1193,29 @@ DASHBOARD_HTML = """
                 </div>
 
                 <!-- Calculation Formulas -->
-                <div style="margin-top: 15px; padding: 12px; background-color: #f8f9fa; border-radius: 4px; border: 1px solid #e9ecef;">
-                    <div style="font-size: 12px; font-weight: bold; color: #495057; margin-bottom: 8px;">📊 Calculation Formulas:</div>
-                    <div style="font-size: 11px; color: #6c757d; line-height: 1.4;">
-                        <div><strong>Performance Index:</strong> (Quality Improvement × 40%) + (Time Efficiency × 35%) + (Success Rate × 25%)</div>
-                        <div><strong>Quality Improvement Score:</strong> min(100, max(0, (Quality Change + 15) × 2))</div>
-                        <div><strong>Time Efficiency Score:</strong> min(100, max(0, (30 minutes ÷ Avg Time) × 50))</div>
-                        <div><strong>Success Rate:</strong> (Successful Tasks ÷ Total Tasks) × 100</div>
-                        <div><strong>Quality Change:</strong> Final Score - Initial Score</div>
-                        <div><strong>Avg Time:</strong> Total Time ÷ (Number of Tasks - 1)</div>
+                <div style="margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
+                    <div style="font-size: 13px; font-weight: bold; color: #495057; margin-bottom: 10px;">📊 Calculation Formulas - Model Comparison</div>
+                    <div id="calculation-formulas-container" style="overflow-x: auto;">
+                        <table id="calculation-formulas-table" style="width: 100%; font-size: 12px; color: #6c757d; border-collapse: collapse; min-width: 600px;">
+                            <thead>
+                                <tr id="calculation-formulas-header" style="border-bottom: 2px solid #dee2e6;">
+                                    <th style="text-align: left; padding: 8px 12px; font-weight: bold; color: #495057; background-color: #e9ecef; width: 200px;">Metric</th>
+                                    <th colspan="3" style="text-align: center; padding: 8px 12px; color: #adb5bd; background-color: #e9ecef;">
+                                        Loading models...
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="calculation-formulas-tbody">
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 12px; color: #adb5bd;">
+                                        Loading calculation formulas...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 11px; color: #6c757d; text-align: center;">
+                        💡 Compare model performance indices side by side
                     </div>
                 </div>
             </div>
@@ -1348,8 +1364,8 @@ DASHBOARD_HTML = """
                     fetch('/api/task-distribution').then(r => r.json()),
                     fetch('/api/recent-activity').then(r => r.json()),
                     fetch('/api/system-health').then(r => r.json()),
-                    fetch('/api/quality-timeline?days=1').then(r => r.json()),
-                    fetch('/api/debugging-performance?days=1').then(r => r.json()),
+                    fetch('/api/quality-timeline?days=30').then(r => r.json()),
+                    fetch('/api/debugging-performance?days=30').then(r => r.json()),
                     fetch('/api/recent-performance-records').then(r => r.json())
                 ]);
 
@@ -2050,6 +2066,206 @@ DASHBOARD_HTML = """
                     }
                 }
             });
+            
+            // Update calculation formulas table
+            console.log("Updating calculation formulas with data:", debugData);
+            updateCalculationFormulasTable(debugData);
+        }
+
+        function updateCalculationFormulasTable(debugData) {
+            console.log("updateCalculationFormulasTable called with:", debugData);
+            const tbody = document.getElementById('calculation-formulas-tbody');
+            const headerRow = document.getElementById('calculation-formulas-header');
+
+            if (!debugData || !debugData.performance_rankings || debugData.performance_rankings.length === 0) {
+                headerRow.innerHTML = `
+                    <th style="text-align: left; padding: 8px 12px; font-weight: bold; color: #495057; background-color: #e9ecef; width: 200px;">Metric</th>
+                    <th colspan="3" style="text-align: center; padding: 8px 12px; color: #adb5bd; background-color: #e9ecef;">No Models</th>
+                `;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 12px; color: #adb5bd;">
+                            No debugging data available for calculations
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const rankings = debugData.performance_rankings;
+
+            // Build header row with model names (including "Metric" column)
+            let headerHtml = `
+                <th style="text-align: left; padding: 8px 12px; font-weight: bold; color: #495057; background-color: #e9ecef; width: 200px;">Metric</th>
+            `;
+
+            rankings.forEach((ranking, index) => {
+                const modelColor = index === 0 ? '#667eea' : '#10b981';
+                headerHtml += `
+                    <th style="text-align: center; padding: 8px 12px; font-weight: bold; color: ${modelColor}; background-color: #e9ecef; border-left: 1px solid #dee2e6;">
+                        ${ranking.model}
+                    </th>
+                `;
+            });
+
+            headerRow.innerHTML = headerHtml;
+
+            // Build comparison rows (metrics as rows, models as columns)
+            let formulasHtml = '';
+
+            // Row 1: Performance Index
+            formulasHtml += `<tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
+                <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
+                    🎯 Performance Index
+                    <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
+                        (0.40 × QIS) + (0.35 × TES) + (0.25 × SR) − Penalty
+                    </div>
+                </td>`;
+            rankings.forEach(ranking => {
+                const pi = ranking.performance_index || 0;
+                const qis = ranking.qis || ranking.quality_improvement_score || 0;
+                const tes = ranking.time_efficiency_score || 0;
+                const sr = (ranking.success_rate || 0) * 100;
+                const penalty = ranking.regression_penalty || 0;
+
+                formulasHtml += `
+                    <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
+                        <div style="font-size: 14px; font-weight: bold; color: #495057;">${pi.toFixed(1)}</div>
+                        <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
+                            (0.40×${qis.toFixed(1)}) + (0.35×${tes.toFixed(1)}) + (0.25×${sr.toFixed(1)}) − ${penalty.toFixed(1)}
+                        </div>
+                    </td>
+                `;
+            });
+            formulasHtml += `</tr>`;
+
+            // Row 2: QIS (Quality Improvement Score)
+            formulasHtml += `<tr style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
+                    📈 QIS
+                    <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
+                        (0.6 × Final Quality) + (0.4 × Gap Closed %)
+                    </div>
+                </td>`;
+            rankings.forEach(ranking => {
+                const qis = ranking.qis || ranking.quality_improvement_score || 0;
+                const finalQuality = ranking.final_quality || 0;
+                const gapClosed = ranking.gap_closed_pct || 0;
+
+                formulasHtml += `
+                    <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
+                        <div style="font-size: 14px; font-weight: bold; color: #495057;">${qis.toFixed(1)}</div>
+                        <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
+                            (0.6×${finalQuality.toFixed(1)}) + (0.4×${gapClosed.toFixed(1)}%)
+                        </div>
+                    </td>
+                `;
+            });
+            formulasHtml += `</tr>`;
+
+            // Row 3: TES (Time Efficiency Score)
+            formulasHtml += `<tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
+                <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
+                    ⚡ TES
+                    <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
+                        Time Efficiency Score
+                    </div>
+                </td>`;
+            rankings.forEach(ranking => {
+                const tes = ranking.time_efficiency_score || 0;
+
+                formulasHtml += `
+                    <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
+                        <div style="font-size: 14px; font-weight: bold; color: #495057;">${tes.toFixed(1)}</div>
+                        <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
+                            Based on resolution time
+                        </div>
+                    </td>
+                `;
+            });
+            formulasHtml += `</tr>`;
+
+            // Row 4: Success Rate
+            formulasHtml += `<tr style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
+                    ✅ Success Rate
+                    <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
+                        Successful tasks / Total tasks
+                    </div>
+                </td>`;
+            rankings.forEach(ranking => {
+                const sr = (ranking.success_rate || 0) * 100;
+                const totalTasks = ranking.total_debugging_tasks || 0;
+                const successTasks = Math.round(totalTasks * (ranking.success_rate || 0));
+
+                formulasHtml += `
+                    <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
+                        <div style="font-size: 14px; font-weight: bold; color: #495057;">${sr.toFixed(1)}%</div>
+                        <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
+                            ${successTasks} / ${totalTasks} tasks
+                        </div>
+                    </td>
+                `;
+            });
+            formulasHtml += `</tr>`;
+
+            // Row 5: Quality Improvement (Initial → Final)
+            formulasHtml += `<tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
+                <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
+                    📊 Quality Change
+                    <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
+                        Initial → Final (Gap Closed %)
+                    </div>
+                </td>`;
+            rankings.forEach(ranking => {
+                const initialQuality = ranking.initial_quality || 0;
+                const finalQuality = ranking.final_quality || 0;
+                const gapClosed = ranking.gap_closed_pct || 0;
+                const improvement = finalQuality - initialQuality;
+                const improvementColor = improvement > 0 ? '#10b981' : (improvement < 0 ? '#dc3545' : '#6c757d');
+
+                formulasHtml += `
+                    <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
+                        <div style="font-size: 14px; font-weight: bold; color: ${improvementColor};">
+                            ${initialQuality.toFixed(1)} → ${finalQuality.toFixed(1)}
+                            <span style="font-size: 11px;">(${improvement > 0 ? '+' : ''}${improvement.toFixed(1)})</span>
+                        </div>
+                        <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
+                            Gap closed: ${gapClosed.toFixed(1)}%
+                        </div>
+                    </td>
+                `;
+            });
+            formulasHtml += `</tr>`;
+
+            // Row 6: Regression Penalty (if applicable)
+            const hasPenalties = rankings.some(r => (r.regression_penalty || 0) > 0);
+            if (hasPenalties) {
+                formulasHtml += `<tr style="background-color: #fff5f5; border-bottom: 1px solid #e9ecef;">
+                    <td style="padding: 8px 12px; font-weight: bold; color: #dc3545; background-color: #f8f9fa;">
+                        ⚠️ Regression Penalty
+                        <div style="font-size: 10px; color: #dc3545; font-weight: normal; margin-top: 2px;">
+                            Deduction for quality regressions
+                        </div>
+                    </td>`;
+                rankings.forEach(ranking => {
+                    const penalty = ranking.regression_penalty || 0;
+
+                    formulasHtml += `
+                        <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
+                            <div style="font-size: 14px; font-weight: bold; color: ${penalty > 0 ? '#dc3545' : '#10b981'};">
+                                ${penalty > 0 ? '-' : ''}${penalty.toFixed(1)}
+                            </div>
+                            <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
+                                ${penalty > 0 ? 'Regression detected' : 'No regressions'}
+                            </div>
+                        </td>
+                    `;
+                });
+                formulasHtml += `</tr>`;
+            }
+
+            tbody.innerHTML = formulasHtml;
         }
 
         function updateSkillsTable(data) {
