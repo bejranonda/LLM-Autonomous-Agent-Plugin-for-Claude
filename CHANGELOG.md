@@ -5,6 +5,93 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5.0] - 2025-10-27
+
+### 💥 **BREAKING CHANGE: Command Naming Convention Migration**
+
+This release implements a major breaking change to fix command discovery issues and improve the user experience.
+
+#### ⚠️ **Migration Required**
+All slash commands have been migrated from hyphen-separated names (`/command-name`) to colon-separated names (`/category:command`) to ensure proper command discovery and align with Claude Code conventions.
+
+#### 📋 **Complete Command Mapping**
+**Development Commands** (`/dev:*`)
+- `/dev-auto` → `/dev:auto` ✓
+- `/release-dev` → `/dev:release` ✓
+- `/pr-review` → `/dev:pr-review` ✓
+- `/dev-model-switch` → `/dev:model-switch` ✓
+
+**Analysis Commands** (`/analyze:*`)
+- `/auto-analyze` → `/analyze:project` ✓
+- `/quality-check` → `/analyze:quality` ✓
+- `/static-analysis` → `/analyze:static` ✓
+- `/scan-dependencies` → `/analyze:dependencies` ✓
+
+**Validation Commands** (`/validate:*`)
+- `/validate` → `/validate:all` ✓
+- `/validate-claude-plugin` → `/validate:plugin` ✓
+- `/validate-fullstack` → `/validate:fullstack` ✓
+- `/validate-patterns` → `/validate:patterns` ✓
+
+**Debug Commands** (`/debug:*`)
+- `/eval-debug` → `/debug:eval` ✓
+- `/gui-debug` → `/debug:gui` ✓
+
+**Learning Commands** (`/learn:*`)
+- `/learn-patterns` → `/learn:init` ✓
+- `/learning-analytics` → `/learn:analytics` ✓
+- `/performance-report` → `/learn:performance` ✓
+- `/predictive-analytics` → `/learn:predict` ✓
+
+**Workspace Commands** (`/workspace:*`)
+- `/organize-workspace` → `/workspace:organize` ✓
+- `/organize-reports` → `/workspace:reports` ✓
+- `/improve-plugin` → `/workspace:improve` ✓
+
+**Monitoring Commands** (`/monitor:*`)
+- `/recommend` → `/monitor:recommend` ✓
+
+**Special Commands**
+- `/git-release-workflow` → `/git-release-workflow` (unchanged)
+
+#### 📁 **File Structure Changes**
+Commands are now organized in subdirectories by category:
+```
+commands/
+├── dev/           # Development commands
+├── analyze/        # Analysis commands
+├── validate/       # Validation commands
+├── debug/          # Debug commands
+├── learn/          # Learning commands
+├── workspace/      # Workspace commands
+├── monitor/        # Monitoring commands
+└── git-release-workflow.md  # Special case
+```
+
+#### 🎯 **Benefits**
+- **✅ Commands are discoverable**: All commands now work reliably with Claude Code
+- **📂 Better organization**: Commands grouped by functional categories
+- **🎨 Cleaner naming**: Consistent `category:command` format
+- **🔍 Improved UX**: Users can easily find and discover commands
+- **📚 Clearer documentation**: Each category has focused documentation
+
+#### ⚡ **Updated Documentation**
+- **CLAUDE.md**: Updated command structure documentation
+- **assets/README.md**: Updated screenshot examples with new command names
+- **agents/orchestrator.md**: Updated command references
+- **plugin.json**: Updated version and description
+
+#### 🔄 **Backward Compatibility**
+- **❌ No backward compatibility**: This is a breaking change by design
+- **⚠️ Migration required**: Users must update their command usage
+- **📖 Migration guide**: See complete mapping above
+
+#### 🛠️ **Technical Implementation**
+- **File migration**: All 23 command files moved to appropriate subdirectories
+- **Content preservation**: All command functionality remains identical
+- **Metadata integrity**: All YAML frontmatter preserved and validated
+- **Discovery testing**: Verified all commands are discoverable in new structure
+
 ## [4.4.0] - 2025-10-26
 
 ### 🎨 **Major GUI Enhancement - Complete Design System Integration**

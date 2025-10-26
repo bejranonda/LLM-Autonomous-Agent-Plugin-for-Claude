@@ -65,9 +65,9 @@ D:\Code\Claude\agent\
 
 | Command | Purpose | Triggers |
 |---------|---------|----------|
-| `/auto-analyze` | Comprehensive autonomous project analysis | orchestrator → code-analyzer + background tasks |
-| `/quality-check` | Full quality control with auto-fixing | orchestrator → quality-controller |
-| `/learn-patterns` | Initialize pattern learning database | orchestrator → pattern database setup |
+| `/analyze:project` | Comprehensive autonomous project analysis | orchestrator → code-analyzer + background tasks |
+| `/analyze:quality` | Full quality control with auto-fixing | orchestrator → quality-controller |
+| `/learn:init` | Initialize pattern learning database | orchestrator → pattern database setup |
 
 ## Workflow Examples
 
@@ -233,7 +233,7 @@ Located at: `.claude-patterns/patterns.json` (auto-created)
 
 2. **Initialize Pattern Learning** (for new projects):
    ```
-   /learn-patterns
+   /learn:init
    ```
 
 3. **Use Autonomously**:
@@ -245,12 +245,12 @@ Located at: `.claude-patterns/patterns.json` (auto-created)
 
 4. **Run Quality Checks**:
    ```
-   /quality-check
+   /analyze:quality
    ```
 
 5. **Analyze Project**:
    ```
-   /auto-analyze
+   /analyze:project
    ```
 
 ## Integration Points

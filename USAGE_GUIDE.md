@@ -57,7 +57,7 @@ claude
 
 Then run:
 ```
-/learn-patterns
+/learn:init
 ```
 
 **Expected Output**:
@@ -121,7 +121,7 @@ Request quality validation at any time:
 You: "Review the code I just wrote"
 
 # Or use the command
-/quality-check
+/analyze:quality
 ```
 
 **What Happens**:
@@ -139,7 +139,7 @@ Large codebases benefit from background analysis:
 You: "Analyze this entire module for refactoring opportunities"
 
 # Or use the command
-/auto-analyze
+/analyze:project
 ```
 
 **What Happens**:
@@ -433,7 +433,7 @@ cat .claude/patterns/learned-patterns.json | jq '.patterns | length'
 
 **Accelerate Learning**:
 ```
-/auto-analyze  # Builds baseline
+/analyze:project  # Builds baseline
 [Do 5 similar tasks in succession]
 [Observe improvement from task 3+]
 ```
@@ -569,19 +569,19 @@ For different project types, initialize separate patterns:
 
 **Backend API Project**:
 ```
-/learn-patterns
+/learn:init
 # Learns API-specific patterns
 ```
 
 **Frontend Project**:
 ```
-/learn-patterns
+/learn:init
 # Learns UI/UX-specific patterns
 ```
 
 **Mobile Project**:
 ```
-/learn-patterns
+/learn:init
 # Learns mobile-specific patterns
 ```
 
@@ -590,14 +590,14 @@ For different project types, initialize separate patterns:
 **Before Commits**:
 ```bash
 # Add to pre-commit hook
-/quality-check
+/analyze:quality
 # Only commit if quality >= 70
 ```
 
 **Before PRs**:
 ```bash
 # Add to CI/CD
-claude /quality-check
+claude /analyze:quality
 # Fail build if quality < 70
 ```
 
@@ -651,16 +651,16 @@ $report | ConvertTo-Json | Out-File team-learning-report.json
 
 ```bash
 # Initialize (once per project)
-/learn-patterns
+/learn:init
 
 # Regular usage
 [Use Claude Code normally]
 
 # Check quality
-/quality-check
+/analyze:quality
 
 # Analyze project
-/auto-analyze
+/analyze:project
 
 # View learning (Linux/Mac)
 cat .claude/patterns/learned-patterns.json | jq '.skill_effectiveness'

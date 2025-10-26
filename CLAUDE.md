@@ -45,29 +45,37 @@ skills/                              # 14 knowledge packages
 ├── validation-standards/           # Tool validation & consistency checks (v1.7+)
 └── fullstack-validation/           # Full-stack validation methodology (NEW v2.0)
 
-commands/                            # 22 slash commands (7 categories)
-├── dev:auto                        # Autonomous development workflow
-├── dev:release                     # Release management workflow
-├── dev:pr-review                   # Pull request review
-├── analyze:project                 # Autonomous project analysis
-├── analyze:quality                 # Comprehensive quality control
-├── analyze:static                  # Static code analysis
-├── analyze:dependencies            # Dependency vulnerability scanning
-├── validate:all                    # Comprehensive validation audit (v1.7+)
-├── validate:fullstack              # Full-stack validation & auto-fix (NEW v2.0)
-├── validate:plugin                 # Claude plugin validation
-├── validate:patterns               # Pattern validation
-├── debug:eval                      # Evaluation debugging
-├── debug:gui                       # GUI debugging
-├── learn:init                      # Initialize pattern learning
-├── learn:analytics                 # Learning analytics
-├── learn:performance               # Performance analytics dashboard (v1.2+)
-├── learn:predict                   # Predictive analytics
-├── workspace:organize              # Workspace organization
-├── workspace:reports               # Report organization
-├── workspace:improve               # Plugin improvement
-├── monitor:dashboard               # Real-time monitoring dashboard
-└── monitor:recommend               # Smart workflow recommendations (v1.3+)
+commands/                            # 23 slash commands (7 categories with colon notation)
+├── dev/                           # Development commands
+│   ├── auto.md                    # Autonomous development workflow (/dev:auto)
+│   ├── release.md                 # Release management workflow (/dev:release)
+│   ├── model-switch.md            # Model switching (/dev:model-switch)
+│   └── pr-review.md              # Pull request review (/dev:pr-review)
+├── analyze/                       # Analysis commands
+│   ├── project.md                 # Autonomous project analysis (/analyze:project)
+│   ├── quality.md                 # Comprehensive quality control (/analyze:quality)
+│   ├── static.md                  # Static code analysis (/analyze:static)
+│   └── dependencies.md           # Dependency vulnerability scanning (/analyze:dependencies)
+├── validate/                       # Validation commands
+│   ├── all.md                     # Comprehensive validation audit (/validate:all)
+│   ├── fullstack.md               # Full-stack validation & auto-fix (/validate:fullstack)
+│   ├── plugin.md                 # Claude plugin validation (/validate:plugin)
+│   └── patterns.md               # Pattern validation (/validate:patterns)
+├── debug/                          # Debugging commands
+│   ├── eval.md                    # Evaluation debugging (/debug:eval)
+│   └── gui.md                    # GUI debugging (/debug:gui)
+├── learn/                          # Learning commands
+│   ├── init.md                    # Initialize pattern learning (/learn:init)
+│   ├── analytics.md               # Learning analytics (/learn:analytics)
+│   ├── performance.md             # Performance analytics dashboard (/learn:performance)
+│   └── predict.md                # Predictive analytics (/learn:predict)
+├── workspace/                      # Workspace commands
+│   ├── organize.md                # Workspace organization (/workspace:organize)
+│   ├── reports.md                 # Report organization (/workspace:reports)
+│   └── improve.md                # Plugin improvement (/workspace:improve)
+├── monitor/                        # Monitoring commands
+│   └── recommend.md               # Smart workflow recommendations (/monitor:recommend)
+└── git-release-workflow.md        # Git release workflow (special case)
 
 patterns/                            # Auto-fix pattern database (NEW v2.0)
 └── autofix-patterns.json           # 24 patterns with 89% avg success rate

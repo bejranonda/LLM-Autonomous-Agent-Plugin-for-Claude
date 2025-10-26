@@ -17,12 +17,12 @@ This directory contains visual assets for the Autonomous Claude Agent Plugin mar
 Place screenshots in the `screenshots/` subdirectory:
 
 #### 1. autonomous-analysis.png
-- **Description**: Shows the `/auto-analyze` command in action
+- **Description**: Shows the `/analyze:project` command in action
 - **Content**: Terminal output showing autonomous code analysis with skill auto-selection
 - **Recommended size**: 1920x1080 or 1280x720
 
 #### 2. quality-control.png
-- **Description**: Shows the `/quality-check` command with auto-fix loop
+- **Description**: Shows the `/analyze:quality` command with auto-fix loop
 - **Content**: Terminal output showing quality assessment, failed checks, and automatic corrections
 - **Recommended size**: 1920x1080 or 1280x720
 
@@ -64,9 +64,9 @@ for a developer tool. 256x256 pixels, PNG format, transparent background."
 2. Navigate to a test project
 3. Run each command:
    ```bash
-   /auto-analyze
-   /quality-check
-   /learn-patterns
+   /analyze:project
+   /analyze:quality
+   /learn:init
    ```
 4. Capture terminal output with screenshot tool:
    - **Windows**: Win + Shift + S

@@ -289,7 +289,7 @@ async function select_skills_intelligently(task_context) {
 - Infrastructure: `/monitor:dashboard` (start dashboard service)
 - Data Display: `/learn:analytics`, `/learn:performance` (show reports)
 - Utilities: `/workspace:organize`, `/workspace:reports` (file organization)
-- Simple Tools: `/monitor:recommend`, `/learn:patterns`, `/validate:plugin` (basic operations)
+- Simple Tools: `/monitor:recommend`, `/learn:init`, `/validate:plugin` (basic operations)
 
 **Commands that use FULL AUTONOMOUS ANALYSIS** (require intelligence):
 - Complex Development: `/dev:auto`, `/dev:release`, `/dev:model-switch`
