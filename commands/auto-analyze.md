@@ -1,5 +1,5 @@
 ---
-name: auto-analyze
+name: analyze:project
 description: Autonomously analyze the project with automatic skill selection and pattern learning
 
 delegates-to: autonomous-agent:orchestrator
@@ -34,7 +34,7 @@ The orchestrator will make all decisions autonomously without requiring confirma
 ## Usage
 
 ```bash
-/auto-analyze
+/analyze:project
 ```
 
 ## Example Output
@@ -56,13 +56,13 @@ Top Recommendations:
 2. [MED]  Add docstrings to public APIs
 3. [MED]  Refactor high-complexity functions
 
-📄 Full report: .claude/reports/auto-analyze-2025-10-21.md
+📄 Full report: .claude/reports/analyze-project-2025-10-21.md
 ⏱ Completed in 2.3 minutes
 ```
 
 ### File Report (Detailed)
 
-Saved to `.claude/reports/auto-analyze-2025-10-21.md`:
+Saved to `.claude/reports/analyze-project-2025-10-21.md`:
 
 ```
 ═══════════════════════════════════════════════════════
@@ -140,5 +140,5 @@ Analysis Time: 2.3 minutes
 
 ## See Also
 
-- `/quality-check` - Comprehensive quality control with auto-fix
-- `/learn-patterns` - Initialize pattern learning database
+- `/analyze:quality` - Comprehensive quality control with auto-fix
+- `/learn:init` - Initialize pattern learning database

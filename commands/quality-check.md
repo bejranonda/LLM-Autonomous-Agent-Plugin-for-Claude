@@ -1,5 +1,5 @@
 ---
-command: /quality-check
+name: analyze:quality
 description: Run comprehensive quality control with autonomous auto-fixing
 delegates-to: autonomous-agent:orchestrator
 ---
@@ -30,7 +30,7 @@ Run comprehensive quality control check with autonomous fixing. This will:
 ## Usage
 
 ```bash
-/quality-check
+/analyze:quality
 ```
 
 ## Quality Scoring
@@ -125,5 +125,5 @@ When quality < 70, the plugin will:
 
 ## See Also
 
-- `/auto-analyze` - Autonomous project analysis
-- `/learn-patterns` - Initialize pattern learning database
+- `/analyze:project` - Autonomous project analysis
+- `/learn:init` - Initialize pattern learning database

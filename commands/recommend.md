@@ -1,5 +1,5 @@
 ---
-name: recommend
+name: monitor:recommend
 description: Command for recommend
 delegates-to: autonomous-agent:orchestrator
 ---
@@ -23,10 +23,10 @@ Get intelligent recommendations for optimal workflows, skill combinations, and a
 
 ```bash
 # Get recommendations for a specific task
-/recommend "refactor authentication module"
+/monitor:recommend "refactor authentication module"
 
 # Or just invoke for general guidance
-/recommend
+/monitor:recommend
 ```
 
 ## What You'll Get

@@ -1,5 +1,5 @@
 ---
-name: learning-analytics
+name: learn:analytics
 description: Display comprehensive learning analytics dashboard showing pattern learning progress, skill effectiveness, prediction accuracy, and improvement trends
 
 delegates-to: autonomous-agent:orchestrator

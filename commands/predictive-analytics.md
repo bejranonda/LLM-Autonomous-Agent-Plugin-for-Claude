@@ -1,5 +1,5 @@
 ---
-name: predictive-analytics
+name: learn:predict
 description: Generate advanced predictive insights and optimization recommendations using machine learning-inspired analytics
 
 delegates-to: autonomous-agent:orchestrator
@@ -11,17 +11,17 @@ Generate advanced predictive insights, optimization recommendations, and trend a
 ## Usage
 
 ```bash
-/predictive-analytics [OPTIONS]
+/learn:predict [OPTIONS]
 ```
 
 **Examples**:
 ```bash
-/predictive-analytics                              # Comprehensive predictive analytics report
-/predictive-analytics --action quality-trend   # Predict quality trends for next 7 days
-/predictive-analytics --action optimal-skills  # Recommend optimal skills for task
-/predictive-analytics --action learning-velocity # Predict learning acceleration
-/predictive-analytics --action opportunities   # Identify optimization opportunities
-/predictive-analytics --action accuracy       # Check prediction accuracy metrics
+/learn:predict                              # Comprehensive predictive analytics report
+/learn:predict --action quality-trend   # Predict quality trends for next 7 days
+/learn:predict --action optimal-skills  # Recommend optimal skills for task
+/learn:predict --action learning-velocity # Predict learning acceleration
+/learn:predict --action opportunities   # Identify optimization opportunities
+/learn:predict --action accuracy       # Check prediction accuracy metrics
 ```
 
 ## Advanced Analytics Features

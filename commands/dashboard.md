@@ -1,5 +1,5 @@
 ---
-name: dashboard
+name: monitor:dashboard
 description: Launch improved real-time web dashboard with automatic port detection and robust error handling
 
 delegates-to: autonomous-agent:orchestrator
@@ -11,16 +11,16 @@ Launch an interactive web-based dashboard with automatic port detection, server 
 ## Usage
 
 ```bash
-/dashboard [OPTIONS]
+/monitor:dashboard [OPTIONS]
 ```
 
 **Examples**:
 ```bash
-/dashboard                          # Launch with automatic port detection
-/dashboard --port 8080              # Launch on preferred port (finds alternative if occupied)
-/dashboard --host 0.0.0.0           # Allow external access
-/dashboard --patterns-dir ./patterns # Custom pattern directory
-/dashboard --no-browser             # Don't open browser automatically
+/monitor:dashboard                          # Launch with automatic port detection
+/monitor:dashboard --port 8080              # Launch on preferred port (finds alternative if occupied)
+/monitor:dashboard --host 0.0.0.0           # Allow external access
+/monitor:dashboard --patterns-dir ./patterns # Custom pattern directory
+/monitor:dashboard --no-browser             # Don't open browser automatically
 ```
 
 ## Key Improvements

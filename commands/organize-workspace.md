@@ -1,10 +1,10 @@
 ---
-name: organize-workspace
+name: workspace:organize
 description: Automatically organize workspace files, consolidate reports, and validate links
 
 delegates-to: autonomous-agent:orchestrator
 
-# Command: `/organize-workspace`
+# Command: `/workspace:organize`
 
 Automatically organizes your workspace by moving files to appropriate directories, consolidating scattered reports, and fixing broken links. Improves project hygiene and maintains professional structure.
 

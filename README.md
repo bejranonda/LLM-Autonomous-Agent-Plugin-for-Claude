@@ -68,9 +68,9 @@ The plugin automatically learns from successes and failures, continuously improv
 
 ### 🌟 **NEW in v3.4.1: Workspace Organization & Pattern Validation**
 
-**🤖 Autonomous Development (`/dev-auto`)**
+**🤖 Autonomous Development (`/dev:auto`)**
 - **Zero to Production**: From simple requirement to release-ready code
-- **Example**: `/dev-auto "add MQTT broker with certificate support"`
+- **Example**: `/dev:auto "add MQTT broker with certificate support"`
   - Breaks down into 5 milestones automatically
   - Implements incrementally with commits each milestone
   - Auto-debugs failures (87% success rate)
@@ -79,7 +79,7 @@ The plugin automatically learns from successes and failures, continuously improv
 - **45-90 minutes** from requirement to complete implementation
 - **Learning integration**: Gets faster with similar tasks (20-30% improvement)
 
-**🚀 Streamlined Releases (`/release-dev`)**
+**🚀 Streamlined Releases (`/dev:release`)**
 - **One-Command Release**: Complete release workflow automated
 - Smart version detection (analyzes commits for major/minor/patch)
 - Documentation sync (README, CHANGELOG, RELEASE_NOTES)
@@ -87,11 +87,11 @@ The plugin automatically learns from successes and failures, continuously improv
 - Auto-commit, tag, and push to remote
 - Multi-platform publishing (GitHub, GitLab, npm, PyPI, Docker)
 - **2-3 minutes** from code complete to released
-- 💡 **Need more thorough validation?** Use `/git-release-workflow` for enterprise-grade releases with comprehensive testing, security scans, and post-release monitoring (3-8 min)
+- 💡 **Need more thorough validation?** Use `/dev:release` for enterprise-grade releases with comprehensive testing, security scans, and post-release monitoring (3-8 min)
 
 ### 🌟 **NEW in v3.4.1: Workspace Organization & Pattern Validation**
 
-**🧹 Workspace Organization (`/organize-workspace`)**
+**🧹 Workspace Organization (`/workspace:organize`)**
 - **Automated Cleanup**: Moves scattered files to proper directories
 - **Report Consolidation**: Organizes `*.md` reports into `docs/reports/generated/`
 - **Link Validation**: Fixes broken links after file moves
@@ -99,7 +99,7 @@ The plugin automatically learns from successes and failures, continuously improv
 - **Smart Suggestions**: Automatically suggests cleanup when health < 70
 - **1-2 minutes** to transform messy workspace to professional structure
 
-**📊 Pattern Learning Validation (`/validate-patterns`)**
+**📊 Pattern Learning Validation (`/validate:patterns`)**
 - **System Health Check**: Validates pattern learning across all commands
 - **Coverage Analysis**: Ensures 100% of analysis commands store patterns
 - **Effectiveness Metrics**: Tracks learning improvement over time
@@ -118,9 +118,9 @@ The plugin automatically learns from successes and failures, continuously improv
 - Context-aware next action recommendations
 - Learns from your choices to improve suggestions
 - Quick action shortcuts (1-4 number selection)
-- Example after `/dev-auto`:
+- Example after `/dev:auto`:
   1. [High] Run integration tests
-  2. [Recommended] Release feature → `/release-dev --minor`
+  2. [Recommended] Release feature → `/dev:release --minor`
   3. [Optional] Add monitoring
   4. [Learning] View analytics
 
@@ -133,13 +133,13 @@ The plugin automatically learns from successes and failures, continuously improv
 **Complete Workflow Example:**
 ```bash
 # 1. Implement feature (45-90 min automated)
-/dev-auto "add user authentication with JWT"
+/dev:auto "add user authentication with JWT"
 
 # 2. Suggestion appears: Release this feature
 #    Quick action: Type "2" to execute
 
 # 3. Release automatically (2-3 min)
-/release-dev --minor
+/dev:release --minor
 
 # Done! From requirement to v1.2.0 released
 ```
@@ -147,7 +147,7 @@ The plugin automatically learns from successes and failures, continuously improv
 
 ## 🎯 Quick Start
 
-*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-18-commands-total)
+*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-22-commands-across-7-categories)
 
 ### Claude Code
 
@@ -181,7 +181,7 @@ You can find the instruction at the following link: [Set up Claude Code](https:/
 
 <img width="979" height="177" alt="Learn Patterns Command" src="https://github.com/user-attachments/assets/0a62d1d0-ed11-4b23-a8a1-fbbeb72da739" />
 
-*Execution of the "/learn-patterns" slash command to initialize the project database*
+*Execution of the "/learn:init" slash command to initialize the project database*
 
 This creates `.claude-patterns/` directory with the learning database.
 
@@ -190,13 +190,13 @@ This creates `.claude-patterns/` directory with the learning database.
 
 ```bash
 # Initialize learning system
-/learn-patterns
+/learn:init
 
 # Run your first comprehensive analysis
-/pr-review
+/dev:pr-review
 
 # Launch monitoring dashboard
-/dashboard
+/monitor:dashboard
 ```
 
 ### Basic Commands
@@ -205,51 +205,51 @@ This creates `.claude-patterns/` directory with the learning database.
 
 ```bash
 # Initialize learning system (one-time setup)
-/learn-patterns
+/learn:init
 
 # Comprehensive project analysis (all-in-one)
-/auto-analyze
+/analyze:project
 
 # Quality control with auto-fix
-/quality-check
+/analyze:quality
 
 # General validation check
-/validate
+/validate:all
 ```
 
 **🔍 Specialized Analysis Commands:**
 
 ```bash
 # PR review and analysis
-/pr-review 123
+/dev:pr-review 123
 
 # Static analysis (40+ linters)
-/static-analysis src/
+/analyze:static src/
 
 # Dependency vulnerability scanning
-/scan-dependencies
+/analyze:dependencies
 
 # Full-stack validation
-/validate-fullstack
+/validate:fullstack
 ```
 
 **📊 Monitoring & Insights:**
 
 ```bash
 # Launch real-time dashboard (monitoring)
-/dashboard
+/monitor:dashboard
 
 # View learning analytics
-/learning-analytics
+/learn:analytics
 
 # Advanced predictive analytics
-/predictive-analytics
+/learn:predict
 
 # Performance analytics report
-/performance-report
+/learn:performance
 
 # Get smart recommendations
-/recommend
+/monitor:recommend
 ```
 
 ### 🌐 **Access the Dashboard**
@@ -258,7 +258,7 @@ This creates `.claude-patterns/` directory with the learning database.
 
 ```bash
 # Launch the dashboard
-/dashboard
+/monitor:dashboard
 ```
 
 **🌍 Access URL**: http://127.0.0.1:5000
@@ -289,18 +289,18 @@ Assessments are **automatically created** when you use plugin commands:
 
 ```bash
 # These commands automatically create new assessments:
-/quality-check          # Creates quality-control assessment
-/auto-analyze          # Creates project-analysis assessment
-/validate-fullstack    # Creates validation assessment
-/performance-report    # Creates performance assessment
+/analyze:quality          # Creates quality-control assessment
+/analyze:project          # Creates project-analysis assessment
+/validate:fullstack       # Creates validation assessment
+/learn:performance        # Creates performance assessment
 ```
 
 
 **🔧 Troubleshooting:**
-- If port 5000 is busy: `/dashboard --port 8080`
+- If port 5000 is busy: `/monitor:dashboard --port 8080`
 - Dashboard not reachable: Run `pip install flask flask-cors` first
 - Stop dashboard: Press `Ctrl+C` in the terminal where it's running
-- No data showing: Run `/learn-patterns` or `/quality-check` first to generate assessment data
+- No data showing: Run `/learn:init` or `/analyze:quality` first to generate assessment data
 
 
 ---
@@ -333,7 +333,7 @@ Assessments are **automatically created** when you use plugin commands:
 
 <img width="1115" height="892" alt="Auto-Analyze Results" src="https://github.com/user-attachments/assets/b2e532d1-bbf1-4a4c-8c4b-9e54ca47c959" />
 
-*Results from the "/auto-analyze" slash command using the orchestrator approach for comprehensive project analysis in Version 1.1*
+*Results from the "/analyze:project" slash command using the orchestrator approach for comprehensive project analysis in Version 1.1*
 
 ### 🎯 **Key Benefits**
 
@@ -435,53 +435,54 @@ Assessments are **automatically created** when you use plugin commands:
 
 ---
 
-## 📚 Complete Command Reference (18 Commands Total)
+## 📚 Complete Command Reference (22 Commands Across 7 Categories)
 
-### 🚀 **Getting Started (Basic)**
-- `/learn-patterns` - Initialize pattern learning system (one-time setup)
-- `/auto-analyze` - Comprehensive project analysis with automatic learning
-- `/quality-check` - Quality control with autonomous auto-fixing
-- `/validate` - General validation of tools, docs, and execution flow
-- `/dashboard` - Launch real-time monitoring web interface
-- `/dashboard-debug` - Comprehensive dashboard validation and debugging
-
-### 🤖 **Autonomous Development (NEW v3.4+)**
-- `/dev-auto "requirement"` - **🌟 NEW:** Fully autonomous development from requirements to release-ready code
+### 🚀 **Development Commands**
+- `/dev:auto "requirement"` - **🌟 NEW:** Fully autonomous development from requirements to release-ready code
   - Breaks down requirements into milestones
   - Implements incrementally with automatic commits
   - Continuous testing with auto-debugging
   - Quality assurance (≥ 85/100)
-  - Example: `/dev-auto "add MQTT broker with certificate support"`
-- `/release-dev` - **🌟 NEW:** Streamlined release preparation and publishing
+  - Example: `/dev:auto "add MQTT broker with certificate support"`
+- `/dev:release` - **🌟 NEW:** Streamlined release preparation and publishing
   - Smart version detection (major/minor/patch)
   - Documentation sync (README, CHANGELOG, RELEASE_NOTES)
   - Consistency validation across all files
   - Auto-commit, tag, and push
   - Multi-platform publishing (GitHub, GitLab, npm, PyPI, Docker)
-  - 💡 **Fast 2-3 min releases.** For thorough validation, use `/git-release-workflow`
+  - 💡 **Fast 2-3 min releases.** For thorough validation, use `/dev:release`
+- `/dev:pr-review [PR_NUMBER]` - CodeRabbit-style comprehensive PR reviews
 
-### 🔍 **Analysis & Review (Intermediate)**
-- `/pr-review [PR_NUMBER]` - CodeRabbit-style comprehensive PR reviews
-- `/static-analysis [PATH]` - Run 40+ linters with intelligent synthesis
-- `/scan-dependencies [PATH]` - Multi-ecosystem dependency vulnerability scanning
-- `/validate-fullstack` - Full-stack validation with OWASP coverage
-- `/learning-analytics` - View comprehensive learning progress and trends
+### 🔍 **Analysis Commands**
+- `/analyze:project` - Comprehensive project analysis with automatic learning
+- `/analyze:quality` - Quality control with autonomous auto-fixing
+- `/analyze:static [PATH]` - Run 40+ linters with intelligent synthesis
+- `/analyze:dependencies [PATH]` - Multi-ecosystem dependency vulnerability scanning
 
-### 📊 **Advanced & Specialized (Expert)**
-- `/performance-report` - Generate performance analytics dashboard
-- `/predictive-analytics` - Advanced predictive insights and optimization recommendations
-- `/recommend` - Get intelligent workflow recommendations
-- `/organize-reports` - Intelligent report organization and archival
-- `/git-release-workflow` - Automated Git release workflow with semantic versioning
-  - Enterprise-grade with comprehensive testing, security scans, post-release monitoring
-  - Multi-platform publishing with extensive validation (3-8 min)
-  - 💡 **Need faster iterations?** Use `/release-dev` for quick 2-3 min releases
-- `/validate-claude-plugin` - Comprehensive Claude Code plugin validation
+### ✅ **Validation Commands**
+- `/validate:all` - General validation of tools, docs, and execution flow
+- `/validate:fullstack` - Full-stack validation with OWASP coverage
+- `/validate:plugin` - Comprehensive Claude Code plugin validation
+- `/validate:patterns` - Pattern learning system validation
 
-### 🔧 **Helper Commands (Sub-commands)**
-- `/apply-pr-fixes [PR_NUMBER]` - Apply all auto-fixable PR issues
-- `/apply-static-analysis-fixes` - Apply all auto-fixable static analysis issues
-- `/apply-fix [ISSUE_ID]` - Apply specific fix from analysis results
+### 🧠 **Learning Commands**
+- `/learn:init` - Initialize pattern learning system (one-time setup)
+- `/learn:analytics` - View comprehensive learning progress and trends
+- `/learn:performance` - Generate performance analytics dashboard
+- `/learn:predict` - Advanced predictive insights and optimization recommendations
+
+### 🐛 **Debug Commands**
+- `/debug:eval` - Evaluation debugging and diagnostics
+- `/debug:gui` - Comprehensive GUI validation and debugging
+
+### 🗂️ **Workspace Commands**
+- `/workspace:organize` - Intelligent workspace file organization
+- `/workspace:reports` - Intelligent report organization and archival
+- `/workspace:improve` - Plugin improvement suggestions and automation
+
+### 📊 **Monitoring Commands**
+- `/monitor:dashboard` - Launch real-time monitoring web interface
+- `/monitor:recommend` - Get intelligent workflow recommendations
 
 ---
 
@@ -493,81 +494,81 @@ Assessments are **automatically created** when you use plugin commands:
 
 | Your Goal | Command | Why Use This | Time |
 |-----------|---------|--------------|------|
-| **Rapid feature development** | `/dev-auto "requirement"` | Zero to production automatically. Breaks down requirements, implements with commits, auto-debugs, validates quality ≥85. Perfect for: new features, bug fixes, refactoring. | 45-90 min |
-| **Quick release (iterations)** | `/release-dev` | Fast release for dev cycles. Auto-detects version, syncs docs, validates consistency. Best for: plugin development, rapid iterations, minor updates. **→** For thorough validation, see `/git-release-workflow` | 2-3 min |
-| **Production release (thorough)** | `/git-release-workflow` | Enterprise-grade with full validation. Comprehensive testing, security scans, multi-platform publishing, post-release monitoring. Best for: major releases, production deployments. **→** For speed, see `/release-dev` | 3-8 min |
+| **Rapid feature development** | `/dev:auto "requirement"` | Zero to production automatically. Breaks down requirements, implements with commits, auto-debugs, validates quality ≥85. Perfect for: new features, bug fixes, refactoring. | 45-90 min |
+| **Quick release (iterations)** | `/dev:release` | Fast release for dev cycles. Auto-detects version, syncs docs, validates consistency. Best for: plugin development, rapid iterations, minor updates. **→** For thorough validation, see `/dev:release` | 2-3 min |
+| **Production release (thorough)** | `/dev:release` | Enterprise-grade with full validation. Comprehensive testing, security scans, multi-platform publishing, post-release monitoring. Best for: major releases, production deployments. **→** For speed, see `/dev:release` | 3-8 min |
 
-**💡 Tip**: Use `/dev-auto` → `/release-dev` for development, then `/git-release-workflow` for major production releases.
+**💡 Tip**: Use `/dev:auto` → `/dev:release` for development, then `/dev:release` for major production releases.
 
 ### Analysis & Quality Commands
 
 | Your Goal | Command | Why Use This | Time |
 |-----------|---------|--------------|------|
-| **First-time project analysis** | `/auto-analyze` | Comprehensive overview. Analyzes entire project structure, quality, patterns. Run this first to understand your codebase. | 1-2 min |
-| **Ongoing quality checks** | `/quality-check` | Regular quality control. Auto-fixes issues, maintains quality ≥70. Use regularly during development. | 30-60 sec |
-| **Full-stack app validation** | `/validate-fullstack` | Complete stack validation. Backend, frontend, database, API contracts with 80-90% auto-fix. Best for: web applications. | 2-3 min |
-| **Tool & doc validation** | `/validate` | Checks tool usage, documentation consistency, best practices. Use when: debugging tool errors, after doc updates. | 20-40 sec |
+| **First-time project analysis** | `/analyze:project` | Comprehensive overview. Analyzes entire project structure, quality, patterns. Run this first to understand your codebase. | 1-2 min |
+| **Ongoing quality checks** | `/analyze:quality` | Regular quality control. Auto-fixes issues, maintains quality ≥70. Use regularly during development. | 30-60 sec |
+| **Full-stack app validation** | `/validate:fullstack` | Complete stack validation. Backend, frontend, database, API contracts with 80-90% auto-fix. Best for: web applications. | 2-3 min |
+| **Tool & doc validation** | `/validate:all` | Checks tool usage, documentation consistency, best practices. Use when: debugging tool errors, after doc updates. | 20-40 sec |
 
 ### Code Review & Security Commands
 
 | Your Goal | Command | Why Use This | Time |
 |-----------|---------|--------------|------|
-| **Pull request review** | `/pr-review [PR_NUMBER]` | CodeRabbit-style review with 38-45% auto-fix. Line-by-line analysis, security scan, test coverage. | 1-2 min |
-| **Security-focused scan** | `/scan-dependencies` | Vulnerability scan across 11 package managers. Focused on dependencies only. | 8-90 sec |
-| **Deep static analysis** | `/static-analysis` | 40+ linters across 15+ languages. Comprehensive code quality analysis. | 15-60 sec |
+| **Pull request review** | `/dev:pr-review [PR_NUMBER]` | CodeRabbit-style review with 38-45% auto-fix. Line-by-line analysis, security scan, test coverage. | 1-2 min |
+| **Security-focused scan** | `/analyze:dependencies` | Vulnerability scan across 11 package managers. Focused on dependencies only. | 8-90 sec |
+| **Deep static analysis** | `/analyze:static` | 40+ linters across 15+ languages. Comprehensive code quality analysis. | 15-60 sec |
 
 ### Learning & Monitoring Commands
 
 | Your Goal | Command | Why Use This | Time |
 |-----------|---------|--------------|------|
-| **Initialize learning** | `/learn-patterns` | One-time setup. Creates pattern database for learning system. Run this first! | 10-20 sec |
-| **View learning progress** | `/learning-analytics` | See how the agent improves over time. Pattern recognition, skill effectiveness, trends. | 30-60 sec |
-| **System performance** | `/performance-report` | Analyze system performance, bottlenecks, optimizations. | 30-60 sec |
-| **Live monitoring** | `/dashboard` | Real-time web dashboard with metrics, charts, live updates. | Instant |
-| **Get recommendations** | `/recommend` | AI-powered suggestions for next steps based on project analysis and patterns. | 20-30 sec |
+| **Initialize learning** | `/learn:init` | One-time setup. Creates pattern database for learning system. Run this first! | 10-20 sec |
+| **View learning progress** | `/learn:analytics` | See how the agent improves over time. Pattern recognition, skill effectiveness, trends. | 30-60 sec |
+| **System performance** | `/learn:performance` | Analyze system performance, bottlenecks, optimizations. | 30-60 sec |
+| **Live monitoring** | `/monitor:dashboard` | Real-time web dashboard with metrics, charts, live updates. | Instant |
+| **Get recommendations** | `/monitor:recommend` | AI-powered suggestions for next steps based on project analysis and patterns. | 20-30 sec |
 
 ### **Quick Start Workflow**
 
 ```bash
 # 1️⃣ First time? Initialize learning
-/learn-patterns
+/learn:init
 
 # 2️⃣ Understand your project
-/auto-analyze
+/analyze:project
 
 # 3️⃣ Develop a feature
-/dev-auto "add user authentication"
+/dev:auto "add user authentication"
 
 # 4️⃣ Release it (rapid iteration)
-/release-dev --minor
+/dev:release --minor
 
 # 5️⃣ Monitor everything
-/dashboard
+/monitor:dashboard
 ```
 
 ### **Production Release Workflow**
 
 ```bash
-# After multiple /release-dev iterations...
+# After multiple /dev:release iterations...
 
 # Comprehensive validation before major release
-/validate-fullstack
-/static-analysis
-/scan-dependencies
+/validate:fullstack
+/analyze:static
+/analyze:dependencies
 
 # Thorough production release
-/git-release-workflow --version 2.0.0 --validation-level thorough
+/dev:release --version 2.0.0 --validation-level thorough
 
 # Monitor and learn
-/performance-report
-/learning-analytics
+/learn:performance
+/learn:analytics
 ```
 
 ---
 
 <img width="1552" height="830" alt="Quality Check Results" src="https://github.com/user-attachments/assets/1e8337d5-132e-4206-a0f3-53bdbbf2b76d" />
 
-*Results from the "/quality-check" slash command performing a comprehensive quality control check.*
+*Results from the "/analyze:quality" slash command performing a comprehensive quality control check.*
 
 ---
 
@@ -624,13 +625,13 @@ your-project/                          # YOUR PROJECT DIRECTORY
 
 | Report Type | Command That Creates | Example Filename | What It Contains |
 |-------------|----------------------|------------------|------------------|
-| **Quality Control** | `/quality-check` | `quality-check-2025-10-23.md` | Code quality analysis, auto-fixes applied, recommendations |
-| **Autonomous Analysis** | `/auto-analyze` | `auto-analyze-2025-10-23.md` | Comprehensive project analysis, patterns found |
-| **Validation Audit** | `/validate` | `validation-2025-10-23.md` | Tool validation, compliance checks, issues found |
-| **Learning Analytics** | `/learning-analytics` | `learning-analytics-2025-10-23.md` | Learning progress, skill effectiveness trends |
-| **Performance Report** | `/performance-report` | `performance-report-2025-10-23.md` | System performance, bottlenecks, optimizations |
-| **Full-Stack Validation** | `/validate-fullstack` | `fullstack-validation-2025-10-23.md` | Backend/frontend/database validation |
-| **GUI Validation** | `/gui-debug` | `gui-validation-2025-10-23.md` | Dashboard and interface validation |
+| **Quality Control** | `/analyze:quality` | `quality-check-2025-10-23.md` | Code quality analysis, auto-fixes applied, recommendations |
+| **Autonomous Analysis** | `/analyze:project` | `auto-analyze-2025-10-23.md` | Comprehensive project analysis, patterns found |
+| **Validation Audit** | `/validate:all` | `validation-2025-10-23.md` | Tool validation, compliance checks, issues found |
+| **Learning Analytics** | `/learn:analytics` | `learning-analytics-2025-10-23.md` | Learning progress, skill effectiveness trends |
+| **Performance Report** | `/learn:performance` | `performance-report-2025-10-23.md` | System performance, bottlenecks, optimizations |
+| **Full-Stack Validation** | `/validate:fullstack` | `fullstack-validation-2025-10-23.md` | Backend/frontend/database validation |
+| **GUI Validation** | `/debug:gui` | `gui-validation-2025-10-23.md` | Dashboard and interface validation |
 
 #### 🔄 **What Happens Where - Complete Comparison**
 
@@ -693,9 +694,9 @@ your-project/                          # YOUR PROJECT DIRECTORY
 ```
 You Run Command → Plugin Analyzes → Stores Results in .claude-patterns/ → Dashboard Reads Files
        ↓                    ↓                      ↓                           ↓
-  /quality-check     →  quality-controller  →  quality_history.json  →  Real-time charts
-  /auto-analyze      →  orchestrator        →  patterns.json         →  Learning trends
-  /dashboard         →  dashboard.py        →  reads all files       →  Live metrics
+  /analyze:quality   →  quality-controller  →  quality_history.json  →  Real-time charts
+  /analyze:project   →  orchestrator        →  patterns.json         →  Learning trends
+  /monitor:dashboard →  dashboard.py        →  reads all files       →  Live metrics
 ```
 
 ### 🔒 **Privacy & Control - Complete Details**
@@ -772,7 +773,7 @@ ls .claude-patterns/reports/ | wc -l
 |----------------|-------|--------|-------------|
 | **Agents** | **22** | ✅ Validated | Specialized autonomous agents |
 | **Skills** | **15** | ✅ Validated | Domain knowledge packages |
-| **Commands** | **20** | ✅ Validated | User-facing slash commands |
+| **Commands** | **22** | ✅ Validated | User-facing slash commands (7 categories) |
 | **Python Libraries** | **15** | ✅ Validated | Utility and analysis tools |
 | **Documentation** | **40+** | ✅ Validated | Comprehensive guides |
 | **Total Lines of Code** | **18,000+** | ✅ Production | Enterprise-grade |
@@ -916,7 +917,7 @@ v3.3.0 includes **40+ organized documentation files** across multiple directorie
 
 ### 📊 **Command Documentation**
 
-All 15 commands have comprehensive documentation with:
+All 22 commands across 7 categories have comprehensive documentation with:
 - Usage examples
 - Options and parameters
 - Expected outputs
@@ -974,7 +975,7 @@ exit
 claude
 
 # Initialize learning system
-/learn-patterns
+/learn:init
 
 # Verify plugin is loaded
 /help
@@ -1015,7 +1016,7 @@ claude
 ### 💡 **Example 1: Comprehensive PR Review**
 ```bash
 # Review PR #456 with CodeRabbit-level analysis
-/pr-review 456
+/dev:pr-review 456
 
 # Output includes:
 # - Change categorization and risk assessment
@@ -1029,7 +1030,7 @@ claude
 ### 🔍 **Example 2: Project Security Audit**
 ```bash
 # Scan entire project for vulnerabilities
-/scan-dependencies
+/analyze:dependencies
 
 # Output includes:
 # - CVE database integration for all dependencies
@@ -1041,7 +1042,7 @@ claude
 ### 📊 **Example 3: Real-Time Monitoring**
 ```bash
 # Launch web dashboard
-/dashboard
+/monitor:dashboard
 
 # Access at http://localhost:5000
 # Shows:
@@ -1151,9 +1152,9 @@ claude
 /plugin install https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude
 
 # Start using immediately
-/learn-patterns
-/pr-review
-/dashboard
+/learn:init
+/dev:pr-review
+/monitor:dashboard
 ```
 
 **No setup required - everything works out of the box!**

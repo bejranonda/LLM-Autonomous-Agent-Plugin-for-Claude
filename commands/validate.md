@@ -1,5 +1,5 @@
 ---
-name: validate
+name: validate:all
 description: Run comprehensive validation checks on tool usage, documentation consistency, and execution flow compliance
 delegates-to: autonomous-agent:validation-controller
 ---
@@ -34,7 +34,7 @@ This command delegates to the **validation-controller** agent which:
 ## Usage
 
 ```bash
-/validate
+/validate:all
 ```
 
 ## Expected Output (Two-Tier Presentation)
@@ -269,7 +269,7 @@ This validation compared to baseline (first validation):
 
 ## When to Use
 
-Run `/validate` when:
+Run `/validate:all` when:
 - Before releases or major changes
 - After significant refactoring
 - When documentation is updated
@@ -286,7 +286,7 @@ The orchestrator automatically triggers validation:
 - **Post-documentation**: After doc updates (checks consistency)
 - **Periodic**: Every 25 tasks (comprehensive audit)
 
-Users can also manually trigger full validation with `/validate`.
+Users can also manually trigger full validation with `/validate:all`.
 
 ## Success Criteria
 

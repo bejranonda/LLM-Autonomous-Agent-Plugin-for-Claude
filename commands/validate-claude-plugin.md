@@ -1,5 +1,5 @@
 ---
-name: validate-claude-plugin
+name: validate:plugin
 description: Validate Claude Code plugin against official guidelines
 delegates-to: autonomous-agent:orchestrator
 ---
@@ -8,7 +8,7 @@ delegates-to: autonomous-agent:orchestrator
 
 Comprehensive validation for Claude Code plugins against official development guidelines to prevent installation failures and ensure marketplace compatibility.
 
-## Command: `/validate-claude-plugin`
+## Command: `/validate:plugin`
 
 Validates the current plugin against Claude Code official guidelines, checking for common installation failures, compatibility issues, and marketplace requirements.
 
@@ -71,17 +71,17 @@ The validator now checks for command execution issues that cause runtime failure
 
 ### Quick Validation
 ```bash
-/validate-claude-plugin
+/validate:plugin
 ```
 
 ### Strict Validation (treat warnings as errors)
 ```bash
-/validate-claude-plugin --strict
+/validate:plugin --strict
 ```
 
 ### Validate Specific Plugin Directory
 ```bash
-/validate-claude-plugin --dir /path/to/plugin
+/validate:plugin --dir /path/to/plugin
 ```
 
 ## Expected Output
@@ -180,7 +180,7 @@ The validation command creates detailed reports in:
 ### Pre-Release Checklist
 ```bash
 # Required validation before any release
-/validate-claude-plugin --strict
+/validate:plugin --strict
 
 # Only proceed if validation passes
 if [ $? -eq 0 ]; then
@@ -196,7 +196,7 @@ fi
 # GitHub Actions example
 - name: Validate Claude Plugin
   run: |
-    /validate-claude-plugin --strict
+    /validate:plugin --strict
     if [ $? -ne 0 ]; then
       echo "Plugin validation failed - blocking release"
       exit 1
@@ -344,13 +344,13 @@ The validator can automatically correct many common issues:
 
 ```bash
 # Detailed validation with debugging
-/validate-claude-plugin --debug
+/validate:plugin --debug
 
 # Check specific file
-/validate-claude-plugin --file .claude-plugin/plugin.json
+/validate:plugin --file .claude-plugin/plugin.json
 
 # Show validation rules
-/validate-claude-plugin --show-rules
+/validate:plugin --show-rules
 ```
 
 ## Best Practices
@@ -359,7 +359,7 @@ The validator can automatically correct many common issues:
 1. **Create Plugin Structure**: Follow standard layout
 2. **Write Manifest**: Complete all required fields
 3. **Add Content**: Agents, skills, commands
-4. **Validate**: Run `/validate-claude-plugin`
+4. **Validate**: Run `/validate:plugin`
 5. **Fix Issues**: Address any problems found
 6. **Re-validate**: Ensure all issues resolved
 7. **Release**: Publish with confidence

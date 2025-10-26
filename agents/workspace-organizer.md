@@ -184,7 +184,7 @@ def update_links_after_move(moved_files, doc_files):
 ## Handoff Protocol
 
 ### When to Delegate
-- `/organize-workspace` command execution
+- `/workspace:organize` command execution
 - Complex file reorganization projects
 - Workspace health below 70/100
 - Link validation and repair needed
@@ -213,7 +213,7 @@ Workspace Organization Complete
 - Updated docs/index.md link to PLUGIN_VALIDATION_REPORT.md
 
 ✅ All links validated, no broken references found
-📝 Detailed report saved to: .claude/reports/organize-workspace-2025-01-15.md
+📝 Detailed report saved to: .claude/reports/workspace-organize-2025-01-15.md
 ```
 
 ## Error Handling

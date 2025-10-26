@@ -1,10 +1,10 @@
 ---
-name: validate-patterns
+name: validate:patterns
 description: Validate pattern learning system and generate comprehensive reports
 
 delegates-to: autonomous-agent:orchestrator
 
-# Command: `/validate-patterns`
+# Command: `/validate:patterns`
 
 Validates the pattern learning system across all commands and agents. Ensures patterns are being stored correctly, consistently formatted, and effectively used for improving performance over time.
 
@@ -58,17 +58,17 @@ Validates the pattern learning system across all commands and agents. Ensures pa
 
 ```bash
 # Basic pattern validation
-/validate-patterns
+/validate:patterns
 
 # Include detailed analytics (slower but comprehensive)
-/validate-patterns --analytics
+/validate:patterns --analytics
 
 # Quick validation skip analytics
-/validate-patterns --quick
+/validate:patterns --quick
 
 # Validate specific command or agent
-/validate-patterns --filter orchestrator
-/validate-patterns --filter release-dev
+/validate:patterns --filter orchestrator
+/validate:patterns --filter release-dev
 ```
 
 ## Output
@@ -98,15 +98,15 @@ Pattern Learning Validation Complete ✅
 ### 1. Commands Pattern Storage
 
 **Analysis Commands** (should store patterns):
-- `/auto-analyze` ✅
-- `/quality-check` ✅
-- `/validate-fullstack` ✅
-- `/pr-review` ✅
+- `/analyze:project` ✅
+- `/analyze:quality` ✅
+- `/validate:fullstack` ✅
+- `/dev:pr-review` ✅
 - And 12 more...
 
 **Utility Commands** (don't store patterns - expected):
-- `/dashboard` - Display only
-- `/organize-reports` - File management only
+- `/monitor:dashboard` - Display only
+- `/workspace:reports` - File management only
 
 ### 2. Pattern Format Validation
 
@@ -204,7 +204,7 @@ Agent Reliability:
 
 ### Example 1: Basic Validation
 ```bash
-User: /validate-patterns
+User: /validate:patterns
 
 System: ✅ Pattern learning system healthy
         Commands storing patterns: 16/16
@@ -214,7 +214,7 @@ System: ✅ Pattern learning system healthy
 
 ### Example 2: With Analytics
 ```bash
-User: /validate-patterns --analytics
+User: /validate:patterns --analytics
 
 System: 📊 Generated comprehensive analytics
         Learning trends: Improving (+12% over 30 days)
@@ -224,7 +224,7 @@ System: 📊 Generated comprehensive analytics
 
 ### Example 3: Filter Validation
 ```bash
-User: /validate-patterns --filter orchestrator
+User: /validate:patterns --filter orchestrator
 
 System: ✅ Orchestrator pattern integration validated
         Patterns contributed: 89
@@ -234,7 +234,7 @@ System: ✅ Orchestrator pattern integration validated
 
 ## When to Use
 
-Run `/validate-patterns` when:
+Run `/validate:patterns` when:
 - After implementing new commands or agents
 - Suspecting pattern learning issues
 - Regular system health checks
@@ -243,7 +243,7 @@ Run `/validate-patterns` when:
 
 ## Automation
 
-The orchestrator can automatically run `/validate-patterns`:
+The orchestrator can automatically run `/validate:patterns`:
 - Every 50 tasks to ensure system health
 - When learning effectiveness drops below 75%
 - After adding new commands or agents
@@ -256,7 +256,7 @@ The orchestrator can automatically run `/validate-patterns`:
 1. **Pattern Database Missing**
    ```
    Error: .claude-patterns/patterns.json not found
-   Fix: Run /learn-patterns to initialize
+   Fix: Run /learn:init to initialize
    ```
 
 2. **Permission Issues**
@@ -273,9 +273,9 @@ The orchestrator can automatically run `/validate-patterns`:
 
 ## Related Commands
 
-- `/learn-patterns` - Initialize pattern learning system
-- `/auto-analyze` - Analyze project and learn patterns
-- `/quality-check` - Check overall system quality
+- `/learn:init` - Initialize pattern learning system
+- `/analyze:project` - Analyze project and learn patterns
+- `/analyze:quality` - Check overall system quality
 
 ## See Also
 

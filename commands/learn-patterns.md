@@ -1,5 +1,5 @@
 ---
-name: learn-patterns
+name: learn:init
 description: Initialize pattern learning database and analyze project patterns
 
 delegates-to: autonomous-agent:orchestrator
@@ -31,7 +31,7 @@ Use this command when starting with a new project to build the autonomous learni
 ## Usage
 
 ```bash
-/learn-patterns
+/learn:init
 ```
 
 ## What Gets Created

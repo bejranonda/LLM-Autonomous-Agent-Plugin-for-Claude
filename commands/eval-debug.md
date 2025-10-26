@@ -1,5 +1,5 @@
 ---
-name: eval-debug
+name: debug:eval
 description: Command for eval debug
 delegates-to: autonomous-agent:orchestrator
 ---
@@ -11,7 +11,7 @@ Measures AI debugging performance by analyzing and fixing real issues in the cod
 ## Usage
 
 ```bash
-/eval-debug <target>
+/debug:eval <target>
 ```
 
 ## How It Works

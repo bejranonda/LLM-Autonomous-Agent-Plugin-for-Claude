@@ -1,12 +1,12 @@
 ---
-name: release-dev
-description: Command for release dev
+name: dev:release
+description: Command for dev release
 delegates-to: autonomous-agent:orchestrator
 ---
 
 # Release-Dev Command
 
-## Command: `/release-dev`
+## Command: `/dev:release`
 
 Streamlined release preparation and publishing workflow. This command automates the entire release process from version detection to GitHub/GitLab publishing with intelligent validation and automatic documentation updates.
 
@@ -34,7 +34,7 @@ Streamlined release preparation and publishing workflow. This command automates 
 ### Quick Release (Recommended)
 ```bash
 # Fully automated release with smart detection
-/release-dev
+/dev:release
 
 # This will:
 # - Analyze changes and determine version bump
@@ -48,59 +48,59 @@ Streamlined release preparation and publishing workflow. This command automates 
 ### Specify Version Type
 ```bash
 # Force specific version bump
-/release-dev --patch     # Bug fixes only (x.y.Z)
-/release-dev --minor     # New features (x.Y.0)
-/release-dev --major     # Breaking changes (X.0.0)
+/dev:release --patch     # Bug fixes only (x.y.Z)
+/dev:release --minor     # New features (x.Y.0)
+/dev:release --major     # Breaking changes (X.0.0)
 
 # Specify exact version
-/release-dev --version 2.5.0
+/dev:release --version 2.5.0
 ```
 
 ### Validation Options
 ```bash
 # Skip quality validation (not recommended)
-/release-dev --skip-validation
+/dev:release --skip-validation
 
 # Set minimum quality threshold (default: 85)
-/release-dev --quality-threshold 90
+/dev:release --quality-threshold 90
 
 # Dry run (preview without making changes)
-/release-dev --dry-run
+/dev:release --dry-run
 ```
 
 ### Documentation Options
 ```bash
 # Update specific documentation
-/release-dev --update-changelog
-/release-dev --update-readme
-/release-dev --generate-release-notes
+/dev:release --update-changelog
+/dev:release --update-readme
+/dev:release --generate-release-notes
 
 # Custom release notes file
-/release-dev --release-notes ./CUSTOM_NOTES.md
+/dev:release --release-notes ./CUSTOM_NOTES.md
 ```
 
 ### Platform Options
 ```bash
 # Publish to specific platforms
-/release-dev --github      # GitHub only
-/release-dev --gitlab      # GitLab only
-/release-dev --npm         # Also publish to npm
-/release-dev --pypi        # Also publish to PyPI
-/release-dev --docker      # Build and push Docker image
+/dev:release --github      # GitHub only
+/dev:release --gitlab      # GitLab only
+/dev:release --npm         # Also publish to npm
+/dev:release --pypi        # Also publish to PyPI
+/dev:release --docker      # Build and push Docker image
 
 # Multi-platform release
-/release-dev --github --npm --docker
+/dev:release --github --npm --docker
 ```
 
 ### Pre-release Options
 ```bash
 # Create pre-release versions
-/release-dev --pre-release alpha
-/release-dev --pre-release beta
-/release-dev --pre-release rc
+/dev:release --pre-release alpha
+/dev:release --pre-release beta
+/dev:release --pre-release rc
 
 # Example: v1.2.3-beta.1
-/release-dev --minor --pre-release beta
+/dev:release --minor --pre-release beta
 ```
 
 ## Workflow Stages
@@ -360,7 +360,7 @@ Links:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Monitor release metrics
-   → /performance-report
+   → /learn:performance
 
 2. Announce release to team
    → Draft announcement with highlights
@@ -470,26 +470,26 @@ The `/release-dev` command integrates with the autonomous learning system:
 ### Pre-Release Validation
 ```bash
 # Validate before releasing
-/validate-fullstack
-/quality-check
-/release-dev
+/validate:fullstack
+/analyze:quality
+/dev:release
 ```
 
 ### Post-Release Monitoring
 ```bash
 # Monitor after release
-/release-dev
-/performance-report
-/learning-analytics
+/dev:release
+/learn:performance
+/learn:analytics
 ```
 
 ### Integrated Workflow
 ```bash
 # Complete development cycle
-/dev-auto "add new feature"
+/dev:auto "add new feature"
 # ... development happens ...
-/quality-check
-/release-dev
+/analyze:quality
+/dev:release
 ```
 
 ## Troubleshooting
@@ -497,23 +497,23 @@ The `/release-dev` command integrates with the autonomous learning system:
 ### Quality Check Failed
 ```bash
 # View detailed quality report
-/quality-check --verbose
+/analyze:quality --verbose
 
 # Fix issues and retry
-/release-dev --retry
+/dev:release --retry
 
 # Skip validation (not recommended)
-/release-dev --skip-validation --force
+/dev:release --skip-validation --force
 ```
 
 ### Version Conflict
 ```bash
 # Reset version detection
-/release-dev --version 3.4.0 --force
+/dev:release --version 3.4.0 --force
 
 # Manual version update
 edit .claude-plugin/plugin.json
-/release-dev --skip-version-update
+/dev:release --skip-version-update
 ```
 
 ### Git Operation Failed
@@ -523,7 +523,7 @@ git status
 git log --oneline -5
 
 # Retry with verbose logging
-/release-dev --verbose --retry
+/dev:release --verbose --retry
 ```
 
 ### Platform Publishing Failed
@@ -535,7 +535,7 @@ npm whoami        # npm
 docker info       # Docker
 
 # Retry specific platform
-/release-dev --github --retry
+/dev:release --github --retry
 ```
 
 ## Best Practices

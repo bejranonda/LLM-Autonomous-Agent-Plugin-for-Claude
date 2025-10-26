@@ -1,5 +1,5 @@
 ---
-name: gui-debug
+name: debug:gui
 description: Comprehensive GUI validation, debugging, and performance monitoring for entire graphical user interface system (web dashboard, CLI interface, visual components) with automated diagnostics and issue resolution
 
 delegates-to: autonomous-agent:orchestrator
@@ -35,19 +35,19 @@ Run comprehensive validation, debugging, and performance analysis of the entire 
 
 ```bash
 # Complete GUI system validation (recommended for first time)
-/gui-debug
+/debug:gui
 
 # Quick health check (45 seconds)
-/gui-debug --quick-check
+/debug:gui --quick-check
 
 # Web dashboard focused validation
-/gui-debug --web-dashboard
+/debug:gui --web-dashboard
 
 # CLI interface focused validation
-/gui-debug --cli-interface
+/debug:gui --cli-interface
 
 # Visual components validation
-/gui-debug --visual-components
+/debug:gui --visual-components
 
 # Cross-platform compatibility testing
 /gui-debug --cross-platform

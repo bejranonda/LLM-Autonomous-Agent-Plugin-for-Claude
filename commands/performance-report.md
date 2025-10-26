@@ -1,5 +1,5 @@
 ---
-name: performance-report
+name: learn:performance
 description: Command for performance report
 delegates-to: autonomous-agent:orchestrator
 ---
@@ -22,7 +22,7 @@ Generate comprehensive performance analytics report showing learning effectivene
 ## Usage
 
 ```bash
-/performance-report
+/learn:performance
 ```
 
 ## What You'll Get

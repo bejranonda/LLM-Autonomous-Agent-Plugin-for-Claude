@@ -45,14 +45,29 @@ skills/                              # 14 knowledge packages
 ├── validation-standards/           # Tool validation & consistency checks (v1.7+)
 └── fullstack-validation/           # Full-stack validation methodology (NEW v2.0)
 
-commands/                            # 15 slash commands
-├── validate-fullstack.md           # Full-stack validation & auto-fix (NEW v2.0)
-├── auto-analyze.md                 # Autonomous project analysis
-├── quality-check.md                # Comprehensive quality control
-├── learn-patterns.md               # Initialize pattern learning
-├── performance-report.md           # Performance analytics dashboard (v1.2+)
-├── recommend.md                    # Smart workflow recommendations (v1.3+)
-└── validate.md                     # Comprehensive validation audit (v1.7+)
+commands/                            # 22 slash commands (7 categories)
+├── dev:auto                        # Autonomous development workflow
+├── dev:release                     # Release management workflow
+├── dev:pr-review                   # Pull request review
+├── analyze:project                 # Autonomous project analysis
+├── analyze:quality                 # Comprehensive quality control
+├── analyze:static                  # Static code analysis
+├── analyze:dependencies            # Dependency vulnerability scanning
+├── validate:all                    # Comprehensive validation audit (v1.7+)
+├── validate:fullstack              # Full-stack validation & auto-fix (NEW v2.0)
+├── validate:plugin                 # Claude plugin validation
+├── validate:patterns               # Pattern validation
+├── debug:eval                      # Evaluation debugging
+├── debug:gui                       # GUI debugging
+├── learn:init                      # Initialize pattern learning
+├── learn:analytics                 # Learning analytics
+├── learn:performance               # Performance analytics dashboard (v1.2+)
+├── learn:predict                   # Predictive analytics
+├── workspace:organize              # Workspace organization
+├── workspace:reports               # Report organization
+├── workspace:improve               # Plugin improvement
+├── monitor:dashboard               # Real-time monitoring dashboard
+└── monitor:recommend               # Smart workflow recommendations (v1.3+)
 
 patterns/                            # Auto-fix pattern database (NEW v2.0)
 └── autofix-patterns.json           # 24 patterns with 89% avg success rate
@@ -158,13 +173,13 @@ Since this is a plugin definition (not executable code), testing involves:
    cd /path/to/test-project
 
    # Initialize pattern learning
-   /learn-patterns
+   /learn:init
 
    # Run autonomous analysis
-   /auto-analyze
+   /analyze:project
 
    # Test quality control
-   /quality-check
+   /analyze:quality
    ```
 
 3. **Verify pattern storage**:
@@ -506,7 +521,7 @@ Comprehensive validation and auto-fix for full-stack applications. Validates bac
 
 ### Key Features
 
-**Full-Stack Validation** (`/autonomous-agent:validate-fullstack`):
+**Full-Stack Validation** (`/validate:fullstack`):
 - **Backend**: Dependencies, type hints, tests, API schema, database migrations, SQLAlchemy 2.0 compatibility
 - **Frontend**: TypeScript, builds, dependencies, bundle size, ESM/CommonJS conflicts
 - **API Contracts**: Frontend ↔ Backend endpoint matching, type synchronization, error handling

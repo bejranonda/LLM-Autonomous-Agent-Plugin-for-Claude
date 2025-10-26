@@ -1,12 +1,12 @@
 ---
-name: dev-auto
+name: dev:auto
 description: Command for dev auto
 delegates-to: autonomous-agent:orchestrator
 ---
 
 # Dev-Auto Command
 
-## Command: `/dev-auto`
+## Command: `/dev:auto`
 
 Fully autonomous development from requirements to release-ready implementation. This command handles the entire development lifecycle including planning, implementation, testing, debugging, validation, and optional release - all automatically with minimal human intervention.
 
@@ -34,61 +34,61 @@ Fully autonomous development from requirements to release-ready implementation. 
 ### Basic Usage
 ```bash
 # Simple feature request
-/dev-auto "add MQTT broker with certificate support"
+/dev:auto "add MQTT broker with certificate support"
 
 # Complex feature with multiple parts
-/dev-auto "implement user authentication with JWT, including login, logout, and token refresh"
+/dev:auto "implement user authentication with JWT, including login, logout, and token refresh"
 
 # Bug fix with testing
-/dev-auto "fix memory leak in data processing module and add comprehensive tests"
+/dev:auto "fix memory leak in data processing module and add comprehensive tests"
 
 # Refactoring task
-/dev-auto "refactor authentication module to use dependency injection pattern"
+/dev:auto "refactor authentication module to use dependency injection pattern"
 ```
 
 ### Advanced Options
 ```bash
 # Development with automatic release
-/dev-auto "add email notification system" --auto-release
+/dev:auto "add email notification system" --auto-release
 
 # Specify quality threshold (default: 85)
-/dev-auto "add caching layer" --quality-threshold 90
+/dev:auto "add caching layer" --quality-threshold 90
 
 # Maximum debug iterations per milestone (default: 5)
-/dev-auto "fix login bug" --max-debug-iterations 3
+/dev:auto "fix login bug" --max-debug-iterations 3
 
 # Skip tests (not recommended)
-/dev-auto "update documentation" --skip-tests
+/dev:auto "update documentation" --skip-tests
 
 # Verbose logging for debugging
-/dev-auto "implement API endpoint" --verbose
+/dev:auto "implement API endpoint" --verbose
 
 # Dry run (planning only, no implementation)
-/dev-auto "add OAuth support" --dry-run
+/dev:auto "add OAuth support" --dry-run
 ```
 
 ### Incremental Commit Options
 ```bash
 # Commit frequency
-/dev-auto "large feature" --commit-per-milestone  # Default
-/dev-auto "large feature" --commit-per-file       # More frequent
-/dev-auto "large feature" --commit-per-step       # Very frequent
+/dev:auto "large feature" --commit-per-milestone  # Default
+/dev:auto "large feature" --commit-per-file       # More frequent
+/dev:auto "large feature" --commit-per-step       # Very frequent
 
 # Skip commits (single commit at end)
-/dev-auto "small feature" --no-incremental-commits
+/dev:auto "small feature" --no-incremental-commits
 ```
 
 ### Testing Options
 ```bash
 # Test types to run
-/dev-auto "add API" --run-unit-tests --run-integration-tests
-/dev-auto "add UI" --run-e2e-tests
+/dev:auto "add API" --run-unit-tests --run-integration-tests
+/dev:auto "add UI" --run-e2e-tests
 
 # Test coverage requirement (default: 80%)
-/dev-auto "add feature" --test-coverage 90
+/dev:auto "add feature" --test-coverage 90
 
 # Generate tests automatically
-/dev-auto "add feature" --auto-generate-tests
+/dev:auto "add feature" --auto-generate-tests
 ```
 
 ## Development Workflow
@@ -415,16 +415,16 @@ All requirements satisfied!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. [High Priority] Test MQTT integration end-to-end
-   → /dev-auto "add integration tests for MQTT with real broker"
+   → /dev:auto "add integration tests for MQTT with real broker"
 
 2. [Recommended] Release this feature
-   → /release-dev --minor
+   → /dev:release --minor
 
 3. [Optional] Add monitoring for MQTT connection
-   → /dev-auto "add prometheus metrics for MQTT"
+   → /dev:auto "add prometheus metrics for MQTT"
 
 4. [Learning] View development analytics
-   → /performance-report
+   → /learn:performance
 
 Choose option (1-4) or type custom command:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -437,9 +437,9 @@ Choose option (1-4) or type custom command:
 🚀 AUTO-RELEASE TRIGGERED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Triggering /release-dev...
+Triggering /dev:release...
 
-[Release workflow output here - see /release-dev docs]
+[Release workflow output here - see /dev:release docs]
 
 Release: v3.5.1 ✅
 Links:
@@ -642,36 +642,36 @@ The `/dev-auto` command deeply integrates with pattern learning:
 ### Complete Development Workflow
 ```bash
 # Plan feature
-/dev-auto "add feature" --dry-run
+/dev:auto "add feature" --dry-run
 
 # Implement feature
-/dev-auto "add feature"
+/dev:auto "add feature"
 
 # Validate quality
-/quality-check
+/analyze:quality
 
 # Release
-/release-dev
+/dev:release
 ```
 
 ### With Validation Commands
 ```bash
 # Development with validation
-/dev-auto "implement API"
-/validate-fullstack
-/static-analysis
+/dev:auto "implement API"
+/validate:fullstack
+/analyze:static
 ```
 
 ### With Learning Commands
 ```bash
 # Check development patterns
-/learning-analytics
+/learn:analytics
 
 # Development with pattern awareness
-/dev-auto "similar feature to previous"
+/dev:auto "similar feature to previous"
 
 # Review performance
-/performance-report
+/learn:performance
 ```
 
 ## Agent Delegation
@@ -704,19 +704,19 @@ Auto-loads relevant skills based on task:
 ### Writing Good Requirements
 ```bash
 # Good: Specific and actionable
-/dev-auto "add REST API endpoint for user registration with email validation"
+/dev:auto "add REST API endpoint for user registration with email validation"
 
 # Bad: Too vague
-/dev-auto "make the app better"
+/dev:auto "make the app better"
 
 # Good: Clear scope
-/dev-auto "refactor database layer to use repository pattern"
+/dev:auto "refactor database layer to use repository pattern"
 
 # Bad: Too broad
-/dev-auto "fix everything"
+/dev:auto "fix everything"
 
 # Good: Includes acceptance criteria
-/dev-auto "add caching with Redis, must support TTL and invalidation"
+/dev:auto "add caching with Redis, must support TTL and invalidation"
 ```
 
 ### When to Use --auto-release
@@ -742,10 +742,10 @@ Auto-loads relevant skills based on task:
 ### Development Stuck in Loop
 ```bash
 # Check current status
-/dev-auto status
+/dev:auto status
 
 # Force exit debug loop
-/dev-auto abort
+/dev:auto abort
 
 # View detailed logs
 cat .claude/logs/dev-auto-current.log
@@ -754,25 +754,25 @@ cat .claude/logs/dev-auto-current.log
 ### Tests Keep Failing
 ```bash
 # Increase max debug iterations
-/dev-auto "feature" --max-debug-iterations 10
+/dev:auto "feature" --max-debug-iterations 10
 
 # Skip specific test types
-/dev-auto "feature" --skip-integration-tests
+/dev:auto "feature" --skip-integration-tests
 
 # Manual fix mode
-/dev-auto "feature" --manual-fix-on-failure
+/dev:auto "feature" --manual-fix-on-failure
 ```
 
 ### Quality Check Fails
 ```bash
 # Lower threshold temporarily
-/dev-auto "feature" --quality-threshold 75
+/dev:auto "feature" --quality-threshold 75
 
 # Skip quality check (not recommended)
-/dev-auto "feature" --skip-quality-check
+/dev:auto "feature" --skip-quality-check
 
 # Run quality check separately
-/quality-check
+/analyze:quality
 ```
 
 ## Performance Metrics

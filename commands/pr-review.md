@@ -1,5 +1,5 @@
 ---
-name: pr-review
+name: dev:pr-review
 description: Comprehensive pull request review with summaries, line-by-line analysis, security scanning, and automated fixes
 
 delegates-to: autonomous-agent:pr-reviewer
@@ -11,14 +11,14 @@ Execute a comprehensive CodeRabbit-style review of a pull request with automated
 ## Usage
 
 ```bash
-/pr-review [PR_NUMBER|BRANCH_NAME]
+/dev:pr-review [PR_NUMBER|BRANCH_NAME]
 ```
 
 **Examples**:
 ```bash
-/pr-review 123              # Review PR #123
-/pr-review feature/auth     # Review branch against main
-/pr-review                  # Review current branch changes
+/dev:pr-review 123              # Review PR #123
+/dev:pr-review feature/auth     # Review branch against main
+/dev:pr-review                  # Review current branch changes
 ```
 
 ## Workflow
@@ -627,8 +627,8 @@ After review:
 ```bash
 /apply-pr-fixes {PR_NUMBER}     # Apply all auto-fixable issues
 /apply-fix {ISSUE_ID}           # Apply specific fix
-/pr-review-history              # Show review history
-/pr-review-analytics            # Review performance analytics
+/dev:pr-review-history          # Show review history
+/learn:analytics                # Review performance analytics
 ```
 
 ---

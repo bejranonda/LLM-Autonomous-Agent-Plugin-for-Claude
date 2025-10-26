@@ -274,7 +274,7 @@ Prioritized list of optimization suggestions
 
 ## When to Run
 
-1. **On Demand**: User requests performance analysis via `/performance-report`
+1. **On Demand**: User requests performance analysis via `/learn:performance`
 2. **Periodic**: After every 10 tasks (automated by orchestrator)
 3. **Milestone**: When reaching pattern/quality milestones
 4. **Troubleshooting**: When quality drops or learning stalls

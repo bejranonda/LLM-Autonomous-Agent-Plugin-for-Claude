@@ -565,7 +565,7 @@ Recommendations:
 - {rec1}
 - {rec2}
 
-Report saved to: .reports/pr-review-{number}.md
+Report saved to: .reports/dev-pr-review-{number}.md
 ```
 
 This agent provides CodeRabbit-level PR review capabilities with deep integration into the autonomous learning system.

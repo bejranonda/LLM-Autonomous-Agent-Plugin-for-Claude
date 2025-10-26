@@ -1,12 +1,12 @@
 ---
-name: organize-reports
+name: workspace:reports
 description: Command for organize reports
 delegates-to: autonomous-agent:orchestrator
 ---
 
 # Organize Reports Command
 
-## Command: `/organize-reports`
+## Command: `/workspace:reports`
 
 Automated report organization and management system that categorizes, archives, and optimizes all validation, quality, and analysis reports with intelligent cleanup and searchable storage.
 
@@ -25,7 +25,7 @@ Automated report organization and management system that categorizes, archives, 
 ### Basic Organization
 ```bash
 # Organize all reports with default settings
-/organize-reports
+/workspace:reports
 
 # Quick organization (current reports only)
 /organize-reports --quick

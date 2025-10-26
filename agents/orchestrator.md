@@ -628,14 +628,14 @@ Patterns Stored: X new patterns in .claude-patterns/
 
 **Examples by Command Type**:
 
-**/auto-analyze Terminal Output** (concise):
+**/analyze:project Terminal Output** (concise):
 - Status + quality score
 - Top 3 findings (e.g., failing tests, missing docs)
 - Top 3 recommendations with impact
 - File path to detailed report
 - Execution time
 
-**/auto-analyze File Report** (detailed):
+**/analyze:project File Report** (detailed):
 - Complete project context
 - Full quality assessment breakdown
 - All findings with file/line references
@@ -643,47 +643,47 @@ Patterns Stored: X new patterns in .claude-patterns/
 - Pattern learning status
 - Charts and metrics
 
-**/quality-check Terminal Output** (concise):
+**/analyze:quality Terminal Output** (concise):
 - Status + score + trend
 - Quality breakdown summary (tests, standards, docs)
 - Auto-fix actions summary
 - Top 3 remaining issues
 - File path to detailed report
 
-**/quality-check File Report** (detailed):
+**/analyze:quality File Report** (detailed):
 - Complete quality breakdown
 - All auto-fix actions taken
 - All remaining issues with details
 - Trend analysis with charts
 - Full recommendations
 
-**/learn-patterns Terminal Output** (concise):
+**/learn:init Terminal Output** (concise):
 - Project type detected
 - Number of patterns identified
 - Database location
 - Top 3 next steps
 - File path to detailed report
 
-**/learn-patterns File Report** (detailed):
+**/learn:init File Report** (detailed):
 - Complete project analysis
 - All detected patterns
 - Framework and technology details
 - Baseline metrics
 - Comprehensive next steps
 
-**/performance-report Terminal Output** (concise):
+**/learn:performance Terminal Output** (concise):
 - Executive summary (patterns, trend, top skill)
 - Top 3 recommendations with impact
 - File path (includes charts, trends, complete metrics)
 
-**/performance-report File Report** (detailed):
+**/learn:performance File Report** (detailed):
 - Complete analytics dashboard
 - ASCII charts for trends
 - All skill/agent performance metrics
 - All recommendations
 - Full analysis
 
-**/recommend Terminal Output** (concise):
+**/monitor:recommend Terminal Output** (concise):
 - Recommended approach + confidence
 - Expected quality/time
 - Skills and agents to use
@@ -691,7 +691,7 @@ Patterns Stored: X new patterns in .claude-patterns/
 - Risk level + mitigation
 - File path to detailed report
 
-**/recommend File Report** (detailed):
+**/monitor:recommend File Report** (detailed):
 - Complete approach details
 - All alternatives compared
 - Full risk assessment
@@ -1095,7 +1095,7 @@ async function after_documentation_update(files_modified) {
 4. **After Doc Updates**: Check version/path consistency
 5. **Periodic**: Every 25 tasks, run comprehensive validation
 
-**Manual Trigger**: User can run `/validate` for full audit
+**Manual Trigger**: User can run `/validate:all` for full audit
 
 ### Session State Tracking
 
@@ -1148,7 +1148,7 @@ async function generate_contextual_suggestions(task_result) {
       priority: 'high',
       label: 'Improve Quality',
       description: `Quality score is ${context.quality_score}/100. Run quality check to reach 85+.`,
-      command: '/quality-check',
+      command: '/analyze:quality',
       estimated_time: '2-5 minutes'
     })
   }
@@ -1158,7 +1158,7 @@ async function generate_contextual_suggestions(task_result) {
       priority: 'high',
       label: 'Fix Failing Tests',
       description: `${context.tests_failing} tests are failing. Auto-debug and fix.`,
-      command: `/dev-auto "fix failing tests"`,
+      command: `/dev:auto "fix failing tests"`,
       estimated_time: '5-15 minutes'
     })
   }
@@ -1169,7 +1169,7 @@ async function generate_contextual_suggestions(task_result) {
       priority: 'recommended',
       label: 'Release Feature',
       description: 'Feature is complete and tested. Create release.',
-      command: '/release-dev --minor',
+      command: '/dev:release --minor',
       estimated_time: '2-3 minutes'
     })
   }
@@ -1179,7 +1179,7 @@ async function generate_contextual_suggestions(task_result) {
       priority: 'recommended',
       label: 'Update Documentation',
       description: `Documentation coverage is ${context.documentation_coverage}%. Generate docs.`,
-      command: `/dev-auto "update documentation for ${context.feature_name}"`,
+      command: `/dev:auto "update documentation for ${context.feature_name}"`,
       estimated_time: '5-10 minutes'
     })
   }
@@ -1190,7 +1190,7 @@ async function generate_contextual_suggestions(task_result) {
       priority: 'optional',
       label: 'Optimize Performance',
       description: `Found ${context.performance_bottlenecks} performance bottlenecks.`,
-      command: `/dev-auto "optimize ${context.bottleneck_location}"`,
+      command: `/dev:auto "optimize ${context.bottleneck_location}"`,
       estimated_time: '15-30 minutes'
     })
   }
@@ -1201,7 +1201,7 @@ async function generate_contextual_suggestions(task_result) {
       priority: 'optional',
       label: 'View Analytics',
       description: 'Review performance improvements and learned patterns.',
-      command: '/learning-analytics',
+      command: '/learn:analytics',
       estimated_time: '1 minute'
     })
   }
@@ -1222,19 +1222,19 @@ async function generate_contextual_suggestions(task_result) {
 Based on analysis, here are recommended next steps:
 
 1. [High Priority] Fix Failing Tests
-   → /dev-auto "fix failing tests"
+   → /dev:auto "fix failing tests"
    ⏱ Estimated: 5-15 minutes
 
 2. [Recommended] Update Documentation
-   → /dev-auto "update documentation for auth module"
+   → /dev:auto "update documentation for auth module"
    ⏱ Estimated: 5-10 minutes
 
 3. [Optional] Optimize Performance
-   → /dev-auto "optimize database queries"
+   → /dev:auto "optimize database queries"
    ⏱ Estimated: 15-30 minutes
 
 4. [Learning] View Performance Analytics
-   → /learning-analytics
+   → /learn:analytics
    ⏱ Estimated: 1 minute
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1615,7 +1615,7 @@ async function generate_health_suggestions(health_score) {
       priority: 'high',
       label: 'Organize Workspace',
       description: `Workspace health is ${health_score}/100. Time to clean up.`,
-      command: '/organize-workspace',
+      command: '/workspace:organize',
       estimated_time: '1-2 minutes',
       expected_improvement: '+15-25 points'
     })
@@ -1626,7 +1626,7 @@ async function generate_health_suggestions(health_score) {
       priority: 'recommended',
       label: 'Improve Organization',
       description: `Workspace health is ${health_score}/100. Minor improvements available.`,
-      command: '/organize-workspace --dry-run',
+      command: '/workspace:organize --dry-run',
       estimated_time: '30 seconds',
       expected_improvement: '+5-15 points'
     })
@@ -1638,7 +1638,7 @@ async function generate_health_suggestions(health_score) {
       priority: 'recommended',
       label: 'Consolidate Reports',
       description: 'Reports scattered in root directory. Consolidate to docs/reports/.',
-      command: '/organize-workspace --reports-only',
+      command: '/workspace:organize --reports-only',
       estimated_time: '45 seconds'
     })
   }
@@ -1667,7 +1667,7 @@ async function generate_health_suggestions(health_score) {
 
 ### Automatic Cleanup Triggers
 
-**Suggest `/organize-workspace` when**:
+**Suggest `/workspace:organize` when**:
 - Health score drops below 70/100
 - More than 5 report files in root directory
 - Broken links detected in documentation
@@ -1685,7 +1685,7 @@ async function generate_health_suggestions(health_score) {
 
 📈 Trend: Improving (+8 points since last check)
 
-💡 Recommendation: Run /organize-workspace to improve score to 90+
+💡 Recommendation: Run /workspace:organize to improve score to 90+
 ```
 
 ### Integration with Learning System

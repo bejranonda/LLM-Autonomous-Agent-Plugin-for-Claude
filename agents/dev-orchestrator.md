@@ -731,7 +731,7 @@ async function generateSuggestions(implementation) {
     suggestions.push({
       priority: 'high',
       action: 'Add integration tests',
-      command: `/dev-auto "add integration tests for ${implementation.feature}"`
+      command: `/dev:auto "add integration tests for ${implementation.feature}"`
     });
   }
 
@@ -740,7 +740,7 @@ async function generateSuggestions(implementation) {
     suggestions.push({
       priority: 'recommended',
       action: 'Release this feature',
-      command: `/release-dev --minor`
+      command: `/dev:release --minor`
     });
   }
 
@@ -749,7 +749,7 @@ async function generateSuggestions(implementation) {
     suggestions.push({
       priority: 'optional',
       action: 'Optimize performance',
-      command: `/dev-auto "optimize ${identifyBottleneck(implementation)}"`
+      command: `/dev:auto "optimize ${identifyBottleneck(implementation)}"`
     });
   }
 
