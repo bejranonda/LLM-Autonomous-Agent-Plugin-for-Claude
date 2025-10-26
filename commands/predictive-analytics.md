@@ -1,7 +1,8 @@
 ---
 name: predictive-analytics
 description: Generate advanced predictive insights and optimization recommendations using machine learning-inspired analytics
----
+
+delegates-to: autonomous-agent:orchestrator
 
 # Predictive Analytics Command
 
@@ -288,7 +289,9 @@ Insights Database (.claude-patterns/insights.json)
 
 ### Resource Usage
 | Component | CPU | Memory | Storage |
-|-----------|-----|--------|---------|
+|---
+
+--------|-----|--------|---------|
 | Prediction Engine | <2% | ~100MB | ~5MB (prediction history) |
 | Data Analysis | <1% | ~50MB | Minimal (reads existing data) |
 | Report Generation | <1% | ~30MB | None |

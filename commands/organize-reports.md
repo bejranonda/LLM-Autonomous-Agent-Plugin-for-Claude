@@ -1,3 +1,9 @@
+---
+name: organize-reports
+description: Command for organize reports
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Organize Reports Command
 
 ## Command: `/organize-reports`

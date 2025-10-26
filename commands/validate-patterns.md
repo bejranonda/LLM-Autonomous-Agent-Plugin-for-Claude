@@ -1,7 +1,8 @@
 ---
 name: validate-patterns
 description: Validate pattern learning system and generate comprehensive reports
----
+
+delegates-to: autonomous-agent:orchestrator
 
 # Command: `/validate-patterns`
 

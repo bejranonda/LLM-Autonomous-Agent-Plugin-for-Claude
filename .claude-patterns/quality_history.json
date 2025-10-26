@@ -684,12 +684,80 @@
       "pass": true,
       "threshold_met": true,
       "assessment_type": "debugging-performance"
+    },
+    {
+      "assessment_id": "auto-refactoring-20251026-190421",
+      "timestamp": "2025-10-26T19:04:21.874637Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 32,
+        "standards_compliance": 10,
+        "documentation": 42,
+        "pattern_adherence": 7,
+        "code_metrics": 7
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Test Model",
+        "task_description": "Test refactoring task",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis"
+        ],
+        "agents_delegated": [],
+        "files_modified": 1,
+        "lines_changed": 25,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-refactoring-20251026-193226",
+      "timestamp": "2025-10-26T19:32:26.201881Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 32,
+        "standards_compliance": 10,
+        "documentation": 42,
+        "pattern_adherence": 7,
+        "code_metrics": 7
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Test Model",
+        "task_description": "Test refactoring task",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis"
+        ],
+        "agents_delegated": [],
+        "files_modified": 1,
+        "lines_changed": 25,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true
     }
   ],
   "statistics": {
-    "avg_quality_score": 92.0,
-    "total_assessments": 16,
-    "passing_rate": 0.9375,
+    "avg_quality_score": 93.5,
+    "total_assessments": 21,
+    "passing_rate": 0.9523809523809523,
     "trend": "improving"
   },
   "baselines": {
@@ -699,10 +767,11 @@
     "pattern_adherence": 100
   },
   "metadata": {
-    "last_assessment": "2025-10-23T21:14:39.244021+00:00",
+    "last_assessment": "2025-10-26T19:32:26.201881Z",
     "version": "1.1.0",
     "improvement_trend": "Quality framework validated - 87/100 passing score demonstrates autonomous quality control",
     "learning_velocity": "pattern learning and quality control integration proven",
-    "quality_trajectory": "89 â†’ 95 â†’ 98 â†’ 96 â†’ 97 â†’ 99 â†’ 98 â†’ 87 â†’ 92 (pattern storage integration fixed)"
+    "quality_trajectory": "89 â†’ 95 â†’ 98 â†’ 96 â†’ 97 â†’ 99 â†’ 98 â†’ 87 â†’ 92 (pattern storage integration fixed)",
+    "auto_recording_count": 2
   }
 }

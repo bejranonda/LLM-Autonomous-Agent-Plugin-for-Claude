@@ -1,7 +1,8 @@
 ---
 name: gui-debug
 description: Comprehensive GUI validation, debugging, and performance monitoring for entire graphical user interface system (web dashboard, CLI interface, visual components) with automated diagnostics and issue resolution
----
+
+delegates-to: autonomous-agent:orchestrator
 
 # GUI Debug & Validation Command
 
@@ -67,7 +68,9 @@ Run comprehensive validation, debugging, and performance analysis of the entire 
 ## 🔧 Validation Options
 
 | Option | Description | Duration | When to Use |
-|--------|-------------|----------|-------------|
+|---
+
+-----|-------------|----------|-------------|
 | `--quick-check` | Basic health check for all GUI interfaces | 45s | Quick validation before use |
 | `--web-dashboard` | Web dashboard focused validation | 60s | Dashboard issues suspected |
 | `--cli-interface` | CLI interface focused validation | 30s | Command execution problems |

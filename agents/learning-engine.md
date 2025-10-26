@@ -1091,3 +1091,368 @@ async function learn_version_management_patterns(version_operation) {
   return version_pattern
 }
 ```
+
+## Automatic Performance Recording Integration (v2.1+)
+
+**Seamless Integration**: The learning engine now integrates with the automatic performance recording system to capture comprehensive metrics for all tasks.
+
+### Enhanced Pattern Capture with Performance Metrics
+
+**Performance-Enriched Pattern Structure**:
+```javascript
+async function capture_pattern_with_performance(task_data, performance_data) {
+  const enhanced_pattern = {
+    // Existing pattern structure
+    task_id: generate_uuid(),
+    timestamp: new Date().toISOString(),
+    task_type: classify_task(task_data.description),
+    task_description: task_data.description,
+    task_complexity: assess_complexity(task_data),
+
+    // Enhanced Execution Context with Performance
+    context: {
+      language: detect_language(task_data.files),
+      framework: detect_framework(task_data.files),
+      module_type: categorize_module(task_data.files),
+      file_count: task_data.files.length,
+      lines_changed: task_data.changes.lines,
+      duration_seconds: performance_data.duration_seconds,
+      success: performance_data.success,
+      quality_score: performance_data.quality_score
+    },
+
+    // Performance-Enhanced Execution Data
+    execution: {
+      skills_loaded: task_data.skills,
+      agents_delegated: task_data.agents,
+      approach_taken: task_data.approach,
+      tools_used: task_data.tools,
+      duration_seconds: performance_data.duration_seconds,
+
+      // NEW: Performance Metrics
+      performance_metrics: {
+        overall_score: performance_data.quality_score,
+        quality_improvement: performance_data.quality_improvement,
+        time_efficiency: performance_data.time_efficiency,
+        performance_index: performance_data.performance_index,
+        files_modified: performance_data.files_modified,
+        lines_changed: performance_data.lines_changed
+      }
+    },
+
+    // Enhanced Outcome with Performance Tracking
+    outcome: {
+      success: task_data.success,
+      quality_score: performance_data.quality_score,
+      tests_passing: task_data.tests_passing,
+      test_coverage_change: task_data.coverage_delta,
+      standards_compliance: task_data.standards_score,
+      documentation_coverage: task_data.docs_coverage,
+      errors_encountered: task_data.errors,
+      user_satisfaction: task_data.user_feedback,
+
+      // NEW: Performance Tracking
+      performance_recorded: true,
+      assessment_id: performance_data.assessment_id,
+      model_used: performance_data.model_used,
+      task_completed_at: performance_data.timestamp
+    },
+
+    // Enhanced Learning Insights
+    insights: {
+      what_worked: analyze_success_factors(task_data, performance_data),
+      what_failed: analyze_failure_factors(task_data, performance_data),
+      bottlenecks: identify_bottlenecks(task_data, performance_data),
+      optimization_opportunities: find_optimizations(task_data, performance_data),
+      lessons_learned: generate_lessons(task_data, performance_data),
+
+      // NEW: Performance Insights
+      performance_insights: {
+        efficiency_rating: calculate_efficiency_rating(performance_data),
+        quality_trajectory: analyze_quality_trajectory(performance_data),
+        model_effectiveness: assess_model_effectiveness(performance_data),
+        tool_effectiveness: assess_tool_effectiveness(task_data, performance_data)
+      }
+    },
+
+    // Reuse Tracking
+    reuse_count: 0,
+    last_reused: null,
+    reuse_success_rate: null,
+
+    // NEW: Performance Metadata
+    performance_metadata: {
+      recorded_by: "automatic_performance_recorder",
+      integration_version: "2.1+",
+      dashboard_compatible: true,
+      quality_framework_version: "2.0+"
+    }
+  }
+
+  await store_pattern(enhanced_pattern)
+  await update_effectiveness_metrics_with_performance(enhanced_pattern)
+  await analyze_performance_trends(enhanced_pattern)
+
+  return enhanced_pattern
+}
+```
+
+### Performance-Enhanced Skill Effectiveness Tracking
+
+**Updated Skill Metrics with Performance Data**:
+```javascript
+async function update_skill_effectiveness_with_performance(skill_name, task_outcome, performance_data) {
+  const metrics = load_metrics(skill_name)
+
+  // Existing metrics
+  metrics.total_uses++
+  if (task_outcome.success) {
+    metrics.successful_uses++
+  }
+  metrics.success_rate = metrics.successful_uses / metrics.total_uses
+
+  // Enhanced performance metrics
+  metrics.performance_scores.push(performance_data.performance_index)
+  metrics.avg_performance_index = average(metrics.performance_scores)
+
+  // Time efficiency tracking
+  metrics.execution_times.push(performance_data.duration_seconds)
+  metrics.avg_execution_time = average(metrics.execution_times)
+
+  // Quality contribution tracking
+  metrics.quality_contributions.push(performance_data.quality_improvement)
+  metrics.avg_quality_contribution = average(metrics.quality_contributions)
+
+  // Task type performance
+  if (!metrics.by_task_type_performance[task_outcome.type]) {
+    metrics.by_task_type_performance[task_outcome.type] = {
+      uses: 0,
+      avg_performance: 0,
+      avg_quality_score: 0,
+      avg_time_efficiency: 0
+    }
+  }
+
+  const type_metrics = metrics.by_task_type_performance[task_outcome.type]
+  type_metrics.uses++
+  type_metrics.performance_scores = type_metrics.performance_scores || []
+  type_metrics.performance_scores.push(performance_data.performance_index)
+  type_metrics.avg_performance = average(type_metrics.performance_scores)
+
+  // Performance-based recommendations
+  metrics.recommended_for = Object.entries(metrics.by_task_type_performance)
+    .filter(([type, data]) => data.avg_performance >= 80)
+    .map(([type, data]) => type)
+
+  // Performance-based anti-recommendations
+  metrics.not_recommended_for = Object.entries(metrics.by_task_type_performance)
+    .filter(([type, data]) => data.avg_performance < 60 && data.uses >= 3)
+    .map(([type, data]) => type)
+
+  save_metrics(skill_name, metrics)
+}
+```
+
+### Performance-Enhanced Agent Performance Tracking
+
+**Updated Agent Metrics with Performance Data**:
+```javascript
+async function track_agent_performance_with_performance(agent_name, task_data, performance_data) {
+  const perf = load_agent_performance(agent_name)
+
+  // Existing metrics
+  perf.total_delegations++
+  if (task_data.success) {
+    perf.successful_completions++
+  }
+  perf.success_rate = perf.successful_completions / perf.total_delegations
+
+  // Enhanced performance metrics
+  perf.performance_indices = perf.performance_indices || []
+  perf.performance_indices.push(performance_data.performance_index)
+  perf.avg_performance_index = average(perf.performance_indices)
+
+  // Time efficiency tracking
+  perf.execution_times.push(performance_data.duration_seconds)
+  perf.avg_execution_time = average(perf.execution_times)
+
+  // Quality score tracking
+  perf.quality_scores = perf.quality_scores || []
+  perf.quality_scores.push(performance_data.quality_score)
+  perf.avg_quality_score = average(perf.quality_scores)
+
+  // Task completion rate by type
+  if (!perf.task_type_performance[task_data.type]) {
+    perf.task_type_performance[task_data.type] = {
+      total_delegations: 0,
+      successful_completions: 0,
+      avg_performance_index: 0,
+      avg_quality_score: 0
+    }
+  }
+
+  const type_perf = perf.task_type_performance[task_data.type]
+  type_perf.total_delegations++
+  if (task_data.success) {
+    type_perf.successful_completions++
+  }
+  type_perf.performance_indices = type_perf.performance_indices || []
+  type_perf.performance_indices.push(performance_data.performance_index)
+  type_perf.avg_performance_index = average(type_perf.performance_indices)
+
+  // Calculate enhanced reliability score
+  perf.reliability_score = calculate_enhanced_reliability(
+    perf.success_rate,
+    perf.avg_performance_index,
+    perf.avg_quality_score,
+    perf.error_frequency
+  )
+
+  save_agent_performance(agent_name, perf)
+}
+```
+
+### Performance Trend Analysis Integration
+
+**Real-Time Performance Trend Analysis**:
+```javascript
+async function analyze_performance_trends(current_pattern) {
+  // Get recent patterns with performance data
+  const recent_patterns = await query_patterns({
+    timestamp_after: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // Last 30 days
+    has_performance_data: true,
+    sort_by: 'timestamp ASC'
+  })
+
+  if (recent_patterns.length < 5) {
+    return "insufficient_data_for_trends"
+  }
+
+  // Analyze performance trends
+  const performance_trends = {
+    quality_score_trend: calculate_trend(recent_patterns.map(p => p.outcome.quality_score)),
+    performance_index_trend: calculate_trend(recent_patterns.map(p => p.execution.performance_metrics.performance_index)),
+    time_efficiency_trend: calculate_trend(recent_patterns.map(p => 1 / (p.execution.duration_seconds / 60))), // Inverse time
+    success_rate_trend: calculate_trend(recent_patterns.map(p => p.outcome.success ? 1 : 0))
+  }
+
+  // Identify patterns in performance
+  const performance_patterns = identify_performance_patterns(recent_patterns)
+
+  // Generate performance recommendations
+  const recommendations = generate_performance_recommendations(performance_trends, performance_patterns)
+
+  // Store trend analysis
+  await store_performance_trend_analysis({
+    timestamp: new Date().toISOString(),
+    analysis_period: "30_days",
+    trends: performance_trends,
+    patterns: performance_patterns,
+    recommendations: recommendations
+  })
+
+  return {
+    trends: performance_trends,
+    patterns: performance_patterns,
+    recommendations: recommendations
+  }
+}
+```
+
+### Integration with Dashboard Performance System
+
+**Automatic Data Synchronization**:
+```javascript
+async function synchronize_with_dashboard_performance_system(pattern_data) {
+  // Ensure performance data is available for dashboard
+  const performance_record = {
+    assessment_id: pattern_data.outcome.assessment_id,
+    timestamp: pattern_data.timestamp,
+    task_type: pattern_data.task_type,
+    overall_score: pattern_data.outcome.quality_score,
+    breakdown: generate_score_breakdown(pattern_data),
+    details: {
+      auto_recorded: true,
+      model_used: pattern_data.outcome.model_used,
+      task_description: pattern_data.task_description,
+      task_complexity: pattern_data.task_complexity,
+      duration_seconds: pattern_data.execution.duration_seconds,
+      skills_used: pattern_data.execution.skills_loaded,
+      agents_delegated: pattern_data.execution.agents_delegated,
+      performance_index: pattern_data.execution.performance_metrics.performance_index,
+      quality_improvement: pattern_data.execution.performance_metrics.quality_improvement,
+      time_efficiency: pattern_data.execution.performance_metrics.time_efficiency
+    },
+    issues_found: pattern_data.insights.what_failed || [],
+    recommendations: pattern_data.insights.optimization_opportunities || [],
+    pass: pattern_data.outcome.quality_score >= 70,
+    auto_generated: true
+  }
+
+  // Add to quality history for dashboard compatibility
+  await add_to_quality_history(performance_record)
+
+  // Add to performance records
+  await add_to_performance_records(performance_record, pattern_data.outcome.model_used)
+
+  return performance_record
+}
+```
+
+### Enhanced Learning Integration
+
+**Performance-Aware Learning Loop**:
+```javascript
+// Enhanced automatic learning trigger (now includes performance)
+async function on_task_complete_with_performance(task_data, performance_data) {
+  // 1. ALWAYS capture pattern with performance data
+  await learning_engine.capture_pattern_with_performance(task_data, performance_data)
+
+  // 2. Update skill effectiveness with performance metrics
+  for (const skill of task_data.skills) {
+    await learning_engine.update_skill_effectiveness_with_performance(skill, task_data, performance_data)
+  }
+
+  // 3. Update agent performance with performance metrics
+  for (const agent of task_data.agents) {
+    await learning_engine.track_agent_performance_with_performance(agent, task_data, performance_data)
+  }
+
+  // 4. Analyze performance trends (every 10 tasks)
+  if (task_data.task_number % 10 === 0) {
+    await learning_engine.analyze_performance_trends()
+  }
+
+  // 5. Optimize configurations with performance data (every 25 tasks)
+  if (task_data.task_number % 25 === 0) {
+    await learning_engine.optimize_configurations_with_performance()
+  }
+
+  // 6. Synchronize with dashboard performance system
+  await learning_engine.synchronize_with_dashboard_performance_system({
+    ...task_data,
+    ...performance_data
+  })
+}
+```
+
+### Benefits of Performance Integration
+
+**Enhanced Learning Capabilities**:
+- **Quantitative Learning**: Performance metrics provide objective measures of success
+- **Trend Recognition**: Identify what approaches lead to better performance over time
+- **Model Effectiveness**: Track which models perform best for specific task types
+- **Tool Optimization**: Learn which skill combinations yield highest performance
+
+**Dashboard Integration Benefits**:
+- **Real-Time Learning Updates**: Dashboard shows immediate benefits of learning
+- **Performance-Based Recommendations**: Suggestions based on actual performance data
+- **Historical Learning Tracking**: See how learning improves performance over time
+- **Cross-Model Performance Insights**: Compare learning effectiveness across models
+
+**Continuous Improvement Loop**:
+```
+Task Completion → Performance Recording → Pattern Learning →
+Better Recommendations → Improved Task Performance →
+Better Learning Data → [Continuous Improvement Cycle]
+```

@@ -1,3 +1,9 @@
+---
+name: validate-fullstack
+description: Command for validate fullstack
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Validate Full-Stack Command
 
 **Slash command**: `/autonomous-agent:validate-fullstack`

@@ -1,7 +1,8 @@
 ---
 name: dashboard
 description: Launch improved real-time web dashboard with automatic port detection and robust error handling
----
+
+delegates-to: autonomous-agent:orchestrator
 
 # Real-Time Monitoring Dashboard
 
@@ -401,7 +402,9 @@ curl http://localhost:5000/api/recent-activity?limit=10
 ### Resource Usage
 
 | Component | CPU | Memory | Disk I/O |
-|-----------|-----|--------|----------|
+|---
+
+--------|-----|--------|----------|
 | Flask Server | <1% | ~50MB | Minimal |
 | Data Collection | <1% | ~20MB | 1-2 reads/30s |
 | Web UI | <1% | ~30MB | None (cached) |

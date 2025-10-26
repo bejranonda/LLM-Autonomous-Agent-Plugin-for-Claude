@@ -1,7 +1,8 @@
 ---
 name: scan-dependencies
 description: Scan project dependencies for known vulnerabilities across all package managers (Python, npm, Ruby, Go, Rust, Java, PHP, .NET)
----
+
+delegates-to: autonomous-agent:orchestrator
 
 # Dependency Vulnerability Scanner
 
@@ -110,7 +111,9 @@ Example:
 - High: 3 → 45 points
 - Medium: 7 → 56 points
 - Low: 3 → 9 points
---------------------------
+---
+
+-----------------------
 Total: 160 (capped at 100)
 Risk Score: 100/100 (EXTREME)
 ```

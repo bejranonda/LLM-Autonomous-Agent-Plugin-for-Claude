@@ -1,7 +1,8 @@
 ---
 name: learn-patterns
 description: Initialize pattern learning database and analyze project patterns
----
+
+delegates-to: autonomous-agent:orchestrator
 
 # Learn Patterns Command
 

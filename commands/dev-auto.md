@@ -1,3 +1,9 @@
+---
+name: dev-auto
+description: Command for dev auto
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Dev-Auto Command
 
 ## Command: `/dev-auto`

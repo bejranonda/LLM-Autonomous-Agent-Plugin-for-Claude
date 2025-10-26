@@ -1,7 +1,8 @@
 ---
 name: pr-review
 description: Comprehensive pull request review with summaries, line-by-line analysis, security scanning, and automated fixes
----
+
+delegates-to: autonomous-agent:pr-reviewer
 
 # Pull Request Review Command
 

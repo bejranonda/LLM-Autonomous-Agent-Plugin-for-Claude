@@ -1,3 +1,9 @@
+---
+name: performance-report
+description: Command for performance report
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Performance Report Command
 
 Generate comprehensive performance analytics report showing learning effectiveness, skill/agent performance trends, quality improvements, and optimization recommendations.

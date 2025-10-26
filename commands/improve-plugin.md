@@ -1,3 +1,9 @@
+---
+name: improve-plugin
+description: Command for improve plugin
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Improve Plugin Command
 
 ## Command: `/improve-plugin`

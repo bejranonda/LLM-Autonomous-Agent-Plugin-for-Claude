@@ -161,5 +161,31 @@
         }
       ]
     }
+  },
+  "Test Model": {
+    "total_tasks": 2,
+    "avg_score": 100.0,
+    "success_rate": 1.0,
+    "task_types": {
+      "refactoring": {
+        "count": 2,
+        "avg_score": 100.0
+      }
+    },
+    "performance_timeline": [
+      {
+        "timestamp": "2025-10-26T19:04:21.874637Z",
+        "score": 100,
+        "task_type": "refactoring",
+        "performance_index": 69.375
+      },
+      {
+        "timestamp": "2025-10-26T19:32:26.201881Z",
+        "score": 100,
+        "task_type": "refactoring",
+        "performance_index": 69.375
+      }
+    ],
+    "last_updated": "2025-10-26T19:32:26.201881Z"
   }
 }

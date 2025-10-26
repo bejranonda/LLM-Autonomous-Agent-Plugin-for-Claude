@@ -1,3 +1,9 @@
+---
+name: eval-debug
+description: Command for eval debug
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Debugging Performance Evaluation
 
 Measures AI debugging performance by analyzing and fixing real issues in the codebase.

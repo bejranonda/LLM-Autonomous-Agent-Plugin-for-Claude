@@ -1,3 +1,9 @@
+---
+name: recommend
+description: Command for recommend
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Recommend Command
 
 Get intelligent recommendations for optimal workflows, skill combinations, and agent delegations based on learned patterns before starting a task.

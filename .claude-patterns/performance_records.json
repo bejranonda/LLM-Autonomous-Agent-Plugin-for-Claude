@@ -1,0 +1,89 @@
+{
+  "version": "2.0.0",
+  "records": [
+    {
+      "assessment_id": "auto-refactoring-20251026-190421",
+      "timestamp": "2025-10-26T19:04:21.874637Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 32,
+        "standards_compliance": 10,
+        "documentation": 42,
+        "pattern_adherence": 7,
+        "code_metrics": 7
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Test Model",
+        "task_description": "Test refactoring task",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis"
+        ],
+        "agents_delegated": [],
+        "files_modified": 1,
+        "lines_changed": 25,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "model_used": "Test Model"
+    },
+    {
+      "assessment_id": "auto-refactoring-20251026-193226",
+      "timestamp": "2025-10-26T19:32:26.201881Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 32,
+        "standards_compliance": 10,
+        "documentation": 42,
+        "pattern_adherence": 7,
+        "code_metrics": 7
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Test Model",
+        "task_description": "Test refactoring task",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis"
+        ],
+        "agents_delegated": [],
+        "files_modified": 1,
+        "lines_changed": 25,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "model_used": "Test Model"
+    }
+  ],
+  "task_types": {
+    "refactoring": {
+      "count": 2,
+      "avg_score": 100.0,
+      "success_rate": 1.0
+    }
+  },
+  "model_metrics": {},
+  "metadata": {
+    "auto_recording_enabled": true,
+    "created": "2025-10-26T19:04:21.874247",
+    "last_updated": "2025-10-26T19:32:26.201881Z",
+    "total_records": 2
+  }
+}

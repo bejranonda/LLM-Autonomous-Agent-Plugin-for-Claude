@@ -1,3 +1,9 @@
+---
+name: git-release-workflow
+description: Command for git release workflow
+delegates-to: autonomous-agent:git-repository-manager
+---
+
 # Git Release Workflow Command
 
 ## Command: `/git-release-workflow`

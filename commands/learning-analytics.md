@@ -1,7 +1,8 @@
 ---
 name: learning-analytics
 description: Display comprehensive learning analytics dashboard showing pattern learning progress, skill effectiveness, prediction accuracy, and improvement trends
----
+
+delegates-to: autonomous-agent:orchestrator
 
 # Learning Analytics Dashboard
 

@@ -702,46 +702,244 @@ Patterns Stored: X new patterns in .claude-patterns/
 
 ## Automatic Learning Integration
 
-**CRITICAL**: After every task completion, **automatically and silently** trigger the learning engine:
+**CRITICAL**: After every task completion, **automatically and silently** trigger the learning engine and performance recording:
 
 ```javascript
 // This happens AUTOMATICALLY after every task - no user confirmation needed
 async function complete_task(task_data) {
+  const start_time = Date.now()
+
   // 1. Execute main task
   const result = await execute_task(task_data)
 
   // 2. Run quality assessment
   const quality = await assess_quality(result)
+  const end_time = Date.now()
 
-  // 3. AUTOMATIC LEARNING (Silent Background)
+  // 3. AUTOMATIC PERFORMANCE RECORDING (Silent Background)
+  const performance_data = {
+    task_type: task_data.type || classify_task(task_data.description),
+    description: task_data.description,
+    complexity: assess_complexity(task_data),
+    duration: Math.round((end_time - start_time) / 1000), // seconds
+    success: quality.overall_score >= 70,
+    skills_used: this.loaded_skills || [],
+    agents_delegated: this.delegated_agents || [],
+    files_modified: task_data.files_modified || 0,
+    lines_changed: task_data.lines_changed || 0,
+    quality_improvement: quality.improvement || 0,
+    issues_found: quality.issues_found || [],
+    recommendations: quality.recommendations || [],
+    best_practices_followed: quality.best_practices_met || true,
+    documentation_updated: task_data.documentation_updated || false,
+    timestamp: new Date().toISOString()
+  }
+
+  // Record performance metrics (compatible with dashboard)
+  await record_task_performance(performance_data, detect_current_model())
+
+  // 4. AUTOMATIC LEARNING (Silent Background)
   await delegate_to_learning_engine({
     task: task_data,
     result: result,
     quality: quality,
+    performance: performance_data,
     skills_used: this.loaded_skills,
     agents_delegated: this.delegated_agents,
-    duration: task_data.end_time - task_data.start_time
+    duration: performance_data.duration
   })
   // Learning engine runs silently - no output to user
 
-  // 4. Return results to user
+  // 5. Return results to user
   return result
 }
 ```
 
-**Learning Happens Every Time**:
-- ✓ After successful tasks → Learn what worked
-- ✓ After failed tasks → Learn what to avoid
-- ✓ After quality checks → Learn quality patterns
-- ✓ After delegations → Learn agent effectiveness
-- ✓ After skill usage → Learn skill effectiveness
+**Learning & Performance Recording Happen Every Time**:
+- ✓ After successful tasks → Learn what worked + record performance
+- ✓ After failed tasks → Learn what to avoid + record failure patterns
+- ✓ After quality checks → Learn quality patterns + record quality metrics
+- ✓ After delegations → Learn agent effectiveness + record delegation performance
+- ✓ After skill usage → Learn skill effectiveness + record skill performance
+- ✓ After ANY task → Automatic performance recording for dashboard display
 
-**User Never Sees Learning**:
-- Learning is background process
-- No "learning..." messages to user
+**User Never Sees Learning or Recording**:
+- Learning and recording are background processes
+- No "learning..." or "recording..." messages to user
 - No interruption of workflow
 - Just silent continuous improvement
 - Results show in better performance over time
+- Dashboard automatically updates with new performance data
+
+**Performance Recording Benefits**:
+- Dashboard shows all task types, not just assessments
+- Real-time performance tracking without manual commands
+- Historical performance data for trend analysis
+- Model-specific performance metrics
+- Task-type specific performance insights
+- Automatic quality improvement tracking
+
+## Automatic Performance Recording Integration (v2.1+)
+
+**CRITICAL**: Every task automatically records performance metrics for dashboard display and trend analysis.
+
+### Performance Data Capture
+
+**Task Metrics Collected**:
+```javascript
+const performance_metrics = {
+  // Task Classification
+  task_type: classify_task(task_data.description),  // refactoring, coding, documentation, etc.
+  task_complexity: assess_complexity(task_data),     // simple, medium, complex
+
+  // Execution Metrics
+  duration_seconds: actual_execution_time,
+  success: quality_score >= 70,
+  files_modified: count_files_modified(),
+  lines_changed: count_lines_changed(),
+
+  // Quality Metrics
+  quality_score: overall_quality_assessment,
+  quality_improvement: calculate_improvement_from_baseline(),
+  best_practices_followed: validate_best_practices(),
+
+  // Tool & Agent Usage
+  skills_used: loaded_skills_list,
+  agents_delegated: delegated_agents_list,
+  tools_used: track_tool_usage(),
+
+  // Context & Outcomes
+  issues_found: identified_issues,
+  recommendations: generated_recommendations,
+  documentation_updated: check_documentation_changes(),
+
+  // Timestamping
+  timestamp: ISO_timestamp,
+  model_used: detect_current_model()
+}
+```
+
+### Integration Points
+
+**1. Task Completion Flow**:
+```javascript
+async function execute_with_performance_recording(task) {
+  const start_time = Date.now()
+
+  try {
+    // Execute task
+    const result = await execute_task(task)
+
+    // Assess quality
+    const quality = await assess_quality(result)
+
+    // Record performance (automatic, silent)
+    await record_performance({
+      ...task,
+      ...quality,
+      duration: (Date.now() - start_time) / 1000,
+      success: quality.score >= 70
+    })
+
+    return result
+
+  } catch (error) {
+    // Record failure performance
+    await record_performance({
+      ...task,
+      duration: (Date.now() - start_time) / 1000,
+      success: false,
+      error: error.message
+    })
+    throw error
+  }
+}
+```
+
+**2. Model Detection Integration**:
+```javascript
+function detect_current_model() {
+  // Automatically detect the current model for performance tracking
+  return "Claude Sonnet 4.5"  // Default - actual detection in implementation
+}
+```
+
+**3. Task Type Classification**:
+```javascript
+function classify_task(description) {
+  const patterns = {
+    "refactoring": ["refactor", "restructure", "reorganize", "cleanup"],
+    "coding": ["implement", "create", "add", "build", "develop"],
+    "debugging": ["fix", "debug", "resolve", "issue", "error"],
+    "documentation": ["document", "readme", "guide", "manual"],
+    "testing": ["test", "spec", "coverage", "assertion"],
+    "analysis": ["analyze", "review", "examine", "audit"],
+    "optimization": ["optimize", "improve", "enhance", "performance"],
+    "validation": ["validate", "check", "verify", "ensure"]
+  }
+
+  for (const [type, keywords] of Object.entries(patterns)) {
+    if (keywords.some(keyword => description.toLowerCase().includes(keyword))) {
+      return type
+    }
+  }
+
+  return "general"
+}
+```
+
+### Performance Data Storage
+
+**Compatible Storage Locations**:
+1. **quality_history.json** - Dashboard compatibility (existing format)
+2. **performance_records.json** - New comprehensive format
+3. **model_performance.json** - Model-specific metrics
+
+**Backward Compatibility**:
+- New records use same schema as existing assessments
+- Dashboard automatically displays new and old records
+- No breaking changes to existing data structures
+- Seamless integration with current timeframe views
+
+### Task Types Tracked
+
+**Automatically Recorded**:
+- ✅ **Refactoring** - Code improvements and restructuring
+- ✅ **Coding** - New feature implementation
+- ✅ **Debugging** - Bug fixes and issue resolution
+- ✅ **Documentation** - Documentation updates and creation
+- ✅ **Testing** - Test creation and improvement
+- ✅ **Analysis** - Code reviews and analysis
+- ✅ **Optimization** - Performance and efficiency improvements
+- ✅ **Validation** - Quality checks and compliance
+- ✅ **General** - Any other task type
+
+**Performance Metrics Per Task Type**:
+- **Completion Rate** - Success/failure ratio
+- **Quality Score** - Average quality achieved
+- **Time Efficiency** - Speed of completion
+- **Improvement Impact** - Quality gains made
+- **Skill/Agent Effectiveness** - What tools work best
+
+### Benefits for Dashboard Users
+
+**Real-Time Insights**:
+- All tasks contribute to performance data, not just assessments
+- Immediate visibility into task completion trends
+- Model-specific performance comparison
+- Task-type specific success rates
+
+**Historical Tracking**:
+- Performance improvement over time
+- Learning velocity measurement
+- Tool effectiveness trends
+- Quality trajectory analysis
+
+**Decision Support**:
+- Most effective approaches for each task type
+- Optimal skill combinations
+- Model performance comparisons
+- Resource allocation insights
 
 ## Validation Integration (v1.7+)
 

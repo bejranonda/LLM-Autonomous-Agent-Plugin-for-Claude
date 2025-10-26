@@ -2369,25 +2369,62 @@ DASHBOARD_HTML = """
                 const qualityImprovement = record.quality_improvement > 0 ? `+${record.quality_improvement}` : record.quality_improvement;
                 const improvementColor = record.quality_improvement > 0 ? 'green' : (record.quality_improvement < 0 ? 'red' : '#666');
 
+                // Show if auto-generated with a subtle indicator
+                const autoIndicator = record.auto_generated
+                    ? '<span class="badge" style="background-color: #e3f2fd; color: #1976d2; font-size: 0.7em; margin-left: 5px;">AUTO</span>'
+                    : '';
+
+                // Format task type for display - use evaluation_target for debugging, task_type for others
+                let displayTarget = record.evaluation_target || record.task_type || 'Unknown';
+                if (record.task_type && record.task_type !== 'debugging') {
+                    displayTarget = record.task_type.charAt(0).toUpperCase() + record.task_type.slice(1).replace('-', ' ');
+                }
+
+                // Handle success_rate which might be already in percentage format
+                const successRate = typeof record.success_rate === 'number' && record.success_rate > 1
+                    ? record.success_rate.toFixed(1)
+                    : (record.success_rate * 100).toFixed(1);
+
                 return `
                     <tr>
                         <td>${timestamp}</td>
-                        <td><strong>${record.model}</strong></td>
-                        <td>${record.evaluation_target}</td>
+                        <td><strong>${record.model}</strong>${autoIndicator}</td>
+                        <td>${displayTarget}</td>
                         <td><strong>${record.overall_score}</strong></td>
                         <td><strong>${performanceIndex}</strong></td>
                         <td style="color: ${improvementColor};">${qualityImprovement}</td>
                         <td>${record.issues_found}</td>
                         <td>${record.fixes_applied}</td>
-                        <td>${(record.success_rate * 100).toFixed(1)}%</td>
+                        <td>${successRate}%</td>
                         <td>${passBadge}</td>
                     </tr>
                 `;
             }).join('');
 
-            // Update summary info
-            document.getElementById('performance-records-summary').innerHTML =
-                `Showing ${data.showing_records} of ${data.total_records} recent performance records`;
+            // Enhanced summary info with task type statistics
+            let summaryHtml = `Showing ${data.showing_records} of ${data.total_records} recent performance records`;
+
+            if (data.auto_generated_count !== undefined && data.manual_assessment_count !== undefined) {
+                summaryHtml += ` (${data.auto_generated_count} auto-recorded, ${data.manual_assessment_count} manual)`;
+            }
+
+            // Add task type breakdown if available
+            if (data.task_type_stats && Object.keys(data.task_type_stats).length > 0) {
+                summaryHtml += '<br><div style="margin-top: 5px; font-size: 0.85em;">';
+                summaryHtml += '<strong>Task Types:</strong> ';
+
+                const taskTypes = Object.entries(data.task_type_stats)
+                    .sort(([,a], [,b]) => b.count - a.count)
+                    .slice(0, 5); // Show top 5 task types
+
+                summaryHtml += taskTypes.map(([type, stats]) =>
+                    `${type.charAt(0).toUpperCase() + type.slice(1)} (${stats.count}, ${stats.avg_score.toFixed(0)}pts)`
+                ).join(', ');
+
+                summaryHtml += '</div>';
+            }
+
+            document.getElementById('performance-records-summary').innerHTML = summaryHtml;
         }
 
         // Add event listener for quality period selector
@@ -2629,11 +2666,66 @@ def get_unified_model_order(debugging_data=None):
 
 @app.route('/api/recent-performance-records')
 def api_recent_performance_records():
-    """Get recent performance records from all debugging assessments."""
+    """Get recent performance records from all sources including auto-recorded tasks."""
     try:
         all_records = []
 
-        # Check all available timeframe files
+        # 1. Load quality history (includes auto-recorded tasks and assessments)
+        quality_history_file = os.path.join('.claude-patterns', 'quality_history.json')
+        if os.path.exists(quality_history_file):
+            with open(quality_history_file, 'r', encoding='utf-8') as f:
+                quality_data = json.load(f)
+
+            for assessment in quality_data.get('quality_assessments', []):
+                # Extract model from details if available
+                model = assessment.get('details', {}).get('model_used', 'Claude Sonnet 4.5')
+
+                # Standardize record format
+                record = {
+                    'timestamp': assessment.get('timestamp'),
+                    'model': model,
+                    'assessment_id': assessment.get('assessment_id'),
+                    'task_type': assessment.get('task_type', 'unknown'),
+                    'overall_score': assessment.get('overall_score', 0),
+                    'performance_index': assessment.get('details', {}).get('performance_index', 0),
+                    'evaluation_target': assessment.get('details', {}).get('evaluation_target', assessment.get('task_type', 'Unknown')),
+                    'quality_improvement': assessment.get('details', {}).get('quality_improvement', 0),
+                    'issues_found': len(assessment.get('issues_found', [])),
+                    'fixes_applied': assessment.get('details', {}).get('fixes_applied', 0),
+                    'time_elapsed_minutes': assessment.get('details', {}).get('duration_seconds', 0) / 60,
+                    'success_rate': 100 if assessment.get('pass', False) else 0,
+                    'pass': assessment.get('pass', False),
+                    'auto_generated': assessment.get('auto_generated', False)
+                }
+                all_records.append(record)
+
+        # 2. Load dedicated performance records file (new format)
+        performance_records_file = os.path.join('.claude-patterns', 'performance_records.json')
+        if os.path.exists(performance_records_file):
+            with open(performance_records_file, 'r', encoding='utf-8') as f:
+                perf_data = json.load(f)
+
+            for record in perf_data.get('records', []):
+                # Convert to dashboard format
+                dashboard_record = {
+                    'timestamp': record.get('timestamp'),
+                    'model': record.get('model_used', 'Claude Sonnet 4.5'),
+                    'assessment_id': record.get('assessment_id'),
+                    'task_type': record.get('task_type', 'unknown'),
+                    'overall_score': record.get('overall_score', 0),
+                    'performance_index': record.get('details', {}).get('performance_index', 0),
+                    'evaluation_target': record.get('task_type', 'Unknown'),
+                    'quality_improvement': record.get('details', {}).get('quality_improvement', 0),
+                    'issues_found': len(record.get('issues_found', [])),
+                    'fixes_applied': record.get('details', {}).get('fixes_applied', 0),
+                    'time_elapsed_minutes': record.get('details', {}).get('duration_seconds', 0) / 60,
+                    'success_rate': 100 if record.get('pass', False) else 0,
+                    'pass': record.get('pass', False),
+                    'auto_generated': record.get('auto_generated', True)
+                }
+                all_records.append(dashboard_record)
+
+        # 3. Load debugging performance data (existing format)
         timeframe_files = [
             'debugging_performance_1days.json',
             'debugging_performance_3days.json',
@@ -2654,27 +2746,65 @@ def api_recent_performance_records():
                             'timestamp': assessment.get('timestamp'),
                             'model': model_name,
                             'assessment_id': assessment.get('assessment_id'),
-                            'task_type': assessment.get('task_type'),
-                            'overall_score': assessment.get('overall_score'),
+                            'task_type': assessment.get('task_type', 'debugging'),
+                            'overall_score': assessment.get('overall_score', 0),
                             'performance_index': assessment.get('details', {}).get('performance_index', 0),
                             'evaluation_target': assessment.get('details', {}).get('evaluation_target', 'Unknown'),
                             'quality_improvement': assessment.get('details', {}).get('quality_improvement', 0),
                             'issues_found': len(assessment.get('issues_found', [])),
                             'fixes_applied': assessment.get('details', {}).get('fixes_applied', 0),
                             'time_elapsed_minutes': assessment.get('details', {}).get('time_elapsed_minutes', 0),
-                            'success_rate': assessment.get('details', {}).get('success_rate', 0),
-                            'pass': assessment.get('pass', False)
+                            'success_rate': assessment.get('details', {}).get('success_rate', 0) * 100,
+                            'pass': assessment.get('pass', False),
+                            'auto_generated': False
                         }
                         all_records.append(record)
 
-        # Sort by timestamp (most recent first) and limit to 50 records
-        all_records.sort(key=lambda x: x['timestamp'], reverse=True)
-        recent_records = all_records[:50]
+        # 4. Remove duplicates (keep the most recent version of each assessment_id)
+        unique_records = {}
+        for record in all_records:
+            assessment_id = record.get('assessment_id')
+            if assessment_id and assessment_id not in unique_records:
+                unique_records[assessment_id] = record
+            elif not assessment_id:  # Handle records without assessment_id
+                # Use timestamp+task_type as fallback key
+                key = f"{record.get('timestamp')}_{record.get('task_type')}"
+                if key not in unique_records:
+                    unique_records[key] = record
+
+        # Convert back to list and sort by timestamp (most recent first)
+        final_records = list(unique_records.values())
+        final_records.sort(key=lambda x: x['timestamp'], reverse=True)
+
+        # Limit to 50 most recent records
+        recent_records = final_records[:50]
+
+        # Add task type statistics
+        task_type_stats = {}
+        for record in recent_records:
+            task_type = record.get('task_type', 'unknown')
+            if task_type not in task_type_stats:
+                task_type_stats[task_type] = {
+                    'count': 0,
+                    'avg_score': 0,
+                    'success_rate': 0
+                }
+            task_type_stats[task_type]['count'] += 1
+
+        # Calculate averages for each task type
+        for task_type, stats in task_type_stats.items():
+            type_records = [r for r in recent_records if r.get('task_type') == task_type]
+            if type_records:
+                stats['avg_score'] = sum(r.get('overall_score', 0) for r in type_records) / len(type_records)
+                stats['success_rate'] = sum(1 for r in type_records if r.get('pass', False)) / len(type_records) * 100
 
         return jsonify({
             'records': recent_records,
-            'total_records': len(all_records),
+            'total_records': len(final_records),
             'showing_records': len(recent_records),
+            'task_type_stats': task_type_stats,
+            'auto_generated_count': sum(1 for r in recent_records if r.get('auto_generated', False)),
+            'manual_assessment_count': sum(1 for r in recent_records if not r.get('auto_generated', True)),
             'last_updated': datetime.now().isoformat()
         })
 
@@ -2683,6 +2813,9 @@ def api_recent_performance_records():
             'records': [],
             'total_records': 0,
             'showing_records': 0,
+            'task_type_stats': {},
+            'auto_generated_count': 0,
+            'manual_assessment_count': 0,
             'error': str(e),
             'last_updated': datetime.now().isoformat()
         })

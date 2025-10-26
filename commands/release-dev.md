@@ -1,3 +1,9 @@
+---
+name: release-dev
+description: Command for release dev
+delegates-to: autonomous-agent:orchestrator
+---
+
 # Release-Dev Command
 
 ## Command: `/release-dev`
