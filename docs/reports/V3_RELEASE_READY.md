@@ -60,7 +60,7 @@ Your autonomous agent plugin is now **fully prepared for v3.0.0 release** with:
 
 ### Release Documentation
 - ✅ `V3_RELEASE_MATRIX.md` - Complete advantages matrix and achievements
-- ✅ `RELEASE_NOTES_V3.0.0.md` - Comprehensive release notes
+- ✅ `RELEASE_NOTES_V3.0.0.md` - Comprehensive release notes (moved to `docs/reports/generated/`)
 - ✅ `V3_RELEASE_READY.md` - This summary document
 - ✅ `VALIDATION_COMPLETE.md` - Production certification report
 - ✅ `COMPLETE_IMPLEMENTATION_SUMMARY.md` - Full implementation guide

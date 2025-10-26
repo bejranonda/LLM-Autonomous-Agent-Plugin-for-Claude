@@ -1,5 +1,9 @@
 # Ignore claude AI files
 .claude/
+.claude-patterns/
+
+# Ignore generated reports
+docs/reports/generated/
 
 # Ignore temporary files
 *.tmp

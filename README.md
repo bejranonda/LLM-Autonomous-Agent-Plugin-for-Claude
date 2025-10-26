@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v3.5.3
+# 🚀 Autonomous Agent for Claude Code v3.7.1
 
-[![Version](https://img.shields.io/badge/version-3.5.3-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.5.3)
+[![Version](https://img.shields.io/badge/version-3.7.1-blue.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v3.7.1)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -906,7 +906,7 @@ v3.3.0 includes **40+ organized documentation files** across multiple directorie
 
 ### 📖 **Key Documentation Files**
 
-- **[RELEASE_NOTES_V3.1.0.md](RELEASE_NOTES_V3.1.0.md)** - Comprehensive release notes (Enhanced Learning & Modern Stack Support)
+- **[RELEASE_NOTES_V3.1.0.md](docs/reports/generated/RELEASE_NOTES_V3.1.0.md)** - Comprehensive release notes (Enhanced Learning & Modern Stack Support)
 - **[V3_RELEASE_MATRIX.md](V3_RELEASE_MATRIX.md)** - Feature matrix and achievements
 - **[VALIDATION_COMPLETE.md](docs/reports/VALIDATION_COMPLETE.md)** - Production certification report
 - **[ENHANCED_LEARNING_SYSTEM.md](ENHANCED_LEARNING_SYSTEM.md)** - Learning system technical docs
