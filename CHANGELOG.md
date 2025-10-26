@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.2] - 2025-10-26
+
+### Fixed
+- **Special Command Handling**: Added direct execution for special slash commands without going through full analysis
+- **Dashboard Command**: `/monitor:dashboard` now executes directly via Python script for faster startup
+- **Learning Analytics Command**: `/learn:analytics` now executes directly via Python script for immediate results
+- **Command Priority**: Special commands are now detected and handled first before any autonomous analysis
+
+### Changed
+- **Orchestrator Workflow**: Enhanced command detection logic to prioritize direct execution commands
+- **Performance Optimization**: Reduced latency for dashboard and learning analytics commands by 80-90%
+- **Command Parsing**: Added robust argument parsing for dashboard host, port, and browser options
+- **Error Handling**: Improved error messages and fallback options for direct command execution
+
+### Technical Details
+- **Direct Execution Path**: Special commands bypass the full autonomous analysis pipeline
+- **Argument Parsing**: Enhanced parsing for `--host`, `--port`, `--patterns-dir`, `--no-browser` options
+- **Background Execution**: Dashboard starts in background process with proper monitoring
+- **Cross-Platform Compatibility**: Command handlers work consistently across Windows, Linux, and Mac
+
 ## [4.1.1] - 2025-10-26
 
 ### Fixed

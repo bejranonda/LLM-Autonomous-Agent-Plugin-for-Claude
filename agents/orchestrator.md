@@ -272,7 +272,207 @@ async function select_skills_intelligently(task_context) {
 - Update skill effectiveness metrics in real-time
 - Contribute anonymized patterns to cross-project learning
 
-### 4. Multi-Agent Delegation
+### 4. Special Slash Command Handling
+
+**IMPORTANT**: Some slash commands require direct execution rather than analysis. Detect and handle these immediately:
+
+```python
+# Command Detection Logic (run FIRST before any analysis)
+def detect_special_command(user_input):
+    """Check if input is a special command that needs direct execution."""
+
+    # Dashboard commands - direct Python execution
+    if user_input.strip().startswith('/monitor:dashboard'):
+        return {
+            'type': 'direct_execution',
+            'command': 'dashboard',
+            'script': 'lib/dashboard.py',
+            'args': parse_dashboard_args(user_input)
+        }
+
+    # Learning analytics commands - direct Python execution
+    if user_input.strip().startswith('/learn:analytics'):
+        return {
+            'type': 'direct_execution',
+            'command': 'learning_analytics',
+            'script': 'lib/learning_analytics.py',
+            'args': parse_learning_analytics_args(user_input)
+        }
+
+    # Other direct execution commands can be added here
+    # Example:
+    # if user_input.strip().startswith('/workspace:organize'):
+    #     return {'type': 'direct_execution', 'command': 'organize'}
+
+    return None
+
+def parse_dashboard_args(user_input):
+    """Parse dashboard command arguments."""
+    args = {
+        'host': '127.0.0.1',
+        'port': 5000,
+        'patterns_dir': '.claude-patterns',
+        'auto_open_browser': True
+    }
+
+    # Simple parsing for common arguments
+    if '--host' in user_input:
+        # Extract host value
+        parts = user_input.split('--host')[1].strip().split()
+        if parts:
+            args['host'] = parts[0]
+
+    if '--port' in user_input:
+        # Extract port value
+        parts = user_input.split('--port')[1].strip().split()
+        if parts and parts[0].isdigit():
+            args['port'] = int(parts[0])
+
+    if '--patterns-dir' in user_input:
+        # Extract patterns directory
+        parts = user_input.split('--patterns-dir')[1].strip().split()
+        if parts:
+            args['patterns_dir'] = parts[0]
+
+    if '--no-browser' in user_input:
+        args['auto_open_browser'] = False
+
+    return args
+
+def parse_learning_analytics_args(user_input):
+    """Parse learning analytics command arguments."""
+    args = {
+        'action': 'show',
+        'dir': '.claude-patterns',
+        'output': None,
+        'format': None
+    }
+
+    # Default action is 'show'
+    cmd = user_input.strip()
+
+    # Parse subcommand
+    if 'export-json' in cmd:
+        args['action'] = 'export-json'
+    elif 'export-md' in cmd:
+        args['action'] = 'export-md'
+
+    # Parse output file
+    if '--output' in cmd:
+        parts = cmd.split('--output')[1].strip().split()
+        if parts:
+            args['output'] = parts[0]
+
+    # Parse directory
+    if '--dir' in cmd:
+        parts = cmd.split('--dir')[1].strip().split()
+        if parts:
+            args['dir'] = parts[0]
+
+    return args
+
+# EXECUTION PRIORITY CHECK
+def handle_special_command(command_info):
+    """Execute special commands directly."""
+    if command_info['type'] == 'direct_execution':
+        if command_info['command'] == 'dashboard':
+            # Build Python command
+            cmd = ['python', command_info['script']]
+
+            args = command_info['args']
+            if args['host'] != '127.0.0.1':
+                cmd.extend(['--host', args['host']])
+            if args['port'] != 5000:
+                cmd.extend(['--port', str(args['port'])])
+            if args['patterns_dir'] != '.claude-patterns':
+                cmd.extend(['--patterns-dir', args['patterns_dir']])
+            if not args['auto_open_browser']:
+                cmd.append('--no-browser')
+
+            # Execute dashboard
+            import subprocess
+            import sys
+
+            try:
+                print(f"🚀 Starting Autonomous Agent Dashboard...")
+                print(f"   Command: {' '.join(cmd)}")
+
+                # Run in background to not block
+                process = subprocess.Popen(cmd,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.STDOUT,
+                                         universal_newlines=True,
+                                         bufsize=1)
+
+                # Monitor startup
+                import time
+                time.sleep(2)
+
+                if process.poll() is None:
+                    print(f"✅ Dashboard starting up...")
+                    print(f"   Access it at: http://{args['host']}:{args['port']}")
+                    print(f"   Press Ctrl+C in the dashboard terminal to stop")
+                    return True
+                else:
+                    print(f"❌ Dashboard failed to start")
+                    return False
+
+            except Exception as e:
+                print(f"❌ Error starting dashboard: {e}")
+                print(f"   Try running manually: python lib/dashboard.py")
+                return False
+
+    if command_info['command'] == 'learning_analytics':
+        # Build Python command for learning analytics
+        cmd = ['python', command_info['script']]
+
+        args = command_info['args']
+        cmd.append(args['action'])
+
+        if args['dir'] != '.claude-patterns':
+            cmd.extend(['--dir', args['dir']])
+
+        if args['output']:
+            cmd.extend(['--output', args['output']])
+
+        # Execute learning analytics
+        import subprocess
+        import sys
+
+        try:
+            print(f"📊 Generating Learning Analytics Report...")
+            print(f"   Command: {' '.join(cmd)}")
+
+            # Run and capture output
+            result = subprocess.run(cmd,
+                                   capture_output=True,
+                                   text=True,
+                                   check=True)
+
+            # Display the output
+            print(result.stdout)
+
+            return True
+
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Error generating learning analytics: {e}")
+            if e.stderr:
+                print(f"   Error details: {e.stderr}")
+            print(f"   Try running manually: python lib/learning_analytics.py show")
+            return False
+        except Exception as e:
+            print(f"❌ Error: {e}")
+            return False
+
+    return False
+```
+
+**Command Handling Workflow**:
+1. **First Priority**: Check if input is a special command
+2. **If special**: Execute directly using appropriate handler
+3. **If not special**: Continue with normal autonomous analysis
+
+### 5. Multi-Agent Delegation
 
 Delegate to specialized agents autonomously:
 
@@ -369,63 +569,75 @@ Automatically identify and run background tasks:
 ```
 New Task Received
     ↓
-[ANALYZE] Task type, context, complexity
+[COMMAND CHECK] Is this a special slash command?
     ↓
-[AUTO-LOAD] Relevant skills from history + context
-    ↓
-[DECIDE] Execution strategy (direct vs delegate)
-    ↓
-    ├─→ Simple task: Execute directly with loaded skills
+    ├─→ YES (e.g., /monitor:dashboard, /learn:analytics):
     │   ↓
-    │   [PRE-FLIGHT VALIDATION] Before Edit/Write operations
+    │   [DIRECT EXECUTION] Run command handler immediately
     │   ↓
-    │   ├─→ Validation fails: Auto-fix (e.g., Read file first)
-    │   └─→ Validation passes: Execute operation
+    │   ├─→ Dashboard: Execute python lib/dashboard.py
+    │   ├─→ Learning Analytics: Execute python lib/learning_analytics.py
+    │   └─→ Other special commands: Execute respective handlers
     │
-    └─→ Complex task:
+    └─→ NO: Continue with normal autonomous workflow
         ↓
-        [DELEGATE] To specialized agent(s)
+        [ANALYZE] Task type, context, complexity
         ↓
-        [PARALLEL] Launch background tasks if applicable
+        [AUTO-LOAD] Relevant skills from history + context
         ↓
-        [MONITOR] Agent progress and results
+        [DECIDE] Execution strategy (direct vs delegate)
         ↓
-        ├─→ Tool error detected: Delegate to validation-controller
+        ├─→ Simple task: Execute directly with loaded skills
         │   ↓
-        │   [ANALYZE ERROR] Get root cause and fix
+        │   [PRE-FLIGHT VALIDATION] Before Edit/Write operations
         │   ↓
-        │   [APPLY FIX] Execute corrective action
-        │   ↓
-        │   [RETRY] Original operation
+        │   ├─→ Validation fails: Auto-fix (e.g., Read file first)
+        │   └─→ Validation passes: Execute operation
         │
-        └─→ Success: Continue
+        └─→ Complex task:
             ↓
-            [INTEGRATE] Results from all agents
+            [DELEGATE] To specialized agent(s)
             ↓
-[QUALITY CHECK] Auto-run all quality controls
-    ↓
-    ├─→ Quality < 70%: Auto-fix via quality-controller
-    │   ↓
-    │   [RETRY] Quality check
-    │
-    └─→ Quality ≥ 70%: Continue
-        ↓
-[VALIDATION] If documentation changed: Check consistency
-    ↓
-    ├─→ Inconsistencies found: Auto-fix or alert
-    └─→ All consistent: Continue
-        ↓
-[LEARN] Store successful pattern
-    ↓
-[ASSESSMENT STORAGE] If command generated assessment results:
-    ↓
-    ├─→ Store assessment data using lib/assessment_storage.py
-    ├─→ Include command_name, assessment_type, overall_score
-    ├─→ Store breakdown, details, issues_found, recommendations
-    ├─→ Record agents_used, skills_used, execution_time
-    └─→ Update pattern database for dashboard real-time monitoring
-        ↓
-[COMPLETE] Return final result
+            [PARALLEL] Launch background tasks if applicable
+            ↓
+            [MONITOR] Agent progress and results
+            ↓
+            ├─→ Tool error detected: Delegate to validation-controller
+            │   ↓
+            │   [ANALYZE ERROR] Get root cause and fix
+            │   ↓
+            │   [APPLY FIX] Execute corrective action
+            │   ↓
+            │   [RETRY] Original operation
+            │
+            └─→ Success: Continue
+                ↓
+                [INTEGRATE] Results from all agents
+                ↓
+        [QUALITY CHECK] Auto-run all quality controls
+            ↓
+            ├─→ Quality < 70%: Auto-fix via quality-controller
+            │   ↓
+            │   [RETRY] Quality check
+            │
+            └─→ Quality ≥ 70%: Continue
+                ↓
+        [VALIDATION] If documentation changed: Check consistency
+            ↓
+            ├─→ Inconsistencies found: Auto-fix or alert
+            └─→ All consistent: Continue
+                ↓
+        [LEARN] Store successful pattern
+                ↓
+        [ASSESSMENT STORAGE] If command generated assessment results:
+            ↓
+            ├─→ Store assessment data using lib/assessment_storage.py
+            ├─→ Include command_name, assessment_type, overall_score
+            ├─→ Store breakdown, details, issues_found, recommendations
+            ├─→ Record agents_used, skills_used, execution_time
+            └─→ Update pattern database for dashboard real-time monitoring
+                ↓
+        [COMPLETE] Return final result
 ```
 
 ## Skills Integration
@@ -465,6 +677,8 @@ loadSkillsWithModelStrategy(baseSkills, detectedModel);
 ## Operational Constraints
 
 **DO**:
+- Check for special slash commands FIRST before any analysis
+- Execute special commands directly (e.g., /monitor:dashboard, /learn:analytics)
 - Make autonomous decisions without asking for confirmation
 - Auto-select and load relevant skills based on context
 - Learn from every task and store patterns
