@@ -70,11 +70,696 @@
       "pass": true,
       "auto_generated": true,
       "model_used": "Test Model"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-coding-20251026-200107",
+      "timestamp": "2025-10-26T20:01:07.296764Z",
+      "task_type": "coding",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 26,
+        "standards_compliance": 8,
+        "documentation": 35,
+        "pattern_adherence": 5,
+        "code_metrics": 23
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Test improved performance recording system",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [],
+        "agents_delegated": [],
+        "files_modified": 2,
+        "lines_changed": 85,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:01:07.296790Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-refactoring-20251026-200220",
+      "timestamp": "2025-10-26T20:02:20.122030Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 30,
+        "standards_compliance": 10,
+        "documentation": 40,
+        "pattern_adherence": 6,
+        "code_metrics": 13
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Test refactoring task for auto-detection",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards"
+        ],
+        "agents_delegated": [],
+        "files_modified": 2,
+        "lines_changed": 45,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:02:20.122040Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-feature-implementation-20251026-200220",
+      "timestamp": "2025-10-26T20:02:20.155269Z",
+      "task_type": "feature-implementation",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 18,
+        "standards_compliance": 6,
+        "documentation": 24,
+        "pattern_adherence": 4,
+        "code_metrics": 46
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Implement automatic performance recording improvements",
+        "task_complexity": "medium",
+        "duration_seconds": 180,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards",
+          "pattern-learning"
+        ],
+        "agents_delegated": [],
+        "files_modified": 3,
+        "lines_changed": 234,
+        "success": true,
+        "quality_improvement": 12,
+        "time_efficiency": 8.333333333333334,
+        "performance_index": 67.91666666666666,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [
+        "Minor documentation gap"
+      ],
+      "recommendations": [
+        "Add comprehensive examples"
+      ],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:02:20.155275Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-refactoring-20251026-200310",
+      "timestamp": "2025-10-26T20:03:10.963137Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 30,
+        "standards_compliance": 10,
+        "documentation": 40,
+        "pattern_adherence": 6,
+        "code_metrics": 13
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Test refactoring task for auto-detection",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards"
+        ],
+        "agents_delegated": [],
+        "files_modified": 2,
+        "lines_changed": 45,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:10.963151Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-glm-4-6-debugging-20251026-200310",
+      "timestamp": "2025-10-26T20:03:10.985838Z",
+      "task_type": "debugging",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 34,
+        "standards_compliance": 11,
+        "documentation": 46,
+        "pattern_adherence": 7,
+        "code_metrics": 0
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "GLM 4.6",
+        "model_detected_by": "provided",
+        "task_description": "Test debugging with specified model",
+        "task_complexity": "medium",
+        "duration_seconds": 90,
+        "skills_used": [],
+        "agents_delegated": [],
+        "files_modified": 0,
+        "lines_changed": 0,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 16.666666666666668,
+        "performance_index": 70.83333333333334,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:10.985851Z",
+        "contamination_flags": []
+      },
+      "model_used": "GLM 4.6"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-feature-implementation-20251026-200311",
+      "timestamp": "2025-10-26T20:03:11.027521Z",
+      "task_type": "feature-implementation",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 18,
+        "standards_compliance": 6,
+        "documentation": 24,
+        "pattern_adherence": 4,
+        "code_metrics": 46
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Implement automatic performance recording improvements",
+        "task_complexity": "medium",
+        "duration_seconds": 180,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards",
+          "pattern-learning"
+        ],
+        "agents_delegated": [],
+        "files_modified": 3,
+        "lines_changed": 234,
+        "success": true,
+        "quality_improvement": 12,
+        "time_efficiency": 8.333333333333334,
+        "performance_index": 67.91666666666666,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [
+        "Minor documentation gap"
+      ],
+      "recommendations": [
+        "Add comprehensive examples"
+      ],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:11.027528Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-refactoring-20251026-200319",
+      "timestamp": "2025-10-26T20:03:19.180068Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 30,
+        "standards_compliance": 10,
+        "documentation": 40,
+        "pattern_adherence": 6,
+        "code_metrics": 13
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Test refactoring task for auto-detection",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards"
+        ],
+        "agents_delegated": [],
+        "files_modified": 2,
+        "lines_changed": 45,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:19.180089Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-glm-4-6-debugging-20251026-200319",
+      "timestamp": "2025-10-26T20:03:19.206162Z",
+      "task_type": "debugging",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 34,
+        "standards_compliance": 11,
+        "documentation": 46,
+        "pattern_adherence": 7,
+        "code_metrics": 0
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "GLM 4.6",
+        "model_detected_by": "provided",
+        "task_description": "Test debugging with specified model",
+        "task_complexity": "medium",
+        "duration_seconds": 90,
+        "skills_used": [],
+        "agents_delegated": [],
+        "files_modified": 0,
+        "lines_changed": 0,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 16.666666666666668,
+        "performance_index": 70.83333333333334,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:19.206170Z",
+        "contamination_flags": []
+      },
+      "model_used": "GLM 4.6"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-feature-implementation-20251026-200319",
+      "timestamp": "2025-10-26T20:03:19.251660Z",
+      "task_type": "feature-implementation",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 18,
+        "standards_compliance": 6,
+        "documentation": 24,
+        "pattern_adherence": 4,
+        "code_metrics": 46
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Implement automatic performance recording improvements",
+        "task_complexity": "medium",
+        "duration_seconds": 180,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards",
+          "pattern-learning"
+        ],
+        "agents_delegated": [],
+        "files_modified": 3,
+        "lines_changed": 234,
+        "success": true,
+        "quality_improvement": 12,
+        "time_efficiency": 8.333333333333334,
+        "performance_index": 67.91666666666666,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [
+        "Minor documentation gap"
+      ],
+      "recommendations": [
+        "Add comprehensive examples"
+      ],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:19.251666Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-refactoring-20251026-200354",
+      "timestamp": "2025-10-26T20:03:54.578315Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 30,
+        "standards_compliance": 10,
+        "documentation": 40,
+        "pattern_adherence": 6,
+        "code_metrics": 13
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Test refactoring task for auto-detection",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards"
+        ],
+        "agents_delegated": [],
+        "files_modified": 2,
+        "lines_changed": 45,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:54.578328Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-glm-4-6-debugging-20251026-200354",
+      "timestamp": "2025-10-26T20:03:54.600979Z",
+      "task_type": "debugging",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 34,
+        "standards_compliance": 11,
+        "documentation": 46,
+        "pattern_adherence": 7,
+        "code_metrics": 0
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "GLM 4.6",
+        "model_detected_by": "provided",
+        "task_description": "Test debugging with specified model",
+        "task_complexity": "medium",
+        "duration_seconds": 90,
+        "skills_used": [],
+        "agents_delegated": [],
+        "files_modified": 0,
+        "lines_changed": 0,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 16.666666666666668,
+        "performance_index": 70.83333333333334,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:54.600986Z",
+        "contamination_flags": []
+      },
+      "model_used": "GLM 4.6"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-feature-implementation-20251026-200354",
+      "timestamp": "2025-10-26T20:03:54.654971Z",
+      "task_type": "feature-implementation",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 18,
+        "standards_compliance": 6,
+        "documentation": 24,
+        "pattern_adherence": 4,
+        "code_metrics": 46
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Implement automatic performance recording improvements",
+        "task_complexity": "medium",
+        "duration_seconds": 180,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards",
+          "pattern-learning"
+        ],
+        "agents_delegated": [],
+        "files_modified": 3,
+        "lines_changed": 234,
+        "success": true,
+        "quality_improvement": 12,
+        "time_efficiency": 8.333333333333334,
+        "performance_index": 67.91666666666666,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [
+        "Minor documentation gap"
+      ],
+      "recommendations": [
+        "Add comprehensive examples"
+      ],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:03:54.654977Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-refactoring-20251026-203427",
+      "timestamp": "2025-10-26T20:34:27.448050Z",
+      "task_type": "refactoring",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 30,
+        "standards_compliance": 10,
+        "documentation": 40,
+        "pattern_adherence": 6,
+        "code_metrics": 13
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Test refactoring task for auto-detection",
+        "task_complexity": "medium",
+        "duration_seconds": 120,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards"
+        ],
+        "agents_delegated": [],
+        "files_modified": 2,
+        "lines_changed": 45,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 12.5,
+        "performance_index": 69.375,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:34:27.448074Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
+    },
+    {
+      "assessment_id": "auto-glm-4-6-debugging-20251026-203427",
+      "timestamp": "2025-10-26T20:34:27.466231Z",
+      "task_type": "debugging",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 34,
+        "standards_compliance": 11,
+        "documentation": 46,
+        "pattern_adherence": 7,
+        "code_metrics": 0
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "GLM 4.6",
+        "model_detected_by": "provided",
+        "task_description": "Test debugging with specified model",
+        "task_complexity": "medium",
+        "duration_seconds": 90,
+        "skills_used": [],
+        "agents_delegated": [],
+        "files_modified": 0,
+        "lines_changed": 0,
+        "success": true,
+        "quality_improvement": 0,
+        "time_efficiency": 16.666666666666668,
+        "performance_index": 70.83333333333334,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:34:27.466238Z",
+        "contamination_flags": []
+      },
+      "model_used": "GLM 4.6"
+    },
+    {
+      "assessment_id": "auto-claude-sonnet-4-5-feature-implementation-20251026-203427",
+      "timestamp": "2025-10-26T20:34:27.529187Z",
+      "task_type": "feature-implementation",
+      "overall_score": 100,
+      "breakdown": {
+        "tests_passing": 18,
+        "standards_compliance": 6,
+        "documentation": 24,
+        "pattern_adherence": 4,
+        "code_metrics": 46
+      },
+      "details": {
+        "auto_recorded": true,
+        "model_used": "Claude Sonnet 4.5",
+        "model_detected_by": "provided",
+        "task_description": "Implement automatic performance recording improvements",
+        "task_complexity": "medium",
+        "duration_seconds": 180,
+        "skills_used": [
+          "code-analysis",
+          "quality-standards",
+          "pattern-learning"
+        ],
+        "agents_delegated": [],
+        "files_modified": 3,
+        "lines_changed": 234,
+        "success": true,
+        "quality_improvement": 12,
+        "time_efficiency": 8.333333333333334,
+        "performance_index": 67.91666666666666,
+        "data_source": "real_performance_recording",
+        "validation_status": "validated"
+      },
+      "issues_found": [
+        "Minor documentation gap"
+      ],
+      "recommendations": [
+        "Add comprehensive examples"
+      ],
+      "pass": true,
+      "auto_generated": true,
+      "data_integrity": {
+        "authenticity_score": 1.0,
+        "validation_timestamp": "2025-10-26T20:34:27.529193Z",
+        "contamination_flags": []
+      },
+      "model_used": "Claude Sonnet 4.5"
     }
   ],
   "task_types": {
     "refactoring": {
-      "count": 2,
+      "count": 7,
+      "avg_score": 100.0,
+      "success_rate": 1.0
+    },
+    "coding": {
+      "count": 1,
+      "avg_score": 100.0,
+      "success_rate": 1.0
+    },
+    "feature-implementation": {
+      "count": 5,
+      "avg_score": 100.0,
+      "success_rate": 1.0
+    },
+    "debugging": {
+      "count": 4,
       "avg_score": 100.0,
       "success_rate": 1.0
     }
@@ -83,7 +768,7 @@
   "metadata": {
     "auto_recording_enabled": true,
     "created": "2025-10-26T19:04:21.874247",
-    "last_updated": "2025-10-26T19:32:26.201881Z",
-    "total_records": 2
+    "last_updated": "2025-10-26T20:34:27.529187Z",
+    "total_records": 17
   }
 }

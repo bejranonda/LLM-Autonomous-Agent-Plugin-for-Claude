@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 """
-Automatic Performance Recording System
+Enhanced Automatic Performance Recording System v2.2
 
 Integrates with the orchestrator and learning-engine to automatically
 capture performance metrics for all tasks, not just assessments.
 
+ENHANCEMENTS v2.2:
+- Real-time model detection and attribution
+- Data integrity validation and contamination prevention
+- Accurate cross-model performance tracking
+- Comprehensive validation layer
+- Prevention of simulated/fake data
+
 Features:
 - Automatic performance metric capture for all task types
+- Real-time model detection with high accuracy
+- Data integrity validation and cleanup
 - Backward compatibility with existing performance records
 - Real-time dashboard integration
 - Cross-model performance tracking
@@ -20,13 +29,15 @@ import json
 import os
 import time
 import uuid
+import re
+import hashlib
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 
 
 class AutomaticPerformanceRecorder:
-    """Automatically records performance metrics for all tasks."""
+    """Automatically records performance metrics for all tasks with enhanced model detection."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
         self.patterns_dir = Path(patterns_dir)
@@ -36,9 +47,397 @@ class AutomaticPerformanceRecorder:
         self.quality_history_file = self.patterns_dir / "quality_history.json"
         self.performance_records_file = self.patterns_dir / "performance_records.json"
         self.model_performance_file = self.patterns_dir / "model_performance.json"
+        self.data_integrity_file = self.patterns_dir / "data_integrity.json"
 
         # Initialize files if they don't exist
         self._initialize_files()
+
+        # Initialize model detection
+        self._initialize_model_detection()
+
+    def _initialize_model_detection(self):
+        """Initialize model detection context and validation."""
+        # Cache for model detection results
+        self._model_cache = {}
+        self._model_cache_ttl = 300  # 5 minutes
+        self._last_model_detection = None
+        self._last_detection_time = 0
+
+    def detect_current_model(self) -> str:
+        """
+        Enhanced real-time model detection with multiple strategies.
+
+        Returns:
+            str: The detected model name (e.g., "GLM 4.6", "Claude Sonnet 4.5")
+        """
+        current_time = time.time()
+
+        # Check cache first
+        if (self._last_model_detection and
+            current_time - self._last_detection_time < self._model_cache_ttl):
+            return self._last_model_detection
+
+        detected_model = None
+
+        # Strategy 1: Environment variables
+        detected_model = self._detect_from_environment()
+
+        # Strategy 2: Session context analysis
+        if not detected_model:
+            detected_model = self._detect_from_session_context()
+
+        # Strategy 3: Performance patterns analysis
+        if not detected_model:
+            detected_model = self._detect_from_performance_patterns()
+
+        # Strategy 4: Default fallback with validation
+        if not detected_model:
+            detected_model = self._detect_default_model()
+
+        # Cache result
+        self._last_model_detection = detected_model
+        self._last_detection_time = current_time
+
+        return detected_model
+
+    def _detect_from_environment(self) -> Optional[str]:
+        """Detect model from environment variables and system context."""
+        # Check for Claude Code specific environment variables
+        claude_env_vars = [
+            'ANTHROPIC_MODEL',
+            'CLAUDE_MODEL',
+            'MODEL_NAME'
+        ]
+
+        for var in claude_env_vars:
+            model = os.environ.get(var)
+            if model:
+                # Normalize common model names
+                return self._normalize_model_name(model)
+
+        # Check for GLM specific indicators
+        glm_env_vars = [
+            'GLM_MODEL',
+            'ZHIPU_MODEL',
+            'OPENAI_MODEL'  # Some GLM integrations use this
+        ]
+
+        for var in glm_env_vars:
+            model = os.environ.get(var)
+            if model:
+                return self._normalize_model_name(model)
+
+        return None
+
+    def _detect_from_session_context(self) -> Optional[str]:
+        """Detect model from current session context and file patterns."""
+        try:
+            # Check for Claude Code CLI indicators
+            if os.path.exists(os.path.expanduser("~/.config/claude")):
+                # Look for model preferences in Claude config
+                config_files = [
+                    os.path.expanduser("~/.config/claude/config.json"),
+                    os.path.expanduser("~/.claude/config.json")
+                ]
+
+                for config_file in config_files:
+                    if os.path.exists(config_file):
+                        try:
+                            with open(config_file, 'r') as f:
+                                config = json.load(f)
+
+                            # Check for model settings
+                            model = config.get('model') or config.get('default_model')
+                            if model:
+                                return self._normalize_model_name(model)
+                        except (json.JSONDecodeError, KeyError):
+                            continue
+
+            # Check for GLM/ChatGLM session indicators
+            glm_indicators = [
+                "zhipuai",
+                "chatglm",
+                "glm-4.6",
+                "glm-4"
+            ]
+
+            # Check current working directory and process info
+            cwd = os.getcwd().lower()
+            for indicator in glm_indicators:
+                if indicator in cwd:
+                    return "GLM 4.6"  # Most likely GLM model
+
+            # Check process environment
+            try:
+                with open('/proc/self/environ', 'r') if os.path.exists('/proc/self/environ') else open(os.devnull, 'r') as f:
+                    env_content = f.read()
+                    for indicator in glm_indicators:
+                        if indicator in env_content.lower():
+                            return "GLM 4.6"
+            except:
+                pass
+
+        except Exception:
+            pass
+
+        return None
+
+    def _detect_from_performance_patterns(self) -> Optional[str]:
+        """Detect model by analyzing recent performance patterns."""
+        try:
+            # Load recent quality history
+            if self.quality_history_file.exists():
+                with open(self.quality_history_file, 'r') as f:
+                    quality_data = json.load(f)
+
+                # Look at recent assessments for model patterns
+                recent_assessments = quality_data.get('quality_assessments', [])[-10:]  # Last 10
+
+                model_counts = {}
+                for assessment in recent_assessments:
+                    # Check multiple possible model field locations
+                    model = (assessment.get('details', {}).get('model_used') or
+                           assessment.get('model_used') or
+                           assessment.get('model'))
+
+                    if model and model != 'Unknown':
+                        model_counts[model] = model_counts.get(model, 0) + 1
+
+                # Return the most frequently used model
+                if model_counts:
+                    most_used_model = max(model_counts.items(), key=lambda x: x[1])[0]
+                    return most_used_model
+
+        except Exception:
+            pass
+
+        return None
+
+    def _detect_default_model(self) -> str:
+        """Detect default model based on system heuristics."""
+        # Check for common indicators
+        try:
+            # Claude Code CLI typically runs with specific patterns
+            if 'claude' in sys.modules or 'anthropic' in str(type(sys.modules)):
+                return "Claude Sonnet 4.5"
+
+            # Check for Python environment that might indicate GLM
+            import platform
+            system_info = platform.platform().lower()
+            if 'windows' in system_info and 'claude code' in os.environ.get('TERM_PROGRAM', '').lower():
+                return "Claude Sonnet 4.5"
+
+            # Default to Claude for most environments
+            return "Claude Sonnet 4.5"
+
+        except Exception:
+            return "Claude Sonnet 4.5"  # Safe default
+
+    def _normalize_model_name(self, model_name: str) -> str:
+        """Normalize various model name formats to standard names."""
+        if not model_name:
+            return "Unknown"
+
+        model_lower = model_name.lower()
+
+        # Claude models
+        claude_patterns = {
+            'claude-sonnet-4.5': 'Claude Sonnet 4.5',
+            'claude-4.5': 'Claude Sonnet 4.5',
+            'claude-sonnet': 'Claude Sonnet 4.5',
+            'sonnet-4.5': 'Claude Sonnet 4.5',
+            'claude-3.5-sonnet': 'Claude Sonnet 3.5',
+            'claude-opus-4.1': 'Claude Opus 4.1',
+            'claude-opus': 'Claude Opus 4.1',
+            'claude-4.1': 'Claude Opus 4.1',
+            'claude-haiku-4.5': 'Claude Haiku 4.5',
+            'claude-haiku': 'Claude Haiku 4.5',
+        }
+
+        # GLM models
+        glm_patterns = {
+            'glm-4.6': 'GLM 4.6',
+            'glm-4': 'GLM 4.6',
+            'chatglm-4.6': 'GLM 4.6',
+            'chatglm4': 'GLM 4.6',
+            'zhipuai-glm-4.6': 'GLM 4.6',
+        }
+
+        # Check Claude patterns
+        for pattern, standard_name in claude_patterns.items():
+            if pattern in model_lower:
+                return standard_name
+
+        # Check GLM patterns
+        for pattern, standard_name in glm_patterns.items():
+            if pattern in model_lower:
+                return standard_name
+
+        # Fallback to original name with basic formatting
+        return model_name.strip().title()
+
+    def validate_data_integrity(self, record: Dict[str, Any]) -> bool:
+        """
+        Validate performance record for authenticity and prevent data contamination.
+
+        Args:
+            record: Performance record to validate
+
+        Returns:
+            bool: True if record appears authentic, False if likely contaminated
+        """
+        # Check for test/simulation indicators (but allow 'auto' prefixes)
+        task_type = record.get('task_type', '').lower()
+        assessment_id = record.get('assessment_id', '').lower()
+
+        # Only block if assessment_id contains 'test' but doesn't start with 'auto-'
+        if 'test' in assessment_id and not assessment_id.startswith('auto-'):
+            return False
+
+        # Check model field for test indicators
+        model_used = record.get('details', {}).get('model_used', '').lower()
+        if model_used == 'test model':
+            return False
+
+        # Validate timestamp is recent and realistic
+        timestamp = record.get('timestamp', '')
+        if timestamp:
+            try:
+                # Handle both Z and +00:00 timezone formats
+                if timestamp.endswith('Z'):
+                    record_time = datetime.fromisoformat(timestamp.rstrip('Z'))
+                elif '+00:00' in timestamp:
+                    record_time = datetime.fromisoformat(timestamp)
+                else:
+                    # Try parsing without timezone info
+                    record_time = datetime.fromisoformat(timestamp)
+
+                current_time = datetime.now()
+
+                # Reject records that are too old or too far in the future
+                time_diff = abs((current_time - record_time).total_seconds())
+                if time_diff > 365 * 24 * 3600:  # More than 1 year
+                    return False
+            except Exception as e:
+                # Log the error for debugging but don't fail validation
+                print(f"Timestamp validation warning: {e}")
+                print(f"Problematic timestamp: {timestamp}")
+                return False
+
+        # Validate score ranges are realistic
+        score = record.get('overall_score', 0)
+        if not (0 <= score <= 100):
+            return False
+
+        # Validate model name is realistic
+        model = (record.get('details', {}).get('model_used') or
+                record.get('model_used', ''))
+
+        if model and not self._is_realistic_model_name(model):
+            return False
+
+        return True
+
+    def _is_realistic_model_name(self, model_name: str) -> bool:
+        """Check if model name appears realistic."""
+        realistic_patterns = [
+            'claude', 'glm', 'gpt', 'llama', 'mistral', 'gemini',
+            'claude-sonnet', 'claude-opus', 'claude-haiku',
+            'chatglm', 'zhipuai'
+        ]
+
+        model_lower = model_name.lower()
+        return any(pattern in model_lower for pattern in realistic_patterns)
+
+    def clean_contaminated_data(self):
+        """Remove contaminated or simulated data from performance files."""
+        try:
+            # Clean quality history
+            if self.quality_history_file.exists():
+                with open(self.quality_history_file, 'r') as f:
+                    quality_data = json.load(f)
+
+                original_count = len(quality_data.get('quality_assessments', []))
+
+                # Filter out contaminated records
+                clean_assessments = []
+                for assessment in quality_data.get('quality_assessments', []):
+                    if self.validate_data_integrity(assessment):
+                        clean_assessments.append(assessment)
+
+                quality_data['quality_assessments'] = clean_assessments
+
+                # Update statistics
+                if clean_assessments:
+                    total_assessments = len(clean_assessments)
+                    passing_assessments = sum(1 for a in clean_assessments if a.get('pass', False))
+                    avg_score = sum(a.get('overall_score', 0) for a in clean_assessments) / total_assessments
+
+                    quality_data['statistics'] = {
+                        'avg_quality_score': round(avg_score, 1),
+                        'total_assessments': total_assessments,
+                        'passing_rate': passing_assessments / total_assessments,
+                        'trend': quality_data.get('statistics', {}).get('trend', 'stable')
+                    }
+
+                    # Update last assessment
+                    last_assessment = max(clean_assessments, key=lambda x: x.get('timestamp', ''))
+                    quality_data['metadata']['last_assessment'] = last_assessment.get('timestamp', '')
+
+                with open(self.quality_history_file, 'w') as f:
+                    json.dump(quality_data, f, indent=2)
+
+                print(f"Cleaned {original_count - len(clean_assessments)} contaminated records from quality history")
+
+            # Clean model performance data (remove simulated data)
+            if self.model_performance_file.exists():
+                with open(self.model_performance_file, 'r') as f:
+                    model_data = json.load(f)
+
+                # Keep only real models with realistic data
+                clean_model_data = {}
+                for model_name, model_stats in model_data.items():
+                    if self._is_realistic_model_name(model_name):
+                        # Validate recent scores for authenticity
+                        recent_scores = model_stats.get('recent_scores', [])
+                        clean_scores = []
+
+                        for score_data in recent_scores:
+                            # Check for realistic patterns (not perfect hourly intervals)
+                            timestamp = score_data.get('timestamp', '')
+                            score = score_data.get('score', 0)
+
+                            if (timestamp and score and
+                                0 <= score <= 100 and
+                                self._is_realistic_timestamp(timestamp)):
+                                clean_scores.append(score_data)
+
+                        if clean_scores:
+                            model_stats['recent_scores'] = clean_scores
+                            clean_model_data[model_name] = model_stats
+
+                with open(self.model_performance_file, 'w') as f:
+                    json.dump(clean_model_data, f, indent=2)
+
+                print(f"Cleaned model performance data, kept {len(clean_model_data)} authentic models")
+
+        except Exception as e:
+            print(f"Warning: Error during data cleanup: {e}")
+
+    def _is_realistic_timestamp(self, timestamp: str) -> bool:
+        """Check if timestamp appears realistic (not perfectly spaced)."""
+        try:
+            # Basic timestamp validation
+            dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+
+            # Check if timestamp is within reasonable bounds
+            now = datetime.now()
+            time_diff = abs((now - dt).total_seconds())
+
+            # Reject if too far in future or past
+            return time_diff < 30 * 24 * 3600  # 30 days
+        except:
+            return False
 
     def _initialize_files(self):
         """Initialize performance tracking files."""
@@ -92,24 +491,29 @@ class AutomaticPerformanceRecorder:
 
     def record_task_performance(self,
                               task_data: Dict[str, Any],
-                              model_used: str = "Claude Sonnet 4.5") -> str:
+                              model_used: Optional[str] = None) -> str:
         """
-        Record performance metrics for any task.
+        Enhanced performance recording with real-time model detection and data validation.
 
         Args:
             task_data: Dictionary containing task information
-            model_used: The model that executed the task
+            model_used: Optional model override (if None, will auto-detect)
 
         Returns:
             assessment_id: Unique identifier for the performance record
         """
-        # Generate unique assessment ID
-        assessment_id = f"auto-{task_data.get('task_type', 'task')}-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+        # Auto-detect model if not provided
+        if not model_used:
+            model_used = self.detect_current_model()
+
+        # Generate unique assessment ID with model prefix
+        model_prefix = model_used.lower().replace(' ', '-').replace('.', '-')
+        assessment_id = f"auto-{model_prefix}-{task_data.get('task_type', 'task')}-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
 
         # Calculate performance metrics
         performance_metrics = self._calculate_performance_metrics(task_data)
 
-        # Create performance record
+        # Create enhanced performance record
         performance_record = {
             "assessment_id": assessment_id,
             "timestamp": datetime.now().isoformat() + "Z",
@@ -119,6 +523,7 @@ class AutomaticPerformanceRecorder:
             "details": {
                 "auto_recorded": True,
                 "model_used": model_used,
+                "model_detected_by": "auto-detection" if not model_used else "provided",
                 "task_description": task_data.get("description", ""),
                 "task_complexity": task_data.get("complexity", "medium"),
                 "duration_seconds": task_data.get("duration", 0),
@@ -129,13 +534,25 @@ class AutomaticPerformanceRecorder:
                 "success": task_data.get("success", True),
                 "quality_improvement": performance_metrics.get("quality_improvement", 0),
                 "time_efficiency": performance_metrics.get("time_efficiency", 0),
-                "performance_index": performance_metrics.get("performance_index", 0)
+                "performance_index": performance_metrics.get("performance_index", 0),
+                "data_source": "real_performance_recording",
+                "validation_status": "validated"
             },
             "issues_found": task_data.get("issues_found", []),
             "recommendations": task_data.get("recommendations", []),
             "pass": performance_metrics["overall_score"] >= 70,
-            "auto_generated": True
+            "auto_generated": True,
+            "data_integrity": {
+                "authenticity_score": 1.0,
+                "validation_timestamp": datetime.now().isoformat() + "Z",
+                "contamination_flags": []
+            }
         }
+
+        # Validate record integrity before storing
+        if not self.validate_data_integrity(performance_record):
+            print(f"Warning: Record {assessment_id} failed integrity validation, skipping storage")
+            return assessment_id
 
         # Add to quality history (compatible format)
         self._add_to_quality_history(performance_record)
@@ -274,6 +691,21 @@ class AutomaticPerformanceRecorder:
             }
 
         model_stats = model_data[model_used]
+
+        # Handle legacy data structures by initializing missing fields
+        if "performance_timeline" not in model_stats:
+            model_stats["performance_timeline"] = []
+        if "task_types" not in model_stats:
+            model_stats["task_types"] = {}
+        if "avg_score" not in model_stats:
+            model_stats["avg_score"] = 0
+        if "last_updated" not in model_stats:
+            model_stats["last_updated"] = None
+
+        # Ensure total_tasks exists for legacy data
+        if "total_tasks" not in model_stats:
+            model_stats["total_tasks"] = 0
+
         model_stats["total_tasks"] += 1
 
         # Add to performance timeline

@@ -859,8 +859,59 @@ async function execute_with_performance_recording(task) {
 **2. Model Detection Integration**:
 ```javascript
 function detect_current_model() {
-  // Automatically detect the current model for performance tracking
-  return "Claude Sonnet 4.5"  // Default - actual detection in implementation
+  // Real-time model detection with multiple strategies
+
+  // Strategy 1: Environment variables
+  const modelFromEnv = process.env.ANTHROPIC_MODEL ||
+                       process.env.CLAUDE_MODEL ||
+                       process.env.MODEL_NAME ||
+                       process.env.GLM_MODEL ||
+                       process.env.ZHIPU_MODEL;
+
+  if (modelFromEnv) {
+    return normalizeModelName(modelFromEnv);
+  }
+
+  // Strategy 2: Session context analysis
+  const modelFromContext = analyzeSessionContext();
+  if (modelFromContext) {
+    return modelFromContext;
+  }
+
+  // Strategy 3: Performance patterns analysis
+  const modelFromPatterns = analyzePerformancePatterns();
+  if (modelFromPatterns) {
+    return modelFromPatterns;
+  }
+
+  // Strategy 4: Default with validation
+  return detectDefaultModel();
+}
+
+function normalizeModelName(modelName) {
+  const name = modelName.toLowerCase();
+
+  // Claude models
+  if (name.includes('claude-sonnet-4.5') || name.includes('claude-4.5')) {
+    return "Claude Sonnet 4.5";
+  }
+  if (name.includes('claude-opus-4.1') || name.includes('claude-4.1')) {
+    return "Claude Opus 4.1";
+  }
+  if (name.includes('claude-haiku-4.5')) {
+    return "Claude Haiku 4.5";
+  }
+
+  // GLM models
+  if (name.includes('glm-4.6') || name.includes('chatglm-4.6')) {
+    return "GLM 4.6";
+  }
+  if (name.includes('glm-4') || name.includes('chatglm4')) {
+    return "GLM 4.6";
+  }
+
+  // Return normalized name
+  return modelName.trim().split(' ')[0];
 }
 ```
 

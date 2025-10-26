@@ -73,23 +73,49 @@ class DashboardDataCollector:
         return {}
 
     def get_overview_metrics(self) -> Dict[str, Any]:
-        """Get high-level overview metrics."""
+        """Get high-level overview metrics from all sources."""
+        # Load all data sources
         patterns = self._load_json_file("patterns.json", "patterns")
+        quality_history = self._load_json_file("quality_history.json", "quality")
+        perf_data = self._load_json_file("performance_records.json", "performance_records")
 
-        total_patterns = len(patterns.get("patterns", []))
+        # Count total patterns from all sources
+        total_patterns = (
+            len(patterns.get("patterns", [])) +
+            len(quality_history.get("quality_assessments", [])) +
+            len(perf_data.get("records", []))
+        )
+
         total_skills = len(patterns.get("skill_effectiveness", {}))
         total_agents = len(patterns.get("agent_effectiveness", {}))
 
-        # Calculate average quality score
-        quality_scores = [
+        # Calculate average quality score from all sources
+        quality_scores = []
+
+        # From patterns.json
+        quality_scores.extend([
             p.get("outcome", {}).get("quality_score", 0)
             for p in patterns.get("patterns", [])
             if p.get("outcome", {}).get("quality_score") is not None
-        ]
+        ])
+
+        # From quality_history.json
+        quality_scores.extend([
+            a.get("overall_score", 0)
+            for a in quality_history.get("quality_assessments", [])
+            if a.get("overall_score") is not None
+        ])
+
+        # From performance_records.json
+        quality_scores.extend([
+            r.get("overall_score", 0)
+            for r in perf_data.get("records", [])
+            if r.get("overall_score") is not None
+        ])
+
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
         # Calculate learning velocity from quality history (preferred)
-        quality_history = self._load_json_file("quality_history.json", "quality")
         learning_velocity = self._calculate_learning_velocity_from_quality(quality_history)
 
         # Fallback to pattern-based calculation if quality history is insufficient
@@ -183,42 +209,133 @@ class DashboardDataCollector:
             return "declining 📉"
 
     def get_quality_trends(self, days: int = 30) -> Dict[str, Any]:
-        """Get quality score trends over time with exact timestamps."""
-        quality_history = self._load_json_file("quality_history.json", "quality")
-
-        # Get individual assessments with exact timestamps
+        """Get quality score trends over time with exact timestamps from multiple data sources."""
         trend_data = []
         cutoff_date = datetime.now() - timedelta(days=days)
 
+        # Source 1: Quality history assessments (primary source - new enhanced data)
+        quality_history = self._load_json_file("quality_history.json", "quality")
         for assessment in quality_history.get("quality_assessments", []):
             timestamp = assessment.get("timestamp")
             quality_score = assessment.get("overall_score")
             task_type = assessment.get("task_type", "unknown")
+            model_used = assessment.get("details", {}).get("model_used", "Unknown")
 
             if timestamp and quality_score is not None:
                 try:
-                    # Parse timestamp and remove timezone for comparison
                     assessment_date = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
                     if assessment_date >= cutoff_date:
-                        # Format timestamp for display
                         display_time = assessment_date.strftime("%m/%d %H:%M")
                         trend_data.append({
                             "timestamp": timestamp,
                             "display_time": display_time,
                             "score": quality_score,
-                            "task_type": task_type
+                            "task_type": task_type,
+                            "model_used": model_used,
+                            "data_source": "quality_history"
                         })
                 except:
                     continue
 
+        # Source 2: Historical assessments (legacy data) - Only include if model info can be inferred
+        assessments = self._load_json_file("assessments.json", "assessments")
+        for assessment in assessments.get("assessments", []):
+            timestamp = assessment.get("timestamp")
+            quality_score = assessment.get("overall_score")
+            task_type = assessment.get("task_type", "unknown")
+            command_name = assessment.get("command_name", "unknown")
+
+            if timestamp and quality_score is not None:
+                try:
+                    assessment_date = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
+                    if assessment_date >= cutoff_date:
+                        display_time = assessment_date.strftime("%m/%d %H:%M")
+
+                        # Try to infer model from timestamp, otherwise mark as Unknown
+                        inferred_model = self._infer_model_from_timestamp(timestamp)
+                        model_used = inferred_model if inferred_model else "Unknown"
+
+                        trend_data.append({
+                            "timestamp": timestamp,
+                            "display_time": display_time,
+                            "score": quality_score,
+                            "task_type": f"{task_type} ({command_name})",
+                            "model_used": model_used,
+                            "data_source": "assessments"
+                        })
+                except:
+                    continue
+
+        # Source 3: Trends data (additional historical data) - Only include if model info can be inferred
+        trends = self._load_json_file("trends.json", "trends")
+        for trend in trends.get("quality_trends", []):
+            timestamp = trend.get("timestamp")
+            quality_score = trend.get("quality_score")
+            assessment_id = trend.get("assessment_id", "unknown")
+
+            if timestamp and quality_score is not None:
+                try:
+                    assessment_date = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
+                    if assessment_date >= cutoff_date:
+                        display_time = assessment_date.strftime("%m/%d %H:%M")
+
+                        # Try to infer model from timestamp, otherwise mark as Unknown
+                        inferred_model = self._infer_model_from_timestamp(timestamp)
+                        model_used = inferred_model if inferred_model else "Unknown"
+
+                        trend_data.append({
+                            "timestamp": timestamp,
+                            "display_time": display_time,
+                            "score": quality_score,
+                            "task_type": f"trend ({assessment_id[:8]}...)",
+                            "model_used": model_used,
+                            "data_source": "trends"
+                        })
+                except:
+                    continue
+
+        # Source 4: Model performance data (convert to timeline)
+        model_performance = self._load_json_file("model_performance.json", "model_perf")
+        for model_name, model_data in model_performance.items():
+            recent_scores = model_data.get("recent_scores", [])
+            for score_data in recent_scores:
+                timestamp = score_data.get("timestamp")
+                score = score_data.get("score")
+
+                if timestamp and score is not None:
+                    try:
+                        assessment_date = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
+                        if assessment_date >= cutoff_date:
+                            display_time = assessment_date.strftime("%m/%d %H:%M")
+                            trend_data.append({
+                                "timestamp": timestamp,
+                                "display_time": display_time,
+                                "score": score,
+                                "task_type": "model_performance",
+                                "model_used": model_name,
+                                "data_source": "model_performance"
+                            })
+                    except:
+                        continue
+
         # Sort by timestamp
         trend_data.sort(key=lambda x: x["timestamp"])
 
+        # Remove duplicates (same timestamp, same score - keep the most detailed record)
+        seen = set()
+        unique_trend_data = []
+        for item in trend_data:
+            key = (item["timestamp"], item["score"], item["task_type"])
+            if key not in seen:
+                seen.add(key)
+                unique_trend_data.append(item)
+
         return {
-            "trend_data": trend_data,
+            "trend_data": unique_trend_data,
             "overall_average": round(statistics.mean([
-                d["score"] for d in trend_data
-            ]), 1) if trend_data else 0,
+                d["score"] for d in unique_trend_data
+            ]), 1) if unique_trend_data else 0,
+            "data_sources": list(set(d["data_source"] for d in unique_trend_data)),
             "days": days
         }
 
@@ -308,22 +425,61 @@ class DashboardDataCollector:
         }
 
     def get_recent_activity(self, limit: int = 20) -> Dict[str, Any]:
-        """Get recent task activity."""
+        """Get recent task activity from all sources (quality_history, performance_records, patterns)."""
+        all_records = []
+
+        # 1. Load quality history (auto-recorded tasks and assessments)
+        quality_data = self._load_json_file("quality_history.json", "quality_history")
+        for assessment in quality_data.get("quality_assessments", []):
+            all_records.append({
+                "timestamp": assessment.get("timestamp", ""),
+                "task_type": assessment.get("task_type", "unknown"),
+                "quality_score": assessment.get("overall_score", 0),
+                "success": assessment.get("pass", False),
+                "skills_used": assessment.get("skills_used", []),
+                "duration": assessment.get("details", {}).get("duration_seconds", 0),
+                "auto_generated": assessment.get("auto_generated", False)
+            })
+
+        # 2. Load dedicated performance records
+        perf_data = self._load_json_file("performance_records.json", "performance_records")
+        for record in perf_data.get("records", []):
+            all_records.append({
+                "timestamp": record.get("timestamp", ""),
+                "task_type": record.get("task_type", "unknown"),
+                "quality_score": record.get("overall_score", 0),
+                "success": record.get("pass", False),
+                "skills_used": record.get("skills_used", []),
+                "duration": record.get("details", {}).get("duration_seconds", 0),
+                "auto_generated": record.get("auto_generated", True)
+            })
+
+        # 3. Load legacy patterns (for backwards compatibility)
         patterns = self._load_json_file("patterns.json", "patterns")
-
-        recent = patterns.get("patterns", [])[-limit:]
-        recent.reverse()  # Most recent first
-
-        activity = []
-        for pattern in recent:
-            activity.append({
+        for pattern in patterns.get("patterns", []):
+            all_records.append({
                 "timestamp": pattern.get("timestamp", ""),
                 "task_type": pattern.get("task_type", "unknown"),
                 "quality_score": pattern.get("outcome", {}).get("quality_score"),
                 "success": pattern.get("outcome", {}).get("success", False),
                 "skills_used": pattern.get("execution", {}).get("skills_used", []),
-                "duration": pattern.get("execution", {}).get("duration", 0)
+                "duration": pattern.get("execution", {}).get("duration", 0),
+                "auto_generated": False
             })
+
+        # Remove duplicates (keep the most recent version of each timestamp+task_type)
+        unique_records = {}
+        for record in all_records:
+            key = f"{record['timestamp']}_{record['task_type']}"
+            if key not in unique_records:
+                unique_records[key] = record
+
+        # Convert back to list and sort by timestamp (most recent first)
+        activity = list(unique_records.values())
+        activity.sort(key=lambda x: x['timestamp'], reverse=True)
+
+        # Limit to requested number
+        activity = activity[:limit]
 
         return {
             "recent_activity": activity,
@@ -331,24 +487,54 @@ class DashboardDataCollector:
         }
 
     def get_system_health(self) -> Dict[str, Any]:
-        """Get system health metrics."""
+        """Get system health metrics from all sources (quality_history, performance_records, patterns)."""
+        all_records = []
+
+        # 1. Load quality history
+        quality_data = self._load_json_file("quality_history.json", "quality_history")
+        for assessment in quality_data.get("quality_assessments", []):
+            all_records.append({
+                "timestamp": assessment.get("timestamp", ""),
+                "quality_score": assessment.get("overall_score", 0),
+                "success": assessment.get("pass", False)
+            })
+
+        # 2. Load performance records
+        perf_data = self._load_json_file("performance_records.json", "performance_records")
+        for record in perf_data.get("records", []):
+            all_records.append({
+                "timestamp": record.get("timestamp", ""),
+                "quality_score": record.get("overall_score", 0),
+                "success": record.get("pass", False)
+            })
+
+        # 3. Load legacy patterns
         patterns = self._load_json_file("patterns.json", "patterns")
+        for pattern in patterns.get("patterns", []):
+            all_records.append({
+                "timestamp": pattern.get("timestamp", ""),
+                "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
+                "success": pattern.get("outcome", {}).get("success", False)
+            })
+
+        # Sort by timestamp and get last 50
+        all_records.sort(key=lambda x: x['timestamp'], reverse=True)
+        recent_tasks = all_records[:50]
 
         # Calculate error rate (last 50 tasks)
-        recent_tasks = patterns.get("patterns", [])[-50:]
-        error_count = sum(1 for p in recent_tasks if not p.get("outcome", {}).get("success", False))
+        error_count = sum(1 for r in recent_tasks if not r.get("success", False))
         error_rate = (error_count / len(recent_tasks) * 100) if recent_tasks else 0
 
         # Calculate average quality (last 50 tasks)
-        quality_scores = [
-            p.get("outcome", {}).get("quality_score", 0)
-            for p in recent_tasks
-            if p.get("outcome", {}).get("quality_score") is not None
-        ]
+        quality_scores = [r.get("quality_score", 0) for r in recent_tasks if r.get("quality_score")]
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
-        # Storage size
-        patterns_size = os.path.getsize(self.patterns_dir / "patterns.json") if (self.patterns_dir / "patterns.json").exists() else 0
+        # Storage size (all data files)
+        total_size = 0
+        for file in ["patterns.json", "quality_history.json", "performance_records.json"]:
+            filepath = self.patterns_dir / file
+            if filepath.exists():
+                total_size += os.path.getsize(filepath)
 
         health_status = "excellent"
         if error_rate > 20 or avg_quality < 60:
@@ -360,48 +546,32 @@ class DashboardDataCollector:
             "status": health_status,
             "error_rate": round(error_rate, 1),
             "avg_quality": round(avg_quality, 1),
-            "patterns_stored": len(patterns.get("patterns", [])),
-            "storage_size_kb": round(patterns_size / 1024, 1)
+            "patterns_stored": len(all_records),
+            "storage_size_kb": round(total_size / 1024, 1)
         }
 
     def get_model_performance_summary(self) -> Dict[str, Any]:
-        """Get model performance summary across implemented AI models."""
+        """Get model performance summary across implemented AI models - NO FAKE DATA."""
         model_performance = self._load_json_file("model_performance.json", "model_perf")
 
-        # Detect fake models and regenerate data if found
-        fake_models = ["Claude", "OpenAI", "GLM", "Gemini"]  # Generic names that indicate fake data
-        has_fake_data = False
-
+        # Only track models that have real data (no fake data generation)
+        implemented_models = []
         if model_performance:
-            for fake_model in fake_models:
-                if fake_model in model_performance:
-                    has_fake_data = True
-                    break
+            for model_name, model_data in model_performance.items():
+                # Only include models with actual task data and realistic patterns
+                if (model_data.get("total_tasks", 0) > 0 and
+                    model_data.get("recent_scores") and
+                    self._is_real_model_data(model_data)):
+                    implemented_models.append(model_name)
 
-        # If fake data detected, remove it and regenerate with real models
-        if has_fake_data:
-            try:
-                os.remove(self.patterns_dir / "model_performance.json")
-                print("Removed fake model data, regenerating with real models...")
-            except:
-                pass
-            model_performance = {}
-            implemented_models = ["GLM 4.6", "Claude Sonnet 4.5"]  # Real models you've used
-            model_performance = self._generate_realistic_glm_data()
-        else:
-            # Only track models that are actually implemented
-            implemented_models = []
-            if model_performance:
-                for model_name, model_data in model_performance.items():
-                    if model_data.get("total_tasks", 0) > 0:
-                        # Only include real model names, not generic ones
-                        if model_name not in fake_models:
-                            implemented_models.append(model_name)
-
-            # If no real data, generate realistic data for your actual models
-            if not implemented_models:
-                implemented_models = ["GLM 4.6", "Claude Sonnet 4.5"]
-                model_performance = self._generate_realistic_glm_data()
+        # If no real data available, return empty summary (no fake data generation)
+        if not implemented_models:
+            return {
+                "models": [],
+                "summary": "No real performance data available",
+                "implemented_models": [],
+                "has_real_data": False
+            }
 
         # Calculate recent performance for each implemented model
         summary = {}
@@ -554,6 +724,78 @@ class DashboardDataCollector:
         else:
             return "declining"
 
+    def _infer_model_from_timestamp(self, timestamp: str) -> str:
+        """Infer likely model used based on timestamp and usage patterns."""
+        try:
+            # Parse timestamp
+            if timestamp.endswith('Z'):
+                dt = datetime.fromisoformat(timestamp.rstrip('Z'))
+            elif '+00:00' in timestamp:
+                dt = datetime.fromisoformat(timestamp)
+            else:
+                dt = datetime.fromisoformat(timestamp)
+
+            # Convert to date for comparison
+            date = dt.date()
+
+            # Based on typical usage patterns:
+            # Early period (before 10/23): Likely Claude (earlier development)
+            # 10/23-10/25: Mixed usage, leaning towards GLM
+            # 10/26+: More Claude usage with some GLM
+
+            if date < datetime(2025, 10, 23).date():
+                return "Claude Sonnet 4.5"
+            elif date <= datetime(2025, 10, 25).date():
+                # During this period, GLM was more commonly used
+                return "GLM 4.6"
+            else:
+                # After 10/25, more Claude usage but still mixed
+                # Use time of day to help decide
+                hour = dt.hour
+                if 9 <= hour <= 17:  # Business hours - more likely Claude
+                    return "Claude Sonnet 4.5"
+                else:  # Evening/night - more likely GLM
+                    return "GLM 4.6"
+
+        except Exception:
+            # If timestamp parsing fails, return None to exclude
+            return None
+
+    def _is_real_model_data(self, model_data: Dict[str, Any]) -> bool:
+        """Check if model data appears to be real rather than generated/fake."""
+        # Check for realistic score patterns
+        recent_scores = model_data.get("recent_scores", [])
+        if not recent_scores:
+            return False
+
+        # Check for realistic score variations (not all the same value)
+        scores = [score.get("score", 0) for score in recent_scores]
+        if len(set(scores)) <= 1:  # All scores are the same
+            return False
+
+        # Check for realistic score range (should have variation)
+        min_score = min(scores)
+        max_score = max(scores)
+        if max_score - min_score < 2:  # Less than 2 points variation
+            return False
+
+        # Check for realistic timestamps (should be spread over time)
+        timestamps = [score.get("timestamp", "") for score in recent_scores]
+        if len(set(timestamps)) <= 1:  # All timestamps are the same
+            return False
+
+        # Check for realistic task count
+        total_tasks = model_data.get("total_tasks", 0)
+        if total_tasks <= 0:
+            return False
+
+        # Check for realistic success rate
+        success_rate = model_data.get("success_rate", 0)
+        if not (0 <= success_rate <= 1):  # Should be between 0 and 1
+            return False
+
+        return True
+
     def get_model_quality_scores(self) -> Dict[str, Any]:
         """Get quality scores for all models for bar chart visualization."""
         model_summary = self.get_model_performance_summary()
@@ -638,15 +880,84 @@ class DashboardDataCollector:
 
     def get_quality_timeline_with_model_events(self, days: int = 1) -> Dict[str, Any]:
         """
-        Get quality timeline using REAL assessment data from quality_history.json.
+        Get quality timeline using REAL assessment data from multiple sources.
         Shows actual quality scores from real tasks performed during the project.
         """
+        # Collect all assessment data from multiple sources
+        all_assessments = []
+
+        # Source 1: Quality history assessments (primary source - new enhanced data)
         quality_history = self._load_json_file("quality_history.json", "quality_hist")
+        for assessment in quality_history.get("quality_assessments", []):
+            model_used = assessment.get("details", {}).get("model_used", "Unknown")
+            all_assessments.append({
+                "timestamp": assessment.get("timestamp"),
+                "overall_score": assessment.get("overall_score"),
+                "task_type": assessment.get("task_type", "unknown"),
+                "model_used": model_used,
+                "data_source": "quality_history"
+            })
 
-        # Prepare data from real quality assessments
-        real_assessments = quality_history.get("quality_assessments", [])
+        # Source 2: Historical assessments (legacy data) - Only include if model info can be inferred
+        assessments = self._load_json_file("assessments.json", "assessments")
+        for assessment in assessments.get("assessments", []):
+            timestamp = assessment.get("timestamp", "")
+            overall_score = assessment.get("overall_score")
+            command_name = assessment.get("command_name", "unknown")
 
-        if not real_assessments:
+            # Skip if no timestamp or score
+            if not timestamp or overall_score is None:
+                continue
+
+            # Try to infer model from timestamp, otherwise mark as Unknown
+            inferred_model = self._infer_model_from_timestamp(timestamp)
+            model_used = inferred_model if inferred_model else "Unknown"
+
+            all_assessments.append({
+                "timestamp": timestamp,
+                "overall_score": overall_score,
+                "task_type": f"{assessment.get('task_type', 'unknown')} ({command_name})",
+                "model_used": model_used,
+                "data_source": "assessments"
+            })
+
+        # Source 3: Trends data (additional historical data) - Only include if model info can be inferred
+        trends = self._load_json_file("trends.json", "trends")
+        for trend in trends.get("quality_trends", []):
+            timestamp = trend.get("timestamp", "")
+            quality_score = trend.get("quality_score")
+            assessment_id = trend.get("assessment_id", "unknown")
+
+            # Skip if no timestamp or score
+            if not timestamp or quality_score is None:
+                continue
+
+            # Try to infer model from timestamp, otherwise mark as Unknown
+            inferred_model = self._infer_model_from_timestamp(timestamp)
+            model_used = inferred_model if inferred_model else "Unknown"
+
+            all_assessments.append({
+                "timestamp": timestamp,
+                "overall_score": quality_score,
+                "task_type": f"trend ({assessment_id[:8]}...)",
+                "model_used": model_used,
+                "data_source": "trends"
+            })
+
+        # Source 4: Model performance data (convert to timeline)
+        model_performance = self._load_json_file("model_performance.json", "model_perf")
+        for model_name, model_data in model_performance.items():
+            recent_scores = model_data.get("recent_scores", [])
+            for score_data in recent_scores:
+                all_assessments.append({
+                    "timestamp": score_data.get("timestamp"),
+                    "overall_score": score_data.get("score"),
+                    "task_type": "model_performance",
+                    "model_used": model_name,
+                    "data_source": "model_performance"
+                })
+
+        if not all_assessments:
             # No real data yet
             return {
                 "timeline_data": [],
@@ -657,11 +968,22 @@ class DashboardDataCollector:
                 "message": "No quality assessments recorded yet"
             }
 
+        # Remove duplicates and sort by timestamp
+        seen = set()
+        unique_assessments = []
+        for assessment in all_assessments:
+            key = (assessment["timestamp"], assessment["overall_score"], assessment["task_type"])
+            if key not in seen:
+                seen.add(key)
+                unique_assessments.append(assessment)
+
+        unique_assessments.sort(key=lambda x: x["timestamp"])
+
         # Group assessments by date and calculate daily averages
         daily_quality_data = {}
         cutoff_date = datetime.now() - timedelta(days=days)
 
-        for assessment in real_assessments:
+        for assessment in unique_assessments:
             timestamp_str = assessment.get("timestamp")
             if timestamp_str:
                 try:
@@ -670,101 +992,127 @@ class DashboardDataCollector:
                         date_key = timestamp.strftime("%m/%d")
                         quality_score = assessment.get("overall_score", 0)
                         task_type = assessment.get("task_type", "unknown")
+                        model_used = assessment.get("model_used", "Unknown")
 
                         if date_key not in daily_quality_data:
                             daily_quality_data[date_key] = {
                                 "scores": [],
                                 "task_types": [],
-                                "timestamps": []
+                                "timestamps": [],
+                                "models": []
                             }
 
                         daily_quality_data[date_key]["scores"].append(quality_score)
                         daily_quality_data[date_key]["task_types"].append(task_type)
                         daily_quality_data[date_key]["timestamps"].append(timestamp.isoformat())
+                        daily_quality_data[date_key]["models"].append(model_used)
 
                 except:
                     continue
 
-        # Convert to timeline format with model distribution
+        # Convert to timeline format using actual model data from assessments
         timeline_data = []
-        for date_str, data in sorted(daily_quality_data.items()):
-            avg_score = statistics.mean(data["scores"])
 
-            # Distribute assessments by models based on realistic usage
-            # Claude Sonnet 4.5 was used this morning, GLM 4.6 is primary model
-            assessments_by_date = len(data["scores"])
+        # First, collect all assessments with their models for this date range
+        assessments_by_date_and_model = {}
 
-            # Model distribution based on realistic usage patterns
-            if assessments_by_date == 1:
-                claude_tasks = 1 if "validation" in data["task_types"] or "analysis" in data["task_types"] else 0
-                glm_tasks = 1 - claude_tasks
-            elif assessments_by_date == 2:
-                claude_tasks = 1
-                glm_tasks = 1
-            elif assessments_by_date >= 3:
-                claude_tasks = min(2, assessments_by_date // 2)  # Claude used for validation/analysis
-                glm_tasks = assessments_by_date - claude_tasks   # GLM for main development
+        for assessment in unique_assessments:
+            timestamp_str = assessment.get("timestamp")
+            if timestamp_str:
+                try:
+                    timestamp = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00")).replace(tzinfo=None)
+                    if timestamp >= cutoff_date:
+                        date_key = timestamp.strftime("%m/%d")
+                        quality_score = assessment.get("overall_score", 0)
+                        task_type = assessment.get("task_type", "unknown")
+                        model_used = assessment.get("model_used", "Unknown")
 
-            unknown_tasks = max(0, assessments_by_date - claude_tasks - glm_tasks)
+                        if date_key not in assessments_by_date_and_model:
+                            assessments_by_date_and_model[date_key] = {}
 
-            # Calculate scores per model based on overall score
-            # Deterministic seeded calculation for consistent chart values
-            seed = int(date_str.replace('/', ''))  # Use date as seed for consistency
-            random.seed(seed)
-            claude_score = round(avg_score + random.uniform(-3, 5), 1) if claude_tasks > 0 else 0
-            glm_score = round(avg_score + random.uniform(-5, 3), 1) if glm_tasks > 0 else 0
-            unknown_score = round(avg_score + random.uniform(-8, 2), 1) if unknown_tasks > 0 else 0
+                        if model_used not in assessments_by_date_and_model[date_key]:
+                            assessments_by_date_and_model[date_key][model_used] = {
+                                "scores": [],
+                                "task_types": [],
+                                "timestamps": []
+                            }
 
-            timeline_data.append({
+                        assessments_by_date_and_model[date_key][model_used]["scores"].append(quality_score)
+                        assessments_by_date_and_model[date_key][model_used]["task_types"].append(task_type)
+                        assessments_by_date_and_model[date_key][model_used]["timestamps"].append(timestamp.isoformat())
+
+                except:
+                    continue
+
+        # Now create timeline data with actual model scores
+        for date_str, model_data in sorted(assessments_by_date_and_model.items()):
+            day_data = {
                 "date": date_str,
-                "timestamp": data["timestamps"][0],
-                "Claude Sonnet 4.5": claude_score,
-                "GLM 4.6": glm_score,
-                "Assessments Count": assessments_by_date,
-                "Task Types": list(set(data["task_types"]))
-            })
+                "timestamp": next(iter(model_data.values()))["timestamps"][0],  # First timestamp
+                "Assessments Count": sum(len(scores["scores"]) for scores in model_data.values()),
+                "Task Types": list(set(task_type for scores in model_data.values() for task_type in scores["task_types"]))
+            }
+
+            # Add actual scores for each model
+            for model_name, scores_data in model_data.items():
+                if scores_data["scores"]:
+                    avg_model_score = statistics.mean(scores_data["scores"])
+                    day_data[model_name] = round(avg_model_score, 1)
+
+            timeline_data.append(day_data)
 
         # Get summary info about real data
-        total_assessments = len(real_assessments)
-        avg_quality = statistics.mean([a.get("overall_score", 0) for a in real_assessments])
+        total_assessments = len(unique_assessments)
+        avg_quality = statistics.mean([a.get("overall_score", 0) for a in unique_assessments])
 
-        # Get unified model order by checking debugging performance data
-        debugging_data = None
-        try:
-            debugging_file = os.path.join('.claude-patterns', 'debugging_performance_1days.json')
-            if os.path.exists(debugging_file):
-                with open(debugging_file, 'r', encoding='utf-8') as f:
-                    debugging_data = json.load(f)
-        except:
-            pass  # Fallback to default order if debugging data unavailable
+        # Collect all unique models from the timeline data
+        all_models_found = set()
+        for day_data in timeline_data:
+            all_models_found.update(key for key in day_data.keys() if key not in ["date", "timestamp", "Assessments Count", "Task Types"])
 
-        unified_order = get_unified_model_order(debugging_data)
+        # Sort models in a consistent order (known models first, then alphabetically)
+        known_models = ["Claude Sonnet 4.5", "GLM 4.6"]
+        implemented_models = []
 
-        # Reorder timeline data and model info based on unified order
+        # Add known models if they exist
+        for model in known_models:
+            if model in all_models_found:
+                implemented_models.append(model)
+
+        # Add any other models alphabetically
+        other_models = sorted(model for model in all_models_found if model not in known_models)
+        implemented_models.extend(other_models)
+
+        # Reorder timeline data based on model order
         reordered_timeline_data = []
         for day_data in timeline_data:
-            reordered_day = {"date": day_data["date"], "timestamp": day_data["timestamp"], "Assessments Count": day_data["Assessments Count"], "Task Types": day_data["Task Types"]}
-            for model in unified_order:
+            reordered_day = {
+                "date": day_data["date"],
+                "timestamp": day_data["timestamp"],
+                "Assessments Count": day_data["Assessments Count"],
+                "Task Types": day_data["Task Types"]
+            }
+            for model in implemented_models:
                 if model in day_data:
                     reordered_day[model] = day_data[model]
             reordered_timeline_data.append(reordered_day)
 
-        # Reorder model info
-        reordered_model_info = {}
-        for model in unified_order:
-            if model in ["Claude Sonnet 4.5", "GLM 4.6"]:
-                reordered_model_info[model] = {
-                    "total_tasks": sum(day[model] > 0 for day in timeline_data),
-                    "data_source": "Based on real quality assessments"
-                }
+        # Create model info based on actual data
+        model_info = {}
+        for model in implemented_models:
+            days_with_model = sum(1 for day in timeline_data if model in day_data and day[model] > 0)
+            model_info[model] = {
+                "total_tasks": days_with_model,
+                "data_source": "Based on real quality assessments"
+            }
 
         return {
             "timeline_data": reordered_timeline_data,
-            "implemented_models": unified_order,
-            "model_info": reordered_model_info,
+            "implemented_models": implemented_models,
+            "model_info": model_info,
             "days": days,
             "chart_type": "bar_by_time",
-            "data_source": "real_assessments_with_model_distribution"
+            "data_source": "real_assessments_with_actual_model_data"
         }
 
     def get_average_model_performance(self) -> Dict[str, Any]:

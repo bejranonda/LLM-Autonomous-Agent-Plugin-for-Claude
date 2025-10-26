@@ -289,21 +289,37 @@ def cleanup_test_data():
 
             original_count = len(quality_data.get("quality_assessments", []))
 
-            # Remove test records (those with "test" in description or task_type)
+            # Remove test records (those with "test" indicators)
             assessments = quality_data.get("quality_assessments", [])
-            filtered_assessments = [
-                a for a in assessments
-                if "test" not in a.get("task_type", "").lower()
-                and "test" not in a.get("details", {}).get("task_description", "").lower()
-            ]
+            filtered_assessments = []
+
+            for a in assessments:
+                # Remove if test indicators found
+                task_type = a.get("task_type", "").lower()
+                task_desc = a.get("details", {}).get("task_description", "").lower()
+                model_used = a.get("details", {}).get("model_used", "").lower()
+                assessment_id = a.get("assessment_id", "").lower()
+
+                is_test = ("test" in task_type or
+                          "test" in task_desc or
+                          "test" in model_used or
+                          "test" in assessment_id or
+                          a.get("auto_generated", False) and "test" in task_type)
+
+                if not is_test:
+                    filtered_assessments.append(a)
 
             if len(filtered_assessments) < original_count:
                 quality_data["quality_assessments"] = filtered_assessments
 
                 # Update statistics
                 total_assessments = len(filtered_assessments)
-                passing_assessments = sum(1 for a in filtered_assessments if a.get("pass", False))
-                avg_score = sum(a.get("overall_score", 0) for a in filtered_assessments) / total_assessments if total_assessments > 0 else 0
+                if total_assessments > 0:
+                    passing_assessments = sum(1 for a in filtered_assessments if a.get("pass", False))
+                    avg_score = sum(a.get("overall_score", 0) for a in filtered_assessments) / total_assessments
+                else:
+                    passing_assessments = 0
+                    avg_score = 0
 
                 quality_data["statistics"] = {
                     "avg_quality_score": round(avg_score, 1),
@@ -312,10 +328,40 @@ def cleanup_test_data():
                     "trend": quality_data["statistics"].get("trend", "stable")
                 }
 
+                # Update last assessment timestamp
+                if filtered_assessments:
+                    last_timestamp = max(a.get("timestamp", "") for a in filtered_assessments)
+                    quality_data["metadata"]["last_assessment"] = last_timestamp
+                else:
+                    quality_data["metadata"]["last_assessment"] = ""
+
+                # Update auto recording count
+                auto_count = sum(1 for a in filtered_assessments if a.get("auto_generated", False))
+                quality_data["metadata"]["auto_recording_count"] = auto_count
+
                 with open(quality_file, 'w', encoding='utf-8') as f:
                     json.dump(quality_data, f, indent=2, ensure_ascii=False)
 
                 print(f"  ✓ Removed {original_count - len(filtered_assessments)} test records from quality history")
+
+        # Remove test models from model performance
+        model_perf_file = patterns_dir / "model_performance.json"
+        if model_perf_file.exists():
+            with open(model_perf_file, 'r', encoding='utf-8') as f:
+                model_data = json.load(f)
+
+            original_count = len(model_data)
+
+            # Remove test models
+            filtered_models = {}
+            for model_name, model_stats in model_data.items():
+                if "test" not in model_name.lower():
+                    filtered_models[model_name] = model_stats
+
+            if len(filtered_models) != original_count:
+                with open(model_perf_file, 'w', encoding='utf-8') as f:
+                    json.dump(filtered_models, f, indent=2, ensure_ascii=False)
+                print(f"  ✓ Removed {original_count - len(filtered_models)} test models from model performance")
 
         # Remove performance records file if it was created by test
         perf_records_file = patterns_dir / "performance_records.json"
@@ -331,6 +377,7 @@ def cleanup_test_data():
                 r for r in records
                 if "test" not in r.get("task_type", "").lower()
                 and "test" not in r.get("details", {}).get("task_description", "").lower()
+                and "test" not in r.get("model_used", "").lower()
             ]
 
             if len(filtered_records) < original_count:
