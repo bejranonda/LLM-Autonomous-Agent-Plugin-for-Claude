@@ -2,6 +2,53 @@
 
 All notable changes to the Autonomous Claude Agent Plugin will be documented in this file.
 
+## [4.1.0] - 2025-01-26
+
+### 🔄 NEW: Model Switch Command (`/dev:model-switch`)
+
+**Major Feature**: Cross-platform model switching utility that enables seamless switching between Claude and GLM models with secure token management.
+
+#### Key Innovation
+**Problem**: Users needed flexibility to use different AI models based on task requirements, cost considerations, and language-specific performance.
+
+**Solution**: Secure, cross-platform model switching with automatic configuration management, backup/restore capabilities, and intelligent validation.
+
+### Added
+
+#### New Model Switch System
+- **Model Switch Command** (`commands/dev-model-switch.md`)
+  - Switch between Claude and GLM models with one command
+  - Secure API token management and validation
+  - Cross-platform compatibility (Windows PowerShell, Linux/macOS Bash)
+  - Automatic backup and rollback capabilities
+
+- **Model Switcher Library** (`lib/model_switcher.py`)
+  - Cross-platform Python utility for model configuration
+  - JSON validation and secure token handling
+  - Platform detection and appropriate script execution
+  - Configuration backup and restore functionality
+
+- **PowerShell Script** (`scripts/model-switch.ps1`)
+  - Windows-specific implementation for model switching
+  - Secure credential handling in Windows environment
+  - Integration with Windows PowerShell security features
+
+#### Command Categories Update
+- **Development commands**: Updated from 3 to 4 commands
+- **Total commands**: Updated from 22 to 23 commands
+- **Plugin manifest**: Updated to reflect new command structure
+
+### Documentation Updates
+- **README.md**: Added model switching feature documentation
+- **Plugin manifest**: Updated description and command counts
+- **Command examples**: Added comprehensive usage examples
+
+### Technical Improvements
+- **JSON validation**: Ensured all configuration files are valid
+- **Cross-platform support**: Enhanced Windows/Linux/macOS compatibility
+- **Security**: Implemented secure token management practices
+- **Quality**: Maintained ≥ 85/100 quality score threshold
+
 ## [2.1.2] - 2025-10-23
 
 ### 🛡️ NEW: Claude Plugin Guidelines Validation System

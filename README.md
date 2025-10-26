@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v4.0.0
+# 🚀 Autonomous Agent for Claude Code v4.1.0
 
-[![Version](https://img.shields.io/badge/version-4.0.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.0.0)
+[![Version](https://img.shields.io/badge/version-4.1.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.1.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -76,7 +76,7 @@ The plugin automatically learns from successes and failures, continuously improv
 
 | Category | Commands | Example Usage |
 |----------|----------|---------------|
-| **🚀 dev:** (3) | Development workflow | `/dev:auto "add feature"` |
+| **🚀 dev:** (4) | Development workflow | `/dev:auto "add feature"` |
 | **🔍 analyze:** (4) | Code analysis | `/analyze:quality` |
 | **✅ validate:** (4) | Validation | `/validate:fullstack` |
 | **🐛 debug:** (2) | Debugging | `/debug:eval` |
@@ -125,6 +125,12 @@ The plugin automatically learns from successes and failures, continuously improv
 - **Smart Version Detection**: Analyzes commits for version bump
 - **Multi-Platform Publishing**: GitHub, GitLab, npm, PyPI, Docker
 - **Enterprise Option**: Comprehensive validation for production releases
+
+**🔄 Model Switching (`/dev:model-switch`)**
+- **Cross-Model Support**: Switch between Claude and GLM models
+- **Secure Token Management**: Safe API key handling and validation
+- **Platform Compatibility**: Windows, Linux, macOS support
+- **Smart Configuration**: Automatic backup and rollback capabilities
 
 **🧹 Workspace Organization (`/workspace:organize`)**
 - **Automated Cleanup**: Transforms messy workspace in 1-2 minutes
@@ -926,7 +932,7 @@ v3.3.0 includes **40+ organized documentation files** across multiple directorie
 
 ### 📊 **Command Documentation**
 
-All 22 commands across 7 categories have comprehensive documentation with:
+All 23 commands across 7 categories have comprehensive documentation with:
 - Usage examples
 - Options and parameters
 - Expected outputs
