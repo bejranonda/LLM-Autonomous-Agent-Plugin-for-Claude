@@ -1,8 +1,9 @@
 ---
 name: monitor:recommend
 description: Command for recommend
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Recommend Command
 

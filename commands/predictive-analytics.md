@@ -2,7 +2,7 @@
 name: learn:predict
 description: Generate advanced predictive insights and optimization recommendations using machine learning-inspired analytics
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Predictive Analytics Command
 
@@ -289,7 +289,9 @@ Insights Database (.claude-patterns/insights.json)
 
 ### Resource Usage
 | Component | CPU | Memory | Storage |
-|---
+|
+---
+
 
 --------|-----|--------|---------|
 | Prediction Engine | <2% | ~100MB | ~5MB (prediction history) |

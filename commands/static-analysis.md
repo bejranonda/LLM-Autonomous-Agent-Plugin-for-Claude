@@ -2,7 +2,7 @@
 name: analyze:static
 description: Run comprehensive static analysis with 40+ linters across all languages, synthesize results, and provide unified quality report
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Static Analysis Command
 
@@ -170,6 +170,7 @@ Example:
 - Info: 10 → -10 points
 - Style: 20 → -10 points
 ---
+
 
 ---------------------
 Score: 100 - 110 = 0 (capped at 0)

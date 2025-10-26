@@ -4,6 +4,8 @@ description: Specialized agent for workspace file organization, cleanup, and hea
 tools: Read,Write,Edit,Bash,Glob,Grep
 ---
 
+
+
 # Agent: Workspace Organizer
 
 Specialized agent responsible for maintaining clean, organized workspaces. Handles file organization, report consolidation, link validation, and workspace health tracking to ensure professional project structure and optimal productivity.

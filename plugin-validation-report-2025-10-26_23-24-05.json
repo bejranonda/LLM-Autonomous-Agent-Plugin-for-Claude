@@ -1,0 +1,70 @@
+{
+  "timestamp": "2025-10-26T23:24:05.702810",
+  "plugin_dir": ".",
+  "overall_score": 85,
+  "quality_level": "Good",
+  "issues_count": 11,
+  "warnings_count": 15,
+  "fixes_count": 7,
+  "issues": [
+    "Unclosed YAML frontmatter: commands\\auto-analyze.md",
+    "Invalid YAML in commands\\dashboard.md: while scanning a simple key\n  in \"<unicode string>",
+    "Invalid YAML in commands\\gui-debug.md: while scanning an alias\n  in \"<unicode string>\", l",
+    "Unclosed YAML frontmatter: commands\\learn-patterns.md",
+    "Unclosed YAML frontmatter: commands\\learning-analytics.md",
+    "Unclosed YAML frontmatter: commands\\organize-workspace.md",
+    "Invalid YAML in commands\\pr-review.md: while scanning a simple key\n  in \"<unicode string>",
+    "Invalid YAML in commands\\predictive-analytics.md: while scanning a simple key\n  in \"<unicode string>",
+    "Invalid YAML in commands\\scan-dependencies.md: while scanning a simple key\n  in \"<unicode string>",
+    "Invalid YAML in commands\\static-analysis.md: while scanning a simple key\n  in \"<unicode string>",
+    "Unclosed YAML frontmatter: commands\\validate-patterns.md"
+  ],
+  "warnings": [
+    "autofix-patterns.json has unexpected structure",
+    "Command missing usage section: git-release-workflow.md",
+    "Command missing usage section: gui-debug.md",
+    "Command missing usage section: validate-fullstack.md",
+    "README missing ## Features section",
+    "README missing ## Usage section",
+    "README missing ## Installation section",
+    "Missing license file: LICENSE",
+    "Broken reference in README: blob/main/COMMAND_MIGRATION_GUIDE_v4.0.0.md (linked as 'COMMAND_MIGRATION_GUIDE_v4.0.0.md')",
+    "Broken reference in README: #-complete-command-reference-22-commands-across-7-categories (linked as '📚 Complete Command Reference')",
+    "Broken reference in README: docs/reports/generated/RELEASE_NOTES_V3.1.0.md (linked as 'RELEASE_NOTES_V3.1.0.md')",
+    "Broken reference in README: V3_RELEASE_MATRIX.md (linked as 'V3_RELEASE_MATRIX.md')",
+    "Broken reference in README: ENHANCED_LEARNING_SYSTEM.md (linked as 'ENHANCED_LEARNING_SYSTEM.md')",
+    "Broken reference in README: PR_REVIEW_SYSTEM.md (linked as 'PR_REVIEW_SYSTEM.md')",
+    "Documentation needs improvement: 14%"
+  ],
+  "fixes": [
+    [
+      "manifest_valid",
+      "Plugin manifest is valid and complete"
+    ],
+    [
+      "agents_valid",
+      "Validated 22 agent files"
+    ],
+    [
+      "skills_valid",
+      "Validated 15 skill files"
+    ],
+    [
+      "commands_valid",
+      "Validated 24 command files"
+    ],
+    [
+      "documentation_checked",
+      "Documentation files validated"
+    ],
+    [
+      "versions_consistent",
+      "Version consistency verified: 4.2.0"
+    ],
+    [
+      "components_counted",
+      "Found 22 agents, 15 skills, 24 commands"
+    ]
+  ],
+  "summary": "Plugin is in good condition with minor issues\nQuality Score: 85/100 (11 issues, 15 warnings)\n\nCritical Issues (11):\n  • Unclosed YAML frontmatter: commands\\auto-analyze.md\n  • Invalid YAML in commands\\dashboard.md: while scanning a simple key\n  in \"<unicode string>\n  • Invalid YAML in commands\\gui-debug.md: while scanning an alias\n  in \"<unicode string>\", l\n  • Unclosed YAML frontmatter: commands\\learn-patterns.md\n  • Unclosed YAML frontmatter: commands\\learning-analytics.md\n  ... and 6 more issues\n\nWarnings (15):\n  • autofix-patterns.json has unexpected structure\n  • Command missing usage section: git-release-workflow.md\n  • Command missing usage section: gui-debug.md\n  ... and 12 more warnings\n\nValidations Passed (7):\n  • Plugin manifest is valid and complete\n  • Validated 22 agent files\n  • Validated 15 skill files\n  • Validated 24 command files\n  • Documentation files validated\n  ... and 2 more validations"
+}

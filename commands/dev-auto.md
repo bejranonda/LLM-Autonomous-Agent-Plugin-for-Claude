@@ -1,8 +1,9 @@
 ---
 name: dev:auto
 description: Command for dev auto
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Dev-Auto Command
 

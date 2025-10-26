@@ -1,8 +1,9 @@
 ---
 name: debug:eval
 description: Command for eval debug
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Debugging Performance Evaluation
 

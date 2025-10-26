@@ -1,8 +1,9 @@
 ---
 name: workspace:improve
 description: Command for improve plugin
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Improve Plugin Command
 

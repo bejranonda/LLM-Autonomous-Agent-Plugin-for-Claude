@@ -1,9 +1,10 @@
 ---
-name: autonomous-agent:frontend-analyzer
+name: frontend-analyzer
 description: Analyzes and auto-fixes frontend code including TypeScript errors, unused imports, deprecated syntax, build configs, and framework-specific patterns
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
+
 
 # Frontend Analyzer Agent
 

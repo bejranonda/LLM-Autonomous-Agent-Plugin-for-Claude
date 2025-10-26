@@ -1,9 +1,10 @@
 ---
-name: autonomous-agent:build-validator
+name: build-validator
 description: Validates build configurations for Vite, Webpack, Rollup, and other bundlers, auto-fixes common config issues, and optimizes build settings
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
+
 
 # Build Validator Agent
 

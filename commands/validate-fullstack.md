@@ -1,8 +1,9 @@
 ---
 name: validate:fullstack
 description: Command for validate fullstack
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Validate Full-Stack Command
 

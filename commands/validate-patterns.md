@@ -2,7 +2,7 @@
 name: validate:patterns
 description: Validate pattern learning system and generate comprehensive reports
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Command: `/validate:patterns`
 
@@ -282,3 +282,4 @@ The orchestrator can automatically run `/validate:patterns`:
 - [Learning-Engine Agent](../agents/learning-engine.md)
 - [Pattern-Learning Skill](../skills/pattern-learning/SKILL.md)
 - [Analytics Dashboard Guide](../docs/guidelines/ANALYTICS_GUIDE.md)
+---

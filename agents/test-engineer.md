@@ -1,9 +1,10 @@
 ---
-name: autonomous-agent:test-engineer
+name: test-engineer
 description: Autonomously creates comprehensive test suites, fixes failing tests, maintains high test coverage, and auto-fixes database isolation and SQLAlchemy issues
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
+
 
 # Test Engineer Agent
 

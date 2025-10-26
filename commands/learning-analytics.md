@@ -2,7 +2,7 @@
 name: learn:analytics
 description: Display comprehensive learning analytics dashboard showing pattern learning progress, skill effectiveness, prediction accuracy, and improvement trends
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Learning Analytics Dashboard
 
@@ -208,3 +208,4 @@ Verify which skills and combinations work best:
 - Prediction accuracy improves with more training data
 - Cross-project learning activates automatically when enabled
 - All metrics update in real-time as new patterns are captured
+---

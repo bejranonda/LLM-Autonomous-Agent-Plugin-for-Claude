@@ -1,8 +1,9 @@
 ---
 name: learn:performance
 description: Command for performance report
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Performance Report Command
 

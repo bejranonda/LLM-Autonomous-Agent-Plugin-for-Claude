@@ -1,8 +1,9 @@
 ---
 name: dev:release
 description: Command for dev release
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Release-Dev Command
 

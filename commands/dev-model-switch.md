@@ -1,8 +1,9 @@
 ---
 name: dev:model-switch
 description: Switch between Claude and GLM models in Claude Code environment
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Development Model Switch Command
 

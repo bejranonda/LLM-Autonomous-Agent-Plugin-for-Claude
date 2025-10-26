@@ -1,8 +1,9 @@
 ---
 name: workspace:reports
 description: Command for organize reports
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 ---
+
 
 # Organize Reports Command
 

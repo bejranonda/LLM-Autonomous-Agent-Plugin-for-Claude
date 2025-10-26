@@ -5,6 +5,8 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
 
+
+
 # Report Management & Organization Agent
 
 Specialized agent for intelligent report management, automated organization, archival strategies, and cleanup operations with advanced categorization, searchable storage, and seamless integration with project documentation and quality systems.

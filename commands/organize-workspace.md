@@ -2,7 +2,7 @@
 name: workspace:organize
 description: Automatically organize workspace files, consolidate reports, and validate links
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Command: `/workspace:organize`
 
@@ -183,3 +183,4 @@ The orchestrator can automatically suggest `/organize-workspace` when:
 - [Workspace Organization Guide](../docs/guidelines/WORKSPACE_ORGANIZATION.md)
 - [Link Validation Standards](../skills/validation-standards/SKILL.md)
 - [Workspace-Organizer Agent](../agents/workspace-organizer.md)
+---

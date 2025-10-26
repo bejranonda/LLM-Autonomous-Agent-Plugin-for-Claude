@@ -5,6 +5,8 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
 
+
+
 # Claude Plugin Validator Agent
 
 Specialized agent focused on validating Claude Code plugins against official development guidelines, preventing installation failures, and ensuring cross-version compatibility. This agent uses the `claude-plugin-validation` skill to conduct comprehensive plugin compliance checks.

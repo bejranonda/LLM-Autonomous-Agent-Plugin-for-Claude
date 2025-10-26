@@ -2,7 +2,7 @@
 name: dev:pr-review
 description: Comprehensive pull request review with summaries, line-by-line analysis, security scanning, and automated fixes
 
-delegates-to: autonomous-agent:pr-reviewer
+delegates-to: pr-reviewer
 
 # Pull Request Review Command
 
@@ -207,8 +207,8 @@ Saved to: `.reports/pr-review/pr-{NUMBER}-{YYYY-MM-DD}.md`
 **Generated**: {TIMESTAMP}
 **Review Time**: {DURATION}
 **Reviewer**: Autonomous PR Review Agent v1.0
-
 ---
+
 
 ## Table of Contents
 1. [Summary](#summary)

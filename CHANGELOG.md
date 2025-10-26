@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.0] - 2025-10-26
+
+### 🎉 **Major Usability Enhancement - Agent Naming Simplification**
+- **Removed All Agent Prefixes**: All agents now use simple names without `autonomous-agent:` prefix for better usability
+- **Updated Command Delegations**: All 24 commands updated to delegate to simple agent names
+- **Enhanced User Experience**: Agents now referenced as `validation-controller` instead of `autonomous-agent:validation-controller`
+- **Comprehensive Naming Standard**: Created complete naming convention guide for consistency
+
+### Added
+- **NAMING_CONVENTIONS.md**: Comprehensive documentation for new naming standard
+- **Dashboard Launcher**: Robust dashboard launcher with health monitoring and auto-restart
+- **Learning Trigger Utility**: Manual learning system trigger for fallback scenarios
+- **Cross-Model Compatibility**: Enhanced validation system supporting Claude and GLM models
+
+### Changed
+- **22 Agent Files**: Updated to use simple naming format (orchestrator, validation-controller, etc.)
+- **24 Command Files**: Updated delegation references to use simple agent names
+- **System Architecture**: Maintained full backward compatibility with prefixed names
+- **Documentation**: Updated all references to reflect new naming convention
+
+### Technical Improvements
+- **No Breaking Changes**: All existing functionality preserved
+- **Backward Compatible**: System supports both old and new naming conventions
+- **Enhanced Validation**: Improved validation controller with model-adaptive error recovery
+- **Pattern Learning**: Enhanced learning system with better pattern capture
+
+### Impact
+- **🔧 Developer Experience**: Significantly improved with cleaner, more readable agent names
+- **📚 Documentation**: More intuitive and easier to understand
+- **🔄 Migration**: Seamless transition with automatic compatibility
+- **🎯 Consistency**: Uniform naming across all components
+
 ## [4.2.0] - 2025-10-26
 
 ### Added

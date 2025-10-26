@@ -2,11 +2,49 @@
 name: monitor:dashboard
 description: Launch improved real-time web dashboard with automatic port detection and robust error handling
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Real-Time Monitoring Dashboard
 
 Launch an interactive web-based dashboard with automatic port detection, server validation, and robust error handling to prevent connectivity issues. The dashboard provides comprehensive monitoring of the autonomous agent's learning progress, quality trends, and performance metrics.
+
+## Command Implementation
+
+**For the Orchestrator**: When this command is invoked, execute the robust dashboard launcher with comprehensive error handling and automatic learning integration:
+
+```bash
+# Execute robust launcher with auto-restart and monitoring
+python lib/dashboard_launcher.py --host 127.0.0.1 --port 5000
+
+# After successful dashboard startup, automatically trigger learning engine
+# to record the dashboard startup pattern and performance metrics
+```
+
+**Critical Instructions for Orchestrator**:
+1. **Execute the robust launcher** (not the basic dashboard.py)
+2. **Validate successful startup** before reporting success
+3. **Trigger learning-engine automatically** after dashboard is running
+4. **Record performance metrics** for the dashboard startup task
+5. **Monitor for any issues** and handle them appropriately
+
+**Key Features**:
+- ✅ **Automatic Port Detection**: Finds available ports if 5000 is occupied
+- ✅ **Health Monitoring**: Continuously checks dashboard responsiveness
+- ✅ **Auto-Restart**: Restarts dashboard if it crashes (max 5 attempts)
+- ✅ **Startup Validation**: Confirms API is responding before reporting success
+- ✅ **Robust Error Handling**: Clear error messages and recovery suggestions
+- ✅ **Background Monitoring**: Keeps dashboard running reliably
+- ✅ **Cross-Platform**: Works on Windows, Linux, and macOS
+- ✅ **Automatic Learning**: Integrates with learning system for continuous improvement
+
+**Execution Flow**:
+1. Execute robust dashboard launcher
+2. Wait for successful startup and validation
+3. Confirm dashboard API endpoints are responding
+4. Open browser automatically on success
+5. **Automatically trigger learning-engine** to record the pattern
+6. Begin background monitoring for continuous reliability
+7. **Continue with standard orchestrator learning workflow**
 
 ## Usage
 
@@ -402,7 +440,9 @@ curl http://localhost:5000/api/recent-activity?limit=10
 ### Resource Usage
 
 | Component | CPU | Memory | Disk I/O |
-|---
+|
+---
+
 
 --------|-----|--------|----------|
 | Flask Server | <1% | ~50MB | Minimal |

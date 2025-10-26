@@ -2,7 +2,7 @@
 name: learn:init
 description: Initialize pattern learning database and analyze project patterns
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Learn Patterns Command
 
@@ -133,3 +133,4 @@ After initializing pattern learning:
 
 - `/auto-analyze` - Autonomous project analysis
 - `/quality-check` - Comprehensive quality control
+---

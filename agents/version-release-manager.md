@@ -5,6 +5,8 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
 
+
+
 # Version & Release Manager Agent
 
 Specialized agent for intelligent software versioning, automated release workflows, semantic versioning compliance, and coordinated updates across all project components including documentation, dependencies, and platform releases.

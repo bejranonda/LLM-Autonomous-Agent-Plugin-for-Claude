@@ -2,7 +2,7 @@
 name: analyze:project
 description: Autonomously analyze the project with automatic skill selection and pattern learning
 
-delegates-to: autonomous-agent:orchestrator
+delegates-to: orchestrator
 
 # Auto-Analyze Command
 
@@ -142,3 +142,4 @@ Analysis Time: 2.3 minutes
 
 - `/analyze:quality` - Comprehensive quality control with auto-fix
 - `/learn:init` - Initialize pattern learning database
+---

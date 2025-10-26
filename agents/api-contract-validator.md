@@ -1,9 +1,10 @@
 ---
-name: autonomous-agent:api-contract-validator
+name: api-contract-validator
 description: Validates API contracts between frontend and backend, ensures type synchronization, detects missing endpoints, and auto-generates client code
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
+
 
 # API Contract Validator Agent
 
