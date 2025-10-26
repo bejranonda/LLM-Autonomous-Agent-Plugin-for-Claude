@@ -1,10 +1,10 @@
 ---
-name: model-switch
+name: dev:model-switch
 description: Switch between Claude and GLM models in Claude Code environment
 delegates-to: autonomous-agent:orchestrator
 ---
 
-# Model Switch Command
+# Development Model Switch Command
 
 Switch between Claude and GLM models in your Claude Code environment with secure token management and cross-platform compatibility.
 
@@ -12,19 +12,19 @@ Switch between Claude and GLM models in your Claude Code environment with secure
 
 ```bash
 # Switch to GLM models (interactive setup)
-/model-switch --to glm
+/dev:model-switch --to glm
 
 # Switch to Claude models (restore defaults)
-/model-switch --to claude
+/dev:model-switch --to claude
 
 # Check current model configuration
-/model-switch --status
+/dev:model-switch --status
 
 # Auto-switch based on task type (future feature)
-/model-switch --auto
+/dev:model-switch --auto
 
 # Set up initial configuration
-/model-switch --setup
+/dev:model-switch --setup
 ```
 
 ## How It Works
@@ -117,39 +117,39 @@ mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 
 ```bash
 # Switch to GLM (interactive)
-/model-switch --to glm
+/dev:model-switch --to glm
 
 # Switch to Claude (restore defaults)
-/model-switch --to claude
+/dev:model-switch --to claude
 ```
 
 ### Status and Information
 
 ```bash
 # Check current configuration
-/model-switch --status
+/dev:model-switch --status
 
 # Show available models
-/model-switch --list-models
+/dev:model-switch --list-models
 
 # Validate current configuration
-/model-switch --validate
+/dev:model-switch --validate
 ```
 
 ### Advanced Options
 
 ```bash
 # Force switch without confirmation
-/model-switch --to glm --force
+/dev:model-switch --to glm --force
 
 # Use specific GLM model
-/model-switch --to glm --model glm-4.6
+/dev:model-switch --to glm --model glm-4.6
 
 # Backup current settings before switching
-/model-switch --to glm --backup
+/dev:model-switch --to glm --backup
 
 # Dry run (show changes without applying)
-/model-switch --to glm --dry-run
+/dev:model-switch --to glm --dry-run
 ```
 
 ## Model Comparison
@@ -196,7 +196,7 @@ mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 
 ```bash
 # First-time GLM setup
-/model-switch --to glm
+/dev:model-switch --to glm
 
 # Interactive prompts:
 # 1. Enter your Z.AI API key: [sk-xxxxxxxx]
@@ -216,26 +216,26 @@ Last Updated: 2025-01-26 20:45:30
 
 ```bash
 # Switch to GLM for Chinese content
-/model-switch --to glm --force
+/dev:model-switch --to glm --force
 
 # Switch back to Claude for code analysis
-/model-switch --to claude
+/dev:model-switch --to claude
 
 # Check current status
-/model-switch --status
+/dev:model-switch --status
 ```
 
 ### Advanced Configuration
 
 ```bash
 # Use specific GLM model with backup
-/model-switch --to glm --model glm-4.5-air --backup
+/dev:model-switch --to glm --model glm-4.5-air --backup
 
 # Dry run to preview changes
-/model-switch --to glm --dry-run
+/dev:model-switch --to glm --dry-run
 
 # Validate configuration without switching
-/model-switch --validate --target glm
+/dev:model-switch --validate --target glm
 ```
 
 ## Troubleshooting
@@ -245,28 +245,28 @@ Last Updated: 2025-01-26 20:45:30
 **API Key Invalid:**
 ```bash
 # Check token format
-/model-switch --validate-token sk-xxxxxxxx
+/dev:model-switch --validate-token sk-xxxxxxxx
 
 # Re-enter token
-/model-switch --to glm --renew-token
+/dev:model-switch --to glm --renew-token
 ```
 
 **Configuration Not Applied:**
 ```bash
 # Check file permissions
-/model-switch --check-permissions
+/dev:model-switch --check-permissions
 
 # Manually apply changes
-/model-switch --to glm --manual
+/dev:model-switch --to glm --manual
 ```
 
 **Model Not Responding:**
 ```bash
 # Test API connection
-/model-switch --test-connection
+/dev:model-switch --test-connection
 
 # Switch to backup model
-/model-switch --fallback claude
+/dev:model-switch --fallback claude
 ```
 
 ### Platform-Specific Issues
@@ -295,13 +295,13 @@ jq --version
 
 ```bash
 # Restore from backup
-/model-switch --restore-backup
+/dev:model-switch --restore-backup
 
 # Reset to defaults
-/model-switch --reset-defaults
+/dev:model-switch --reset-defaults
 
 # Generate new configuration
-/model-switch --generate-config
+/dev:model-switch --generate-config
 ```
 
 ## Integration with Learning System
