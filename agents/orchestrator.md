@@ -274,15 +274,30 @@ async function select_skills_intelligently(task_context) {
 
 ### 4. Special Slash Command Handling
 
-**IMPORTANT**: Some slash commands require direct execution rather than analysis. Detect and handle these immediately:
+**IMPORTANT**: Some slash commands require direct execution rather than full autonomous analysis. These are typically infrastructure, utility, or simple data display commands that benefit from immediate execution.
+
+**Commands that use DIRECT EXECUTION** (bypass full analysis for speed):
+- Infrastructure: `/monitor:dashboard` (start dashboard service)
+- Data Display: `/learn:analytics`, `/learn:performance` (show reports)
+- Utilities: `/workspace:organize`, `/workspace:reports` (file organization)
+- Simple Tools: `/monitor:recommend`, `/learn:patterns`, `/validate:plugin` (basic operations)
+
+**Commands that use FULL AUTONOMOUS ANALYSIS** (require intelligence):
+- Complex Development: `/dev:auto`, `/dev:release`, `/dev:model-switch`
+- Comprehensive Analysis: `/analyze:project`, `/analyze:quality`
+- Advanced Validation: `/validate:fullstack`, `/validate:all`, `/validate:patterns`
+- Complex Debugging: `/debug:gui`, `/debug:eval`
+- Strategic Tasks: `/pr-review`, `/analyze:dependencies`, `/analyze:static`
 
 ```python
 # Command Detection Logic (run FIRST before any analysis)
 def detect_special_command(user_input):
     """Check if input is a special command that needs direct execution."""
 
-    # Dashboard commands - direct Python execution
-    if user_input.strip().startswith('/monitor:dashboard'):
+    cmd = user_input.strip()
+
+    # Dashboard and monitoring commands - direct Python execution
+    if cmd.startswith('/monitor:dashboard'):
         return {
             'type': 'direct_execution',
             'command': 'dashboard',
@@ -290,8 +305,8 @@ def detect_special_command(user_input):
             'args': parse_dashboard_args(user_input)
         }
 
-    # Learning analytics commands - direct Python execution
-    if user_input.strip().startswith('/learn:analytics'):
+    # Learning and analytics commands - direct Python execution (data display only)
+    if cmd.startswith('/learn:analytics'):
         return {
             'type': 'direct_execution',
             'command': 'learning_analytics',
@@ -299,10 +314,61 @@ def detect_special_command(user_input):
             'args': parse_learning_analytics_args(user_input)
         }
 
-    # Other direct execution commands can be added here
-    # Example:
-    # if user_input.strip().startswith('/workspace:organize'):
-    #     return {'type': 'direct_execution', 'command': 'organize'}
+    if cmd.startswith('/learn:performance'):
+        return {
+            'type': 'direct_execution',
+            'command': 'performance_report',
+            'script': 'lib/performance_report.py',
+            'args': parse_performance_report_args(user_input)
+        }
+
+    # Workspace organization commands - direct Python execution (utility functions)
+    if cmd.startswith('/workspace:organize'):
+        return {
+            'type': 'direct_execution',
+            'command': 'organize_workspace',
+            'script': 'lib/workspace_organizer.py',
+            'args': parse_organize_workspace_args(user_input)
+        }
+
+    if cmd.startswith('/workspace:reports'):
+        return {
+            'type': 'direct_execution',
+            'command': 'organize_reports',
+            'script': 'lib/report_organizer.py',
+            'args': parse_organize_reports_args(user_input)
+        }
+
+    # Pattern management commands - direct Python execution (simple operations)
+    if cmd.startswith('/learn:patterns'):
+        return {
+            'type': 'direct_execution',
+            'command': 'pattern_management',
+            'script': 'lib/pattern_management.py',
+            'args': parse_pattern_management_args(user_input)
+        }
+
+    # Recommendation system - direct Python execution (simple recommendations)
+    if cmd.startswith('/monitor:recommend'):
+        return {
+            'type': 'direct_execution',
+            'command': 'smart_recommendations',
+            'script': 'lib/smart_recommender.py',
+            'args': parse_smart_recommendations_args(user_input)
+        }
+
+    # Plugin validation - direct Python execution (utility validation)
+    if cmd.startswith('/validate:plugin'):
+        return {
+            'type': 'direct_execution',
+            'command': 'plugin_validation',
+            'script': 'lib/plugin_validator.py',
+            'args': parse_plugin_validation_args(user_input)
+        }
+
+    # All other commands should go through full autonomous analysis
+    # Complex commands like /dev:auto, /analyze:project, /validate:fullstack, etc.
+    # benefit from pattern learning, skill selection, and quality control
 
     return None
 
@@ -371,6 +437,182 @@ def parse_learning_analytics_args(user_input):
 
     return args
 
+def parse_performance_report_args(user_input):
+    """Parse performance report command arguments."""
+    args = {
+        'action': 'show',
+        'dir': '.claude-patterns',
+        'output': None,
+        'format': None,
+        'days': 30
+    }
+
+    cmd = user_input.strip()
+
+    if 'export' in cmd:
+        args['action'] = 'export'
+
+    if '--output' in cmd:
+        parts = cmd.split('--output')[1].strip().split()
+        if parts:
+            args['output'] = parts[0]
+
+    if '--dir' in cmd:
+        parts = cmd.split('--dir')[1].strip().split()
+        if parts:
+            args['dir'] = parts[0]
+
+    if '--days' in cmd:
+        parts = cmd.split('--days')[1].strip().split()
+        if parts and parts[0].isdigit():
+            args['days'] = int(parts[0])
+
+    return args
+
+
+def parse_organize_workspace_args(user_input):
+    """Parse workspace organization command arguments."""
+    args = {
+        'action': 'organize',
+        'target': '.',
+        'dry_run': False,
+        'backup': True
+    }
+
+    cmd = user_input.strip()
+
+    if '--dry-run' in cmd:
+        args['dry_run'] = True
+
+    if '--no-backup' in cmd:
+        args['backup'] = False
+
+    if '--target' in cmd:
+        parts = cmd.split('--target')[1].strip().split()
+        if parts:
+            args['target'] = parts[0]
+
+    return args
+
+def parse_organize_reports_args(user_input):
+    """Parse report organization command arguments."""
+    args = {
+        'action': 'organize',
+        'source': '.claude/reports',
+        'archive_old': True,
+        'days_threshold': 90
+    }
+
+    cmd = user_input.strip()
+
+    if '--source' in cmd:
+        parts = cmd.split('--source')[1].strip().split()
+        if parts:
+            args['source'] = parts[0]
+
+    if '--no-archive' in cmd:
+        args['archive_old'] = False
+
+    if '--days' in cmd:
+        parts = cmd.split('--days')[1].strip().split()
+        if parts and parts[0].isdigit():
+            args['days_threshold'] = int(parts[0])
+
+    return args
+
+def parse_pattern_management_args(user_input):
+    """Parse pattern management command arguments."""
+    args = {
+        'action': 'show',
+        'dir': '.claude-patterns',
+        'pattern_type': None,
+        'export': None
+    }
+
+    cmd = user_input.strip()
+
+    if 'export' in cmd:
+        args['action'] = 'export'
+    elif 'validate' in cmd:
+        args['action'] = 'validate'
+    elif 'clean' in cmd:
+        args['action'] = 'clean'
+
+    if '--dir' in cmd:
+        parts = cmd.split('--dir')[1].strip().split()
+        if parts:
+            args['dir'] = parts[0]
+
+    if '--type' in cmd:
+        parts = cmd.split('--type')[1].strip().split()
+        if parts:
+            args['pattern_type'] = parts[0]
+
+    if '--export' in cmd:
+        parts = cmd.split('--export')[1].strip().split()
+        if parts:
+            args['export'] = parts[0]
+
+    return args
+
+def parse_smart_recommendations_args(user_input):
+    """Parse smart recommendations command arguments."""
+    args = {
+        'task_description': None,
+        'context': 'current',
+        'count': 3,
+        'show_confidence': True
+    }
+
+    cmd = user_input.strip()
+
+    # Extract task description after command
+    if '--task' in cmd:
+        parts = cmd.split('--task')[1].strip()
+        args['task_description'] = parts
+
+    if '--context' in cmd:
+        parts = cmd.split('--context')[1].strip().split()
+        if parts:
+            args['context'] = parts[0]
+
+    if '--count' in cmd:
+        parts = cmd.split('--count')[1].strip().split()
+        if parts and parts[0].isdigit():
+            args['count'] = int(parts[0])
+
+    if '--no-confidence' in cmd:
+        args['show_confidence'] = False
+
+    return args
+
+
+def parse_plugin_validation_args(user_input):
+    """Parse plugin validation command arguments."""
+    args = {
+        'plugin_path': '.',
+        'strict_mode': False,
+        'output_format': 'table'
+    }
+
+    cmd = user_input.strip()
+
+    if '--strict' in cmd:
+        args['strict_mode'] = True
+
+    if '--format' in cmd:
+        parts = cmd.split('--format')[1].strip().split()
+        if parts:
+            args['output_format'] = parts[0]
+
+    if '--path' in cmd:
+        parts = cmd.split('--path')[1].strip().split()
+        if parts:
+            args['plugin_path'] = parts[0]
+
+    return args
+
+
 # EXECUTION PRIORITY CHECK
 def handle_special_command(command_info):
     """Execute special commands directly."""
@@ -422,7 +664,7 @@ def handle_special_command(command_info):
                 print(f"   Try running manually: python lib/dashboard.py")
                 return False
 
-    if command_info['command'] == 'learning_analytics':
+    elif command_info['command'] == 'learning_analytics':
         # Build Python command for learning analytics
         cmd = ['python', command_info['script']]
 
@@ -464,7 +706,125 @@ def handle_special_command(command_info):
             print(f"❌ Error: {e}")
             return False
 
+        elif command_info['command'] == 'performance_report':
+            # Build Python command for performance report
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            cmd.append(args['action'])
+            if args['dir'] != '.claude-patterns':
+                cmd.extend(['--dir', args['dir']])
+            if args['output']:
+                cmd.extend(['--output', args['output']])
+            if args['days'] != 30:
+                cmd.extend(['--days', str(args['days'])])
+            return execute_python_command(cmd, "Performance Report")
+
+        
+        elif command_info['command'] == 'organize_workspace':
+            # Build Python command for workspace organization
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['dry_run']:
+                cmd.append('--dry-run')
+            if not args['backup']:
+                cmd.append('--no-backup')
+            if args['target'] != '.':
+                cmd.extend(['--target', args['target']])
+            return execute_python_command(cmd, "Workspace Organization")
+
+        elif command_info['command'] == 'organize_reports':
+            # Build Python command for report organization
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['source'] != '.claude/reports':
+                cmd.extend(['--source', args['source']])
+            if not args['archive_old']:
+                cmd.append('--no-archive')
+            if args['days_threshold'] != 90:
+                cmd.extend(['--days', str(args['days_threshold'])])
+            return execute_python_command(cmd, "Report Organization")
+
+        elif command_info['command'] == 'pattern_management':
+            # Build Python command for pattern management
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            cmd.append(args['action'])
+            if args['dir'] != '.claude-patterns':
+                cmd.extend(['--dir', args['dir']])
+            if args['pattern_type']:
+                cmd.extend(['--type', args['pattern_type']])
+            if args['export']:
+                cmd.extend(['--export', args['export']])
+            return execute_python_command(cmd, "Pattern Management")
+
+        elif command_info['command'] == 'smart_recommendations':
+            # Build Python command for smart recommendations
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['task_description']:
+                cmd.extend(['--task', args['task_description']])
+            if args['context'] != 'current':
+                cmd.extend(['--context', args['context']])
+            if args['count'] != 3:
+                cmd.extend(['--count', str(args['count'])])
+            if not args['show_confidence']:
+                cmd.append('--no-confidence')
+            return execute_python_command(cmd, "Smart Recommendations")
+
+        
+        elif command_info['command'] == 'plugin_validation':
+            # Build Python command for plugin validation
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['plugin_path'] != '.':
+                cmd.extend(['--path', args['plugin_path']])
+            if args['strict_mode']:
+                cmd.append('--strict')
+            if args['output_format'] != 'table':
+                cmd.extend(['--format', args['output_format']])
+            return execute_python_command(cmd, "Plugin Validation")
+
+        
     return False
+
+def execute_python_command(cmd, command_name):
+    """Helper function to execute Python commands consistently."""
+    import subprocess
+
+    try:
+        print(f"⚡ Executing {command_name}...")
+        print(f"   Command: {' '.join(cmd)}")
+
+        result = subprocess.run(cmd,
+                               capture_output=True,
+                               text=True,
+                               check=True)
+
+        # Display the output
+        if result.stdout:
+            print(result.stdout)
+
+        print(f"✅ {command_name} completed successfully")
+        return True
+
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error executing {command_name}: {e}")
+        if e.stderr:
+            print(f"   Error details: {e.stderr}")
+        print(f"   Try running manually: {' '.join(cmd)}")
+        return False
+
+    except FileNotFoundError:
+        script_name = cmd[1].split('/')[-1] if len(cmd) > 1 else 'script'
+        print(f"❌ Script not found: {script_name}")
+        print(f"   Ensure {script_name} exists in lib/ directory")
+        print(f"   Try running manually: {' '.join(cmd)}")
+        return False
+
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}")
+        print(f"   Try running manually: {' '.join(cmd)}")
+        return False
 ```
 
 **Command Handling Workflow**:
@@ -472,7 +832,7 @@ def handle_special_command(command_info):
 2. **If special**: Execute directly using appropriate handler
 3. **If not special**: Continue with normal autonomous analysis
 
-### 5. Multi-Agent Delegation
+### 6. Multi-Agent Delegation
 
 Delegate to specialized agents autonomously:
 
@@ -517,7 +877,7 @@ Delegate to specialized agents autonomously:
 - **NO user-facing output** - pure background learning
 - **Exponential improvement** through predictive intelligence
 
-### 5. Self-Assessment & Quality Control
+### 7. Self-Assessment & Quality Control
 
 **Autonomous Quality Checks**:
 After each task completion, automatically:
