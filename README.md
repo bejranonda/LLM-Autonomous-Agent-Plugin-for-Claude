@@ -112,82 +112,45 @@ The plugin automatically learns from successes and failures, continuously improv
 
 **💡 User Experience:** Type category prefixes for instant command discovery - no more searching docs!
 
-### 🌟 **NEW in v3.4.1: Workspace Organization & Pattern Validation**
+### 🌟 **NEW in v3.4.1: Autonomous Development & Workspace Management**
 
 **🤖 Autonomous Development (`/dev:auto`)**
-- **Zero to Production**: From simple requirement to release-ready code
-- **Example**: `/dev:auto "add MQTT broker with certificate support"`
-  - Breaks down into 5 milestones automatically
-  - Implements incrementally with commits each milestone
-  - Auto-debugs failures (87% success rate)
-  - Validates parameter consistency (prevents 90% of common errors)
-  - Achieves ≥ 85/100 quality score automatically
-- **45-90 minutes** from requirement to complete implementation
-- **Learning integration**: Gets faster with similar tasks (20-30% improvement)
+- **Zero to Production**: From requirement to release-ready code in 45-90 minutes
+- **Auto-Implementation**: Breaks down into milestones, auto-debugs (87% success rate)
+- **Quality Assured**: Achieves ≥ 85/100 quality score automatically
+- **Learning Integration**: Gets faster with similar tasks (20-30% improvement)
 
 **🚀 Streamlined Releases (`/dev:release`)**
-- **One-Command Release**: Complete release workflow automated
-- Smart version detection (analyzes commits for major/minor/patch)
-- Documentation sync (README, CHANGELOG, RELEASE_NOTES)
-- Consistency validation across all files
-- Auto-commit, tag, and push to remote
-- Multi-platform publishing (GitHub, GitLab, npm, PyPI, Docker)
-- **2-3 minutes** from code complete to released
-- 💡 **Need more thorough validation?** Use `/dev:release` for enterprise-grade releases with comprehensive testing, security scans, and post-release monitoring (3-8 min)
-
-### 🌟 **NEW in v3.4.1: Workspace Organization & Pattern Validation**
+- **One-Command Release**: Complete workflow automated in 2-3 minutes
+- **Smart Version Detection**: Analyzes commits for version bump
+- **Multi-Platform Publishing**: GitHub, GitLab, npm, PyPI, Docker
+- **Enterprise Option**: Comprehensive validation for production releases
 
 **🧹 Workspace Organization (`/workspace:organize`)**
-- **Automated Cleanup**: Moves scattered files to proper directories
-- **Report Consolidation**: Organizes `*.md` reports into `docs/reports/generated/`
-- **Link Validation**: Fixes broken links after file moves
-- **Health Monitoring**: Tracks workspace organization score (0-100)
-- **Smart Suggestions**: Automatically suggests cleanup when health < 70
-- **1-2 minutes** to transform messy workspace to professional structure
+- **Automated Cleanup**: Transforms messy workspace in 1-2 minutes
+- **Health Monitoring**: Tracks organization score (0-100) with smart suggestions
+- **Report Consolidation**: Organizes files and fixes broken links
 
 **📊 Pattern Learning Validation (`/validate:patterns`)**
-- **System Health Check**: Validates pattern learning across all commands
-- **Coverage Analysis**: Ensures 100% of analysis commands store patterns
-- **Effectiveness Metrics**: Tracks learning improvement over time
-- **Analytics Dashboard**: Comprehensive learning performance report
+- **System Health Check**: Validates learning across all commands
+- **Effectiveness Metrics**: Tracks improvement over time
 - **Auto-Fix Detection**: Identifies and fixes pattern storage issues
-- **1-2 minutes** for complete learning system validation
-
-**🏥 Workspace Health Monitoring**
-- **Automatic Tracking**: Monitors workspace organization in real-time
-- **Health Scoring**: 0-100 score based on 4 factors (root cleanliness, report organization, pattern storage, link health)
-- **Smart Triggers**: Suggests cleanup when health drops below 70
-- **Trend Analysis**: Tracks improvement or degradation over time
-- **Integration**: Works seamlessly with all commands for continuous monitoring
 
 **💡 Interactive Suggestions**
-- Context-aware next action recommendations
-- Learns from your choices to improve suggestions
-- Quick action shortcuts (1-4 number selection)
-- Example after `/dev:auto`:
-  1. [High] Run integration tests
-  2. [Recommended] Release feature → `/dev:release --minor`
-  3. [Optional] Add monitoring
-  4. [Learning] View analytics
+- Context-aware recommendations with quick action shortcuts (1-4)
+- Learns from your choices to improve future suggestions
+- Example after `/dev:auto`: Release feature, add monitoring, view analytics
 
 **📁 Smart .gitignore Management**
-- Automatic detection of `.claude/` folders
-- Intelligent prompts for privacy management
-- Context-aware recommendations (private vs team projects)
-- Stores preferences for future projects
+- Automatic detection and privacy management for `.claude/` folders
+- Context-aware recommendations for private vs team projects
 
 **Complete Workflow Example:**
 ```bash
-# 1. Implement feature (45-90 min automated)
-/dev:auto "add user authentication with JWT"
-
-# 2. Suggestion appears: Release this feature
-#    Quick action: Type "2" to execute
-
-# 3. Release automatically (2-3 min)
-/dev:release --minor
-
-# Done! From requirement to v1.2.0 released
+/dev:auto "add user authentication"    # Implement (45-90 min)
+# Type "2" for quick release action
+/dev:release --minor                   # Release (2-3 min)
+# Done! From requirement to released
 ```
 ---
 
