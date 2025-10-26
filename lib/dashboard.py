@@ -1164,7 +1164,7 @@ class DashboardDataCollector:
         # Create model info based on actual data
         model_info = {}
         for model in implemented_models:
-            days_with_model = sum(1 for day in timeline_data if model in day_data and day[model] > 0)
+            days_with_model = sum(1 for day in timeline_data if model in day and day[model] > 0)
             model_info[model] = {
                 "total_tasks": days_with_model,
                 "data_source": "Based on real quality assessments"
