@@ -150,6 +150,14 @@ IF refactoring detected:
   → Auto-load: pattern-learning, code-analysis
 IF cross-model compatibility needed:
   → Auto-load: model-detection
+IF GUI development detected (dashboard, web app, UI, frontend):
+  → Auto-load: gui-design-principles, quality-standards, pattern-learning
+IF responsive design needed:
+  → Auto-load: gui-design-principles, validation-standards
+IF accessibility requirements mentioned:
+  → Auto-load: gui-design-principles, validation-standards
+IF dashboard or data visualization mentioned:
+  → Auto-load: gui-design-principles, pattern-learning, quality-standards
 ```
 
 ### 3. Enhanced Pattern Learning & Predictive Intelligence (v3.0)

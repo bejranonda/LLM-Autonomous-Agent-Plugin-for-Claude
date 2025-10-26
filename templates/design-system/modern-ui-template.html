@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern UI Design System Template</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Modern Design System Variables */
+        :root {
+            /* Color Palette */
+            --color-primary: #3b82f6;
+            --color-primary-hover: #2563eb;
+            --color-primary-light: #dbeafe;
+            --color-secondary: #64748b;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --color-info: #06b6d4;
+
+            /* Neutral Colors */
+            --color-gray-50: #f8fafc;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-300: #cbd5e1;
+            --color-gray-400: #94a3b8;
+            --color-gray-500: #64748b;
+            --color-gray-600: #475569;
+            --color-gray-700: #334155;
+            --color-gray-800: #1e293b;
+            --color-gray-900: #0f172a;
+
+            /* Typography */
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.375rem;
+            --radius-lg: 0.5rem;
+            --radius-xl: 0.75rem;
+            --radius-2xl: 1rem;
+            --radius-full: 9999px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+            --transition-slow: 350ms ease;
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--color-gray-800);
+            background: var(--color-gray-50);
+        }
+
+        /* Component Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Button Variants */
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--color-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--color-gray-700);
+            border-color: var(--color-gray-300);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--color-gray-50);
+            border-color: var(--color-gray-400);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+            border-color: var(--color-success);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+            border-color: var(--color-danger);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--color-gray-600);
+            border-color: transparent;
+        }
+
+        .btn-ghost:hover:not(:disabled) {
+            background: var(--color-gray-100);
+            color: var(--color-gray-800);
+        }
+
+        /* Button Sizes */
+        .btn-sm {
+            padding: var(--space-2) var(--space-3);
+            font-size: 0.75rem;
+        }
+
+        .btn-lg {
+            padding: var(--space-4) var(--space-6);
+            font-size: 1rem;
+        }
+
+        /* Card Component */
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-gray-200);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .card-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .card-body {
+            padding: var(--space-6);
+        }
+
+        .card-footer {
+            padding: var(--space-6);
+            border-top: 1px solid var(--color-gray-200);
+            background: var(--color-gray-50);
+        }
+
+        /* Form Components */
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-gray-700);
+            margin-bottom: var(--space-2);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-3);
+            border: 1px solid var(--color-gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input:invalid {
+            border-color: var(--color-danger);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: var(--space-3);
+            border: 1px solid var(--color-gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: var(--space-3);
+            border: 1px solid var(--color-gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Badge Component */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-1) var(--space-3);
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-primary {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: var(--color-success);
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: var(--color-warning);
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: var(--color-danger);
+        }
+
+        .badge-gray {
+            background: var(--color-gray-100);
+            color: var(--color-gray-600);
+        }
+
+        /* Modal Component */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            transform: scale(0.9);
+            transition: transform var(--transition-normal);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--color-gray-200);
+            border-top: 2px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert Component */
+        .alert {
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            border: 1px solid;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            border-color: #fde047;
+            color: #854d0e;
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .alert-info {
+            background: #f0fdfa;
+            border-color: #67e8f9;
+            color: #164e63;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+        }
+
+        .nav-link {
+            color: var(--color-gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-primary);
+            background: var(--color-primary-light);
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 { gap: var(--space-2); }
+        .gap-4 { gap: var(--space-4); }
+        .gap-6 { gap: var(--space-6); }
+
+        .text-center { text-align: center; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+
+        .mb-4 { margin-bottom: var(--space-4); }
+        .mb-6 { margin-bottom: var(--space-6); }
+        .mb-8 { margin-bottom: var(--space-8); }
+
+        .hidden { display: none; }
+        .block { display: block; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--space-3);
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: var(--space-3);
+            }
+
+            .modal {
+                margin: var(--space-4);
+                max-width: calc(100vw - 2rem);
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus Management */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--color-primary);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="container">
+            <nav class="nav py-4">
+                <div class="flex items-center gap-4">
+                    <i class="fas fa-cube text-primary text-xl"></i>
+                    <span class="font-bold text-xl">Design System</span>
+                </div>
+                <div class="nav">
+                    <a href="#components" class="nav-link active">Components</a>
+                    <a href="#patterns" class="nav-link">Patterns</a>
+                    <a href="#guidelines" class="nav-link">Guidelines</a>
+                </div>
+                <button class="btn btn-ghost btn-sm">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="container py-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                Modern UI Design System
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                A comprehensive, accessible design system with modern components, patterns, and guidelines for building beautiful user interfaces.
+            </p>
+            <div class="flex justify-center gap-4 mt-8">
+                <button class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket"></i>
+                    Get Started
+                </button>
+                <button class="btn btn-secondary btn-lg">
+                    <i class="fas fa-book"></i>
+                    Documentation
+                </button>
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components" class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Components</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Buttons Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Buttons</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-2">Primary Buttons</p>
+                                <div class="flex gap-2">
+                                    <button class="btn btn-primary">Default</button>
+                                    <button class="btn btn-primary btn-sm">Small</button>
+                                    <button class="btn btn-primary btn-lg">Large</button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 mb-2">Secondary Buttons</p>
+                                <div class="flex gap-2">
+                                    <button class="btn btn-secondary">Default</button>
+                                    <button class="btn btn-secondary" disabled>Disabled</button>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 mb-2">Status Buttons</p>
+                                <div class="flex gap-2">
+                                    <button class="btn btn-success">Success</button>
+                                    <button class="btn btn-warning">Warning</button>
+                                    <button class="btn btn-danger">Danger</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forms Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Form Elements</h3>
+                    </div>
+                    <div class="card-body">
+                        <form class="space-y-4">
+                            <div class="form-group">
+                                <label class="form-label">Text Input</label>
+                                <input type="text" class="form-input" placeholder="Enter text here">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Select Dropdown</label>
+                                <select class="form-select">
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Textarea</label>
+                                <textarea class="form-textarea" placeholder="Enter multiple lines"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Badges Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Badges</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-2">Status Badges</p>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="badge badge-primary">Primary</span>
+                                    <span class="badge badge-success">Success</span>
+                                    <span class="badge badge-warning">Warning</span>
+                                    <span class="badge badge-danger">Danger</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 mb-2">Neutral Badges</p>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="badge badge-gray">Default</span>
+                                    <span class="badge badge-gray">New</span>
+                                    <span class="badge badge-gray">Updated</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Alerts</h3>
+                    </div>
+                    <div class="card-body space-y-4">
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Success!</strong> Your changes have been saved.
+                            </div>
+                        </div>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Warning:</strong> Please review your input.
+                            </div>
+                        </div>
+                        <div class="alert alert-danger">
+                            <i class="fas fa-times-circle"></i>
+                            <div>
+                                <strong>Error:</strong> Something went wrong.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading States Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Loading States</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="spinner"></div>
+                                <span>Loading...</span>
+                            </div>
+                            <button class="btn btn-primary" disabled>
+                                <div class="spinner" style="width: 16px; height: 16px;"></div>
+                                Processing...
+                            </button>
+                            <div class="text-sm text-gray-600">
+                                <p>• Consistent loading indicators</p>
+                                <p>• Disabled state during processing</p>
+                                <p>• Clear feedback to users</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Modal Dialog</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-gray-600 mb-4">Click the button to open a modal dialog.</p>
+                        <button class="btn btn-primary" onclick="openModal()">
+                            <i class="fas fa-window-maximize"></i>
+                            Open Modal
+                        </button>
+                        <div class="text-sm text-gray-600 mt-4">
+                            <p>• Accessible modal dialogs</p>
+                            <p>• Focus management</p>
+                            <p>• Escape key support</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patterns Section -->
+        <section id="patterns" class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Common Patterns</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Dashboard Layout Pattern -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Dashboard Layout</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <div class="grid grid-cols-4 gap-2">
+                                <div class="bg-blue-100 h-8 rounded"></div>
+                                <div class="bg-blue-100 h-8 rounded col-span-3"></div>
+                                <div class="bg-gray-200 h-20 rounded col-span-4"></div>
+                                <div class="bg-gray-200 h-20 rounded col-span-2"></div>
+                                <div class="bg-gray-200 h-20 rounded col-span-2"></div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Grid-based layouts with clear hierarchy and responsive behavior.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Form Layout Pattern -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-lg font-semibold">Form Layout</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-16 h-4 bg-gray-200 rounded"></div>
+                                <div class="flex-1 h-4 bg-gray-100 rounded"></div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-16 h-4 bg-gray-200 rounded"></div>
+                                <div class="flex-1 h-4 bg-gray-100 rounded"></div>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="w-20 h-8 bg-blue-500 rounded"></div>
+                                <div class="w-20 h-8 bg-gray-200 rounded"></div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">
+                            Clean, accessible forms with proper labeling and validation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal w-full max-w-md">
+            <div class="card-header">
+                <h3 id="modal-title" class="text-lg font-semibold">Modal Dialog</h3>
+                <button onclick="closeModal()" class="btn btn-ghost btn-sm">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <p class="text-gray-600 mb-4">
+                    This is an example of a modal dialog. It's properly accessible with focus management and keyboard support.
+                </p>
+                <div class="text-sm text-gray-500">
+                    <p>• Press Escape to close</p>
+                    <p>• Tab navigation supported</p>
+                    <p>• Focus is trapped within modal</p>
+                </div>
+            </div>
+            <div class="card-footer flex justify-end gap-2">
+                <button onclick="closeModal()" class="btn btn-secondary">Cancel</button>
+                <button onclick="closeModal()" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('modal');
+        const lastFocusedElement = document.activeElement;
+
+        function openModal() {
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+
+            // Focus management
+            const firstFocusable = modal.querySelector('button, input, select, textarea');
+            if (firstFocusable) {
+                firstFocusable.focus();
+            }
+
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+
+            // Restore focus
+            if (lastFocusedElement) {
+                lastFocusedElement.focus();
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Close modal on overlay click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Trap focus within modal
+        modal.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && modal.classList.contains('active')) {
+                const focusableElements = modal.querySelectorAll(
+                    'button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (e.shiftKey && document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Update active nav state
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe cards for animation
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
