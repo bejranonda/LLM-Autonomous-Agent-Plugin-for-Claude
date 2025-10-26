@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v4.1.0
+# 🚀 Autonomous Agent for Claude Code v4.1.1
 
-[![Version](https://img.shields.io/badge/version-4.1.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.1.0)
+[![Version](https://img.shields.io/badge/version-4.1.1-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.1.1)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -1125,7 +1125,7 @@ claude
 - **📚 34 Files Updated** - Massive refactoring with zero functional regressions
 - **🎯 Breaking Change Excellence** - Major version upgrade signals significant improvement
 
-### 🔮 **Future Enhancements (v4.1.0+)**
+### 🔮 **Future Enhancements (v4.1.1+)**
 - IDE integration (VS Code, IntelliJ)
 - Team collaboration features
 - WebSocket real-time updates
