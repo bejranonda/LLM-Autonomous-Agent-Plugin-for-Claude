@@ -1321,7 +1321,11 @@ async function complete_task(task_data) {
   // Record performance metrics (compatible with dashboard)
   await record_task_performance(performance_data, detect_current_model())
 
-  // 4. AUTOMATIC LEARNING (Silent Background)
+  // 4. AUTOMATIC GIT ACTIVITY MONITORING (Silent Background)
+  // Capture any git-based activities that might have been missed
+  await run_automatic_activity_recording()
+
+  // 5. AUTOMATIC LEARNING (Silent Background)
   await delegate_to_learning_engine({
     task: task_data,
     result: result,
@@ -1345,6 +1349,8 @@ async function complete_task(task_data) {
 - ✓ After delegations → Learn agent effectiveness + record delegation performance
 - ✓ After skill usage → Learn skill effectiveness + record skill performance
 - ✓ After ANY task → Automatic performance recording for dashboard display
+- ✓ Git commits → Automatic capture of code changes and version updates
+- ✓ All file modifications → Comprehensive activity tracking
 
 **User Never Sees Learning or Recording**:
 - Learning and recording are background processes
