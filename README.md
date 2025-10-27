@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v4.5.1
+# 🚀 Autonomous Agent for Claude Code v4.6.0
 
-[![Version](https://img.shields.io/badge/version-4.5.1-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.5.1)
+[![Version](https://img.shields.io/badge/version-4.6.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.6.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -72,7 +72,7 @@ The plugin automatically learns from successes and failures, continuously improv
 
 ### 🎯 **Category-Based Command Structure**
 
-**🚀 TRANSFORMATION:** 23 commands reorganized into **7 logical categories** for instant discoverability!
+**🚀 TRANSFORMATION:** 25 commands reorganized into **7 logical categories** for instant discoverability!
 
 | Category | Commands | Example Usage |
 |----------|----------|---------------|
@@ -932,7 +932,7 @@ v3.3.0 includes **40+ organized documentation files** across multiple directorie
 
 ### 📊 **Command Documentation**
 
-All 23 commands across 7 categories have comprehensive documentation with:
+All 25 commands across 7 categories have comprehensive documentation with:
 - Usage examples
 - Options and parameters
 - Expected outputs
