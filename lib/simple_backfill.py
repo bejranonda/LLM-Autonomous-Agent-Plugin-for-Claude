@@ -4,11 +4,6 @@ Simple Assessment Backfill Tool
 Fixes the integration gap by storing missing assessment data.
 """
 
-import json
-import os
-from datetime import datetime, timezone
-from pathlib import Path
-
 # Import our assessment storage
 import sys
 sys.path.append('.')

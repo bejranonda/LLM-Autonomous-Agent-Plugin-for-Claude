@@ -5,12 +5,6 @@ Restores all missing assessment results from recent command executions
 to fix the integration gap and provide complete dashboard data.
 """
 
-import json
-import os
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Dict, List, Any
-
 from lib.assessment_storage import AssessmentStorage
 
 class AssessmentBackfill:

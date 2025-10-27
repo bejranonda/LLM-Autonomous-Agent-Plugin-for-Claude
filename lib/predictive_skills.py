@@ -12,13 +12,7 @@ import argparse
 import sys
 import math
 import numpy as np
-from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Set
-from collections import defaultdict, Counter
-import re
-
-# Handle Windows compatibility
 if platform.system() == 'Windows':
     import msvcrt
     def lock_file(f, exclusive=False):

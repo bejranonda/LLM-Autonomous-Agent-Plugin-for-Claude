@@ -22,7 +22,6 @@ import time
 import uuid
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Dict, List, Any, Optional
 
 # Global performance tracking
 _performance_tracker = None

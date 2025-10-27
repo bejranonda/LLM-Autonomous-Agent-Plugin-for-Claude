@@ -7,23 +7,16 @@ Provides automatic validation before and after critical operations.
 """
 
 import json
-import os
 import sys
-import threading
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Any, Callable
-
-# Import validation components
 from backup_manager import BackupManager
 from command_validator import CommandValidator
 from recovery_manager import RecoveryManager
 
 # Windows compatibility imports
 if sys.platform == "win32":
-    import msvcrt
 else:
-    import fcntl
 
 
 class ValidationHook:

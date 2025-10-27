@@ -9,10 +9,7 @@ Implements the comprehensive debugging performance framework with QIS, TES, and 
 import json
 import os
 import time
-import hashlib
 from datetime import datetime
-from typing import Dict, Any, List, Optional
-
 
 class DebugEvaluator:
     def __init__(self, patterns_dir: str = ".claude-patterns"):

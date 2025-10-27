@@ -11,9 +11,7 @@ import json
 import argparse
 import sys
 from pathlib import Path
-from typing import Dict, List, Set, Tuple, Optional, Any
 from collections import defaultdict, deque
-import platform
 
 class DependencyGraphAnalyzer:
     """Analyze code dependencies and build dependency graphs."""

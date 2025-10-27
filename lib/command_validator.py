@@ -6,18 +6,13 @@ Validates that all commands exist, are discoverable, and work correctly.
 Detects missing commands and provides recovery mechanisms.
 """
 
-import json
 import os
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Any
-
 # Windows compatibility imports
 if sys.platform == "win32":
-    import msvcrt
 else:
-    import fcntl
 
 
 class CommandValidator:

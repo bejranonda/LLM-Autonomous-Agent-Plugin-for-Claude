@@ -10,14 +10,10 @@ Fixes common GitHub release publishing issues:
 """
 
 import argparse
-import json
 import subprocess
 import sys
-import time
 import os
 from pathlib import Path
-from typing import Dict, List, Optional
-import requests
 
 class EnhancedGitHubReleaseManager:
     """Enhanced GitHub release manager with robust error handling."""

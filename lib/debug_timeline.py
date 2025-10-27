@@ -3,7 +3,6 @@
 Debug script for quality timeline function
 """
 import sys
-import os
 sys.path.append('.')
 from lib.dashboard import DashboardDataCollector
 

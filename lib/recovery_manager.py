@@ -7,24 +7,18 @@ Uses multiple recovery strategies: backups, Git history, templates, and patterns
 """
 
 import json
-import os
 import re
 import subprocess
 import sys
-import shutil
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Any
-
 # Import other modules
 from backup_manager import BackupManager
 from command_validator import CommandValidator
 
 # Windows compatibility imports
 if sys.platform == "win32":
-    import msvcrt
 else:
-    import fcntl
 
 
 class RecoveryManager:

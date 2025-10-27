@@ -15,9 +15,6 @@ import sys
 import random
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any
-import platform
-import os
 import statistics
 
 # Handle Windows compatibility for file locking

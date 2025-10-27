@@ -3,7 +3,6 @@
 Test script for the comprehensive prevention system
 """
 
-import os
 import sys
 from pathlib import Path
 

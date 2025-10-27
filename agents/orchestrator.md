@@ -310,7 +310,7 @@ def detect_special_command(user_input):
         return {
             'type': 'direct_execution',
             'command': 'dashboard',
-            'script': 'lib/dashboard_launcher.py',
+            'script': 'lib/dashboard.py',
             'args': parse_dashboard_args(user_input)
         }
 

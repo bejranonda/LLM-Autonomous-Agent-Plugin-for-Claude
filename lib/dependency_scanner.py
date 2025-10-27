@@ -22,15 +22,8 @@ Author: Autonomous Agent Development Team
 import json
 import subprocess
 import sys
-from dataclasses import dataclass, field, asdict
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Any
-import hashlib
-import re
-from datetime import datetime
-import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 class Severity(Enum):

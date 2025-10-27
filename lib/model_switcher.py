@@ -7,10 +7,8 @@ with proper token management and configuration validation.
 """
 
 import os
-import sys
 import json
 import platform
-import subprocess
 import shutil
 from pathlib import Path
 from datetime import datetime

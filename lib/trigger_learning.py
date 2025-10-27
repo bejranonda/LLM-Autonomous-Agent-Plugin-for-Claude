@@ -11,7 +11,6 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime, timezone
-import os
 
 def trigger_learning_engine():
     """Manually trigger the learning engine to record recent activity."""

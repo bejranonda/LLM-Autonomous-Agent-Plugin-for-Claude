@@ -6,7 +6,6 @@ sections in the dashboard show consistent data from the same sources.
 """
 
 import requests
-import json
 from datetime import datetime
 
 def validate_dashboard_consistency():

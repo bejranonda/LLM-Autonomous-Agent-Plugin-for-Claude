@@ -5,7 +5,6 @@ Claude Plugin Validator - Quick validation against official guidelines
 
 import json
 import yaml
-import os
 import re
 import sys
 from pathlib import Path

@@ -8,11 +8,9 @@ and ensure compliance with official plugin development guidelines.
 
 import json
 import yaml
-import os
 import re
 import sys
 from pathlib import Path
-from datetime import datetime
 import argparse
 
 class ClaudePluginValidator:

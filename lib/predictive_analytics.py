@@ -14,14 +14,8 @@ Key Innovation: Every prediction makes the system smarter by learning from predi
 
 import json
 import argparse
-import sys
-import math
 import statistics
-from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
-import platform
-import os
 
 # Handle Windows compatibility for file locking
 if platform.system() == 'Windows':

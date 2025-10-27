@@ -12,10 +12,6 @@ import sys
 import platform
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
-from collections import defaultdict, Counter
-import math
-
 # Handle Windows compatibility
 if platform.system() == 'Windows':
     import msvcrt

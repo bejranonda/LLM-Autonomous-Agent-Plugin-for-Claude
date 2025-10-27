@@ -9,14 +9,10 @@ skill effectiveness tracking, and cross-project pattern transfer capabilities.
 import json
 import argparse
 import sys
-import math
 import hashlib
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
 import platform
-import os
-import re
 
 # Handle Windows compatibility for file locking
 if platform.system() == 'Windows':

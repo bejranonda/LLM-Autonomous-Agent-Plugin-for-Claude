@@ -21,7 +21,6 @@ import json
 import hashlib
 import os
 from pathlib import Path
-from typing import Dict, List, Any, Optional
 from datetime import datetime, timedelta
 import threading
 import time
@@ -838,17 +837,88 @@ class DashboardDataCollector:
                 # During this period, GLM was more commonly used
                 return "GLM 4.6"
             else:
-                # After 10/25, more Claude usage but still mixed
-                # Use time of day to help decide
-                hour = dt.hour
-                if 9 <= hour <= 17:  # Business hours - more likely Claude
-                    return "Claude Sonnet 4.5"
-                else:  # Evening/night - more likely GLM
-                    return "GLM 4.6"
+                # After 10/25, detect current model from recent actual usage data
+                return self._detect_current_model_from_data()
 
         except Exception:
             # If timestamp parsing fails, return None to exclude
             return None
+
+    def _detect_current_model_from_data(self) -> str:
+        """Detect currently active model by analyzing recent actual usage data."""
+        try:
+            # Check quality history for recent model usage
+            quality_history = self._load_json_file("quality_history.json", "quality")
+            model_counts = {}
+
+            # Count models from last 3 days
+            three_days_ago = datetime.now() - timedelta(days=3)
+
+            for assessment in quality_history.get("quality_assessments", []):
+                timestamp_str = assessment.get("timestamp", "")
+                if not timestamp_str:
+                    continue
+
+                try:
+                    # Parse timestamp
+                    if timestamp_str.endswith('Z'):
+                        timestamp = datetime.fromisoformat(timestamp_str.rstrip('Z'))
+                    else:
+                        timestamp = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+
+                    # Only count recent records (last 3 days)
+                    if timestamp < three_days_ago:
+                        continue
+
+                except Exception:
+                    continue
+
+                # Get model from details if available
+                model_used = assessment.get("details", {}).get("model_used", "")
+                if model_used and model_used != "Unknown":
+                    normalized_model = self._normalize_model_name(model_used)
+                    if normalized_model:
+                        model_counts[normalized_model] = model_counts.get(normalized_model, 0) + 1
+
+            # Check performance records too
+            perf_records = self._load_json_file("performance_records.json", "perf")
+            for record in perf_records.get("records", []):
+                timestamp_str = record.get("timestamp", "")
+                if not timestamp_str:
+                    continue
+
+                try:
+                    if timestamp_str.endswith('Z'):
+                        timestamp = datetime.fromisoformat(timestamp_str.rstrip('Z'))
+                    else:
+                        timestamp = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+
+                    if timestamp < three_days_ago:
+                        continue
+
+                except Exception:
+                    continue
+
+                model_used = record.get("model_used", "")
+                if model_used and model_used != "Unknown":
+                    normalized_model = self._normalize_model_name(model_used)
+                    if normalized_model:
+                        model_counts[normalized_model] = model_counts.get(normalized_model, 0) + 1
+
+            # Return the model with highest recent usage
+            if model_counts:
+                return max(model_counts.items(), key=lambda x: x[1])[0]
+
+            # Fallback: check current time pattern (less reliable)
+            current_hour = datetime.now().hour
+            if 9 <= current_hour <= 17:  # Business hours
+                return "GLM 4.6"  # Default to GLM based on current usage patterns
+            else:
+                return "GLM 4.6"  # Default to GLM for consistency
+
+        except Exception:
+            # Ultimate fallback
+            return "GLM 4.6"
 
     def _is_real_model_data(self, model_data: Dict[str, Any]) -> bool:
         """Check if model data appears to be real rather than generated/fake."""
@@ -3119,7 +3189,20 @@ def api_recent_performance_records():
 
             for assessment in quality_data.get('quality_assessments', []):
                 # Extract model from details if available
-                model = assessment.get('details', {}).get('model_used', 'Claude Sonnet 4.5')
+                model_used = assessment.get('details', {}).get('model_used', 'Unknown')
+
+                # Try to normalize the model name
+                normalized_model = data_collector._normalize_model_name(model_used)
+
+                # If no model info, try to infer from timestamp
+                if not normalized_model:
+                    inferred_model = data_collector._infer_model_from_timestamp(assessment.get('timestamp', ''))
+                    if inferred_model:
+                        model = inferred_model
+                    else:
+                        model = "Unknown"
+                else:
+                    model = normalized_model
 
                 # Standardize record format
                 record = {
@@ -3148,9 +3231,24 @@ def api_recent_performance_records():
 
             for record in perf_data.get('records', []):
                 # Convert to dashboard format
+                model_used = record.get('model_used', 'Unknown')
+
+                # Try to normalize the model name
+                normalized_model = data_collector._normalize_model_name(model_used)
+
+                # If no model info, try to infer from timestamp
+                if not normalized_model:
+                    inferred_model = data_collector._infer_model_from_timestamp(record.get('timestamp', ''))
+                    if inferred_model:
+                        model = inferred_model
+                    else:
+                        model = "Unknown"
+                else:
+                    model = normalized_model
+
                 dashboard_record = {
                     'timestamp': record.get('timestamp'),
-                    'model': record.get('model_used', 'Claude Sonnet 4.5'),
+                    'model': model,
                     'assessment_id': record.get('assessment_id'),
                     'task_type': record.get('task_type', 'unknown'),
                     'overall_score': record.get('overall_score', 0),

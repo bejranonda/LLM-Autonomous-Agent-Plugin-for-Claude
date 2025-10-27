@@ -5,7 +5,6 @@ Simple Claude Plugin validation
 
 import json
 import yaml
-import os
 import re
 from pathlib import Path
 

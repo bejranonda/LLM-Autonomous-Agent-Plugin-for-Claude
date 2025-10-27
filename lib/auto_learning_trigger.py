@@ -9,13 +9,9 @@ Fixes the gap where tasks complete but don't automatically record performance.
 """
 
 import json
-import sys
 import time
 import uuid
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
-from typing import Dict, List, Any, Optional
-import subprocess
 import os
 
 class AutomaticLearningTrigger:

@@ -28,9 +28,6 @@ Compatible with existing dashboard.py and performance data format.
 import json
 import os
 import time
-import uuid
-import re
-import hashlib
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 from pathlib import Path

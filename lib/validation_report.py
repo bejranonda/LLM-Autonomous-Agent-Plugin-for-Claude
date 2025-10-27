@@ -5,7 +5,6 @@ Comprehensive Claude Plugin validation to prevent installation failures
 
 import json
 import yaml
-import os
 import re
 from pathlib import Path
 

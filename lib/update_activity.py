@@ -5,7 +5,6 @@ This generates sample activity data to demonstrate the dashboard functionality.
 """
 
 import json
-import os
 from datetime import datetime, timedelta
 from pathlib import Path
 import random

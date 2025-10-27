@@ -11,7 +11,7 @@ description: Launch real-time monitoring dashboard for autonomous agent system m
 
 ## How It Works
 
-1. **Immediate Launch**: Command executes dashboard_launcher.py directly with no delegation
+1. **Immediate Launch**: Command executes dashboard.py directly with no delegation
 2. **Single Process**: Starts one Flask server process in background
 3. **Instant Browser**: Opens default browser to dashboard URL within 2 seconds
 4. **Direct Response**: Returns status immediately without agent overhead
@@ -67,7 +67,7 @@ description: Launch real-time monitoring dashboard for autonomous agent system m
 
 **CRITICAL**: This command executes DIRECTLY via Python with zero delegation. The implementation:
 
-1. **Direct Python Call**: `python lib/dashboard_launcher.py` (no agents involved)
+1. **Direct Python Call**: `python lib/dashboard.py` (no agents involved)
 2. **Port Detection**: Built-in port detection (5000, 5001, etc.)
 3. **Single Process**: Starts exactly one background Flask process
 4. **Immediate Browser**: Opens browser within 2 seconds using `webbrowser.open()`
@@ -78,7 +78,7 @@ description: Launch real-time monitoring dashboard for autonomous agent system m
 
 ```bash
 # Command implementation (no delegation):
-python lib/dashboard_launcher.py --patterns-dir .claude-patterns
+python lib/dashboard.py --patterns-dir .claude-patterns
 
 # Browser opens automatically:
 webbrowser.open(f"http://127.0.0.1:{port}")
@@ -497,7 +497,7 @@ cd /path/to/project
 ---
 
 **Version**: 1.0.0
-**Integration**: Uses dashboard.py from lib/ directory
+**Integration**: Uses dashboard.py directly from lib/ directory (no launcher wrapper)
 **Dependencies**: Flask, Flask-CORS, Python 3.8+
 **Platform**: Cross-platform (Windows, Linux, Mac)
 **Learning**: Integrates with learning-engine for pattern analysis

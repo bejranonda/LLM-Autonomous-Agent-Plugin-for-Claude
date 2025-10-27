@@ -5,7 +5,6 @@ Validates that dashboard API endpoints return data consistent with source record
 """
 
 import requests
-import json
 import sys
 from datetime import datetime
 from pathlib import Path

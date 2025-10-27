@@ -6,7 +6,6 @@ Calculate AI Debugging Performance Index based on quality improvement, time effi
 import json
 import os
 from datetime import datetime
-import statistics
 
 def parse_timestamp(timestamp_str):
     """Parse ISO timestamp to datetime object"""
