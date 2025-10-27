@@ -23,10 +23,13 @@ def trigger_learning_engine():
 
     # Create a learning record for recent dashboard fix work
     learning_record = {
-        "pattern_id": f"manual-learning-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}",
+        "pattern_id": f"manual-learning-{datetime.now(
+    timezone.utc).strftime('%Y%m%d-%H%M%S')}",,
+)
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "task_type": "dashboard-fix",
-        "task_description": "Fixed dashboard connectivity issues and implemented robust launcher",
+        "task_description": "Fixed dashboard connectivity issues and 
+            implemented robust launcher",
         "context": {
             "language": "python",
             "framework": "Flask Dashboard System",
@@ -104,7 +107,9 @@ def create_performance_record():
     performance_file = patterns_dir / 'performance_records.json'
 
     performance_record = {
-        "assessment_id": f"dashboard-fix-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}",
+        "assessment_id": f"dashboard-fix-{datetime.now(
+    timezone.utc).strftime('%Y%m%d-%H%M%S')}",,
+)
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "task_type": "dashboard-fix",
         "overall_score": 95,
@@ -118,7 +123,8 @@ def create_performance_record():
         "details": {
             "auto_recorded": True,
             "model_used": "GLM-4.6",
-            "task_description": "Fixed dashboard connectivity and implemented robust launcher",
+            "task_description": "Fixed dashboard connectivity and 
+                implemented robust launcher",
             "task_complexity": "medium",
             "duration_seconds": 1500,
             "skills_used": [
@@ -151,7 +157,9 @@ def create_performance_record():
         with open(performance_file, 'w') as f:
             json.dump(perf_data, f, indent=2)
 
-        print(f"SUCCESS: Performance record created: {performance_record['assessment_id']}")
+        print(
+    f"SUCCESS: Performance record created: {performance_record['assessment_id']}",
+)
         return True
 
     except Exception as e:

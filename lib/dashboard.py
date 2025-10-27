@@ -49,13 +49,23 @@ class DashboardDataCollector:
         self.cache_ttl = 60  # Cache for 60 seconds
         self.last_update = {}
 
-    def _deterministic_score(self, base_score: float, variance: float, seed_data: str) -> float:
+    def _deterministic_score(
+    self,
+    base_score: float,
+    variance: float,
+    seed_data: str) -> float:,
+)
         """Generate deterministic scores based on seed data."""
         hash_obj = hashlib.md5(seed_data.encode())
         seed_value = int(hash_obj.hexdigest()[:8], 16) / 0xFFFFFFFF
         return base_score + (seed_value - 0.5) * variance * 2
 
-    def _deterministic_contribution(self, score: float, base_contribution: float, seed_data: str) -> float:
+    def _deterministic_contribution(
+    self,
+    score: float,
+    base_contribution: float,
+    seed_data: str) -> float:,
+)
         """Generate deterministic contribution based on score and seed."""
         hash_obj = hashlib.md5(f"{score}-{seed_data}".encode())
         seed_value = int(hash_obj.hexdigest()[:8], 16) / 0xFFFFFFFF
@@ -109,7 +119,8 @@ class DashboardDataCollector:
         for model_name, scores in model_scores.items():
             if len(scores) > 0:
                 avg_score = sum(s["score"] for s in scores) / len(scores)
-                success_rate = len([s for s in scores if s["score"] >= 70]) / len(scores)
+                success_rate = len([s for s in scores if 
+                    s["score"] >= 70]) / len(scores)
                 
                 model_data[model_name] = {
                     "recent_scores": scores,
@@ -194,7 +205,8 @@ class DashboardDataCollector:
 
         # Fallback to pattern-based calculation if quality history is insufficient
         if learning_velocity == "insufficient_data":
-            recent_patterns = patterns.get("patterns", [])[-20:] if patterns.get("patterns") else []
+            recent_patterns = patterns.get("patterns", [])[-20:] if 
+                patterns.get("patterns") else []
             learning_velocity = self._calculate_learning_velocity(recent_patterns)
 
         # Get model performance metrics
@@ -311,7 +323,8 @@ class DashboardDataCollector:
                 except:
                     continue
 
-        # Source 2: Historical assessments (legacy data) - Only include if model info can be inferred
+# Source 2: Historical assessments (legacy data) - Only include if model info can be
+# inferred
         assessments = self._load_json_file("assessments.json", "assessments")
         for assessment in assessments.get("assessments", []):
             timestamp = assessment.get("timestamp")
@@ -340,7 +353,8 @@ class DashboardDataCollector:
                 except:
                     continue
 
-        # Source 3: Trends data (additional historical data) - Only include if model info can be inferred
+# Source 3: Trends data (additional historical data) - Only include if model info can
+# be inferred
         trends = self._load_json_file("trends.json", "trends")
         for trend in trends.get("quality_trends", []):
             timestamp = trend.get("timestamp")
@@ -482,7 +496,8 @@ class DashboardDataCollector:
 
         distribution = []
         for task_type, count in task_counts.items():
-            success_rate = statistics.mean(success_by_task[task_type]) if success_by_task[task_type] else 0
+            success_rate = statistics.mean(success_by_task[task_type]) if 
+                success_by_task[task_type] else 0
 
             distribution.append({
                 "task_type": task_type,
@@ -600,12 +615,14 @@ class DashboardDataCollector:
         error_rate = (error_count / len(recent_tasks) * 100) if recent_tasks else 0
 
         # Calculate average quality (last 50 tasks)
-        quality_scores = [r.get("quality_score", 0) for r in recent_tasks if r.get("quality_score")]
+        quality_scores = [r.get("quality_score", 0) for r in recent_tasks if 
+            r.get("quality_score")]
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
         # Storage size (all data files)
         total_size = 0
-        for file in ["patterns.json", "quality_history.json", "performance_records.json"]:
+        for file in 
+            ["patterns.json", "quality_history.json", "performance_records.json"]:
             filepath = self.patterns_dir / file
             if filepath.exists():
                 total_size += os.path.getsize(filepath)
@@ -671,7 +688,8 @@ class DashboardDataCollector:
                         numeric_scores.append(score.get("score", 0))
 
                 avg_score = statistics.mean(numeric_scores) if numeric_scores else 0
-                trend = self._calculate_model_trend(numeric_scores) if numeric_scores else "stable"
+                trend = self._calculate_model_trend(numeric_scores) if 
+                    numeric_scores else "stable"
                 contribution = model_data.get("contribution_to_project", 0)
             else:
                 avg_score = 85.0  # Default reasonable score
@@ -684,7 +702,10 @@ class DashboardDataCollector:
                 "trend": trend,
                 "contribution_to_project": contribution,
                 "total_tasks": model_data.get("total_tasks", 10),
-                "success_rate": model_data.get("success_rate", 0.9 if "GLM" in model else 0.94)
+                "success_rate": model_data.get(
+    "success_rate",
+    0.9 if "GLM" in model else 0.94,
+)
             }
 
         return summary
@@ -953,7 +974,9 @@ class DashboardDataCollector:
             "models": models,
             "quality_scores": scores,
             "success_rates": success_rates,
-            "contributions": [model_summary[model]["contribution_to_project"] for model in models]
+            "contributions": [model_summary[model]["contribution_to_project"] for model in 
+                
+                models]
         }
 
     def get_temporal_performance(self, days: int = 30) -> Dict[str, Any]:
@@ -1007,7 +1030,8 @@ class DashboardDataCollector:
         if temporal_data:
             avg_performance = statistics.mean([d["score"] for d in temporal_data])
             total_contribution = sum([d["contribution"] for d in temporal_data])
-            performance_trend = self._calculate_model_trend([d["score"] for d in temporal_data])
+            performance_trend = self._calculate_model_trend([d["score"] for d in 
+                temporal_data])
         else:
             avg_performance = 0
             total_contribution = 0
@@ -1045,7 +1069,8 @@ class DashboardDataCollector:
                     "data_source": "quality_history"
                 })
 
-        # Source 2: Historical assessments (legacy data) - Only include if model info can be inferred
+# Source 2: Historical assessments (legacy data) - Only include if model info can be
+# inferred
         assessments = self._load_json_file("assessments.json", "assessments")
         for assessment in assessments.get("assessments", []):
             timestamp = assessment.get("timestamp", "")
@@ -1064,12 +1089,16 @@ class DashboardDataCollector:
             all_assessments.append({
                 "timestamp": timestamp,
                 "overall_score": overall_score,
-                "task_type": f"{assessment.get('task_type', 'unknown')} ({command_name})",
+                "task_type": f"{assessment.get(
+    'task_type',
+    'unknown')} ({command_name})",,
+)
                 "model_used": inferred_model,
                 "data_source": "assessments"
             })
 
-        # Source 3: Trends data (additional historical data) - Only include if model info can be inferred
+# Source 3: Trends data (additional historical data) - Only include if model info can
+# be inferred
         trends = self._load_json_file("trends.json", "trends")
         for trend in trends.get("quality_trends", []):
             timestamp = trend.get("timestamp", "")
@@ -1153,7 +1182,9 @@ class DashboardDataCollector:
 
                         daily_quality_data[date_key]["scores"].append(quality_score)
                         daily_quality_data[date_key]["task_types"].append(task_type)
-                        daily_quality_data[date_key]["timestamps"].append(timestamp.isoformat())
+                        daily_quality_data[date_key]["timestamps"].append(
+    timestamp.isoformat(),
+)
                         daily_quality_data[date_key]["models"].append(model_used)
 
                 except:
@@ -1186,9 +1217,15 @@ class DashboardDataCollector:
                                 "timestamps": []
                             }
 
-                        assessments_by_date_and_model[date_key][model_used]["scores"].append(quality_score)
-                        assessments_by_date_and_model[date_key][model_used]["task_types"].append(task_type)
-                        assessments_by_date_and_model[date_key][model_used]["timestamps"].append(timestamp.isoformat())
+                        assessments_by_date_and_model[date_key][model_used]["scores"].append(
+    quality_score,
+)
+                        assessments_by_date_and_model[date_key][model_used]["task_types"].append(
+    task_type,
+)
+                        assessments_by_date_and_model[date_key][model_used]["timestamps"].append(
+    timestamp.isoformat(),
+)
 
                 except:
                     continue
@@ -1197,9 +1234,17 @@ class DashboardDataCollector:
         for date_str, model_data in sorted(assessments_by_date_and_model.items()):
             day_data = {
                 "date": date_str,
-                "timestamp": next(iter(model_data.values()))["timestamps"][0],  # First timestamp
-                "Assessments Count": sum(len(scores["scores"]) for scores in model_data.values()),
-                "Task Types": list(set(task_type for scores in model_data.values() for task_type in scores["task_types"]))
+                "timestamp": next(
+    iter(model_data.values()))["timestamps"][0],  # First timestamp,
+)
+                "Assessments Count": sum(
+    len(scores["scores"]) for scores in model_data.values()),,
+)
+                "Task Types": list(
+    set(
+    task_type for scores in model_data.values() for task_type in scores["task_types"]),,
+)
+)
             }
 
             # Add actual scores for each model
@@ -1212,12 +1257,18 @@ class DashboardDataCollector:
 
         # Get summary info about real data
         total_assessments = len(unique_assessments)
-        avg_quality = statistics.mean([a.get("overall_score", 0) for a in unique_assessments])
+        avg_quality = statistics.mean([a.get("overall_score", 0) for a in 
+            unique_assessments])
 
         # Collect all unique models from the timeline data
         all_models_found = set()
         for day_data in timeline_data:
-            all_models_found.update(key for key in day_data.keys() if key not in ["date", "timestamp", "Assessments Count", "Task Types"])
+            all_models_found.update(
+    key for key in day_data.keys() if key not in ["date",
+    "timestamp",
+    "Assessments Count",
+    "Task Types"],
+)
 
         # Use unified model ordering to ensure consistency with AI Debugging Performance Index
         # Load debugging performance data to get the unified order
@@ -1263,7 +1314,8 @@ class DashboardDataCollector:
         # Create model info based on actual data
         model_info = {}
         for model in implemented_models:
-            days_with_model = sum(1 for day in timeline_data if model in day and day[model] > 0)
+            days_with_model = sum(1 for day in timeline_data if model in day and 
+                day[model] > 0)
             model_info[model] = {
                 "total_tasks": days_with_model,
                 "data_source": "Based on real quality assessments"
@@ -1326,7 +1378,8 @@ class DashboardDataCollector:
         models_data = []
 
         for model_name, summary_data in active_models.items():
-            model_data = model_performance.get(model_name, {}) if model_name in model_performance else {}
+            model_data = model_performance.get(model_name, {}) if 
+                model_name in model_performance else {}
             recent_scores = model_data.get("recent_scores", [])
 
             # Calculate metrics
@@ -1337,19 +1390,25 @@ class DashboardDataCollector:
 
             # Calculate performance trend
             if recent_scores:
-                scores = [s.get("score", 0) if isinstance(s, dict) else s for s in recent_scores if s]
+                scores = [s.get("score", 0) if isinstance(s, dict) else 
+                    s for s in recent_scores if s]
                 if len(scores) >= 2:
-                    recent_avg = statistics.mean(scores[-5:]) if len(scores) >= 5 else statistics.mean(scores)
-                    older_avg = statistics.mean(scores[:-5]) if len(scores) > 5 else scores[0]
+                    recent_avg = statistics.mean(scores[-5:]) if 
+                        len(scores) >= 5 else statistics.mean(scores)
+                    older_avg = statistics.mean(scores[:-5]) if 
+                        len(scores) > 5 else scores[0]
                     trend = "📈 Improving" if recent_avg > older_avg + 2 else "📉 Declining" if recent_avg < older_avg - 2 else "📊 Stable"
                 else:
                     trend = "📊 Stable"
             else:
                 trend = "📊 Stable"
 
-            # Use real performance metrics if available (calculated from quality improvement over time)
+# Use real performance metrics if available (calculated from quality improvement over
+# time)
             model_perf_data = model_performance.get(model_name, {})
-            if 'performance_index' in model_perf_data and model_perf_data.get('performance_calculation_method') == 'quality_improvement_over_time':
+            if 'performance_index' in model_perf_data and model_perf_data.get(
+    'performance_calculation_method') == 'quality_improvement_over_time':,
+)
                 # Use real time-based performance index
                 performance_index = model_perf_data['performance_index']
                 improvement_rate = model_perf_data.get('improvement_rate', 0)
@@ -1423,9 +1482,12 @@ class DashboardDataCollector:
             "total_tasks": [d["total_tasks"] for d in ordered_models],
             "reliability_scores": [d["reliability"] for d in ordered_models],
             "speed_scores": [d["speed_score"] for d in ordered_models],
-            "quality_impact_scores": [d["quality_impact_score"] for d in ordered_models],
-            "avg_task_durations": [d["avg_task_duration_minutes"] for d in ordered_models],
-            "total_quality_improvements": [d["total_quality_improvements"] for d in ordered_models]
+            "quality_impact_scores": [d["quality_impact_score"] for d in 
+                ordered_models],
+            "avg_task_durations": [d["avg_task_duration_minutes"] for d in 
+                ordered_models],
+            "total_quality_improvements": [d["total_quality_improvements"] for d in 
+                ordered_models]
         }
 
 
@@ -1893,10 +1955,14 @@ DASHBOARD_HTML = """
 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+                document.getElementById(
+    'last-update').textContent = new Date().toLocaleTimeString();,
+)
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
-                document.getElementById('loading').textContent = 'Error loading dashboard data. Retrying...';
+                document.getElementById(
+    'loading').textContent = 'Error loading dashboard data. Retrying...';,
+)
             }
         }
 
@@ -2091,7 +2157,9 @@ DASHBOARD_HTML = """
                             max: 100,
                             ticks: {
                                 callback: function(value) {
-                                    return value + (context.datasetIndex === 1 ? '%' : '');
+                                    return value + (
+    context.datasetIndex === 1 ? '%' : '');,
+)
                                 }
                             }
                         }
@@ -2234,7 +2302,9 @@ DASHBOARD_HTML = """
             }
 
             // Check if we have real data
-            if (!timelineData.timeline_data || timelineData.timeline_data.length === 0) {
+            if (
+    !timelineData.timeline_data || timelineData.timeline_data.length === 0) {,
+)
                 // Show no data message
                 timelineChart = new Chart(ctx, {
                     type: 'bar',
@@ -2272,10 +2342,25 @@ DASHBOARD_HTML = """
 
             // Model colors - consistent with Average Performance Chart
             const modelColors = {
-                'Claude Sonnet 4.5': { bg: 'rgba(102, 126, 234, 0.8)', border: '#667eea' },
+                'Claude Sonnet 4.5': { bg: 'rgba(
+    102,
+    126,
+    234,
+    0.8)', border: '#667eea' },,
+)
                 'GLM 4.6': { bg: 'rgba(16, 185, 129, 0.8)', border: '#10b981' },
-                'Claude': { bg: 'rgba(102, 126, 234, 0.8)', border: '#667eea' },  // Fallback
-                'GLM': { bg: 'rgba(16, 185, 129, 0.8)', border: '#10b981' },  // Fallback
+                'Claude': { bg: 'rgba(
+    102,
+    126,
+    234,
+    0.8)', border: '#667eea' },  // Fallback,
+)
+                'GLM': { bg: 'rgba(
+    16,
+    185,
+    129,
+    0.8)', border: '#10b981' },  // Fallback,
+)
                 'Unknown': { bg: 'rgba(107, 114, 128, 0.6)', border: '#6b7280' }
             };
 
@@ -2339,14 +2424,28 @@ DASHBOARD_HTML = """
                                     let tooltipLines = [];
 
                                     if (modelInfo) {
-                                        tooltipLines.push(`📋 Total Tasks: ${modelInfo.total_tasks}`);
-                                        tooltipLines.push(`📊 Data Source: ${modelInfo.data_source}`);
+                                        tooltipLines.push(
+    `📋 Total Tasks: ${modelInfo.total_tasks}`);,
+)
+                                        tooltipLines.push(
+    `📊 Data Source: ${modelInfo.data_source}`);,
+)
                                     }
 
                                     if (dayData) {
-                                        tooltipLines.push(`📊 Assessments: ${dayData["Assessments Count"]}`);
-                                        if (dayData["Task Types"] && dayData["Task Types"].length > 0) {
-                                            tooltipLines.push(`🔧 Task Types: ${dayData["Task Types"].slice(0, 3).join(", ")}${dayData["Task Types"].length > 3 ? "..." : ""}`);
+                                        tooltipLines.push(
+    `📊 Assessments: ${dayData["Assessments Count"]}`);,
+)
+                                        if (
+    dayData["Task Types"] && dayData["Task Types"].length > 0) {,
+)
+                                            tooltipLines.push(
+    `🔧 Task Types: ${dayData["Task Types"].slice(
+    0,
+    3).join(",
+    ")}${dayData["Task Types"].length > 3 ? "..." : ""}`);,,
+)
+)
                                         }
                                     }
 
@@ -2394,7 +2493,9 @@ DASHBOARD_HTML = """
             }
 
             // Check if we have debugging performance data
-            if (!debugData || !debugData.performance_rankings || debugData.performance_rankings.length === 0) {
+            if (
+    !debugData || !debugData.performance_rankings || debugData.performance_rankings.length === 0) {,
+)
                 // Show no data message
                 debuggingPerformanceChart = new Chart(ctx, {
                     type: 'bar',
@@ -2442,7 +2543,12 @@ DASHBOARD_HTML = """
 
             // Model colors
             const modelColors = {
-                'Claude Sonnet 4.5': { bg: 'rgba(102, 126, 234, 0.8)', border: '#667eea' },
+                'Claude Sonnet 4.5': { bg: 'rgba(
+    102,
+    126,
+    234,
+    0.8)', border: '#667eea' },,
+)
                 'GLM 4.6': { bg: 'rgba(16, 185, 129, 0.8)', border: '#10b981' },
                 'Claude': { bg: 'rgba(102, 126, 234, 0.8)', border: '#667eea' },
                 'GLM': { bg: 'rgba(16, 185, 129, 0.8)', border: '#10b981' }
@@ -2512,28 +2618,47 @@ DASHBOARD_HTML = """
                                         return `${modelName}: ${value.toFixed(1)}%`;
                                     } else if (metric === 'Performance Index') {
                                         let details = [];
-                                        if (modelData && modelData.regression_penalty > 0) {
-                                            details.push(`Penalty: -${modelData.regression_penalty}`);
+                                        if (
+    modelData && modelData.regression_penalty > 0) {,
+)
+                                            details.push(
+    `Penalty: -${modelData.regression_penalty}`);,
+)
                                         }
-                                        const detailText = details.length > 0 ? ` (${details.join(', ')})` : '';
-                                        return `${modelName}: ${value.toFixed(1)}/100${detailText}`;
+                                        const detailText = details.length > 
+                                            0 ? ` (${details.join(', ')})` : '';
+                                        return `${modelName}: ${value.toFixed(
+    1)}/100${detailText}`;,
+)
                                     } else if (metric === 'QIS') {
                                         let details = [];
                                         if (modelData) {
-                                            details.push(`Gap: ${modelData.gap_closed_pct || 0}%`);
+                                            details.push(
+    `Gap: ${modelData.gap_closed_pct || 0}%`);,
+)
                                             if (modelData.regressions_detected > 0) {
-                                                details.push(`Regressions: ${modelData.regressions_detected}`);
+                                                details.push(
+    `Regressions: ${modelData.regressions_detected}`);,
+)
                                             }
                                         }
-                                        const detailText = details.length > 0 ? ` (${details.join(', ')})` : '';
-                                        return `${modelName}: ${value.toFixed(1)}/100${detailText}`;
+                                        const detailText = details.length > 
+                                            0 ? ` (${details.join(', ')})` : '';
+                                        return `${modelName}: ${value.toFixed(
+    1)}/100${detailText}`;,
+)
                                     } else if (metric === 'Efficiency Index') {
                                         let details = [];
                                         if (modelData) {
-                                            details.push(`Rel. Improvement: ${modelData.relative_improvement || 0}x`);
+                                            details.push(
+    `Rel. Improvement: ${modelData.relative_improvement || 0}x`);,
+)
                                         }
-                                        const detailText = details.length > 0 ? ` (${details.join(', ')})` : '';
-                                        return `${modelName}: ${value.toFixed(1)}/100${detailText}`;
+                                        const detailText = details.length > 
+                                            0 ? ` (${details.join(', ')})` : '';
+                                        return `${modelName}: ${value.toFixed(
+    1)}/100${detailText}`;,
+)
                                     } else {
                                         return `${modelName}: ${value.toFixed(1)}/100`;
                                     }
@@ -2588,7 +2713,9 @@ DASHBOARD_HTML = """
             const tbody = document.getElementById('calculation-formulas-tbody');
             const headerRow = document.getElementById('calculation-formulas-header');
 
-            if (!debugData || !debugData.performance_rankings || debugData.performance_rankings.length === 0) {
+            if (
+    !debugData || !debugData.performance_rankings || debugData.performance_rankings.length === 0) {,
+)
                 headerRow.innerHTML = `
                     <th style="text-align: left; padding: 8px 12px; font-weight: bold; color: #495057; background-color: #e9ecef; width: 200px;">Metric</th>
                     <th colspan="3" style="text-align: center; padding: 8px 12px; color: #adb5bd; background-color: #e9ecef;">No Models</th>
@@ -2643,7 +2770,11 @@ DASHBOARD_HTML = """
                     <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
                         <div style="font-size: 14px; font-weight: bold; color: #495057;">${pi.toFixed(1)}</div>
                         <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
-                            (0.40×${qis.toFixed(1)}) + (0.35×${tes.toFixed(1)}) + (0.25×${sr.toFixed(1)}) − ${penalty.toFixed(1)}
+                            (
+    0.40×${qis.toFixed(
+    1)}) + (0.35×${tes.toFixed(1)}) + (0.25×${sr.toFixed(1)}) − ${penalty.toFixed(1)},,
+)
+)
                         </div>
                     </td>
                 `;
@@ -2667,7 +2798,9 @@ DASHBOARD_HTML = """
                     <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
                         <div style="font-size: 14px; font-weight: bold; color: #495057;">${qis.toFixed(1)}</div>
                         <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
-                            (0.6×${finalQuality.toFixed(1)}) + (0.4×${gapClosed.toFixed(1)}%)
+                            (
+    0.6×${finalQuality.toFixed(1)}) + (0.4×${gapClosed.toFixed(1)}%,
+)
                         </div>
                     </td>
                 `;
@@ -2733,13 +2866,15 @@ DASHBOARD_HTML = """
                 const finalQuality = ranking.final_quality || 0;
                 const gapClosed = ranking.gap_closed_pct || 0;
                 const improvement = finalQuality - initialQuality;
-                const improvementColor = improvement > 0 ? '#10b981' : (improvement < 0 ? '#dc3545' : '#6c757d');
+                const improvementColor = improvement > 0 ? '#10b981' : (improvement < 
+                    0 ? '#dc3545' : '#6c757d');
 
                 formulasHtml += `
                     <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
                         <div style="font-size: 14px; font-weight: bold; color: ${improvementColor};">
                             ${initialQuality.toFixed(1)} → ${finalQuality.toFixed(1)}
-                            <span style="font-size: 11px;">(${improvement > 0 ? '+' : ''}${improvement.toFixed(1)})</span>
+                            <span style="font-size: 11px;">(${improvement > 
+                                0 ? '+' : ''}${improvement.toFixed(1)})</span>
                         </div>
                         <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
                             Gap closed: ${gapClosed.toFixed(1)}%
@@ -2764,11 +2899,14 @@ DASHBOARD_HTML = """
 
                     formulasHtml += `
                         <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
-                            <div style="font-size: 14px; font-weight: bold; color: ${penalty > 0 ? '#dc3545' : '#10b981'};">
+                            <div style="font-size: 14px; font-weight: bold; color: ${penalty > 
+                                
+                                0 ? '#dc3545' : '#10b981'};">
                                 ${penalty > 0 ? '-' : ''}${penalty.toFixed(1)}
                             </div>
                             <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
-                                ${penalty > 0 ? 'Regression detected' : 'No regressions'}
+                                ${penalty > 
+                                    0 ? 'Regression detected' : 'No regressions'}
                             </div>
                         </td>
                     `;
@@ -2877,8 +3015,11 @@ DASHBOARD_HTML = """
                     : '<span class="badge badge-danger">✗ Fail</span>';
 
                 const performanceIndex = record.performance_index ? record.performance_index.toFixed(1) : 'N/A';
-                const qualityImprovement = record.quality_improvement > 0 ? `+${record.quality_improvement}` : record.quality_improvement;
-                const improvementColor = record.quality_improvement > 0 ? 'green' : (record.quality_improvement < 0 ? 'red' : '#666');
+                const qualityImprovement = record.quality_improvement > 
+                    0 ? `+${record.quality_improvement}` : record.quality_improvement;
+                const improvementColor = record.quality_improvement > 0 ? 'green' : (record.quality_improvement < 
+                    
+                    0 ? 'red' : '#666');
 
                 // Show if auto-generated with a subtle indicator
                 const autoIndicator = record.auto_generated
@@ -2892,7 +3033,9 @@ DASHBOARD_HTML = """
                 }
 
                 // Handle success_rate which might be already in percentage format
-                const successRate = typeof record.success_rate === 'number' && record.success_rate > 1
+                const successRate = typeof record.success_rate === 'number' && record.success_rate > 
+                    
+                    1
                     ? record.success_rate.toFixed(1)
                     : (record.success_rate * 100).toFixed(1);
 
@@ -2915,7 +3058,9 @@ DASHBOARD_HTML = """
             // Enhanced summary info with task type statistics
             let summaryHtml = `Showing ${data.showing_records} of ${data.total_records} recent performance records`;
 
-            if (data.auto_generated_count !== undefined && data.manual_assessment_count !== undefined) {
+            if (
+    data.auto_generated_count !== undefined && data.manual_assessment_count !== undefined) {,
+)
                 summaryHtml += ` (${data.auto_generated_count} auto-recorded, ${data.manual_assessment_count} manual)`;
             }
 
@@ -2929,17 +3074,25 @@ DASHBOARD_HTML = """
                     .slice(0, 5); // Show top 5 task types
 
                 summaryHtml += taskTypes.map(([type, stats]) =>
-                    `${type.charAt(0).toUpperCase() + type.slice(1)} (${stats.count}, ${stats.avg_score.toFixed(0)}pts)`
+                    `${type.charAt(
+    0).toUpperCase() + type.slice(1)} (${stats.count},
+    ${stats.avg_score.toFixed(0)}pts)`,
+)
                 ).join(', ');
 
                 summaryHtml += '</div>';
             }
 
-            document.getElementById('performance-records-summary').innerHTML = summaryHtml;
+            document.getElementById(
+    'performance-records-summary').innerHTML = summaryHtml;,
+)
         }
 
         // Add event listener for quality period selector
-        document.getElementById('quality-period').addEventListener('change', function(e) {
+        document.getElementById(
+    'quality-period').addEventListener('change',
+    function(e) {,
+)
             const period = e.target.value;
             if (period === 'all') {
                 // Fetch all data by using a very large number
@@ -2950,7 +3103,10 @@ DASHBOARD_HTML = """
         });
 
         // Old temporal performance period selector (removed - now using combined chart)
-        // document.getElementById('temporal-period').addEventListener('change', function(e) {
+        // document.getElementById(
+    'temporal-period').addEventListener('change',
+    function(e) {,
+)
         //     const period = parseInt(e.target.value);
         //     fetchTemporalPerformanceData(period);
         // });
@@ -2959,7 +3115,10 @@ DASHBOARD_HTML = """
         fetchDashboardData();
 
         // Period selector for timeline chart
-        document.getElementById('timeline-period').addEventListener('change', async function(e) {
+        document.getElementById(
+    'timeline-period').addEventListener('change',
+    async function(e) {,
+)
             const days = parseInt(e.target.value);
             try {
                 const [timelineData] = await Promise.all([
@@ -2972,7 +3131,10 @@ DASHBOARD_HTML = """
         });
 
         // Period selector for debugging performance chart
-        document.getElementById('debugging-timeframe').addEventListener('change', async function(e) {
+        document.getElementById(
+    'debugging-timeframe').addEventListener('change',
+    async function(e) {,
+)
             const days = parseInt(e.target.value);
             try {
                 const [debugData] = await Promise.all([
@@ -2980,7 +3142,10 @@ DASHBOARD_HTML = """
                 ]);
                 updateDebuggingPerformanceChart(debugData);
             } catch (error) {
-                console.error('Error updating debugging performance chart with new timeframe:', error);
+                console.error(
+    'Error updating debugging performance chart with new timeframe:',
+    error);,
+)
             }
         });
 
@@ -3100,7 +3265,8 @@ def api_debugging_performance():
         if 'performance_rankings' in data:
             unified_order = get_unified_model_order(data)
             # Reorder performance rankings based on unified order
-            ranked_models = {ranking['model']: ranking for ranking in data['performance_rankings']}
+            ranked_models = {ranking['model']: ranking for ranking in 
+                data['performance_rankings']}
             reordered_rankings = []
             for model in unified_order:
                 if model in ranked_models:
@@ -3130,7 +3296,8 @@ def api_debugging_performance():
                 if 'performance_rankings' in data:
                     unified_order = get_unified_model_order(data)
                     # Reorder performance rankings based on unified order
-                    ranked_models = {ranking['model']: ranking for ranking in data['performance_rankings']}
+                    ranked_models = {ranking['model']: ranking for ranking in 
+                        data['performance_rankings']}
                     reordered_rankings = []
                     for model in unified_order:
                         if model in ranked_models:
@@ -3139,7 +3306,9 @@ def api_debugging_performance():
 
                 return jsonify(data)
             else:
-                raise FileNotFoundError(f"Could not generate timeframe data: {result.stderr}")
+                raise FileNotFoundError(
+    f"Could not generate timeframe data: {result.stderr}",
+)
         except Exception as e:
             # Return empty structure if generation fails
             return jsonify({
@@ -3149,7 +3318,9 @@ def api_debugging_performance():
                 'timeframe_days': days,
                 'timeframe_label': get_timeframe_label(days),
                 'analysis_timestamp': datetime.now().isoformat(),
-                'error': f"Could not load or generate data for {get_timeframe_label(days)}"
+                'error': f"Could not load or generate data for {get_timeframe_label(
+    days)}",
+)
             })
 
 def get_unified_model_order(debugging_data=None):
@@ -3211,12 +3382,32 @@ def api_recent_performance_records():
                     'assessment_id': assessment.get('assessment_id'),
                     'task_type': assessment.get('task_type', 'unknown'),
                     'overall_score': assessment.get('overall_score', 0),
-                    'performance_index': assessment.get('details', {}).get('performance_index', 0),
-                    'evaluation_target': assessment.get('details', {}).get('evaluation_target', assessment.get('task_type', 'Unknown')),
-                    'quality_improvement': assessment.get('details', {}).get('quality_improvement', 0),
+                    'performance_index': assessment.get(
+    'details',
+    {}).get('performance_index',
+    0),,
+)
+                    'evaluation_target': assessment.get(
+    'details',
+    {}).get('evaluation_target',
+    assessment.get('task_type', 'Unknown')),,
+)
+                    'quality_improvement': assessment.get(
+    'details',
+    {}).get('quality_improvement',
+    0),,
+)
                     'issues_found': len(assessment.get('issues_found', [])),
-                    'fixes_applied': assessment.get('details', {}).get('fixes_applied', 0),
-                    'time_elapsed_minutes': assessment.get('details', {}).get('duration_seconds', 0) / 60,
+                    'fixes_applied': assessment.get(
+    'details',
+    {}).get('fixes_applied',
+    0),,
+)
+                    'time_elapsed_minutes': assessment.get(
+    'details',
+    {}).get('duration_seconds',
+    0) / 60,,
+)
                     'success_rate': 100 if assessment.get('pass', False) else 0,
                     'pass': assessment.get('pass', False),
                     'auto_generated': assessment.get('auto_generated', False)
@@ -3252,12 +3443,24 @@ def api_recent_performance_records():
                     'assessment_id': record.get('assessment_id'),
                     'task_type': record.get('task_type', 'unknown'),
                     'overall_score': record.get('overall_score', 0),
-                    'performance_index': record.get('details', {}).get('performance_index', 0),
+                    'performance_index': record.get(
+    'details',
+    {}).get('performance_index',
+    0),,
+)
                     'evaluation_target': record.get('task_type', 'Unknown'),
-                    'quality_improvement': record.get('details', {}).get('quality_improvement', 0),
+                    'quality_improvement': record.get(
+    'details',
+    {}).get('quality_improvement',
+    0),,
+)
                     'issues_found': len(record.get('issues_found', [])),
                     'fixes_applied': record.get('details', {}).get('fixes_applied', 0),
-                    'time_elapsed_minutes': record.get('details', {}).get('duration_seconds', 0) / 60,
+                    'time_elapsed_minutes': record.get(
+    'details',
+    {}).get('duration_seconds',
+    0) / 60,,
+)
                     'success_rate': 100 if record.get('pass', False) else 0,
                     'pass': record.get('pass', False),
                     'auto_generated': record.get('auto_generated', True)
@@ -3287,13 +3490,37 @@ def api_recent_performance_records():
                             'assessment_id': assessment.get('assessment_id'),
                             'task_type': assessment.get('task_type', 'debugging'),
                             'overall_score': assessment.get('overall_score', 0),
-                            'performance_index': assessment.get('details', {}).get('performance_index', 0),
-                            'evaluation_target': assessment.get('details', {}).get('evaluation_target', 'Unknown'),
-                            'quality_improvement': assessment.get('details', {}).get('quality_improvement', 0),
+                            'performance_index': assessment.get(
+    'details',
+    {}).get('performance_index',
+    0),,
+)
+                            'evaluation_target': assessment.get(
+    'details',
+    {}).get('evaluation_target',
+    'Unknown'),,
+)
+                            'quality_improvement': assessment.get(
+    'details',
+    {}).get('quality_improvement',
+    0),,
+)
                             'issues_found': len(assessment.get('issues_found', [])),
-                            'fixes_applied': assessment.get('details', {}).get('fixes_applied', 0),
-                            'time_elapsed_minutes': assessment.get('details', {}).get('time_elapsed_minutes', 0),
-                            'success_rate': assessment.get('details', {}).get('success_rate', 0) * 100,
+                            'fixes_applied': assessment.get(
+    'details',
+    {}).get('fixes_applied',
+    0),,
+)
+                            'time_elapsed_minutes': assessment.get(
+    'details',
+    {}).get('time_elapsed_minutes',
+    0),,
+)
+                            'success_rate': assessment.get(
+    'details',
+    {}).get('success_rate',
+    0) * 100,,
+)
                             'pass': assessment.get('pass', False),
                             'auto_generated': False
                         }
@@ -3332,18 +3559,25 @@ def api_recent_performance_records():
 
         # Calculate averages for each task type
         for task_type, stats in task_type_stats.items():
-            type_records = [r for r in recent_records if r.get('task_type') == task_type]
+            type_records = [r for r in recent_records if 
+                r.get('task_type') == task_type]
             if type_records:
-                stats['avg_score'] = sum(r.get('overall_score', 0) for r in type_records) / len(type_records)
-                stats['success_rate'] = sum(1 for r in type_records if r.get('pass', False)) / len(type_records) * 100
+                stats['avg_score'] = sum(r.get('overall_score', 0) for r in 
+                    type_records) / len(type_records)
+                stats['success_rate'] = sum(1 for r in type_records if 
+                    r.get('pass', False)) / len(type_records) * 100
 
         return jsonify({
             'records': recent_records,
             'total_records': len(final_records),
             'showing_records': len(recent_records),
             'task_type_stats': task_type_stats,
-            'auto_generated_count': sum(1 for r in recent_records if r.get('auto_generated', False)),
-            'manual_assessment_count': sum(1 for r in recent_records if not r.get('auto_generated', True)),
+            'auto_generated_count': sum(
+    1 for r in recent_records if r.get('auto_generated', False)),,
+)
+            'manual_assessment_count': sum(
+    1 for r in recent_records if not r.get('auto_generated', True)),,
+)
             'last_updated': datetime.now().isoformat()
         })
 
@@ -3407,7 +3641,9 @@ def find_available_port(start_port: int = 5000, max_attempts: int = 10) -> int:
         except OSError:
             continue
 
-    raise RuntimeError(f"Could not find an available port after {max_attempts + 5} attempts")
+    raise RuntimeError(
+    f"Could not find an available port after {max_attempts + 5} attempts",
+)
 
 
 def validate_server_startup(url: str, timeout: int = 5) -> bool:
@@ -3437,7 +3673,12 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
     return False
 
 
-def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True):
+def run_dashboard(
+    host: str = '127.0.0.1',
+    port: int = 5000,
+    patterns_dir: str = ".claude-patterns",
+    auto_open_browser: bool = True):,
+)
     """
     Run the dashboard server with robust error handling and port management.
 
@@ -3516,12 +3757,25 @@ def main():
     parser = argparse.ArgumentParser(description="Autonomous Agent Dashboard")
     parser.add_argument('--host', default='127.0.0.1', help="Host to bind to")
     parser.add_argument('--port', type=int, default=5000, help="Port to bind to")
-    parser.add_argument('--patterns-dir', default='.claude-patterns', help="Pattern directory")
-    parser.add_argument('--no-browser', action='store_true', help="Don't open browser automatically")
+    parser.add_argument(
+    '--patterns-dir',
+    default='.claude-patterns',
+    help="Pattern directory",
+)
+    parser.add_argument(
+    '--no-browser',
+    action='store_true',
+    help="Don't open browser automatically",
+)
 
     args = parser.parse_args()
 
-    run_dashboard(args.host, args.port, args.patterns_dir, auto_open_browser=not args.no_browser)
+    run_dashboard(
+    args.host,
+    args.port,
+    args.patterns_dir,
+    auto_open_browser=not args.no_browser,
+)
 
 
 if __name__ == '__main__':

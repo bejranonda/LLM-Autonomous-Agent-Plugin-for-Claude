@@ -618,7 +618,12 @@ class DependencyScanner:
         if parallel:
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 future_to_task = {
-                    executor.submit(self._scan_ecosystem, eco, manifest): (eco, manifest)
+                    executor.submit(
+    self._scan_ecosystem,
+    eco,
+    manifest): (eco,
+    manifest,
+)
                     for eco, manifest in scan_tasks
                 }
 
@@ -783,7 +788,9 @@ class DependencyScanner:
         md.append("")
         md.append(f"**Risk Score**: {report.risk_score}/100")
         md.append(f"**Total Vulnerabilities**: {report.total_vulnerabilities}")
-        md.append(f"**Vulnerable Dependencies**: {report.vulnerable_dependencies}/{report.total_dependencies}")
+        md.append(
+    f"**Vulnerable Dependencies**: {report.vulnerable_dependencies}/{report.total_dependencies}",
+)
         md.append(f"**Ecosystems Scanned**: {', '.join(report.ecosystems_scanned)}")
         md.append("")
 
@@ -806,7 +813,11 @@ class DependencyScanner:
         # Ecosystem breakdown
         md.append("## Vulnerabilities by Ecosystem")
         md.append("")
-        for ecosystem, count in sorted(report.by_ecosystem.items(), key=lambda x: x[1], reverse=True):
+        for ecosystem, count in sorted(
+    report.by_ecosystem.items(),
+    key=lambda x: x[1],
+    reverse=True):,
+)
             md.append(f"- **{ecosystem}**: {count}")
         md.append("")
 
@@ -822,7 +833,8 @@ class DependencyScanner:
         md.append("## Critical Vulnerabilities")
         md.append("")
 
-        critical = [v for v in report.unique_vulnerabilities if v.severity == Severity.CRITICAL][:10]
+        critical = [v for v in report.unique_vulnerabilities if 
+            v.severity == Severity.CRITICAL][:10]
         if critical:
             for vuln in critical:
                 md.append(f"### {vuln.id} - {vuln.package}")
@@ -860,7 +872,9 @@ class DependencyScanner:
         lines.append("=" * 60)
         lines.append(f"Risk Score: {report.risk_score}/100")
         lines.append(f"Vulnerabilities: {report.total_vulnerabilities}")
-        lines.append(f"Vulnerable Deps: {report.vulnerable_dependencies}/{report.total_dependencies}")
+        lines.append(
+    f"Vulnerable Deps: {report.vulnerable_dependencies}/{report.total_dependencies}",
+)
         lines.append("")
 
         lines.append("SEVERITY BREAKDOWN:")
@@ -879,14 +893,23 @@ def main():
 
     parser = argparse.ArgumentParser(description="Dependency vulnerability scanner")
     parser.add_argument("path", help="Project path")
-    parser.add_argument("--format", choices=["markdown", "json", "text"], default="markdown")
+    parser.add_argument(
+    "--format",
+    choices=["markdown",
+    "json",
+    "text"],
+    default="markdown",
+)
     parser.add_argument("--output", "-o", help="Output file")
 
     args = parser.parse_args()
 
     scanner = DependencyScanner(args.path)
 
-    print(f"Detected ecosystems: {', '.join([e.value for e in scanner.detected_ecosystems.keys()])}")
+    print(
+    f"Detected ecosystems: {',
+    '.join([e.value for e in scanner.detected_ecosystems.keys()])}",
+)
     print("Scanning dependencies...")
 
     results = scanner.scan_all()

@@ -137,7 +137,9 @@ class DependencyGraphAnalyzer:
 
         # Check if module file exists in project
         module_path = self.project_root / module.replace(".", "/")
-        if module_path.with_suffix(".py").exists() or (module_path / "__init__.py").exists():
+        if module_path.with_suffix(
+    ".py").exists() or (module_path / "__init__.py").exists():,
+)
             return True
 
         return False
@@ -180,7 +182,12 @@ class DependencyGraphAnalyzer:
         Returns:
             List of circular dependency chains
         """
-        def dfs(node: str, visited: Set[str], rec_stack: Set[str], path: List[str]) -> List[List[str]]:
+        def dfs(
+    node: str,
+    visited: Set[str],
+    rec_stack: Set[str],
+    path: List[str]) -> List[List[str]]:,
+)
             visited.add(node)
             rec_stack.add(node)
             path.append(node)
@@ -391,7 +398,11 @@ class DependencyGraphAnalyzer:
 
         return impact_score
 
-    def generate_dot_graph(self, output_file: str = "dependencies.dot", max_nodes: int = 50):
+    def generate_dot_graph(
+    self,
+    output_file: str = "dependencies.dot",
+    max_nodes: int = 50):,
+)
         """
         Generate GraphViz DOT file for visualization.
 
@@ -478,7 +489,10 @@ class DependencyGraphAnalyzer:
             "circular_dependencies": circular_deps,
             "coupling_metrics": {
                 "highly_coupled": coupling_metrics["highly_coupled"][:10],  # Top 10
-                "average_instability": sum(coupling_metrics["instability"].values()) / max(len(coupling_metrics["instability"]), 1)
+                "average_instability": sum(
+    coupling_metrics["instability"].values()) / max(len(coupling_metrics["instability"]),
+    1,
+)
             },
             "critical_modules": critical_modules[:10],  # Top 10
             "architecture_layers": {
@@ -542,7 +556,11 @@ def main():
     """Command-line interface for dependency graph analyzer."""
     parser = argparse.ArgumentParser(description='Dependency Graph Analyzer')
     parser.add_argument('--root', default='.', help='Project root directory')
-    parser.add_argument('--output', default='dependency_report.json', help='Output report file')
+    parser.add_argument(
+    '--output',
+    default='dependency_report.json',
+    help='Output report file',
+)
     parser.add_argument('--dot', help='Generate DOT file for GraphViz')
     parser.add_argument('--max-nodes', type=int, default=50, help='Max nodes in graph')
 

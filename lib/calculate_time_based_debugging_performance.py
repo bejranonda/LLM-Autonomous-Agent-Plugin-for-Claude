@@ -26,7 +26,8 @@ def filter_assessments_by_timeframe(assessments, days):
     for assessment in assessments:
         timestamp = parse_timestamp(assessment.get('timestamp', ''))
         # Remove timezone info for comparison
-        timestamp_naive = timestamp.replace(tzinfo=None) if timestamp.tzinfo else timestamp
+        timestamp_naive = timestamp.replace(tzinfo=None) if 
+            timestamp.tzinfo else timestamp
         if timestamp_naive >= cutoff_date:
             filtered_assessments.append(assessment)
 
@@ -53,7 +54,10 @@ def extract_debugging_assessments(assessments):
             'error' in ' '.join(issues_found).lower() or
             'fix' in ' '.join(recommendations).lower() or
             'bug' in ' '.join(issues_found + recommendations).lower() or
-            assessment.get('assessment_type', '') in ['validation', 'comprehensive-validation']
+            assessment.get(
+    'assessment_type',
+    '') in ['validation', 'comprehensive-validation'],
+)
         )
 
         if is_debugging:
@@ -110,15 +114,18 @@ def calculate_quality_improvement(debugging_assessments, model_name):
     quality_scores = [a.get('overall_score', 0) for a in sorted_assessments]
 
     # Calculate initial and final quality (average if multiple)
-    initial_quality = quality_scores[0] if len(quality_scores) == 1 else sum(quality_scores[:3]) / min(3, len(quality_scores))
-    final_quality = quality_scores[-1] if len(quality_scores) == 1 else sum(quality_scores[-3:]) / min(3, len(quality_scores))
+    initial_quality = quality_scores[0] if 
+        len(quality_scores) == 1 else sum(quality_scores[:3]) / min(3, len(quality_scores))
+    final_quality = quality_scores[-1] if 
+        len(quality_scores) == 1 else sum(quality_scores[-3:]) / min(3, len(quality_scores))
 
     # Quality gap analysis
     max_possible_quality = 100
     quality_gap_initial = max_possible_quality - initial_quality
     quality_gap_final = max_possible_quality - final_quality
     gap_closed = quality_gap_initial - quality_gap_final
-    gap_closed_pct = (gap_closed / quality_gap_initial * 100) if quality_gap_initial > 0 else 0
+    gap_closed_pct = (gap_closed / quality_gap_initial * 100) if 
+        quality_gap_initial > 0 else 0
 
     # Regression detection
     regressions_detected = 0
@@ -126,7 +133,8 @@ def calculate_quality_improvement(debugging_assessments, model_name):
         if quality_scores[i] < quality_scores[i-1] - 2:  # 2-point tolerance
             regressions_detected += 1
 
-    regression_rate = (regressions_detected / (len(quality_scores) - 1)) if len(quality_scores) > 1 else 0
+    regression_rate = (regressions_detected / (len(quality_scores) - 1)) if 
+        len(quality_scores) > 1 else 0
     regression_penalty = regression_rate * 20  # As per framework
 
     # Calculate QIS using new formula
@@ -141,7 +149,8 @@ def calculate_quality_improvement(debugging_assessments, model_name):
     efficiency_index = qis * success_rate
 
     # Relative Improvement (Final Quality / Initial Quality, capped at 2.0)
-    relative_improvement = min(2.0, final_quality / initial_quality) if initial_quality > 0 else 0
+    relative_improvement = min(2.0, final_quality / initial_quality) if 
+        initial_quality > 0 else 0
 
     return {
         'initial_quality': round(initial_quality, 1),
@@ -177,13 +186,15 @@ def calculate_time_efficiency(debugging_assessments, model_name):
         total_time_span = (last_time - first_time).total_seconds() / 3600  # hours
 
         # Average time per debugging task
-        avg_time_hours = total_time_span / (len(sorted_assessments) - 1) if len(sorted_assessments) > 1 else 0
+        avg_time_hours = total_time_span / (len(sorted_assessments) - 1) if 
+            len(sorted_assessments) > 1 else 0
         avg_time_minutes = avg_time_hours * 60
 
         # Time efficiency score (faster is better)
         # Ideal debugging time is ~30 minutes per task
         ideal_time_minutes = 30
-        efficiency_ratio = ideal_time_minutes / avg_time_minutes if avg_time_minutes > 0 else 1
+        efficiency_ratio = ideal_time_minutes / avg_time_minutes if 
+            avg_time_minutes > 0 else 1
         time_efficiency_score = min(100, max(0, efficiency_ratio * 50))  # Scale to 0-100
 
     else:
@@ -334,7 +345,9 @@ def save_debugging_performance_results(debugging_performance, ranked_models, day
         'analysis_timestamp': datetime.now().isoformat(),
         'timeframe_days': days,
         'timeframe_label': get_timeframe_label(days),
-        'total_debugging_assessments': sum(len(m['debugging_assessments']) for m in debugging_performance.values()),
+        'total_debugging_assessments': sum(
+    len(m['debugging_assessments']) for m in debugging_performance.values()),,
+)
         'performance_rankings': [
             {
                 'rank': rank + 1,
@@ -384,4 +397,6 @@ if __name__ == "__main__":
     days = int(sys.argv[1]) if len(sys.argv) > 1 else 30
 
     performance_data, rankings = analyze_debugging_performance_for_timeframe(days)
-    print(f"\nAI Debugging Performance Index analysis complete for {get_timeframe_label(days)} at {datetime.now().isoformat()}")
+    print(
+    f"\nAI Debugging Performance Index analysis complete for {get_timeframe_label(days)} at {datetime.now().isoformat()}",
+)

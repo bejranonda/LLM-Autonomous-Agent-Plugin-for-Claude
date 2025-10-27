@@ -166,7 +166,11 @@ class AutomaticPerformanceRecorder:
 
             # Check process environment
             try:
-                with open('/proc/self/environ', 'r') if os.path.exists('/proc/self/environ') else open(os.devnull, 'r') as f:
+                with open(
+    '/proc/self/environ',
+    'r') if os.path.exists('/proc/self/environ') else open(os.devnull,
+    'r') as f:,
+)
                     env_content = f.read()
                     for indicator in glm_indicators:
                         if indicator in env_content.lower():
@@ -221,7 +225,10 @@ class AutomaticPerformanceRecorder:
             # Check for Python environment that might indicate GLM
             import platform
             system_info = platform.platform().lower()
-            if 'windows' in system_info and 'claude code' in os.environ.get('TERM_PROGRAM', '').lower():
+            if 'windows' in system_info and 'claude code' in os.environ.get(
+    'TERM_PROGRAM',
+    '').lower():,
+)
                 return "Claude Sonnet 4.5"
 
             # Default to Claude for most environments
@@ -372,14 +379,20 @@ class AutomaticPerformanceRecorder:
                 # Update statistics
                 if clean_assessments:
                     total_assessments = len(clean_assessments)
-                    passing_assessments = sum(1 for a in clean_assessments if a.get('pass', False))
-                    avg_score = sum(a.get('overall_score', 0) for a in clean_assessments) / total_assessments
+                    passing_assessments = sum(1 for a in clean_assessments if 
+                        a.get('pass', False))
+                    avg_score = sum(a.get('overall_score', 0) for a in 
+                        clean_assessments) / total_assessments
 
                     quality_data['statistics'] = {
                         'avg_quality_score': round(avg_score, 1),
                         'total_assessments': total_assessments,
                         'passing_rate': passing_assessments / total_assessments,
-                        'trend': quality_data.get('statistics', {}).get('trend', 'stable')
+                        'trend': quality_data.get(
+    'statistics',
+    {}).get('trend',
+    'stable',
+)
                     }
 
                     # Update last assessment
@@ -389,7 +402,11 @@ class AutomaticPerformanceRecorder:
                 with open(self.quality_history_file, 'w') as f:
                     json.dump(quality_data, f, indent=2)
 
-                print(f"Cleaned {original_count - len(clean_assessments)} contaminated records from quality history")
+                print(
+    f"Cleaned {original_count - len(
+    clean_assessments)} contaminated records from quality history",,
+)
+)
 
             # Clean model performance data (remove simulated data)
             if self.model_performance_file.exists():
@@ -421,7 +438,10 @@ class AutomaticPerformanceRecorder:
                 with open(self.model_performance_file, 'w') as f:
                     json.dump(clean_model_data, f, indent=2)
 
-                print(f"Cleaned model performance data, kept {len(clean_model_data)} authentic models")
+                print(
+    f"Cleaned model performance data,
+    kept {len(clean_model_data)} authentic models",
+)
 
         except Exception as e:
             print(f"Warning: Error during data cleanup: {e}")
@@ -495,7 +515,8 @@ class AutomaticPerformanceRecorder:
                               task_data: Dict[str, Any],
                               model_used: Optional[str] = None) -> str:
         """
-        Enhanced performance recording with real-time model detection and data validation.
+        Enhanced performance recording with real-time model detection and 
+            data validation.
 
         Args:
             task_data: Dictionary containing task information
@@ -534,7 +555,10 @@ class AutomaticPerformanceRecorder:
                 "files_modified": task_data.get("files_modified", 0),
                 "lines_changed": task_data.get("lines_changed", 0),
                 "success": task_data.get("success", True),
-                "quality_improvement": performance_metrics.get("quality_improvement", 0),
+                "quality_improvement": performance_metrics.get(
+    "quality_improvement",
+    0),,
+)
                 "time_efficiency": performance_metrics.get("time_efficiency", 0),
                 "performance_index": performance_metrics.get("performance_index", 0),
                 "data_source": "real_performance_recording",
@@ -553,7 +577,10 @@ class AutomaticPerformanceRecorder:
 
         # Validate record integrity before storing
         if not self.validate_data_integrity(performance_record):
-            print(f"Warning: Record {assessment_id} failed integrity validation, skipping storage")
+            print(
+    f"Warning: Record {assessment_id} failed integrity validation,
+    skipping storage",
+)
             return assessment_id
 
         # Add to quality history (compatible format)
@@ -567,7 +594,11 @@ class AutomaticPerformanceRecorder:
 
         return assessment_id
 
-    def _calculate_performance_metrics(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
+    def _calculate_performance_metrics(
+    self,
+    task_data: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """Calculate performance metrics based on task data."""
 
         # Base score calculation
@@ -577,8 +608,14 @@ class AutomaticPerformanceRecorder:
         quality_factors = {
             "task_completion": 30 if task_data.get("success", True) else 0,
             "code_quality": min(25, task_data.get("lines_changed", 0) * 0.1),
-            "efficiency": min(20, 300 / max(task_data.get("duration", 60), 30)),  # Faster is better
-            "best_practices": 15 if task_data.get("best_practices_followed", True) else 5,
+            "efficiency": min(
+    20,
+    300 / max(task_data.get("duration", 60), 30)),  # Faster is better,
+)
+            "best_practices": 15 if task_data.get(
+    "best_practices_followed",
+    True) else 5,,
+)
             "documentation": 10 if task_data.get("documentation_updated", False) else 5
         }
 
@@ -596,7 +633,8 @@ class AutomaticPerformanceRecorder:
         # Normalize breakdown to sum to overall_score
         breakdown_sum = sum(breakdown.values())
         if breakdown_sum > 0:
-            breakdown = {k: int(v * overall_score / breakdown_sum) for k, v in breakdown.items()}
+            breakdown = {k: int(v * overall_score / breakdown_sum) for k, v in 
+                breakdown.items()}
 
         # Calculate performance indices
         quality_improvement = task_data.get("quality_improvement", 0)
@@ -626,13 +664,16 @@ class AutomaticPerformanceRecorder:
 
         # Update statistics
         total_assessments = len(quality_data["quality_assessments"])
-        passing_assessments = sum(1 for a in quality_data["quality_assessments"] if a.get("pass", False))
-        avg_score = sum(a.get("overall_score", 0) for a in quality_data["quality_assessments"]) / total_assessments
+        passing_assessments = sum(1 for a in quality_data["quality_assessments"] if 
+            a.get("pass", False))
+        avg_score = sum(a.get("overall_score", 0) for a in 
+            quality_data["quality_assessments"]) / total_assessments
 
         quality_data["statistics"] = {
             "avg_quality_score": round(avg_score, 1),
             "total_assessments": total_assessments,
-            "passing_rate": passing_assessments / total_assessments if total_assessments > 0 else 0,
+            "passing_rate": passing_assessments / total_assessments if 
+                total_assessments > 0 else 0,
             "trend": self._calculate_trend(quality_data["quality_assessments"])
         }
 
@@ -666,7 +707,8 @@ class AutomaticPerformanceRecorder:
 
         # Update average score for this task type
         type_records = [r for r in perf_data["records"] if r["task_type"] == task_type]
-        task_stats["avg_score"] = sum(r.get("overall_score", 0) for r in type_records) / len(type_records)
+        task_stats["avg_score"] = sum(r.get("overall_score", 0) for r in 
+            type_records) / len(type_records)
 
         # Update success rate
         successful_tasks = sum(1 for r in type_records if r.get("pass", False))
@@ -723,10 +765,12 @@ class AutomaticPerformanceRecorder:
             model_stats["performance_timeline"] = model_stats["performance_timeline"][-100:]
 
         # Update averages
-        recent_scores = [entry["score"] for entry in model_stats["performance_timeline"]]
+        recent_scores = [entry["score"] for entry in 
+            model_stats["performance_timeline"]]
         model_stats["avg_score"] = sum(recent_scores) / len(recent_scores)
 
-        successful_tasks = sum(1 for entry in model_stats["performance_timeline"] if entry["score"] >= 70)
+        successful_tasks = sum(1 for entry in model_stats["performance_timeline"] if 
+            entry["score"] >= 70)
         model_stats["success_rate"] = successful_tasks / len(recent_scores)
 
         # Update task type stats for this model
@@ -735,9 +779,11 @@ class AutomaticPerformanceRecorder:
             model_stats["task_types"][task_type] = {"count": 0, "avg_score": 0}
 
         model_stats["task_types"][task_type]["count"] += 1
-        type_entries = [e for e in model_stats["performance_timeline"] if e["task_type"] == task_type]
+        type_entries = [e for e in model_stats["performance_timeline"] if 
+            e["task_type"] == task_type]
         if type_entries:
-            model_stats["task_types"][task_type]["avg_score"] = sum(e["score"] for e in type_entries) / len(type_entries)
+            model_stats["task_types"][task_type]["avg_score"] = sum(e["score"] for e in 
+                type_entries) / len(type_entries)
 
         model_stats["last_updated"] = record["timestamp"]
 
@@ -813,12 +859,15 @@ class AutomaticPerformanceRecorder:
 
         # Calculate averages for task types and models
         for task_type in task_types:
-            type_records = [r for r in recent_records if r.get("task_type") == task_type]
-            task_types[task_type]["avg_score"] = sum(r.get("overall_score", 0) for r in type_records) / len(type_records)
+            type_records = [r for r in recent_records if 
+                r.get("task_type") == task_type]
+            task_types[task_type]["avg_score"] = sum(r.get("overall_score", 0) for r in 
+                type_records) / len(type_records)
 
         for model in models_used:
             model_records = [r for r in recent_records if r.get("model_used") == model]
-            models_used[model]["avg_score"] = sum(r.get("overall_score", 0) for r in model_records) / len(model_records)
+            models_used[model]["avg_score"] = sum(r.get("overall_score", 0) for r in 
+                model_records) / len(model_records)
 
         return {
             "period_days": days,

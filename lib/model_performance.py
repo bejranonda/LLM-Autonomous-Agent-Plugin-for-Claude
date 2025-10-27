@@ -3,7 +3,8 @@
 Model Performance Data Manager for Autonomous Agent Dashboard
 
 Manages historical performance data for different AI models.
-Provides utilities to add performance data, generate reports, and maintain data integrity.
+Provides utilities to add performance data, generate reports, and 
+    maintain data integrity.
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
@@ -112,7 +113,13 @@ class ModelPerformanceManager:
             print(f"Error writing model performance data: {e}", file=sys.stderr)
             raise
 
-    def add_performance_score(self, model: str, score: float, task_type: str = "unknown", contribution: float = 0.0):
+    def add_performance_score(
+    self,
+    model: str,
+    score: float,
+    task_type: str = "unknown",
+    contribution: float = 0.0):,
+)
         """
         Add a new performance score for a model.
 
@@ -154,12 +161,14 @@ class ModelPerformanceManager:
         data[model]["last_updated"] = datetime.now().isoformat()
 
         # Calculate success rate (scores >= 70 are considered successful)
-        successful_tasks = sum(1 for s in data[model]["recent_scores"] if s["score"] >= 70)
+        successful_tasks = sum(1 for s in data[model]["recent_scores"] if 
+            s["score"] >= 70)
         data[model]["success_rate"] = successful_tasks / len(data[model]["recent_scores"])
 
         # Update contribution (rolling average)
         contributions = [s["contribution"] for s in data[model]["recent_scores"]]
-        data[model]["contribution_to_project"] = statistics.mean(contributions) if contributions else 0.0
+        data[model]["contribution_to_project"] = statistics.mean(contributions) if 
+            contributions else 0.0
 
         self._save_data(data)
 
@@ -221,8 +230,10 @@ class ModelPerformanceManager:
             scores.sort(key=lambda x: x["timestamp"])
             data[model]["recent_scores"] = scores[-100:]  # Keep last 100
             data[model]["total_tasks"] = len(scores)
-            data[model]["success_rate"] = sum(1 for s in scores if s["score"] >= 70) / len(scores)
-            data[model]["contribution_to_project"] = statistics.mean([s["contribution"] for s in scores])
+            data[model]["success_rate"] = sum(1 for s in scores if 
+                s["score"] >= 70) / len(scores)
+            data[model]["contribution_to_project"] = statistics.mean([s["contribution"] for s in 
+                scores])
 
         self._save_data(data)
         print(f"Generated {days} days of sample data for {len(models)} models")
@@ -247,7 +258,10 @@ class ModelPerformanceManager:
             "min_score": min(scores),
             "max_score": max(scores),
             "success_rate": round(model_data.get("success_rate", 0) * 100, 1),
-            "contribution_to_project": round(model_data.get("contribution_to_project", 0), 1),
+            "contribution_to_project": round(
+    model_data.get("contribution_to_project", 0),
+    1),,
+)
             "recent_scores": scores[-10:],  # Last 10 scores
             "first_seen": model_data.get("first_seen"),
             "last_updated": model_data.get("last_updated")
@@ -272,20 +286,46 @@ class ModelPerformanceManager:
 def main():
     """CLI interface for model performance management."""
     parser = argparse.ArgumentParser(description='Model Performance Data Manager')
-    parser.add_argument('--dir', default='.claude-patterns', help='Patterns directory path')
+    parser.add_argument(
+    '--dir',
+    default='.claude-patterns',
+    help='Patterns directory path',
+)
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
 
     # Add score action
     add_parser = subparsers.add_parser('add', help='Add performance score')
-    add_parser.add_argument('--model', required=True, choices=['Claude', 'OpenAI', 'GLM', 'Gemini'])
-    add_parser.add_argument('--score', type=float, required=True, help='Performance score (0-100)')
+    add_parser.add_argument(
+    '--model',
+    required=True,
+    choices=['Claude',
+    'OpenAI',
+    'GLM',
+    'Gemini'],
+)
+    add_parser.add_argument(
+    '--score',
+    type=float,
+    required=True,
+    help='Performance score (0-100)',
+)
     add_parser.add_argument('--task-type', default='unknown', help='Type of task')
-    add_parser.add_argument('--contribution', type=float, default=0.0, help='Contribution to project (0-100)')
+    add_parser.add_argument(
+    '--contribution',
+    type=float,
+    default=0.0,
+    help='Contribution to project (0-100)',
+)
 
     # Generate sample data action
     generate_parser = subparsers.add_parser('generate-sample', help='Generate sample data')
-    generate_parser.add_argument('--days', type=int, default=30, help='Days of historical data to generate')
+    generate_parser.add_argument(
+    '--days',
+    type=int,
+    default=30,
+    help='Days of historical data to generate',
+)
 
     # Summary actions
     subparsers.add_parser('summary', help='Show all models summary')
@@ -306,7 +346,12 @@ def main():
 
     try:
         if args.action == 'add':
-            manager.add_performance_score(args.model, args.score, args.task_type, args.contribution)
+            manager.add_performance_score(
+    args.model,
+    args.score,
+    args.task_type,
+    args.contribution,
+)
             print(f"Added score {args.score} for {args.model}")
 
         elif args.action == 'generate-sample':
@@ -324,7 +369,10 @@ def main():
             manager.clear_data()
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(
+    json.dumps({'success': False, 'error': str(e)}, indent=2),
+    file=sys.stderr,
+)
         sys.exit(1)
 
 

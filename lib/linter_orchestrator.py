@@ -505,7 +505,11 @@ class LinterOrchestrator:
                 timeout=5
             )
             return True
-        except (subprocess.TimeoutExpired, FileNotFoundError, subprocess.SubprocessError):
+        except (
+    subprocess.TimeoutExpired,
+    FileNotFoundError,
+    subprocess.SubprocessError):,
+)
             try:
                 subprocess.run(
                     [executable, "--help"],
@@ -733,7 +737,11 @@ class LinterOrchestrator:
         else:
             return Category.CODE_QUALITY
 
-    def run_all(self, parallel: bool = True, max_workers: int = 8) -> List[LinterResult]:
+    def run_all(
+    self,
+    parallel: bool = True,
+    max_workers: int = 8) -> List[LinterResult]:,
+)
         """
         Run all enabled linters.
 

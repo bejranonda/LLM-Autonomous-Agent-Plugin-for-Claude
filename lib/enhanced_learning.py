@@ -46,7 +46,9 @@ class EnhancedLearningEngine:
         Initialize enhanced learning engine.
 
         Args:
-            patterns_dir: Directory path for storing patterns (default: .claude-patterns)
+            patterns_dir: Directory path for storing patterns (
+    default: .claude-patterns,
+)
         """
         self.patterns_dir = Path(patterns_dir)
         self.patterns_file = self.patterns_dir / "enhanced_patterns.json"
@@ -172,16 +174,25 @@ class EnhancedLearningEngine:
             "frameworks": sorted(project_context.get("frameworks", [])),
             "project_type": project_context.get("project_type", ""),
             "package_managers": sorted(project_context.get("package_managers", [])),
-            "file_structure_patterns": project_context.get("file_structure_patterns", []),
+            "file_structure_patterns": project_context.get(
+    "file_structure_patterns",
+    []),,
+)
             "dependencies": sorted(project_context.get("top_dependencies", []))
         }
 
         fingerprint_str = json.dumps(fingerprint_data, sort_keys=True)
         return hashlib.sha256(fingerprint_str.encode()).hexdigest()[:16]
 
-    def enhance_project_context_for_modern_stacks(self, project_context: Dict[str, Any], project_path: str = ".") -> Dict[str, Any]:
+    def enhance_project_context_for_modern_stacks(
+    self,
+    project_context: Dict[str,
+    Any],
+    project_path: str = ".") -> Dict[str, Any]:,
+)
         """
-        Enhance project context with specific detection for NextJS, Supabase, and other modern stacks.
+        Enhance project context with specific detection for NextJS, Supabase, and 
+            other modern stacks.
 
         Args:
             project_context: Existing project context
@@ -206,9 +217,15 @@ class EnhancedLearningEngine:
             if (path / "app").exists():
                 enhanced_context.setdefault("features", []).append("nextjs-app-router")
             if (path / "pages").exists():
-                enhanced_context.setdefault("features", []).append("nextjs-pages-router")
+                enhanced_context.setdefault(
+    "features",
+    []).append("nextjs-pages-router",
+)
             if (path / "next.config.js").exists():
-                enhanced_context.setdefault("features", []).append("nextjs-configuration")
+                enhanced_context.setdefault(
+    "features",
+    []).append("nextjs-configuration",
+)
 
         # Supabase Detection
         supabase_indicators = [
@@ -222,9 +239,15 @@ class EnhancedLearningEngine:
 
             # Detect Supabase configuration
             if (path / "supabase/migrations").exists():
-                enhanced_context.setdefault("features", []).append("supabase-migrations")
+                enhanced_context.setdefault(
+    "features",
+    []).append("supabase-migrations",
+)
             if (path / "supabase/functions").exists():
-                enhanced_context.setdefault("features", []).append("supabase-edge-functions")
+                enhanced_context.setdefault(
+    "features",
+    []).append("supabase-edge-functions",
+)
 
         # Modern React Stack Detection
         package_json_path = path / "package.json"
@@ -246,9 +269,15 @@ class EnhancedLearningEngine:
                     if "@supabase/supabase-js" in dependencies:
                         enhanced_context.setdefault("frameworks", []).append("supabase")
                     if "tailwindcss" in dependencies:
-                        enhanced_context.setdefault("frameworks", []).append("tailwindcss")
+                        enhanced_context.setdefault(
+    "frameworks",
+    []).append("tailwindcss",
+)
                     if "typescript" in dependencies:
-                        enhanced_context.setdefault("languages", []).append("typescript")
+                        enhanced_context.setdefault(
+    "languages",
+    []).append("typescript",
+)
 
             except Exception:
                 pass  # Ignore JSON parsing errors
@@ -265,7 +294,10 @@ class EnhancedLearningEngine:
 
             # Detect Swift frameworks
             if (path / "Package.swift").exists():
-                enhanced_context.setdefault("frameworks", []).append("swift-package-manager")
+                enhanced_context.setdefault(
+    "frameworks",
+    []).append("swift-package-manager",
+)
                 enhanced_context.setdefault("features", []).append("swiftpm-project")
 
             if (path / "*.xcodeproj").exists() or (path / "*.xcworkspace").exists():
@@ -274,9 +306,15 @@ class EnhancedLearningEngine:
 
             # Detect iOS-specific features
             if any(path.glob("*.storyboard")) or any(path.glob("*.xib")):
-                enhanced_context.setdefault("features", []).append("ios-interface-builder")
+                enhanced_context.setdefault(
+    "features",
+    []).append("ios-interface-builder",
+)
             if (path / "Info.plist").exists():
-                enhanced_context.setdefault("features", []).append("ios-app-configuration")
+                enhanced_context.setdefault(
+    "features",
+    []).append("ios-app-configuration",
+)
 
         # Kotlin/Android Detection (Enhanced v3.2.0)
         kotlin_indicators = [
@@ -303,9 +341,16 @@ class EnhancedLearningEngine:
                 try:
                     with open(path / "build.gradle.kts", 'r') as f:
                         gradle_content = f.read()
-                        if "spring-boot" in gradle_content or "org.springframework.boot" in gradle_content:
-                            enhanced_context.setdefault("frameworks", []).append("spring-boot")
-                            enhanced_context.setdefault("features", []).append("kotlin-spring-boot")
+                        if "spring-boot" in gradle_content or 
+                            "org.springframework.boot" in gradle_content:
+                            enhanced_context.setdefault(
+    "frameworks",
+    []).append("spring-boot",
+)
+                            enhanced_context.setdefault(
+    "features",
+    []).append("kotlin-spring-boot",
+)
                 except Exception:
                     pass
 
@@ -316,7 +361,9 @@ class EnhancedLearningEngine:
                         gradle_content = f.read()
                         if "ktor" in gradle_content or "io.ktor" in gradle_content:
                             enhanced_context.setdefault("frameworks", []).append("ktor")
-                            enhanced_context.setdefault("features").append("kotlin-web-framework")
+                            enhanced_context.setdefault(
+    "features").append("kotlin-web-framework",
+)
                 except Exception:
                     pass
 
@@ -346,7 +393,9 @@ class EnhancedLearningEngine:
                         sbt_content = f.read()
                         if "akka" in sbt_content or "com.typesafe.akka" in sbt_content:
                             enhanced_context.setdefault("frameworks", []).append("akka")
-                            enhanced_context.setdefault("features").append("akka-actor-system")
+                            enhanced_context.setdefault(
+    "features").append("akka-actor-system",
+)
                 except Exception:
                     pass
 
@@ -356,8 +405,13 @@ class EnhancedLearningEngine:
                     with open(path / "build.sbt", 'r') as f:
                         sbt_content = f.read()
                         if "spark" in sbt_content or "org.apache.spark" in sbt_content:
-                            enhanced_context.setdefault("frameworks", []).append("spark")
-                            enhanced_context.setdefault("features").append("big-data-processing")
+                            enhanced_context.setdefault(
+    "frameworks",
+    []).append("spark",
+)
+                            enhanced_context.setdefault(
+    "features").append("big-data-processing",
+)
                 except Exception:
                     pass
 
@@ -368,7 +422,13 @@ class EnhancedLearningEngine:
 
         return enhanced_context
 
-    def calculate_context_similarity(self, context1: Dict[str, Any], context2: Dict[str, Any]) -> float:
+    def calculate_context_similarity(
+    self,
+    context1: Dict[str,
+    Any],
+    context2: Dict[str,
+    Any]) -> float:,
+)
         """
         Calculate similarity between two contexts (0.0 to 1.0).
 
@@ -387,7 +447,8 @@ class EnhancedLearningEngine:
         framework_similarity = len(frameworks1 & frameworks2) / max(len(frameworks1 | frameworks2), 1)
 
         # Project type similarity (20% weight)
-        type_similarity = 1.0 if context1.get("project_type") == context2.get("project_type") else 0.0
+        type_similarity = 1.0 if 
+            context1.get("project_type") == context2.get("project_type") else 0.0
 
         # File structure similarity (10% weight)
         structure1, structure2 = set(context1.get("file_patterns", [])), set(context2.get("file_patterns", []))
@@ -426,7 +487,9 @@ class EnhancedLearningEngine:
 
             # Contextual Understanding
             "context": {
-                "project_fingerprint": self.generate_project_fingerprint(pattern_data.get("project_context", {})),
+                "project_fingerprint": self.generate_project_fingerprint(
+    pattern_data.get("project_context", {})),,
+)
                 "languages": pattern_data.get("languages", []),
                 "frameworks": pattern_data.get("frameworks", []),
                 "project_type": pattern_data.get("project_type", ""),
@@ -439,7 +502,10 @@ class EnhancedLearningEngine:
             # Execution Details
             "execution": {
                 "skills_loaded": pattern_data.get("skills_used", []),
-                "skill_loading_strategy": pattern_data.get("skill_loading_strategy", "auto"),
+                "skill_loading_strategy": pattern_data.get(
+    "skill_loading_strategy",
+    "auto"),,
+)
                 "agents_delegated": pattern_data.get("agents_delegated", []),
                 "delegation_reasoning": pattern_data.get("delegation_reasoning", ""),
                 "approach_taken": pattern_data.get("approach", ""),
@@ -466,7 +532,10 @@ class EnhancedLearningEngine:
                 "what_worked": pattern_data.get("what_worked", []),
                 "what_failed": pattern_data.get("what_failed", []),
                 "bottlenecks": pattern_data.get("bottlenecks", []),
-                "optimization_opportunities": pattern_data.get("optimization_opportunities", []),
+                "optimization_opportunities": pattern_data.get(
+    "optimization_opportunities",
+    []),,
+)
                 "lessons_learned": pattern_data.get("lessons_learned", []),
                 "unexpected_discoveries": pattern_data.get("unexpected_discoveries", [])
             },
@@ -571,12 +640,15 @@ class EnhancedLearningEngine:
                            if skill in p["execution"]["skills_loaded"] and
                            p["task_classification"]["type"] == task_type]
             if type_patterns:
-                task_metrics["avg_quality"] = sum(p["outcome"]["quality_score"] for p in type_patterns) / len(type_patterns)
+                task_metrics["avg_quality"] = sum(p["outcome"]["quality_score"] for p in 
+                    
+                    type_patterns) / len(type_patterns)
 
             # Update confidence score based on consistency
             recent_scores = skill_metrics["quality_scores"][-20:]  # Last 20 uses
             if len(recent_scores) >= 10:
-                variance = sum((x - sum(recent_scores)/len(recent_scores))**2 for x in recent_scores) / len(recent_scores)
+                variance = sum((x - sum(recent_scores)/len(recent_scores))**2 for x in 
+                    recent_scores) / len(recent_scores)
                 skill_metrics["confidence_score"] = max(0.1, 1.0 - variance / 100)  # Normalize variance
 
             # Update recommendations
@@ -593,7 +665,8 @@ class EnhancedLearningEngine:
             # Update performance trend
             if len(recent_scores) >= 10:
                 recent_avg = sum(recent_scores[-10:]) / 10
-                older_avg = sum(recent_scores[-20:-10]) / 10 if len(recent_scores) >= 20 else recent_avg
+                older_avg = sum(recent_scores[-20:-10]) / 10 if 
+                    len(recent_scores) >= 20 else recent_avg
 
                 if recent_avg > older_avg + 5:
                     skill_metrics["performance_trend"] = "improving"
@@ -674,8 +747,12 @@ class EnhancedLearningEngine:
                            if agent in p["execution"]["agents_delegated"] and
                            p["task_classification"]["type"] == task_type]
             if type_patterns:
-                task_metrics["avg_duration"] = sum(p["task_classification"]["estimated_duration"] for p in type_patterns) / len(type_patterns)
-                task_metrics["avg_quality"] = sum(p["outcome"]["quality_score"] for p in type_patterns) / len(type_patterns)
+                task_metrics["avg_duration"] = sum(p["task_classification"]["estimated_duration"] for p in 
+                    
+                    type_patterns) / len(type_patterns)
+                task_metrics["avg_quality"] = sum(p["outcome"]["quality_score"] for p in 
+                    
+                    type_patterns) / len(type_patterns)
 
             # Track common errors
             for error in outcome.get("errors_encountered", []):
@@ -686,7 +763,10 @@ class EnhancedLearningEngine:
             reliability_factors = [
                 agent_metrics["success_rate"],
                 min(1.0, agent_metrics["avg_quality_score"] / 100),
-                1.0 - min(1.0, len(agent_metrics["common_errors"]) / 10)  # Penalize many error types
+                1.0 - min(
+    1.0,
+    len(agent_metrics["common_errors"]) / 10)  # Penalize many error types,
+)
             ]
             agent_metrics["reliability_score"] = sum(reliability_factors) / len(reliability_factors)
 
@@ -695,10 +775,14 @@ class EnhancedLearningEngine:
                 agent_metrics["efficiency_rating"] = (agent_metrics["avg_quality_score"] / agent_metrics["avg_execution_time"]) * 10
 
             # Update performance trend
-            recent_quality = agent_metrics["quality_scores"][-10:] if len(agent_metrics["quality_scores"]) >= 10 else agent_metrics["quality_scores"]
+            recent_quality = agent_metrics["quality_scores"][-10:] if 
+                len(
+    agent_metrics["quality_scores"]) >= 10 else agent_metrics["quality_scores"],
+)
             if len(recent_quality) >= 5:
                 recent_avg = sum(recent_quality[-5:]) / 5
-                older_avg = sum(recent_quality[-10:-5]) / 5 if len(recent_quality) >= 10 else recent_avg
+                older_avg = sum(recent_quality[-10:-5]) / 5 if 
+                    len(recent_quality) >= 10 else recent_avg
 
                 if recent_avg > older_avg + 3:
                     agent_metrics["performance_trend"] = "improving"
@@ -728,7 +812,9 @@ class EnhancedLearningEngine:
             "execution": {
                 "skills_loaded": pattern["execution"]["skills_loaded"],
                 "agents_delegated": pattern["execution"]["agents_delegated"],
-                "approach_category": self._categorize_approach(pattern["execution"]["approach_taken"])
+                "approach_category": self._categorize_approach(
+    pattern["execution"]["approach_taken"],
+)
             },
             "outcome": {
                 "success": pattern["outcome"]["success"],
@@ -736,7 +822,9 @@ class EnhancedLearningEngine:
                 "performance_impact": pattern["outcome"]["performance_impact"]
             },
             "effectiveness_metrics": {
-                "skill_combination_success": self._calculate_skill_combination_success(pattern),
+                "skill_combination_success": self._calculate_skill_combination_success(
+    pattern),,
+)
                 "agent_effectiveness": self._calculate_agent_effectiveness(pattern),
                 "context_transferability": self._calculate_transferability(pattern)
             }
@@ -754,7 +842,11 @@ class EnhancedLearningEngine:
         """Categorize approach type for pattern matching."""
         approach_lower = approach.lower()
 
-        if any(word in approach_lower for word in ["refactor", "extract", "restructure"]):
+        if any(
+    word in approach_lower for word in ["refactor",
+    "extract",
+    "restructure"]):,
+)
             return "refactoring"
         elif any(word in approach_lower for word in ["test", "spec", "verify"]):
             return "testing"
@@ -818,8 +910,10 @@ class EnhancedLearningEngine:
         common_frameworks = {"react", "vue", "angular", "nextjs", "nuxt", "flask", "django", "express", "fastapi", "supabase",
                             "spring", "spring-boot", "vapor", "ktor", "play", "akka", "spark", "android", "ios"}
 
-        language_score = len([l for l in languages if l in common_languages]) / max(len(languages), 1)
-        framework_score = len([f for f in frameworks if f in common_frameworks]) / max(len(frameworks), 1)
+        language_score = len([l for l in languages if 
+            l in common_languages]) / max(len(languages), 1)
+        framework_score = len([f for f in frameworks if 
+            f in common_frameworks]) / max(len(frameworks), 1)
 
         # General project types are more transferable
         general_types = {"web-application", "api", "library", "cli-tool"}
@@ -828,9 +922,16 @@ class EnhancedLearningEngine:
         # High quality patterns are more transferable
         quality_score = min(1.0, quality / 85)  # 85+ is considered high quality
 
-        return (language_score * 0.3 + framework_score * 0.3 + type_score * 0.2 + quality_score * 0.2)
+        return (
+    language_score * 0.3 + framework_score * 0.3 + type_score * 0.2 + quality_score * 0.2,
+)
 
-    def predict_optimal_skills(self, task_context: Dict[str, Any], limit: int = 5) -> List[Dict[str, Any]]:
+    def predict_optimal_skills(
+    self,
+    task_context: Dict[str,
+    Any],
+    limit: int = 5) -> List[Dict[str, Any]]:,
+)
         """
         Predict optimal skills for a given task context.
 
@@ -856,11 +957,15 @@ class EnhancedLearningEngine:
                 pattern["context"]
             )
 
-            if similarity >= 0.3 and pattern["task_classification"]["type"] == task_type:
+            if similarity >= 0.3 and 
+                pattern["task_classification"]["type"] == task_type:
                 local_matches.append((pattern, similarity))
 
         # Sort by similarity and quality
-        local_matches.sort(key=lambda x: (x[1], x[0]["outcome"]["quality_score"]), reverse=True)
+        local_matches.sort(
+    key=lambda x: (x[1], x[0]["outcome"]["quality_score"]),
+    reverse=True,
+)
 
         # Find matches in cross-project patterns
         cross_matches = []
@@ -868,11 +973,21 @@ class EnhancedLearningEngine:
             if pattern["task_classification"]["type"] == task_type:
                 # Simple context matching for cross-project
                 context_match = 0
-                if pattern["context_categories"]["project_type"] == task_context.get("project_context", {}).get("project_type"):
+                if 
+                    pattern["context_categories"]["project_type"] == 
+                        task_context.get("project_context", {}).get("project_type"):
                     context_match += 0.5
-                if set(pattern["context_categories"]["languages"]) & set(task_context.get("project_context", {}).get("languages", [])):
+                if set(
+    pattern["context_categories"]["languages"]) & set(
+    task_context.get("project_context", {}).get("languages", [])):,,
+)
+)
                     context_match += 0.3
-                if set(pattern["context_categories"]["frameworks"]) & set(task_context.get("project_context", {}).get("frameworks", [])):
+                if set(
+    pattern["context_categories"]["frameworks"]) & set(
+    task_context.get("project_context", {}).get("frameworks", [])):,,
+)
+)
                     context_match += 0.2
 
                 if context_match > 0:
@@ -955,14 +1070,25 @@ class EnhancedLearningEngine:
                 "cross_matches": scores["cross_matches"],
                 "avg_quality": avg_quality,
                 "effectiveness": skill_metrics.get("success_rate", 0.5),
-                "reasoning": self._generate_skill_reasoning(skill, scores, skill_metrics, task_type)
+                "reasoning": self._generate_skill_reasoning(
+    skill,
+    scores,
+    skill_metrics,
+    task_type,
+)
             })
 
         # Sort by score and return top recommendations
         recommendations.sort(key=lambda x: x["score"], reverse=True)
         return recommendations[:limit]
 
-    def _generate_skill_reasoning(self, skill: str, scores: Dict, skill_metrics: Dict, task_type: str) -> str:
+    def _generate_skill_reasoning(
+    self,
+    skill: str,
+    scores: Dict,
+    skill_metrics: Dict,
+    task_type: str) -> str:,
+)
         """Generate reasoning for skill recommendation."""
         reasons = []
 
@@ -970,7 +1096,9 @@ class EnhancedLearningEngine:
             reasons.append(f"Found in {scores['local_matches']} similar local patterns")
 
         if scores["cross_matches"] > 0:
-            reasons.append(f"Successful in {scores['cross_matches']} cross-project patterns")
+            reasons.append(
+    f"Successful in {scores['cross_matches']} cross-project patterns",
+)
 
         if skill_metrics.get("success_rate", 0) >= 0.8:
             reasons.append(f"High success rate ({skill_metrics['success_rate']:.1%})")
@@ -982,11 +1110,18 @@ class EnhancedLearningEngine:
             reasons.append("Showing improving performance trend")
 
         if scores["avg_quality"] >= 85:
-            reasons.append(f"Associated with high-quality outcomes ({scores['avg_quality']:.1f})")
+            reasons.append(
+    f"Associated with high-quality outcomes ({scores['avg_quality']:.1f})",
+)
 
         return "; ".join(reasons) if reasons else "Based on pattern analysis"
 
-    def update_pattern_reuse(self, pattern_id: str, success: bool, adaptation_notes: Optional[str] = None) -> bool:
+    def update_pattern_reuse(
+    self,
+    pattern_id: str,
+    success: bool,
+    adaptation_notes: Optional[str] = None) -> bool:,
+)
         """
         Update pattern reuse analytics.
 
@@ -1050,8 +1185,11 @@ class EnhancedLearningEngine:
         recent_patterns = sorted(patterns_db["patterns"], key=lambda x: x["timestamp"], reverse=True)[:50]
         older_patterns = sorted(patterns_db["patterns"], key=lambda x: x["timestamp"], reverse=True)[50:100]
 
-        recent_avg_quality = sum(p["outcome"]["quality_score"] for p in recent_patterns) / len(recent_patterns)
-        older_avg_quality = sum(p["outcome"]["quality_score"] for p in older_patterns) / len(older_patterns) if older_patterns else recent_avg_quality
+        recent_avg_quality = sum(p["outcome"]["quality_score"] for p in 
+            recent_patterns) / len(recent_patterns)
+        older_avg_quality = sum(p["outcome"]["quality_score"] for p in older_patterns) / len(older_patterns) if 
+            
+            older_patterns else recent_avg_quality
 
         quality_trend = "improving" if recent_avg_quality > older_avg_quality + 2 else "declining" if recent_avg_quality < older_avg_quality - 2 else "stable"
 
@@ -1068,7 +1206,11 @@ class EnhancedLearningEngine:
 
         # Skill effectiveness
         top_skills = sorted(
-            [(name, metrics.get("success_rate", 0), metrics.get("avg_quality_contribution", 0))
+            [(
+    name,
+    metrics.get("success_rate", 0),
+    metrics.get("avg_quality_contribution", 0),
+)
              for name, metrics in skills_db.items()],
             key=lambda x: x[1],
             reverse=True
@@ -1076,7 +1218,11 @@ class EnhancedLearningEngine:
 
         # Agent performance
         top_agents = sorted(
-            [(name, metrics.get("reliability_score", 0), metrics.get("efficiency_rating", 0))
+            [(
+    name,
+    metrics.get("reliability_score", 0),
+    metrics.get("efficiency_rating", 0),
+)
              for name, metrics in agents_db.items()],
             key=lambda x: x[1],
             reverse=True
@@ -1089,7 +1235,9 @@ class EnhancedLearningEngine:
             patterns_by_week[week] = patterns_by_week.get(week, 0) + 1
 
         recent_weeks = sorted(patterns_by_week.keys())[-8:]  # Last 8 weeks
-        avg_patterns_per_week = sum(patterns_by_week[week] for week in recent_weeks) / len(recent_weeks) if recent_weeks else 0
+        avg_patterns_per_week = sum(patterns_by_week[week] for week in recent_weeks) / len(recent_weeks) if 
+            
+            recent_weeks else 0
 
         # Prediction accuracy
         predictions_with_outcomes = [
@@ -1111,7 +1259,10 @@ class EnhancedLearningEngine:
         return {
             "overview": {
                 "total_patterns": total_patterns,
-                "learning_effectiveness": patterns_db["metadata"].get("learning_effectiveness", 0.0),
+                "learning_effectiveness": patterns_db["metadata"].get(
+    "learning_effectiveness",
+    0.0),,
+)
                 "prediction_accuracy": prediction_accuracy,
                 "patterns_per_week": avg_patterns_per_week
             },
@@ -1150,21 +1301,37 @@ class EnhancedLearningEngine:
             "cross_project_learning": {
                 "universal_patterns": len(cross_project_db["universal_patterns"]),
                 "transferability_score": sum(p["effectiveness_metrics"]["context_transferability"]
-                                           for p in cross_project_db["universal_patterns"]) / max(1, len(cross_project_db["universal_patterns"]))
+                                           for p in cross_project_db["universal_patterns"]) / max(
+)
+    1,
+    len(cross_project_db["universal_patterns"]),
+)
             },
-            "insights": self._generate_learning_insights(patterns_db, skills_db, agents_db)
+            "insights": self._generate_learning_insights(
+    patterns_db,
+    skills_db,
+    agents_db,
+)
         }
 
-    def _generate_learning_insights(self, patterns_db: Dict, skills_db: Dict, agents_db: Dict) -> List[str]:
+    def _generate_learning_insights(
+    self,
+    patterns_db: Dict,
+    skills_db: Dict,
+    agents_db: Dict) -> List[str]:,
+)
         """Generate actionable insights from learning data."""
         insights = []
 
         # Quality insights
         patterns = patterns_db["patterns"]
         if patterns:
-            high_quality_patterns = [p for p in patterns if p["outcome"]["quality_score"] >= 90]
+            high_quality_patterns = [p for p in patterns if 
+                p["outcome"]["quality_score"] >= 90]
             if len(high_quality_patterns) / len(patterns) > 0.3:
-                insights.append("Strong quality performance - 30%+ patterns achieving 90+ quality scores")
+                insights.append(
+    "Strong quality performance - 30%+ patterns achieving 90+ quality scores",
+)
 
             # Skill combination insights
             skill_combos = {}
@@ -1175,32 +1342,55 @@ class EnhancedLearningEngine:
             if skill_combos:
                 best_combo = max(skill_combos.items(), key=lambda x: x[1])
                 if best_combo[1] >= 3:
-                    insights.append(f"High-performing skill combination: {', '.join(best_combo[0])} (used in {best_combo[1]} successful patterns)")
+                    insights.append(
+    f"High-performing skill combination: {',
+    '.join(best_combo[0])} (used in {best_combo[1]} successful patterns)",
+)
 
         # Skill insights
         improving_skills = [name for name, metrics in skills_db.items()
-                          if metrics.get("performance_trend") == "improving" and metrics.get("total_uses", 0) >= 5]
+                          if metrics.get(
+    "performance_trend") == "improving" and metrics.get("total_uses",
+    0) >= 5],
+)
 
         if improving_skills:
-            insights.append(f"Skills showing improvement: {', '.join(improving_skills[:3])}")
+            insights.append(
+    f"Skills showing improvement: {',
+    '.join(improving_skills[:3])}",
+)
 
         # Agent insights
         reliable_agents = [name for name, metrics in agents_db.items()
-                         if metrics.get("reliability_score", 0) >= 0.9 and metrics.get("total_delegations", 0) >= 3]
+                         if metrics.get(
+    "reliability_score",
+    0) >= 0.9 and metrics.get("total_delegations",
+    0) >= 3],
+)
 
         if reliable_agents:
             insights.append(f"Highly reliable agents: {', '.join(reliable_agents)}")
 
         # Learning velocity insights
-        recent_patterns = [p for p in patterns if datetime.fromisoformat(p["timestamp"]) > datetime.now() - timedelta(days=7)]
+        recent_patterns = [p for p in patterns if 
+            datetime.fromisoformat(p["timestamp"]) > datetime.now() - timedelta(days=7)]
         if len(recent_patterns) > 20:
-            insights.append("High learning velocity - 20+ patterns captured in last week")
+            insights.append(
+    "High learning velocity - 20+ patterns captured in last week",
+)
         elif len(recent_patterns) < 5:
-            insights.append("Low learning activity - consider increasing pattern capture frequency")
+            insights.append(
+    "Low learning activity - consider increasing pattern capture frequency",
+)
 
         return insights
 
-    def find_similar_patterns(self, task_context: Dict[str, Any], limit: int = 5) -> List[Dict[str, Any]]:
+    def find_similar_patterns(
+    self,
+    task_context: Dict[str,
+    Any],
+    limit: int = 5) -> List[Dict[str, Any]]:,
+)
         """
         Find patterns similar to the given task context.
 
@@ -1243,11 +1433,21 @@ class EnhancedLearningEngine:
 
                 # Simple similarity for cross-project
                 similarity = 0.0
-                if pattern["context_categories"]["project_type"] == project_context.get("project_type"):
+                if 
+                    pattern["context_categories"]["project_type"] == 
+                        project_context.get("project_type"):
                     similarity += 0.4
-                if set(pattern["context_categories"]["languages"]) & set(project_context.get("languages", [])):
+                if set(
+    pattern["context_categories"]["languages"]) & set(
+    project_context.get("languages", [])):,,
+)
+)
                     similarity += 0.3
-                if set(pattern["context_categories"]["frameworks"]) & set(project_context.get("frameworks", [])):
+                if set(
+    pattern["context_categories"]["frameworks"]) & set(
+    project_context.get("frameworks", [])):,,
+)
+)
                     similarity += 0.3
 
                 if similarity >= 0.4:
@@ -1271,7 +1471,11 @@ class EnhancedLearningEngine:
 def main():
     """Command-line interface for enhanced learning engine."""
     parser = argparse.ArgumentParser(description='Enhanced Learning Engine')
-    parser.add_argument('--dir', default='.claude-patterns', help='Patterns directory path')
+    parser.add_argument(
+    '--dir',
+    default='.claude-patterns',
+    help='Patterns directory path',
+)
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
 
@@ -1281,19 +1485,41 @@ def main():
 
     # Predict skills action
     predict_parser = subparsers.add_parser('predict', help='Predict optimal skills')
-    predict_parser.add_argument('--context', required=True, help='Task context JSON string')
-    predict_parser.add_argument('--limit', type=int, default=5, help='Maximum recommendations')
+    predict_parser.add_argument(
+    '--context',
+    required=True,
+    help='Task context JSON string',
+)
+    predict_parser.add_argument(
+    '--limit',
+    type=int,
+    default=5,
+    help='Maximum recommendations',
+)
 
     # Find similar patterns action
     find_parser = subparsers.add_parser('find-similar', help='Find similar patterns')
-    find_parser.add_argument('--context', required=True, help='Task context JSON string')
+    find_parser.add_argument(
+    '--context',
+    required=True,
+    help='Task context JSON string',
+)
     find_parser.add_argument('--limit', type=int, default=5, help='Maximum results')
 
     # Update reuse action
     update_parser = subparsers.add_parser('update-reuse', help='Update pattern reuse analytics')
     update_parser.add_argument('--pattern-id', required=True, help='Pattern ID')
-    update_parser.add_argument('--success', action='store_true', help='Mark as successful reuse')
-    update_parser.add_argument('--failure', dest='success', action='store_false', help='Mark as failed reuse')
+    update_parser.add_argument(
+    '--success',
+    action='store_true',
+    help='Mark as successful reuse',
+)
+    update_parser.add_argument(
+    '--failure',
+    dest='success',
+    action='store_false',
+    help='Mark as failed reuse',
+)
     update_parser.add_argument('--notes', help='Adaptation notes')
 
     # Analytics action
@@ -1332,7 +1558,10 @@ def main():
             print(json.dumps(analytics, indent=2))
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(
+    json.dumps({'success': False, 'error': str(e)}, indent=2),
+    file=sys.stderr,
+)
         sys.exit(1)
 
 

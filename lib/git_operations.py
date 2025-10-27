@@ -84,7 +84,9 @@ class SemanticVersion:
 
     def bump_patch(self) -> 'SemanticVersion':
         """Bump patch version (x.y.Z)"""
-        return SemanticVersion(f"{self.prefix}{self.major}.{self.minor}.{self.patch + 1}")
+        return SemanticVersion(
+    f"{self.prefix}{self.major}.{self.minor}.{self.patch + 1}",
+)
 
     def __str__(self) -> str:
         """String representation of version"""
@@ -102,7 +104,10 @@ class SemanticVersion:
         return f"SemanticVersion('{str(self)}')"
 
 
-def run_git_command(args: List[str], cwd: Optional[Path] = None) -> Tuple[int, str, str]:
+def run_git_command(
+    args: List[str],
+    cwd: Optional[Path] = None) -> Tuple[int, str, str]:,
+)
     """
     Run a Git command and return the result.
 
@@ -194,7 +199,11 @@ def version_bump(current_version: str, bump_type: str) -> str:
     elif bump_type == 'patch':
         return str(version.bump_patch())
     else:
-        raise ValueError(f"Invalid bump type: {bump_type}. Use 'major', 'minor', or 'patch'")
+        raise ValueError(
+    f"Invalid bump type: {bump_type}. Use 'major',
+    'minor',
+    or 'patch'",
+)
 
 
 def detect_version_bump_from_commits(since: Optional[str] = None) -> str:

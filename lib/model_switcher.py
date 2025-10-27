@@ -202,19 +202,25 @@ class ModelSwitcher:
                 "status": "glm",
                 "model": model,
                 "base_url": base_url,
-                "token_status": "configured" if env.get("ANTHROPIC_AUTH_TOKEN") else "missing"
+                "token_status": "configured" if env.get(
+    "ANTHROPIC_AUTH_TOKEN") else "missing",
+)
             }
         elif "anthropic.com" in base_url:
             return {
                 "status": "claude",
                 "base_url": base_url,
-                "token_status": "configured" if env.get("ANTHROPIC_AUTH_TOKEN") else "missing"
+                "token_status": "configured" if env.get(
+    "ANTHROPIC_AUTH_TOKEN") else "missing",
+)
             }
         else:
             return {
                 "status": "unknown",
                 "base_url": base_url,
-                "token_status": "configured" if env.get("ANTHROPIC_AUTH_TOKEN") else "missing"
+                "token_status": "configured" if env.get(
+    "ANTHROPIC_AUTH_TOKEN") else "missing",
+)
             }
 
     def validate_configuration(self) -> Tuple[bool, str]:
@@ -298,12 +304,23 @@ def main():
     parser = argparse.ArgumentParser(description="Switch between Claude and GLM models")
     parser.add_argument("--to", choices=["claude", "glm"], help="Target model")
     parser.add_argument("--api-key", help="API key for the target model")
-    parser.add_argument("--model", help="Specific model (for GLM: glm-4.5-air, glm-4.6)")
+    parser.add_argument(
+    "--model",
+    help="Specific model (for GLM: glm-4.5-air, glm-4.6)",
+)
     parser.add_argument("--status", action="store_true", help="Show current status")
-    parser.add_argument("--validate", action="store_true", help="Validate configuration")
+    parser.add_argument(
+    "--validate",
+    action="store_true",
+    help="Validate configuration",
+)
     parser.add_argument("--backup", action="store_true", help="Create backup")
     parser.add_argument("--restore", help="Restore from backup")
-    parser.add_argument("--list-backups", action="store_true", help="List available backups")
+    parser.add_argument(
+    "--list-backups",
+    action="store_true",
+    help="List available backups",
+)
 
     args = parser.parse_args()
 

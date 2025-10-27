@@ -45,9 +45,13 @@ def calculate_success_rates():
         # Claude Sonnet 4.5 appears in validation and analysis tasks
 
         model_name = None
-        if 'validation' in task_type or 'plugin-validation' in assessment.get('assessment_type', ''):
+        if 'validation' in task_type or 'plugin-validation' in assessment.get(
+    'assessment_type',
+    ''):,
+)
             model_name = 'Claude Sonnet 4.5'
-        elif 'analysis' in task_type or task_type in ['quality-assessment', 'debugging']:
+        elif 'analysis' in task_type or 
+            task_type in ['quality-assessment', 'debugging']:
             model_name = 'Claude Sonnet 4.5'
         else:
             model_name = 'GLM 4.6'  # Default to GLM for other tasks
@@ -68,8 +72,10 @@ def calculate_success_rates():
     print("=" * 60)
 
     for model_name, stats in model_stats.items():
-        success_rate = stats['successful_assessments'] / stats['total_assessments'] if stats['total_assessments'] > 0 else 0
-        avg_score = sum(stats['scores']) / len(stats['scores']) if stats['scores'] else 0
+        success_rate = stats['successful_assessments'] / stats['total_assessments'] if 
+            stats['total_assessments'] > 0 else 0
+        avg_score = sum(stats['scores']) / len(stats['scores']) if 
+            stats['scores'] else 0
 
         success_rates[model_name] = {
             'success_rate': round(success_rate, 3),
@@ -77,7 +83,9 @@ def calculate_success_rates():
             'successful_assessments': stats['successful_assessments'],
             'failed_assessments': stats['failed_assessments'],
             'average_score': round(avg_score, 1),
-            'assessment_types': list(set(assessment['assessment_id'].split('-')[0] for assessment in quality_data.get('quality_assessments', [])))
+            'assessment_types': list(
+    set(assessment['assessment_id'].split('-')[0] for assessment in quality_data.get('quality_assessments', [])),
+)
         }
 
         print(f"\n{model_name}:")
@@ -86,7 +94,10 @@ def calculate_success_rates():
         print(f"  Failed: {stats['failed_assessments']}")
         print(f"  Success Rate: {success_rate:.1%}")
         print(f"  Average Score: {avg_score:.1f}")
-        print(f"  Assessment IDs: {', '.join(stats['assessment_ids'][:5])}{'...' if len(stats['assessment_ids']) > 5 else ''}")
+        print(
+    f"  Assessment IDs: {',
+    '.join(stats['assessment_ids'][:5])}{'...' if len(stats['assessment_ids']) > 5 else ''}",
+)
 
     return success_rates
 

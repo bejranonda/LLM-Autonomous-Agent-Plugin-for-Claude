@@ -79,7 +79,9 @@ class DashboardCompatibilityManager:
         model_status = self._ensure_model_performance_data()
         migration_report["data_status"]["model_performance"] = model_status
         if model_status.get("created"):
-            migration_report["migrations_performed"].append("model_performance.json created")
+            migration_report["migrations_performed"].append(
+    "model_performance.json created",
+)
 
         # Migrate quality history if exists
         quality_status = self._migrate_quality_history()
@@ -181,7 +183,9 @@ class DashboardCompatibilityManager:
 
                 # Check if data has expected structure
                 if not isinstance(data, dict):
-                    status["issues"].append("model_performance.json has invalid structure")
+                    status["issues"].append(
+    "model_performance.json has invalid structure",
+)
                     return status
 
                 # Ensure all expected models exist
@@ -285,18 +289,30 @@ class DashboardCompatibilityManager:
 
         # Check if migrations were performed
         if migration_report["migrations_performed"]:
-            recommendations.append("[OK] Data successfully migrated for new dashboard features")
+            recommendations.append(
+    "[OK] Data successfully migrated for new dashboard features",
+)
 
         # Check for missing data
         if not migration_report["data_status"].get("patterns", {}).get("exists"):
-            recommendations.append("[INFO] Run /learn-patterns to initialize pattern learning")
+            recommendations.append(
+    "[INFO] Run /learn-patterns to initialize pattern learning",
+)
 
-        if not migration_report["data_status"].get("model_performance", {}).get("exists"):
-            recommendations.append("[INFO] Model performance data will be created automatically")
+        if not migration_report["data_status"].get(
+    "model_performance",
+    {}).get("exists"):,
+)
+            recommendations.append(
+    "[INFO] Model performance data will be created automatically",
+)
 
         # If everything is good
-        if not migration_report["issues_found"] and not migration_report["migrations_performed"]:
-            recommendations.append("[OK] All data is compatible with new dashboard features")
+        if not migration_report["issues_found"] and 
+            not migration_report["migrations_performed"]:
+            recommendations.append(
+    "[OK] All data is compatible with new dashboard features",
+)
 
         return recommendations
 
@@ -353,9 +369,15 @@ class DashboardCompatibilityManager:
 
                 model_metrics[model] = {
                     "total_patterns": len(patterns_list),
-                    "success_rate": (success_count / len(patterns_list) * 100) if patterns_list else 0,
-                    "avg_quality_score": sum(quality_scores) / len(quality_scores) if quality_scores else 0,
-                    "avg_contribution": sum(contributions) / len(contributions) if contributions else 0,
+                    "success_rate": (
+    success_count / len(patterns_list) * 100) if patterns_list else 0,,
+)
+                    "avg_quality_score": sum(
+    quality_scores) / len(quality_scores) if quality_scores else 0,,
+)
+                    "avg_contribution": sum(
+    contributions) / len(contributions) if contributions else 0,,
+)
                     "recent_scores": quality_scores[-10:]  # Last 10 scores
                 }
 

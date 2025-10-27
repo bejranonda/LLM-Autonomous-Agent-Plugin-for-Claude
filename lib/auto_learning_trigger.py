@@ -115,7 +115,11 @@ class AutomaticLearningTrigger:
             return model
 
         # Check for GLM
-        if "glm" in os.getenv("TERM", "").lower() or "glm" in os.getenv("SHELL", "").lower():
+        if "glm" in os.getenv(
+    "TERM",
+    "").lower() or "glm" in os.getenv("SHELL",
+    "").lower():,
+)
             return "GLM-4.6"
 
         # Check for Claude
@@ -214,7 +218,10 @@ class AutomaticLearningTrigger:
                 "performance_metrics": {
                     "overall_score": quality_score,
                     "success_rate": 1.0 if success else 0.0,
-                    "efficiency": min(100, 100 - (duration / 60)), # Simple efficiency calc
+                    "efficiency": min(
+    100,
+    100 - (duration / 60)), # Simple efficiency calc,
+)
                 }
             },
             "outcome": {
@@ -231,7 +238,8 @@ class AutomaticLearningTrigger:
             "insights": {
                 "what_worked": ["Automatic performance recording enabled"],
                 "what_failed": [] if success else ["Task completion issues"],
-                "bottlenecks": [] if duration < 300 else ["Task took longer than expected"],
+                "bottlenecks": [] if 
+                    duration < 300 else ["Task took longer than expected"],
                 "optimization_opportunities": recommendations or [],
                 "lessons_learned": [f"Automatic recording successful for {self.current_task['type']} tasks"]
             },
@@ -346,7 +354,8 @@ class AutomaticLearningTrigger:
             log_data["metadata"]["last_trigger"] = trigger_entry["timestamp"]
             log_data["metadata"]["total_triggers"] = len(log_data["triggers"])
 
-            if trigger_type in ["task_completed_with_recording", "performance_recorded"]:
+            if 
+                trigger_type in ["task_completed_with_recording", "performance_recorded"]:
                 log_data["metadata"]["successful_triggers"] += 1
 
             # Save log

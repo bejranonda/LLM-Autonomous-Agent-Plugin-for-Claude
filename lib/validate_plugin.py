@@ -18,7 +18,8 @@ def validate_plugin():
 
             # Check required fields
             required_fields = ['name', 'version', 'description', 'author']
-            missing_fields = [field for field in required_fields if field not in manifest]
+            missing_fields = [field for field in required_fields if 
+                field not in manifest]
             if missing_fields:
                 issues.append(f'Missing required fields: {missing_fields}')
             else:
@@ -62,7 +63,8 @@ def validate_plugin():
                     if frontmatter_end != -1:
                         frontmatter = content[3:frontmatter_end].strip()
                         if 'name:' in frontmatter:
-                            name_line = [line for line in frontmatter.split('\n') if line.startswith('name:')]
+                            name_line = [line for line in frontmatter.split('\n') if 
+                                line.startswith('name:')]
                             if name_line:
                                 name = name_line[0].split(':', 1)[1].strip()
                                 agent_names.append((name, agent_file.name))
@@ -70,7 +72,9 @@ def validate_plugin():
                                 if name in [a[0] for a in agent_names[:-1]]:
                                     duplicate_agents.append(name)
                                 # Check prefix consistency
-                                if ':' in name and not name.startswith('autonomous-agent:'):
+                                if ':' in name and not name.startswith(
+    'autonomous-agent:'):,
+)
                                     agent_prefix_issues.append(name)
         except Exception as e:
             warnings.append(f'Could not parse {agent_file}: {str(e)[:50]}')
@@ -82,7 +86,8 @@ def validate_plugin():
         issues.append(f'Duplicate agent names: {duplicate_agents}')
 
     # 3. Command validation
-    command_files = list(Path('commands').glob('*.md')) if Path('commands').exists() else []
+    command_files = list(Path('commands').glob('*.md')) if 
+        Path('commands').exists() else []
     print(f'OK Directory structure: Found {len(command_files)} command files')
 
     commands_missing_delegation = []
@@ -111,15 +116,24 @@ def validate_plugin():
         except Exception as e:
             warnings.append(f'Could not parse {cmd_file}: {str(e)[:50]}')
 
-    print(f'OK Command files: {commands_with_delegation}/{len(command_files)} have delegation fields')
-    print(f'OK Command files: {commands_with_name}/{len(command_files)} have name fields')
-    print(f'OK Command files: {commands_with_command}/{len(command_files)} have command fields')
+    print(
+    f'OK Command files: {commands_with_delegation}/{len(command_files)} have delegation fields',
+)
+    print(
+    f'OK Command files: {commands_with_name}/{len(command_files)} have name fields',
+)
+    print(
+    f'OK Command files: {commands_with_command}/{len(command_files)} have command fields',
+)
 
     if commands_missing_delegation:
-        warnings.append(f'Commands missing delegates-to field: {len(commands_missing_delegation)} files')
+        warnings.append(
+    f'Commands missing delegates-to field: {len(commands_missing_delegation)} files',
+)
 
     # 4. Skill validation
-    skill_dirs = [d for d in Path('skills').iterdir() if d.is_dir()] if Path('skills').exists() else []
+    skill_dirs = [d for d in Path('skills').iterdir() if d.is_dir()] if Path('skills').exists() else 
+        []
     skill_files = []
     for skill_dir in skill_dirs:
         skill_file = skill_dir / 'SKILL.md'
@@ -130,7 +144,8 @@ def validate_plugin():
 
     # 5. Cross-reference validation - check delegation mappings
     delegation_issues = []
-    agent_short_names = [name.replace('autonomous-agent:', '') for name, _ in agent_names]
+    agent_short_names = [name.replace('autonomous-agent:', '') for name, _ in 
+        agent_names]
 
     for cmd_file in command_files:
         try:
@@ -146,12 +161,17 @@ def validate_plugin():
                         for full_name, _ in agent_names:
                             short_name = full_name.replace('autonomous-agent:', '')
                             if (delegated_agent == full_name or
-                                delegated_agent.replace('autonomous-agent:', '') == short_name):
+                                delegated_agent.replace(
+    'autonomous-agent:',
+    '') == short_name):,
+)
                                 agent_exists = True
                                 break
 
                         if not agent_exists:
-                            delegation_issues.append(f'{cmd_file.name} -> {delegated_agent}')
+                            delegation_issues.append(
+    f'{cmd_file.name} -> {delegated_agent}',
+)
         except Exception:
             pass
 
@@ -194,7 +214,9 @@ def validate_plugin():
             pass
 
     if commands_without_proper_delegation:
-        warnings.append(f'Commands mentioning orchestrator but missing delegation: {len(commands_without_proper_delegation)}')
+        warnings.append(
+    f'Commands mentioning orchestrator but missing delegation: {len(commands_without_proper_delegation)}',
+)
 
     # Calculate quality score
     total_checks = 13  # Total number of validation checks

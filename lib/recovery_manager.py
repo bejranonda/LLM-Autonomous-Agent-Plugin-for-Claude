@@ -41,7 +41,11 @@ class RecoveryManager:
         # Component templates and patterns
         self.component_templates = self._load_component_templates()
 
-    def recover_missing_components(self, validation_results: Dict[str, Any]) -> Dict[str, Any]:
+    def recover_missing_components(
+    self,
+    validation_results: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """
         Recover all missing components based on validation results
 
@@ -92,7 +96,11 @@ class RecoveryManager:
 
         return recovery_results
 
-    def recover_specific_component(self, component_type: str, component_path: str) -> Dict[str, Any]:
+    def recover_specific_component(
+    self,
+    component_type: str,
+    component_path: str) -> Dict[str, Any]:,
+)
         """
         Recover a specific component
 
@@ -111,7 +119,11 @@ class RecoveryManager:
 
         return self._recover_single_component(component)
 
-    def create_recovery_plan(self, missing_components: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def create_recovery_plan(
+    self,
+    missing_components: List[Dict[str,
+    Any]]) -> Dict[str, Any]:,
+)
         """
         Create a recovery plan without executing it
 
@@ -211,7 +223,12 @@ class RecoveryManager:
 
         return recovery_result
 
-    def _execute_recovery_strategy(self, component: Dict[str, Any], strategy: str) -> Dict[str, Any]:
+    def _execute_recovery_strategy(
+    self,
+    component: Dict[str,
+    Any],
+    strategy: str) -> Dict[str, Any]:,
+)
         """Execute a specific recovery strategy"""
         strategy_result = {
             "strategy": strategy,
@@ -300,7 +317,8 @@ class RecoveryManager:
             if result.stdout:
                 # Extract commit hash
                 lines = result.stdout.split('\n')
-                commit_line = next((line for line in lines if line.startswith('commit ')), None)
+                commit_line = next((line for line in lines if 
+                    line.startswith('commit ')), None)
 
                 if commit_line:
                     commit_hash = commit_line.split()[1]
@@ -425,7 +443,11 @@ class RecoveryManager:
 
         return strategy_result
 
-    def _identify_missing_components(self, validation_results: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def _identify_missing_components(
+    self,
+    validation_results: Dict[str,
+    Any]) -> List[Dict[str, Any]]:,
+)
         """Identify missing components from validation results"""
         missing_components = []
 
@@ -437,14 +459,18 @@ class RecoveryManager:
                     "path": f"commands{missing_cmd['command'].replace(':', '/')}.md",
                     "critical": missing_cmd.get("severity") == "critical",
                     "category": missing_cmd.get("category"),
-                    "name": missing_cmd["command"].split(":")[1] if ":" in missing_cmd["command"] else missing_cmd["command"]
+                    "name": missing_cmd["command"].split(
+    ":")[1] if ":" in missing_cmd["command"] else missing_cmd["command"],
+)
                 }
                 missing_components.append(component)
 
         # Check for syntax errors that indicate broken files
         if "syntax_errors" in validation_results:
             for error in validation_results["syntax_errors"]:
-                if "error" in str(error).lower() and ("not found" in str(error) or "missing" in str(error)):
+                if "error" in str(
+    error).lower() and ("not found" in str(error) or "missing" in str(error)):,
+)
                     component = {
                         "type": "file",
                         "path": error["file"],
@@ -455,7 +481,11 @@ class RecoveryManager:
 
         return missing_components
 
-    def _find_component_template(self, component: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def _find_component_template(
+    self,
+    component: Dict[str,
+    Any]) -> Optional[Dict[str, Any]]:,
+)
         """Find template for component type"""
         component_type = component["type"]
 
@@ -464,7 +494,13 @@ class RecoveryManager:
 
         return None
 
-    def _load_and_customize_template(self, component: Dict[str, Any], template_info: Dict[str, Any]) -> str:
+    def _load_and_customize_template(
+    self,
+    component: Dict[str,
+    Any],
+    template_info: Dict[str,
+    Any]) -> str:,
+)
         """Load and customize template content"""
         template_path = Path(template_info["template_path"])
 
@@ -481,7 +517,11 @@ class RecoveryManager:
 
         return template_content
 
-    def _find_similar_component(self, component: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def _find_similar_component(
+    self,
+    component: Dict[str,
+    Any]) -> Optional[Dict[str, Any]]:,
+)
         """Find similar existing component"""
         component_type = component["type"]
 
@@ -509,7 +549,14 @@ class RecoveryManager:
 
         return None
 
-    def _customize_content_from_reference(self, content: str, target: Dict[str, Any], reference: Dict[str, Any]) -> str:
+    def _customize_content_from_reference(
+    self,
+    content: str,
+    target: Dict[str,
+    Any],
+    reference: Dict[str,
+    Any]) -> str:,
+)
         """Customize content from reference component"""
         # Basic content customization
         customized = content
@@ -556,7 +603,9 @@ class RecoveryManager:
         if component_type == "command":
             guidance["steps"] = [
                 f"1. Create file: {component_path}",
-                f"2. Add YAML frontmatter with name, description, usage, category: {component.get('category')}",
+                f"2. Add YAML frontmatter with name, description, usage, category: {component.get(
+    'category')}",,
+)
                 "3. Add command description and usage examples",
                 "4. Include parameter documentation if applicable",
                 "5. Test command discoverability: run validation check"
@@ -576,7 +625,8 @@ class RecoveryManager:
                 "5. Validate agent integration"
             ]
 
-        guidance["estimated_difficulty"] = "high" if component.get("critical") else "medium"
+        guidance["estimated_difficulty"] = "high" if 
+            component.get("critical") else "medium"
 
         return guidance
 
@@ -672,7 +722,11 @@ class RecoveryManager:
         """Generate recovery session ID"""
         return f"recovery_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
-    def _analyze_recovery_options(self, component: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def _analyze_recovery_options(
+    self,
+    component: Dict[str,
+    Any]) -> List[Dict[str, Any]]:,
+)
         """Analyze available recovery options for component"""
         options = []
 
@@ -722,7 +776,11 @@ class RecoveryManager:
 
         return options
 
-    def _select_best_recovery_strategy(self, recovery_options: List[Dict[str, Any]]) -> str:
+    def _select_best_recovery_strategy(
+    self,
+    recovery_options: List[Dict[str,
+    Any]]) -> str:,
+)
         """Select best recovery strategy based on confidence and time"""
         available_options = [opt for opt in recovery_options if opt["available"]]
 
@@ -753,7 +811,11 @@ class RecoveryManager:
 
         return int(base_times.get(strategy, 30) * complexity_factor)
 
-    def _calculate_recovery_confidence(self, recovery_options: List[Dict[str, Any]]) -> int:
+    def _calculate_recovery_confidence(
+    self,
+    recovery_options: List[Dict[str,
+    Any]]) -> int:,
+)
         """Calculate overall recovery confidence score"""
         available_options = [opt for opt in recovery_options if opt["available"]]
 
@@ -787,13 +849,21 @@ class RecoveryManager:
         estimated_time = recovery_plan["estimated_time"]
 
         if confidence > 80:
-            actions.append(f"[HIGH] Automatic recovery recommended ({confidence}% confidence)")
+            actions.append(
+    f"[HIGH] Automatic recovery recommended ({confidence}% confidence)",
+)
             actions.append(f"Estimated time: {estimated_time} seconds")
         elif confidence > 50:
-            actions.append(f"[MED] Recovery with manual intervention likely ({confidence}% confidence)")
-            actions.append(f"Estimated time: {estimated_time} seconds (may require additional work)")
+            actions.append(
+    f"[MED] Recovery with manual intervention likely ({confidence}% confidence)",
+)
+            actions.append(
+    f"Estimated time: {estimated_time} seconds (may require additional work)",
+)
         else:
-            actions.append(f"[LOW] Manual recreation recommended ({confidence}% confidence)")
+            actions.append(
+    f"[LOW] Manual recreation recommended ({confidence}% confidence)",
+)
             actions.append("Focus on components with highest recovery potential first")
 
         # Check for components requiring manual intervention
@@ -803,7 +873,9 @@ class RecoveryManager:
         ]
 
         if manual_components:
-            actions.append(f"[ATTENTION] {len(manual_components)} components require manual intervention")
+            actions.append(
+    f"[ATTENTION] {len(manual_components)} components require manual intervention",
+)
 
         # Critical components priority
         critical_components = [
@@ -812,7 +884,9 @@ class RecoveryManager:
         ]
 
         if critical_components:
-            actions.append(f"[PRIORITY] Recover {len(critical_components)} critical components first")
+            actions.append(
+    f"[PRIORITY] Recover {len(critical_components)} critical components first",
+)
 
         return actions
 
@@ -836,7 +910,9 @@ class RecoveryManager:
     def _check_template_availability(self, component: Dict[str, Any]) -> bool:
         """Check if template is available for component"""
         template_info = self._find_component_template(component)
-        return template_info is not None and Path(template_info["template_path"]).exists()
+        return template_info is not None and Path(
+    template_info["template_path"]).exists(,
+)
 
     def _check_pattern_availability(self, component: Dict[str, Any]) -> bool:
         """Check if pattern-based recovery is possible"""
@@ -871,9 +947,15 @@ def main():
         results = recovery_manager.recover_missing_components(validation_results)
 
         print(f"🔄 Recovery Session: {results['recovery_session_id']}")
-        print(f"📊 Summary: {results['recovery_summary']['total_recovered']}/{results['recovery_summary']['total_missing']} recovered")
+        print(
+    f"📊 Summary: {results['recovery_summary']['total_recovered']}/{results['recovery_summary']['total_missing']} recovered",
+)
         print(f"✅ Success Rate: {results['recovery_summary']['success_rate']}%")
-        print(f"⏱ Time Taken: {sum(r['time_taken'] for r in results['components_recovered'].values()):.2f}s")
+        print(
+    f"⏱ Time Taken: {sum(
+    r['time_taken'] for r in results['components_recovered'].values()):.2f}s",,
+)
+)
 
         if results['components_failed']:
             print(f"\n❌ Failed Recoveries ({len(results['components_failed'])}):")
@@ -904,7 +986,9 @@ def main():
 
     elif args.action == "single":
         if not args.component_type or not args.component_path:
-            print("❌ --component-type and --component-path required for single recovery")
+            print(
+    "❌ --component-type and --component-path required for single recovery",
+)
             sys.exit(1)
 
         result = recovery_manager.recover_specific_component(

@@ -50,7 +50,8 @@ def calculate_quality_improvement_trend(assessments, model_name):
             'total_improvement': 0,
             'time_span_days': 0,
             'trend_direction': 'insufficient_data',
-            'performance_score': quality_timeline[0]['score'] if quality_timeline else 0,
+            'performance_score': quality_timeline[0]['score'] if 
+                quality_timeline else 0,
             'data_points': len(quality_timeline)
         }
 
@@ -213,8 +214,11 @@ def main():
         # Show detailed timeline
         if trend_analysis['quality_timeline']:
             print(f"\nQuality Score Timeline:")
-            for i, point in enumerate(trend_analysis['quality_timeline'][-5:]):  # Last 5 points
-                timestamp_str = point['timestamp'] if isinstance(point['timestamp'], str) else point['timestamp'].isoformat()
+            for i, point in enumerate(
+    trend_analysis['quality_timeline'][-5:]):  # Last 5 points,
+)
+                timestamp_str = point['timestamp'] if 
+                    isinstance(point['timestamp'], str) else point['timestamp'].isoformat()
                 # Parse the timestamp string to format it
                 try:
                     dt = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
@@ -266,4 +270,6 @@ def update_model_performance_file(performance_results):
 
 if __name__ == "__main__":
     results = main()
-    print(f"\nTime-based performance calculation complete at {datetime.now().isoformat()}")
+    print(
+    f"\nTime-based performance calculation complete at {datetime.now().isoformat()}",
+)

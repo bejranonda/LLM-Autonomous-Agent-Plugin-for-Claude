@@ -116,7 +116,9 @@ class PluginValidator:
                     if field not in manifest['author']:
                         self.warnings.append(f"Missing author field: {field}")
 
-            self.fixes.append(("manifest_valid", "Plugin manifest is valid and complete"))
+            self.fixes.append(
+    ("manifest_valid", "Plugin manifest is valid and complete"),
+)
 
         except json.JSONDecodeError as e:
             self.issues.append(f"Invalid JSON in plugin.json: {e}")
@@ -150,9 +152,13 @@ class PluginValidator:
                     if isinstance(patterns, dict) and 'patterns' in patterns:
                         pattern_count = len(patterns['patterns'])
                         if pattern_count > 0:
-                            self.fixes.append(("patterns_found", f"Found {pattern_count} auto-fix patterns"))
+                            self.fixes.append(
+    ("patterns_found", f"Found {pattern_count} auto-fix patterns"),
+)
                     else:
-                        self.warnings.append("autofix-patterns.json has unexpected structure")
+                        self.warnings.append(
+    "autofix-patterns.json has unexpected structure",
+)
 
                 except json.JSONDecodeError:
                     self.warnings.append("autofix-patterns.json contains invalid JSON")
@@ -173,7 +179,9 @@ class PluginValidator:
 
                 # Check for YAML frontmatter
                 if not content.startswith('---'):
-                    self.issues.append(f"Agent missing YAML frontmatter: {agent_file.name}")
+                    self.issues.append(
+    f"Agent missing YAML frontmatter: {agent_file.name}",
+)
                     self.score -= 3
                     continue
 
@@ -185,11 +193,15 @@ class PluginValidator:
 
                     # Check required frontmatter fields
                     if 'name' not in frontmatter:
-                        self.issues.append(f"Agent missing name in frontmatter: {agent_file.name}")
+                        self.issues.append(
+    f"Agent missing name in frontmatter: {agent_file.name}",
+)
                         self.score -= 2
 
                     if 'description' not in frontmatter:
-                        self.warnings.append(f"Agent missing description: {agent_file.name}")
+                        self.warnings.append(
+    f"Agent missing description: {agent_file.name}",
+)
 
                 except yaml.YAMLError:
                     self.issues.append(f"Invalid YAML frontmatter: {agent_file.name}")
@@ -197,7 +209,9 @@ class PluginValidator:
 
                 # Check content quality
                 if len(content) < 500:
-                    self.warnings.append(f"Agent file seems too short: {agent_file.name}")
+                    self.warnings.append(
+    f"Agent file seems too short: {agent_file.name}",
+)
 
             except Exception as e:
                 self.issues.append(f"Error reading agent file {agent_file.name}: {e}")
@@ -228,7 +242,9 @@ class PluginValidator:
 
                         # Check for YAML frontmatter
                         if not content.startswith('---'):
-                            self.issues.append(f"Skill missing YAML frontmatter: {skill_dir.name}")
+                            self.issues.append(
+    f"Skill missing YAML frontmatter: {skill_dir.name}",
+)
                             self.score -= 3
                             continue
 
@@ -240,25 +256,37 @@ class PluginValidator:
 
                             # Check required frontmatter fields
                             if 'name' not in frontmatter:
-                                self.issues.append(f"Skill missing name in frontmatter: {skill_dir.name}")
+                                self.issues.append(
+    f"Skill missing name in frontmatter: {skill_dir.name}",
+)
                                 self.score -= 2
 
                             if 'description' not in frontmatter:
-                                self.warnings.append(f"Skill missing description: {skill_dir.name}")
+                                self.warnings.append(
+    f"Skill missing description: {skill_dir.name}",
+)
 
                             if 'version' not in frontmatter:
-                                self.warnings.append(f"Skill missing version: {skill_dir.name}")
+                                self.warnings.append(
+    f"Skill missing version: {skill_dir.name}",
+)
 
                         except yaml.YAMLError:
-                            self.issues.append(f"Invalid YAML frontmatter in skill: {skill_dir.name}")
+                            self.issues.append(
+    f"Invalid YAML frontmatter in skill: {skill_dir.name}",
+)
                             self.score -= 3
 
                         # Check content quality
                         if len(content) < 300:
-                            self.warnings.append(f"Skill file seems too short: {skill_dir.name}")
+                            self.warnings.append(
+    f"Skill file seems too short: {skill_dir.name}",
+)
 
                     except Exception as e:
-                        self.issues.append(f"Error reading skill file {skill_dir.name}: {e}")
+                        self.issues.append(
+    f"Error reading skill file {skill_dir.name}: {e}",
+)
                         self.score -= 2
 
         if skill_count == 0:
@@ -283,28 +311,40 @@ class PluginValidator:
 
                 # Check for command name in filename (slash command format)
                 if command_file.name.startswith('.'):
-                    self.warnings.append(f"Command filename should not start with dot: {command_file.name}")
+                    self.warnings.append(
+    f"Command filename should not start with dot: {command_file.name}",
+)
 
                 # Check content quality and structure
                 if len(content) < 300:
-                    self.warnings.append(f"Command file seems too short: {command_file.name}")
+                    self.warnings.append(
+    f"Command file seems too short: {command_file.name}",
+)
 
                 # Look for command documentation patterns
                 if '## Usage' not in content:
-                    self.warnings.append(f"Command missing usage section: {command_file.name}")
+                    self.warnings.append(
+    f"Command missing usage section: {command_file.name}",
+)
 
                 if '```bash' not in content and '```' not in content:
-                    self.warnings.append(f"Command missing usage examples: {command_file.name}")
+                    self.warnings.append(
+    f"Command missing usage examples: {command_file.name}",
+)
 
             except Exception as e:
-                self.issues.append(f"Error reading command file {command_file.name}: {e}")
+                self.issues.append(
+    f"Error reading command file {command_file.name}: {e}",
+)
                 self.score -= 2
 
         if command_count == 0:
             self.issues.append("No command files found in commands/ directory")
             self.score -= 10
         else:
-            self.fixes.append(("commands_valid", f"Validated {command_count} command files"))
+            self.fixes.append(
+    ("commands_valid", f"Validated {command_count} command files"),
+)
 
     def _validate_documentation(self):
         """Validate documentation files."""
@@ -326,24 +366,34 @@ class PluginValidator:
                     # Check content quality
                     if doc_file == 'README.md':
                         if len(content) < 1000:
-                            self.warnings.append("README.md seems too short for a comprehensive plugin")
+                            self.warnings.append(
+    "README.md seems too short for a comprehensive plugin",
+)
 
                         # Look for key sections
                         required_sections = ['## Features', '## Usage', '## Installation']
                         for section in required_sections:
                             if section not in content:
-                                self.warnings.append(f"README missing {section} section")
+                                self.warnings.append(
+    f"README missing {section} section",
+)
 
                     elif doc_file == 'CLAUDE.md':
                         if len(content) < 500:
-                            self.warnings.append("CLAUDE.md should contain detailed project instructions")
+                            self.warnings.append(
+    "CLAUDE.md should contain detailed project instructions",
+)
 
                         # Look for key information
                         if '## Project Overview' not in content:
-                            self.warnings.append("CLAUDE.md missing Project Overview section")
+                            self.warnings.append(
+    "CLAUDE.md missing Project Overview section",
+)
 
                 except Exception as e:
-                    self.issues.append(f"Error reading documentation file {doc_file}: {e}")
+                    self.issues.append(
+    f"Error reading documentation file {doc_file}: {e}",
+)
                     self.score -= 5
 
         self.fixes.append(("documentation_checked", "Documentation files validated"))
@@ -395,7 +445,12 @@ class PluginValidator:
             for file_name, version in versions.items():
                 self.warnings.append(f"Version in {file_name}: {version}")
         elif versions:
-            self.fixes.append(("versions_consistent", f"Version consistency verified: {list(versions.values())[0]}"))
+            self.fixes.append(
+    (
+    "versions_consistent",
+    f"Version consistency verified: {list(versions.values())[0]}"),,
+)
+)
 
     def _validate_yaml_frontmatter(self):
         """Validate YAML frontmatter in all markdown files."""
@@ -413,7 +468,9 @@ class PluginValidator:
                     try:
                         frontmatter_end = content.find('---', 3)
                         if frontmatter_end == -1:
-                            self.issues.append(f"Unclosed YAML frontmatter: {md_file.relative_to(self.plugin_dir)}")
+                            self.issues.append(
+    f"Unclosed YAML frontmatter: {md_file.relative_to(self.plugin_dir)}",
+)
                             frontmatter_errors += 1
                             continue
 
@@ -422,16 +479,22 @@ class PluginValidator:
                         valid_files += 1
 
                     except yaml.YAMLError as e:
-                        self.issues.append(f"Invalid YAML in {md_file.relative_to(self.plugin_dir)}: {str(e)[:50]}")
+                        self.issues.append(
+    f"Invalid YAML in {md_file.relative_to(self.plugin_dir)}: {str(e)[:50]}",
+)
                         frontmatter_errors += 1
 
             except Exception:
-                self.warnings.append(f"Could not read file: {md_file.relative_to(self.plugin_dir)}")
+                self.warnings.append(
+    f"Could not read file: {md_file.relative_to(self.plugin_dir)}",
+)
 
         if frontmatter_errors > 0:
             self.score -= min(frontmatter_errors * 2, 15)
         else:
-            self.fixes.append(("yaml_valid", f"YAML frontmatter valid in {valid_files} files"))
+            self.fixes.append(
+    ("yaml_valid", f"YAML frontmatter valid in {valid_files} files"),
+)
 
     def _validate_cross_references(self):
         """Validate cross-references between components."""
@@ -450,18 +513,31 @@ class PluginValidator:
 
                     ref_full_path = self.plugin_dir / ref_path
                     if not ref_full_path.exists():
-                        self.warnings.append(f"Broken reference in README: {ref_path} (linked as '{ref_name}')")
+                        self.warnings.append(
+    f"Broken reference in README: {ref_path} (linked as '{ref_name}')",
+)
 
             except:
                 pass
 
         # Check component count consistency
-        agents_count = len(list((self.plugin_dir / "agents").glob("*.md"))) if (self.plugin_dir / "agents").exists() else 0
-        skills_count = len([d for d in (self.plugin_dir / "skills").iterdir() if d.is_dir() and (d / "SKILL.md").exists()]) if (self.plugin_dir / "skills").exists() else 0
-        commands_count = len(list((self.plugin_dir / "commands").glob("*.md"))) if (self.plugin_dir / "commands").exists() else 0
+        agents_count = len(list((self.plugin_dir / "agents").glob("*.md"))) if 
+            (self.plugin_dir / "agents").exists() else 0
+        skills_count = len([d for d in (self.plugin_dir / "skills").iterdir() if d.is_dir() and 
+            
+            (d / "SKILL.md").exists()]) if (self.plugin_dir / "skills").exists() else 0
+        commands_count = len(list((self.plugin_dir / "commands").glob("*.md"))) if 
+            (self.plugin_dir / "commands").exists() else 0
 
         if agents_count > 0 and skills_count > 0 and commands_count > 0:
-            self.fixes.append(("components_counted", f"Found {agents_count} agents, {skills_count} skills, {commands_count} commands"))
+            self.fixes.append(
+    (
+    "components_counted",
+    f"Found {agents_count} agents,
+    {skills_count} skills,
+    {commands_count} commands"),,
+)
+)
 
     def _validate_documentation_quality(self):
         """Validate documentation quality and completeness."""
@@ -496,11 +572,17 @@ class PluginValidator:
             quality_score = (found_indicators / len(quality_indicators)) * 100
 
             if quality_score >= 80:
-                self.fixes.append(("high_quality_docs", f"Documentation quality: {quality_score:.0f}%"))
+                self.fixes.append(
+    ("high_quality_docs", f"Documentation quality: {quality_score:.0f}%"),
+)
             elif quality_score >= 60:
-                self.warnings.append(f"Documentation quality could be improved: {quality_score:.0f}%")
+                self.warnings.append(
+    f"Documentation quality could be improved: {quality_score:.0f}%",
+)
             else:
-                self.warnings.append(f"Documentation needs improvement: {quality_score:.0f}%")
+                self.warnings.append(
+    f"Documentation needs improvement: {quality_score:.0f}%",
+)
 
         except:
             pass
@@ -510,7 +592,9 @@ class PluginValidator:
         # Check for very large files
         for file_path in self.plugin_dir.rglob("*.md"):
             if file_path.stat().st_size > 1024 * 1024:  # > 1MB
-                self.warnings.append(f"Large file may impact performance: {file_path.relative_to(self.plugin_dir)}")
+                self.warnings.append(
+    f"Large file may impact performance: {file_path.relative_to(self.plugin_dir)}",
+)
 
         # Check for potential sensitive information
         sensitive_patterns = [
@@ -527,7 +611,9 @@ class PluginValidator:
 
                 for pattern in sensitive_patterns:
                     if re.search(pattern, content, re.IGNORECASE):
-                        self.warnings.append(f"Potential sensitive information in {file_path.relative_to(self.plugin_dir)}")
+                        self.warnings.append(
+    f"Potential sensitive information in {file_path.relative_to(self.plugin_dir)}",
+)
                         break
 
             except:
@@ -581,7 +667,12 @@ class PluginValidator:
         else:
             summary.append("Plugin has critical issues that must be addressed")
 
-        summary.append(f"Quality Score: {self.score}/100 ({len(self.issues)} issues, {len(self.warnings)} warnings)")
+        summary.append(
+    f"Quality Score: {self.score}/100 (
+    {len(self.issues)} issues,
+    {len(self.warnings)} warnings)",,
+)
+)
 
         if self.issues:
             summary.append(f"\nCritical Issues ({len(self.issues)}):")
@@ -629,10 +720,23 @@ class PluginValidator:
 def main():
     """Command-line interface."""
     parser = argparse.ArgumentParser(description='Validate Autonomous Agent Plugin')
-    parser.add_argument('--dir', default='.', help='Plugin directory path (default: current directory)')
-    parser.add_argument('--output', help='Output file for detailed report (default: auto-generated)')
+    parser.add_argument(
+    '--dir',
+    default='.',
+    help='Plugin directory path (default: current directory)',
+)
+    parser.add_argument(
+    '--output',
+    help='Output file for detailed report (default: auto-generated)',
+)
     parser.add_argument('--quiet', action='store_true', help='Only show summary')
-    parser.add_argument('--format', choices=['text', 'json'], default='text', help='Output format')
+    parser.add_argument(
+    '--format',
+    choices=['text',
+    'json'],
+    default='text',
+    help='Output format',
+)
 
     args = parser.parse_args()
 

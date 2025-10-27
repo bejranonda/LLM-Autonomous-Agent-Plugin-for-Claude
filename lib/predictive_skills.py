@@ -92,7 +92,11 @@ class PredictiveSkillSelector:
         except Exception as e:
             print(f"Error writing {file_path}: {e}", file=sys.stderr)
 
-    def extract_context_features(self, task_context: Dict[str, Any]) -> Dict[str, float]:
+    def extract_context_features(
+    self,
+    task_context: Dict[str,
+    Any]) -> Dict[str, float]:,
+)
         """
         Extract numerical features from task context for ML-based prediction.
 
@@ -113,7 +117,8 @@ class PredictiveSkillSelector:
 
         # Technology maturity (based on common tech stacks)
         mature_tech = {"python", "javascript", "java", "go", "rust", "react", "vue", "django", "flask"}
-        tech_maturity_score = sum(1 for tech in languages + frameworks if tech.lower() in mature_tech)
+        tech_maturity_score = sum(1 for tech in languages + frameworks if 
+            tech.lower() in mature_tech)
         features["tech_maturity"] = tech_maturity_score / max(1, len(languages) + len(frameworks))
 
         # Project type features
@@ -121,7 +126,8 @@ class PredictiveSkillSelector:
         features["is_web_app"] = 1.0 if "web" in project_type else 0.0
         features["is_api"] = 1.0 if "api" in project_type else 0.0
         features["is_library"] = 1.0 if "lib" in project_type else 0.0
-        features["is_cli"] = 1.0 if "cli" in project_type or "command" in project_type else 0.0
+        features["is_cli"] = 1.0 if "cli" in project_type or 
+            "command" in project_type else 0.0
 
         # Complexity features
         features["estimated_complexity"] = self._extract_complexity_score(task_context)
@@ -129,8 +135,10 @@ class PredictiveSkillSelector:
         features["lines_of_code"] = min(1.0, task_context.get("lines_changed", 0) / 10000)
 
         # Security and risk features
-        features["security_critical"] = 1.0 if task_context.get("security_critical", False) else 0.0
-        features["performance_critical"] = 1.0 if task_context.get("performance_critical", False) else 0.0
+        features["security_critical"] = 1.0 if 
+            task_context.get("security_critical", False) else 0.0
+        features["performance_critical"] = 1.0 if 
+            task_context.get("performance_critical", False) else 0.0
 
         # Team features
         team_size = task_context.get("team_size", "unknown").lower()
@@ -170,7 +178,11 @@ class PredictiveSkillSelector:
         else:
             return 0.5  # Default to medium
 
-    def train_skill_prediction_model(self, patterns: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def train_skill_prediction_model(
+    self,
+    patterns: List[Dict[str,
+    Any]]) -> Dict[str, Any]:,
+)
         """
         Train a simple ML model for skill prediction based on historical patterns.
 
@@ -248,7 +260,12 @@ class PredictiveSkillSelector:
             "negative_count": len(negative_indices)
         }
 
-    def predict_skills_for_context(self, task_context: Dict[str, Any], top_k: int = 5) -> List[Dict[str, Any]]:
+    def predict_skills_for_context(
+    self,
+    task_context: Dict[str,
+    Any],
+    top_k: int = 5) -> List[Dict[str, Any]]:,
+)
         """
         Predict optimal skills for a given task context.
 
@@ -294,14 +311,23 @@ class PredictiveSkillSelector:
                 "probability": adjusted_probability,
                 "confidence": min(1.0, max(0.0, adjusted_probability)),
                 "model_confidence": self._calculate_model_confidence(model),
-                "reasoning": self._generate_prediction_reasoning(skill_name, features, model)
+                "reasoning": self._generate_prediction_reasoning(
+    skill_name,
+    features,
+    model,
+)
             })
 
         # Sort by probability and return top k
         skill_predictions.sort(key=lambda x: x["probability"], reverse=True)
         return skill_predictions[:top_k]
 
-    def _pattern_based_prediction(self, task_context: Dict[str, Any], top_k: int = 5) -> List[Dict[str, Any]]:
+    def _pattern_based_prediction(
+    self,
+    task_context: Dict[str,
+    Any],
+    top_k: int = 5) -> List[Dict[str, Any]]:,
+)
         """Fallback prediction using pattern matching."""
         patterns_db = self._read_json(self.enhanced_patterns_file)
         patterns = patterns_db.get("patterns", [])
@@ -350,14 +376,23 @@ class PredictiveSkillSelector:
                 "probability": avg_score,
                 "confidence": confidence,
                 "model_confidence": 0.7,  # Lower confidence for pattern-based prediction
-                "reasoning": f"Found in {scores['count']} similar patterns with average similarity {avg_score:.2f}",
+                "reasoning": f"Found in 
+{
+    scores['count']} similar patterns with average similarity {avg_score:.2f}",
+}
                 "based_on_patterns": scores["patterns"][:3]  # Top 3 contributing patterns
             })
 
         predictions.sort(key=lambda x: x["probability"], reverse=True)
         return predictions[:top_k]
 
-    def _calculate_feature_similarity(self, features1: Dict[str, float], features2: Dict[str, float]) -> float:
+    def _calculate_feature_similarity(
+    self,
+    features1: Dict[str,
+    float],
+    features2: Dict[str,
+    float]) -> float:,
+)
         """Calculate cosine similarity between feature vectors."""
         all_features = set(features1.keys()) | set(features2.keys())
 
@@ -407,7 +442,14 @@ class PredictiveSkillSelector:
 
         return balance * sample_factor
 
-    def _generate_prediction_reasoning(self, skill_name: str, features: Dict[str, float], model: Dict[str, Any]) -> str:
+    def _generate_prediction_reasoning(
+    self,
+    skill_name: str,
+    features: Dict[str,
+    float],
+    model: Dict[str,
+    Any]) -> str:,
+)
         """Generate human-readable reasoning for skill prediction."""
         reasoning_parts = []
 
@@ -417,7 +459,9 @@ class PredictiveSkillSelector:
 
         if len(weights) == len(feature_names):
             # Get top contributing features
-            feature_contributions = list(zip(feature_names, weights, [features.get(name, 0.0) for name in feature_names]))
+            feature_contributions = list(zip(feature_names, weights, [features.get(name, 0.0) for name in 
+                
+                feature_names]))
             feature_contributions.sort(key=lambda x: abs(x[1] * x[2]), reverse=True)
 
             top_features = feature_contributions[:3]
@@ -431,11 +475,19 @@ class PredictiveSkillSelector:
         success_examples = model.get("positive_count", 0)
 
         if total_examples > 0:
-            reasoning_parts.append(f"Based on {success_examples} successful uses out of {total_examples} examples")
+            reasoning_parts.append(
+    f"Based on {success_examples} successful uses out of {total_examples} examples",
+)
 
-        return "; ".join(reasoning_parts) if reasoning_parts else "Based on pattern analysis"
+        return "; ".join(
+    reasoning_parts) if reasoning_parts else "Based on pattern analysis",
+)
 
-    def update_skill_predictions(self, new_patterns: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def update_skill_predictions(
+    self,
+    new_patterns: List[Dict[str,
+    Any]]) -> Dict[str, Any]:,
+)
         """
         Update skill prediction models with new patterns.
 
@@ -481,7 +533,13 @@ class PredictiveSkillSelector:
                 "patterns_available": len(all_patterns)
             }
 
-    def _calculate_prediction_accuracy(self, patterns: List[Dict[str, Any]], model: Dict[str, Any]) -> float:
+    def _calculate_prediction_accuracy(
+    self,
+    patterns: List[Dict[str,
+    Any]],
+    model: Dict[str,
+    Any]) -> float:,
+)
         """Calculate prediction accuracy using cross-validation."""
         if len(patterns) < 10:
             return 0.0  # Not enough data for meaningful accuracy calculation
@@ -509,7 +567,8 @@ class PredictiveSkillSelector:
 
             # Predict skills
             predicted_skills = self.predict_skills_for_context(context, top_k=5)
-            predicted_skill_names = {pred["skill"] for pred in predicted_skills if pred["confidence"] > 0.5}
+            predicted_skill_names = {pred["skill"] for pred in predicted_skills if 
+                pred["confidence"] > 0.5}
 
             # Calculate precision and recall
             if predicted_skill_names:
@@ -525,7 +584,11 @@ class PredictiveSkillSelector:
 
         return correct_predictions / max(1, total_predictions)
 
-    def analyze_skill_combinations(self, patterns: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def analyze_skill_combinations(
+    self,
+    patterns: List[Dict[str,
+    Any]]) -> Dict[str, Any]:,
+)
         """
         Analyze effective skill combinations from historical patterns.
 
@@ -579,7 +642,11 @@ class PredictiveSkillSelector:
             "insights": self._generate_combination_insights(combinations)
         }
 
-    def _generate_combination_insights(self, combinations: List[Dict[str, Any]]) -> List[str]:
+    def _generate_combination_insights(
+    self,
+    combinations: List[Dict[str,
+    Any]]) -> List[str]:,
+)
         """Generate insights about skill combinations."""
         insights = []
 
@@ -588,16 +655,26 @@ class PredictiveSkillSelector:
 
         # Most effective combination
         best_combo = combinations[0]
-        insights.append(f"Most effective combination: {' + '.join(best_combo['skills'])} with {best_combo['effectiveness_score']:.2f} effectiveness score")
+        insights.append(
+    f"Most effective combination: {' + '.join(
+    best_combo['skills'])} with {best_combo['effectiveness_score']:.2f} effectiveness score",,
+)
+)
 
         # Most frequently used
         most_used = max(combinations, key=lambda x: x["usage_count"])
-        insights.append(f"Most frequently used: {' + '.join(most_used['skills'])} used {most_used['usage_count']} times")
+        insights.append(
+    f"Most frequently used: {' + '.join(
+    most_used['skills'])} used {most_used['usage_count']} times",,
+)
+)
 
         # High success rate combinations
         high_success = [c for c in combinations if c["success_rate"] >= 0.9]
         if high_success:
-            insights.append(f"{len(high_success)} combinations achieve 90%+ success rates")
+            insights.append(
+    f"{len(high_success)} combinations achieve 90%+ success rates",
+)
 
         # Common skill pairs
         skill_pairs = defaultdict(int)
@@ -610,11 +687,19 @@ class PredictiveSkillSelector:
 
         if skill_pairs:
             top_pair = max(skill_pairs.items(), key=lambda x: x[1])
-            insights.append(f"Most common skill pair: {' + '.join(top_pair[0])} used together {top_pair[1]} times")
+            insights.append(
+    f"Most common skill pair: {' + '.join(
+    top_pair[0])} used together {top_pair[1]} times",,
+)
+)
 
         return insights
 
-    def get_skill_recommendations_report(self, task_context: Dict[str, Any]) -> Dict[str, Any]:
+    def get_skill_recommendations_report(
+    self,
+    task_context: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """
         Generate comprehensive skill recommendation report.
 
@@ -648,13 +733,19 @@ class PredictiveSkillSelector:
             "context_insights": context_insights,
             "risk_assessment": risk_assessment,
             "meta_information": {
-                "prediction_confidence": self._calculate_overall_confidence(primary_predictions),
+                "prediction_confidence": self._calculate_overall_confidence(
+    primary_predictions),,
+)
                 "training_data_size": self._get_training_data_size(),
                 "last_model_update": self._get_last_model_update()
             }
         }
 
-    def _get_alternative_predictions(self, task_context: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def _get_alternative_predictions(
+    self,
+    task_context: Dict[str,
+    Any]) -> List[Dict[str, Any]]:,
+)
         """Get alternative skill combinations for the same task."""
         # Modify context slightly to get different perspectives
         alternatives = []
@@ -694,19 +785,27 @@ class PredictiveSkillSelector:
         frameworks = task_context.get("frameworks", [])
 
         if len(languages) > 3:
-            insights.append("Multi-language project detected - consider integration-focused skills")
+            insights.append(
+    "Multi-language project detected - consider integration-focused skills",
+)
 
         if len(frameworks) > 2:
-            insights.append("Complex framework stack - prioritize framework-agnostic skills")
+            insights.append(
+    "Complex framework stack - prioritize framework-agnostic skills",
+)
 
         # Complexity insights
         complexity = task_context.get("complexity", "medium").lower()
         if complexity in ["complex", "expert"]:
-            insights.append("High complexity task - ensure comprehensive skill coverage")
+            insights.append(
+    "High complexity task - ensure comprehensive skill coverage",
+)
 
         # Security insights
         if task_context.get("security_critical", False):
-            insights.append("Security-critical task - prioritize security-focused skills")
+            insights.append(
+    "Security-critical task - prioritize security-focused skills",
+)
 
         # Performance insights
         if task_context.get("performance_critical", False):
@@ -714,7 +813,13 @@ class PredictiveSkillSelector:
 
         return insights
 
-    def _assess_skill_risks(self, predictions: List[Dict[str, Any]], task_context: Dict[str, Any]) -> Dict[str, Any]:
+    def _assess_skill_risks(
+    self,
+    predictions: List[Dict[str,
+    Any]],
+    task_context: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """Assess potential risks with recommended skills."""
         risks = []
 
@@ -728,12 +833,17 @@ class PredictiveSkillSelector:
                     "skill": skill,
                     "risk_type": "low_confidence",
                     "severity": "medium",
-                    "description": f"Low confidence ({confidence:.2f}) in {skill} prediction",
+                    "description": f"Low confidence (
+    {confidence:.2f}) in {skill} prediction",,
+)
                     "mitigation": "Consider alternative skills or gather more context"
                 })
 
             # Check for skill conflicts
-            if skill in ["testing", "test-engineer"] and task_context.get("security_critical", False):
+            if skill in ["testing", "test-engineer"] and task_context.get(
+    "security_critical",
+    False):,
+)
                 risks.append({
                     "skill": skill,
                     "risk_type": "context_mismatch",
@@ -796,14 +906,27 @@ class PredictiveSkillSelector:
 def main():
     """Command-line interface for predictive skill selector."""
     parser = argparse.ArgumentParser(description='Predictive Skill Selection System')
-    parser.add_argument('--dir', default='.claude-patterns', help='Patterns directory path')
+    parser.add_argument(
+    '--dir',
+    default='.claude-patterns',
+    help='Patterns directory path',
+)
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
 
     # Predict action
     predict_parser = subparsers.add_parser('predict', help='Predict skills for context')
-    predict_parser.add_argument('--context', required=True, help='Task context JSON string')
-    predict_parser.add_argument('--top-k', type=int, default=5, help='Number of predictions')
+    predict_parser.add_argument(
+    '--context',
+    required=True,
+    help='Task context JSON string',
+)
+    predict_parser.add_argument(
+    '--top-k',
+    type=int,
+    default=5,
+    help='Number of predictions',
+)
 
     # Update models action
     update_parser = subparsers.add_parser('update', help='Update prediction models')
@@ -813,7 +936,11 @@ def main():
 
     # Report action
     report_parser = subparsers.add_parser('report', help='Generate comprehensive report')
-    report_parser.add_argument('--context', required=True, help='Task context JSON string')
+    report_parser.add_argument(
+    '--context',
+    required=True,
+    help='Task context JSON string',
+)
 
     args = parser.parse_args()
 
@@ -848,7 +975,10 @@ def main():
             print(json.dumps(report, indent=2))
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(
+    json.dumps({'success': False, 'error': str(e)}, indent=2),
+    file=sys.stderr,
+)
         sys.exit(1)
 
 

@@ -39,7 +39,9 @@ class AssessmentBackfill:
         print(f"   Total assessments: {summary['total_assessments']}")
         print(f"   Commands with data: {len(summary['command_performance'])}")
         for cmd, metrics in summary['command_performance'].items():
-            print(f"   • {cmd}: {metrics['total_executions']} executions (avg: {metrics['avg_score']:.1f}/100)")
+            print(
+    f"   • {cmd}: {metrics['total_executions']} executions (avg: {metrics['avg_score']:.1f}/100)",
+)
 
     def _backfill_claude_plugin_validation(self) -> int:
         """Backfill from CLAUDE_PLUGIN_VALIDATION_REPORT.md"""
@@ -79,8 +81,10 @@ class AssessmentBackfill:
                     "commands": 17,
                     "python_utilities": 15
                 },
-                "installation_readiness": "ready" if score >= 90 else "needs_improvement",
-                "marketplace_compatibility": "compatible" if score >= 90 else "conditional"
+                "installation_readiness": "ready" if 
+                    score >= 90 else "needs_improvement",
+                "marketplace_compatibility": "compatible" if 
+                    score >= 90 else "conditional"
             },
             "issues_found": self._extract_issues_from_report(content),
             "recommendations": self._extract_recommendations_from_report(content),
@@ -441,8 +445,12 @@ class AssessmentBackfill:
             if 'Recommendations' in line:
                 in_recommendations_section = True
                 continue
-            elif in_recommendations_section and line.strip() and not line.startswith('```'):
-                if line.startswith('•') or line.startswith('-') or line.startswith('*') or line[0].isdigit():
+            elif in_recommendations_section and line.strip(
+    ) and not line.startswith('```'):,
+)
+                if line.startswith(
+    '•') or line.startswith('-') or line.startswith('*') or line[0].isdigit():,
+)
                     recommendations.append(line.strip())
             elif in_recommendations_section and ('---' in line or 'Conclusion' in line):
                 break
@@ -457,7 +465,9 @@ def main():
     backfill = AssessmentBackfill()
     backfill.backfill_all_missing_assessments()
 
-    print("\n🎉 Integration gap fixed! All assessment data now stored in pattern database.")
+    print(
+    "\n🎉 Integration gap fixed! All assessment data now stored in pattern database.",
+)
     print("📊 Dashboard will show complete real-time metrics for all commands.")
 
 if __name__ == "__main__":

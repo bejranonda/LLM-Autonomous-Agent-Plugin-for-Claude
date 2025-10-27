@@ -87,7 +87,12 @@ class ValidationHookManager:
             self.post_hooks[operation] = []
         self.post_hooks[operation].append(hook)
 
-    def execute_pre_validation(self, operation: str, context: Dict[str, Any]) -> Dict[str, Any]:
+    def execute_pre_validation(
+    self,
+    operation: str,
+    context: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """Execute all pre-operation validation hooks"""
         validation_result = {
             "operation": operation,
@@ -107,7 +112,9 @@ class ValidationHookManager:
         # Check if operation has registered hooks
         if operation not in self.pre_hooks:
             validation_result["overall_passed"] = True
-            validation_result["recommendations"].append("No pre-validation hooks registered for this operation")
+            validation_result["recommendations"].append(
+    "No pre-validation hooks registered for this operation",
+)
             return validation_result
 
         # Create backup before operation
@@ -149,7 +156,12 @@ class ValidationHookManager:
 
         return validation_result
 
-    def execute_post_validation(self, operation: str, context: Dict[str, Any]) -> Dict[str, Any]:
+    def execute_post_validation(
+    self,
+    operation: str,
+    context: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """Execute all post-operation validation hooks"""
         validation_result = {
             "operation": operation,
@@ -170,7 +182,9 @@ class ValidationHookManager:
         # Check if operation has registered hooks
         if operation not in self.post_hooks:
             validation_result["overall_passed"] = True
-            validation_result["recommendations"].append("No post-validation hooks registered for this operation")
+            validation_result["recommendations"].append(
+    "No post-validation hooks registered for this operation",
+)
             return validation_result
 
         # Get pre-validation context for comparison
@@ -204,7 +218,8 @@ class ValidationHookManager:
                     validation_result["issues_detected"].extend(hook_result["issues"])
 
         # Attempt auto-recovery for critical issues
-        if validation_result["issues_detected"] and validation_result["critical_failures"] > 0:
+        if validation_result["issues_detected"] and 
+            validation_result["critical_failures"] > 0:
             recovery_results = self._attempt_auto_recovery(validation_result["issues_detected"])
             validation_result["auto_recovery_attempted"] = True
             validation_result["auto_recovery_results"] = recovery_results
@@ -226,7 +241,12 @@ class ValidationHookManager:
 
         return validation_result
 
-    def wrap_operation_with_validation(self, operation: str, operation_func: Callable, **kwargs):
+    def wrap_operation_with_validation(
+    self,
+    operation: str,
+    operation_func: Callable,
+    **kwargs):,
+)
         """
         Wrap an operation function with automatic validation
 
@@ -421,18 +441,25 @@ class ValidationHookManager:
 
             if current_score < pre_score:
                 result["success"] = False
-                result["issues"].append(f"Command integrity degraded: {pre_score} → {current_score}")
+                result["issues"].append(
+    f"Command integrity degraded: {pre_score} → {current_score}",
+)
 
         # Check for new missing commands
         if validation["missing_commands"]:
             result["success"] = False
             result["issues"].extend([
-                f"Missing command: {cmd['command']}" for cmd in validation["missing_commands"]
+                f"Missing command: {cmd['command']}" for cmd in 
+                    validation["missing_commands"]
             ])
 
         return result
 
-    def _validate_command_creation_prerequisites(self, context: Dict[str, Any]) -> Dict[str, Any]:
+    def _validate_command_creation_prerequisites(
+    self,
+    context: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """Validate prerequisites for command creation"""
         category = context.get("category")
         name = context.get("name")
@@ -452,7 +479,9 @@ class ValidationHookManager:
         # Validate category exists
         if category and not Path(f"commands/{category}").exists():
             result["success"] = False
-            result["issues"].append(f"Command category does not exist: commands/{category}/")
+            result["issues"].append(
+    f"Command category does not exist: commands/{category}/",
+)
 
         return result
 
@@ -492,7 +521,9 @@ class ValidationHookManager:
 
                 if len(content) < 100:
                     result["success"] = False
-                    result["issues"].append(f"Agent file seems too short: {len(content)} characters")
+                    result["issues"].append(
+    f"Agent file seems too short: {len(content)} characters",
+)
 
                 # Check for YAML frontmatter
                 if not content.startswith('---'):
@@ -550,10 +581,22 @@ class ValidationHookManager:
 
         # Get current inventory and compare with pre-operation
         current_inventory = {
-            "commands": [str(p.relative_to(self.plugin_dir)) for p in self.plugin_dir.glob("commands/**/*.md")],
-            "agents": [str(p.relative_to(self.plugin_dir)) for p in self.plugin_dir.glob("agents/**/*.md")],
-            "skills": [str(p.relative_to(self.plugin_dir)) for p in self.plugin_dir.glob("skills/**/SKILL.md")],
-            "configs": [str(p.relative_to(self.plugin_dir)) for p in self.plugin_dir.glob(".claude-plugin/**/*.json")]
+            "commands": [str(
+    p.relative_to(self.plugin_dir)) for p in self.plugin_dir.glob("commands/**/*.md")],,
+)
+            "agents": [str(
+    p.relative_to(self.plugin_dir)) for p in self.plugin_dir.glob("agents/**/*.md")],,
+)
+            "skills": [str(
+    p.relative_to(
+    self.plugin_dir)) for p in self.plugin_dir.glob("skills/**/SKILL.md")],,,
+)
+)
+            "configs": [str(
+    p.relative_to(
+    self.plugin_dir)) for p in self.plugin_dir.glob(".claude-plugin/**/*.json")],,
+)
+)
         }
 
         # Find missing critical files
@@ -590,7 +633,9 @@ class ValidationHookManager:
                 required_fields = ["name", "version", "description"]
                 for field in required_fields:
                     if field not in plugin_data:
-                        result["issues"].append(f"Plugin missing required field: {field}")
+                        result["issues"].append(
+    f"Plugin missing required field: {field}",
+)
 
             except json.JSONDecodeError:
                 result["success"] = False
@@ -637,38 +682,61 @@ class ValidationHookManager:
             try:
                 # Create validation results structure for recovery manager
                 validation_results = {
-                    "missing_commands": [{"command": cmd.replace(".md", "").replace("commands/", "/").replace("/", ":")} for cmd in missing_commands]
+                    "missing_commands": [{"command": cmd.replace(
+    ".md",
+    "").replace("commands/",
+    "/").replace("/",
+    ":")} for cmd in missing_commands],
+)
                 }
 
                 recovery = self.recovery_manager.recover_missing_components(validation_results)
                 recovery_results["recovery_details"].append(recovery)
                 recovery_results["recovered_components"] = recovery["recovery_summary"]["total_recovered"]
                 recovery_results["failed_recoveries"] = recovery["recovery_summary"]["total_failed"]
-                recovery_results["success"] = recovery["recovery_summary"]["total_recovered"] > 0
+                recovery_results["success"] = recovery["recovery_summary"]["total_recovered"] > 
+                    
+                    0
 
             except Exception as e:
                 recovery_results["error"] = str(e)
 
         return recovery_results
 
-    def _generate_pre_validation_recommendations(self, validation_result: Dict[str, Any]) -> List[str]:
+    def _generate_pre_validation_recommendations(
+    self,
+    validation_result: Dict[str,
+    Any]) -> List[str]:,
+)
         """Generate recommendations based on pre-validation results"""
         recommendations = []
 
         if not validation_result["overall_passed"]:
             if validation_result["critical_failures"] > 0:
-                recommendations.append("[CRITICAL] Critical validation failures detected. Operation aborted.")
-                recommendations.append("Fix critical issues before proceeding with the operation.")
+                recommendations.append(
+    "[CRITICAL] Critical validation failures detected. Operation aborted.",
+)
+                recommendations.append(
+    "Fix critical issues before proceeding with the operation.",
+)
             else:
-                recommendations.append("[WARNING] Non-critical validation failures detected.")
+                recommendations.append(
+    "[WARNING] Non-critical validation failures detected.",
+)
                 recommendations.append("Proceed with caution and monitor for issues.")
 
         if not validation_result["backup_created"]:
-            recommendations.append("[RECOMMENDATION] Consider manual backup before operation.")
+            recommendations.append(
+    "[RECOMMENDATION] Consider manual backup before operation.",
+)
 
         return recommendations
 
-    def _generate_post_validation_recommendations(self, validation_result: Dict[str, Any]) -> List[str]:
+    def _generate_post_validation_recommendations(
+    self,
+    validation_result: Dict[str,
+    Any]) -> List[str]:,
+)
         """Generate recommendations based on post-validation results"""
         recommendations = []
 
@@ -679,15 +747,25 @@ class ValidationHookManager:
                 if validation_result["auto_recovery_attempted"]:
                     auto_recovery = validation_result["auto_recovery_results"]
                     if auto_recovery.get("success", False):
-                        recommendations.append(f"[RECOVERED] Auto-recovery restored {auto_recovery['recovered_components']} components.")
+                        recommendations.append(
+    f"[RECOVERED] Auto-recovery restored {auto_recovery['recovered_components']} components.",
+)
                     else:
-                        recommendations.append("[RECOVERY FAILED] Auto-recovery failed. Manual intervention required.")
-                        recommendations.append("Run manual recovery commands to restore missing components.")
+                        recommendations.append(
+    "[RECOVERY FAILED] Auto-recovery failed. Manual intervention required.",
+)
+                        recommendations.append(
+    "Run manual recovery commands to restore missing components.",
+)
                 else:
-                    recommendations.append("[ACTION REQUIRED] Run recovery system to restore missing components.")
+                    recommendations.append(
+    "[ACTION REQUIRED] Run recovery system to restore missing components.",
+)
 
         if validation_result["hooks_failed"] > 0:
-            recommendations.append(f"[INFO] {validation_result['hooks_failed']} validation hooks failed.")
+            recommendations.append(
+    f"[INFO] {validation_result['hooks_failed']} validation hooks failed.",
+)
 
         return recommendations
 

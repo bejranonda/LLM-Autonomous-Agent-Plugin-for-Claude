@@ -130,7 +130,9 @@ def test_validation_commands():
             missing_commands.append(cmd_file)
 
     print(f"  Expected Validation Commands: {len(validation_commands)}")
-    print(f"  Found Validation Commands: {len(validation_commands) - len(missing_commands)}")
+    print(
+    f"  Found Validation Commands: {len(validation_commands) - len(missing_commands)}",
+)
     print(f"  Missing Validation Commands: {len(missing_commands)}")
 
     if missing_commands:
@@ -215,7 +217,9 @@ def main():
         print("\n[SUCCESS] All prevention system tests passed!")
         return 0
     else:
-        print(f"\n[WARNING] {len(results) - passed} tests failed. Review the issues above.")
+        print(
+    f"\n[WARNING] {len(results) - passed} tests failed. Review the issues above.",
+)
         return 1
 
 if __name__ == "__main__":

@@ -3,7 +3,8 @@
 Pattern Storage System for Autonomous Claude Agent Plugin
 
 Manages pattern learning data using JSON files. Stores successful task patterns,
-retrieves similar patterns for context-aware recommendations, and tracks usage statistics.
+retrieves similar patterns for context-aware recommendations, and 
+    tracks usage statistics.
 """
 
 import json
@@ -46,7 +47,9 @@ class PatternStorage:
         Initialize pattern storage.
 
         Args:
-            patterns_dir: Directory path for storing patterns (default: .claude-patterns)
+            patterns_dir: Directory path for storing patterns (
+    default: .claude-patterns,
+)
         """
         self.patterns_dir = Path(patterns_dir)
         self.patterns_file = self.patterns_dir / "patterns.json"
@@ -79,7 +82,10 @@ class PatternStorage:
         except FileNotFoundError:
             return []
         except json.JSONDecodeError as e:
-            print(f"Error: Malformed JSON in {self.patterns_file}: {e}", file=sys.stderr)
+            print(
+    f"Error: Malformed JSON in {self.patterns_file}: {e}",
+    file=sys.stderr,
+)
             return []
         except Exception as e:
             print(f"Error reading patterns: {e}", file=sys.stderr)
@@ -115,7 +121,12 @@ class PatternStorage:
             pattern_id of the stored pattern
 
         Required pattern fields:
-            - task_type: Type of task (feature_implementation, bug_fix, refactoring, testing)
+            - task_type: Type of task (
+    feature_implementation,
+    bug_fix,
+    refactoring,
+    testing,
+)
             - context: Natural language description of task context
             - skills_used: List of skills used
             - approach: Detailed description of approach taken
@@ -131,10 +142,16 @@ class PatternStorage:
         # Validate task_type
         valid_task_types = ['feature_implementation', 'bug_fix', 'refactoring', 'testing']
         if pattern['task_type'] not in valid_task_types:
-            raise ValueError(f"Invalid task_type. Must be one of: {', '.join(valid_task_types)}")
+            raise ValueError(
+    f"Invalid task_type. Must be one of: {',
+    '.join(valid_task_types)}",
+)
 
         # Validate quality_score
-        if not isinstance(pattern['quality_score'], (int, float)) or not (0 <= pattern['quality_score'] <= 1):
+        if not isinstance(
+    pattern['quality_score'],
+    (int, float)) or not (0 <= pattern['quality_score'] <= 1):,
+)
             raise ValueError("quality_score must be a number between 0 and 1")
 
         # Generate pattern_id if not provided
@@ -293,14 +310,20 @@ class PatternStorage:
             'total_patterns': len(patterns),
             'average_quality': total_quality / len(patterns),
             'task_type_distribution': task_types,
-            'most_used_skills': dict(sorted(skills_usage.items(), key=lambda x: x[1], reverse=True)[:10])
+            'most_used_skills': dict(
+    sorted(skills_usage.items(), key=lambda x: x[1], reverse=True)[:10],
+)
         }
 
 
 def main():
     """Command-line interface for pattern storage."""
     parser = argparse.ArgumentParser(description='Pattern Storage System')
-    parser.add_argument('--dir', default='.claude-patterns', help='Patterns directory path')
+    parser.add_argument(
+    '--dir',
+    default='.claude-patterns',
+    help='Patterns directory path',
+)
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
 
@@ -310,16 +333,34 @@ def main():
 
     # Retrieve action
     retrieve_parser = subparsers.add_parser('retrieve', help='Retrieve patterns')
-    retrieve_parser.add_argument('--context', required=True, help='Search context/keywords')
+    retrieve_parser.add_argument(
+    '--context',
+    required=True,
+    help='Search context/keywords',
+)
     retrieve_parser.add_argument('--task-type', help='Filter by task type')
-    retrieve_parser.add_argument('--min-quality', type=float, default=0.8, help='Minimum quality score')
+    retrieve_parser.add_argument(
+    '--min-quality',
+    type=float,
+    default=0.8,
+    help='Minimum quality score',
+)
     retrieve_parser.add_argument('--limit', type=int, default=5, help='Maximum results')
 
     # Update action
     update_parser = subparsers.add_parser('update', help='Update pattern usage')
     update_parser.add_argument('--pattern-id', required=True, help='Pattern ID')
-    update_parser.add_argument('--success', action='store_true', help='Mark as successful usage')
-    update_parser.add_argument('--failure', dest='success', action='store_false', help='Mark as failed usage')
+    update_parser.add_argument(
+    '--success',
+    action='store_true',
+    help='Mark as successful usage',
+)
+    update_parser.add_argument(
+    '--failure',
+    dest='success',
+    action='store_false',
+    help='Mark as failed usage',
+)
     update_parser.set_defaults(success=True)
 
     # Statistics action
@@ -357,7 +398,10 @@ def main():
             print(json.dumps(stats, indent=2))
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(
+    json.dumps({'success': False, 'error': str(e)}, indent=2),
+    file=sys.stderr,
+)
         sys.exit(1)
 
 

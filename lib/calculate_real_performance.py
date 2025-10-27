@@ -141,7 +141,8 @@ def calculate_quality_impact(assessments, model_name):
 def calculate_performance_index(speed_metrics, quality_metrics):
     """Calculate overall performance index"""
 
-    # Performance Index = (Speed Score × 40%) + (Quality Impact × 40%) + (Success Rate × 20%)
+# Performance Index = (Speed Score × 40%) + (Quality Impact × 40%) + (Success Rate ×
+# 20%)
     speed_score = speed_metrics['speed_score']
     quality_score = quality_metrics['quality_impact_score']
 
@@ -229,17 +230,24 @@ def main():
         # Display results
         print(f"Total Assessments: {total}")
         print(f"Success Rate: {success_rate:.1f}%")
-        print(f"Average Task Duration: {speed_metrics['avg_task_duration']:.1f} minutes")
+        print(
+    f"Average Task Duration: {speed_metrics['avg_task_duration']:.1f} minutes",
+)
         print(f"Speed Score: {speed_metrics['speed_score']:.1f}/100")
         print(f"Quality Improvements: {quality_metrics['quality_improvements']} points")
-        print(f"Quality Impact Score: {quality_metrics['quality_impact_score']:.1f}/100")
+        print(
+    f"Quality Impact Score: {quality_metrics['quality_impact_score']:.1f}/100",
+)
         print(f"Overall Performance Index: {performance_index}/100")
 
         # Show task type breakdown
         if speed_metrics['tasks_by_type']:
             print("\nTask Performance by Type:")
             for task_type, metrics in speed_metrics['tasks_by_type'].items():
-                print(f"  {task_type}: {metrics['count']} tasks, {metrics['avg_duration_minutes']}min avg")
+                print(
+    f"  {task_type}: {metrics['count']} tasks,
+    {metrics['avg_duration_minutes']}min avg",
+)
 
     # Update model performance file
     update_model_performance_file(performance_results)
@@ -265,7 +273,10 @@ def update_model_performance_file(performance_results):
                 'performance_index': results['performance_index'],
                 'speed_score': results['speed_metrics']['speed_score'],
                 'quality_impact_score': results['quality_metrics']['quality_impact_score'],
-                'avg_task_duration_minutes': round(results['speed_metrics']['avg_task_duration'], 1),
+                'avg_task_duration_minutes': round(
+    results['speed_metrics']['avg_task_duration'],
+    1),,
+)
                 'total_quality_improvements': results['quality_metrics']['quality_improvements'],
                 'performance_calculation_method': 'speed_and_quality_impact',
                 'calculation_timestamp': datetime.now().isoformat(),

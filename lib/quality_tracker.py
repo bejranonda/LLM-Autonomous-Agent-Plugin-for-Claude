@@ -47,7 +47,9 @@ class QualityTracker:
         Initialize quality tracker.
 
         Args:
-            tracker_dir: Directory path for storing quality data (default: .claude-patterns)
+            tracker_dir: Directory path for storing quality data (
+    default: .claude-patterns,
+)
         """
         self.tracker_dir = Path(tracker_dir)
         self.quality_file = self.tracker_dir / "quality_history.json"
@@ -117,7 +119,12 @@ class QualityTracker:
         Args:
             task_id: ID of the task assessed
             quality_score: Overall quality score (0.0 to 1.0)
-            metrics: Dictionary of metric scores (e.g., code_quality, test_quality, etc.)
+            metrics: Dictionary of metric scores (
+    e.g.,
+    code_quality,
+    test_quality,
+    etc.,
+)
 
         Returns:
             True on success
@@ -128,8 +135,13 @@ class QualityTracker:
 
         # Validate metrics
         for metric_name, metric_value in metrics.items():
-            if not isinstance(metric_value, (int, float)) or not (0 <= metric_value <= 1):
-                raise ValueError(f"Metric '{metric_name}' must be a number between 0 and 1")
+            if not isinstance(
+    metric_value,
+    (int, float)) or not (0 <= metric_value <= 1):,
+)
+                raise ValueError(
+    f"Metric '{metric_name}' must be a number between 0 and 1",
+)
 
         # Create quality record
         record = {
@@ -159,7 +171,10 @@ class QualityTracker:
 
         Args:
             days: Number of days to analyze (default: 30)
-            metric: Specific metric to analyze (optional, analyzes overall quality if not specified)
+            metric: Specific metric to analyze (
+    optional,
+    analyzes overall quality if not specified,
+)
 
         Returns:
             Dictionary with trend analysis
@@ -231,7 +246,8 @@ class QualityTracker:
         # Create timeline data
         timeline = []
         for record in recent_records:
-            value = record['metrics'].get(metric, 0) if metric else record['quality_score']
+            value = record['metrics'].get(metric, 0) if 
+                metric else record['quality_score']
             timeline.append({
                 'timestamp': record['timestamp'],
                 'task_id': record['task_id'],
@@ -278,7 +294,10 @@ class QualityTracker:
         total = sum(r['quality_score'] for r in records)
         return total / len(records)
 
-    def get_metric_statistics(self, days: Optional[int] = None) -> Dict[str, Dict[str, float]]:
+    def get_metric_statistics(
+    self,
+    days: Optional[int] = None) -> Dict[str, Dict[str, float]]:,
+)
         """
         Get statistics for all metrics.
 
@@ -376,14 +395,23 @@ class QualityTracker:
 def main():
     """Command-line interface for quality tracker."""
     parser = argparse.ArgumentParser(description='Quality Tracker System')
-    parser.add_argument('--dir', default='.claude-patterns', help='Tracker directory path')
+    parser.add_argument(
+    '--dir',
+    default='.claude-patterns',
+    help='Tracker directory path',
+)
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
 
     # Record action
     record_parser = subparsers.add_parser('record', help='Record quality assessment')
     record_parser.add_argument('--task-id', required=True, help='Task ID')
-    record_parser.add_argument('--score', type=float, required=True, help='Quality score (0-1)')
+    record_parser.add_argument(
+    '--score',
+    type=float,
+    required=True,
+    help='Quality score (0-1)',
+)
     record_parser.add_argument('--metrics', required=True, help='Metrics JSON string')
 
     # Trends action
@@ -401,11 +429,21 @@ def main():
 
     # Recent action
     recent_parser = subparsers.add_parser('recent', help='Show recent records')
-    recent_parser.add_argument('--limit', type=int, default=10, help='Number of records')
+    recent_parser.add_argument(
+    '--limit',
+    type=int,
+    default=10,
+    help='Number of records',
+)
 
     # Low quality action
     low_parser = subparsers.add_parser('low-quality', help='Show low quality tasks')
-    low_parser.add_argument('--threshold', type=float, default=0.7, help='Quality threshold')
+    low_parser.add_argument(
+    '--threshold',
+    type=float,
+    default=0.7,
+    help='Quality threshold',
+)
     low_parser.add_argument('--days', type=int, help='Days to analyze')
 
     args = parser.parse_args()
@@ -446,7 +484,10 @@ def main():
             print(json.dumps(low_quality, indent=2))
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(
+    json.dumps({'success': False, 'error': str(e)}, indent=2),
+    file=sys.stderr,
+)
         sys.exit(1)
 
 

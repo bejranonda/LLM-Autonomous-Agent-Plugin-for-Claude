@@ -50,7 +50,13 @@ class LearningAnalyticsDashboard:
         except (FileNotFoundError, json.JSONDecodeError):
             return {}
 
-    def generate_ascii_chart(self, data: List[float], width: int = 50, height: int = 10, title: str = "") -> str:
+    def generate_ascii_chart(
+    self,
+    data: List[float],
+    width: int = 50,
+    height: int = 10,
+    title: str = "") -> str:,
+)
         """Generate ASCII chart for terminal display."""
         if not data:
             return "No data available"
@@ -90,11 +96,19 @@ class LearningAnalyticsDashboard:
 
         # Add x-axis
         lines.append(f"       └{'─' * width}┘")
-        lines.append(f"        {len(data) - width:>{width // 2 - 3}} → {len(data):<{width // 2 - 3}}")
+        lines.append(
+    f"        {len(data) - width:>{width // 2 - 3}} → {len(data):<{width // 2 - 3}}",
+)
 
         return "\n".join(lines)
 
-    def generate_bar_chart(self, data: Dict[str, float], width: int = 40, title: str = "") -> str:
+    def generate_bar_chart(
+    self,
+    data: Dict[str,
+    float],
+    width: int = 40,
+    title: str = "") -> str:,
+)
         """Generate horizontal bar chart for terminal display."""
         if not data:
             return "No data available"
@@ -109,7 +123,8 @@ class LearningAnalyticsDashboard:
         max_val = max(v for _, v in sorted_data) if sorted_data else 1
 
         # Calculate max label length
-        max_label_len = max(len(label) for label, _ in sorted_data) if sorted_data else 0
+        max_label_len = max(len(label) for label, _ in sorted_data) if 
+            sorted_data else 0
 
         for label, value in sorted_data:
             bar_length = int((value / max_val) * width)
@@ -118,7 +133,11 @@ class LearningAnalyticsDashboard:
 
         return "\n".join(lines)
 
-    def calculate_learning_velocity(self, patterns: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def calculate_learning_velocity(
+    self,
+    patterns: List[Dict[str,
+    Any]]) -> Dict[str, Any]:,
+)
         """Calculate how fast the system is learning."""
         if len(patterns) < 10:
             return {"status": "insufficient_data", "message": "Need at least 10 patterns"}
@@ -133,7 +152,8 @@ class LearningAnalyticsDashboard:
         # Calculate average quality by week
         weekly_quality = {}
         for week, week_patterns in patterns_by_week.items():
-            avg_quality = sum(p["outcome"]["quality_score"] for p in week_patterns) / len(week_patterns)
+            avg_quality = sum(p["outcome"]["quality_score"] for p in 
+                week_patterns) / len(week_patterns)
             weekly_quality[week] = avg_quality
 
         # Sort by week
@@ -172,7 +192,11 @@ class LearningAnalyticsDashboard:
             "weekly_quality": dict(sorted_weeks)
         }
 
-    def analyze_skill_synergies(self, patterns: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def analyze_skill_synergies(
+    self,
+    patterns: List[Dict[str,
+    Any]]) -> List[Dict[str, Any]]:,
+)
         """Analyze which skill combinations work best together."""
         combo_stats = defaultdict(lambda: {
             "count": 0,
@@ -227,7 +251,11 @@ class LearningAnalyticsDashboard:
         synergies.sort(key=lambda x: x["synergy_score"], reverse=True)
         return synergies
 
-    def analyze_learning_patterns(self, patterns: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def analyze_learning_patterns(
+    self,
+    patterns: List[Dict[str,
+    Any]]) -> Dict[str, Any]:,
+)
         """Analyze patterns in how the system learns."""
         if not patterns:
             return {"status": "no_data"}
@@ -271,14 +299,20 @@ class LearningAnalyticsDashboard:
 
         # Identify fastest learning areas
         fastest_learning = sorted(
-            [(task, curve["improvement_per_task"]) for task, curve in learning_curves.items()],
+            [(
+    task,
+    curve["improvement_per_task"]) for task, curve in learning_curves.items()],,
+)
             key=lambda x: x[1],
             reverse=True
         )
 
         # Identify slowest learning areas
         slowest_learning = sorted(
-            [(task, curve["improvement_per_task"]) for task, curve in learning_curves.items()],
+            [(
+    task,
+    curve["improvement_per_task"]) for task, curve in learning_curves.items()],,
+)
             key=lambda x: x[1]
         )
 
@@ -296,17 +330,23 @@ class LearningAnalyticsDashboard:
         # Find plateaus (areas where learning has stalled)
         for task_type, curve in learning_curves.items():
             if curve["improvement_per_task"] < 0.5 and curve["pattern_count"] >= 5:
-                insights.append(f"Learning plateau detected in {task_type} - may need new approaches or skills")
+                insights.append(
+    f"Learning plateau detected in {task_type} - may need new approaches or skills",
+)
 
         # Find rapid learners
         for task_type, curve in learning_curves.items():
             if curve["improvement_per_task"] > 2.0:
-                insights.append(f"Rapid learning in {task_type} - effective skill combinations identified")
+                insights.append(
+    f"Rapid learning in {task_type} - effective skill combinations identified",
+)
 
         # Find areas needing attention
         for task_type, curve in learning_curves.items():
             if curve["current_quality"] < 75 and curve["pattern_count"] >= 5:
-                insights.append(f"Low quality in {task_type} despite multiple attempts - review approach")
+                insights.append(
+    f"Low quality in {task_type} despite multiple attempts - review approach",
+)
 
         return insights
 
@@ -334,17 +374,25 @@ class LearningAnalyticsDashboard:
 
         # Overall statistics
         total_patterns = len(patterns)
-        avg_quality = sum(p["outcome"]["quality_score"] for p in patterns) / total_patterns
-        success_rate = sum(1 for p in patterns if p["outcome"]["success"]) / total_patterns
+        avg_quality = sum(p["outcome"]["quality_score"] for p in 
+            patterns) / total_patterns
+        success_rate = sum(1 for p in patterns if 
+            p["outcome"]["success"]) / total_patterns
 
         # Recent vs historical performance
         recent_patterns = sorted(patterns, key=lambda p: p["timestamp"], reverse=True)[:20]
-        recent_avg_quality = sum(p["outcome"]["quality_score"] for p in recent_patterns) / len(recent_patterns)
-        recent_success_rate = sum(1 for p in recent_patterns if p["outcome"]["success"]) / len(recent_patterns)
+        recent_avg_quality = sum(p["outcome"]["quality_score"] for p in 
+            recent_patterns) / len(recent_patterns)
+        recent_success_rate = sum(1 for p in recent_patterns if 
+            p["outcome"]["success"]) / len(recent_patterns)
 
         # Skill performance
         top_skills = sorted(
-            [(name, metrics.get("success_rate", 0), metrics.get("avg_quality_contribution", 0))
+            [(
+    name,
+    metrics.get("success_rate", 0),
+    metrics.get("avg_quality_contribution", 0),
+)
              for name, metrics in skill_metrics.items()],
             key=lambda x: x[1] * x[2],  # Combined score
             reverse=True
@@ -352,7 +400,11 @@ class LearningAnalyticsDashboard:
 
         # Agent performance
         top_agents = sorted(
-            [(name, metrics.get("reliability_score", 0), metrics.get("efficiency_rating", 0))
+            [(
+    name,
+    metrics.get("reliability_score", 0),
+    metrics.get("efficiency_rating", 0),
+)
              for name, metrics in agent_metrics.items()],
             key=lambda x: x[1],
             reverse=True
@@ -376,15 +428,20 @@ class LearningAnalyticsDashboard:
         # Time-based trends
         patterns_last_7_days = [
             p for p in patterns
-            if datetime.fromisoformat(p["timestamp"]) > datetime.now() - timedelta(days=7)
+            if datetime.fromisoformat(
+    p["timestamp"]) > datetime.now() - timedelta(days=7,
+)
         ]
         patterns_last_30_days = [
             p for p in patterns
-            if datetime.fromisoformat(p["timestamp"]) > datetime.now() - timedelta(days=30)
+            if datetime.fromisoformat(
+    p["timestamp"]) > datetime.now() - timedelta(days=30,
+)
         ]
 
         # Generate quality trend chart data
-        quality_over_time = [p["outcome"]["quality_score"] for p in sorted(patterns, key=lambda p: p["timestamp"])]
+        quality_over_time = [p["outcome"]["quality_score"] for p in 
+            sorted(patterns, key=lambda p: p["timestamp"])]
 
         return {
             "status": "success",
@@ -428,7 +485,9 @@ class LearningAnalyticsDashboard:
             "skill_synergies": {
                 "total_synergies_found": len(skill_synergies),
                 "top_synergies": skill_synergies[:5],
-                "highly_recommended_count": sum(1 for s in skill_synergies if s["recommendation"] == "highly_recommended")
+                "highly_recommended_count": sum(
+    1 for s in skill_synergies if s["recommendation"] == "highly_recommended",
+)
             },
             "prediction_system": {
                 "prediction_accuracy": prediction_accuracy,
@@ -443,7 +502,9 @@ class LearningAnalyticsDashboard:
             "learning_patterns": learning_patterns,
             "quality_trend": {
                 "data": quality_over_time,
-                "trend": "improving" if recent_avg_quality > avg_quality else "declining" if recent_avg_quality < avg_quality - 2 else "stable"
+                "trend": "improving" if recent_avg_quality > avg_quality else 
+                    "declining" if recent_avg_quality < 
+                    avg_quality - 2 else "stable"
             },
             "insights": self._generate_comprehensive_insights(
                 learning_velocity,
@@ -470,36 +531,69 @@ class LearningAnalyticsDashboard:
         # Learning velocity insights
         if velocity.get("status") == "calculated":
             if velocity["trajectory"] == "accelerating":
-                insights.append(f"✓ Learning is accelerating! Quality improving at {velocity['improvement_per_week']:.2f} points/week and speeding up")
+                insights.append(
+    f"✓ Learning is accelerating! Quality improving at {velocity['improvement_per_week']:.2f} points/week and 
+        speeding up",
+)
             elif velocity["improvement_per_week"] > 1.0:
-                insights.append(f"✓ Steady improvement of {velocity['improvement_per_week']:.2f} quality points per week")
+                insights.append(
+    f"✓ Steady improvement of {velocity['improvement_per_week']:.2f} quality points per week",
+)
             elif velocity["improvement_per_week"] < 0:
-                insights.append(f"⚠ Quality declining by {abs(velocity['improvement_per_week']):.2f} points/week - system may need recalibration")
+                insights.append(
+    f"⚠ Quality declining by {abs(
+    velocity['improvement_per_week']):.2f} points/week - system may need recalibration",,
+)
+)
 
         # Quality insights
         if recent_quality > avg_quality + 3:
-            insights.append(f"✓ Recent performance ({recent_quality:.1f}) significantly better than historical average ({avg_quality:.1f})")
+            insights.append(
+    f"✓ Recent performance (
+    {recent_quality:.1f}) significantly better than historical average ({avg_quality:.1f})",,
+)
+)
         elif recent_quality > 90:
-            insights.append(f"✓ Excellent recent quality scores ({recent_quality:.1f}/100) - system is performing optimally")
+            insights.append(
+    f"✓ Excellent recent quality scores (
+    {recent_quality:.1f}/100) - system is performing optimally",,
+)
+)
 
         # Synergy insights
         if synergies:
-            highly_recommended = [s for s in synergies if s["recommendation"] == "highly_recommended"]
+            highly_recommended = [s for s in synergies if 
+                s["recommendation"] == "highly_recommended"]
             if highly_recommended:
                 top_synergy = highly_recommended[0]
-                insights.append(f"✓ Highly effective skill pair discovered: {' + '.join(top_synergy['skill_pair'])} ({top_synergy['synergy_score']:.1f} synergy score)")
+                insights.append(
+    f"✓ Highly effective skill pair discovered: {' + '.join(
+    top_synergy['skill_pair'])} ({top_synergy['synergy_score']:.1f} synergy score)",,
+)
+)
 
         # Prediction system insights
         if prediction_accuracy > 0.85:
-            insights.append(f"✓ Prediction system highly accurate ({prediction_accuracy:.1%}) - trust automated skill recommendations")
+            insights.append(
+    f"✓ Prediction system highly accurate (
+    {prediction_accuracy:.1%}) - trust automated skill recommendations",,
+)
+)
         elif prediction_accuracy > 0:
-            insights.append(f"⚠ Prediction accuracy moderate ({prediction_accuracy:.1%}) - system still learning optimal patterns")
+            insights.append(
+    f"⚠ Prediction accuracy moderate (
+    {prediction_accuracy:.1%}) - system still learning optimal patterns",,
+)
+)
 
         # Learning patterns insights
         if patterns.get("learning_curves"):
             fastest = patterns.get("fastest_learning_areas", [])
             if fastest:
-                insights.append(f"✓ Fastest learning in: {', '.join([area[0] for area in fastest[:2]])}")
+                insights.append(
+    f"✓ Fastest learning in: {',
+    '.join([area[0] for area in fastest[:2]])}",
+)
 
         # Add custom insights from learning patterns
         if patterns.get("insights"):
@@ -515,9 +609,15 @@ class LearningAnalyticsDashboard:
         lines = []
 
         # Header
-        lines.append("╔═══════════════════════════════════════════════════════════════════════════╗")
-        lines.append("║           LEARNING ANALYTICS DASHBOARD - ENHANCED SYSTEM v3.0           ║")
-        lines.append("╚═══════════════════════════════════════════════════════════════════════════╝")
+        lines.append(
+    "╔═══════════════════════════════════════════════════════════════════════════╗",
+)
+        lines.append(
+    "║           LEARNING ANALYTICS DASHBOARD - ENHANCED SYSTEM v3.0           ║",
+)
+        lines.append(
+    "╚═══════════════════════════════════════════════════════════════════════════╝",
+)
         lines.append("")
 
         # Summary Section
@@ -526,10 +626,20 @@ class LearningAnalyticsDashboard:
         lines.append("─" * 79)
         lines.append(f"  Total Patterns Captured: {summary['total_patterns']}")
         lines.append(f"  Overall Quality Score:   {summary['overall_quality']:.1f}/100")
-        lines.append(f"  Success Rate:            {summary['overall_success_rate']:.1%}")
-        lines.append(f"  Recent Quality:          {summary['recent_quality']:.1f}/100 ({'+' if summary['quality_improvement'] >= 0 else ''}{summary['quality_improvement']:.1f})")
-        lines.append(f"  Activity (Last 7 days):  {summary['patterns_last_7_days']} patterns")
-        lines.append(f"  Activity (Last 30 days): {summary['patterns_last_30_days']} patterns")
+        lines.append(
+    f"  Success Rate:            {summary['overall_success_rate']:.1%}",
+)
+        lines.append(
+    f"  Recent Quality:          {summary['recent_quality']:.1f}/100 (
+    {'+' if summary['quality_improvement'] >= 0 else ''}{summary['quality_improvement']:.1f})",,
+)
+)
+        lines.append(
+    f"  Activity (Last 7 days):  {summary['patterns_last_7_days']} patterns",
+)
+        lines.append(
+    f"  Activity (Last 30 days): {summary['patterns_last_30_days']} patterns",
+)
         lines.append("")
 
         # Quality Trend Chart
@@ -552,13 +662,24 @@ class LearningAnalyticsDashboard:
             lines.append("🚀 LEARNING VELOCITY")
             lines.append("─" * 79)
             lines.append(f"  Weeks Analyzed:          {velocity['weeks_analyzed']}")
-            lines.append(f"  Early Average Quality:   {velocity['early_average_quality']:.1f}/100")
-            lines.append(f"  Recent Average Quality:  {velocity['recent_average_quality']:.1f}/100")
-            lines.append(f"  Total Improvement:       {'+' if velocity['total_improvement'] >= 0 else ''}{velocity['total_improvement']:.1f} points")
-            lines.append(f"  Improvement Rate:        {velocity['improvement_per_week']:.2f} points/week")
+            lines.append(
+    f"  Early Average Quality:   {velocity['early_average_quality']:.1f}/100",
+)
+            lines.append(
+    f"  Recent Average Quality:  {velocity['recent_average_quality']:.1f}/100",
+)
+            lines.append(
+    f"  Total Improvement:       {'+' if 
+        velocity['total_improvement'] >= 0 else ''}{velocity['total_improvement']:.1f} points",
+)
+            lines.append(
+    f"  Improvement Rate:        {velocity['improvement_per_week']:.2f} points/week",
+)
             lines.append(f"  Trajectory:              {velocity['trajectory'].upper()}")
             if velocity['trajectory'] == "accelerating":
-                lines.append(f"  Acceleration:            +{velocity['acceleration']:.2f} (speeding up!)")
+                lines.append(
+    f"  Acceleration:            +{velocity['acceleration']:.2f} (speeding up!)",
+)
             lines.append("")
 
         # Top Skills
@@ -567,7 +688,9 @@ class LearningAnalyticsDashboard:
             lines.append("⭐ TOP PERFORMING SKILLS")
             lines.append("─" * 79)
             for i, skill in enumerate(skill_perf["top_skills"][:5], 1):
-                lines.append(f"  {i}. {skill['name']:<30} Success: {skill['success_rate']:.1%}  Quality: {skill['avg_quality']:.1f}")
+                lines.append(
+    f"  {i}. {skill['name']:<30} Success: {skill['success_rate']:.1%}  Quality: {skill['avg_quality']:.1f}",
+)
             lines.append("")
 
         # Top Agents
@@ -576,7 +699,9 @@ class LearningAnalyticsDashboard:
             lines.append("🤖 TOP PERFORMING AGENTS")
             lines.append("─" * 79)
             for i, agent in enumerate(agent_perf["top_agents"], 1):
-                lines.append(f"  {i}. {agent['name']:<30} Reliability: {agent['reliability']:.1%}  Efficiency: {agent['efficiency']:.2f}")
+                lines.append(
+    f"  {i}. {agent['name']:<30} Reliability: {agent['reliability']:.1%}  Efficiency: {agent['efficiency']:.2f}",
+)
             lines.append("")
 
         # Skill Synergies
@@ -586,8 +711,14 @@ class LearningAnalyticsDashboard:
             lines.append("─" * 79)
             for i, synergy in enumerate(synergies["top_synergies"], 1):
                 pair = " + ".join(synergy["skill_pair"])
-                lines.append(f"  {i}. {pair:<40} Score: {synergy['synergy_score']:.1f}  Uses: {synergy['usage_count']}")
-                lines.append(f"     Quality: {synergy['average_quality']:.1f}  Success: {synergy['success_rate']:.1%}  [{synergy['recommendation'].upper()}]")
+                lines.append(
+    f"  {i}. {pair:<40} Score: {synergy['synergy_score']:.1f}  Uses: {synergy['usage_count']}",
+)
+                lines.append(
+    f"     Quality: {synergy['average_quality']:.1f}  Success: {synergy['success_rate']:.1%}  [{synergy['recommendation'].upper(
+    )}]",,
+)
+)
             lines.append("")
 
         # Prediction System
@@ -598,7 +729,9 @@ class LearningAnalyticsDashboard:
         lines.append(f"  Models Trained:          {pred['models_trained']} skills")
         lines.append(f"  Prediction Accuracy:     {pred['prediction_accuracy']:.1%}")
         if pred["prediction_accuracy"] > 0.85:
-            lines.append("  ✓ High accuracy - automated recommendations highly reliable")
+            lines.append(
+    "  ✓ High accuracy - automated recommendations highly reliable",
+)
         elif pred["prediction_accuracy"] > 0.7:
             lines.append("  ⚠ Moderate accuracy - system still learning")
         lines.append("")
@@ -611,7 +744,9 @@ class LearningAnalyticsDashboard:
         lines.append(f"  Universal Patterns:      {cross['universal_patterns']}")
         lines.append(f"  Avg Transferability:     {cross['avg_transferability']:.1%}")
         if cross["universal_patterns"] > 0:
-            lines.append("  ✓ Knowledge transfer active - benefiting from other projects")
+            lines.append(
+    "  ✓ Knowledge transfer active - benefiting from other projects",
+)
         lines.append("")
 
         # Learning Patterns
@@ -634,9 +769,13 @@ class LearningAnalyticsDashboard:
             lines.append("")
 
         # Footer
-        lines.append("╔═══════════════════════════════════════════════════════════════════════════╗")
+        lines.append(
+    "╔═══════════════════════════════════════════════════════════════════════════╗",
+)
         lines.append(f"║  Generated: {report['generated_at']:<62} ║")
-        lines.append("╚═══════════════════════════════════════════════════════════════════════════╝")
+        lines.append(
+    "╚═══════════════════════════════════════════════════════════════════════════╝",
+)
 
         return "\n".join(lines)
 
@@ -683,18 +822,31 @@ class LearningAnalyticsDashboard:
         lines.append(f"- **Total Patterns**: {summary['total_patterns']}")
         lines.append(f"- **Overall Quality**: {summary['overall_quality']:.1f}/100")
         lines.append(f"- **Success Rate**: {summary['overall_success_rate']:.1%}")
-        lines.append(f"- **Recent Quality**: {summary['recent_quality']:.1f}/100 ({'+' if summary['quality_improvement'] >= 0 else ''}{summary['quality_improvement']:.1f})")
-        lines.append(f"- **Activity (7 days)**: {summary['patterns_last_7_days']} patterns")
-        lines.append(f"- **Activity (30 days)**: {summary['patterns_last_30_days']} patterns")
+        lines.append(
+    f"- **Recent Quality**: {summary['recent_quality']:.1f}/100 (
+    {'+' if summary['quality_improvement'] >= 0 else ''}{summary['quality_improvement']:.1f})",,
+)
+)
+        lines.append(
+    f"- **Activity (7 days)**: {summary['patterns_last_7_days']} patterns",
+)
+        lines.append(
+    f"- **Activity (30 days)**: {summary['patterns_last_30_days']} patterns",
+)
         lines.append("")
 
         # Learning Velocity
         velocity = report["learning_velocity"]
         if velocity.get("status") == "calculated":
             lines.append("## 🚀 Learning Velocity\n")
-            lines.append(f"- **Improvement Rate**: {velocity['improvement_per_week']:.2f} points/week")
+            lines.append(
+    f"- **Improvement Rate**: {velocity['improvement_per_week']:.2f} points/week",
+)
             lines.append(f"- **Trajectory**: {velocity['trajectory'].capitalize()}")
-            lines.append(f"- **Total Improvement**: {'+' if velocity['total_improvement'] >= 0 else ''}{velocity['total_improvement']:.1f} points")
+            lines.append(
+    f"- **Total Improvement**: {'+' if 
+        velocity['total_improvement'] >= 0 else ''}{velocity['total_improvement']:.1f} points",
+)
             lines.append("")
 
         # Top Skills
@@ -704,18 +856,26 @@ class LearningAnalyticsDashboard:
             lines.append("| Rank | Skill | Success Rate | Avg Quality |")
             lines.append("|------|-------|--------------|-------------|")
             for i, skill in enumerate(skill_perf["top_skills"][:5], 1):
-                lines.append(f"| {i} | {skill['name']} | {skill['success_rate']:.1%} | {skill['avg_quality']:.1f} |")
+                lines.append(
+    f"| {i} | {skill['name']} | {skill['success_rate']:.1%} | {skill['avg_quality']:.1f} |",
+)
             lines.append("")
 
         # Skill Synergies
         synergies = report["skill_synergies"]
         if synergies["top_synergies"]:
             lines.append("## 🔗 Skill Synergies\n")
-            lines.append("| Rank | Skill Combination | Synergy Score | Uses | Quality | Success Rate |")
-            lines.append("|------|-------------------|---------------|------|---------|--------------|")
+            lines.append(
+    "| Rank | Skill Combination | Synergy Score | Uses | Quality | Success Rate |",
+)
+            lines.append(
+    "|------|-------------------|---------------|------|---------|--------------|",
+)
             for i, synergy in enumerate(synergies["top_synergies"][:5], 1):
                 pair = " + ".join(synergy["skill_pair"])
-                lines.append(f"| {i} | {pair} | {synergy['synergy_score']:.1f} | {synergy['usage_count']} | {synergy['average_quality']:.1f} | {synergy['success_rate']:.1%} |")
+                lines.append(
+    f"| {i} | {pair} | {synergy['synergy_score']:.1f} | {synergy['usage_count']} | {synergy['average_quality']:.1f} | {synergy['success_rate']:.1%} |",
+)
             lines.append("")
 
         # Insights
@@ -732,7 +892,11 @@ class LearningAnalyticsDashboard:
 def main():
     """Command-line interface for learning analytics."""
     parser = argparse.ArgumentParser(description='Learning Analytics Dashboard')
-    parser.add_argument('--dir', default='.claude-patterns', help='Patterns directory path')
+    parser.add_argument(
+    '--dir',
+    default='.claude-patterns',
+    help='Patterns directory path',
+)
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
 
@@ -741,11 +905,19 @@ def main():
 
     # Export JSON
     json_parser = subparsers.add_parser('export-json', help='Export analytics as JSON')
-    json_parser.add_argument('--output', default='learning_analytics.json', help='Output file path')
+    json_parser.add_argument(
+    '--output',
+    default='learning_analytics.json',
+    help='Output file path',
+)
 
     # Export Markdown
     md_parser = subparsers.add_parser('export-md', help='Export analytics as Markdown')
-    md_parser.add_argument('--output', default='learning_analytics.md', help='Output file path')
+    md_parser.add_argument(
+    '--output',
+    default='learning_analytics.md',
+    help='Output file path',
+)
 
     args = parser.parse_args()
 

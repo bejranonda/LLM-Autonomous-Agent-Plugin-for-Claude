@@ -29,10 +29,36 @@ class AssessmentStorage:
         """Ensure all pattern files exist with proper structure"""
         for file_path, default_structure in [
             (self.patterns_file, {"project_context": {}, "patterns": []}),
-            (self.quality_history_file, {"quality_assessments": [], "statistics": {}, "baselines": {}, "metadata": {}}),
-            (self.agent_metrics_file, {"quality_assessment_tasks": [], "agent_performance": {}, "last_updated": "", "total_quality_assessments": 0, "overall_success_rate": 1.0}),
-            (self.skill_metrics_file, {"skill_usage_history": [], "skill_effectiveness": {}, "last_updated": "", "total_skill_usage_events": 0, "overall_success_rate": 1.0}),
-            (self.assessments_file, {"assessments": [], "command_performance": {}, "last_updated": "", "total_assessments": 0})
+            (
+    self.quality_history_file,
+    {"quality_assessments": [],
+    "statistics": {},
+    "baselines": {},
+    "metadata": {}}),,
+)
+            (
+    self.agent_metrics_file,
+    {"quality_assessment_tasks": [],
+    "agent_performance": {},
+    "last_updated": "",
+    "total_quality_assessments": 0,
+    "overall_success_rate": 1.0}),,
+)
+            (
+    self.skill_metrics_file,
+    {"skill_usage_history": [],
+    "skill_effectiveness": {},
+    "last_updated": "",
+    "total_skill_usage_events": 0,
+    "overall_success_rate": 1.0}),,
+)
+            (
+    self.assessments_file,
+    {"assessments": [],
+    "command_performance": {},
+    "last_updated": "",
+    "total_assessments": 0},
+)
         ]:
             if not file_path.exists():
                 with open(file_path, 'w') as f:
@@ -45,7 +71,12 @@ class AssessmentStorage:
         Args:
             assessment_data: Dict containing:
                 - command_name: str (e.g., 'validate-claude-plugin', 'gui-debug')
-                - assessment_type: str (e.g., 'validation', 'quality-control', 'gui-analysis')
+                - assessment_type: str (
+    e.g.,
+    'validation',
+    'quality-control',
+    'gui-analysis',
+)
                 - overall_score: int (0-100)
                 - breakdown: Dict[str, int] (score breakdown)
                 - details: Dict[str, Any] (detailed findings)
@@ -71,7 +102,10 @@ class AssessmentStorage:
                 "timestamp": timestamp.isoformat(),
                 "command_name": assessment_data["command_name"],
                 "assessment_type": assessment_data.get("assessment_type", "general"),
-                "task_type": assessment_data.get("task_type", assessment_data["command_name"]),
+                "task_type": assessment_data.get(
+    "task_type",
+    assessment_data["command_name"]),,
+)
                 "overall_score": assessment_data["overall_score"],
                 "breakdown": assessment_data.get("breakdown", {}),
                 "details": assessment_data.get("details", {}),
@@ -80,7 +114,10 @@ class AssessmentStorage:
                 "agents_used": assessment_data.get("agents_used", []),
                 "skills_used": assessment_data.get("skills_used", []),
                 "execution_time_minutes": assessment_data.get("execution_time"),
-                "pass_threshold_met": assessment_data.get("pass_threshold_met", assessment_data["overall_score"] >= 70),
+                "pass_threshold_met": assessment_data.get(
+    "pass_threshold_met",
+    assessment_data["overall_score"] >= 70),,
+)
                 "additional_metrics": assessment_data.get("additional_metrics", {}),
                 "success": assessment_data["overall_score"] >= 70
             }
@@ -102,7 +139,9 @@ class AssessmentStorage:
             # Store in patterns file (for learning system)
             self._store_in_patterns_file(assessment_record)
 
-            print(f"[+] Assessment stored: {assessment_id} (Score: {assessment_data['overall_score']}/100)")
+            print(
+    f"[+] Assessment stored: {assessment_id} (Score: {assessment_data['overall_score']}/100)",
+)
             return True
 
         except Exception as e:
@@ -178,7 +217,9 @@ class AssessmentStorage:
         data["statistics"] = {
             "avg_quality_score": sum(scores) / len(scores) if scores else 0,
             "total_assessments": total_assessments,
-            "passing_rate": sum(1 for s in scores if s >= 70) / len(scores) if scores else 1.0,
+            "passing_rate": sum(
+    1 for s in scores if s >= 70) / len(scores) if scores else 1.0,,
+)
             "trend": "improving"  # Could be calculated more sophisticatedly
         }
 
@@ -198,7 +239,8 @@ class AssessmentStorage:
             "task_type": assessment_record["task_type"],
             "agents_involved": assessment_record["agents_used"],
             "execution_details": {},
-            "collaboration_effectiveness": "excellent" if assessment_record["success"] else "needs_improvement",
+            "collaboration_effectiveness": "excellent" if 
+                assessment_record["success"] else "needs_improvement",
             "integration_success": assessment_record["success"]
         }
 
@@ -206,7 +248,9 @@ class AssessmentStorage:
         for agent in assessment_record["agents_used"]:
             task_record["execution_details"][agent] = {
                 "role": "assessment_execution",
-                "duration_seconds": int((assessment_record.get("execution_time_minutes", 0) or 0) * 60),
+                "duration_seconds": int(
+    (assessment_record.get("execution_time_minutes", 0) or 0) * 60),,
+)
                 "success": assessment_record["success"],
                 "quality_score": assessment_record["overall_score"]
             }
@@ -235,12 +279,14 @@ class AssessmentStorage:
             perf["avg_quality_score"] = ((current_avg * (total_tasks - 1)) + new_score) / total_tasks
 
             # Update total duration
-            duration = int((assessment_record.get("execution_time_minutes", 0) or 0) * 60)
+            duration = int((assessment_record.get("execution_time_minutes", 0) or 
+                0) * 60)
             perf["total_duration"] += duration
 
         data["last_updated"] = assessment_record["timestamp"]
         data["total_quality_assessments"] = len(data["quality_assessment_tasks"])
-        data["overall_success_rate"] = sum(1 for t in data["quality_assessment_tasks"] if t["integration_success"]) / len(data["quality_assessment_tasks"])
+        data["overall_success_rate"] = sum(1 for t in data["quality_assessment_tasks"] if 
+            t["integration_success"]) / len(data["quality_assessment_tasks"])
 
         with open(self.agent_metrics_file, 'w') as f:
             json.dump(data, f, indent=2)
@@ -286,7 +332,8 @@ class AssessmentStorage:
 
         data["last_updated"] = assessment_record["timestamp"]
         data["total_skill_usage_events"] = len(data["skill_usage_history"])
-        data["overall_success_rate"] = sum(1 for t in data["skill_usage_history"] if t["overall_success"]) / len(data["skill_usage_history"])
+        data["overall_success_rate"] = sum(1 for t in data["skill_usage_history"] if 
+            t["overall_success"]) / len(data["skill_usage_history"])
 
         with open(self.skill_metrics_file, 'w') as f:
             json.dump(data, f, indent=2)
@@ -311,19 +358,29 @@ class AssessmentStorage:
                 "skills_used": assessment_record.get("skills_used", []),
                 "agents_delegated": assessment_record.get("agents_used", []),
                 "approach": assessment_record["command_name"],
-                "duration_seconds": int((assessment_record.get("execution_time_minutes", 0) or 0) * 60),
+                "duration_seconds": int(
+    (assessment_record.get("execution_time_minutes", 0) or 0) * 60),,
+)
                 "score_achieved": assessment_record["overall_score"]
             },
             "findings": {
                 "issues_count": len(assessment_record.get("issues_found", [])),
-                "recommendations_count": len(assessment_record.get("recommendations", [])),
-                "key_issues": assessment_record.get("issues_found", [])[:3],  # Top 3 issues
+                "recommendations_count": len(
+    assessment_record.get("recommendations", [])),,
+)
+                "key_issues": assessment_record.get(
+    "issues_found",
+    [])[:3],  # Top 3 issues,
+)
                 "success_factors": self._extract_success_factors(assessment_record)
             },
             "outcome": {
                 "success": assessment_record["success"],
                 "quality_score": assessment_record["overall_score"],
-                "threshold_met": assessment_record.get("pass_threshold_met", assessment_record["overall_score"] >= 70)
+                "threshold_met": assessment_record.get(
+    "pass_threshold_met",
+    assessment_record["overall_score"] >= 70,
+)
             },
             "reuse_count": 0,
             "confidence_boost": 0.1 if assessment_record["success"] else 0.0
@@ -367,8 +424,17 @@ def main():
     import sys
 
     parser = argparse.ArgumentParser(description="Store assessment results from any command")
-    parser.add_argument("--command", required=True, help="Command name (e.g., validate-claude-plugin)")
-    parser.add_argument("--score", type=int, required=True, help="Overall score (0-100)")
+    parser.add_argument(
+    "--command",
+    required=True,
+    help="Command name (e.g., validate-claude-plugin)",
+)
+    parser.add_argument(
+    "--score",
+    type=int,
+    required=True,
+    help="Overall score (0-100)",
+)
     parser.add_argument("--type", default="general", help="Assessment type")
     parser.add_argument("--time", type=float, help="Execution time in minutes")
     parser.add_argument("--agents", nargs="*", default=[], help="Agents used")

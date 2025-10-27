@@ -3,7 +3,8 @@
 Debugging Performance Evaluator
 
 Measures AI debugging performance by analyzing and fixing real issues in the codebase.
-Implements the comprehensive debugging performance framework with QIS, TES, and Performance Index.
+Implements the comprehensive debugging performance framework with QIS, TES, and 
+    Performance Index.
 """
 
 import json
@@ -116,7 +117,8 @@ def deterministic_score(avg_score, model_name, date_str):
         return round(avg_score + rnd.uniform(-8, 2), 1)
 
 # Replace random generation with deterministic calls
-claude_score = deterministic_score(avg_score, "Claude Sonnet 4.5", date_str) if claude_tasks > 0 else 0
+claude_score = deterministic_score(avg_score, "Claude Sonnet 4.5", date_str) if 
+    claude_tasks > 0 else 0
 glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0 else 0'''
 
                 fixes.append({
@@ -162,7 +164,8 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
                         issues.append({
                             'type': 'missing_structure',
                             'severity': 'medium',
-                            'description': f'Performance rankings missing in {file_path}',
+                            'description': f'Performance rankings missing in 
+                                {file_path}',
                             'location': file_path
                         })
 
@@ -330,7 +333,8 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
         quality_gap_initial = 100 - initial_quality
         quality_gap_final = 100 - final_quality
         gap_closed = quality_gap_initial - quality_gap_final
-        gap_closed_pct = (gap_closed / quality_gap_initial * 100) if quality_gap_initial > 0 else 0
+        gap_closed_pct = (gap_closed / quality_gap_initial * 100) if 
+            quality_gap_initial > 0 else 0
 
         qis = (0.6 * final_quality) + (0.4 * gap_closed_pct)
 
@@ -350,7 +354,8 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
 
         # Supporting metrics
         efficiency_index = qis * success_rate
-        relative_improvement = min(2.0, final_quality / initial_quality) if initial_quality > 0 else 1.0
+        relative_improvement = min(2.0, final_quality / initial_quality) if 
+            initial_quality > 0 else 1.0
 
         return {
             'initial_quality': initial_quality,
@@ -395,7 +400,9 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
 
 ### Key Results
 - **Initial Quality:** {metrics['initial_quality']}/100
-- **Final Quality:** {metrics['final_quality']}/100 ({metrics['quality_improvement']:+.0f} points)
+- **Final Quality:** {metrics['final_quality']}/100 (
+    {metrics['quality_improvement']:+.0f} points,
+)
 - **QIS (Quality Improvement):** {metrics['qis']}/100
 - **Time Efficiency:** {metrics['time_efficiency_score']}/100
 - **Success Rate:** {metrics['success_rate']:.0%}
@@ -458,12 +465,14 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
         report_content += """### Performance Factors
 
 - **✅ Strong Quality Improvement:** """ + ("Significant improvement demonstrated" if metrics['quality_improvement'] > 5 else "Modest improvement achieved") + "\n"
-        report_content += "- **✅ High Success Rate:** Task completed successfully\n" if metrics['success_rate'] > 0 else "- **❌ Task Failed:** Debugging task was not completed\n"
+        report_content += "- **✅ High Success Rate:** Task completed successfully\n" if 
+            metrics['success_rate'] > 0 else "- **❌ Task Failed:** Debugging task was not completed\n"
 
         if metrics['time_efficiency_score'] > 80:
             report_content += "- **✅ Excellent Time Efficiency:** Completed within optimal timeframe\n"
         elif metrics['time_efficiency_score'] > 60:
-            report_content += "- **⚠️ Good Time Efficiency:** Completed in reasonable timeframe\n"
+            report_content += "- **⚠️ Good Time Efficiency:** Completed in 
+                reasonable timeframe\n"
         else:
             report_content += "- **❌ Poor Time Efficiency:** Took longer than expected\n"
 
@@ -521,7 +530,9 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
 
         # Create debugging assessment
         assessment = {
-            'assessment_id': f'debug-eval-{target}-{datetime.now().strftime("%Y%m%d-%H%M%S")}',
+            'assessment_id': f'debug-eval-{target}-{datetime.now(
+    ).strftime("%Y%m%d-%H%M%S")}',,
+)
             'timestamp': datetime.now().isoformat() + 'Z',
             'task_type': 'debugging-evaluation',
             'overall_score': int(metrics['performance_index']),
@@ -572,7 +583,9 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
         print()
         print("PERFORMANCE METRICS:")
         print(f"• Initial Quality: {metrics['initial_quality']}/100")
-        print(f"• Final Quality: {metrics['final_quality']}/100 ({metrics['quality_improvement']:+.0f} points)")
+        print(
+    f"• Final Quality: {metrics['final_quality']}/100 ({metrics['quality_improvement']:+.0f} points)",
+)
         print(f"• QIS (Quality Improvement): {metrics['qis']}/100")
         print(f"• Time Efficiency: {metrics['time_efficiency_score']}/100")
         print(f"• Success Rate: {metrics['success_rate']:.0%}")
@@ -585,7 +598,9 @@ glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0
         print(f"+ Quality improvement: {metrics['quality_improvement']:+.0f} points")
         print(f"+ Time to resolution: {metrics['time_elapsed_minutes']:.1f} minutes")
         print()
-        print(f"Full report: .claude/reports/debug-eval-{target}-{datetime.now().strftime('%Y-%m-%d')}.md")
+        print(
+    f"Full report: .claude/reports/debug-eval-{target}-{datetime.now().strftime('%Y-%m-%d')}.md",
+)
         print(f"Completed in {metrics['time_elapsed_minutes']:.1f} minutes")
 
 

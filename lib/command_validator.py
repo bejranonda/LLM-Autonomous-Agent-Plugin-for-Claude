@@ -129,7 +129,9 @@ class CommandValidator:
                     })
 
             # Track discoverability issues
-            validation_result["discoverability_issues"].extend(category_result["discoverability_issues"])
+            validation_result["discoverability_issues"].extend(
+    category_result["discoverability_issues"],
+)
 
             # Track syntax errors
             validation_result["syntax_errors"].extend(category_result["syntax_errors"])
@@ -313,7 +315,12 @@ class CommandValidator:
 
         return recovery_result
 
-    def _validate_command_category(self, category: str, config: Dict[str, Any]) -> Dict[str, Any]:
+    def _validate_command_category(
+    self,
+    category: str,
+    config: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """Validate a single command category"""
         category_result = {
             "category": category,
@@ -436,12 +443,17 @@ class CommandValidator:
                 validation_result["sections"][section] = True
             else:
                 validation_result["valid"] = False
-                validation_result["errors"].append(f"Missing required section: {section} ({description})")
+                validation_result["errors"].append(
+    f"Missing required section: {section} ({description})",
+)
                 validation_result["sections"][section] = False
 
         # Check for parameter documentation (optional but recommended)
-        if "## Parameters" not in content_no_frontmatter and "### Parameters" not in content_no_frontmatter:
-            validation_result["errors"].append("Missing parameter documentation (recommended)")
+        if "## Parameters" not in content_no_frontmatter and 
+            "### Parameters" not in content_no_frontmatter:
+            validation_result["errors"].append(
+    "Missing parameter documentation (recommended)",
+)
 
         return validation_result
 
@@ -484,9 +496,13 @@ class CommandValidator:
                 if len(description) > 50:  # Reasonable description length
                     validation_result["features"]["clear_description"] = True
                 else:
-                    validation_result["errors"].append("Description too brief or unclear")
+                    validation_result["errors"].append(
+    "Description too brief or unclear",
+)
             except:
-                validation_result["errors"].append("Cannot parse frontmatter for description check")
+                validation_result["errors"].append(
+    "Cannot parse frontmatter for description check",
+)
 
         # Assess overall validity
         validation_result["valid"] = all([
@@ -542,7 +558,9 @@ class CommandValidator:
             else:
                 results["valid"] = False
                 results["categories_missing"].append(expected_category)
-                results["errors"].append(f"Missing category directory: {expected_category}/")
+                results["errors"].append(
+    f"Missing category directory: {expected_category}/",
+)
 
         return results
 
@@ -566,10 +584,14 @@ class CommandValidator:
                     # Check naming conventions
                     if " " in command_name:
                         results["valid"] = False
-                        results["errors"].append(f"Command name contains spaces: {command_name}")
+                        results["errors"].append(
+    f"Command name contains spaces: {command_name}",
+)
 
                     if command_name != command_name.lower():
-                        results["errors"].append(f"Command name should be lowercase: {command_name}")
+                        results["errors"].append(
+    f"Command name should be lowercase: {command_name}",
+)
 
                     results["patterns"].append({
                         "category": category_dir.name,
@@ -632,7 +654,8 @@ class CommandValidator:
                     try:
                         with open(Path(root) / file, 'r') as f:
                             content = f.read()
-                            if f"/{category}:{name}" in content or f"{category}:{name}" in content:
+                            if f"/{category}:{name}" in content or 
+                                f"{category}:{name}" in content:
                                 return str(Path(root) / file)
                     except:
                         pass
@@ -800,7 +823,9 @@ class CommandValidator:
         # Discoverability issues
         if validation_result["discoverability_issues"]:
             recommendations.append(
-                f"[HIGH] Fix {len(validation_result['discoverability_issues'])} discoverability issues. "
+                f"[HIGH] Fix {len(
+    validation_result['discoverability_issues'])} discoverability issues. ",
+)
                 "Add examples, clear descriptions, and usage patterns."
             )
 
@@ -814,11 +839,17 @@ class CommandValidator:
         # Score-based recommendations
         score = validation_result["summary"]["overall_score"]
         if score < 50:
-            recommendations.append("[CRITICAL] Overall command system integrity is severely compromised.")
+            recommendations.append(
+    "[CRITICAL] Overall command system integrity is severely compromised.",
+)
         elif score < 70:
-            recommendations.append("[HIGH] Command system needs significant improvements.")
+            recommendations.append(
+    "[HIGH] Command system needs significant improvements.",
+)
         elif score < 90:
-            recommendations.append("[MED] Command system is functional but can be improved.")
+            recommendations.append(
+    "[MED] Command system is functional but can be improved.",
+)
 
         return recommendations
 
@@ -847,9 +878,15 @@ def main():
 
     parser = argparse.ArgumentParser(description="Command Validation System")
     parser.add_argument("action", choices=["validate", "check", "discover", "recover"])
-    parser.add_argument("--command", help="Command path to validate (e.g., commands/dev/auto.md)")
+    parser.add_argument(
+    "--command",
+    help="Command path to validate (e.g., commands/dev/auto.md)",
+)
     parser.add_argument("--plugin-dir", default=".", help="Plugin directory path")
-    parser.add_argument("--missing-command", help="Missing command to recover (e.g., /monitor:dashboard)")
+    parser.add_argument(
+    "--missing-command",
+    help="Missing command to recover (e.g., /monitor:dashboard)",
+)
 
     args = parser.parse_args()
 
@@ -871,9 +908,15 @@ def main():
             result = validator.validate_all_commands()
             print("[VALIDATION] Command System Validation")
             print(f"Overall Score: {result['summary']['overall_score']}/100")
-            print(f"Commands: {result['summary']['total_found']}/{result['summary']['total_expected']}")
-            print(f"Discoverable: {result['summary']['discoverable']}/{result['summary']['total_expected']}")
-            print(f"Valid Syntax: {result['summary']['valid_syntax']}/{result['summary']['total_expected']}")
+            print(
+    f"Commands: {result['summary']['total_found']}/{result['summary']['total_expected']}",
+)
+            print(
+    f"Discoverable: {result['summary']['discoverable']}/{result['summary']['total_expected']}",
+)
+            print(
+    f"Valid Syntax: {result['summary']['valid_syntax']}/{result['summary']['total_expected']}",
+)
 
             if result['missing_commands']:
                 print("\n❌ Missing Commands:")
@@ -888,7 +931,9 @@ def main():
     elif args.action == "discover":
         result = validator.check_command_discoverability()
         print("🔎 Command Discoverability Check")
-        print(f"Overall: {'✅ Discoverable' if result['overall_discoverable'] else '❌ Issues found'}")
+        print(
+    f"Overall: {'✅ Discoverable' if result['overall_discoverable'] else '❌ Issues found'}",
+)
 
         for method, method_result in result['methods'].items():
             print(f"\n{method.title()}: {'✅' if method_result['valid'] else '❌'}")
@@ -906,7 +951,9 @@ def main():
         print(f"Success: {'✅' if result['success'] else '❌'}")
 
         for method, method_result in result['recovery_methods'].items():
-            print(f"\n{method.title()}: {'✅' if method_result.get('success', False) else '❌'}")
+            print(
+    f"\n{method.title()}: {'✅' if method_result.get('success', False) else '❌'}",
+)
             if 'suggested_action' in method_result:
                 print(f"  Action: {method_result['suggested_action']}")
 

@@ -230,7 +230,8 @@ class EnhancedGitHubReleaseManager:
 
             # Analyze commits for version bump
             has_features = any('feat' in commit for commit in commits)
-            has_breaking = any('break' in commit.lower() or '!' in commit for commit in commits)
+            has_breaking = any('break' in commit.lower() or 
+                '!' in commit for commit in commits)
             has_fixes = any('fix' in commit for commit in commits)
 
             if has_breaking:
@@ -275,13 +276,27 @@ def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="Enhanced GitHub Release Manager")
     parser.add_argument("--tag", help="Release tag (auto-detected if not provided)")
-    parser.add_argument("--title", help="Release title (auto-generated if not provided)")
-    parser.add_argument("--notes", help="Release notes (auto-generated if not provided)")
+    parser.add_argument(
+    "--title",
+    help="Release title (auto-generated if not provided)",
+)
+    parser.add_argument(
+    "--notes",
+    help="Release notes (auto-generated if not provided)",
+)
     parser.add_argument("--notes-file", help="Read release notes from file")
     parser.add_argument("--prerelease", action="store_true", help="Mark as prerelease")
     parser.add_argument("--draft", action="store_true", help="Create as draft")
-    parser.add_argument("--no-verify", action="store_true", help="Skip release verification")
-    parser.add_argument("--auto", action="store_true", help="Auto-detect version and changes")
+    parser.add_argument(
+    "--no-verify",
+    action="store_true",
+    help="Skip release verification",
+)
+    parser.add_argument(
+    "--auto",
+    action="store_true",
+    help="Auto-detect version and changes",
+)
 
     args = parser.parse_args()
 
@@ -309,7 +324,8 @@ def main():
                 print(f"❌ Notes file not found: {args.notes_file}")
                 sys.exit(1)
         else:
-            notes = args.notes or "Release created with Enhanced GitHub Release Manager."
+            notes = args.notes or 
+                "Release created with Enhanced GitHub Release Manager."
 
     # Validate inputs
     if not tag:

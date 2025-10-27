@@ -153,7 +153,9 @@ class BackupManager:
                             backup_manifest["files_backed_up"][category][file_path] = {
                                 "backup_path": str(backup_file),
                                 "size": backup_file.stat().st_size,
-                                "modified": datetime.fromtimestamp(backup_file.stat().st_mtime).isoformat(),
+                                "modified": datetime.fromtimestamp(
+    backup_file.stat().st_mtime).isoformat(),,
+)
                                 "hash": self._calculate_file_hash(file_path)
                             }
                         except Exception as e:
@@ -177,7 +179,11 @@ class BackupManager:
         finally:
             self.release_lock()
 
-    def restore_backup(self, backup_id: str, files_to_restore: Optional[List[str]] = None) -> Dict[str, Any]:
+    def restore_backup(
+    self,
+    backup_id: str,
+    files_to_restore: Optional[List[str]] = None) -> Dict[str, Any]:,
+)
         """
         Restore files from backup
 
@@ -304,7 +310,9 @@ class BackupManager:
                     validation_result["file_integrity"][original_path] = {
                         "exists": True,
                         "hash_match": current_hash == original_hash,
-                        "size_match": Path(backup_file_path).stat().st_size == backup_info["size"]
+                        "size_match": Path(
+    backup_file_path).stat().st_size == backup_info["size"],
+)
                     }
 
             return validation_result
@@ -403,7 +411,11 @@ class BackupManager:
                 except:
                     pass
 
-    def auto_backup_before_operation(self, operation_name: str, files_to_modify: List[str]) -> str:
+    def auto_backup_before_operation(
+    self,
+    operation_name: str,
+    files_to_modify: List[str]) -> str:,
+)
         """
         Automatically create backup before an operation
 
@@ -438,13 +450,28 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Automated Backup Manager")
-    parser.add_argument("action", choices=["create", "restore", "list", "validate", "auto-backup"])
+    parser.add_argument(
+    "action",
+    choices=["create",
+    "restore",
+    "list",
+    "validate",
+    "auto-backup"],
+)
     parser.add_argument("--operation", help="Operation name for backup")
     parser.add_argument("--reason", help="Reason for backup")
     parser.add_argument("--backup-id", help="Backup ID to restore/validate")
     parser.add_argument("--files", nargs="+", help="Specific files to restore")
-    parser.add_argument("--files-to-modify", nargs="+", help="Files that will be modified (for auto-backup)")
-    parser.add_argument("--backup-dir", default=".claude/backups", help="Backup directory")
+    parser.add_argument(
+    "--files-to-modify",
+    nargs="+",
+    help="Files that will be modified (for auto-backup)",
+)
+    parser.add_argument(
+    "--backup-dir",
+    default=".claude/backups",
+    help="Backup directory",
+)
 
     args = parser.parse_args()
 

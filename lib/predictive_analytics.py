@@ -214,7 +214,12 @@ class PredictiveAnalyticsEngine:
 
         return prediction_result
 
-    def predict_optimal_skills(self, task_context: Dict[str, Any], top_k: int = 3) -> Dict[str, Any]:
+    def predict_optimal_skills(
+    self,
+    task_context: Dict[str,
+    Any],
+    top_k: int = 3) -> Dict[str, Any]:,
+)
         """
         Predict optimal skills for a given task context using historical performance.
 
@@ -243,7 +248,11 @@ class PredictiveAnalyticsEngine:
                 # Weight by recent usage (more recent = more relevant)
                 recent_usage_bonus = 0
                 for pattern in enhanced_patterns.get("patterns", []):
-                    if skill_name in pattern.get("execution", {}).get("skills_used", []):
+                    if skill_name in pattern.get(
+    "execution",
+    {}).get("skills_used",
+    []):,
+)
                         pattern_age = datetime.now() - datetime.fromisoformat(pattern["timestamp"])
                         if pattern_age.days < 7:  # Recent usage
                             recent_usage_bonus += (7 - pattern_age.days) / 7
@@ -272,16 +281,26 @@ class PredictiveAnalyticsEngine:
                 "success_rate": round(performance["success_rate"] * 100, 2),
                 "avg_quality_impact": round(performance["avg_quality_impact"], 2),
                 "usage_count": performance["total_usage"],
-                "recommendation_reason": self._generate_skill_recommendation_reason(skill_name, performance, task_context)
+                "recommendation_reason": self._generate_skill_recommendation_reason(
+    skill_name,
+    performance,
+    task_context,
+)
             })
 
         prediction_result = {
             "prediction_type": "optimal_skills",
             "task_type": task_type,
             "recommended_skills": top_skills,
-            "prediction_confidence": round(statistics.mean([s["confidence"] for s in top_skills]) if top_skills else 0, 2),
+            "prediction_confidence": round(
+    statistics.mean([s["confidence"] for s in top_skills]) if top_skills else 0,
+    2),,
+)
             "total_skills_analyzed": len(skill_performance),
-            "recommendations": self._generate_skill_recommendations(top_skills, task_context)
+            "recommendations": self._generate_skill_recommendations(
+    top_skills,
+    task_context,
+)
         }
 
         # Store prediction for learning
@@ -319,8 +338,14 @@ class PredictiveAnalyticsEngine:
                     learning_metrics.append({
                         "date": pattern_date.date().isoformat(),
                         "days_ago": days_ago,
-                        "skills_used": len(pattern.get("execution", {}).get("skills_used", [])),
-                        "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
+                        "skills_used": len(
+    pattern.get("execution", {}).get("skills_used", [])),,
+)
+                        "quality_score": pattern.get(
+    "outcome",
+    {}).get("quality_score",
+    0),,
+)
                         "success": pattern.get("outcome", {}).get("success", False)
                     })
 
@@ -358,7 +383,8 @@ class PredictiveAnalyticsEngine:
             recent_averages = daily_averages[:7]  # Last 7 days
             quality_trend = statistics.mean([d["avg_quality"] for d in recent_averages])
             skills_trend = statistics.mean([d["avg_skills"] for d in recent_averages])
-            success_trend = statistics.mean([d["success_rate"] for d in recent_averages])
+            success_trend = statistics.mean([d["success_rate"] for d in 
+                recent_averages])
 
             # Predict future velocity
             velocity_predictions = []
@@ -391,7 +417,10 @@ class PredictiveAnalyticsEngine:
                 "predictions": velocity_predictions,
                 "confidence_score": confidence,
                 "learning_acceleration_factor": "2% daily improvement",
-                "recommendations": self._generate_learning_recommendations(quality_trend, success_trend)
+                "recommendations": self._generate_learning_recommendations(
+    quality_trend,
+    success_trend,
+)
             }
         else:
             prediction_result = {
@@ -446,7 +475,10 @@ class PredictiveAnalyticsEngine:
                         "target": task_type,
                         "current_success_rate": round(success_rate * 100, 2),
                         "current_avg_quality": round(avg_quality, 2),
-                        "improvement_potential": round((100 - avg_quality) * 0.8, 2),  # 80% of gap achievable
+                        "improvement_potential": round(
+    (100 - avg_quality) * 0.8,
+    2),  # 80% of gap achievable,
+)
                         "recommendation": f"Focus on improving {task_type} tasks through targeted skill training"
                     })
 
@@ -485,14 +517,19 @@ class PredictiveAnalyticsEngine:
 
         # Sort opportunities by priority and impact
         priority_order = {"high": 3, "medium": 2, "low": 1}
-        opportunities.sort(key=lambda x: priority_order.get(x["priority"], 0), reverse=True)
+        opportunities.sort(
+    key=lambda x: priority_order.get(x["priority"], 0),
+    reverse=True,
+)
 
         result = {
             "analysis_type": "optimization_opportunities",
             "total_opportunities": len(opportunities),
             "opportunities": opportunities[:10],  # Top 10 opportunities
             "analysis_timestamp": datetime.now().isoformat(),
-            "recommendations": self._generate_optimization_recommendations(opportunities)
+            "recommendations": self._generate_optimization_recommendations(
+    opportunities,
+)
         }
 
         # Store insights
@@ -500,30 +537,51 @@ class PredictiveAnalyticsEngine:
 
         return result
 
-    def _generate_quality_recommendations(self, slope: float, confidence: float) -> List[str]:
+    def _generate_quality_recommendations(
+    self,
+    slope: float,
+    confidence: float) -> List[str]:,
+)
         """Generate recommendations based on quality trend analysis."""
         recommendations = []
 
         if slope > 1.0:
-            recommendations.append("📈 Strong positive trend detected - maintain current approach")
+            recommendations.append(
+    "📈 Strong positive trend detected - maintain current approach",
+)
             recommendations.append("🎯 Consider setting higher quality targets")
         elif slope > 0.5:
-            recommendations.append("📊 Positive quality trend - continue current practices")
+            recommendations.append(
+    "📊 Positive quality trend - continue current practices",
+)
         elif slope > -0.5:
-            recommendations.append("⚖️ Quality is stable - focus on incremental improvements")
+            recommendations.append(
+    "⚖️ Quality is stable - focus on incremental improvements",
+)
         else:
-            recommendations.append("📉 Negative quality trend detected - immediate action needed")
-            recommendations.append("🔍 Review recent changes that may have impacted quality")
+            recommendations.append(
+    "📉 Negative quality trend detected - immediate action needed",
+)
+            recommendations.append(
+    "🔍 Review recent changes that may have impacted quality",
+)
             recommendations.append("📚 Consider additional training for team members")
 
         if confidence < 60:
             recommendations.append("📊 Low confidence in prediction - collect more data")
         elif confidence > 80:
-            recommendations.append("✅ High confidence prediction - reliable for planning")
+            recommendations.append(
+    "✅ High confidence prediction - reliable for planning",
+)
 
         return recommendations
 
-    def _generate_skill_recommendation_reason(self, skill_name: str, performance: Dict, task_context: Dict) -> str:
+    def _generate_skill_recommendation_reason(
+    self,
+    skill_name: str,
+    performance: Dict,
+    task_context: Dict) -> str:,
+)
         """Generate reasoning for skill recommendation."""
         reasons = []
 
@@ -538,7 +596,11 @@ class PredictiveAnalyticsEngine:
 
         return " | ".join(reasons) if reasons else "Potential fit"
 
-    def _generate_skill_recommendations(self, skills: List[Dict], task_context: Dict) -> List[str]:
+    def _generate_skill_recommendations(
+    self,
+    skills: List[Dict],
+    task_context: Dict) -> List[str]:,
+)
         """Generate overall skill recommendations."""
         if not skills:
             return ["No specific skill recommendations available"]
@@ -547,43 +609,68 @@ class PredictiveAnalyticsEngine:
         top_skill = skills[0]
 
         if top_skill["confidence"] > 80:
-            recommendations.append(f"🎯 Prioritize using {top_skill['skill']} - {top_skill['confidence']}% confidence")
+            recommendations.append(
+    f"🎯 Prioritize using {top_skill['skill']} - {top_skill['confidence']}% confidence",
+)
 
         if len(skills) >= 2:
             avg_confidence = sum(s["confidence"] for s in skills) / len(skills)
             if avg_confidence > 70:
-                recommendations.append("📊 Multiple high-confidence skills available - consider combination approach")
+                recommendations.append(
+    "📊 Multiple high-confidence skills available - consider combination approach",
+)
 
         task_type = task_context.get("task_type", "unknown")
-        recommendations.append(f"💡 Task type '{task_type}' has good skill match options")
+        recommendations.append(
+    f"💡 Task type '{task_type}' has good skill match options",
+)
 
         return recommendations
 
-    def _generate_learning_recommendations(self, quality_trend: float, success_trend: float) -> List[str]:
+    def _generate_learning_recommendations(
+    self,
+    quality_trend: float,
+    success_trend: float) -> List[str]:,
+)
         """Generate learning velocity recommendations."""
         recommendations = []
 
         if quality_trend > 80:
-            recommendations.append("🎯 Excellent learning velocity - maintain current pace")
+            recommendations.append(
+    "🎯 Excellent learning velocity - maintain current pace",
+)
         elif quality_trend > 70:
-            recommendations.append("📈 Good learning progress - continue current approach")
+            recommendations.append(
+    "📈 Good learning progress - continue current approach",
+)
         elif quality_trend > 60:
-            recommendations.append("⚠️ Moderate learning pace - consider focused practice")
+            recommendations.append(
+    "⚠️ Moderate learning pace - consider focused practice",
+)
         else:
-            recommendations.append("📉 Learning velocity needs improvement - review learning strategy")
+            recommendations.append(
+    "📉 Learning velocity needs improvement - review learning strategy",
+)
 
         if success_trend > 0.8:
             recommendations.append("✅ High success rate - excellent skill application")
         elif success_trend > 0.6:
-            recommendations.append("🔄 Good success rate - refine technique for consistency")
+            recommendations.append(
+    "🔄 Good success rate - refine technique for consistency",
+)
         else:
-            recommendations.append("🎯 Success rate needs improvement - focus on fundamentals")
+            recommendations.append(
+    "🎯 Success rate needs improvement - focus on fundamentals",
+)
 
         recommendations.append("📚 Regular practice accelerates learning velocity")
 
         return recommendations
 
-    def _generate_optimization_recommendations(self, opportunities: List[Dict]) -> List[str]:
+    def _generate_optimization_recommendations(
+    self,
+    opportunities: List[Dict]) -> List[str]:,
+)
         """Generate optimization recommendations based on opportunities."""
         if not opportunities:
             return ["🎉 Current performance is optimal - maintain standards"]
@@ -592,17 +679,27 @@ class PredictiveAnalyticsEngine:
 
         high_priority = [op for op in opportunities if op["priority"] == "high"]
         if high_priority:
-            recommendations.append(f"🚨 Address {len(high_priority)} high-priority issues first")
+            recommendations.append(
+    f"🚨 Address {len(high_priority)} high-priority issues first",
+)
 
-        task_improvements = [op for op in opportunities if op["type"] == "task_type_improvement"]
+        task_improvements = [op for op in opportunities if 
+            op["type"] == "task_type_improvement"]
         if task_improvements:
-            recommendations.append(f"📊 Focus on {len(task_improvements)} task types needing improvement")
+            recommendations.append(
+    f"📊 Focus on {len(task_improvements)} task types needing improvement",
+)
 
-        skill_opportunities = [op for op in opportunities if op["type"] == "skill_utilization"]
+        skill_opportunities = [op for op in opportunities if 
+            op["type"] == "skill_utilization"]
         if skill_opportunities:
-            recommendations.append(f"💡 Leverage {len(skill_opportunities)} underutilized effective skills")
+            recommendations.append(
+    f"💡 Leverage {len(skill_opportunities)} underutilized effective skills",
+)
 
-        recommendations.append("📈 Regular optimization reviews maintain peak performance")
+        recommendations.append(
+    "📈 Regular optimization reviews maintain peak performance",
+)
 
         return recommendations
 
@@ -689,7 +786,9 @@ class PredictiveAnalyticsEngine:
         if quality_pred.get("confidence_score", 0) > 70:
             if quality_pred.get("trend_slope", 0) > 0.5:
                 summary["key_insights"].append("Positive quality trend predicted")
-                summary["predicted_outcomes"].append("Continued quality improvement expected")
+                summary["predicted_outcomes"].append(
+    "Continued quality improvement expected",
+)
             elif quality_pred.get("trend_slope", 0) < -0.5:
                 summary["key_insights"].append("Quality decline detected")
                 summary["action_items"].append("Address quality issues immediately")
@@ -701,17 +800,23 @@ class PredictiveAnalyticsEngine:
             if "current_velocity" in learning_pred:
                 current = learning_pred["current_velocity"]
                 if current.get("success_rate", 0) > 0.8:
-                    summary["predicted_outcomes"].append("Strong learning performance maintained")
+                    summary["predicted_outcomes"].append(
+    "Strong learning performance maintained",
+)
 
         # Analyze optimization opportunities
         opportunities = report.get("optimization_opportunities", {})
         total_ops = opportunities.get("total_opportunities", 0)
         if total_ops > 0:
-            summary["key_insights"].append(f"{total_ops} optimization opportunities identified")
+            summary["key_insights"].append(
+    f"{total_ops} optimization opportunities identified",
+)
             high_priority = len([op for op in opportunities.get("opportunities", [])
                                if op.get("priority") == "high"])
             if high_priority > 0:
-                summary["action_items"].append(f"Address {high_priority} high-priority opportunities")
+                summary["action_items"].append(
+    f"Address {high_priority} high-priority opportunities",
+)
 
         return summary
 
@@ -719,13 +824,31 @@ class PredictiveAnalyticsEngine:
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="Predictive Analytics Engine")
-    parser.add_argument("--dir", default=".claude-patterns", help="Patterns directory path")
+    parser.add_argument(
+    "--dir",
+    default=".claude-patterns",
+    help="Patterns directory path",
+)
     parser.add_argument("--action", choices=["quality-trend", "optimal-skills", "learning-velocity",
                         "opportunities", "comprehensive", "accuracy"],
                         default="comprehensive", help="Action to perform")
-    parser.add_argument("--days", type=int, default=7, help="Days ahead for predictions")
-    parser.add_argument("--task-type", default="general", help="Task type for skill prediction")
-    parser.add_argument("--top-k", type=int, default=3, help="Number of top skills to recommend")
+    parser.add_argument(
+    "--days",
+    type=int,
+    default=7,
+    help="Days ahead for predictions",
+)
+    parser.add_argument(
+    "--task-type",
+    default="general",
+    help="Task type for skill prediction",
+)
+    parser.add_argument(
+    "--top-k",
+    type=int,
+    default=3,
+    help="Number of top skills to recommend",
+)
 
     args = parser.parse_args()
 

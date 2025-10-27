@@ -197,7 +197,9 @@ class DashboardLauncher:
         # Attempt restart if enabled and under max restarts
         if self.auto_restart and self.restart_count < self.max_restarts:
             self.restart_count += 1
-            logger.info(f"Restarting dashboard (attempt {self.restart_count}/{self.max_restarts})")
+            logger.info(
+    f"Restarting dashboard (attempt {self.restart_count}/{self.max_restarts})",
+)
 
             self.stop_dashboard()
             time.sleep(2)  # Brief pause before restart
@@ -285,9 +287,17 @@ def main():
     parser = argparse.ArgumentParser(description='Robust Dashboard Launcher')
     parser.add_argument('--host', default='127.0.0.1', help='Host to bind to')
     parser.add_argument('--port', type=int, default=5000, help='Port to bind to')
-    parser.add_argument('--patterns-dir', default='.claude-patterns', help='Pattern directory')
+    parser.add_argument(
+    '--patterns-dir',
+    default='.claude-patterns',
+    help='Pattern directory',
+)
     parser.add_argument('--no-browser', action='store_true', help='Don\'t open browser')
-    parser.add_argument('--no-restart', action='store_true', help='Disable auto-restart')
+    parser.add_argument(
+    '--no-restart',
+    action='store_true',
+    help='Disable auto-restart',
+)
     parser.add_argument('--verbose', action='store_true', help='Verbose logging')
 
     args = parser.parse_args()

@@ -29,7 +29,11 @@ import re
 class DashboardValidator:
     """Comprehensive dashboard validation and debugging system."""
 
-    def __init__(self, patterns_dir: str = ".claude-patterns", dashboard_url: str = "http://127.0.0.1:5000"):
+    def __init__(
+    self,
+    patterns_dir: str = ".claude-patterns",
+    dashboard_url: str = "http://127.0.0.1:5000"):,
+)
         """
         Initialize dashboard validator.
 
@@ -57,7 +61,13 @@ class DashboardValidator:
         Run comprehensive dashboard validation.
 
         Args:
-            validation_type: Type of validation (quick, full, performance, data, frontend)
+            validation_type: Type of validation (
+    quick,
+    full,
+    performance,
+    data,
+    frontend,
+)
 
         Returns:
             Validation results dictionary
@@ -120,13 +130,17 @@ class DashboardValidator:
                     "status": "pass",
                     "response_time": response.elapsed.total_seconds()
                 }
-                print(f"   ✅ Dashboard accessible ({response.elapsed.total_seconds():.3f}s)")
+                print(
+    f"   ✅ Dashboard accessible ({response.elapsed.total_seconds():.3f}s)",
+)
             else:
                 layer_results["tests"]["dashboard_accessible"] = {
                     "status": "fail",
                     "status_code": response.status_code
                 }
-                layer_results["issues"].append(f"Dashboard returned HTTP {response.status_code}")
+                layer_results["issues"].append(
+    f"Dashboard returned HTTP {response.status_code}",
+)
                 layer_results["status"] = "fail"
                 print(f"   ❌ Dashboard returned HTTP {response.status_code}")
         except Exception as e:
@@ -165,7 +179,9 @@ class DashboardValidator:
                         "status": "fail",
                         "status_code": response.status_code
                     }
-                    layer_results["issues"].append(f"API endpoint {endpoint} returned {response.status_code}")
+                    layer_results["issues"].append(
+    f"API endpoint {endpoint} returned {response.status_code}",
+)
                     print(f"   ❌ {endpoint} returned {response.status_code}")
             except Exception as e:
                 api_results[endpoint] = {
@@ -219,10 +235,13 @@ class DashboardValidator:
         total_tests = len(layer_results["tests"])
         passed_tests = sum(1 for test in layer_results["tests"].values()
                          if test.get("status") == "pass")
-        layer_results["score"] = int((passed_tests / total_tests) * 100) if total_tests > 0 else 0
+        layer_results["score"] = int((passed_tests / total_tests) * 100) if 
+            total_tests > 0 else 0
 
         if layer_results["issues"]:
-            self.results["issues"].extend([f"Application: {issue}" for issue in layer_results["issues"]])
+            self.results["issues"].extend(
+    [f"Application: {issue}" for issue in layer_results["issues"]],
+)
 
         self.results["layers"]["application"] = layer_results
 
@@ -265,7 +284,8 @@ class DashboardValidator:
 
                     if not validation_result["valid"]:
                         layer_results["issues"].extend([f"{filename}: {issue}"
-                                                      for issue in validation_result["issues"]])
+                                                      for issue in 
+                                                          validation_result["issues"]])
                 else:
                     file_results[filename] = {
                         "status": "fail",
@@ -282,7 +302,9 @@ class DashboardValidator:
                 print(f"   ❌ {filename} JSON error: {e}")
                 # Try to auto-fix JSON syntax
                 if self._fix_json_syntax(filepath):
-                    layer_results["fixes_applied"].append(f"Fixed JSON syntax in {filename}")
+                    layer_results["fixes_applied"].append(
+    f"Fixed JSON syntax in {filename}",
+)
                     print(f"   🔧 Auto-fixed JSON syntax in {filename}")
             except Exception as e:
                 file_results[filename] = {
@@ -315,10 +337,13 @@ class DashboardValidator:
         total_tests = len(layer_results["tests"])
         passed_tests = sum(1 for test in layer_results["tests"].values()
                          if test.get("status") == "pass")
-        layer_results["score"] = int((passed_tests / total_tests) * 100) if total_tests > 0 else 0
+        layer_results["score"] = int((passed_tests / total_tests) * 100) if 
+            total_tests > 0 else 0
 
         if layer_results["issues"]:
-            self.results["issues"].extend([f"Data: {issue}" for issue in layer_results["issues"]])
+            self.results["issues"].extend(
+    [f"Data: {issue}" for issue in layer_results["issues"]],
+)
 
         self.results["layers"]["data"] = layer_results
 
@@ -357,7 +382,10 @@ class DashboardValidator:
                         "status": "fail",
                         "missing_elements": missing_elements
                     }
-                    layer_results["issues"].append(f"Missing HTML elements: {', '.join(missing_elements)}")
+                    layer_results["issues"].append(
+    f"Missing HTML elements: {',
+    '.join(missing_elements)}",
+)
                     print(f"   ❌ Missing HTML elements: {', '.join(missing_elements)}")
                 else:
                     layer_results["tests"]["html_structure"] = {
@@ -370,7 +398,9 @@ class DashboardValidator:
                     "status": "fail",
                     "error": f"HTTP {response.status_code}"
                 }
-                layer_results["issues"].append(f"Cannot validate HTML: HTTP {response.status_code}")
+                layer_results["issues"].append(
+    f"Cannot validate HTML: HTTP {response.status_code}",
+)
         except Exception as e:
             layer_results["tests"]["html_structure"] = {
                 "status": "fail",
@@ -383,7 +413,8 @@ class DashboardValidator:
         try:
             # Test if JavaScript is working by checking API responses
             response = self.session.get(f"{self.dashboard_url}/api/overview")
-            if response.status_code == 200 and response.headers.get('content-type', '').startswith('application/json'):
+            if response.status_code == 200 and 
+                response.headers.get('content-type', '').startswith('application/json'):
                 layer_results["tests"]["javascript_api"] = {
                     "status": "pass",
                     "content_type": response.headers.get('content-type')
@@ -394,7 +425,9 @@ class DashboardValidator:
                     "status": "fail",
                     "content_type": response.headers.get('content-type', 'unknown')
                 }
-                layer_results["issues"].append("JavaScript API not responding correctly")
+                layer_results["issues"].append(
+    "JavaScript API not responding correctly",
+)
                 print(f"   ❌ JavaScript API not working")
         except Exception as e:
             layer_results["tests"]["javascript_api"] = {
@@ -430,7 +463,9 @@ class DashboardValidator:
                     "status": "fail",
                     "error": f"HTTP {response.status_code}"
                 }
-                layer_results["issues"].append(f"Chart data API failed: HTTP {response.status_code}")
+                layer_results["issues"].append(
+    f"Chart data API failed: HTTP {response.status_code}",
+)
         except Exception as e:
             layer_results["tests"]["chart_data"] = {
                 "status": "fail",
@@ -443,10 +478,13 @@ class DashboardValidator:
         total_tests = len(layer_results["tests"])
         passed_tests = sum(1 for test in layer_results["tests"].values()
                          if test.get("status") == "pass")
-        layer_results["score"] = int((passed_tests / total_tests) * 100) if total_tests > 0 else 0
+        layer_results["score"] = int((passed_tests / total_tests) * 100) if 
+            total_tests > 0 else 0
 
         if layer_results["issues"]:
-            self.results["issues"].extend([f"Frontend: {issue}" for issue in layer_results["issues"]])
+            self.results["issues"].extend(
+    [f"Frontend: {issue}" for issue in layer_results["issues"]],
+)
 
         self.results["layers"]["frontend"] = layer_results
 
@@ -491,11 +529,17 @@ class DashboardValidator:
                 "avg": avg_response_time,
                 "min": min(response_times),
                 "max": max_response_time,
-                "p95": sorted(response_times)[int(len(response_times) * 0.95)] if len(response_times) > 1 else avg_response_time
+                "p95": sorted(
+    response_times)[int(
+    len(response_times) * 0.95)] if len(response_times) > 1 else avg_response_time,,
+)
+)
             }
 
             if avg_response_time > 0.5:
-                layer_results["issues"].append(f"Slow API responses: avg {avg_response_time:.3f}s (target: <0.2s)")
+                layer_results["issues"].append(
+    f"Slow API responses: avg {avg_response_time:.3f}s (target: <0.2s)",
+)
                 print(f"   ⚠️ Slow API responses: avg {avg_response_time:.3f}s")
             else:
                 print(f"   ✅ API response times: avg {avg_response_time:.3f}s")
@@ -540,7 +584,9 @@ class DashboardValidator:
                 }
 
                 if memory_mb > 200:
-                    layer_results["issues"].append(f"High memory usage: {memory_mb:.1f}MB")
+                    layer_results["issues"].append(
+    f"High memory usage: {memory_mb:.1f}MB",
+)
                     print(f"   ⚠️ High memory usage: {memory_mb:.1f}MB")
                 else:
                     print(f"   ✅ Memory usage: {memory_mb:.1f}MB")
@@ -587,7 +633,9 @@ class DashboardValidator:
                         "port": port,
                         "error_code": result
                     }
-                    layer_results["issues"].append(f"Port {port} not accessible (error code: {result})")
+                    layer_results["issues"].append(
+    f"Port {port} not accessible (error code: {result})",
+)
                     print(f"   ❌ Port {port} not accessible")
             else:
                 layer_results["tests"]["port_connectivity"] = {
@@ -606,10 +654,13 @@ class DashboardValidator:
         total_tests = len(layer_results["tests"])
         passed_tests = sum(1 for test in layer_results["tests"].values()
                          if test.get("status") == "pass")
-        layer_results["score"] = int((passed_tests / total_tests) * 100) if total_tests > 0 else 0
+        layer_results["score"] = int((passed_tests / total_tests) * 100) if 
+            total_tests > 0 else 0
 
         if layer_results["issues"]:
-            self.results["issues"].extend([f"Performance: {issue}" for issue in layer_results["issues"]])
+            self.results["issues"].extend(
+    [f"Performance: {issue}" for issue in layer_results["issues"]],
+)
 
         self.results["layers"]["performance"] = layer_results
         self.results["performance_metrics"] = layer_results["metrics"]
@@ -634,21 +685,32 @@ class DashboardValidator:
 
                 # Validate required fields
                 required_fields = ["patterns", "skill_effectiveness", "agent_effectiveness", "metadata"]
-                missing_fields = [field for field in required_fields if field not in patterns_data]
+                missing_fields = [field for field in required_fields if 
+                    field not in patterns_data]
 
                 if missing_fields:
                     integrity_results["checks"]["patterns_structure"] = {
                         "status": "fail",
                         "missing_fields": missing_fields
                     }
-                    integrity_results["issues"].append(f"patterns.json missing fields: {', '.join(missing_fields)}")
-                    print(f"   ❌ patterns.json missing fields: {', '.join(missing_fields)}")
+                    integrity_results["issues"].append(
+    f"patterns.json missing fields: {',
+    '.join(missing_fields)}",
+)
+                    print(
+    f"   ❌ patterns.json missing fields: {',
+    '.join(missing_fields)}",
+)
                 else:
                     integrity_results["checks"]["patterns_structure"] = {
                         "status": "pass",
                         "patterns_count": len(patterns_data.get("patterns", [])),
-                        "skills_count": len(patterns_data.get("skill_effectiveness", {})),
-                        "agents_count": len(patterns_data.get("agent_effectiveness", {}))
+                        "skills_count": len(
+    patterns_data.get("skill_effectiveness", {})),,
+)
+                        "agents_count": len(
+    patterns_data.get("agent_effectiveness", {}),
+)
                     }
                     print(f"   ✅ patterns.json structure valid")
             else:
@@ -675,23 +737,36 @@ class DashboardValidator:
 
                 # Validate required fields
                 required_fields = ["quality_assessments", "statistics", "metadata"]
-                missing_fields = [field for field in required_fields if field not in quality_data]
+                missing_fields = [field for field in required_fields if 
+                    field not in quality_data]
 
                 if missing_fields:
                     integrity_results["checks"]["quality_history_structure"] = {
                         "status": "fail",
                         "missing_fields": missing_fields
                     }
-                    integrity_results["issues"].append(f"quality_history.json missing fields: {', '.join(missing_fields)}")
-                    print(f"   ❌ quality_history.json missing fields: {', '.join(missing_fields)}")
+                    integrity_results["issues"].append(
+    f"quality_history.json missing fields: {',
+    '.join(missing_fields)}",
+)
+                    print(
+    f"   ❌ quality_history.json missing fields: {',
+    '.join(missing_fields)}",
+)
                 else:
                     assessments_count = len(quality_data.get("quality_assessments", []))
                     integrity_results["checks"]["quality_history_structure"] = {
                         "status": "pass",
                         "assessments_count": assessments_count,
-                        "avg_quality_score": quality_data.get("statistics", {}).get("avg_quality_score", 0)
+                        "avg_quality_score": quality_data.get(
+    "statistics",
+    {}).get("avg_quality_score",
+    0,
+)
                     }
-                    print(f"   ✅ quality_history.json structure valid ({assessments_count} assessments)")
+                    print(
+    f"   ✅ quality_history.json structure valid ({assessments_count} assessments)",
+)
             else:
                 integrity_results["checks"]["quality_history_structure"] = {
                     "status": "fail",
@@ -704,7 +779,9 @@ class DashboardValidator:
                 "status": "fail",
                 "error": str(e)
             }
-            integrity_results["issues"].append(f"quality_history.json validation failed: {e}")
+            integrity_results["issues"].append(
+    f"quality_history.json validation failed: {e}",
+)
             print(f"   ❌ quality_history.json validation failed: {e}")
 
         # Check data consistency between files
@@ -716,7 +793,9 @@ class DashboardValidator:
             }
 
             if consistency_score <= 80:
-                integrity_results["issues"].append(f"Low data consistency score: {consistency_score}%")
+                integrity_results["issues"].append(
+    f"Low data consistency score: {consistency_score}%",
+)
                 print(f"   ⚠️ Low data consistency: {consistency_score}%")
             else:
                 print(f"   ✅ Data consistency: {consistency_score}%")
@@ -732,10 +811,13 @@ class DashboardValidator:
         total_checks = len(integrity_results["checks"])
         passed_checks = sum(1 for check in integrity_results["checks"].values()
                           if check.get("status") == "pass")
-        integrity_results["score"] = int((passed_checks / total_checks) * 100) if total_checks > 0 else 0
+        integrity_results["score"] = int((passed_checks / total_checks) * 100) if 
+            total_checks > 0 else 0
 
         if integrity_results["issues"]:
-            self.results["issues"].extend([f"Integrity: {issue}" for issue in integrity_results["issues"]])
+            self.results["issues"].extend(
+    [f"Integrity: {issue}" for issue in integrity_results["issues"]],
+)
 
         self.results["layers"]["integrity"] = integrity_results
 
@@ -747,7 +829,12 @@ class DashboardValidator:
         except json.JSONDecodeError:
             return False
 
-    def _validate_data_structure(self, filename: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def _validate_data_structure(
+    self,
+    filename: str,
+    data: Dict[str,
+    Any]) -> Dict[str, Any]:,
+)
         """Validate specific data file structure."""
         validation_result = {
             "valid": True,
@@ -794,11 +881,21 @@ class DashboardValidator:
             # These should be roughly equal (patterns are created from assessments)
             if abs(patterns_count - quality_assessments_count) > 2:
                 result["consistent"] = False
-                result["issues"].append(f"Pattern count ({patterns_count}) doesn't match assessment count ({quality_assessments_count})")
+                result["issues"].append(
+    f"Pattern count (
+    {patterns_count}) doesn't match assessment count ({quality_assessments_count})",,
+)
+)
 
             # Check timestamp consistency
-            if patterns_data.get("metadata", {}).get("last_updated") != quality_data.get("metadata", {}).get("last_assessment"):
-                result["issues"].append("Last updated timestamps don't match between files")
+            if patterns_data.get(
+    "metadata",
+    {}).get("last_updated") != quality_data.get("metadata",
+    {}).get("last_assessment"):,
+)
+                result["issues"].append(
+    "Last updated timestamps don't match between files",
+)
 
         except Exception as e:
             result["consistent"] = False
@@ -905,7 +1002,9 @@ class DashboardValidator:
                             "patterns": [],
                             "skill_effectiveness": {},
                             "agent_effectiveness": {},
-                            "metadata": {"total_patterns": 0, "last_updated": datetime.now().isoformat()}
+                            "metadata": {"total_patterns": 0, "last_updated": datetime.now(
+    ).isoformat()},
+)
                         }
                     elif filename == "quality_history.json":
                         template = {
@@ -947,7 +1046,8 @@ class DashboardValidator:
                     "priority": "medium",
                     "category": "performance",
                     "issue": "Slow API responses",
-                    "recommendation": "Implement response caching and optimize database queries"
+                    "recommendation": "Implement response caching and 
+                        optimize database queries"
                 })
 
             resource_usage = perf_layer["tests"].get("resource_usage", {})
@@ -956,7 +1056,8 @@ class DashboardValidator:
                     "priority": "medium",
                     "category": "performance",
                     "issue": "High memory usage",
-                    "recommendation": "Implement memory cleanup and optimize data structures"
+                    "recommendation": "Implement memory cleanup and 
+                        optimize data structures"
                 })
 
         # Data layer recommendations
@@ -966,7 +1067,8 @@ class DashboardValidator:
                 "priority": "low",
                 "category": "data",
                 "issue": "Data layer issues detected",
-                "recommendation": "Review data file integrity and implement regular backups"
+                "recommendation": "Review data file integrity and 
+                    implement regular backups"
             })
 
         # Frontend recommendations
@@ -976,7 +1078,8 @@ class DashboardValidator:
                 "priority": "low",
                 "category": "frontend",
                 "issue": "Frontend layer issues detected",
-                "recommendation": "Test browser compatibility and optimize JavaScript performance"
+                "recommendation": "Test browser compatibility and 
+                    optimize JavaScript performance"
             })
 
         # General recommendations based on overall score
@@ -985,7 +1088,8 @@ class DashboardValidator:
                 "priority": "high",
                 "category": "general",
                 "issue": "Dashboard health below optimal",
-                "recommendation": "Schedule regular validation checks and implement monitoring alerts"
+                "recommendation": "Schedule regular validation checks and 
+                    implement monitoring alerts"
             })
 
         self.results["recommendations"] = recommendations
@@ -993,7 +1097,10 @@ class DashboardValidator:
     def print_results(self) -> None:
         """Print formatted validation results."""
         print("\n" + "="*55)
-        print(f"  DASHBOARD VALIDATION {'COMPLETE' if self.results['status'] != 'failed' else 'FAILED'}")
+        print(
+    f"  DASHBOARD VALIDATION {'COMPLETE' if 
+        self.results['status'] != 'failed' else 'FAILED'}",
+)
         print("="*55)
 
         # Overall status
@@ -1007,16 +1114,26 @@ class DashboardValidator:
         }
 
         print(f"\n┌─ Overall Health Score ──────────────────────────────┐")
-        print(f"│ Score: {self.results['overall_score']}/100 {status_emoji.get(self.results['status'], '❓')} {self.results['status'].upper().replace('_', ' ').title()} │")
+        print(
+    f"│ Score: {self.results['overall_score']}/100 {status_emoji.get(
+    self.results['status'],
+    '❓')} {self.results['status'].upper().replace('_',
+    ' ').title()} │",,
+)
+)
         if "execution_time" in self.results:
-            print(f"│ Validation Time: {self.results['execution_time']:.1f}s           │")
+            print(
+    f"│ Validation Time: {self.results['execution_time']:.1f}s           │",
+)
         print(f"└───────────────────────────────────────────────────────┘")
 
         # Layer results
         for layer_name, layer_data in self.results["layers"].items():
             layer_emoji = "✅" if layer_data.get("score", 0) >= 80 else "⚠️" if layer_data.get("score", 0) >= 60 else "❌"
             print(f"\n┌─ {layer_name.title()} Layer ───────────────────────────────┐")
-            print(f"│ Score: {layer_data.get('score', 0):3d}/100 {layer_emoji}                    │")
+            print(
+    f"│ Score: {layer_data.get('score', 0):3d}/100 {layer_emoji}                    │",
+)
 
             # Show key test results
             if "tests" in layer_data:
@@ -1045,10 +1162,15 @@ class DashboardValidator:
         # Issues found
         if self.results["issues"]:
             print(f"\n┌─ Issues Found ─────────────────────────────────────┐")
-            for i, issue in enumerate(self.results["issues"][:10], 1):  # Show max 10 issues
+            for i, issue in enumerate(
+    self.results["issues"][:10],
+    1):  # Show max 10 issues,
+)
                 print(f"│ {i}. {issue:<50} │")
             if len(self.results["issues"]) > 10:
-                print(f"│ ... and {len(self.results['issues']) - 10} more issues           │")
+                print(
+    f"│ ... and {len(self.results['issues']) - 10} more issues           │",
+)
             print(f"└───────────────────────────────────────────────────────┘")
 
         # Fixes applied
@@ -1061,7 +1183,10 @@ class DashboardValidator:
         # Recommendations
         if self.results["recommendations"]:
             print(f"\n┌─ Recommendations ──────────────────────────────────┐")
-            for i, rec in enumerate(self.results["recommendations"][:5], 1):  # Show max 5 recommendations
+            for i, rec in enumerate(
+    self.results["recommendations"][:5],
+    1):  # Show max 5 recommendations,
+)
                 priority_emoji = "🔴" if rec["priority"] == "high" else "🟡" if rec["priority"] == "medium" else "🟢"
                 print(f"│ {i}. {priority_emoji} {rec['recommendation']:<45} │")
             print(f"└───────────────────────────────────────────────────────┘")
@@ -1078,7 +1203,8 @@ class DashboardValidator:
 
 def main():
     """Main entry point for dashboard validator."""
-    parser = argparse.ArgumentParser(description="Dashboard Validation and Debugging Tool")
+    parser = argparse.ArgumentParser(description="Dashboard Validation and 
+        Debugging Tool")
     parser.add_argument("--patterns-dir", default=".claude-patterns",
                        help="Directory containing pattern data")
     parser.add_argument("--dashboard-url", default="http://127.0.0.1:5000",

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Calculate AI Debugging Performance Index based on quality improvement, time efficiency, and overall performance
+Calculate AI Debugging Performance Index based on quality improvement, time efficiency, and 
+    overall performance
 """
 
 import json
@@ -35,7 +36,10 @@ def extract_debugging_assessments(assessments):
             'error' in ' '.join(issues_found).lower() or
             'fix' in ' '.join(recommendations).lower() or
             'bug' in ' '.join(issues_found + recommendations).lower() or
-            assessment.get('assessment_type', '') in ['validation', 'comprehensive-validation']
+            assessment.get(
+    'assessment_type',
+    '') in ['validation', 'comprehensive-validation'],
+)
         )
 
         if is_debugging:
@@ -90,7 +94,8 @@ def calculate_quality_improvement(debugging_assessments, model_name):
         improvement = after_score - before_score
 
         # Calculate improvement percentage
-        improvement_percentage = (improvement / before_score * 100) if before_score > 0 else 0
+        improvement_percentage = (improvement / before_score * 100) if 
+            before_score > 0 else 0
 
         # Normalize improvement score (0-100 scale)
         # Max expected improvement is ~30 points, scale accordingly
@@ -102,7 +107,8 @@ def calculate_quality_improvement(debugging_assessments, model_name):
         before_score = 70  # Assumed baseline before debugging
         after_score = score
         improvement = after_score - before_score
-        improvement_percentage = (improvement / before_score * 100) if before_score > 0 else 0
+        improvement_percentage = (improvement / before_score * 100) if 
+            before_score > 0 else 0
         improvement_score = min(100, max(0, (improvement + 15) * 2))
     else:
         before_score = after_score = improvement = improvement_percentage = improvement_score = 0
@@ -136,13 +142,15 @@ def calculate_time_efficiency(debugging_assessments, model_name):
         total_time_span = (last_time - first_time).total_seconds() / 3600  # hours
 
         # Average time per debugging task
-        avg_time_hours = total_time_span / (len(sorted_assessments) - 1) if len(sorted_assessments) > 1 else 0
+        avg_time_hours = total_time_span / (len(sorted_assessments) - 1) if 
+            len(sorted_assessments) > 1 else 0
         avg_time_minutes = avg_time_hours * 60
 
         # Time efficiency score (faster is better)
         # Ideal debugging time is ~30 minutes per task
         ideal_time_minutes = 30
-        efficiency_ratio = ideal_time_minutes / avg_time_minutes if avg_time_minutes > 0 else 1
+        efficiency_ratio = ideal_time_minutes / avg_time_minutes if 
+            avg_time_minutes > 0 else 1
         time_efficiency_score = min(100, max(0, efficiency_ratio * 50))  # Scale to 0-100
 
     else:
@@ -161,7 +169,8 @@ def calculate_debugging_performance_index(quality_metrics, time_metrics, success
     """Calculate overall AI Debugging Performance Index"""
 
     # Performance Index formula:
-    # PI = (Quality Improvement Score × 40%) + (Time Efficiency Score × 35%) + (Success Rate × 25%)
+# PI = (Quality Improvement Score × 40%) + (Time Efficiency Score × 35%) + (Success
+# Rate × 25%)
 
     quality_weight = 0.40
     time_weight = 0.35
@@ -195,7 +204,9 @@ def analyze_debugging_performance():
     # Extract debugging-related assessments
     debugging_assessments = extract_debugging_assessments(assessments)
 
-    print(f"Found {len(debugging_assessments)} debugging-related assessments out of {len(assessments)} total")
+    print(
+    f"Found {len(debugging_assessments)} debugging-related assessments out of {len(assessments)} total",
+)
 
     # Classify by model
     model_debugging = classify_debugging_by_model(debugging_assessments)
@@ -240,7 +251,9 @@ def analyze_debugging_performance():
         print(f"Success Rate: {success_rate:.1%}")
         print(f"Quality Before: {quality_metrics['before_score']}")
         print(f"Quality After: {quality_metrics['after_score']}")
-        print(f"Quality Improvement: {quality_metrics['improvement']:+.1f} points ({quality_metrics['improvement_percentage']:+.1f}%)")
+        print(
+    f"Quality Improvement: {quality_metrics['improvement']:+.1f} points ({quality_metrics['improvement_percentage']:+.1f}%)",
+)
         print(f"Avg Time per Task: {time_metrics['avg_time_minutes']} minutes")
         print(f"Time Efficiency Score: {time_metrics['time_efficiency_score']}/100")
         print(f"Quality Improvement Score: {quality_metrics['improvement_score']}/100")
@@ -284,7 +297,9 @@ def save_debugging_performance_results(debugging_performance, ranked_models):
 
     results = {
         'analysis_timestamp': datetime.now().isoformat(),
-        'total_debugging_assessments': sum(len(m['debugging_assessments']) for m in debugging_performance.values()),
+        'total_debugging_assessments': sum(
+    len(m['debugging_assessments']) for m in debugging_performance.values()),,
+)
         'performance_rankings': [
             {
                 'rank': rank + 1,
@@ -309,4 +324,6 @@ def save_debugging_performance_results(debugging_performance, ranked_models):
 
 if __name__ == "__main__":
     performance_data, rankings = analyze_debugging_performance()
-    print(f"\nAI Debugging Performance Index analysis complete at {datetime.now().isoformat()}")
+    print(
+    f"\nAI Debugging Performance Index analysis complete at {datetime.now().isoformat()}",
+)

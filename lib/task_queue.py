@@ -238,7 +238,10 @@ class TaskQueue:
         valid_statuses = [self.STATUS_PENDING, self.STATUS_RUNNING,
                          self.STATUS_COMPLETED, self.STATUS_FAILED]
         if status not in valid_statuses:
-            print(f"Error: Invalid status '{status}'. Must be one of: {', '.join(valid_statuses)}",
+            print(
+    f"Error: Invalid status '{status}'. Must be one of: {',
+    '.join(valid_statuses)}",
+)
                   file=sys.stderr)
             return False
 
@@ -343,7 +346,8 @@ class TaskQueue:
         original_count = len(queue)
 
         # Keep only pending and running tasks
-        queue = [task for task in queue if task['status'] in [self.STATUS_PENDING, self.STATUS_RUNNING]]
+        queue = [task for task in queue if 
+            task['status'] in [self.STATUS_PENDING, self.STATUS_RUNNING]]
 
         self._write_queue(queue)
         return original_count - len(queue)
@@ -369,7 +373,11 @@ class TaskQueue:
 def main():
     """Command-line interface for task queue."""
     parser = argparse.ArgumentParser(description='Task Queue System')
-    parser.add_argument('--dir', default='.claude-patterns', help='Queue directory path')
+    parser.add_argument(
+    '--dir',
+    default='.claude-patterns',
+    help='Queue directory path',
+)
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
 
@@ -377,7 +385,11 @@ def main():
     add_parser = subparsers.add_parser('add', help='Add a new task')
     add_parser.add_argument('--name', required=True, help='Task name')
     add_parser.add_argument('--description', required=True, help='Task description')
-    add_parser.add_argument('--priority', default='medium', help='Priority (high, medium, low)')
+    add_parser.add_argument(
+    '--priority',
+    default='medium',
+    help='Priority (high, medium, low)',
+)
     add_parser.add_argument('--skills', help='Comma-separated list of skills')
 
     # Execute next action
@@ -440,7 +452,9 @@ def main():
             if task:
                 print(json.dumps(task, indent=2))
             else:
-                print(json.dumps({'error': f"Task '{args.task_id}' not found"}, indent=2),
+                print(
+    json.dumps({'error': f"Task '{args.task_id}' not found"}, indent=2),
+)
                       file=sys.stderr)
                 sys.exit(1)
 
@@ -457,7 +471,10 @@ def main():
             print(json.dumps({'success': True, 'removed': removed}, indent=2))
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(
+    json.dumps({'success': False, 'error': str(e)}, indent=2),
+    file=sys.stderr,
+)
         sys.exit(1)
 
 

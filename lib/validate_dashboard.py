@@ -43,22 +43,30 @@ def validate_data_consistency():
     # Test 1: Overview API
     print("\n1. Testing Overview API...")
     overview_fields = ["average_quality_score", "model_performance", "total_patterns", "total_skills", "total_agents"]
-    results.append(test_api_endpoint(f"{base_url}/overview", overview_fields, "Overview"))
+    results.append(
+    test_api_endpoint(f"{base_url}/overview", overview_fields, "Overview"),
+)
 
     # Test 2: Quality Trends API
     print("\n2. Testing Quality Trends API...")
     trends_fields = ["trend_data", "overall_average", "days"]
-    results.append(test_api_endpoint(f"{base_url}/quality-trends", trends_fields, "Quality Trends"))
+    results.append(
+    test_api_endpoint(f"{base_url}/quality-trends", trends_fields, "Quality Trends"),
+)
 
     # Test 3: Quality Timeline API
     print("\n3. Testing Quality Timeline API...")
     timeline_fields = ["timeline_data", "implemented_models", "model_info", "chart_type"]
-    results.append(test_api_endpoint(f"{base_url}/quality-timeline?days=30", timeline_fields, "Quality Timeline"))
+    results.append(
+    test_api_endpoint(f"{base_url}/quality-timeline?days=30", timeline_fields, "Quality Timeline"),
+)
 
     # Test 4: Model Quality Scores API
     print("\n4. Testing Model Quality Scores API...")
     model_scores_fields = ["models", "quality_scores", "success_rates"]
-    results.append(test_api_endpoint(f"{base_url}/model-quality-scores", model_scores_fields, "Model Quality Scores"))
+    results.append(
+    test_api_endpoint(f"{base_url}/model-quality-scores", model_scores_fields, "Model Quality Scores"),
+)
 
     # Test 5: Skills API
     print("\n5. Testing Skills API...")
@@ -73,17 +81,23 @@ def validate_data_consistency():
     # Test 7: Task Distribution API
     print("\n7. Testing Task Distribution API...")
     task_dist_fields = ["distribution", "total_tasks"]
-    results.append(test_api_endpoint(f"{base_url}/task-distribution", task_dist_fields, "Task Distribution"))
+    results.append(
+    test_api_endpoint(f"{base_url}/task-distribution", task_dist_fields, "Task Distribution"),
+)
 
     # Test 8: Recent Activity API
     print("\n8. Testing Recent Activity API...")
     activity_fields = ["recent_activity"]
-    results.append(test_api_endpoint(f"{base_url}/recent-activity", activity_fields, "Recent Activity"))
+    results.append(
+    test_api_endpoint(f"{base_url}/recent-activity", activity_fields, "Recent Activity"),
+)
 
     # Test 9: System Health API
     print("\n9. Testing System Health API...")
     health_fields = ["status", "error_rate", "avg_quality", "patterns_stored"]
-    results.append(test_api_endpoint(f"{base_url}/system-health", health_fields, "System Health"))
+    results.append(
+    test_api_endpoint(f"{base_url}/system-health", health_fields, "System Health"),
+)
 
     # Summary
     passed = sum(results)
@@ -106,7 +120,9 @@ def validate_data_consistency():
             timeline_entries = timeline_data.get("timeline_data", [])
             unique_dates = set(entry.get("date", "") for entry in timeline_entries)
 
-            print(f"[PASS] Timeline covers {len(unique_dates)} unique dates: {sorted(unique_dates)}")
+            print(
+    f"[PASS] Timeline covers {len(unique_dates)} unique dates: {sorted(unique_dates)}",
+)
 
             if len(unique_dates) >= 3:
                 print("[PASS] Multi-day historical data confirmed!")

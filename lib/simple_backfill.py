@@ -44,7 +44,9 @@ def main():
         "overall_score": 58,
         "breakdown": {"plugin_manifest": 20, "directory_structure": 25, "file_format_compliance": 20, "cross_platform_compatibility": 20, "content_quality": 8},
         "details": {"validation_type": "comprehensive-plugin-validation", "plugin_version": "3.3.0", "warnings": 21, "critical_issues": 0},
-        "issues_found": ["Description too long: 541 chars (max 200)", "Agent description too long: Multiple agents exceed 100 char limit"],
+        "issues_found": ["Description too long: 541 chars (
+    max 200)", "Agent description too long: Multiple agents exceed 100 char limit"],,
+)
         "recommendations": ["Shorten plugin description", "Optimize agent descriptions"],
         "agents_used": ["validation-controller", "quality-controller"],
         "skills_used": ["validation-standards", "quality-standards"],
@@ -64,7 +66,8 @@ def main():
         "breakdown": {"tool_usage_compliance": 30, "documentation_consistency": 22, "best_practices_adherence": 20, "error_free_execution": 15, "pattern_compliance": 5},
         "details": {"validation_type": "complete-system-audit", "components_validated": {"agents": 20, "skills": 14, "commands": 17}},
         "issues_found": ["Path inconsistency: Historical references to .claude/patterns/ vs .claude-patterns/"],
-        "recommendations": ["Standardize path references in documentation", "Complete historical documentation cleanup"],
+        "recommendations": ["Standardize path references in 
+            documentation", "Complete historical documentation cleanup"],
         "agents_used": ["validation-controller"],
         "skills_used": ["validation-standards", "quality-standards", "pattern-learning"],
         "execution_time": 8.0,
@@ -140,9 +143,15 @@ def main():
     print(f"    Total assessments: {summary['total_assessments']}")
     print(f"    Commands with data: {len(summary['command_performance'])}")
     for cmd, metrics in summary['command_performance'].items():
-        print(f"    - {cmd}: {metrics['total_executions']} executions (avg: {metrics['avg_score']:.1f}/100)")
+        print(
+    f"    - {cmd}: {metrics['total_executions']} executions (
+    avg: {metrics['avg_score']:.1f}/100)",,
+)
+)
 
-    print(f"\n[+] Integration gap fixed! All assessment data now stored in pattern database.")
+    print(
+    f"\n[+] Integration gap fixed! All assessment data now stored in pattern database.",
+)
 
 if __name__ == "__main__":
     main()

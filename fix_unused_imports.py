@@ -95,7 +95,8 @@ def main():
     py_files = list(Path('.').rglob('*.py'))
 
     # Filter out __pycache__ and other non-source directories
-    py_files = [f for f in py_files if '__pycache__' not in str(f) and '.git' not in str(f)]
+    py_files = [f for f in py_files if '__pycache__' not in str(f) and 
+        '.git' not in str(f)]
 
     total_unused = 0
 

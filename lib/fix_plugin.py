@@ -71,7 +71,8 @@ def add_delegation_to_commands():
 
     for cmd_file in commands_dir.glob('*.md'):
         # Skip already fixed files
-        if cmd_file.name in ['quality-check.md', 'validate.md', 'validate-claude-plugin.md']:
+        if 
+            cmd_file.name in ['quality-check.md', 'validate.md', 'validate-claude-plugin.md']:
             continue
 
         with open(cmd_file, 'r', encoding='utf-8') as f:

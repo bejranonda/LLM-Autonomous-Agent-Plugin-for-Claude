@@ -1,10 +1,20 @@
-def _deterministic_score(self, base_score: float, variance: float, seed_data: str) -> float:
+def _deterministic_score(
+    self,
+    base_score: float,
+    variance: float,
+    seed_data: str) -> float:,
+)
     """Generate deterministic scores based on seed data."""
     hash_obj = hashlib.md5(seed_data.encode())
     seed_value = int(hash_obj.hexdigest()[:8], 16) / 0xFFFFFFFF
     return base_score + (seed_value - 0.5) * variance * 2
 
-def _deterministic_contribution(self, score: float, base_contribution: float, seed_data: str) -> float:
+def _deterministic_contribution(
+    self,
+    score: float,
+    base_contribution: float,
+    seed_data: str) -> float:,
+)
     """Generate deterministic contribution based on score and seed."""
     hash_obj = hashlib.md5(f"{score}-{seed_data}".encode())
     seed_value = int(hash_obj.hexdigest()[:8], 16) / 0xFFFFFFFF
@@ -42,7 +52,10 @@ def _load_historical_model_performance(self) -> Dict[str, Any]:
                 "recent_scores": scores,
                 "total_tasks": len(scores),
                 "success_rate": round(success_rate, 2),
-                "contribution_to_project": round(avg_score * 0.25, 1)  # Estimate contribution
+                "contribution_to_project": round(
+    avg_score * 0.25,
+    1)  # Estimate contribution,
+)
             }
     
     return model_data if model_data else None

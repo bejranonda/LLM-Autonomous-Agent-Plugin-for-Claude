@@ -102,7 +102,12 @@ class PerformanceIntegrator:
 
         Args:
             description: Task description
-            task_type: Type of task (e.g., "code-analysis", "validation", "documentation")
+            task_type: Type of task (
+    e.g.,
+    "code-analysis",
+    "validation",
+    "documentation",
+)
 
         Returns:
             str: Task ID for later completion
@@ -232,7 +237,8 @@ class PerformanceIntegrator:
             "insights": {
                 "what_worked": ["Automatic performance recording"],
                 "what_failed": [] if success else ["Task completion issues"],
-                "bottlenecks": [] if duration_seconds < 300 else ["Task took longer than expected"],
+                "bottlenecks": [] if 
+                    duration_seconds < 300 else ["Task took longer than expected"],
                 "optimization_opportunities": recommendations or [],
                 "lessons_learned": [f"Automatic recording successful for {task['type']} tasks"]
             },
