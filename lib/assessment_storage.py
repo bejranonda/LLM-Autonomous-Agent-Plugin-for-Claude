@@ -115,9 +115,7 @@ class AssessmentStorage:
                 "assessment_type": assessment_data.get("assessment_type", "general"),
                 "task_type": assessment_data.get(
     "task_type",
-    assessment_data["command_name"]), ,
-)
-                "overall_score": assessment_data["overall_score"],
+    assessment_data["command_name"])"overall_score": assessment_data["overall_score"],
                 "breakdown": assessment_data.get("breakdown", {}),
                 "details": assessment_data.get("details", {}),
                 "issues_found": assessment_data.get("issues_found", []),
@@ -127,11 +125,7 @@ class AssessmentStorage:
                 "execution_time_minutes": assessment_data.get("execution_time"),
                 "pass_threshold_met": assessment_data.get(
     "pass_threshold_met",
-    assessment_data["overall_score"] >= 70), ,
-
-
-)
-                "additional_metrics": assessment_data.get("additional_metrics", {}),
+    assessment_data["overall_score"] >= 70)"additional_metrics": assessment_data.get("additional_metrics", {}),
                 "success": assessment_data["overall_score"] >= 70
             }
 
@@ -231,9 +225,7 @@ class AssessmentStorage:
             "avg_quality_score": sum(scores) / len(scores) if scores else 0,
             "total_assessments": total_assessments,
             "passing_rate": sum(
-    1 for s in scores if s >= 70) / len(scores) if scores else 1.0,,
-)
-            "trend": "improving"  # Could be calculated more sophisticatedly
+    1 for s in scores if s >= 70) / len(scores) if scores else 1.0"trend": "improving"  # Could be calculated more sophisticatedly
         }
 
         data["metadata"]["last_assessment"] = assessment_record["timestamp"]
@@ -262,9 +254,7 @@ class AssessmentStorage:
             task_record["execution_details"][agent] = {
                 "role": "assessment_execution",
                 "duration_seconds": int(
-    (assessment_record.get("execution_time_minutes", 0) or 0) * 60),,
-)
-                "success": assessment_record["success"],
+    (assessment_record.get("execution_time_minutes", 0) or 0) * 60)"success": assessment_record["success"],
                 "quality_score": assessment_record["overall_score"]
             }
 
@@ -372,16 +362,12 @@ class AssessmentStorage:
                 "agents_delegated": assessment_record.get("agents_used", []),
                 "approach": assessment_record["command_name"],
                 "duration_seconds": int(
-    (assessment_record.get("execution_time_minutes", 0) or 0) * 60),,
-)
-                "score_achieved": assessment_record["overall_score"]
+    (assessment_record.get("execution_time_minutes", 0) or 0) * 60)"score_achieved": assessment_record["overall_score"]
             },
             "findings": {
                 "issues_count": len(assessment_record.get("issues_found", [])),
                 "recommendations_count": len(
-    assessment_record.get("recommendations", [])),,
-)
-                "key_issues": assessment_record.get(
+    assessment_record.get("recommendations", []))"key_issues": assessment_record.get(
     "issues_found",
     [])[:3],  # Top 3 issues,
 )
