@@ -978,6 +978,264 @@
         "time_efficiency": 85
       },
       "validation_timestamp": "2025-10-26T22:04:25.794594+00:00"
+    },
+    {
+      "assessment_id": "auto-13ec3d48-0593-4ad0-b07a-64c5e115c876",
+      "timestamp": "2025-10-27T13:11:22.442706+00:00",
+      "task_type": "testing",
+      "overall_score": 92,
+      "pass": true,
+      "skills_used": [
+        "automatic-learning",
+        "performance-recording"
+      ],
+      "details": {
+        "model_used": "Unknown Model",
+        "duration_seconds": 2,
+        "task_description": "Test automatic recording functionality",
+        "files_modified": 1,
+        "lines_changed": 50,
+        "success": true,
+        "auto_generated": true
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Continue using automatic recording"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-1b1a0b46-3852-49e7-9082-c3b6d5b3c200",
+      "timestamp": "2025-10-27T13:11:53.492819+00:00",
+      "task_type": "testing",
+      "overall_score": 88,
+      "pass": true,
+      "skills_used": [
+        "performance-integration",
+        "testing"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 1,
+        "task_description": "Test integration system",
+        "files_modified": 1,
+        "lines_changed": 25,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "performance-integrator"
+        ]
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Use this for all agent tasks"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-3703ba06-671a-4f57-8009-d290ae632c2c",
+      "timestamp": "2025-10-27T13:12:04.791022+00:00",
+      "task_type": "debugging",
+      "overall_score": 95,
+      "pass": true,
+      "skills_used": [
+        "debugging",
+        "performance-analysis",
+        "system-integration"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 2,
+        "task_description": "Debug performance evaluation system",
+        "files_modified": 2,
+        "lines_changed": 150,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "debugging-evaluator"
+        ]
+      },
+      "issues_found": [
+        "Automatic recording not working"
+      ],
+      "recommendations": [
+        "Use performance_integration.py for all agents"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-13ea4709-080d-4052-8233-8349bb583324",
+      "timestamp": "2025-10-27T13:13:06.021923+00:00",
+      "task_type": "refactoring",
+      "overall_score": 92,
+      "pass": true,
+      "skills_used": [
+        "refactoring",
+        "quality-standards",
+        "automation"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 1,
+        "task_description": "Code refactoring for performance",
+        "files_modified": 3,
+        "lines_changed": 150,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "autonomous-agent"
+        ]
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Continue using refactoring best practices"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-8f77968c-b7b4-4119-bc8e-e5f6ad324124",
+      "timestamp": "2025-10-27T13:13:15.171747+00:00",
+      "task_type": "refactoring",
+      "overall_score": 92,
+      "pass": true,
+      "skills_used": [
+        "refactoring",
+        "quality-standards",
+        "automation"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 1,
+        "task_description": "Code refactoring for performance",
+        "files_modified": 3,
+        "lines_changed": 150,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "autonomous-agent"
+        ]
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Continue using refactoring best practices"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-be50cbf9-b250-4dc0-ac66-7aa35a6a97b4",
+      "timestamp": "2025-10-27T13:13:15.999616+00:00",
+      "task_type": "documentation",
+      "overall_score": 88,
+      "pass": true,
+      "skills_used": [
+        "documentation",
+        "quality-standards",
+        "automation"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 1,
+        "task_description": "Documentation generation",
+        "files_modified": 2,
+        "lines_changed": 75,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "autonomous-agent"
+        ]
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Continue using documentation best practices"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-ae561f54-fe29-4762-890b-544aa9c9e9ee",
+      "timestamp": "2025-10-27T13:13:16.817107+00:00",
+      "task_type": "security",
+      "overall_score": 95,
+      "pass": true,
+      "skills_used": [
+        "security",
+        "quality-standards",
+        "automation"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 1,
+        "task_description": "Security vulnerability scan",
+        "files_modified": 5,
+        "lines_changed": 200,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "autonomous-agent"
+        ]
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Continue using security best practices"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-526bc50e-a748-4e04-8499-c130c860e9e5",
+      "timestamp": "2025-10-27T13:13:17.642854+00:00",
+      "task_type": "testing",
+      "overall_score": 90,
+      "pass": true,
+      "skills_used": [
+        "testing",
+        "quality-standards",
+        "automation"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 1,
+        "task_description": "Test suite enhancement",
+        "files_modified": 4,
+        "lines_changed": 120,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "autonomous-agent"
+        ]
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Continue using testing best practices"
+      ],
+      "auto_generated": true
+    },
+    {
+      "assessment_id": "auto-b657f871-81b1-49a5-8439-edafb27cbad5",
+      "timestamp": "2025-10-27T13:13:18.471425+00:00",
+      "task_type": "validation",
+      "overall_score": 94,
+      "pass": true,
+      "skills_used": [
+        "validation",
+        "quality-standards",
+        "automation"
+      ],
+      "details": {
+        "model_used": "GLM-4.6",
+        "duration_seconds": 1,
+        "task_description": "API endpoint validation",
+        "files_modified": 2,
+        "lines_changed": 80,
+        "success": true,
+        "auto_generated": true,
+        "agents_used": [
+          "autonomous-agent"
+        ]
+      },
+      "issues_found": [],
+      "recommendations": [
+        "Continue using validation best practices"
+      ],
+      "auto_generated": true
     }
   ],
   "task_types": {
@@ -1006,7 +1264,39 @@
   "metadata": {
     "auto_recording_enabled": true,
     "created": "2025-10-26T19:04:21.874247",
-    "last_updated": "2025-10-26T20:34:27.529187Z",
-    "total_records": 17
+    "last_updated": "2025-10-27T13:13:18.482211+00:00",
+    "total_records": 43
+  },
+  "summary": {
+    "testing": {
+      "count": 3,
+      "avg_score": 90.0,
+      "success_rate": 1.0
+    },
+    "debugging": {
+      "count": 1,
+      "avg_score": 95.0,
+      "success_rate": 1.0
+    },
+    "refactoring": {
+      "count": 2,
+      "avg_score": 92.0,
+      "success_rate": 1.0
+    },
+    "documentation": {
+      "count": 1,
+      "avg_score": 88.0,
+      "success_rate": 1.0
+    },
+    "security": {
+      "count": 1,
+      "avg_score": 95.0,
+      "success_rate": 1.0
+    },
+    "validation": {
+      "count": 1,
+      "avg_score": 94.0,
+      "success_rate": 1.0
+    }
   }
 }
