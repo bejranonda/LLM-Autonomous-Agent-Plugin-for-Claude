@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v4.6.3
+# 🚀 Autonomous Agent for Claude Code v4.8.0
 
-[![Version](https://img.shields.io/badge/version-4.6.3-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.6.3)
+[![Version](https://img.shields.io/badge/version-4.8.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.8.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -292,6 +292,9 @@ This creates `.claude-patterns/` directory with the learning database.
 - **Recent Activity**: Latest assessments with task types and scores
 - **Learning Velocity**: Shows improvement rate (accelerating 🚀, stable →, or declining ↓)
 - **Skills & Agents Effectiveness**: Success rates and usage statistics
+- **🧠 Dynamic Model Detection**: Real-time model identification based on actual usage patterns
+- **📊 Model Performance Analytics**: Compare performance across Claude and GLM models accurately
+- **⏱️ Temporal Model Tracking**: 3-day rolling window analysis of model usage patterns
 
 
 <img width="1136" height="867" alt="image" src="https://github.com/user-attachments/assets/4b2908c8-e616-422d-8d2b-8d3a9b2bd8b3" />
