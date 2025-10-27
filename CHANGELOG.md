@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5.1] - 2025-10-27
+
+### 🐛 **Bug Fix: Restore Missing /monitor:dashboard Command**
+
+This patch release restores the missing `/monitor:dashboard` command that was accidentally removed during the v4.5.0 command restructure.
+
+#### 🔧 **What Was Fixed**
+- **❌ Issue**: `/monitor:dashboard` command was missing after v4.5.0 reorganization
+- **✅ Solution**: Restored complete `/monitor:dashboard` command to `commands/monitor/dashboard.md`
+- **🔄 Impact**: Users can now launch the real-time monitoring dashboard again
+
+#### 📊 **Dashboard Features Restored**
+- **🌐 Real-time Monitoring**: Live web-based dashboard with interactive charts
+- **📈 Performance Analytics**: Quality trends, agent performance, skill effectiveness
+- **🎯 System Health**: Resource usage, operational status, error monitoring
+- **⚙️ Configuration**: Custom ports, hosts, and data directory options
+- **🔍 Troubleshooting**: Comprehensive debugging and performance optimization
+
+#### 🛠️ **Technical Details**
+- **File Location**: `commands/monitor/dashboard.md` (637 lines)
+- **Full Documentation**: Complete usage examples, API endpoints, and best practices
+- **Integration**: Seamlessly integrates with learning system and pattern data
+- **Compatibility**: All existing dashboard functionality restored
+
+#### 🚀 **Verification**
+- **✅ Command Discovery**: `/monitor:dashboard` is properly discoverable
+- **✅ Documentation**: Complete with usage examples and troubleshooting
+- **✅ Integration**: Works with existing `lib/dashboard.py` implementation
+- **✅ Testing**: All dashboard features tested and functional
+
+---
+
 ## [4.5.0] - 2025-10-27
 
 ### 💥 **BREAKING CHANGE: Command Naming Convention Migration**

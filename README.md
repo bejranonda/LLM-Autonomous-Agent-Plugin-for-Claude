@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v4.4.0
+# 🚀 Autonomous Agent for Claude Code v4.5.1
 
-[![Version](https://img.shields.io/badge/version-4.4.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.4.0)
+[![Version](https://img.shields.io/badge/version-4.5.1-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.5.1)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -162,7 +162,7 @@ The plugin automatically learns from successes and failures, continuously improv
 
 ## 🎯 Quick Start
 
-*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-22-commands-across-7-categories)
+*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-23-commands-across-7-categories)
 
 ### Claude Code
 
@@ -450,7 +450,7 @@ Assessments are **automatically created** when you use plugin commands:
 
 ---
 
-## 📚 Complete Command Reference (22 Commands Across 7 Categories)
+## 📚 Complete Command Reference (23 Commands Across 7 Categories)
 
 ### 🚀 **Development Commands**
 - `/dev:auto "requirement"` - **🌟 NEW:** Fully autonomous development from requirements to release-ready code
@@ -788,7 +788,7 @@ ls .claude-patterns/reports/ | wc -l
 |----------------|-------|--------|-------------|
 | **Agents** | **22** | ✅ Validated | Specialized autonomous agents |
 | **Skills** | **15** | ✅ Validated | Domain knowledge packages |
-| **Commands** | **22** | ✅ Validated | User-facing slash commands (7 categories) |
+| **Commands** | **23** | ✅ Validated | User-facing slash commands (7 categories) |
 | **Python Libraries** | **15** | ✅ Validated | Utility and analysis tools |
 | **Documentation** | **40+** | ✅ Validated | Comprehensive guides |
 | **Total Lines of Code** | **18,000+** | ✅ Production | Enterprise-grade |
