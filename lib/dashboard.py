@@ -62,6 +62,26 @@ class DashboardDataCollector:
         seed_value = int(hash_obj.hexdigest()[:8], 16) / 0xFFFFFFFF
         return (score / 100) * base_contribution + (seed_value - 0.5) * 0.2
 
+    def _normalize_model_name(self, model_name: str) -> str:
+        """Normalize model name variations to standard names."""
+        if not model_name or model_name == "Unknown":
+            return None
+        
+        # Filter out test models
+        if "test" in model_name.lower() or "demo" in model_name.lower():
+            return None
+        
+        # Normalize GLM variations
+        if "glm" in model_name.lower():
+            return "GLM 4.6"
+        
+        # Normalize Claude variations
+        if "claude" in model_name.lower() and "sonnet" in model_name.lower():
+            return "Claude Sonnet 4.5"
+        
+        # Return original if no normalization needed
+        return model_name
+
     def _load_historical_model_performance(self) -> dict:
         """Load actual historical model performance data from available sources."""
         model_data = {}
@@ -75,10 +95,13 @@ class DashboardDataCollector:
             model_used = assessment.get("details", {}).get("model_used", "Unknown")
             quality_score = assessment.get("overall_score")
             
-            if timestamp and quality_score is not None and model_used != "Unknown":
-                if model_used not in model_scores:
-                    model_scores[model_used] = []
-                model_scores[model_used].append({
+            # Normalize and filter model names
+            normalized_model = self._normalize_model_name(model_used)
+            
+            if timestamp and quality_score is not None and normalized_model:
+                if normalized_model not in model_scores:
+                    model_scores[normalized_model] = []
+                model_scores[normalized_model].append({
                     "timestamp": timestamp,
                     "score": quality_score
                 })
@@ -97,6 +120,8 @@ class DashboardDataCollector:
                 }
         
         return model_data if model_data else None
+
+
 
 
     def _load_json_file(self, filename: str, cache_key: str) -> Dict[str, Any]:
@@ -832,32 +857,17 @@ class DashboardDataCollector:
         if not recent_scores:
             return False
 
-        # Check for realistic score variations (not all the same value)
-        scores = [score.get("score", 0) for score in recent_scores]
-        if len(set(scores)) <= 1:  # All scores are the same
-            return False
-
-        # Check for realistic score range (should have variation)
-        min_score = min(scores)
-        max_score = max(scores)
-        if max_score - min_score < 2:  # Less than 2 points variation
-            return False
-
-        # Check for realistic timestamps (should be spread over time)
-        timestamps = [score.get("timestamp", "") for score in recent_scores]
-        if len(set(timestamps)) <= 1:  # All timestamps are the same
-            return False
-
         # Check for realistic task count
         total_tasks = model_data.get("total_tasks", 0)
         if total_tasks <= 0:
             return False
 
-        # Check for realistic success rate
-        success_rate = model_data.get("success_rate", 0)
-        if not (0 <= success_rate <= 1):  # Should be between 0 and 1
+        # Check for valid timestamps
+        has_valid_timestamps = any(score.get("timestamp") for score in recent_scores)
+        if not has_valid_timestamps:
             return False
 
+        # Less strict validation - allow high-quality performance
         return True
 
     def get_model_quality_scores(self) -> Dict[str, Any]:
@@ -954,13 +964,16 @@ class DashboardDataCollector:
         quality_history = self._load_json_file("quality_history.json", "quality_hist")
         for assessment in quality_history.get("quality_assessments", []):
             model_used = assessment.get("details", {}).get("model_used", "Unknown")
-            all_assessments.append({
-                "timestamp": assessment.get("timestamp"),
-                "overall_score": assessment.get("overall_score"),
-                "task_type": assessment.get("task_type", "unknown"),
-                "model_used": model_used,
-                "data_source": "quality_history"
-            })
+            # Normalize model name
+            normalized_model = self._normalize_model_name(model_used)
+            if normalized_model:  # Only include if normalization succeeds
+                all_assessments.append({
+                    "timestamp": assessment.get("timestamp"),
+                    "overall_score": assessment.get("overall_score"),
+                    "task_type": assessment.get("task_type", "unknown"),
+                    "model_used": normalized_model,
+                    "data_source": "quality_history"
+                })
 
         # Source 2: Historical assessments (legacy data) - Only include if model info can be inferred
         assessments = self._load_json_file("assessments.json", "assessments")
@@ -973,15 +986,16 @@ class DashboardDataCollector:
             if not timestamp or overall_score is None:
                 continue
 
-            # Try to infer model from timestamp, otherwise mark as Unknown
+            # Try to infer model from timestamp, otherwise skip
             inferred_model = self._infer_model_from_timestamp(timestamp)
-            model_used = inferred_model if inferred_model else "Unknown"
+            if not inferred_model:
+                continue  # Skip entries without model info
 
             all_assessments.append({
                 "timestamp": timestamp,
                 "overall_score": overall_score,
                 "task_type": f"{assessment.get('task_type', 'unknown')} ({command_name})",
-                "model_used": model_used,
+                "model_used": inferred_model,
                 "data_source": "assessments"
             })
 
@@ -996,15 +1010,16 @@ class DashboardDataCollector:
             if not timestamp or quality_score is None:
                 continue
 
-            # Try to infer model from timestamp, otherwise mark as Unknown
+            # Try to infer model from timestamp, otherwise skip
             inferred_model = self._infer_model_from_timestamp(timestamp)
-            model_used = inferred_model if inferred_model else "Unknown"
+            if not inferred_model:
+                continue  # Skip entries without model info
 
             all_assessments.append({
                 "timestamp": timestamp,
                 "overall_score": quality_score,
                 "task_type": f"trend ({assessment_id[:8]}...)",
-                "model_used": model_used,
+                "model_used": inferred_model,
                 "data_source": "trends"
             })
 
@@ -1134,18 +1149,32 @@ class DashboardDataCollector:
         for day_data in timeline_data:
             all_models_found.update(key for key in day_data.keys() if key not in ["date", "timestamp", "Assessments Count", "Task Types"])
 
-        # Sort models in a consistent order (known models first, then alphabetically)
-        known_models = ["Claude Sonnet 4.5", "GLM 4.6"]
+        # Use unified model ordering to ensure consistency with AI Debugging Performance Index
+        # Load debugging performance data to get the unified order
+        try:
+            debugging_data = {}
+            debugging_files = ['debugging_performance_1days.json', 'debugging_performance_3days.json',
+                             'debugging_performance_7days.json', 'debugging_performance_30days.json']
+
+            for filename in debugging_files:
+                filepath = os.path.join('.claude-patterns', filename)
+                if os.path.exists(filepath):
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        debugging_data = json.load(f)
+                        break
+
+            # Get unified model order using the same function as AI Debugging Performance Index
+            valid_models = get_unified_model_order(debugging_data)
+        except:
+            # Fallback to default order if debugging data not available
+            valid_models = ["Claude Sonnet 4.5", "GLM 4.6"]
+
         implemented_models = []
 
-        # Add known models if they exist
-        for model in known_models:
+        # Only add models that are both valid and have data
+        for model in valid_models:
             if model in all_models_found:
                 implemented_models.append(model)
-
-        # Add any other models alphabetically
-        other_models = sorted(model for model in all_models_found if model not in known_models)
-        implemented_models.extend(other_models)
 
         # Reorder timeline data based on model order
         reordered_timeline_data = []

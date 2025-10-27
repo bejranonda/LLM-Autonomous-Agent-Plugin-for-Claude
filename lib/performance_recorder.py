@@ -290,8 +290,12 @@ class AutomaticPerformanceRecorder:
         task_type = record.get('task_type', '').lower()
         assessment_id = record.get('assessment_id', '').lower()
 
-        # Only block if assessment_id contains 'test' but doesn't start with 'auto-'
-        if 'test' in assessment_id and not assessment_id.startswith('auto-'):
+        # Only block obvious test data - be more permissive for legitimate tasks
+        # Block only if it's clearly simulated test data (not real task with 'test' in name)
+        # Only block obvious simulated test data
+        # Allow legitimate tasks that happen to have 'test' in the name
+        blocked_patterns = ['test-simulation', 'test-fake', 'mock-test', 'dummy-test']
+        if any(blocked in assessment_id for blocked in blocked_patterns):
             return False
 
         # Check model field for test indicators
@@ -307,7 +311,8 @@ class AutomaticPerformanceRecorder:
                 if timestamp.endswith('Z'):
                     record_time = datetime.fromisoformat(timestamp.rstrip('Z'))
                 elif '+00:00' in timestamp:
-                    record_time = datetime.fromisoformat(timestamp)
+                    # Remove timezone info for comparison
+                    record_time = datetime.fromisoformat(timestamp.replace('+00:00', ''))
                 else:
                     # Try parsing without timezone info
                     record_time = datetime.fromisoformat(timestamp)

@@ -8,46 +8,133 @@ delegates-to: orchestrator
 
 ## Command: `/monitor:dashboard`
 
-Launches a real-time web-based monitoring dashboard that provides comprehensive visualization of the autonomous agent's learning progress, performance metrics, and system health.
+**Quick launcher** that delegates to the orchestrator to start a real-time monitoring dashboard in the background for autonomous agent system metrics and learning analytics.
 
 ## How It Works
 
-1. **Launch Dashboard**: Starts a Flask web server locally
-2. **Data Collection**: Aggregates data from pattern learning files
-3. **Real-time Updates**: Provides API endpoints for live data
-4. **Web Interface**: Opens browser-based dashboard with interactive charts
-5. **System Monitoring**: Tracks agent performance, skill effectiveness, and learning trends
+1. **Quick Launch**: Command completes in 2-3 seconds with status report
+2. **Delegate to Orchestrator**: Orchestrator manages background dashboard process
+3. **Background Server**: Flask web server runs independently in background
+4. **Data Collection**: Dashboard aggregates data from pattern learning files
+5. **Real-time Updates**: Provides API endpoints for live data access
+6. **Web Interface**: Browser-based dashboard with interactive charts
+7. **System Monitoring**: Tracks agent performance, skill effectiveness, and learning trends
+
+**IMPORTANT**: This command MUST delegate to the orchestrator agent for background process management. The command itself should return immediately after launching the background process.
 
 ## Usage
 
 ### Basic Usage
 ```bash
-# Launch monitoring dashboard
+# Launch monitoring dashboard in background (default)
 /monitor:dashboard
 
 # Launch with custom port
 /monitor:dashboard --port 8080
 
-# Launch with external access
+# Launch with external access (trusted networks only)
 /monitor:dashboard --host 0.0.0.0
 
 # Launch with custom data directory
 /monitor:dashboard --data-dir /path/to/patterns
+
+# Check if dashboard is running
+/monitor:dashboard --status
+
+# Stop running dashboard
+/monitor:dashboard --stop
 ```
 
 ### Advanced Options
 ```bash
-# Launch with debug mode
+# Launch with debug mode (foreground for debugging)
 /monitor:dashboard --debug
 
 # Launch with custom refresh rate
 /monitor:dashboard --refresh-rate 30
 
-# Launch in background
-/monitor:dashboard --background
-
 # Generate report without launching server
 /monitor:dashboard --report-only
+
+# Force restart if already running
+/monitor:dashboard --restart
+```
+
+**Expected Performance**: Command completes in 2-3 seconds with dashboard running in background.
+
+## Command Behavior and Delegation
+
+### Orchestrator Integration
+
+**CRITICAL**: This command MUST delegate to the orchestrator agent. The orchestrator will:
+
+1. **Process Management**: Start dashboard.py as background process
+2. **Port Detection**: Find available port (5000, 5001, etc.)
+3. **Status Tracking**: Monitor dashboard process health
+4. **Clean Shutdown**: Handle process termination gracefully
+5. **Error Handling**: Manage startup failures and conflicts
+
+### Expected Command Output
+
+The orchestrator MUST present a concise status report immediately:
+
+```
+🚀 Autonomous Agent Dashboard
+════════════════════════════════════════════════════════
+
+Status: ✅ Running in background
+URL:   http://127.0.0.1:5001
+Port:  5001 (5000 was in use)
+PID:   12345
+Data:  .claude-patterns/ (2.3MB)
+
+📊 Dashboard Features:
+• Real-time learning analytics
+• Agent performance metrics
+• Quality trend visualization
+• Interactive system monitoring
+
+💡 Browser opening automatically...
+⚠️  Press Ctrl+C in terminal to stop dashboard
+🔧 Use /monitor:dashboard --status to check status
+════════════════════════════════════════════════════════
+⏱️  Started in 2.1 seconds
+```
+
+### Error Handling
+
+If dashboard fails to start, orchestrator MUST report:
+
+```
+❌ Dashboard Launch Failed
+════════════════════════════════════════════════════════
+
+Error: Port 5000-5005 all in use
+Solution: /monitor:dashboard --port 8080
+
+or
+
+Error: Missing Flask dependencies
+Solution: pip install flask flask-cors
+
+════════════════════════════════════════════════════════
+🔧 Try: /monitor:dashboard --debug for troubleshooting
+```
+
+### Process Management Commands
+
+```bash
+# Check dashboard status
+/monitor:dashboard --status
+→ ✅ Dashboard running on http://127.0.0.1:5001 (PID: 12345)
+
+# Stop dashboard
+/monitor:dashboard --stop
+→ ⏹ Dashboard stopped (PID: 12345)
+
+# Restart dashboard
+/monitor:dashboard --restart
+→ 🔄 Dashboard restarted on http://127.0.0.1:5002
 ```
 
 ## Dashboard Features
