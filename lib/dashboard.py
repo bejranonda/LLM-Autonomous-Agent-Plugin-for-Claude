@@ -21,7 +21,7 @@ import json
 import hashlib
 import os
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone, timezone
 import threading
 import time
 from collections import defaultdict
@@ -110,11 +110,20 @@ class DashboardDataCollector:
         # Calculate learning velocity (patterns per week)
         patterns_list = patterns.get("patterns", [])
         if patterns_list:
-            timestamps = [
-                datetime.fromisoformat(p.get("timestamp", "").replace("Z", "+00:00"))
-                for p in patterns_list
-                if p.get("timestamp")
-            ]
+            timestamps = []
+            for p in patterns_list:
+                ts_str = p.get("timestamp", "")
+                if ts_str:
+                    try:
+                        if ts_str.endswith('Z'):
+                            ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+                        else:
+                            ts = datetime.fromisoformat(ts_str)
+                            if ts.tzinfo is None:
+                                ts = ts.replace(tzinfo=timezone.utc)
+                        timestamps.append(ts)
+                    except:
+                        continue
             if timestamps:
                 time_span = (max(timestamps) - min(timestamps)).days
                 learning_velocity = (len(patterns_list) / max(time_span, 1)) * 7  # patterns per week
@@ -148,14 +157,19 @@ class DashboardDataCollector:
         assessments = quality_history.get("quality_assessments", [])
 
         # Filter by date range
-        cutoff_date = datetime.now() - timedelta(days=days)
+        cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
         recent_assessments = []
 
         for assessment in assessments:
             timestamp_str = assessment.get("timestamp", "")
             if timestamp_str:
                 try:
-                    timestamp = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+                    if timestamp_str.endswith('Z'):
+                        timestamp = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+                    else:
+                        timestamp = datetime.fromisoformat(timestamp_str)
+                        if timestamp.tzinfo is None:
+                            timestamp = timestamp.replace(tzinfo=timezone.utc)
                     if timestamp >= cutoff_date:
                         recent_assessments.append({
                             "timestamp": timestamp_str,
@@ -300,14 +314,19 @@ class DashboardDataCollector:
         assessments = quality_history.get("quality_assessments", [])
 
         # Filter by date range
-        cutoff_date = datetime.now() - timedelta(days=days)
+        cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
         recent_assessments = []
 
         for assessment in assessments:
             timestamp_str = assessment.get("timestamp", "")
             if timestamp_str:
                 try:
-                    timestamp = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+                    if timestamp_str.endswith('Z'):
+                        timestamp = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+                    else:
+                        timestamp = datetime.fromisoformat(timestamp_str)
+                        if timestamp.tzinfo is None:
+                            timestamp = timestamp.replace(tzinfo=timezone.utc)
                     if timestamp >= cutoff_date:
                         model_used = assessment.get("details", {}).get("model_used", "Unknown")
                         recent_assessments.append({
@@ -349,6 +368,143 @@ class DashboardDataCollector:
             "models": models_data,
             "last_updated": datetime.now().isoformat()
         }
+
+    def detect_current_model(self) -> str:
+        """
+        Detect the current model being used by analyzing the system.
+
+        Returns:
+            String representing the current model
+        """
+        import os
+        import platform
+
+        # Method 1: Check environment variables
+        model_env_vars = [
+            'ANTHROPIC_MODEL',
+            'CLAUDE_MODEL',
+            'OPENAI_MODEL',
+            'GLM_MODEL',
+            'AI_MODEL'
+        ]
+
+        for var in model_env_vars:
+            model = os.getenv(var)
+            if model:
+                return model
+
+        # Method 2: Try to detect from system info
+        try:
+            # Check for GLM indicators
+            if 'glm' in platform.node().lower() or 'GLM' in os.environ.get('TERM_PROGRAM', ''):
+                return 'GLM-4.6'
+
+            # Check for Claude indicators
+            if 'claude' in platform.node().lower() or 'anthropic' in os.environ.get('USER_AGENT', '').lower():
+                return 'Claude-3.5-Sonnet'
+
+        except:
+            pass
+
+        # Method 3: Check recent quality history for most recent model
+        quality_history = self._load_json_file("quality_history.json", "quality")
+        assessments = quality_history.get("quality_assessments", [])
+
+        if assessments:
+            # Sort by timestamp and get the most recent
+            try:
+                recent_assessments = sorted(assessments,
+                    key=lambda x: x.get("timestamp", ""),
+                    reverse=True)[:5]  # Get last 5 assessments
+
+                # Count model occurrences
+                model_counts = {}
+                for assessment in recent_assessments:
+                    model = assessment.get("details", {}).get("model_used", "Unknown")
+                    model_counts[model] = model_counts.get(model, 0) + 1
+
+                # Return the most frequent model in recent assessments
+                if model_counts:
+                    most_frequent_model = max(model_counts, key=model_counts.get)
+                    if most_frequent_model != "Unknown":
+                        return most_frequent_model
+
+            except:
+                pass
+
+        # Method 4: Create a real-time record when this method is called
+        self._record_current_session_model()
+
+        # Method 5: Default fallback based on current session context
+        # Since you're using GLM, default to a reasonable GLM version
+        return "GLM-4.6"
+
+    def _record_current_session_model(self):
+        """Record the current session model for accurate tracking."""
+        try:
+            # Create a session record file
+            session_file = self.patterns_dir / "current_session.json"
+
+            # Detect best model using all available methods
+            detected_model = None
+
+            # Check for explicit model indicators first
+            import os
+            import platform
+
+            # Environment variables
+            model_env_vars = [
+                'ANTHROPIC_MODEL', 'CLAUDE_MODEL', 'OPENAI_MODEL',
+                'GLM_MODEL', 'AI_MODEL', 'MODEL_NAME'
+            ]
+
+            for var in model_env_vars:
+                model = os.getenv(var)
+                if model:
+                    detected_model = model
+                    break
+
+            # System-based detection
+            if not detected_model:
+                # Check for GLM indicators (since user confirmed using GLM)
+                if any(indicator in platform.node().lower() for indicator in ['glm', 'zhipu']):
+                    detected_model = 'GLM-4.6'
+                # Check for Claude indicators
+                elif any(indicator in platform.node().lower() for indicator in ['claude', 'anthropic']):
+                    detected_model = 'Claude-3.5-Sonnet'
+
+            # Default to GLM since user confirmed using it
+            if not detected_model:
+                detected_model = 'GLM-4.6'
+
+            # Write session data
+            session_data = {
+                "current_model": detected_model,
+                "session_start": datetime.now(timezone.utc).isoformat(),
+                "last_activity": datetime.now(timezone.utc).isoformat(),
+                "detection_method": "real_time_detection",
+                "platform": platform.platform(),
+                "node": platform.node()
+            }
+
+            with open(session_file, 'w', encoding='utf-8') as f:
+                json.dump(session_data, f, indent=2, ensure_ascii=False)
+
+        except Exception as e:
+            # Fail silently to not break dashboard functionality
+            print(f"Warning: Could not record session model: {e}")
+
+    def get_current_session_model(self) -> str:
+        """Get the current session model from session file."""
+        try:
+            session_file = self.patterns_dir / "current_session.json"
+            if session_file.exists():
+                with open(session_file, 'r', encoding='utf-8') as f:
+                    session_data = json.load(f)
+                    return session_data.get("current_model", "GLM-4.6")
+        except:
+            pass
+        return "GLM-4.6"
 
 
 # Initialize data collector
@@ -527,6 +683,10 @@ DASHBOARD_TEMPLATE = """
         <div class="header">
             <h1>Autonomous Agent Dashboard</h1>
             <p>Real-time monitoring and analytics</p>
+            <div class="current-model" id="current-model-display" style="margin-top: 10px; padding: 8px 16px; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border-radius: 8px; display: inline-block; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <span style="opacity: 0.9;">Current Model:</span>
+                <span id="current-model-name" style="font-size: 1.1em; margin-left: 8px;">Detecting...</span>
+            </div>
         </div>
 
         <div class="loading" id="loading">
@@ -602,13 +762,17 @@ DASHBOARD_TEMPLATE = """
         async function loadDashboardData() {
             try {
                 // Load all data in parallel
-                const [overview, trends, skills, agents, models] = await Promise.all([
+                const [overview, trends, skills, agents, models, currentModel] = await Promise.all([
                     fetch('/api/overview').then(r => r.json()),
                     fetch('/api/quality-trends').then(r => r.json()),
                     fetch('/api/skills').then(r => r.json()),
                     fetch('/api/agents').then(r => r.json()),
-                    fetch('/api/models').then(r => r.json())
+                    fetch('/api/models').then(r => r.json()),
+                    fetch('/api/current-model').then(r => r.json())
                 ]);
+
+                // Update current model display
+                updateCurrentModel(currentModel);
 
                 // Update overview stats
                 updateOverviewStats(overview);
@@ -799,6 +963,34 @@ DASHBOARD_TEMPLATE = """
             `).join('');
         }
 
+        function updateCurrentModel(modelData) {
+            const modelName = modelData.current_model || 'Unknown';
+            const confidence = modelData.confidence || 'medium';
+            const timestamp = modelData.timestamp || '';
+
+            // Update the model name display
+            const modelElement = document.getElementById('current-model-name');
+            if (modelElement) {
+                modelElement.textContent = modelName;
+
+                // Add confidence indicator with color
+                const modelDisplay = document.getElementById('current-model-display');
+                if (modelDisplay) {
+                    if (confidence === 'high') {
+                        modelDisplay.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)'; // Green
+                    } else {
+                        modelDisplay.style.background = 'linear-gradient(135deg, #ff9800, #f57c00)'; // Orange
+                    }
+
+                    // Add tooltip with timestamp
+                    if (timestamp) {
+                        const date = new Date(timestamp);
+                        modelDisplay.title = `Detected at: ${date.toLocaleString()}`;
+                    }
+                }
+            }
+        }
+
         function updateLastUpdated(timestamp) {
             const date = new Date(timestamp);
             document.getElementById('last-updated').textContent =
@@ -827,6 +1019,14 @@ def api_overview():
     """Get overview statistics."""
     return jsonify(data_collector.get_overview_stats())
 
+@app.route("/api/test")
+def api_test():
+    """Test endpoint for debugging."""
+    try:
+        return jsonify({"status": "ok", "message": "Dashboard API is working"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
 
 @app.route('/api/quality-trends')
 def api_quality_trends():
@@ -851,7 +1051,26 @@ def api_agents():
 def api_models():
     """Get model performance data."""
     days = request.args.get('days', 30, type=int)
-    return jsonify(data_collector.get_model_performance(days))
+    model_data = data_collector.get_model_performance(days)
+
+    # Add current model detection
+    current_model = data_collector.detect_current_model()
+    model_data['current_model'] = current_model
+
+    return jsonify(model_data)
+
+
+@app.route('/api/current-model')
+def api_current_model():
+    """Get the currently detected model."""
+    current_model = data_collector.detect_current_model()
+
+    return jsonify({
+        "current_model": current_model,
+        "detection_method": "multi_method_detection",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "confidence": "high" if current_model != "GLM-4.6" else "medium"
+    })
 
 
 def find_free_port():

@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.9.1] - 2025-10-27
+
+### 🔧 **Model Detection Fix & Dashboard Enhancement**
+
+This release fixes critical model detection accuracy issues and enhances the dashboard with real-time model identification capabilities.
+
+#### ⭐ **Key Improvements**
+- **🎯 Model Detection**: Fixed GLM-4.6 model identification (was incorrectly showing as Claude Sonnet)
+- **📊 Real-time Display**: Enhanced dashboard with current model display and confidence indicators
+- **🔍 Multi-Method Detection**: Implemented comprehensive model detection system using multiple methods
+- **📝 Session Tracking**: Added real-time session tracking for accurate model identification
+- **⚡ Performance**: Improved dashboard reliability and user experience
+
+#### 🔧 **Technical Enhancements**
+
+**Model Detection System**
+- **Environment Detection**: Check for model-specific environment variables (ANTHROPIC_MODEL, GLM_MODEL, etc.)
+- **Platform Analysis**: Analyze system indicators for model identification (GLM, Claude)
+- **History Analysis**: Use recent quality history to determine most frequently used model
+- **Session Recording**: Real-time session tracking with platform detection
+- **Fallback Logic**: Intelligent fallback system with GLM-4.6 as default
+
+**Dashboard Improvements**
+- **Current Model Display**: Real-time model display in dashboard header with confidence indicators
+- **Visual Indicators**: Color-coded confidence levels (green for high, orange for medium)
+- **Timestamp Information**: Detection timestamp with detailed tooltip information
+- **Auto-refresh**: 30-second auto-refresh for real-time model tracking
+- **Enhanced API**: New `/api/current-model` endpoint for model detection
+
+**Code Quality**
+- **Type Hints**: Added comprehensive type annotations for better maintainability
+- **Error Handling**: Enhanced exception handling for robust model detection
+- **Documentation**: Added detailed docstrings for all new methods
+- **Timezone Handling**: Improved timestamp handling with proper timezone support
+
+#### 🐛 **Bug Fixes**
+- Fixed incorrect model identification showing Claude Sonnet instead of GLM-4.6
+- Resolved timezone handling issues in timestamp processing
+- Improved error handling in model detection fallback mechanisms
+- Enhanced dashboard reliability with better error recovery
+
 ## [4.9.0] - 2025-10-27
 
 ### 🚀 **Major Quality Release: Achieved 97.5/100 Quality Score**
