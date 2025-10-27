@@ -50,24 +50,22 @@ class DashboardDataCollector:
         self.last_update = {}
 
     def _deterministic_score(
-    self,
-    base_score: float,
-    variance: float,
-    seed_data: str) -> float:,
-
-
-)
+        self,
+        base_score: float,
+        variance: float,
+        seed_data: str
+    ) -> float:
         """Generate deterministic scores based on seed data."""
         hash_obj = hashlib.md5(seed_data.encode())
         seed_value = int(hash_obj.hexdigest()[:8], 16) / 0xFFFFFFFF
         return base_score + (seed_value - 0.5) * variance * 2
 
     def _deterministic_contribution(
-    self,
-    score: float,
-    base_contribution: float,
-    seed_data: str) -> float:,
-)
+        self,
+        score: float,
+        base_contribution: float,
+        seed_data: str
+    ) -> float:
         """Generate deterministic contribution based on score and seed."""
         hash_obj = hashlib.md5(f"{score}-{seed_data}".encode())
         seed_value = int(hash_obj.hexdigest()[:8], 16) / 0xFFFFFFFF
@@ -1091,10 +1089,7 @@ class DashboardDataCollector:
             all_assessments.append({
                 "timestamp": timestamp,
                 "overall_score": overall_score,
-                "task_type": f"{assessment.get(
-    'task_type',
-    'unknown')} ({command_name})",,
-)
+                "task_type": f"{assessment.get('task_type', 'unknown')} ({command_name})",
                 "model_used": inferred_model,
                 "data_source": "assessments"
             })
@@ -1236,17 +1231,9 @@ class DashboardDataCollector:
         for date_str, model_data in sorted(assessments_by_date_and_model.items()):
             day_data = {
                 "date": date_str,
-                "timestamp": next(
-    iter(model_data.values()))["timestamps"][0],  # First timestamp,
-)
-                "Assessments Count": sum(
-    len(scores["scores"]) for scores in model_data.values()),,
-)
-                "Task Types": list(
-    set(
-    task_type for scores in model_data.values() for task_type in scores["task_types"]),,
-)
-)
+                "timestamp": next(iter(model_data.values()))["timestamps"][0],  # First timestamp
+                "Assessments Count": sum(len(scores["scores"]) for scores in model_data.values()),
+                "Task Types": list(set(task_type for scores in model_data.values() for task_type in scores["task_types"]))
             }
 
             # Add actual scores for each model
@@ -1408,9 +1395,8 @@ class DashboardDataCollector:
 # Use real performance metrics if available (calculated from quality improvement over
 # time)
             model_perf_data = model_performance.get(model_name, {})
-            if 'performance_index' in model_perf_data and model_perf_data.get(
-    'performance_calculation_method') == 'quality_improvement_over_time':,
-)
+            if ('performance_index' in model_perf_data and
+                model_perf_data.get('performance_calculation_method') == 'quality_improvement_over_time'):
                 # Use real time-based performance index
                 performance_index = model_perf_data['performance_index']
                 improvement_rate = model_perf_data.get('improvement_rate', 0)
@@ -3320,9 +3306,7 @@ def api_debugging_performance():
                 'timeframe_days': days,
                 'timeframe_label': get_timeframe_label(days),
                 'analysis_timestamp': datetime.now().isoformat(),
-                'error': f"Could not load or generate data for {get_timeframe_label(
-    days)}",
-)
+                'error': f"Could not load or generate data for {get_timeframe_label(days)}"
             })
 
 def get_unified_model_order(debugging_data=None):
@@ -3384,32 +3368,12 @@ def api_recent_performance_records():
                     'assessment_id': assessment.get('assessment_id'),
                     'task_type': assessment.get('task_type', 'unknown'),
                     'overall_score': assessment.get('overall_score', 0),
-                    'performance_index': assessment.get(
-    'details',
-    {}).get('performance_index',
-    0),,
-)
-                    'evaluation_target': assessment.get(
-    'details',
-    {}).get('evaluation_target',
-    assessment.get('task_type', 'Unknown')),,
-)
-                    'quality_improvement': assessment.get(
-    'details',
-    {}).get('quality_improvement',
-    0),,
-)
+                    'performance_index': assessment.get('details', {}).get('performance_index', 0),
+                    'evaluation_target': assessment.get('details', {}).get('evaluation_target', assessment.get('task_type', 'Unknown')),
+                    'quality_improvement': assessment.get('details', {}).get('quality_improvement', 0),
                     'issues_found': len(assessment.get('issues_found', [])),
-                    'fixes_applied': assessment.get(
-    'details',
-    {}).get('fixes_applied',
-    0),,
-)
-                    'time_elapsed_minutes': assessment.get(
-    'details',
-    {}).get('duration_seconds',
-    0) / 60,,
-)
+                    'fixes_applied': assessment.get('details', {}).get('fixes_applied', 0),
+                    'time_elapsed_minutes': assessment.get('details', {}).get('duration_seconds', 0) / 60,
                     'success_rate': 100 if assessment.get('pass', False) else 0,
                     'pass': assessment.get('pass', False),
                     'auto_generated': assessment.get('auto_generated', False)
@@ -3445,17 +3409,9 @@ def api_recent_performance_records():
                     'assessment_id': record.get('assessment_id'),
                     'task_type': record.get('task_type', 'unknown'),
                     'overall_score': record.get('overall_score', 0),
-                    'performance_index': record.get(
-    'details',
-    {}).get('performance_index',
-    0),,
-)
+                    'performance_index': record.get('details', {}).get('performance_index', 0),
                     'evaluation_target': record.get('task_type', 'Unknown'),
-                    'quality_improvement': record.get(
-    'details',
-    {}).get('quality_improvement',
-    0),,
-)
+                    'quality_improvement': record.get('details', {}).get('quality_improvement', 0),
                     'issues_found': len(record.get('issues_found', [])),
                     'fixes_applied': record.get('details', {}).get('fixes_applied', 0),
                     'time_elapsed_minutes': record.get(
@@ -3502,10 +3458,7 @@ def api_recent_performance_records():
     {}).get('evaluation_target',
     'Unknown'),,
 )
-                            'quality_improvement': assessment.get(
-    'details',
-    {}).get('quality_improvement',
-    0),,
+                            'quality_improvement': assessment.get('details', {}).get('quality_improvement', 0)
 )
                             'issues_found': len(assessment.get('issues_found', [])),
                             'fixes_applied': assessment.get(
