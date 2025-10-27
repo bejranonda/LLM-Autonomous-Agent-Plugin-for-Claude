@@ -9,4 +9,5 @@ docs/reports/generated/
 *.tmp
 *.log
 
-# Ignore OS generated files
+# Ignore OS generated fileslib/__pycache__/
+*.backup
