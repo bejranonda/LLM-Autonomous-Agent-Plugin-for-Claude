@@ -1,11 +1,7 @@
 ---
-name: dashboard
+name: monitor:dashboard
 description: Launch real-time monitoring dashboard for autonomous agent system metrics and learning analytics
-category: monitoring
-command-path: "/monitor:dashboard"
-delegates-to: autonomous-agent:orchestrator
-tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
+delegates-to: orchestrator
 ---
 
 # Monitor Dashboard Command
