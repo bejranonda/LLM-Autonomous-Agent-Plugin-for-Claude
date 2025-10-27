@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 from collections import defaultdict, deque
 
+
 class DependencyGraphAnalyzer:
     """Analyze code dependencies and build dependency graphs."""
 
@@ -139,6 +140,8 @@ class DependencyGraphAnalyzer:
         module_path = self.project_root / module.replace(".", "/")
         if module_path.with_suffix(
     ".py").exists() or (module_path / "__init__.py").exists():,
+
+
 )
             return True
 

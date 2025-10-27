@@ -6,10 +6,11 @@ Fix unused imports in Python files
 import ast
 from pathlib import Path
 
+
 def find_unused_imports(filepath):
     """Find unused imports in a Python file"""
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Parse AST
@@ -26,7 +27,7 @@ def find_unused_imports(filepath):
                     imports.append(name)
                     import_lines[name] = node.lineno
             elif isinstance(node, ast.ImportFrom):
-                module = node.module or ''
+                module = node.module or ""
                 for alias in node.names:
                     name = alias.asname if alias.asname else alias.name
                     full_name = f"{module}.{name}" if module else name
@@ -47,7 +48,7 @@ def find_unused_imports(filepath):
         unused = []
         for imp in imports:
             # Special cases that might be used in ways AST doesn't catch
-            if imp in ['__all__', '__version__']:
+            if imp in ["__all__", "__version__"]:
                 continue
             if imp not in used_names:
                 unused.append((imp, import_lines.get(imp, 0)))
@@ -57,9 +58,10 @@ def find_unused_imports(filepath):
         print(f"Error parsing {filepath}: {e}")
         return []
 
+
 def remove_unused_imports(filepath, unused_imports):
     """Remove unused imports from a file"""
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(filepath, "r", encoding="utf-8") as f:
         lines = f.readlines()
 
     # Sort by line number in reverse order to avoid shifting indices
@@ -71,10 +73,10 @@ def remove_unused_imports(filepath, unused_imports):
             line = lines[line_num - 1]
 
             # Handle multi-line imports
-            if '(' in line and ')' not in line:
+            if "(" in line and ")" not in line:
                 # Find the closing parenthesis
                 end_line = line_num
-                while end_line <= len(lines) and ')' not in lines[end_line - 1]:
+                while end_line <= len(lines) and ")" not in lines[end_line - 1]:
                     end_line += 1
 
                 # Remove the entire multi-line import
@@ -86,17 +88,19 @@ def remove_unused_imports(filepath, unused_imports):
                 lines.pop(line_num - 1)
 
     # Write back the file
-    with open(filepath, 'w', encoding='utf-8') as f:
+    with open(filepath, "w", encoding="utf-8") as f:
         f.writelines(lines)
+
 
 def main():
     """Main function"""
     # Find all Python files
-    py_files = list(Path('.').rglob('*.py'))
+    py_files = list(Path(".").rglob("*.py"))
 
     # Filter out __pycache__ and other non-source directories
-    py_files = [f for f in py_files if '__pycache__' not in str(f) and 
-        '.git' not in str(f)]
+    py_files = [
+        f for f in py_files if "__pycache__" not in str(f) and ".git" not in str(f)
+    ]
 
     total_unused = 0
 
@@ -113,6 +117,7 @@ def main():
             print(f"  Removed {len(unused)} unused imports")
 
     print(f"\nTotal unused imports removed: {total_unused}")
+
 
 if __name__ == "__main__":
     main()

@@ -18,25 +18,31 @@ import signal
 import logging
 
 # Ensure log directory exists
-log_dir = Path('.claude/logs')
+log_dir = Path(".claude/logs")
 log_dir.mkdir(parents=True, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(log_dir / 'dashboard-launcher.log'),
-        logging.StreamHandler(sys.stdout)
-    ]
+        logging.FileHandler(log_dir / "dashboard-launcher.log"),
+        logging.StreamHandler(sys.stdout),
+    ],
 )
 logger = logging.getLogger(__name__)
+
 
 class DashboardLauncher:
     """Robust dashboard launcher with health monitoring and auto-restart."""
 
-    def __init__(self, host: str = '127.0.0.1', port: int = 5000,
-                 patterns_dir: str = '.claude-patterns', auto_restart: bool = True):
+    def __init__(
+        self,
+        host: str = "127.0.0.1",
+        port: int = 5000,
+        patterns_dir: str = ".claude-patterns",
+        auto_restart: bool = True,
+    ):
         self.host = host
         self.port = port
         self.patterns_dir = patterns_dir
@@ -66,8 +72,9 @@ class DashboardLauncher:
             logger.warning(f"Port check failed for {port}: {e}")
             return False
 
-    def find_available_port(self, start_port: int = 5000,
-                           max_attempts: int = 10) -> int:
+    def find_available_port(
+        self, start_port: int = 5000, max_attempts: int = 10
+    ) -> int:
         """Find an available port starting from start_port."""
         for i in range(max_attempts):
             port = start_port + i
@@ -75,6 +82,7 @@ class DashboardLauncher:
                 return port
         # Fallback to random port in 8000-9000 range
         import random
+
         for _ in range(10):
             port = random.randint(8000, 9000)
             if self.is_port_available(port):
@@ -105,13 +113,17 @@ class DashboardLauncher:
             Path(self.patterns_dir).mkdir(parents=True, exist_ok=True)
 
             # Start dashboard process
-            dashboard_script = Path(__file__).parent / 'dashboard.py'
+            dashboard_script = Path(__file__).parent / "dashboard.py"
             cmd = [
-                sys.executable, str(dashboard_script),
-                '--host', self.host,
-                '--port', str(self.port),
-                '--patterns-dir', self.patterns_dir,
-                '--no-browser'  # We handle browser opening separately
+                sys.executable,
+                str(dashboard_script),
+                "--host",
+                self.host,
+                "--port",
+                str(self.port),
+                "--patterns-dir",
+                self.patterns_dir,
+                "--no-browser",  # We handle browser opening separately
             ]
 
             logger.info(f"Starting dashboard with command: {' '.join(cmd)}")
@@ -122,7 +134,7 @@ class DashboardLauncher:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True,
-                bufsize=1
+                bufsize=1,
             )
 
             # Wait for startup and validate
@@ -143,7 +155,11 @@ class DashboardLauncher:
 
                 if self.is_dashboard_responding(dashboard_url):
                     logger.info(f"Dashboard is responding at {dashboard_url}")
-                    return True, f"Dashboard started successfully at {dashboard_url}", self.port
+                    return (
+                        True,
+                        f"Dashboard started successfully at {dashboard_url}",
+                        self.port,
+                    )
 
                 time.sleep(1)
 
@@ -198,8 +214,8 @@ class DashboardLauncher:
         if self.auto_restart and self.restart_count < self.max_restarts:
             self.restart_count += 1
             logger.info(
-    f"Restarting dashboard (attempt {self.restart_count}/{self.max_restarts})",
-)
+                f"Restarting dashboard (attempt {self.restart_count}/{self.max_restarts})",
+            )
 
             self.stop_dashboard()
             time.sleep(2)  # Brief pause before restart
@@ -227,6 +243,7 @@ class DashboardLauncher:
             if open_browser:
                 try:
                     import webbrowser
+
                     dashboard_url = f"http://{self.host}:{port}"
                     webbrowser.open(dashboard_url)
                     logger.info(f"Opened browser at {dashboard_url}")
@@ -236,7 +253,10 @@ class DashboardLauncher:
             # Start monitoring in background if auto-restart enabled
             if self.auto_restart:
                 import threading
-                monitor_thread = threading.Thread(target=self.monitor_dashboard, daemon=True)
+
+                monitor_thread = threading.Thread(
+                    target=self.monitor_dashboard, daemon=True
+                )
                 monitor_thread.start()
                 logger.info("Dashboard monitoring started")
 
@@ -282,23 +302,24 @@ API Access:
         finally:
             self.stop_dashboard()
 
+
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description='Robust Dashboard Launcher')
-    parser.add_argument('--host', default='127.0.0.1', help='Host to bind to')
-    parser.add_argument('--port', type=int, default=5000, help='Port to bind to')
+    parser = argparse.ArgumentParser(description="Robust Dashboard Launcher")
+    parser.add_argument("--host", default="127.0.0.1", help="Host to bind to")
+    parser.add_argument("--port", type=int, default=5000, help="Port to bind to")
     parser.add_argument(
-    '--patterns-dir',
-    default='.claude-patterns',
-    help='Pattern directory',
-)
-    parser.add_argument('--no-browser', action='store_true', help='Don\'t open browser')
+        "--patterns-dir",
+        default=".claude-patterns",
+        help="Pattern directory",
+    )
+    parser.add_argument("--no-browser", action="store_true", help="Don't open browser")
     parser.add_argument(
-    '--no-restart',
-    action='store_true',
-    help='Disable auto-restart',
-)
-    parser.add_argument('--verbose', action='store_true', help='Verbose logging')
+        "--no-restart",
+        action="store_true",
+        help="Disable auto-restart",
+    )
+    parser.add_argument("--verbose", action="store_true", help="Verbose logging")
 
     args = parser.parse_args()
 
@@ -309,7 +330,7 @@ def main():
         host=args.host,
         port=args.port,
         patterns_dir=args.patterns_dir,
-        auto_restart=not args.no_restart
+        auto_restart=not args.no_restart,
     )
 
     success, message, port = launcher.run(open_browser=not args.no_browser)
@@ -320,5 +341,6 @@ def main():
     else:
         print(f"SUCCESS: {message}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

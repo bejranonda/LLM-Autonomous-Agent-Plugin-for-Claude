@@ -15,6 +15,7 @@ import sys
 import os
 from pathlib import Path
 
+
 class EnhancedGitHubReleaseManager:
     """Enhanced GitHub release manager with robust error handling."""
 
@@ -38,7 +39,8 @@ class EnhancedGitHubReleaseManager:
 
             # Convert SSH to HTTPS URL for API
             if url.startswith("git@"):
-                url = url.replace("git@github.com:", "https://github.com/").replace(".git", "")
+                url = url.replace("git@github.com:",
+                                  "https://github.com/").replace(".git", "")
             elif url.startswith("https://github.com"):
                 url = url.replace(".git", "")
 
@@ -62,8 +64,13 @@ class EnhancedGitHubReleaseManager:
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
-    def _create_release_with_gh_cli(self, tag: str, title: str, notes: str,
-                                   prerelease: bool = False, draft: bool = False) -> bool:
+    def _create_release_with_gh_cli(
+            self,
+            tag: str,
+            title: str,
+            notes: str,
+            prerelease: bool = False,
+            draft: bool = False) -> bool:
         """Create release using GitHub CLI (most reliable method)."""
         try:
             cmd = [
@@ -86,8 +93,13 @@ class EnhancedGitHubReleaseManager:
             print(f"❌ GitHub CLI release failed: {e.stderr}")
             return False
 
-    def _create_release_with_curl(self, tag: str, title: str, notes: str,
-                                 prerelease: bool = False, draft: bool = False) -> bool:
+    def _create_release_with_curl(
+            self,
+            tag: str,
+            title: str,
+            notes: str,
+            prerelease: bool = False,
+            draft: bool = False) -> bool:
         """Create release using curl and GitHub API (fallback method)."""
         if not self.token:
             print("❌ GITHUB_TOKEN environment variable required for API method")
@@ -149,8 +161,8 @@ class EnhancedGitHubReleaseManager:
             return False
 
     def create_release(self, tag: str, title: str, notes: str,
-                      prerelease: bool = False, draft: bool = False,
-                      verify: bool = True) -> bool:
+                       prerelease: bool = False, draft: bool = False,
+                       verify: bool = True) -> bool:
         """
         Create a GitHub release with multiple fallback methods.
 
@@ -230,8 +242,8 @@ class EnhancedGitHubReleaseManager:
 
             # Analyze commits for version bump
             has_features = any('feat' in commit for commit in commits)
-            has_breaking = any('break' in commit.lower() or 
-                '!' in commit for commit in commits)
+            has_breaking = any('break' in commit.lower() or
+                               '!' in commit for commit in commits)
             has_fixes = any('fix' in commit for commit in commits)
 
             if has_breaking:
@@ -272,31 +284,32 @@ class EnhancedGitHubReleaseManager:
                 "last_tag": "v0.0.0"
             }
 
+
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="Enhanced GitHub Release Manager")
     parser.add_argument("--tag", help="Release tag (auto-detected if not provided)")
     parser.add_argument(
-    "--title",
-    help="Release title (auto-generated if not provided)",
-)
+        "--title",
+        help="Release title (auto-generated if not provided)",
+    )
     parser.add_argument(
-    "--notes",
-    help="Release notes (auto-generated if not provided)",
-)
+        "--notes",
+        help="Release notes (auto-generated if not provided)",
+    )
     parser.add_argument("--notes-file", help="Read release notes from file")
     parser.add_argument("--prerelease", action="store_true", help="Mark as prerelease")
     parser.add_argument("--draft", action="store_true", help="Create as draft")
     parser.add_argument(
-    "--no-verify",
-    action="store_true",
-    help="Skip release verification",
-)
+        "--no-verify",
+        action="store_true",
+        help="Skip release verification",
+    )
     parser.add_argument(
-    "--auto",
-    action="store_true",
-    help="Auto-detect version and changes",
-)
+        "--auto",
+        action="store_true",
+        help="Auto-detect version and changes",
+    )
 
     args = parser.parse_args()
 
@@ -324,8 +337,8 @@ def main():
                 print(f"❌ Notes file not found: {args.notes_file}")
                 sys.exit(1)
         else:
-            notes = args.notes or 
-                "Release created with Enhanced GitHub Release Manager."
+            notes = args.notes or
+            "Release created with Enhanced GitHub Release Manager."
 
     # Validate inputs
     if not tag:
@@ -349,6 +362,7 @@ def main():
     else:
         print(f"💥 Release {tag} failed!")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

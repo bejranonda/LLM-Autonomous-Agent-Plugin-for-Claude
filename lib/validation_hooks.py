@@ -60,7 +60,8 @@ class ValidationHookManager:
         self.hooks_dir.mkdir(parents=True, exist_ok=True)
 
         # Initialize components
-        self.backup_manager = BackupManager(str(self.plugin_dir / ".claude" / "backups"))
+        self.backup_manager = BackupManager(
+            str(self.plugin_dir / ".claude" / "backups"))
         self.command_validator = CommandValidator(str(plugin_dir))
         self.recovery_manager = RecoveryManager(str(plugin_dir))
 
@@ -92,6 +93,8 @@ class ValidationHookManager:
     operation: str,
     context: Dict[str,
     Any]) -> Dict[str, Any]:,
+
+
 )
         """Execute all pre-operation validation hooks"""
         validation_result = {
@@ -120,7 +123,8 @@ class ValidationHookManager:
         # Create backup before operation
         files_to_modify = context.get("files_to_modify", [])
         if files_to_modify:
-            backup_id = self.backup_manager.auto_backup_before_operation(operation, files_to_modify)
+            backup_id = self.backup_manager.auto_backup_before_operation(
+                operation, files_to_modify)
             if backup_id:
                 validation_result["backup_created"] = True
                 validation_result["backup_id"] = backup_id
@@ -142,7 +146,8 @@ class ValidationHookManager:
                     validation_result["critical_failures"] += 1
 
         # Generate recommendations
-        validation_result["recommendations"] = self._generate_pre_validation_recommendations(validation_result)
+        validation_result["recommendations"] = self._generate_pre_validation_recommendations(
+            validation_result)
 
         # Store operation context for post-validation
         self.active_operations[operation] = {

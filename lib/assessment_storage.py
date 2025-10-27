@@ -9,6 +9,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+
 class AssessmentStorage:
     """Manages storage of assessment results from all commands"""
 
@@ -30,35 +31,43 @@ class AssessmentStorage:
         for file_path, default_structure in [
             (self.patterns_file, {"project_context": {}, "patterns": []}),
             (
-    self.quality_history_file,
-    {"quality_assessments": [],
-    "statistics": {},
-    "baselines": {},
-    "metadata": {}}),,
-)
+                self.quality_history_file,
+                {
+                    "quality_assessments": [],
+                    "statistics": {},
+                    "baselines": {},
+                    "metadata": {},
+                },
+            ),
             (
-    self.agent_metrics_file,
-    {"quality_assessment_tasks": [],
-    "agent_performance": {},
-    "last_updated": "",
-    "total_quality_assessments": 0,
-    "overall_success_rate": 1.0}),,
-)
+                self.agent_metrics_file,
+                {
+                    "quality_assessment_tasks": [],
+                    "agent_performance": {},
+                    "last_updated": "",
+                    "total_quality_assessments": 0,
+                    "overall_success_rate": 1.0,
+                },
+            ),
             (
-    self.skill_metrics_file,
-    {"skill_usage_history": [],
-    "skill_effectiveness": {},
-    "last_updated": "",
-    "total_skill_usage_events": 0,
-    "overall_success_rate": 1.0}),,
-)
+                self.skill_metrics_file,
+                {
+                    "skill_usage_history": [],
+                    "skill_effectiveness": {},
+                    "last_updated": "",
+                    "total_skill_usage_events": 0,
+                    "overall_success_rate": 1.0,
+                },
+            ),
             (
-    self.assessments_file,
-    {"assessments": [],
-    "command_performance": {},
-    "last_updated": "",
-    "total_assessments": 0},
-)
+                self.assessments_file,
+                {
+                    "assessments": [],
+                    "command_performance": {},
+                    "last_updated": "",
+                    "total_assessments": 0,
+                },
+            ),
         ]:
             if not file_path.exists():
                 with open(file_path, 'w') as f:
@@ -94,7 +103,9 @@ class AssessmentStorage:
         try:
             # Generate assessment ID
             timestamp = datetime.now(timezone.utc)
-            assessment_id = f"{assessment_data['command_name']}-{timestamp.strftime('%Y%m%d-%H%M%S')}"
+            assessment_id = f"{
+    assessment_data['command_name']}-{
+        timestamp.strftime('%Y%m%d-%H%M%S')}"
 
             # Create comprehensive assessment record
             assessment_record = {
@@ -104,7 +115,7 @@ class AssessmentStorage:
                 "assessment_type": assessment_data.get("assessment_type", "general"),
                 "task_type": assessment_data.get(
     "task_type",
-    assessment_data["command_name"]),,
+    assessment_data["command_name"]), ,
 )
                 "overall_score": assessment_data["overall_score"],
                 "breakdown": assessment_data.get("breakdown", {}),
@@ -116,7 +127,9 @@ class AssessmentStorage:
                 "execution_time_minutes": assessment_data.get("execution_time"),
                 "pass_threshold_met": assessment_data.get(
     "pass_threshold_met",
-    assessment_data["overall_score"] >= 70),,
+    assessment_data["overall_score"] >= 70), ,
+
+
 )
                 "additional_metrics": assessment_data.get("additional_metrics", {}),
                 "success": assessment_data["overall_score"] >= 70

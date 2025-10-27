@@ -15,8 +15,10 @@ from pathlib import Path
 # Handle Windows compatibility
 if platform.system() == 'Windows':
     import msvcrt
+
     def lock_file(f, exclusive=False):
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
+
     def unlock_file(f):
         try:
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
@@ -24,8 +26,10 @@ if platform.system() == 'Windows':
             pass
 else:
     import fcntl
+
     def lock_file(f, exclusive=False):
         fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
+
     def unlock_file(f):
         fcntl.flock(f.fileno(), fcntl.LOCK_UN)
 
@@ -56,6 +60,8 @@ class LearningAnalyticsDashboard:
     width: int = 50,
     height: int = 10,
     title: str = "") -> str:,
+
+
 )
         """Generate ASCII chart for terminal display."""
         if not data:

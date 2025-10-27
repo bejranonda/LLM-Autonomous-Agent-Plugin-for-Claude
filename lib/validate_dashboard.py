@@ -9,6 +9,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+
 def test_api_endpoint(url, expected_fields, name):
     """Test a specific API endpoint"""
     try:
@@ -32,6 +33,7 @@ def test_api_endpoint(url, expected_fields, name):
         print(f"[ERROR] {name}: {e}")
         return False
 
+
 def validate_data_consistency():
     """Validate dashboard data consistency with source records"""
     print("[INFO] COMPREHENSIVE DASHBOARD VALIDATION")
@@ -42,31 +44,50 @@ def validate_data_consistency():
 
     # Test 1: Overview API
     print("\n1. Testing Overview API...")
-    overview_fields = ["average_quality_score", "model_performance", "total_patterns", "total_skills", "total_agents"]
+    overview_fields = [
+        "average_quality_score",
+        "model_performance",
+        "total_patterns",
+        "total_skills",
+        "total_agents",
+    ]
     results.append(
-    test_api_endpoint(f"{base_url}/overview", overview_fields, "Overview"),
-)
+        test_api_endpoint(f"{base_url}/overview", overview_fields, "Overview"),
+    )
 
     # Test 2: Quality Trends API
     print("\n2. Testing Quality Trends API...")
     trends_fields = ["trend_data", "overall_average", "days"]
     results.append(
-    test_api_endpoint(f"{base_url}/quality-trends", trends_fields, "Quality Trends"),
-)
+        test_api_endpoint(
+            f"{base_url}/quality-trends", trends_fields, "Quality Trends"
+        ),
+    )
 
     # Test 3: Quality Timeline API
     print("\n3. Testing Quality Timeline API...")
-    timeline_fields = ["timeline_data", "implemented_models", "model_info", "chart_type"]
+    timeline_fields = [
+        "timeline_data",
+        "implemented_models",
+        "model_info",
+        "chart_type",
+    ]
     results.append(
-    test_api_endpoint(f"{base_url}/quality-timeline?days=30", timeline_fields, "Quality Timeline"),
-)
+        test_api_endpoint(
+            f"{base_url}/quality-timeline?days=30", timeline_fields, "Quality Timeline"
+        ),
+    )
 
     # Test 4: Model Quality Scores API
     print("\n4. Testing Model Quality Scores API...")
     model_scores_fields = ["models", "quality_scores", "success_rates"]
     results.append(
-    test_api_endpoint(f"{base_url}/model-quality-scores", model_scores_fields, "Model Quality Scores"),
-)
+        test_api_endpoint(
+            f"{base_url}/model-quality-scores",
+            model_scores_fields,
+            "Model Quality Scores",
+        ),
+    )
 
     # Test 5: Skills API
     print("\n5. Testing Skills API...")
@@ -82,22 +103,26 @@ def validate_data_consistency():
     print("\n7. Testing Task Distribution API...")
     task_dist_fields = ["distribution", "total_tasks"]
     results.append(
-    test_api_endpoint(f"{base_url}/task-distribution", task_dist_fields, "Task Distribution"),
-)
+        test_api_endpoint(
+            f"{base_url}/task-distribution", task_dist_fields, "Task Distribution"
+        ),
+    )
 
     # Test 8: Recent Activity API
     print("\n8. Testing Recent Activity API...")
     activity_fields = ["recent_activity"]
     results.append(
-    test_api_endpoint(f"{base_url}/recent-activity", activity_fields, "Recent Activity"),
-)
+        test_api_endpoint(
+            f"{base_url}/recent-activity", activity_fields, "Recent Activity"
+        ),
+    )
 
     # Test 9: System Health API
     print("\n9. Testing System Health API...")
     health_fields = ["status", "error_rate", "avg_quality", "patterns_stored"]
     results.append(
-    test_api_endpoint(f"{base_url}/system-health", health_fields, "System Health"),
-)
+        test_api_endpoint(f"{base_url}/system-health", health_fields, "System Health"),
+    )
 
     # Summary
     passed = sum(results)
@@ -114,15 +139,17 @@ def validate_data_consistency():
         # Additional validation: Check multi-day data in timeline
         print("\n[INFO] VALIDATING MULTI-DAY DATA...")
         try:
-            timeline_response = requests.get(f"{base_url}/quality-timeline?days=30", timeout=10)
+            timeline_response = requests.get(
+                f"{base_url}/quality-timeline?days=30", timeout=10
+            )
             timeline_data = timeline_response.json()
 
             timeline_entries = timeline_data.get("timeline_data", [])
             unique_dates = set(entry.get("date", "") for entry in timeline_entries)
 
             print(
-    f"[PASS] Timeline covers {len(unique_dates)} unique dates: {sorted(unique_dates)}",
-)
+                f"[PASS] Timeline covers {len(unique_dates)} unique dates: {sorted(unique_dates)}",
+            )
 
             if len(unique_dates) >= 3:
                 print("[PASS] Multi-day historical data confirmed!")
@@ -137,6 +164,7 @@ def validate_data_consistency():
 
     return passed == total
 
+
 def validate_source_records():
     """Validate that source records exist and contain expected data"""
     print("\n[INFO] VALIDATING SOURCE RECORDS...")
@@ -146,7 +174,7 @@ def validate_source_records():
         "model_performance.json",
         "quality_history.json",
         "assessments.json",
-        "trends.json"
+        "trends.json",
     ]
 
     missing_files = []
@@ -163,6 +191,7 @@ def validate_source_records():
 
     print("[PASS] All required source records present")
     return True
+
 
 if __name__ == "__main__":
     print("Dashboard Validation Script")

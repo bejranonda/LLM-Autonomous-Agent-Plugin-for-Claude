@@ -26,6 +26,7 @@ from datetime import datetime, timezone
 # Global performance tracking
 _performance_tracker = None
 
+
 class PerformanceIntegrator:
     """Simple performance recording integration for agents."""
 
@@ -62,10 +63,10 @@ class PerformanceIntegrator:
                 "auto_recording_enabled": True,
                 "created": datetime.now(timezone.utc).isoformat(),
                 "last_updated": datetime.now(timezone.utc).isoformat(),
-                "total_records": 0
-            }
+                "total_records": 0,
+            },
         }
-        with open(self.performance_records_file, 'w') as f:
+        with open(self.performance_records_file, "w") as f:
             json.dump(initial_data, f, indent=2)
 
     def _create_patterns_file(self):
@@ -78,39 +79,39 @@ class PerformanceIntegrator:
                 "created": datetime.now(timezone.utc).isoformat(),
                 "last_updated": datetime.now(timezone.utc).isoformat(),
                 "total_tasks": 0,
-                "global_learning_enabled": True
+                "global_learning_enabled": True,
             },
             "project_context": {
                 "detected_languages": ["python", "markdown"],
                 "frameworks": ["claude-code"],
                 "project_type": "ai-plugin",
                 "team_size": "individual",
-                "development_stage": "active"
+                "development_stage": "active",
             },
             "patterns": [],
             "skill_effectiveness": {},
             "agent_performance": {},
             "trends": {},
-            "optimizations": {}
+            "optimizations": {},
         }
-        with open(self.patterns_file, 'w') as f:
+        with open(self.patterns_file, "w") as f:
             json.dump(initial_data, f, indent=2)
 
     def start_task(self, description: str, task_type: str = "unknown") -> str:
         """
-        Start tracking a task for performance recording.
+                Start tracking a task for performance recording.
 
-        Args:
-            description: Task description
-            task_type: Type of task (
-    e.g.,
-    "code-analysis",
-    "validation",
-    "documentation",
-)
+                Args:
+                    description: Task description
+                    task_type: Type of task (
+            e.g.,
+            "code-analysis",
+            "validation",
+            "documentation",
+        )
 
-        Returns:
-            str: Task ID for later completion
+                Returns:
+                    str: Task ID for later completion
         """
         task_id = str(uuid.uuid4())
 
@@ -119,23 +120,25 @@ class PerformanceIntegrator:
             "description": description,
             "type": task_type,
             "start_time": time.time(),
-            "start_timestamp": datetime.now(timezone.utc).isoformat()
+            "start_timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
         return task_id
 
-    def complete_task(self,
-                     task_id: str,
-                     success: bool = True,
-                     quality_score: int = 85,
-                     files_modified: int = 0,
-                     lines_changed: int = 0,
-                     skills_used: List[str] = None,
-                     agents_used: List[str] = None,
-                     issues_found: List[str] = None,
-                     recommendations: List[str] = None,
-                     duration_seconds: int = None,
-                     model_used: str = None) -> bool:
+    def complete_task(
+        self,
+        task_id: str,
+        success: bool = True,
+        quality_score: int = 85,
+        files_modified: int = 0,
+        lines_changed: int = 0,
+        skills_used: List[str] = None,
+        agents_used: List[str] = None,
+        issues_found: List[str] = None,
+        recommendations: List[str] = None,
+        duration_seconds: int = None,
+        model_used: str = None,
+    ) -> bool:
         """
         Complete a task and record its performance automatically.
 
@@ -184,11 +187,11 @@ class PerformanceIntegrator:
                 "lines_changed": lines_changed,
                 "success": success,
                 "auto_generated": True,
-                "agents_used": agents_used or []
+                "agents_used": agents_used or [],
             },
             "issues_found": issues_found or [],
             "recommendations": recommendations or [],
-            "auto_generated": True
+            "auto_generated": True,
         }
 
         # Store performance record
@@ -209,7 +212,7 @@ class PerformanceIntegrator:
                 "lines_changed": lines_changed,
                 "duration_seconds": duration_seconds,
                 "success": success,
-                "quality_score": quality_score
+                "quality_score": quality_score,
             },
             "execution": {
                 "skills_loaded": skills_used or ["autonomous"],
@@ -221,7 +224,7 @@ class PerformanceIntegrator:
                     "overall_score": quality_score,
                     "success_rate": 1.0 if success else 0.0,
                     "efficiency": max(0, min(100, 100 - (duration_seconds / 60))),
-                }
+                },
             },
             "outcome": {
                 "success": success,
@@ -232,15 +235,18 @@ class PerformanceIntegrator:
                 "errors_encountered": issues_found or [],
                 "performance_recorded": True,
                 "model_used": model_used,
-                "task_completed_at": datetime.now(timezone.utc).isoformat()
+                "task_completed_at": datetime.now(timezone.utc).isoformat(),
             },
             "insights": {
                 "what_worked": ["Automatic performance recording"],
                 "what_failed": [] if success else ["Task completion issues"],
-                "bottlenecks": [] if 
-                    duration_seconds < 300 else ["Task took longer than expected"],
+                "bottlenecks": (
+                    [] if duration_seconds < 300 else ["Task took longer than expected"]
+                ),
                 "optimization_opportunities": recommendations or [],
-                "lessons_learned": [f"Automatic recording successful for {task['type']} tasks"]
+                "lessons_learned": [
+                    f"Automatic recording successful for {task['type']} tasks"
+                ],
             },
             "reuse_count": 0,
             "last_reused": None,
@@ -249,8 +255,8 @@ class PerformanceIntegrator:
                 "recorded_by": "performance_integration",
                 "integration_version": "1.0+",
                 "dashboard_compatible": True,
-                "auto_triggered": True
-            }
+                "auto_triggered": True,
+            },
         }
 
         # Store learning pattern
@@ -276,7 +282,7 @@ class PerformanceIntegrator:
     def _store_performance_record(self, record: Dict[str, Any]) -> bool:
         """Store performance record."""
         try:
-            with open(self.performance_records_file, 'r') as f:
+            with open(self.performance_records_file, "r") as f:
                 data = json.load(f)
 
             data["records"].append(record)
@@ -288,20 +294,28 @@ class PerformanceIntegrator:
             if "summary" not in data:
                 data["summary"] = {}
             if task_type not in data["summary"]:
-                data["summary"][task_type] = {"count": 0, "avg_score": 0.0, "success_rate": 0.0}
+                data["summary"][task_type] = {
+                    "count": 0,
+                    "avg_score": 0.0,
+                    "success_rate": 0.0,
+                }
 
             summary = data["summary"][task_type]
             summary["count"] += 1
 
             # Update average score
-            total_score = summary["avg_score"] * (summary["count"] - 1) + record["overall_score"]
+            total_score = (
+                summary["avg_score"] * (summary["count"] - 1) + record["overall_score"]
+            )
             summary["avg_score"] = total_score / summary["count"]
 
             # Update success rate
-            successes = summary["success_rate"] * (summary["count"] - 1) + (1.0 if record["pass"] else 0.0)
+            successes = summary["success_rate"] * (summary["count"] - 1) + (
+                1.0 if record["pass"] else 0.0
+            )
             summary["success_rate"] = successes / summary["count"]
 
-            with open(self.performance_records_file, 'w') as f:
+            with open(self.performance_records_file, "w") as f:
                 json.dump(data, f, indent=2)
 
             return True
@@ -313,14 +327,14 @@ class PerformanceIntegrator:
     def _store_learning_pattern(self, pattern: Dict[str, Any]) -> bool:
         """Store learning pattern."""
         try:
-            with open(self.patterns_file, 'r') as f:
+            with open(self.patterns_file, "r") as f:
                 data = json.load(f)
 
             data["patterns"].append(pattern)
             data["metadata"]["total_tasks"] = len(data["patterns"])
             data["metadata"]["last_updated"] = datetime.now(timezone.utc).isoformat()
 
-            with open(self.patterns_file, 'w') as f:
+            with open(self.patterns_file, "w") as f:
                 json.dump(data, f, indent=2)
 
             return True
@@ -329,6 +343,7 @@ class PerformanceIntegrator:
             print(f"ERROR storing learning pattern: {e}")
             return False
 
+
 # Global instance
 def get_performance_integrator() -> PerformanceIntegrator:
     """Get or create the global performance integrator."""
@@ -336,6 +351,7 @@ def get_performance_integrator() -> PerformanceIntegrator:
     if _performance_tracker is None:
         _performance_tracker = PerformanceIntegrator()
     return _performance_tracker
+
 
 # Simple functions for agents to use
 def start_performance_recording(description: str, task_type: str = "unknown") -> str:
@@ -354,17 +370,20 @@ def start_performance_recording(description: str, task_type: str = "unknown") ->
     integrator = get_performance_integrator()
     return integrator.start_task(description, task_type)
 
-def record_performance(task_id: str,
-                      success: bool = True,
-                      quality_score: int = 85,
-                      files_modified: int = 0,
-                      lines_changed: int = 0,
-                      skills_used: List[str] = None,
-                      agents_used: List[str] = None,
-                      issues_found: List[str] = None,
-                      recommendations: List[str] = None,
-                      duration_seconds: int = None,
-                      model_used: str = None) -> bool:
+
+def record_performance(
+    task_id: str,
+    success: bool = True,
+    quality_score: int = 85,
+    files_modified: int = 0,
+    lines_changed: int = 0,
+    skills_used: List[str] = None,
+    agents_used: List[str] = None,
+    issues_found: List[str] = None,
+    recommendations: List[str] = None,
+    duration_seconds: int = None,
+    model_used: str = None,
+) -> bool:
     """
     Record task performance automatically.
 
@@ -398,8 +417,9 @@ def record_performance(task_id: str,
         issues_found=issues_found,
         recommendations=recommendations,
         duration_seconds=duration_seconds,
-        model_used=model_used
+        model_used=model_used,
     )
+
 
 # Example usage and testing
 if __name__ == "__main__":
@@ -423,7 +443,7 @@ if __name__ == "__main__":
         skills_used=["performance-integration", "testing"],
         agents_used=["performance-integrator"],
         issues_found=[],
-        recommendations=["Use this for all agent tasks"]
+        recommendations=["Use this for all agent tasks"],
     )
 
     print(f"Performance recording successful: {success}")

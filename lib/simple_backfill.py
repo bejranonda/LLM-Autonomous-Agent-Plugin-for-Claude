@@ -5,9 +5,10 @@ Fixes the integration gap by storing missing assessment data.
 """
 
 # Import our assessment storage
+from lib.assessment_storage import AssessmentStorage
 import sys
 sys.path.append('.')
-from lib.assessment_storage import AssessmentStorage
+
 
 def main():
     print("Autonomous Agent Plugin - Assessment Backfill Tool")

@@ -7,6 +7,7 @@ import re
 import textwrap
 from pathlib import Path
 
+
 def fix_line_length(filepath, max_length=88):
     """Fix line length violations in a file"""
     try:
@@ -82,6 +83,7 @@ def fix_line_length(filepath, max_length=88):
         print(f"Error processing {filepath}: {e}")
         return 0
 
+
 def fix_import_line(line, max_length):
     """Fix long import lines"""
     lines = []
@@ -119,6 +121,7 @@ def fix_import_line(line, max_length):
 
     return lines
 
+
 def fix_function_call(line, max_length):
     """Fix long function calls"""
     lines = []
@@ -129,7 +132,8 @@ def fix_function_call(line, max_length):
         return [line + '\n']
 
     func_name = line[:paren_pos]
-    args_content = line[paren_pos+1:-1] if line.endswith(')') else line[paren_pos+1:]
+    args_content = line[paren_pos + 1:-
+        1] if line.endswith(')') else line[paren_pos + 1:]
 
     lines.append(func_name + '(\n')
 
@@ -140,6 +144,7 @@ def fix_function_call(line, max_length):
 
     lines.append(')\n')
     return lines
+
 
 def split_arguments(args_str):
     """Split arguments string considering nested parentheses"""
@@ -162,6 +167,7 @@ def split_arguments(args_str):
         args.append(current_arg.strip())
 
     return args
+
 
 def fix_string_concat(line, max_length):
     """Fix string concatenations"""
@@ -187,6 +193,7 @@ def fix_string_concat(line, max_length):
         lines.append(line + '\n')
 
     return lines
+
 
 def fix_collection_definition(line, max_length):
     """Fix dictionary/list definitions"""
@@ -215,6 +222,7 @@ def fix_collection_definition(line, max_length):
         lines.append(line + '\n')
 
     return lines
+
 
 def wrap_generic_line(line, max_length):
     """Generic line wrapper"""

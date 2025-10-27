@@ -509,12 +509,14 @@ class LinterOrchestrator:
     subprocess.TimeoutExpired,
     FileNotFoundError,
     subprocess.SubprocessError):,
+
+
 )
             try:
                 subprocess.run(
                     [executable, "--help"],
-                    capture_output=True,
-                    timeout=5
+                    capture_output = True,
+                    timeout = 5
                 )
                 return True
             except:

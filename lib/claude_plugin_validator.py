@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 import argparse
 
+
 class ClaudePluginValidator:
     """Validates Claude Code plugins against official guidelines."""
 
@@ -49,7 +50,7 @@ class ClaudePluginValidator:
 
         # Check file encoding first
         try:
-            with open(manifest_path, 'r', encoding='utf-8') as f:
+            with open(manifest_path, "r", encoding="utf-8") as f:
                 content = f.read()
         except UnicodeDecodeError:
             self.issues.append("❌ Plugin manifest encoding error (must be UTF-8)")
@@ -64,7 +65,7 @@ class ClaudePluginValidator:
             return
 
         # Check required fields
-        required_fields = ['name', 'version', 'description', 'author']
+        required_fields = ["name", "version", "description", "author"]
         missing_fields = [field for field in required_fields if field not in manifest]
         if missing_fields:
             self.issues.append(f"❌ Missing required fields: {missing_fields}")
@@ -72,8 +73,8 @@ class ClaudePluginValidator:
             print("  ✅ Required fields: Present")
 
         # Validate field types and content
-        if 'name' in manifest:
-            name = str(manifest['name'])
+        if "name" in manifest:
+            name = str(manifest["name"])
             if not name or len(name.strip()) == 0:
                 self.issues.append("❌ Plugin name cannot be empty")
             elif re.search(r'[<>:"/\\|?*]', name):
@@ -82,16 +83,16 @@ class ClaudePluginValidator:
                 print(f"  ✅ Plugin name: {name}")
 
         # Version format validation
-        if 'version' in manifest:
-            version = str(manifest['version'])
-            if not re.match(r'^\d+\.\d+\.\d+$', version):
+        if "version" in manifest:
+            version = str(manifest["version"])
+            if not re.match(r"^\d+\.\d+\.\d+$", version):
                 self.issues.append(f"❌ Invalid version format: {version} (use x.y.z)")
             else:
                 print(f"  ✅ Version format: {version}")
 
         # Description validation
-        if 'description' in manifest:
-            desc = str(manifest['description'])
+        if "description" in manifest:
+            desc = str(manifest["description"])
             if len(desc) < 10:
                 self.warnings.append("⚠️  Plugin description too short (< 10 chars)")
             elif len(desc) > 2000:
@@ -100,10 +101,10 @@ class ClaudePluginValidator:
                 print(f"  ✅ Description: {len(desc)} chars")
 
         # Author validation
-        if 'author' in manifest:
-            author = manifest['author']
+        if "author" in manifest:
+            author = manifest["author"]
             if isinstance(author, dict):
-                required_author_fields = ['name']
+                required_author_fields = ["name"]
                 missing_author = [f for f in required_author_fields if f not in author]
                 if missing_author:
                     self.warnings.append(f"⚠️  Missing author fields: {missing_author}")
@@ -118,15 +119,15 @@ class ClaudePluginValidator:
         file_size = manifest_path.stat().st_size
         if file_size > 1024 * 1024:  # 1MB
             self.warnings.append(
-    f"⚠️  Plugin manifest large: {file_size/1024:.1f}KB (>1MB)",
-)
+                f"⚠️  Plugin manifest large: {file_size / 1024:.1f}KB (>1MB)",
+            )
         else:
             print(f"  ✅ File size: {file_size} bytes")
 
         self.fixes.append(
-    "manifest_validated",
-    "Plugin manifest validated against Claude Code guidelines",
-)
+            "manifest_validated",
+            "Plugin manifest validated against Claude Code guidelines",
+        )
 
     def _validate_directory_structure(self):
         """Validate required directory structure."""
@@ -134,15 +135,15 @@ class ClaudePluginValidator:
 
         # Required directories
         required_structure = {
-            '.claude-plugin': 'Plugin configuration directory',
+            ".claude-plugin": "Plugin configuration directory",
         }
 
         optional_structure = {
-            'agents': 'Agent definitions',
-            'skills': 'Skill definitions',
-            'commands': 'Command definitions',
-            'lib': 'Python utility scripts',
-            'patterns': 'Auto-fix patterns',
+            "agents": "Agent definitions",
+            "skills": "Skill definitions",
+            "commands": "Command definitions",
+            "lib": "Python utility scripts",
+            "patterns": "Auto-fix patterns",
         }
 
         # Check required structure
@@ -163,12 +164,11 @@ class ClaudePluginValidator:
                 if dir_path.is_dir():
                     file_count = len(list(dir_path.glob("*")))
                     print(
-    f"  ✅ {dir_name}/: Present ({file_count} files - {description})",
-)
+                        f"  ✅ {dir_name}/: Present ({file_count} files - {description})", )
                 else:
                     self.warnings.append(
-    f"⚠️  {dir_name} exists but is not a directory",
-)
+                        f"⚠️  {dir_name} exists but is not a directory",
+                    )
             else:
                 print(f"  ⚪ {dir_name}/: Optional ({description})")
 
@@ -215,10 +215,10 @@ class ClaudePluginValidator:
             command_files = list(commands_dir.glob("*.md"))
             valid_commands = 0
             for cmd_file in command_files:
-                if cmd_file.name.startswith('.'):
+                if cmd_file.name.startswith("."):
                     self.warnings.append(
-    f"⚠️  Command file starts with dot: {cmd_file.name}",
-)
+                        f"⚠️  Command file starts with dot: {cmd_file.name}",
+                    )
                 if self._validate_markdown_file(cmd_file, "command"):
                     valid_commands += 1
             print(f"  ✅ Command files: {valid_commands}/{len(command_files)} valid")
@@ -226,41 +226,41 @@ class ClaudePluginValidator:
     def _validate_markdown_file(self, file_path: Path, file_type: str) -> bool:
         """Validate a single markdown file format."""
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
             # Check YAML frontmatter
-            if content.startswith('---'):
+            if content.startswith("---"):
                 try:
-                    frontmatter_end = content.find('---', 3)
+                    frontmatter_end = content.find("---", 3)
                     if frontmatter_end == -1:
                         self.warnings.append(
-    f"⚠️  Unclosed YAML frontmatter: {file_path.name}",
-)
+                            f"⚠️  Unclosed YAML frontmatter: {file_path.name}",
+                        )
                         return False
 
                     frontmatter_str = content[3:frontmatter_end].strip()
                     frontmatter = yaml.safe_load(frontmatter_str)
 
                     # Check required fields based on file type
-                    if file_type in ['agent', 'skill']:
-                        if 'name' not in frontmatter:
+                    if file_type in ["agent", "skill"]:
+                        if "name" not in frontmatter:
                             self.warnings.append(
-    f"⚠️  Missing name in {file_type}: {file_path.name}",
-)
-                        if 'description' not in frontmatter:
+                                f"⚠️  Missing name in {file_type}: {file_path.name}",
+                            )
+                        if "description" not in frontmatter:
                             self.warnings.append(
-    f"⚠️  Missing description in {file_type}: {file_path.name}",
-)
-                        if file_type == 'skill' and 'version' not in frontmatter:
+                                f"⚠️  Missing description in {file_type}: {
+                                    file_path.name}", )
+                        if file_type == "skill" and "version" not in frontmatter:
                             self.warnings.append(
-    f"⚠️  Missing version in skill: {file_path.name}",
-)
+                                f"⚠️  Missing version in skill: {file_path.name}",
+                            )
 
                 except yaml.YAMLError as e:
                     self.warnings.append(
-    f"⚠️  YAML error in {file_path.name}: {str(e)[:50]}",
-)
+                        f"⚠️  YAML error in {file_path.name}: {str(e)[:50]}",
+                    )
                     return False
 
             # Check content quality
@@ -274,8 +274,8 @@ class ClaudePluginValidator:
             return False
         except Exception as e:
             self.warnings.append(
-    f"⚠️  Error validating {file_path.name}: {str(e)[:50]}",
-)
+                f"⚠️  Error validating {file_path.name}: {str(e)[:50]}",
+            )
             return False
 
     def _validate_encoding(self):
@@ -286,24 +286,23 @@ class ClaudePluginValidator:
         files_checked = 0
 
         # Check common file types for encoding
-        for pattern in ['**/*.json', '**/*.md', '**/*.py', '**/*.yml', '**/*.yaml']:
+        for pattern in ["**/*.json", "**/*.md", "**/*.py", "**/*.yml", "**/*.yaml"]:
             for file_path in self.plugin_dir.glob(pattern):
                 files_checked += 1
                 try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
+                    with open(file_path, "r", encoding="utf-8") as f:
                         f.read()
                 except UnicodeDecodeError:
                     encoding_issues += 1
                     self.issues.append(
-    f"❌ Invalid encoding (not UTF-8): {file_path.relative_to(self.plugin_dir)}",
-)
+                        f"❌ Invalid encoding (not UTF-8): {file_path.relative_to(self.plugin_dir)}",
+                    )
 
         if encoding_issues == 0:
             print(f"  ✅ File encoding: UTF-8 ({files_checked} files)")
         else:
             print(
-    f"  ❌ File encoding: {encoding_issues} issues out of {files_checked} files",
-)
+                f"  ❌ File encoding: {encoding_issues} issues out of {files_checked} files", )
 
     def _validate_cross_platform_compatibility(self):
         """Validate cross-platform compatibility."""
@@ -319,8 +318,8 @@ class ClaudePluginValidator:
 
         if long_paths:
             self.warnings.append(
-    f"⚠️  Long file paths found (Windows limit 260 chars): {len(long_paths)} files",
-)
+                f"⚠️  Long file paths found (Windows limit 260 chars): {
+                    len(long_paths)} files", )
         else:
             print("  ✅ Path lengths: All under limits")
 
@@ -334,21 +333,21 @@ class ClaudePluginValidator:
 
         if problematic_files:
             self.warnings.append(
-    f"⚠️  Filenames with problematic characters: {len(problematic_files)}",
-)
+                f"⚠️  Filenames with problematic characters: {len(problematic_files)}",
+            )
         else:
             print("  ✅ Filename characters: All valid")
 
         # Check line endings in script files
         for script_file in self.plugin_dir.glob("**/*.py"):
             try:
-                with open(script_file, 'rb') as f:
+                with open(script_file, "rb") as f:
                     content = f.read()
-                    if b'\r\n' in content:
+                    if b"\r\n" in content:
                         self.warnings.append(
-    f"⚠️  CRLF line endings in {script_file.name} (should be LF)",
-)
-            except:
+                            f"⚠️  CRLF line endings in {
+                                script_file.name} (should be LF)", )
+            except BaseException:
                 pass
 
         print("  ✅ Cross-platform compatibility: Checked")
@@ -364,21 +363,21 @@ class ClaudePluginValidator:
         manifest_path = self.plugin_dir / ".claude-plugin" / "plugin.json"
         if manifest_path.exists():
             try:
-                with open(manifest_path, 'r', encoding='utf-8') as f:
+                with open(manifest_path, "r", encoding="utf-8") as f:
                     manifest = json.load(f)
 
                 # Check for empty required fields
-                for field in ['name', 'description']:
+                for field in ["name", "description"]:
                     if field in manifest and not str(manifest[field]).strip():
                         installation_blockers.append(f"Empty {field} field")
 
-            except:
+            except BaseException:
                 installation_blockers.append("Invalid plugin manifest")
 
         # 2. File permissions
         try:
             # Test read access to critical files
-            manifest_path.read_text(encoding='utf-8')
+            manifest_path.read_text(encoding="utf-8")
             print("  ✅ File permissions: Readable")
         except Exception as e:
             installation_blockers.append(f"File permission error: {e}")
@@ -389,8 +388,11 @@ class ClaudePluginValidator:
 
         if installation_blockers:
             self.issues.extend(
-    [f"❌ Installation blocker: {blocker}" for blocker in installation_blockers],
-)
+                [
+                    f"❌ Installation blocker: {blocker}"
+                    for blocker in installation_blockers
+                ],
+            )
         else:
             print("  ✅ Installation readiness: No blockers found")
 
@@ -402,8 +404,8 @@ class ClaudePluginValidator:
 
         # Calculate score
         score = 100
-        score -= (total_issues * 10)  # -10 points per issue
-        score -= (total_warnings * 2)  # -2 points per warning
+        score -= total_issues * 10  # -10 points per issue
+        score -= total_warnings * 2  # -2 points per warning
         score = max(0, score)
 
         # Determine status
@@ -419,13 +421,13 @@ class ClaudePluginValidator:
             status_emoji = "🔧"
 
         results = {
-            'status': status,
-            'status_emoji': status_emoji,
-            'score': score,
-            'issues': self.issues,
-            'warnings': self.warnings,
-            'fixes': self.fixes,
-            'summary': self._generate_summary()
+            "status": status,
+            "status_emoji": status_emoji,
+            "score": score,
+            "issues": self.issues,
+            "warnings": self.warnings,
+            "fixes": self.fixes,
+            "summary": self._generate_summary(),
         }
 
         return results
@@ -434,11 +436,11 @@ class ClaudePluginValidator:
         """Generate validation summary."""
         lines = []
         lines.append(
-    f"Status: {self.issues and '❌ NEEDS FIXES' or '✅ READY FOR RELEASE'}",
-)
+            f"Status: {self.issues and '❌ NEEDS FIXES' or '✅ READY FOR RELEASE'}",
+        )
         lines.append(
-    f"Score: {max(0, 100 - (len(self.issues) * 10) - (len(self.warnings) * 2))}/100",
-)
+            f"Score: {max(0, 100 - (len(self.issues) * 10) - (len(self.warnings) * 2))}/100",
+        )
         lines.append(f"Issues: {len(self.issues)} | Warnings: {len(self.warnings)}")
 
         if self.issues:
@@ -457,21 +459,23 @@ class ClaudePluginValidator:
 
         if not self.issues and not self.warnings:
             lines.append(
-    "\n🎉 Perfect! Plugin is fully compliant with Claude Code guidelines",
-)
+                "\n🎉 Perfect! Plugin is fully compliant with Claude Code guidelines",
+            )
 
         return "\n".join(lines)
 
 
 def main():
     """Command line interface."""
-    parser = argparse.ArgumentParser(description='Validate Claude Code plugin compliance')
-    parser.add_argument('--dir', default='.', help='Plugin directory')
+    parser = argparse.ArgumentParser(
+        description="Validate Claude Code plugin compliance"
+    )
+    parser.add_argument("--dir", default=".", help="Plugin directory")
     parser.add_argument(
-    '--strict',
-    action='store_true',
-    help='Treat warnings as errors',
-)
+        "--strict",
+        action="store_true",
+        help="Treat warnings as errors",
+    )
 
     args = parser.parse_args()
 
@@ -482,14 +486,14 @@ def main():
         print("\n" + "=" * 60)
         print("VALIDATION SUMMARY")
         print("=" * 60)
-        print(results['summary'])
+        print(results["summary"])
         print("=" * 60)
 
         # Exit code based on results
-        if args.strict and results['warnings']:
+        if args.strict and results["warnings"]:
             print("\n❌ Validation failed (strict mode - warnings treated as errors)")
             sys.exit(1)
-        elif results['issues']:
+        elif results["issues"]:
             print("\n❌ Validation failed (critical issues found)")
             sys.exit(1)
         else:

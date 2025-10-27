@@ -24,7 +24,7 @@ def create_sample_activity():
         "user-interface-refactor",
         "theme-implementation",
         "performance-optimization",
-        "pattern-learning"
+        "pattern-learning",
     ]
 
     skills_options = [
@@ -32,7 +32,7 @@ def create_sample_activity():
         ["gui-design-principles", "validation-standards"],
         ["code-analysis", "quality-standards", "gui-design-principles"],
         ["pattern-learning", "autonomous-development"],
-        ["quality-standards", "documentation-best-practices"]
+        ["quality-standards", "documentation-best-practices"],
     ]
 
     activities = []
@@ -52,7 +52,7 @@ def create_sample_activity():
             "success": random.choice([True, True, True, False]),  # 75% success rate
             "duration": random.randint(60, 300),  # 1-5 minutes
             "skills_used": random.choice(skills_options),
-            "auto_generated": True
+            "auto_generated": True,
         }
 
         activities.append(activity)
@@ -80,7 +80,7 @@ def update_patterns_directory():
 
     if performance_file.exists():
         try:
-            with open(performance_file, 'r', encoding='utf-8') as f:
+            with open(performance_file, "r", encoding="utf-8") as f:
                 existing_data = json.load(f)
         except Exception as e:
             print(f"Error loading existing data: {e}")
@@ -96,7 +96,7 @@ def update_patterns_directory():
     existing_data["records"] = existing_data["records"][:50]
 
     # Save updated data
-    with open(performance_file, 'w', encoding='utf-8') as f:
+    with open(performance_file, "w", encoding="utf-8") as f:
         json.dump(existing_data, f, indent=2, ensure_ascii=False)
 
     print(f"Updated activity data with {len(new_activities)} new entries")
@@ -108,9 +108,9 @@ def update_patterns_directory():
 
     if quality_file.exists():
         try:
-            with open(quality_file, 'r', encoding='utf-8') as f:
+            with open(quality_file, "r", encoding="utf-8") as f:
                 quality_data = json.load(f)
-        except:
+        except BaseException:
             pass
 
     if "quality_assessments" not in quality_data:
@@ -125,17 +125,17 @@ def update_patterns_directory():
             "pass": activity["success"],
             "details": {
                 "duration_seconds": activity["duration"],
-                "skills_used": activity["skills_used"]
+                "skills_used": activity["skills_used"],
             },
             "skills_used": activity["skills_used"],
-            "auto_generated": activity["auto_generated"]
+            "auto_generated": activity["auto_generated"],
         }
         quality_data["quality_assessments"].append(assessment)
 
     # Keep only recent assessments
     quality_data["quality_assessments"] = quality_data["quality_assessments"][-20:]
 
-    with open(quality_file, 'w', encoding='utf-8') as f:
+    with open(quality_file, "w", encoding="utf-8") as f:
         json.dump(quality_data, f, indent=2, ensure_ascii=False)
 
     print(f"Updated quality history with {len(new_activities[:5])} new assessments")

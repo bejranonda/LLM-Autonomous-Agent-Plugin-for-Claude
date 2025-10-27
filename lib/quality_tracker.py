@@ -18,6 +18,7 @@ from collections import defaultdict
 # Handle Windows compatibility for file locking
 if platform.system() == 'Windows':
     import msvcrt
+
     def lock_file(f, exclusive=False):
         """Windows file locking using msvcrt."""
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
@@ -30,6 +31,7 @@ if platform.system() == 'Windows':
             pass
 else:
     import fcntl
+
     def lock_file(f, exclusive=False):
         """Unix file locking using fcntl."""
         fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
@@ -138,6 +140,8 @@ class QualityTracker:
             if not isinstance(
     metric_value,
     (int, float)) or not (0 <= metric_value <= 1):,
+
+
 )
                 raise ValueError(
     f"Metric '{metric_name}' must be a number between 0 and 1",

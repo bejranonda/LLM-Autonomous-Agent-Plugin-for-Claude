@@ -6,6 +6,7 @@ Test script for the comprehensive prevention system
 import sys
 from pathlib import Path
 
+
 # Test the core functionality
 def test_command_validation():
     """Test command validation system"""
@@ -13,6 +14,7 @@ def test_command_validation():
 
     try:
         from lib.command_validator import CommandValidator
+
         validator = CommandValidator(".")
 
         # Check critical commands
@@ -23,7 +25,7 @@ def test_command_validation():
             "monitor": ["recommend", "dashboard"],
             "debug": ["eval", "gui"],
             "learn": ["init", "analytics", "performance", "predict"],
-            "workspace": ["organize", "reports", "improve"]
+            "workspace": ["organize", "reports", "improve"],
         }
 
         missing_critical = []
@@ -58,6 +60,7 @@ def test_command_validation():
         print(f"  ERROR: {e}")
         return False
 
+
 def test_file_structure():
     """Test file structure integrity"""
     print("\nTesting File Structure Integrity...")
@@ -68,7 +71,7 @@ def test_file_structure():
         "skills/",
         ".claude-plugin/",
         "lib/",
-        "patterns/"
+        "patterns/",
     ]
 
     missing_dirs = []
@@ -86,6 +89,7 @@ def test_file_structure():
 
     return len(missing_dirs) == 0
 
+
 def test_lib_components():
     """Test library components"""
     print("\nTesting Library Components...")
@@ -95,7 +99,7 @@ def test_lib_components():
         "lib/command_validator.py",
         "lib/recovery_manager.py",
         "lib/validation_hooks.py",
-        "lib/dashboard.py"
+        "lib/dashboard.py",
     ]
 
     missing_libs = []
@@ -114,6 +118,7 @@ def test_lib_components():
 
     return len(missing_libs) == 0
 
+
 def test_validation_commands():
     """Test validation commands"""
     print("\nTesting Validation Commands...")
@@ -121,7 +126,7 @@ def test_validation_commands():
     validation_commands = [
         "commands/validate/integrity.md",
         "commands/validate/commands.md",
-        "commands/monitor/dashboard.md"
+        "commands/monitor/dashboard.md",
     ]
 
     missing_commands = []
@@ -131,8 +136,10 @@ def test_validation_commands():
 
     print(f"  Expected Validation Commands: {len(validation_commands)}")
     print(
-    f"  Found Validation Commands: {len(validation_commands) - len(missing_commands)}",
-)
+        f"  Found Validation Commands: {
+            len(validation_commands) -
+            len(missing_commands)}",
+    )
     print(f"  Missing Validation Commands: {len(missing_commands)}")
 
     if missing_commands:
@@ -142,13 +149,15 @@ def test_validation_commands():
 
     return len(missing_commands) == 0
 
+
 def test_missing_command_recovery():
     """Test missing command recovery"""
     print("\nTesting Missing Command Recovery...")
 
     try:
-        sys.path.append('lib')
+        sys.path.append("lib")
         from recovery_manager import RecoveryManager
+
         recovery_manager = RecoveryManager(".")
 
         # Test recovery for missing command
@@ -157,23 +166,26 @@ def test_missing_command_recovery():
             "path": "commands/monitor/dashboard.md",
             "critical": True,
             "category": "monitor",
-            "name": "dashboard"
+            "name": "dashboard",
         }
 
         # This should succeed since we just created the dashboard command
-        result = recovery_manager.recover_specific_component(test_component["type"], test_component["path"])
+        result = recovery_manager.recover_specific_component(
+            test_component["type"], test_component["path"]
+        )
 
         print(f"  Recovery Success: {result['success']}")
-        if 'strategy_used' in result:
+        if "strategy_used" in result:
             print(f"  Strategy Used: {result['strategy_used']}")
-        if 'error' in result:
+        if "error" in result:
             print(f"  Recovery Error: {result['error']}")
 
-        return result['success'] or result.get('error', '').find('already exists') >= 0
+        return result["success"] or result.get("error", "").find("already exists") >= 0
 
     except Exception as e:
         print(f"  ERROR: {e}")
         return False
+
 
 def main():
     """Run all tests"""
@@ -186,7 +198,7 @@ def main():
         ("File Structure", test_file_structure),
         ("Library Components", test_lib_components),
         ("Validation Commands", test_validation_commands),
-        ("Missing Command Recovery", test_missing_command_recovery)
+        ("Missing Command Recovery", test_missing_command_recovery),
     ]
 
     results = []
@@ -211,16 +223,19 @@ def main():
             passed += 1
 
     print(f"\nTests Passed: {passed}/{len(results)}")
-    print(f"Success Rate: {(passed/len(results))*100:.1f}%")
+    print(f"Success Rate: {(passed / len(results)) * 100:.1f}%")
 
     if passed == len(results):
         print("\n[SUCCESS] All prevention system tests passed!")
         return 0
     else:
         print(
-    f"\n[WARNING] {len(results) - passed} tests failed. Review the issues above.",
-)
+            f"\n[WARNING] {
+                len(results) -
+                passed} tests failed. Review the issues above.",
+        )
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

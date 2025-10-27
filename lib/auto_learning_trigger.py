@@ -14,6 +14,7 @@ import uuid
 from pathlib import Path
 import os
 
+
 class AutomaticLearningTrigger:
     """Automatically triggers learning engine and performance recording after tasks."""
 
@@ -119,6 +120,8 @@ class AutomaticLearningTrigger:
     "TERM",
     "").lower() or "glm" in os.getenv("SHELL",
     "").lower():,
+
+
 )
             return "GLM-4.6"
 

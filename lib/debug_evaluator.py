@@ -3,7 +3,7 @@
 Debugging Performance Evaluator
 
 Measures AI debugging performance by analyzing and fixing real issues in the codebase.
-Implements the comprehensive debugging performance framework with QIS, TES, and 
+Implements the comprehensive debugging performance framework with QIS, TES, and
     Performance Index.
 """
 
@@ -11,6 +11,7 @@ import json
 import os
 import time
 from datetime import datetime
+
 
 class DebugEvaluator:
     def __init__(self, patterns_dir: str = ".claude-patterns"):
@@ -117,7 +118,7 @@ def deterministic_score(avg_score, model_name, date_str):
         return round(avg_score + rnd.uniform(-8, 2), 1)
 
 # Replace random generation with deterministic calls
-claude_score = deterministic_score(avg_score, "Claude Sonnet 4.5", date_str) if 
+claude_score = deterministic_score(avg_score, "Claude Sonnet 4.5", date_str) if
     claude_tasks > 0 else 0
 glm_score = deterministic_score(avg_score, "GLM 4.6", date_str) if glm_tasks > 0 else 0'''
 

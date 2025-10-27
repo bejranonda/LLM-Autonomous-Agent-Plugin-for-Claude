@@ -7,6 +7,7 @@ to fix the integration gap and provide complete dashboard data.
 
 from lib.assessment_storage import AssessmentStorage
 
+
 class AssessmentBackfill:
     """Backfills missing assessment data from recent command executions"""
 
@@ -40,7 +41,9 @@ class AssessmentBackfill:
         print(f"   Commands with data: {len(summary['command_performance'])}")
         for cmd, metrics in summary['command_performance'].items():
             print(
-    f"   • {cmd}: {metrics['total_executions']} executions (avg: {metrics['avg_score']:.1f}/100)",
+    f"   • {cmd}: {
+    metrics['total_executions']} executions (avg: {
+        metrics['avg_score']:.1f}/100)",
 )
 
     def _backfill_claude_plugin_validation(self) -> int:
@@ -81,9 +84,9 @@ class AssessmentBackfill:
                     "commands": 17,
                     "python_utilities": 15
                 },
-                "installation_readiness": "ready" if 
+                "installation_readiness": "ready" if
                     score >= 90 else "needs_improvement",
-                "marketplace_compatibility": "compatible" if 
+                "marketplace_compatibility": "compatible" if
                     score >= 90 else "conditional"
             },
             "issues_found": self._extract_issues_from_report(content),
@@ -447,6 +450,8 @@ class AssessmentBackfill:
                 continue
             elif in_recommendations_section and line.strip(
     ) and not line.startswith('```'):,
+
+
 )
                 if line.startswith(
     '•') or line.startswith('-') or line.startswith('*') or line[0].isdigit():,

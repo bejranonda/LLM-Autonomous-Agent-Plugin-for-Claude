@@ -9,6 +9,7 @@ import re
 import sys
 from pathlib import Path
 
+
 def validate_plugin_manifest(manifest_path):
     """Validate plugin manifest specifically."""
     issues = []
@@ -22,7 +23,7 @@ def validate_plugin_manifest(manifest_path):
 
     # Check encoding
     try:
-        with open(manifest_path, 'r', encoding='utf-8') as f:
+        with open(manifest_path, "r", encoding="utf-8") as f:
             content = f.read()
     except UnicodeDecodeError:
         issues.append("Plugin manifest encoding error (must be UTF-8)")
@@ -37,7 +38,7 @@ def validate_plugin_manifest(manifest_path):
         return issues, warnings
 
     # Required fields
-    required_fields = ['name', 'version', 'description', 'author']
+    required_fields = ["name", "version", "description", "author"]
     missing_fields = [field for field in required_fields if field not in manifest]
     if missing_fields:
         issues.append(f"Missing required fields: {missing_fields}")
@@ -45,16 +46,16 @@ def validate_plugin_manifest(manifest_path):
         print("  [OK] Required fields: Present")
 
     # Version format
-    if 'version' in manifest:
-        version = str(manifest['version'])
-        if not re.match(r'^\d+\.\d+\.\d+$', version):
+    if "version" in manifest:
+        version = str(manifest["version"])
+        if not re.match(r"^\d+\.\d+\.\d+$", version):
             issues.append(f"Invalid version format: {version} (use x.y.z)")
         else:
             print(f"  [OK] Version: {version}")
 
     # Name validation
-    if 'name' in manifest:
-        name = str(manifest['name'])
+    if "name" in manifest:
+        name = str(manifest["name"])
         if not name or len(name.strip()) == 0:
             issues.append("Plugin name cannot be empty")
         elif re.search(r'[<>:"/\\|?*]', name):
@@ -63,8 +64,8 @@ def validate_plugin_manifest(manifest_path):
             print(f"  [OK] Name: {name}")
 
     # Description
-    if 'description' in manifest:
-        desc = str(manifest['description'])
+    if "description" in manifest:
+        desc = str(manifest["description"])
         if len(desc) < 10:
             warnings.append("Plugin description too short (< 10 chars)")
         elif len(desc) > 2000:
@@ -76,6 +77,7 @@ def validate_plugin_manifest(manifest_path):
 
     return issues, warnings
 
+
 def validate_directory_structure(plugin_dir):
     """Validate directory structure."""
     print("\nValidating Directory Structure...")
@@ -84,7 +86,7 @@ def validate_directory_structure(plugin_dir):
     warnings = []
 
     # Required directories
-    required_dirs = ['.claude-plugin']
+    required_dirs = [".claude-plugin"]
 
     for dir_name in required_dirs:
         dir_path = plugin_dir / dir_name
@@ -101,7 +103,7 @@ def validate_directory_structure(plugin_dir):
         issues.append("Missing plugin.json in .claude-plugin/")
 
     # Optional directories
-    optional_dirs = ['agents', 'skills', 'commands', 'lib', 'patterns']
+    optional_dirs = ["agents", "skills", "commands", "lib", "patterns"]
     for dir_name in optional_dirs:
         dir_path = plugin_dir / dir_name
         if dir_path.exists() and dir_path.is_dir():
@@ -111,6 +113,7 @@ def validate_directory_structure(plugin_dir):
             print(f"  [INFO] {dir_name}/: Not present (optional)")
 
     return issues, warnings
+
 
 def validate_file_formats(plugin_dir):
     """Validate file formats."""
@@ -127,13 +130,13 @@ def validate_file_formats(plugin_dir):
         total_files += 1
 
         try:
-            with open(md_file, 'r', encoding='utf-8') as f:
+            with open(md_file, "r", encoding="utf-8") as f:
                 content = f.read()
 
             # Check YAML frontmatter
-            if content.startswith('---'):
+            if content.startswith("---"):
                 try:
-                    frontmatter_end = content.find('---', 3)
+                    frontmatter_end = content.find("---", 3)
                     if frontmatter_end == -1:
                         warnings.append(f"Unclosed YAML frontmatter: {md_file.name}")
                         continue
@@ -154,6 +157,7 @@ def validate_file_formats(plugin_dir):
 
     return issues, warnings
 
+
 def main():
     """Main validation function."""
     print("Claude Plugin Validator - Official Guidelines Compliance")
@@ -164,7 +168,9 @@ def main():
     all_warnings = []
 
     # Run validations
-    issues, warnings = validate_plugin_manifest(plugin_dir / ".claude-plugin" / "plugin.json")
+    issues, warnings = validate_plugin_manifest(
+        plugin_dir / ".claude-plugin" / "plugin.json"
+    )
     all_issues.extend(issues)
     all_warnings.extend(warnings)
 
@@ -211,6 +217,7 @@ def main():
         score = max(0, 100 - (len(all_issues) * 10) - (len(all_warnings) * 2))
         print(f"\nScore: {score}/100")
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

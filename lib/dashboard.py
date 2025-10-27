@@ -54,6 +54,8 @@ class DashboardDataCollector:
     base_score: float,
     variance: float,
     seed_data: str) -> float:,
+
+
 )
         """Generate deterministic scores based on seed data."""
         hash_obj = hashlib.md5(seed_data.encode())

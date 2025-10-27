@@ -20,6 +20,7 @@ from pathlib import Path
 # Handle Windows compatibility for file locking
 if platform.system() == 'Windows':
     import msvcrt
+
     def lock_file(f, exclusive=False):
         """Windows file locking using msvcrt."""
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
@@ -32,6 +33,7 @@ if platform.system() == 'Windows':
             pass
 else:
     import fcntl
+
     def lock_file(f, exclusive=False):
         """Unix file locking using fcntl."""
         fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
@@ -133,7 +135,8 @@ class PredictiveAnalyticsEngine:
             Dictionary with predictions and confidence scores
         """
         # Read historical data
-        enhanced_patterns = self._read_json_file(self.patterns_dir / "enhanced_patterns.json")
+        enhanced_patterns = self._read_json_file(
+    self.patterns_dir / "enhanced_patterns.json")
         trends = self._read_json_file(self.trends_file)
 
         if not enhanced_patterns.get("patterns"):
@@ -195,9 +198,11 @@ class PredictiveAnalyticsEngine:
         # Calculate confidence based on data consistency
         variance = statistics.variance(y_values) if len(y_values) > 1 else 0
         consistency_score = max(0, 1 - (variance / 100))  # Normalize variance
-        data_quality_score = min(1.0, len(quality_history) / 30)  # More data = higher confidence
+        # More data = higher confidence
+        data_quality_score = min(1.0, len(quality_history) / 30)
 
-        confidence = round((consistency_score * 0.6 + data_quality_score * 0.4) * 100, 2)
+        confidence = round(
+    (consistency_score * 0.6 + data_quality_score * 0.4) * 100, 2)
 
         prediction_result = {
             "prediction_type": "quality_trend",
@@ -219,6 +224,8 @@ class PredictiveAnalyticsEngine:
     task_context: Dict[str,
     Any],
     top_k: int = 3) -> Dict[str, Any]:,
+
+
 )
         """
         Predict optimal skills for a given task context using historical performance.
@@ -232,7 +239,8 @@ class PredictiveAnalyticsEngine:
         """
         # Read historical performance data
         skill_metrics = self._read_json_file(self.patterns_dir / "skill_metrics.json")
-        enhanced_patterns = self._read_json_file(self.patterns_dir / "enhanced_patterns.json")
+        enhanced_patterns = self._read_json_file(
+    self.patterns_dir / "enhanced_patterns.json")
 
         task_type = task_context.get("task_type", "unknown")
         project_context = task_context.get("project_context", {})
@@ -242,7 +250,8 @@ class PredictiveAnalyticsEngine:
 
         for skill_name, metrics in skill_metrics.items():
             if isinstance(metrics, dict) and "success_count" in metrics:
-                success_rate = metrics.get("success_count", 0) / max(1, metrics.get("total_usage", 1))
+                success_rate = metrics.get("success_count", 0) /
+                                           max(1, metrics.get("total_usage", 1))
                 avg_quality_impact = metrics.get("avg_quality_impact", 0)
 
                 # Weight by recent usage (more recent = more relevant)
@@ -253,7 +262,9 @@ class PredictiveAnalyticsEngine:
     {}).get("skills_used",
     []):,
 )
-                        pattern_age = datetime.now() - datetime.fromisoformat(pattern["timestamp"])
+                        pattern_age = datetime.now() -
+                                                   datetime.fromisoformat(
+                                                       pattern["timestamp"])
                         if pattern_age.days < 7:  # Recent usage
                             recent_usage_bonus += (7 - pattern_age.days) / 7
 

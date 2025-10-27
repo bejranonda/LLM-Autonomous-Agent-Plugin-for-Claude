@@ -15,8 +15,10 @@ import numpy as np
 from pathlib import Path
 if platform.system() == 'Windows':
     import msvcrt
+
     def lock_file(f, exclusive=False):
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
+
     def unlock_file(f):
         try:
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
@@ -24,8 +26,10 @@ if platform.system() == 'Windows':
             pass
 else:
     import fcntl
+
     def lock_file(f, exclusive=False):
         fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
+
     def unlock_file(f):
         fcntl.flock(f.fileno(), fcntl.LOCK_UN)
 
@@ -96,6 +100,8 @@ class PredictiveSkillSelector:
     self,
     task_context: Dict[str,
     Any]) -> Dict[str, float]:,
+
+
 )
         """
         Extract numerical features from task context for ML-based prediction.
@@ -116,28 +122,40 @@ class PredictiveSkillSelector:
         features["tech_diversity"] = min(1.0, (len(languages) + len(frameworks)) / 10)
 
         # Technology maturity (based on common tech stacks)
-        mature_tech = {"python", "javascript", "java", "go", "rust", "react", "vue", "django", "flask"}
-        tech_maturity_score = sum(1 for tech in languages + frameworks if 
+        mature_tech = {
+    "python",
+    "javascript",
+    "java",
+    "go",
+    "rust",
+    "react",
+    "vue",
+    "django",
+     "flask"}
+        tech_maturity_score = sum(1 for tech in languages + frameworks if
             tech.lower() in mature_tech)
-        features["tech_maturity"] = tech_maturity_score / max(1, len(languages) + len(frameworks))
+        features["tech_maturity"] = tech_maturity_score /
+            max(1, len(languages) + len(frameworks))
 
         # Project type features
         project_type = task_context.get("project_type", "").lower()
         features["is_web_app"] = 1.0 if "web" in project_type else 0.0
         features["is_api"] = 1.0 if "api" in project_type else 0.0
         features["is_library"] = 1.0 if "lib" in project_type else 0.0
-        features["is_cli"] = 1.0 if "cli" in project_type or 
+        features["is_cli"] = 1.0 if "cli" in project_type or
             "command" in project_type else 0.0
 
         # Complexity features
         features["estimated_complexity"] = self._extract_complexity_score(task_context)
         features["file_count"] = min(1.0, task_context.get("file_count", 1) / 100)
-        features["lines_of_code"] = min(1.0, task_context.get("lines_changed", 0) / 10000)
+        features["lines_of_code"] = min(
+    1.0, task_context.get(
+        "lines_changed", 0) / 10000)
 
         # Security and risk features
-        features["security_critical"] = 1.0 if 
+        features["security_critical"] = 1.0 if
             task_context.get("security_critical", False) else 0.0
-        features["performance_critical"] = 1.0 if 
+        features["performance_critical"] = 1.0 if
             task_context.get("performance_critical", False) else 0.0
 
         # Team features
@@ -157,7 +175,13 @@ class PredictiveSkillSelector:
 
         # Domain features
         domain = task_context.get("domain", "").lower()
-        common_domains = ["finance", "healthcare", "ecommerce", "education", "social", "gaming"]
+        common_domains = [
+    "finance",
+    "healthcare",
+    "ecommerce",
+    "education",
+    "social",
+     "gaming"]
         for i, dom in enumerate(common_domains):
             features[f"domain_{dom}"] = 1.0 if dom in domain else 0.0
 

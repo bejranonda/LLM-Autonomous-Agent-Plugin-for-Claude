@@ -3,7 +3,7 @@
 Model Performance Data Manager for Autonomous Agent Dashboard
 
 Manages historical performance data for different AI models.
-Provides utilities to add performance data, generate reports, and 
+Provides utilities to add performance data, generate reports, and
     maintain data integrity.
 
 Version: 1.0.0
@@ -21,6 +21,7 @@ import statistics
 # Handle Windows compatibility for file locking
 if platform.system() == 'Windows':
     import msvcrt
+
     def lock_file(f, exclusive=False):
         """Windows file locking using msvcrt."""
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
@@ -33,6 +34,7 @@ if platform.system() == 'Windows':
             pass
 else:
     import fcntl
+
     def lock_file(f, exclusive=False):
         """Unix file locking using fcntl."""
         fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
@@ -119,6 +121,8 @@ class ModelPerformanceManager:
     score: float,
     task_type: str = "unknown",
     contribution: float = 0.0):,
+
+
 )
         """
         Add a new performance score for a model.
@@ -161,13 +165,14 @@ class ModelPerformanceManager:
         data[model]["last_updated"] = datetime.now().isoformat()
 
         # Calculate success rate (scores >= 70 are considered successful)
-        successful_tasks = sum(1 for s in data[model]["recent_scores"] if 
+        successful_tasks = sum(1 for s in data[model]["recent_scores"] if
             s["score"] >= 70)
-        data[model]["success_rate"] = successful_tasks / len(data[model]["recent_scores"])
+        data[model]["success_rate"] = successful_tasks /
+            len(data[model]["recent_scores"])
 
         # Update contribution (rolling average)
         contributions = [s["contribution"] for s in data[model]["recent_scores"]]
-        data[model]["contribution_to_project"] = statistics.mean(contributions) if 
+        data[model]["contribution_to_project"] = statistics.mean(contributions) if
             contributions else 0.0
 
         self._save_data(data)

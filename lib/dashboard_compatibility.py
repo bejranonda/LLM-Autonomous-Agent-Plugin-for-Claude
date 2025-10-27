@@ -19,8 +19,10 @@ import platform
 # Import file locking utilities
 if platform.system() == 'Windows':
     import msvcrt
+
     def lock_file(f, exclusive=False):
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
+
     def unlock_file(f):
         try:
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
@@ -28,8 +30,10 @@ if platform.system() == 'Windows':
             pass
 else:
     import fcntl
+
     def lock_file(f, exclusive=False):
         fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
+
     def unlock_file(f):
         fcntl.flock(f.fileno(), fcntl.LOCK_UN)
 
@@ -90,13 +94,18 @@ class DashboardCompatibilityManager:
             migration_report["migrations_performed"].append("quality_history migrated")
 
         # Generate recommendations
-        migration_report["recommendations"] = self._generate_recommendations(migration_report)
+        migration_report["recommendations"] = self._generate_recommendations(
+            migration_report)
 
         return migration_report
 
     def _migrate_patterns_data(self) -> Dict[str, Any]:
         """Migrate patterns.json to ensure compatibility with new dashboard."""
-        status = {"exists": False, "version": "unknown", "migrated": False, "issues": []}
+        status = {
+    "exists": False,
+    "version": "unknown",
+    "migrated": False,
+     "issues": []}
 
         if not self.patterns_file.exists():
             status["issues"].append("patterns.json does not exist")
@@ -302,6 +311,8 @@ class DashboardCompatibilityManager:
         if not migration_report["data_status"].get(
     "model_performance",
     {}).get("exists"):,
+
+
 )
             recommendations.append(
     "[INFO] Model performance data will be created automatically",

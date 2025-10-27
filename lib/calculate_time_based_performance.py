@@ -7,12 +7,14 @@ import json
 import os
 from datetime import datetime
 
+
 def parse_timestamp(timestamp_str):
     """Parse ISO timestamp to datetime object"""
     try:
         return datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
     except:
         return datetime.now()
+
 
 def calculate_quality_improvement_trend(assessments, model_name):
     """Calculate how quality scores improve over time for a specific model"""
@@ -28,7 +30,12 @@ def calculate_quality_improvement_trend(assessments, model_name):
         }
 
     # Sort assessments by timestamp
-    sorted_assessments = sorted(assessments, key=lambda x: parse_timestamp(x.get('timestamp', '')))
+    sorted_assessments = sorted(
+    assessments,
+    key=lambda x: parse_timestamp(
+        x.get(
+            'timestamp',
+             '')))
 
     # Extract quality scores over time
     quality_timeline = []
@@ -50,7 +57,7 @@ def calculate_quality_improvement_trend(assessments, model_name):
             'total_improvement': 0,
             'time_span_days': 0,
             'trend_direction': 'insufficient_data',
-            'performance_score': quality_timeline[0]['score'] if 
+            'performance_score': quality_timeline[0]['score'] if
                 quality_timeline else 0,
             'data_points': len(quality_timeline)
         }
@@ -131,6 +138,7 @@ def calculate_quality_improvement_trend(assessments, model_name):
             ]
     }
 
+
 def classify_assessments_by_model(assessments):
     """Classify assessments by model based on task patterns and timestamps"""
 
@@ -156,6 +164,7 @@ def classify_assessments_by_model(assessments):
         'GLM 4.6': glm_assessments,
         'Claude Sonnet 4.5': claude_assessments
     }
+
 
 def main():
     """Main performance calculation based on quality improvement over time"""
@@ -185,7 +194,8 @@ def main():
         print("-" * 55)
 
         # Calculate quality improvement trend
-        trend_analysis = calculate_quality_improvement_trend(model_specific_assessments, model_name)
+        trend_analysis = calculate_quality_improvement_trend(
+            model_specific_assessments, model_name)
 
         # Calculate success rate
         successful = sum(1 for a in model_specific_assessments if a.get('pass', False))
@@ -216,8 +226,10 @@ def main():
             print(f"\nQuality Score Timeline:")
             for i, point in enumerate(
     trend_analysis['quality_timeline'][-5:]):  # Last 5 points,
+
+
 )
-                timestamp_str = point['timestamp'] if 
+                timestamp_str = point['timestamp'] if
                     isinstance(point['timestamp'], str) else point['timestamp'].isoformat()
                 # Parse the timestamp string to format it
                 try:

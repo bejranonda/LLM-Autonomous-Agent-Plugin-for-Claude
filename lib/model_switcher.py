@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Optional, Tuple, Any
 
+
 class ModelSwitcher:
     """Cross-platform model switching utility with security validation."""
 
@@ -203,89 +204,91 @@ class ModelSwitcher:
                 "model": model,
                 "base_url": base_url,
                 "token_status": "configured" if env.get(
-    "ANTHROPIC_AUTH_TOKEN") else "missing",
-)
+                    "ANTHROPIC_AUTH_TOKEN") else "missing",
+                )
             }
-        elif "anthropic.com" in base_url:
+            elif "anthropic.com" in base_url:
             return {
-                "status": "claude",
+               "status": "claude",
                 "base_url": base_url,
                 "token_status": "configured" if env.get(
-    "ANTHROPIC_AUTH_TOKEN") else "missing",
+                    "ANTHROPIC_AUTH_TOKEN") else "missing",
+
+
 )
-            }
-        else:
+    }
+    else:
             return {
                 "status": "unknown",
                 "base_url": base_url,
                 "token_status": "configured" if env.get(
-    "ANTHROPIC_AUTH_TOKEN") else "missing",
-)
-            }
+   "ANTHROPIC_AUTH_TOKEN") else "missing",
+    )
+    }
 
-    def validate_configuration(self) -> Tuple[bool, str]:
-        """Validate current configuration."""
+        def validate_configuration(self) -> Tuple[bool, str]:
+    """Validate current configuration."""
         if not self.settings_file.exists():
-            return False, "Settings file does not exist"
+    return False, "Settings file does not exist"
 
         try:
-            with open(self.settings_file, 'r') as f:
-                settings = json.load(f)
+    with open(self.settings_file, 'r') as f:
+    settings = json.load(f)
 
             if "env" not in settings:
-                return False, "No env section in settings"
+    return False, "No env section in settings"
 
             env = settings["env"]
 
             if not env.get("ANTHROPIC_AUTH_TOKEN"):
-                return False, "No API token configured"
+    return False, "No API token configured"
 
             if not env.get("ANTHROPIC_BASE_URL"):
-                return False, "No base URL configured"
+    return False, "No base URL configured"
 
             return True, "Configuration is valid"
         except json.JSONDecodeError as e:
-            return False, f"Invalid JSON: {e}"
+    return False, f"Invalid JSON: {e}"
         except Exception as e:
-            return False, f"Validation error: {e}"
+    return False, f"Validation error: {e}"
 
-    def restore_backup(self, backup_name: str = None) -> bool:
-        """Restore settings from backup."""
+        def restore_backup(self, backup_name: str = None) -> bool:
+    """Restore settings from backup."""
         try:
-            if not self.backup_dir.exists():
-                print("No backup directory found")
+    if not self.backup_dir.exists():
+    print("No backup directory found")
                 return False
 
             if backup_name:
-                backup_file = self.backup_dir / backup_name
+    backup_file = self.backup_dir / backup_name
             else:
                 # Find most recent backup
-                backups = list(self.backup_dir.glob("settings_backup_*.json"))
+    backups = list(self.backup_dir.glob("settings_backup_*.json"))
                 if not backups:
-                    print("No backup files found")
+    print("No backup files found")
                     return False
                 backup_file = max(backups, key=os.path.getctime)
 
             if not backup_file.exists():
-                print(f"Backup file not found: {backup_file}")
+    print(f"Backup file not found: {backup_file}")
                 return False
 
             shutil.copy2(backup_file, self.settings_file)
             print(f"Restored from backup: {backup_file}")
             return True
         except Exception as e:
-            print(f"Failed to restore backup: {e}")
+    print(f"Failed to restore backup: {e}")
             return False
 
-    def list_backups(self) -> list:
-        """List available backup files."""
+        def list_backups(self) -> list:
+    """List available backup files."""
         try:
-            if not self.backup_dir.exists():
-                return []
+    if not self.backup_dir.exists():
+    return []
 
             backups = []
             for backup_file in self.backup_dir.glob("settings_backup_*.json"):
-                stat = backup_file.stat()
+    stat = backup_file.stat()
                 backups.append({
                     "name": backup_file.name,
                     "size": stat.st_size,
@@ -297,7 +300,7 @@ class ModelSwitcher:
             return []
 
 
-def main():
+    def main():
     """Command-line interface for model switcher."""
     import argparse
 
@@ -307,20 +310,20 @@ def main():
     parser.add_argument(
     "--model",
     help="Specific model (for GLM: glm-4.5-air, glm-4.6)",
-)
+        )
     parser.add_argument("--status", action="store_true", help="Show current status")
     parser.add_argument(
     "--validate",
     action="store_true",
     help="Validate configuration",
-)
+        )
     parser.add_argument("--backup", action="store_true", help="Create backup")
     parser.add_argument("--restore", help="Restore from backup")
     parser.add_argument(
     "--list-backups",
     action="store_true",
     help="List available backups",
-)
+        )
 
     args = parser.parse_args()
 
@@ -399,5 +402,5 @@ def main():
         parser.print_help()
 
 
-if __name__ == "__main__":
+        if __name__ == "__main__":
     main()

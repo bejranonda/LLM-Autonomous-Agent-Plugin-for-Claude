@@ -8,6 +8,7 @@ import os
 from datetime import datetime
 from collections import defaultdict
 
+
 def calculate_success_rates():
     """Calculate success rates from quality history data"""
 
@@ -48,6 +49,8 @@ def calculate_success_rates():
         if 'validation' in task_type or 'plugin-validation' in assessment.get(
     'assessment_type',
     ''):,
+
+
 )
             model_name = 'Claude Sonnet 4.5'
         elif 'analysis' in task_type or 
