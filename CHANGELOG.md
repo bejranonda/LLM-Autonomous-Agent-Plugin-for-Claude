@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.2] - 2025-10-27
+
+### 🐛 **Bug Fix: Dashboard Browser Launch Issue**
+
+#### Critical Fix
+- **Fixed**: Duplicate browser launch when calling `/monitor:dashboard` command
+- **Root Cause**: Conflicting browser opening mechanisms between orchestrator and dashboard components
+- **Solution**: Updated orchestrator to use `dashboard_launcher.py` instead of direct `dashboard.py` call
+- **Impact**: Eliminates duplicate browser windows/tabs for better user experience
+
+#### Technical Changes
+- **File**: `agents/orchestrator.md`
+- **Line 313**: Changed script reference from `lib/dashboard.py` to `lib/dashboard_launcher.py`
+- **Line 640**: Fixed browser opening logic condition from `if not args['auto_open_browser']` to `if args['auto_open_browser'] == False`
+
+#### User Experience Improvements
+- **Single Browser Launch**: Dashboard now opens browser exactly once per command invocation
+- **Proper Separation of Concerns**: Launcher handles startup, dashboard handles serving
+- **Consistent Behavior**: Predictable browser opening across all scenarios
+- **Maintains Functionality**: All existing features remain intact
+
+#### Documentation
+- **Created**: `DASHBOARD_BROWSER_FIX_SUMMARY.md` with complete technical analysis
+- **Verified**: Command flow and argument parsing logic thoroughly tested
+
+---
+
 ## [4.6.1] - 2025-10-27
 
 ### 📚 **Documentation Fix**

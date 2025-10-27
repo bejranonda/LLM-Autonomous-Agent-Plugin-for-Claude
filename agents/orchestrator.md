@@ -310,7 +310,7 @@ def detect_special_command(user_input):
         return {
             'type': 'direct_execution',
             'command': 'dashboard',
-            'script': 'lib/dashboard.py',
+            'script': 'lib/dashboard_launcher.py',
             'args': parse_dashboard_args(user_input)
         }
 
@@ -637,7 +637,7 @@ def handle_special_command(command_info):
                 cmd.extend(['--port', str(args['port'])])
             if args['patterns_dir'] != '.claude-patterns':
                 cmd.extend(['--patterns-dir', args['patterns_dir']])
-            if not args['auto_open_browser']:
+            if args['auto_open_browser'] == False:
                 cmd.append('--no-browser')
 
             # Execute dashboard
