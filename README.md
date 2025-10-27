@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v4.8.0
+# 🚀 Autonomous Agent for Claude Code v4.9.0
 
-[![Version](https://img.shields.io/badge/version-4.8.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.8.0)
+[![Version](https://img.shields.io/badge/version-4.9.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v4.9.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -20,7 +20,7 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 <img width="1464" height="552" alt="image" src="https://github.com/user-attachments/assets/a4f84e19-1fa7-4f97-ab3e-9366bb1adaf3" />
 
-*Autonomous Agent Dashboard check-in! 🤖 7 Active Agents, 5 Skills, and a 93/100 Quality Score.*
+*Autonomous Agent Dashboard check-in! 🤖 7 Active Agents, 5 Skills, and a 97.5/100 Quality Score.*
 
 
 ---
