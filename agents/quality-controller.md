@@ -550,6 +550,48 @@ Next Steps:
 - [If FAILED]: Review required items
 ```
 
+## Integration with Unified Parameter Storage
+
+**Quality Score Recording**:
+- All quality assessments are automatically stored in unified parameter storage
+- Uses `UnifiedParameterStorage.set_quality_score()` for consistency
+- Historical quality trends tracked in central location
+- Dashboard integration for real-time quality monitoring
+
+**Parameter Storage Integration**:
+```python
+# At start of quality assessment
+from unified_parameter_storage import UnifiedParameterStorage
+unified_storage = UnifiedParameterStorage()
+
+# During quality assessment
+quality_score = calculate_overall_score(...)  # 0-100 scale
+detailed_metrics = {
+    "tests_score": test_score,
+    "standards_score": standards_score,
+    "documentation_score": doc_score,
+    "pattern_score": pattern_score,
+    "code_metrics_score": code_metrics_score
+}
+
+# Store in unified storage
+unified_storage.set_quality_score(quality_score, detailed_metrics)
+
+# For real-time dashboard updates
+dashboard_metrics = {
+    "active_tasks": 1,
+    "quality_assessments": 1,
+    "auto_corrections": corrections_applied
+}
+unified_storage.update_dashboard_metrics(dashboard_metrics)
+```
+
+**Legacy Compatibility**:
+- Automatically migrates from legacy quality storage (.claude-quality/)
+- Backward compatibility with existing quality tracking systems
+- Gradual migration without disrupting existing workflows
+- Fallback to legacy systems if unified storage unavailable
+
 ## Integration with Autonomous System
 
 **Triggered By**:
@@ -564,6 +606,8 @@ Next Steps:
 - Code analyzer (if refactoring needed for quality)
 
 **Contributes To**:
+- Unified parameter storage (quality patterns and scores)
 - Pattern database (stores quality patterns)
 - Project health metrics
 - Continuous improvement feedback loop
+- Dashboard real-time quality metrics

@@ -18,6 +18,7 @@ Author: Autonomous Agent Development Team
 from flask import Flask, render_template_string, jsonify, request
 from flask_cors import CORS
 import json
+import sys
 import hashlib
 import os
 from pathlib import Path
@@ -30,6 +31,15 @@ import statistics
 import random
 import socket
 import subprocess
+
+# Import unified parameter storage system
+try:
+    from unified_parameter_storage import UnifiedParameterStorage
+    from parameter_compatibility import enable_compatibility_mode
+    UNIFIED_STORAGE_AVAILABLE = True
+except ImportError:
+    UNIFIED_STORAGE_AVAILABLE = False
+    print("Warning: Unified parameter storage not available, using legacy system", file=sys.stderr)
 
 
 app = Flask(__name__)
@@ -44,12 +54,22 @@ class DashboardDataCollector:
         Initialize data collector.
 
         Args:
-            patterns_dir: Directory containing pattern data
+            patterns_dir: Directory containing pattern data (legacy parameter)
         """
         self.patterns_dir = Path(patterns_dir)
         self.cache = {}
         self.cache_ttl = 60  # Cache for 60 seconds
         self.last_update = {}
+
+        # Initialize unified parameter storage if available
+        if UNIFIED_STORAGE_AVAILABLE:
+            self.unified_storage = UnifiedParameterStorage()
+            self.use_unified_storage = True
+            # Enable compatibility mode for seamless transition
+            enable_compatibility_mode(auto_patch=False, monkey_patch=False)
+        else:
+            self.unified_storage = None
+            self.use_unified_storage = False
 
     def _deterministic_score(self, base_score: float, variance: float, seed_data: str) -> float:
         """Generate deterministic scores based on seed data."""
@@ -3622,6 +3642,281 @@ def api_debugging_performance():
                 'error': f"Could not load or generate data for {get_timeframe_label(days)}"
             })
 
+    # Unified Parameter Storage Integration Methods
+    def get_unified_quality_data(self) -> Dict[str, Any]:
+        """
+        Get quality data from unified storage system.
+
+        Returns:
+            Quality data from unified storage
+        """
+        if self.use_unified_storage and self.unified_storage:
+            try:
+                # Get quality score and history from unified storage
+                current_score = self.unified_storage.get_quality_score()
+                quality_history = self.unified_storage.get_quality_history(days=30)
+                quality_metrics = self.unified_storage._read_data()["parameters"]["quality"]["metrics"]
+
+                return {
+                    "current_score": current_score,
+                    "history": quality_history,
+                    "metrics": quality_metrics,
+                    "source": "unified_storage"
+                }
+            except Exception as e:
+                print(f"Error getting unified quality data: {e}", file=sys.stderr)
+                # Fallback to legacy system
+                return self._get_legacy_quality_data()
+        else:
+            # Use legacy system
+            return self._get_legacy_quality_data()
+
+    def get_unified_model_data(self) -> Dict[str, Any]:
+        """
+        Get model performance data from unified storage system.
+
+        Returns:
+            Model performance data from unified storage
+        """
+        if self.use_unified_storage and self.unified_storage:
+            try:
+                dashboard_data = self.unified_storage.get_dashboard_data()
+                active_model = self.unified_storage.get_active_model()
+                model_performance = dashboard_data["models"]["performance"]
+
+                # Get performance data for each model
+                model_summaries = {}
+                for model_name, perf_data in model_performance.items():
+                    scores = [s.get("score", 0) for s in perf_data.get("scores", [])]
+                    if scores:
+                        model_summaries[model_name] = {
+                            "average_score": sum(scores) / len(scores),
+                            "success_rate": perf_data.get("success_rate", 0) * 100,
+                            "total_tasks": perf_data.get("total_tasks", 0),
+                            "last_updated": perf_data.get("last_updated"),
+                            "recent_scores": scores[-10:]  # Last 10 scores
+                        }
+
+                return {
+                    "active_model": active_model,
+                    "model_performance": model_summaries,
+                    "source": "unified_storage"
+                }
+            except Exception as e:
+                print(f"Error getting unified model data: {e}", file=sys.stderr)
+                # Fallback to legacy system
+                return self._get_legacy_model_data()
+        else:
+            # Use legacy system
+            return self._get_legacy_model_data()
+
+    def get_unified_dashboard_data(self) -> Dict[str, Any]:
+        """
+        Get complete dashboard data from unified storage system.
+
+        Returns:
+            Complete dashboard data from unified storage
+        """
+        if self.use_unified_storage and self.unified_storage:
+            try:
+                dashboard_data = self.unified_storage.get_dashboard_data()
+
+                # Transform data for dashboard consumption
+                unified_data = {
+                    "quality": {
+                        "current_score": dashboard_data["quality"]["scores"]["current"],
+                        "metrics": dashboard_data["quality"]["metrics"],
+                        "history": self.unified_storage.get_quality_history(days=30)
+                    },
+                    "models": {
+                        "active_model": dashboard_data["models"]["active_model"],
+                        "performance": dashboard_data["models"]["performance"],
+                        "usage_stats": dashboard_data["models"]["usage_stats"]
+                    },
+                    "dashboard": {
+                        "metrics": dashboard_data["dashboard"]["metrics"],
+                        "real_time": dashboard_data["dashboard"]["real_time"]
+                    },
+                    "learning": {
+                        "patterns": dashboard_data["learning"]["patterns"],
+                        "analytics": dashboard_data["learning"]["analytics"]
+                    },
+                    "autofix": dashboard_data["autofix"],
+                    "source": "unified_storage",
+                    "timestamp": datetime.now().isoformat()
+                }
+
+                return unified_data
+            except Exception as e:
+                print(f"Error getting unified dashboard data: {e}", file=sys.stderr)
+                # Fallback to legacy system
+                return self._get_legacy_dashboard_data()
+        else:
+            # Use legacy system
+            return self._get_legacy_dashboard_data()
+
+    def update_unified_dashboard_metrics(self, metrics: Dict[str, Any]):
+        """
+        Update dashboard metrics in unified storage.
+
+        Args:
+            metrics: Dictionary of metrics to update
+        """
+        if self.use_unified_storage and self.unified_storage:
+            try:
+                self.unified_storage.update_dashboard_metrics(metrics)
+                print(f"Updated unified dashboard metrics: {list(metrics.keys())}")
+            except Exception as e:
+                print(f"Error updating unified dashboard metrics: {e}", file=sys.stderr)
+        else:
+            # Legacy system - metrics would be updated via existing mechanisms
+            pass
+
+    def record_quality_to_unified(self, score: float, metrics: Dict[str, float] = None,
+                                task_id: str = None):
+        """
+        Record quality score to unified storage.
+
+        Args:
+            score: Quality score (0-100)
+            metrics: Optional detailed metrics
+            task_id: Optional task identifier
+        """
+        if self.use_unified_storage and self.unified_storage:
+            try:
+                self.unified_storage.set_quality_score(score, metrics)
+                if task_id:
+                    print(f"Recorded quality score {score} for task {task_id} to unified storage")
+                else:
+                    print(f"Recorded quality score {score} to unified storage")
+            except Exception as e:
+                print(f"Error recording quality to unified storage: {e}", file=sys.stderr)
+        else:
+            # Legacy system - would use existing quality recording mechanisms
+            pass
+
+    def update_model_performance_unified(self, model: str, score: float, task_type: str = "unknown"):
+        """
+        Update model performance in unified storage.
+
+        Args:
+            model: Model name
+            score: Performance score (0-100)
+            task_type: Type of task performed
+        """
+        if self.use_unified_storage and self.unified_storage:
+            try:
+                self.unified_storage.update_model_performance(model, score, task_type)
+                print(f"Updated model performance for {model}: {score} ({task_type})")
+            except Exception as e:
+                print(f"Error updating unified model performance: {e}", file=sys.stderr)
+        else:
+            # Legacy system - would use existing model performance mechanisms
+            pass
+
+    def get_unified_storage_stats(self) -> Dict[str, Any]:
+        """
+        Get statistics about unified storage usage.
+
+        Returns:
+            Unified storage statistics
+        """
+        if self.use_unified_storage and self.unified_storage:
+            try:
+                stats = self.unified_storage.get_storage_stats()
+                validation = self.unified_storage.validate_data_integrity()
+
+                return {
+                    "storage_available": True,
+                    "stats": stats,
+                    "validation": validation,
+                    "cache_status": "enabled" if hasattr(self, '_cache') else "disabled"
+                }
+            except Exception as e:
+                return {
+                    "storage_available": True,
+                    "error": str(e),
+                    "cache_status": "unknown"
+                }
+        else:
+            return {
+                "storage_available": False,
+                "reason": "Unified storage not available",
+                "fallback": "Using legacy storage system"
+            }
+
+    # Fallback methods for legacy systems
+    def _get_legacy_quality_data(self) -> Dict[str, Any]:
+        """Fallback method to get quality data from legacy system."""
+        try:
+            quality_assessments = self._load_json_file("quality_history.json", "quality")
+            if quality_assessments and quality_assessments.get("quality_assessments"):
+                latest_assessment = quality_assessments["quality_assessments"][-1]
+                return {
+                    "current_score": latest_assessment.get("overall_score", 0) * 100,
+                    "history": quality_assessments["quality_assessments"],
+                    "metrics": latest_assessment.get("details", {}).get("metrics", {}),
+                    "source": "legacy_storage"
+                }
+        except Exception as e:
+            print(f"Error getting legacy quality data: {e}", file=sys.stderr)
+
+        return {
+            "current_score": 0,
+            "history": [],
+            "metrics": {},
+            "source": "legacy_storage",
+            "error": "Failed to load quality data"
+        }
+
+    def _get_legacy_model_data(self) -> Dict[str, Any]:
+        """Fallback method to get model data from legacy system."""
+        try:
+            model_performance = self._load_json_file("model_performance.json", "model_perf")
+            if model_performance:
+                return {
+                    "active_model": "Claude",  # Default fallback
+                    "model_performance": model_performance,
+                    "source": "legacy_storage"
+                }
+        except Exception as e:
+            print(f"Error getting legacy model data: {e}", file=sys.stderr)
+
+        return {
+            "active_model": "Claude",
+            "model_performance": {},
+            "source": "legacy_storage",
+            "error": "Failed to load model data"
+        }
+
+    def _get_legacy_dashboard_data(self) -> Dict[str, Any]:
+        """Fallback method to get dashboard data from legacy system."""
+        try:
+            # Collect data from various legacy sources
+            quality_data = self._get_legacy_quality_data()
+            model_data = self._get_legacy_model_data()
+
+            return {
+                "quality": quality_data,
+                "models": model_data,
+                "dashboard": {
+                    "metrics": {},
+                    "real_time": {}
+                },
+                "learning": {
+                    "patterns": {},
+                    "analytics": {}
+                },
+                "source": "legacy_storage",
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            print(f"Error getting legacy dashboard data: {e}", file=sys.stderr)
+            return {
+                "error": "Failed to load legacy dashboard data",
+                "source": "error"
+            }
+
 def get_unified_model_order(debugging_data=None):
     """
     Get unified model ordering based on performance rankings.
@@ -3877,6 +4172,134 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         time.sleep(0.2)
 
     return False
+
+    # Unified Storage API Routes
+    @app.route('/api/unified/quality')
+    def get_unified_quality_api():
+        """API endpoint for unified quality data."""
+        try:
+            data = collector.get_unified_quality_data()
+            return jsonify(data)
+        except Exception as e:
+            return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
+
+    @app.route('/api/unified/models')
+    def get_unified_models_api():
+        """API endpoint for unified model performance data."""
+        try:
+            data = collector.get_unified_model_data()
+            return jsonify(data)
+        except Exception as e:
+            return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
+
+    @app.route('/api/unified/dashboard')
+    def get_unified_dashboard_api():
+        """API endpoint for complete unified dashboard data."""
+        try:
+            data = collector.get_unified_dashboard_data()
+            return jsonify(data)
+        except Exception as e:
+            return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
+
+    @app.route('/api/unified/stats')
+    def get_unified_stats_api():
+        """API endpoint for unified storage statistics."""
+        try:
+            data = collector.get_unified_storage_stats()
+            return jsonify(data)
+        except Exception as e:
+            return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
+
+    @app.route('/api/unified/quality', methods=['POST'])
+    def update_unified_quality_api():
+        """API endpoint to update quality score in unified storage."""
+        try:
+            data = request.get_json()
+            score = data.get('score')
+            metrics = data.get('metrics', {})
+            task_id = data.get('task_id')
+
+            if score is None:
+                return jsonify({"error": "Score is required"}), 400
+
+            if not isinstance(score, (int, float)) or not (0 <= score <= 100):
+                return jsonify({"error": "Score must be between 0 and 100"}), 400
+
+            collector.record_quality_to_unified(score, metrics, task_id)
+            return jsonify({"success": True, "message": f"Quality score {score} recorded"})
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/api/unified/model-performance', methods=['POST'])
+    def update_unified_model_performance_api():
+        """API endpoint to update model performance in unified storage."""
+        try:
+            data = request.get_json()
+            model = data.get('model')
+            score = data.get('score')
+            task_type = data.get('task_type', 'unknown')
+
+            if model is None or score is None:
+                return jsonify({"error": "Model and score are required"}), 400
+
+            if not isinstance(score, (int, float)) or not (0 <= score <= 100):
+                return jsonify({"error": "Score must be between 0 and 100"}), 400
+
+            collector.update_model_performance_unified(model, score, task_type)
+            return jsonify({"success": True, "message": f"Model performance for {model} updated"})
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/api/unified/dashboard-metrics', methods=['POST'])
+    def update_unified_dashboard_metrics_api():
+        """API endpoint to update dashboard metrics in unified storage."""
+        try:
+            data = request.get_json()
+            metrics = data.get('metrics', {})
+
+            if not metrics:
+                return jsonify({"error": "Metrics dictionary is required"}), 400
+
+            collector.update_unified_dashboard_metrics(metrics)
+            return jsonify({"success": True, "message": "Dashboard metrics updated"})
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/api/unified/migrate', methods=['POST'])
+    def trigger_migration_api():
+        """API endpoint to trigger migration from legacy storage."""
+        try:
+            if not UNIFIED_STORAGE_AVAILABLE:
+                return jsonify({"error": "Unified storage not available"}), 503
+
+            data = request.get_json()
+            force = data.get('force', False) if data else False
+
+            # Trigger migration
+            from parameter_migration import MigrationManager
+            migration_manager = MigrationManager(collector.unified_storage)
+            result = migration_manager.execute_gradual_migration(force=force)
+
+            return jsonify(result)
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/api/unified/validate')
+    def validate_unified_storage_api():
+        """API endpoint to validate unified storage data integrity."""
+        try:
+            if not UNIFIED_STORAGE_AVAILABLE:
+                return jsonify({"error": "Unified storage not available"}), 503
+
+            validation = collector.unified_storage.validate_data_integrity()
+            return jsonify(validation)
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
 
 def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True):

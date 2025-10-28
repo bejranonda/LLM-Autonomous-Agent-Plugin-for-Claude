@@ -153,9 +153,7 @@ class BackupManager:
                             backup_manifest["files_backed_up"][category][file_path] = {
                                 "backup_path": str(backup_file),
                                 "size": backup_file.stat().st_size,
-                                "modified": datetime.fromtimestamp(
-    backup_file.stat().st_mtime).isoformat(), ,
-)
+                                "modified": datetime.fromtimestamp(backup_file.stat().st_mtime).isoformat(),
                                 "hash": self._calculate_file_hash(file_path)
                             }
                         except Exception as e:
@@ -182,8 +180,8 @@ class BackupManager:
     def restore_backup(
     self,
     backup_id: str,
-    files_to_restore: Optional[List[str]] = None) -> Dict[str, Any]: ,
-)
+    files_to_restore: Optional[List[str]] = None
+) -> Dict[str, Any]:
         """
         Restore files from backup
 
