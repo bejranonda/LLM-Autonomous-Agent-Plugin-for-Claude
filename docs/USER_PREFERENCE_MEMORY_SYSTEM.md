@@ -565,4 +565,4 @@ python -m pytest tests/test_user_preference_memory.py
 
 ---
 
-*This documentation is part of the Autonomous Agent Plugin v5.2.0*
+*This documentation is part of the Autonomous Agent Plugin v5.3.3*

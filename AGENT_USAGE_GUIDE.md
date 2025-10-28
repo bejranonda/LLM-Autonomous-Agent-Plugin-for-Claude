@@ -1,7 +1,7 @@
 # Agent Usage Guide
 ## Autonomous Agent Plugin for Claude Code
 
-**Version**: 5.2.0
+**Version**: 5.3.3
 **Updated**: 2025-10-28
 **Purpose**: Guide for selecting and using specialized agents effectively
 

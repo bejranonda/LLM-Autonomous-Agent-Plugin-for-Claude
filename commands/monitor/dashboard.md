@@ -77,7 +77,7 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ```bash
 # Direct execution with background process (no delegation):
-python lib/dashboard.py --port <available_port> --background
+python lib/dashboard.py --host 127.0.0.1 --port <available_port>
 
 # Browser opens automatically (once only):
 webbrowser.open(f"http://127.0.0.1:{port}")
