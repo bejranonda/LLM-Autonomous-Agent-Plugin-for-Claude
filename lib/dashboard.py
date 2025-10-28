@@ -35,6 +35,7 @@ import subprocess
 # Import unified parameter storage system
 try:
     from unified_parameter_storage import UnifiedParameterStorage
+    from dashboard_unified_adapter import DashboardUnifiedAdapter
     from parameter_compatibility import enable_compatibility_mode
     UNIFIED_STORAGE_AVAILABLE = True
 except ImportError:
@@ -63,11 +64,20 @@ class DashboardDataCollector:
 
         # Initialize unified parameter storage if available
         if UNIFIED_STORAGE_AVAILABLE:
-            self.unified_storage = UnifiedParameterStorage()
-            self.use_unified_storage = True
-            # Enable compatibility mode for seamless transition
-            enable_compatibility_mode(auto_patch=False, monkey_patch=False)
+            try:
+                self.unified_adapter = DashboardUnifiedAdapter()
+                self.unified_storage = UnifiedParameterStorage()
+                self.use_unified_storage = True
+                # Enable compatibility mode for seamless transition
+                enable_compatibility_mode(auto_patch=False, monkey_patch=False)
+                print("✅ Dashboard initialized with unified parameter storage")
+            except Exception as e:
+                print(f"⚠️  Failed to initialize unified storage: {e}")
+                self.unified_adapter = None
+                self.unified_storage = None
+                self.use_unified_storage = False
         else:
+            self.unified_adapter = None
             self.unified_storage = None
             self.use_unified_storage = False
 
@@ -1257,7 +1267,10 @@ class DashboardDataCollector:
         # Source 1: Quality history assessments (primary source - new enhanced data)
         quality_history = self._load_json_file("quality_history.json", "quality_hist")
         for assessment in quality_history.get("quality_assessments", []):
-            model_used = assessment.get("details", {}).get("model_used", "Unknown")
+            model_used = assessment.get("details", {}).get("model_used")
+            if not model_used:
+                # Fall back to current model detection when not specified
+                model_used = self.detect_current_model()
             # Normalize model name
             normalized_model = self._normalize_model_name(model_used)
             if normalized_model:  # Only include if normalization succeeds
@@ -3650,18 +3663,20 @@ def api_debugging_performance():
         Returns:
             Quality data from unified storage
         """
-        if self.use_unified_storage and self.unified_storage:
+        if self.use_unified_storage and self.unified_adapter:
             try:
-                # Get quality score and history from unified storage
-                current_score = self.unified_storage.get_quality_score()
-                quality_history = self.unified_storage.get_quality_history(days=30)
-                quality_metrics = self.unified_storage._read_data()["parameters"]["quality"]["metrics"]
+                # Get quality metrics from unified adapter
+                quality_metrics = self.unified_adapter.get_quality_metrics()
+                timeline_data = self.unified_adapter.get_quality_timeline_data(days=30)
 
                 return {
-                    "current_score": current_score,
-                    "history": quality_history,
+                    "current_score": quality_metrics["current_score"],
+                    "history": timeline_data,
                     "metrics": quality_metrics,
-                    "source": "unified_storage"
+                    "source": "unified_adapter",
+                    "total_assessments": quality_metrics["total_assessments"],
+                    "average_score": quality_metrics["average_score"],
+                    "pass_rate": quality_metrics["pass_rate"]
                 }
             except Exception as e:
                 print(f"Error getting unified quality data: {e}", file=sys.stderr)
@@ -3678,29 +3693,34 @@ def api_debugging_performance():
         Returns:
             Model performance data from unified storage
         """
-        if self.use_unified_storage and self.unified_storage:
+        if self.use_unified_storage and self.unified_adapter:
             try:
-                dashboard_data = self.unified_storage.get_dashboard_data()
-                active_model = self.unified_storage.get_active_model()
-                model_performance = dashboard_data["models"]["performance"]
+                # Get model performance from unified adapter
+                model_performance = self.unified_adapter.get_model_performance_data()
+                active_model = model_performance["active_model"]
+                models = model_performance["models"]
 
                 # Get performance data for each model
                 model_summaries = {}
-                for model_name, perf_data in model_performance.items():
+                for model_name, perf_data in models.items():
                     scores = [s.get("score", 0) for s in perf_data.get("scores", [])]
                     if scores:
                         model_summaries[model_name] = {
-                            "average_score": sum(scores) / len(scores),
+                            "average_score": perf_data.get("average_score", 0),
                             "success_rate": perf_data.get("success_rate", 0) * 100,
                             "total_tasks": perf_data.get("total_tasks", 0),
                             "last_updated": perf_data.get("last_updated"),
-                            "recent_scores": scores[-10:]  # Last 10 scores
+                            "recent_scores": scores[-10:],  # Last 10 scores
+                            "recent_score": perf_data.get("recent_score", 0),
+                            "contribution": perf_data.get("contribution", 0)
                         }
 
                 return {
                     "active_model": active_model,
                     "model_performance": model_summaries,
-                    "source": "unified_storage"
+                    "total_models": model_performance["total_models"],
+                    "usage_stats": model_performance["usage_stats"],
+                    "source": "unified_adapter"
                 }
             except Exception as e:
                 print(f"Error getting unified model data: {e}", file=sys.stderr)
@@ -3954,7 +3974,7 @@ def api_recent_performance_records():
 
             for assessment in quality_data.get('quality_assessments', []):
                 # Extract model from details if available
-                model = assessment.get('details', {}).get('model_used', 'Claude Sonnet 4.5')
+                model = assessment.get('details', {}).get('model_used') or data_collector.detect_current_model()
 
                 # Standardize record format
                 record = {
@@ -3985,7 +4005,7 @@ def api_recent_performance_records():
                 # Convert to dashboard format
                 dashboard_record = {
                     'timestamp': record.get('timestamp'),
-                    'model': record.get('model', record.get('model_used', 'Claude Sonnet 4.5')),
+                    'model': record.get('model') or record.get('model_used') or data_collector.detect_current_model(),
                     'assessment_id': record.get('assessment_id'),
                     'task_type': record.get('task_type', 'unknown'),
                     'overall_score': record.get('overall_score', 0),
