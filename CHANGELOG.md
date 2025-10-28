@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.2] - 2025-10-28
+
+### 🛠️ **Patch Release: Dashboard Browser Auto-Opening Enhancement**
+
+This patch release improves the dashboard user experience by adding automatic browser opening functionality when the dashboard starts.
+
+#### **🌐 Enhanced Dashboard Accessibility**
+
+**Improvement Details**
+- **Automatic Browser Opening**: Added functionality to automatically open the default web browser when the dashboard server starts
+- **Improved User Experience**: Users no longer need to manually navigate to the dashboard URL
+- **Graceful Error Handling**: Includes proper error handling with fallback instructions if automatic browser opening fails
+
+**Technical Implementation**
+- **Browser Integration**: Utilizes Python's `webbrowser` module for cross-platform browser opening
+- **Error Resilience**: Catches and handles exceptions gracefully with informative error messages
+- **Fallback Messaging**: Provides clear manual navigation instructions when auto-opening fails
+
+**Code Changes**
+```python
+# In lib/dashboard.py run_dashboard function
+try:
+    webbrowser.open(server_url)
+    print(f"Browser opened to {server_url}")
+except Exception as e:
+    print(f"Could not open browser automatically: {e}")
+    print(f"Please manually navigate to: {server_url}")
+```
+
+**User Impact**
+- **Smoother Onboarding**: New users get immediate access to the dashboard interface
+- **Reduced Friction**: Eliminates the manual step of copying and pasting URLs
+- **Better Accessibility**: Improves accessibility for users less familiar with web interfaces
+
+---
+
 ## [5.3.1] - 2025-10-28
 
 ### 🛠️ **Patch Release: Dashboard Browser Fix & System Integration**
