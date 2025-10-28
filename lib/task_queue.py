@@ -1,8 +1,12 @@
-#!/usr/bin/env python3,"""
+#!/usr/bin/env python3
+"""
 Task Queue System for Autonomous Claude Agent Plugin
 
 Manages task prioritization and execution tracking using JSON files.
 Supports adding tasks, retrieving next task, updating status, and monitoring progress.
+
+Enhanced with slash command integration and sequential execution capabilities.
+Version: 2.0.0
 """
 
 import json

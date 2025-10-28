@@ -4040,19 +4040,14 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
         time.sleep(1.5)  # Give server time to start
         if validate_server_startup(f"{server_url}/api/overview"):
             print(f"Dashboard is running at: {server_url}")
-            if auto_open_browser:
-                print(f"Opening browser automatically...")
-                try:
-                    webbrowser.open(server_url)
-                except Exception as e:
-                    print(f"Could not open browser automatically: {e}")
-                    print(f"   Please manually open: {server_url}")
+            # Browser opening handled by background thread below
         else:
             print(f"Server validation failed. Please check the logs.")
             print(f"   Try accessing manually: {server_url}")
 
-    # Start browser opening in background thread
+    # Start browser opening in background thread (single browser launch)
     if auto_open_browser:
+        print(f"Opening browser automatically...")
         browser_thread = threading.Thread(target=open_browser_delayed, daemon=True)
         browser_thread.start()
 

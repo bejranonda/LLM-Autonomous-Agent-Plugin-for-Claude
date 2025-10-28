@@ -1,0 +1,301 @@
+{
+  "version": "1.0.0",
+  "created_at": "2025-10-28T21:59:33.855630",
+  "profiles": [
+    {
+      "timestamp": 1761685169.374786,
+      "system": {
+        "platform": "Windows",
+        "platform_release": "11",
+        "platform_version": "10.0.22631",
+        "architecture": "AMD64",
+        "processor": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+        "hostname": "X13",
+        "python_version": "3.13.7",
+        "python_implementation": "CPython",
+        "os_type": "nt"
+      },
+      "hardware": {
+        "cpu": {
+          "cores": 8,
+          "physical_cores": 4,
+          "frequency": {
+            "current": 1803.0,
+            "min": 0.0,
+            "max": 2304.0
+          },
+          "usage_percent": 4.5
+        },
+        "memory": {
+          "total_gb": 15.7,
+          "available_gb": 5.6,
+          "usage_percent": 64.3,
+          "used_gb": 10.1
+        },
+        "disk": {
+          "total_gb": 243.55,
+          "used_gb": 80.77,
+          "free_gb": 162.78,
+          "usage_percent": 33.16
+        },
+        "boot_time": "2025-10-26T22:30:58.773550"
+      },
+      "development": {
+        "installed_tools": {
+          "git": "git version 2.51.0.windows.1",
+          "node": "v22.19.0",
+          "python": "Python 3.13.7",
+          "pip": "pip 25.2 from C:\\Python313\\Lib\\site-packages\\pip (python 3.13)",
+          "docker": "Docker version 28.5.1, build e180ab8"
+        },
+        "preferred_editors": [
+          "code",
+          "nano",
+          "vim"
+        ],
+        "shell": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+        "path_directories": [
+          "C:\\Users\\Nutzer\\bin",
+          "C:\\Program Files\\Git\\mingw64\\bin",
+          "C:\\Program Files\\Git\\usr\\local\\bin",
+          "C:\\Program Files\\Git\\usr\\bin",
+          "C:\\Program Files\\Git\\usr\\bin",
+          "C:\\Program Files\\Git\\mingw64\\bin",
+          "C:\\Program Files\\Git\\usr\\bin",
+          "C:\\Users\\Nutzer\\bin",
+          "C:\\Python313\\Scripts",
+          "C:\\Python313"
+        ],
+        "env_variables": {
+          "HOME": "C:\\Users\\Nutzer",
+          "USERNAME": "Nutzer",
+          "USERPROFILE": "C:\\Users\\Nutzer",
+          "PATH": "C:\\Users\\Nutzer\\bin;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\local\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\Nutzer\\bin;C:\\Python313\\Scripts;C:\\Python313;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0;C:\\Windows\\System32\\OpenSSH;C:\\Program Files\\PuTTY;C:\\Program Files (x86)\\Common Files\\Adobe\\AGL;C:\\Program Files (x86)\\IVI Foundation\\VISA\\WinNT\\Bin;C:\\Program Files\\IVI Foundation\\VISA\\Win64\\Bin;C:\\Program Files (x86)\\IVI Foundation\\VISA\\WinNT\\Bin;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\Scripts;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages;C:\\Program Files\\dotnet;C:\\ffmpeg\\bin;C:\\Program Files\\GTK2-Runtime Win64\\bin;C:\\Program Files\\MiKTeX\\miktex\\bin\\x64;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\GitHub CLI;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Python311\\Scripts;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Python311;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Launcher;C:\\Users\\Nutzer\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Nutzer\\AppData\\Local\\Muse Hub\\lib;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\Nutzer\\AppData\\Roaming\\npm;C:\\Users\\Nutzer\\bin;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Zed\\bin;C:\\Program Files\\Git\\usr\\bin\\vendor_perl;C:\\Program Files\\Git\\usr\\bin\\core_perl",
+          "SHELL": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+          "TERM": "xterm-256color",
+          "LANG": "de_DE.UTF-8",
+          "GIT_SSH": "C:\\Program Files\\PuTTY\\plink.exe"
+        }
+      },
+      "preferences": {
+        "timezone": "Mitteleuropäische Zeit",
+        "language": "de_DE",
+        "git_config": {
+          "user.name": "bwerapol",
+          "user.email": "bwerapol@gmail.com",
+          "difftool.sourcetree.cmd": "'' ",
+          "mergetool.sourcetree.cmd": "'' ",
+          "mergetool.sourcetree.trustexitcode": "true",
+          "credential.helperselector.selected": "manager"
+        },
+        "preferred_shell": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+        "terminal_preference": "xterm"
+      },
+      "capabilities": {
+        "parallel_processing": true,
+        "memory_adequate": true,
+        "disk_space_adequate": true,
+        "virtualization_available": false,
+        "docker_available": true,
+        "git_available": true
+      }
+    }
+  ],
+  "baseline_profile": {
+    "timestamp": 1761685169.374786,
+    "system": {
+      "platform": "Windows",
+      "platform_release": "11",
+      "platform_version": "10.0.22631",
+      "architecture": "AMD64",
+      "processor": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+      "hostname": "X13",
+      "python_version": "3.13.7",
+      "python_implementation": "CPython",
+      "os_type": "nt"
+    },
+    "hardware": {
+      "cpu": {
+        "cores": 8,
+        "physical_cores": 4,
+        "frequency": {
+          "current": 1803.0,
+          "min": 0.0,
+          "max": 2304.0
+        },
+        "usage_percent": 4.5
+      },
+      "memory": {
+        "total_gb": 15.7,
+        "available_gb": 5.6,
+        "usage_percent": 64.3,
+        "used_gb": 10.1
+      },
+      "disk": {
+        "total_gb": 243.55,
+        "used_gb": 80.77,
+        "free_gb": 162.78,
+        "usage_percent": 33.16
+      },
+      "boot_time": "2025-10-26T22:30:58.773550"
+    },
+    "development": {
+      "installed_tools": {
+        "git": "git version 2.51.0.windows.1",
+        "node": "v22.19.0",
+        "python": "Python 3.13.7",
+        "pip": "pip 25.2 from C:\\Python313\\Lib\\site-packages\\pip (python 3.13)",
+        "docker": "Docker version 28.5.1, build e180ab8"
+      },
+      "preferred_editors": [
+        "code",
+        "nano",
+        "vim"
+      ],
+      "shell": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+      "path_directories": [
+        "C:\\Users\\Nutzer\\bin",
+        "C:\\Program Files\\Git\\mingw64\\bin",
+        "C:\\Program Files\\Git\\usr\\local\\bin",
+        "C:\\Program Files\\Git\\usr\\bin",
+        "C:\\Program Files\\Git\\usr\\bin",
+        "C:\\Program Files\\Git\\mingw64\\bin",
+        "C:\\Program Files\\Git\\usr\\bin",
+        "C:\\Users\\Nutzer\\bin",
+        "C:\\Python313\\Scripts",
+        "C:\\Python313"
+      ],
+      "env_variables": {
+        "HOME": "C:\\Users\\Nutzer",
+        "USERNAME": "Nutzer",
+        "USERPROFILE": "C:\\Users\\Nutzer",
+        "PATH": "C:\\Users\\Nutzer\\bin;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\local\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\Nutzer\\bin;C:\\Python313\\Scripts;C:\\Python313;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0;C:\\Windows\\System32\\OpenSSH;C:\\Program Files\\PuTTY;C:\\Program Files (x86)\\Common Files\\Adobe\\AGL;C:\\Program Files (x86)\\IVI Foundation\\VISA\\WinNT\\Bin;C:\\Program Files\\IVI Foundation\\VISA\\Win64\\Bin;C:\\Program Files (x86)\\IVI Foundation\\VISA\\WinNT\\Bin;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\Scripts;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages;C:\\Program Files\\dotnet;C:\\ffmpeg\\bin;C:\\Program Files\\GTK2-Runtime Win64\\bin;C:\\Program Files\\MiKTeX\\miktex\\bin\\x64;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\GitHub CLI;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Python311\\Scripts;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Python311;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Launcher;C:\\Users\\Nutzer\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Nutzer\\AppData\\Local\\Muse Hub\\lib;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\Nutzer\\AppData\\Roaming\\npm;C:\\Users\\Nutzer\\bin;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Zed\\bin;C:\\Program Files\\Git\\usr\\bin\\vendor_perl;C:\\Program Files\\Git\\usr\\bin\\core_perl",
+        "SHELL": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+        "TERM": "xterm-256color",
+        "LANG": "de_DE.UTF-8",
+        "GIT_SSH": "C:\\Program Files\\PuTTY\\plink.exe"
+      }
+    },
+    "preferences": {
+      "timezone": "Mitteleuropäische Zeit",
+      "language": "de_DE",
+      "git_config": {
+        "user.name": "bwerapol",
+        "user.email": "bwerapol@gmail.com",
+        "difftool.sourcetree.cmd": "'' ",
+        "mergetool.sourcetree.cmd": "'' ",
+        "mergetool.sourcetree.trustexitcode": "true",
+        "credential.helperselector.selected": "manager"
+      },
+      "preferred_shell": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+      "terminal_preference": "xterm"
+    },
+    "capabilities": {
+      "parallel_processing": true,
+      "memory_adequate": true,
+      "disk_space_adequate": true,
+      "virtualization_available": false,
+      "docker_available": true,
+      "git_available": true
+    }
+  },
+  "last_profile": {
+    "timestamp": 1761685169.374786,
+    "system": {
+      "platform": "Windows",
+      "platform_release": "11",
+      "platform_version": "10.0.22631",
+      "architecture": "AMD64",
+      "processor": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+      "hostname": "X13",
+      "python_version": "3.13.7",
+      "python_implementation": "CPython",
+      "os_type": "nt"
+    },
+    "hardware": {
+      "cpu": {
+        "cores": 8,
+        "physical_cores": 4,
+        "frequency": {
+          "current": 1803.0,
+          "min": 0.0,
+          "max": 2304.0
+        },
+        "usage_percent": 4.5
+      },
+      "memory": {
+        "total_gb": 15.7,
+        "available_gb": 5.6,
+        "usage_percent": 64.3,
+        "used_gb": 10.1
+      },
+      "disk": {
+        "total_gb": 243.55,
+        "used_gb": 80.77,
+        "free_gb": 162.78,
+        "usage_percent": 33.16
+      },
+      "boot_time": "2025-10-26T22:30:58.773550"
+    },
+    "development": {
+      "installed_tools": {
+        "git": "git version 2.51.0.windows.1",
+        "node": "v22.19.0",
+        "python": "Python 3.13.7",
+        "pip": "pip 25.2 from C:\\Python313\\Lib\\site-packages\\pip (python 3.13)",
+        "docker": "Docker version 28.5.1, build e180ab8"
+      },
+      "preferred_editors": [
+        "code",
+        "nano",
+        "vim"
+      ],
+      "shell": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+      "path_directories": [
+        "C:\\Users\\Nutzer\\bin",
+        "C:\\Program Files\\Git\\mingw64\\bin",
+        "C:\\Program Files\\Git\\usr\\local\\bin",
+        "C:\\Program Files\\Git\\usr\\bin",
+        "C:\\Program Files\\Git\\usr\\bin",
+        "C:\\Program Files\\Git\\mingw64\\bin",
+        "C:\\Program Files\\Git\\usr\\bin",
+        "C:\\Users\\Nutzer\\bin",
+        "C:\\Python313\\Scripts",
+        "C:\\Python313"
+      ],
+      "env_variables": {
+        "HOME": "C:\\Users\\Nutzer",
+        "USERNAME": "Nutzer",
+        "USERPROFILE": "C:\\Users\\Nutzer",
+        "PATH": "C:\\Users\\Nutzer\\bin;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\local\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\Nutzer\\bin;C:\\Python313\\Scripts;C:\\Python313;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0;C:\\Windows\\System32\\OpenSSH;C:\\Program Files\\PuTTY;C:\\Program Files (x86)\\Common Files\\Adobe\\AGL;C:\\Program Files (x86)\\IVI Foundation\\VISA\\WinNT\\Bin;C:\\Program Files\\IVI Foundation\\VISA\\Win64\\Bin;C:\\Program Files (x86)\\IVI Foundation\\VISA\\WinNT\\Bin;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\Scripts;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312;C:\\Users\\Nutzer\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python312\\site-packages;C:\\Program Files\\dotnet;C:\\ffmpeg\\bin;C:\\Program Files\\GTK2-Runtime Win64\\bin;C:\\Program Files\\MiKTeX\\miktex\\bin\\x64;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\GitHub CLI;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Python311\\Scripts;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Python311;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Python\\Launcher;C:\\Users\\Nutzer\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Nutzer\\AppData\\Local\\Muse Hub\\lib;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\Nutzer\\AppData\\Roaming\\npm;C:\\Users\\Nutzer\\bin;C:\\Users\\Nutzer\\AppData\\Local\\Programs\\Zed\\bin;C:\\Program Files\\Git\\usr\\bin\\vendor_perl;C:\\Program Files\\Git\\usr\\bin\\core_perl",
+        "SHELL": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+        "TERM": "xterm-256color",
+        "LANG": "de_DE.UTF-8",
+        "GIT_SSH": "C:\\Program Files\\PuTTY\\plink.exe"
+      }
+    },
+    "preferences": {
+      "timezone": "Mitteleuropäische Zeit",
+      "language": "de_DE",
+      "git_config": {
+        "user.name": "bwerapol",
+        "user.email": "bwerapol@gmail.com",
+        "difftool.sourcetree.cmd": "'' ",
+        "mergetool.sourcetree.cmd": "'' ",
+        "mergetool.sourcetree.trustexitcode": "true",
+        "credential.helperselector.selected": "manager"
+      },
+      "preferred_shell": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+      "terminal_preference": "xterm"
+    },
+    "capabilities": {
+      "parallel_processing": true,
+      "memory_adequate": true,
+      "disk_space_adequate": true,
+      "virtualization_available": false,
+      "docker_available": true,
+      "git_available": true
+    }
+  },
+  "profile_count": 1
+}

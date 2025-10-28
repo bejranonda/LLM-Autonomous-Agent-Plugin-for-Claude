@@ -1,7 +1,6 @@
 ---
 name: monitor:dashboard
 description: Launch real-time monitoring dashboard for autonomous agent system metrics and learning analytics
-delegates-to: orchestrator
 model: inherit
 tools: Read,Write,Edit,Bash,Grep,Glob
 ---
@@ -64,27 +63,29 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ## Command Behavior and Implementation
 
-### Silent Execution (No Reporting)
+### Direct Execution (No Agent Delegation)
 
-**CRITICAL**: This command executes silently with no console output. The implementation:
+**CRITICAL**: This command executes the dashboard directly without agent delegation to prevent duplicate launches.
 
 1. **Direct Python Call**: `python lib/dashboard.py` (no agents involved)
 2. **Background Process**: Runs Flask server completely in background
-3. **Auto Browser**: Opens browser automatically
+3. **Auto Browser**: Opens browser automatically (once only)
 4. **Silent Operation**: No console reporting or status messages
 5. **Web Interface**: All metrics available through dashboard only
 
 ### Implementation
 
 ```bash
-# Silent execution (no console output):
-python lib/dashboard.py --patterns-dir .claude-patterns
+# Direct execution with background process (no delegation):
+python lib/dashboard.py --port <available_port> --background
 
-# Browser opens automatically:
+# Browser opens automatically (once only):
 webbrowser.open(f"http://127.0.0.1:{port}")
 
 # No console reporting - dashboard handles all user feedback
 ```
+
+**Key Fix**: Removed `delegates-to: orchestrator` to prevent duplicate browser launches and agent delegation overhead.
 
 ### Expected Command Output
 
@@ -461,8 +462,9 @@ cd /path/to/project
 
 ---
 
-**Version**: 1.0.0
-**Integration**: Uses dashboard.py directly from lib/ directory (no launcher wrapper)
+**Version**: 1.0.1
+**Integration**: Uses dashboard.py directly from lib/ directory (no delegation)
 **Dependencies**: Flask, Flask-CORS, Python 3.8+
 **Platform**: Cross-platform (Windows, Linux, Mac)
 **Learning**: Integrates with learning-engine for pattern analysis
+**Fix**: Removed agent delegation to prevent duplicate browser launches (v1.0.1)

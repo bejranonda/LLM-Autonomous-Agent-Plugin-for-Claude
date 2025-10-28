@@ -298,6 +298,7 @@ async function select_skills_intelligently(task_context) {
 - Infrastructure: `/monitor:dashboard` (start dashboard service)
 - Data Display: `/learn:analytics`, `/learn:performance` (show reports)
 - Utilities: `/workspace:organize`, `/workspace:reports` (file organization)
+- Queue Management: `/queue:*` commands (task queue operations)
 - Simple Tools: `/monitor:recommend`, `/learn:init`, `/validate:plugin` (basic operations)
 
 **Commands that use FULL AUTONOMOUS ANALYSIS** (require intelligence):
@@ -364,6 +365,35 @@ def detect_special_command(user_input):
             'command': 'pattern_management',
             'script': 'lib/pattern_management.py',
             'args': parse_pattern_management_args(user_input)
+        }
+
+    # Queue management commands - direct Python execution (task operations)
+    if cmd.startswith('/queue:'):
+        queue_action = cmd.split(':')[1].split()[0]
+        return {
+            'type': 'direct_execution',
+            'command': f'queue_{queue_action}',
+            'script': 'lib/enhanced_task_queue.py',
+            'args': parse_queue_args(user_input)
+        }
+
+    # User preference commands - direct Python execution (preference management)
+    if cmd.startswith('/preferences:') or cmd.startswith('/prefs:'):
+        pref_action = cmd.split(':')[1].split()[0]
+        return {
+            'type': 'direct_execution',
+            'command': f'preference_{pref_action}',
+            'script': 'lib/user_preference_memory.py',
+            'args': parse_preference_args(user_input)
+        }
+
+    # Intelligent suggestion commands - direct Python execution (suggestion system)
+    if cmd.startswith('/suggest:') or cmd.startswith('/recommend:'):
+        return {
+            'type': 'direct_execution',
+            'command': 'generate_suggestions',
+            'script': 'lib/intelligent_suggestion_engine.py',
+            'args': parse_suggestion_args(user_input)
         }
 
     # Recommendation system - direct Python execution (simple recommendations)
@@ -630,6 +660,218 @@ def parse_plugin_validation_args(user_input):
 
     return args
 
+def parse_queue_args(user_input):
+    """Parse queue command arguments."""
+    args = {
+        'action': None,
+        'task_id': None,
+        'name': None,
+        'description': None,
+        'command': None,
+        'priority': 'medium',
+        'status': None,
+        'limit': 20,
+        'older_than': 24,
+        'stop_on_error': False,
+        'background': False,
+        'dry_run': False,
+        'dir': '.claude-patterns'
+    }
+
+    cmd = user_input.strip()
+    parts = cmd.split()
+
+    if len(parts) < 2:
+        return args
+
+    # Extract action from command
+    action_part = parts[1] if ':' in parts[0] else parts[0]
+    args['action'] = action_part
+
+    # Parse specific arguments based on action
+    if '--task-id' in cmd:
+        idx = cmd.index('--task-id')
+        if idx + 1 < len(cmd.split()):
+            args['task_id'] = cmd.split()[idx + 1]
+
+    if '--name' in cmd:
+        idx = cmd.index('--name')
+        remaining = ' '.join(cmd.split()[idx + 1:])
+        if '--description' in remaining:
+            args['name'] = remaining.split('--description')[0].strip()
+        else:
+            args['name'] = remaining
+
+    if '--description' in cmd:
+        idx = cmd.index('--description')
+        remaining = ' '.join(cmd.split()[idx + 1:])
+        if '--command' in remaining:
+            args['description'] = remaining.split('--command')[0].strip()
+        else:
+            args['description'] = remaining
+
+    if '--command' in cmd:
+        idx = cmd.index('--command')
+        remaining = ' '.join(cmd.split()[idx + 1:])
+        if '--priority' in remaining:
+            args['command'] = remaining.split('--priority')[0].strip()
+        else:
+            args['command'] = remaining
+
+    if '--priority' in cmd:
+        idx = cmd.index('--priority')
+        if idx + 1 < len(cmd.split()):
+            priority = cmd.split()[idx + 1]
+            args['priority'] = priority
+
+    if '--status' in cmd:
+        idx = cmd.index('--status')
+        if idx + 1 < len(cmd.split()):
+            args['status'] = cmd.split()[idx + 1]
+
+    if '--limit' in cmd:
+        idx = cmd.index('--limit')
+        if idx + 1 < len(cmd.split()):
+            try:
+                args['limit'] = int(cmd.split()[idx + 1])
+            except ValueError:
+                pass
+
+    if '--older-than' in cmd:
+        idx = cmd.index('--older-than')
+        if idx + 1 < len(cmd.split()):
+            try:
+                args['older_than'] = int(cmd.split()[idx + 1])
+            except ValueError:
+                pass
+
+    if '--stop-on-error' in cmd:
+        args['stop_on_error'] = True
+
+    if '--background' in cmd:
+        args['background'] = True
+
+    if '--dry-run' in cmd:
+        args['dry_run'] = True
+
+    if '--dir' in cmd:
+        idx = cmd.index('--dir')
+        if idx + 1 < len(cmd.split()):
+            args['dir'] = cmd.split()[idx + 1]
+
+    return args
+
+def parse_preference_args(user_input):
+    """Parse preference command arguments."""
+    args = {
+        'action': None,
+        'category': None,
+        'key': None,
+        'value': None,
+        'export_path': None,
+        'import_path': None,
+        'strategy': 'merge',
+        'include_sensitive': False,
+        'dir': '.claude-preferences'
+    }
+
+    cmd = user_input.strip()
+    parts = cmd.split()
+
+    if len(parts) < 2:
+        return args
+
+    # Extract action from command
+    if ':' in parts[0]:
+        action_part = parts[0].split(':')[1]
+    else:
+        action_part = parts[1]
+    args['action'] = action_part
+
+    if '--category' in cmd:
+        idx = cmd.index('--category')
+        if idx + 1 < len(cmd.split()):
+            args['category'] = cmd.split()[idx + 1]
+
+    if '--key' in cmd:
+        idx = cmd.index('--key')
+        if idx + 1 < len(cmd.split()):
+            args['key'] = cmd.split()[idx + 1]
+
+    if '--value' in cmd:
+        idx = cmd.index('--value')
+        remaining = ' '.join(cmd.split()[idx + 1:])
+        args['value'] = remaining
+
+    if '--export' in cmd:
+        idx = cmd.index('--export')
+        if idx + 1 < len(cmd.split()):
+            args['export_path'] = cmd.split()[idx + 1]
+
+    if '--import' in cmd:
+        idx = cmd.index('--import')
+        if idx + 1 < len(cmd.split()):
+            args['import_path'] = cmd.split()[idx + 1]
+
+    if '--strategy' in cmd:
+        idx = cmd.index('--strategy')
+        if idx + 1 < len(cmd.split()):
+            args['strategy'] = cmd.split()[idx + 1]
+
+    if '--include-sensitive' in cmd:
+        args['include_sensitive'] = True
+
+    if '--dir' in cmd:
+        idx = cmd.index('--dir')
+        if idx + 1 < len(cmd.split()):
+            args['dir'] = cmd.split()[idx + 1]
+
+    return args
+
+def parse_suggestion_args(user_input):
+    """Parse suggestion command arguments."""
+    args = {
+        'action': 'generate',
+        'max_suggestions': 5,
+        'quality_score': None,
+        'project_type': None,
+        'include_learning': True,
+        'dir': '.claude-preferences'
+    }
+
+    cmd = user_input.strip()
+
+    if '--max' in cmd:
+        idx = cmd.index('--max')
+        if idx + 1 < len(cmd.split()):
+            try:
+                args['max_suggestions'] = int(cmd.split()[idx + 1])
+            except ValueError:
+                pass
+
+    if '--quality' in cmd:
+        idx = cmd.index('--quality')
+        if idx + 1 < len(cmd.split()):
+            try:
+                args['quality_score'] = float(cmd.split()[idx + 1])
+            except ValueError:
+                pass
+
+    if '--project-type' in cmd:
+        idx = cmd.index('--project-type')
+        if idx + 1 < len(cmd.split()):
+            args['project_type'] = cmd.split()[idx + 1]
+
+    if '--no-learning' in cmd:
+        args['include_learning'] = False
+
+    if '--dir' in cmd:
+        idx = cmd.index('--dir')
+        if idx + 1 < len(cmd.split()):
+            args['dir'] = cmd.split()[idx + 1]
+
+    return args
+
 
 # EXECUTION PRIORITY CHECK
 def handle_special_command(command_info):
@@ -812,7 +1054,129 @@ def handle_special_command(command_info):
                 cmd.extend(['--format', args['output_format']])
             return execute_python_command(cmd, "Plugin Validation")
 
-        
+        elif command_info['command'].startswith('queue_'):
+            # Build Python command for queue operations
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+
+            # Base directory
+            if args['dir'] != '.claude-patterns':
+                cmd.extend(['--dir', args['dir']])
+
+            # Queue action
+            action = args['action']
+            if action == 'add':
+                cmd.append('add')
+                if args['name']:
+                    cmd.extend(['--name', args['name']])
+                if args['description']:
+                    cmd.extend(['--description', args['description']])
+                if args['command']:
+                    cmd.extend(['--command', args['command']])
+                if args['priority'] != 'medium':
+                    cmd.extend(['--priority', args['priority']])
+            elif action == 'slash':
+                cmd.append('slash')
+                if args['command']:
+                    cmd.extend(['--command', args['command']])
+                if args['priority'] != 'medium':
+                    cmd.extend(['--priority', args['priority']])
+            elif action == 'execute':
+                cmd.append('execute')
+                if args['stop_on_error']:
+                    cmd.append('--stop-on-error')
+                if args['background']:
+                    cmd.append('--background')
+            elif action == 'status':
+                cmd.append('status')
+            elif action == 'list':
+                cmd.append('list')
+                if args['status']:
+                    cmd.extend(['--status', args['status']])
+                if args['limit'] != 20:
+                    cmd.extend(['--limit', str(args['limit'])])
+            elif action == 'clear':
+                cmd.append('clear')
+                if args['older_than'] != 24:
+                    cmd.extend(['--older-than', str(args['older_than'])])
+                if args['dry_run']:
+                    cmd.append('--dry-run')
+            elif action == 'retry':
+                cmd.append('retry')
+                if args['task_id']:
+                    cmd.extend(['--task-id', args['task_id']])
+                elif args['status']:
+                    cmd.extend(['--status', args['status']])
+                    if args['priority']:
+                        cmd.extend(['--priority', args['priority']])
+
+            return execute_python_command(cmd, f"Queue {action}")
+
+        elif command_info['command'].startswith('preference_'):
+            # Build Python command for preference operations
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+
+            # Base directory
+            if args['dir'] != '.claude-preferences':
+                cmd.extend(['--dir', args['dir']])
+
+            # Preference action
+            action = args['action']
+            if action == 'set':
+                cmd.append('set')
+                if args['category']:
+                    cmd.extend(['--category', args['category']])
+                if args['key']:
+                    cmd.extend(['--key', args['key']])
+                if args['value']:
+                    cmd.extend(['--value', args['value']])
+            elif action == 'get':
+                cmd.append('get')
+                if args['category']:
+                    cmd.extend(['--category', args['category']])
+                if args['key']:
+                    cmd.extend(['--key', args['key']])
+            elif action == 'show':
+                cmd.append('show')
+            elif action == 'profile':
+                cmd.append('profile')
+            elif action == 'export':
+                cmd.append('export')
+                if args['export_path']:
+                    cmd.extend(['--path', args['export_path']])
+                if args['include_sensitive']:
+                    cmd.append('--include-sensitive')
+            elif action == 'import':
+                cmd.append('import')
+                if args['import_path']:
+                    cmd.extend(['--path', args['import_path']])
+                if args['strategy'] != 'merge':
+                    cmd.extend(['--strategy', args['strategy']])
+
+            return execute_python_command(cmd, f"Preference {action}")
+
+        elif command_info['command'] == 'generate_suggestions':
+            # Build Python command for suggestion generation
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+
+            # Base directory
+            if args['dir'] != '.claude-preferences':
+                cmd.extend(['--dir', args['dir']])
+
+            cmd.append('generate')
+            if args['max_suggestions'] != 5:
+                cmd.extend(['--max', str(args['max_suggestions'])])
+            if args['quality_score'] is not None:
+                cmd.extend(['--quality', str(args['quality_score'])])
+            if args['project_type']:
+                cmd.extend(['--project-type', args['project_type']])
+            if not args['include_learning']:
+                cmd.append('--no-learning')
+
+            return execute_python_command(cmd, "Generate Suggestions")
+
     return False
 
 def execute_python_command(cmd, command_name):
