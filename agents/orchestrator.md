@@ -645,32 +645,21 @@ def handle_special_command(command_info):
             import sys
 
             try:
-                print(f"🚀 Starting Autonomous Agent Dashboard...")
-                print(f"   Command: {' '.join(cmd)}")
-
                 # Run in background to not block
                 process = subprocess.Popen(cmd,
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.STDOUT,
-                                         universal_newlines=True,
-                                         bufsize=1)
+                                         stdout=subprocess.DEVNULL,
+                                         stderr=subprocess.DEVNULL)
 
-                # Monitor startup
+                # Brief wait to ensure startup
                 import time
-                time.sleep(2)
+                time.sleep(1)
 
                 if process.poll() is None:
-                    print(f"✅ Dashboard starting up...")
-                    print(f"   Access it at: http://{args['host']}:{args['port']}")
-                    print(f"   Press Ctrl+C in the dashboard terminal to stop")
                     return True
                 else:
-                    print(f"❌ Dashboard failed to start")
                     return False
 
-            except Exception as e:
-                print(f"❌ Error starting dashboard: {e}")
-                print(f"   Try running manually: python lib/dashboard.py")
+            except Exception:
                 return False
 
     elif command_info['command'] == 'learning_analytics':

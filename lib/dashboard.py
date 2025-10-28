@@ -29,6 +29,7 @@ from collections import defaultdict
 import statistics
 import random
 import socket
+import subprocess
 
 
 app = Flask(__name__)
@@ -120,6 +121,80 @@ class DashboardDataCollector:
                 }
         
         return model_data if model_data else None
+
+    def _get_git_activity_history(self, limit: int = 50) -> List[Dict[str, Any]]:
+        """Load recent git commit history for activities not captured in pattern system."""
+        git_activities = []
+
+        try:
+            # Get recent git commits
+            result = subprocess.run([
+                "git", "log", f"--max-count={limit}",
+                "--pretty=format:%H|%ad|%s",
+                "--date=iso",
+                "--no-merges"
+            ], capture_output=True, text=True, check=True, cwd=self.patterns_dir.parent)
+
+            for line in result.stdout.strip().split('\n'):
+                if line:
+                    parts = line.split('|')
+                    if len(parts) >= 3:
+                        commit_hash = parts[0]
+                        commit_date = parts[1]
+                        commit_message = parts[2]
+
+                        # Classify task type from commit message
+                        task_type = self._classify_commit_type(commit_message)
+
+                        git_activities.append({
+                            "timestamp": commit_date,
+                            "task_type": task_type,
+                            "description": commit_message,
+                            "quality_score": None,  # Git activities don't have scores initially
+                            "success": None,  # Success determined by status codes
+                            "skills_used": [],
+                            "duration": None,
+                            "auto_generated": False,
+                            "assessment_id": f"git-{commit_hash[:8]}",
+                            "source": "git_history",
+                            "commit_hash": commit_hash
+                        })
+
+        except subprocess.CalledProcessError:
+            # Git not available or error, return empty list
+            pass
+
+        return git_activities
+
+    def _classify_commit_type(self, message: str) -> str:
+        """Classify task type from git commit message."""
+        msg_lower = message.lower()
+
+        # Check commit message prefixes
+        if msg_lower.startswith('feat:') or msg_lower.startswith('feature:'):
+            return "feature-implementation"
+        elif msg_lower.startswith('fix:') or msg_lower.startswith('bugfix:'):
+            return "bug-fix"
+        elif msg_lower.startswith('refactor:') or msg_lower.startswith('refactoring:'):
+            return "refactoring"
+        elif msg_lower.startswith('docs:') or msg_lower.startswith('documentation:'):
+            return "documentation"
+        elif msg_lower.startswith('test:') or msg_lower.startswith('testing:'):
+            return "testing"
+        elif msg_lower.startswith('perf:') or msg_lower.startswith('performance:'):
+            return "performance-optimization"
+        elif msg_lower.startswith('release:') or msg_lower.startswith('version:'):
+            return "release-management"
+        elif msg_lower.startswith('bump:'):
+            return "version-bump"
+        elif 'quality' in msg_lower:
+            return "quality-improvement"
+        elif 'dashboard' in msg_lower:
+            return "dashboard-improvement"
+        elif 'git' in msg_lower or 'merge' in msg_lower:
+            return "git-operation"
+        else:
+            return "general-maintenance"
 
 
 
@@ -500,7 +575,8 @@ class DashboardDataCollector:
         }
 
     def get_recent_activity(self, limit: int = 20) -> Dict[str, Any]:
-        """Get recent task activity from all sources (quality_history, performance_records, patterns)."""
+        """Get recent task activity from all sources (quality_history, performance_records, patterns, git history).
+        Shows ALL tasks regardless of score for complete history tracking."""
         all_records = []
 
         # 1. Load quality history (auto-recorded tasks and assessments)
@@ -509,24 +585,32 @@ class DashboardDataCollector:
             all_records.append({
                 "timestamp": assessment.get("timestamp", ""),
                 "task_type": assessment.get("task_type", "unknown"),
+                "description": assessment.get("task_description", assessment.get("details", {}).get("task_description", assessment.get("task_type", "Unknown Task"))),
                 "quality_score": assessment.get("overall_score", 0),
                 "success": assessment.get("pass", False),
                 "skills_used": assessment.get("skills_used", []),
                 "duration": assessment.get("details", {}).get("duration_seconds", 0),
-                "auto_generated": assessment.get("auto_generated", False)
+                "auto_generated": assessment.get("auto_generated", False),
+                "assessment_id": assessment.get("assessment_id"),
+                "source": "quality_history"
             })
 
-        # 2. Load dedicated performance records
+        # 2. Load dedicated performance records (comprehensive tracking)
         perf_data = self._load_json_file("performance_records.json", "performance_records")
         for record in perf_data.get("records", []):
             all_records.append({
                 "timestamp": record.get("timestamp", ""),
                 "task_type": record.get("task_type", "unknown"),
+                "description": record.get("description", record.get("details", {}).get("description", record.get("task_type", "Unknown Task"))),
                 "quality_score": record.get("overall_score", 0),
                 "success": record.get("pass", False),
                 "skills_used": record.get("skills_used", []),
                 "duration": record.get("details", {}).get("duration_seconds", 0),
-                "auto_generated": record.get("auto_generated", True)
+                "auto_generated": record.get("auto_generated", True),
+                "assessment_id": record.get("assessment_id"),
+                "source": "performance_records",
+                "commit_hash": record.get("details", {}).get("commit_hash"),
+                "files_modified": record.get("details", {}).get("files_modified", 0)
             })
 
         # 3. Load legacy patterns (for backwards compatibility)
@@ -535,17 +619,25 @@ class DashboardDataCollector:
             all_records.append({
                 "timestamp": pattern.get("timestamp", ""),
                 "task_type": pattern.get("task_type", "unknown"),
-                "quality_score": pattern.get("outcome", {}).get("quality_score"),
+                "description": pattern.get("description", pattern.get("task_type", "Unknown Task")),
+                "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
                 "success": pattern.get("outcome", {}).get("success", False),
                 "skills_used": pattern.get("execution", {}).get("skills_used", []),
                 "duration": pattern.get("execution", {}).get("duration", 0),
-                "auto_generated": False
+                "auto_generated": False,
+                "assessment_id": pattern.get("pattern_id"),
+                "source": "legacy_patterns"
             })
 
-        # Remove duplicates (keep the most recent version of each timestamp+task_type)
+        # 4. Load git commit history for tasks not captured in pattern system
+        git_activities = self._get_git_activity_history(limit)
+        all_records.extend(git_activities)
+
+        # Remove duplicates (keep the most recent version of each timestamp+task_type+source)
         unique_records = {}
         for record in all_records:
-            key = f"{record['timestamp']}_{record['task_type']}"
+            # Create unique key considering multiple factors
+            key = f"{record['timestamp']}_{record['task_type']}_{record.get('source', 'unknown')}"
             if key not in unique_records:
                 unique_records[key] = record
 
@@ -558,7 +650,8 @@ class DashboardDataCollector:
 
         return {
             "recent_activity": activity,
-            "count": len(activity)
+            "count": len(activity),
+            "total_sources": len(set(r.get('source', 'unknown') for r in activity))
         }
 
     def get_system_health(self) -> Dict[str, Any]:

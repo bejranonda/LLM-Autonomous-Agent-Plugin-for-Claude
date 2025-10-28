@@ -7,19 +7,17 @@ description: Launch real-time monitoring dashboard for autonomous agent system m
 
 ## Command: `/monitor:dashboard`
 
-**Direct launcher** that starts a real-time monitoring dashboard in the background for autonomous agent system metrics and learning analytics, then immediately opens the web browser.
+**Simple launcher** that starts a monitoring dashboard in the background and opens the web browser.
 
 ## How It Works
 
-1. **Immediate Launch**: Command executes dashboard.py directly with no delegation
-2. **Single Process**: Starts one Flask server process in background
-3. **Instant Browser**: Opens default browser to dashboard URL within 2 seconds
-4. **Direct Response**: Returns status immediately without agent overhead
-5. **Data Collection**: Dashboard aggregates data from pattern learning files
-6. **Real-time Updates**: Provides API endpoints for live data access
-7. **Interactive Interface**: Browser-based dashboard with charts and metrics
+1. **Silent Launch**: Command executes dashboard.py directly with no console output
+2. **Background Process**: Starts Flask server in background without blocking
+3. **Auto Browser**: Opens default browser to dashboard URL automatically
+4. **Zero Reporting**: No performance metrics or console output
+5. **Direct Access**: Dashboard provides all analytics through web interface
 
-**CRITICAL**: This command executes DIRECTLY without any delegation to orchestrator or other agents. No intermediate processes - just direct Python execution and immediate browser launch.
+**CRITICAL**: This command executes silently with no console reporting. All analytics and metrics are available through the web dashboard interface only.
 
 ## Usage
 
@@ -59,96 +57,60 @@ description: Launch real-time monitoring dashboard for autonomous agent system m
 /monitor:dashboard --restart
 ```
 
-**Expected Performance**: Command completes in 2-3 seconds with dashboard running in background and browser automatically opened.
+**Expected Performance**: Command completes in 1-2 seconds with dashboard running in background and browser automatically opened. No console output.
 
 ## Command Behavior and Implementation
 
-### Direct Execution (No Delegation)
+### Silent Execution (No Reporting)
 
-**CRITICAL**: This command executes DIRECTLY via Python with zero delegation. The implementation:
+**CRITICAL**: This command executes silently with no console output. The implementation:
 
 1. **Direct Python Call**: `python lib/dashboard.py` (no agents involved)
-2. **Port Detection**: Built-in port detection (5000, 5001, etc.)
-3. **Single Process**: Starts exactly one background Flask process
-4. **Immediate Browser**: Opens browser within 2 seconds using `webbrowser.open()`
-5. **Instant Status**: Returns status in 2-3 seconds maximum
-6. **Error Handling**: Direct error messages with clear solutions
+2. **Background Process**: Runs Flask server completely in background
+3. **Auto Browser**: Opens browser automatically
+4. **Silent Operation**: No console reporting or status messages
+5. **Web Interface**: All metrics available through dashboard only
 
-### Implementation (Direct Bash Execution)
+### Implementation
 
 ```bash
-# Command implementation (no delegation):
+# Silent execution (no console output):
 python lib/dashboard.py --patterns-dir .claude-patterns
 
 # Browser opens automatically:
 webbrowser.open(f"http://127.0.0.1:{port}")
 
-# Status returned immediately:
-echo "🚀 Dashboard started at http://127.0.0.1:${port}"
+# No console reporting - dashboard handles all user feedback
 ```
 
 ### Expected Command Output
 
-The command returns a concise status report within 2-3 seconds:
-
-```
-🚀 Autonomous Agent Dashboard
-════════════════════════════════════════════════════════
-
-Status: ✅ Running in background
-URL:   http://127.0.0.1:5001
-Port:  5001 (5000 was in use)
-PID:   12345
-Data:  .claude-patterns/ (1.9MB)
-
-📊 Dashboard Features:
-• Real-time learning analytics
-• Agent performance metrics
-• Quality trend visualization
-• Interactive system monitoring
-
-💡 Browser opened automatically...
-⚠️  Press Ctrl+C in this terminal to stop dashboard
-🔧 Use /monitor:dashboard --status to check status
-════════════════════════════════════════════════════════
-⏱️  Started in 2.1 seconds
-```
+**No console output**. The command executes silently and all information is available through the web dashboard interface at `http://127.0.0.1:5000` (or next available port).
 
 ### Error Handling
 
-If dashboard fails to start, the command reports:
+If dashboard fails to start, the command fails silently. Check for common issues:
 
-```
-❌ Dashboard Launch Failed
-════════════════════════════════════════════════════════
+- **Port conflicts**: Use different port with `--port 8080`
+- **Missing dependencies**: Install with `pip install flask flask-cors`
+- **Directory issues**: Ensure `.claude-patterns` directory exists
 
-Error: Port 5000-5005 all in use
-Solution: /monitor:dashboard --port 8080
-
-or
-
-Error: Missing Flask dependencies
-Solution: pip install flask flask-cors
-
-════════════════════════════════════════════════════════
-🔧 Try: /monitor:dashboard --debug for troubleshooting
-```
+All error handling and status information is available through the web dashboard interface.
 
 ### Process Management Commands
 
 ```bash
 # Check dashboard status
 /monitor:dashboard --status
-→ ✅ Dashboard running on http://127.0.0.1:5001
 
 # Stop dashboard
 /monitor:dashboard --stop
-→ ⏹ Dashboard stopped successfully
 
 # Restart dashboard
 /monitor:dashboard --restart
-→ 🔄 Dashboard restarted on http://127.0.0.1:5002
 ```
+
+*Process management commands are handled through the dashboard web interface.*
 
 ## Dashboard Features
 
