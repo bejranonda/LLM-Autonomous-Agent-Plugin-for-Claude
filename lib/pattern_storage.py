@@ -76,7 +76,15 @@ class PatternStorage:
                     content = f.read()
                     if not content.strip():
                         return []
-                    return json.loads(content)
+                    data = json.loads(content)
+                    # Handle both simple array and object with "patterns" array
+                    if isinstance(data, list):
+                        return data
+                    elif isinstance(data, dict) and "patterns" in data:
+                        return data["patterns"]
+                    else:
+                        print(f"Warning: Unexpected format in {self.patterns_file}", file=sys.stderr)
+                        return []
                 finally:
                     unlock_file(f)
         except FileNotFoundError:
@@ -99,11 +107,32 @@ class PatternStorage:
             patterns: List of pattern dictionaries to write
         """
         try:
+            # Check if file exists and has existing structure
+            existing_structure = None
+            if self.patterns_file.exists():
+                try:
+                    with open(self.patterns_file, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                        if content.strip():
+                            data = json.loads(content)
+                            if isinstance(data, dict) and "patterns" in data:
+                                existing_structure = data
+                except:
+                    pass  # Fall back to simple structure
+
             with open(self.patterns_file, 'w', encoding='utf-8') as f:
                 # Acquire exclusive lock for writing
                 lock_file(f, exclusive=True)
                 try:
-                    json.dump(patterns, f, indent=2, ensure_ascii=False)
+                    if existing_structure:
+                        # Preserve existing structure, update patterns array
+                        existing_structure["patterns"] = patterns
+                        existing_structure["metadata"]["last_updated"] = datetime.now().isoformat()
+                        existing_structure["metadata"]["total_patterns"] = len(patterns)
+                        json.dump(existing_structure, f, indent=2, ensure_ascii=False)
+                    else:
+                        # Simple array format
+                        json.dump(patterns, f, indent=2, ensure_ascii=False)
                 finally:
                     unlock_file(f)
         except Exception as e:
@@ -140,18 +169,12 @@ class PatternStorage:
             raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
 
         # Validate task_type
-        valid_task_types = ['feature_implementation', 'bug_fix', 'refactoring', 'testing']
+        valid_task_types = ['feature_implementation', 'bug_fix', 'refactoring', 'testing', 'dashboard-improvement', 'quality-improvement', 'learning-activity', 'project-analysis', 'security-audit', 'performance-optimization', 'automation']
         if pattern['task_type'] not in valid_task_types:
-            raise ValueError(
-    f"Invalid task_type. Must be one of: {',
-    '.join(valid_task_types)}",
-)
+            raise ValueError(f"Invalid task_type. Must be one of: {', '.join(valid_task_types)}")
 
         # Validate quality_score
-        if not isinstance(
-    pattern['quality_score'],
-    (int, float)) or not (0 <= pattern['quality_score'] <= 1):,
-)
+        if not isinstance(pattern['quality_score'], (int, float)) or not (0 <= pattern['quality_score'] <= 1):
             raise ValueError("quality_score must be a number between 0 and 1")
 
         # Generate pattern_id if not provided

@@ -645,6 +645,10 @@ def handle_special_command(command_info):
             import sys
 
             try:
+                print(f"🚀 Starting Autonomous Agent Dashboard...")
+                print(f"   Dashboard URL: http://{args['host']}:{args['port']}")
+                print(f"   Pattern directory: {args['patterns_dir']}")
+
                 # Run in background to not block
                 process = subprocess.Popen(cmd,
                                          stdout=subprocess.DEVNULL,
@@ -655,11 +659,28 @@ def handle_special_command(command_info):
                 time.sleep(1)
 
                 if process.poll() is None:
+                    print(f"✅ Dashboard started successfully!")
+                    print(f"   Access at: http://{args['host']}:{args['port']}")
+
+                    # Auto-open browser if enabled
+                    if args['auto_open_browser']:
+                        try:
+                            import webbrowser
+                            import time
+                            time.sleep(1)  # Give server time to start
+                            webbrowser.open(f"http://{args['host']}:{args['port']}")
+                            print(f"   🌐 Browser opened automatically")
+                        except Exception:
+                            print(f"   📂 Manual browser access required")
+
+                    print(f"   Press Ctrl+C in the terminal to stop the server")
                     return True
                 else:
+                    print(f"❌ Dashboard failed to start")
                     return False
 
-            except Exception:
+            except Exception as e:
+                print(f"❌ Error starting dashboard: {e}")
                 return False
 
     elif command_info['command'] == 'learning_analytics':

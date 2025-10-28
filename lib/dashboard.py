@@ -122,14 +122,15 @@ class DashboardDataCollector:
         
         return model_data if model_data else None
 
-    def _get_git_activity_history(self, limit: int = 50) -> List[Dict[str, Any]]:
+    def _get_git_activity_history(self, limit: int = 100) -> List[Dict[str, Any]]:
         """Load recent git commit history for activities not captured in pattern system."""
         git_activities = []
 
         try:
-            # Get recent git commits
+            # Get recent git commits from the last 7 days
             result = subprocess.run([
                 "git", "log", f"--max-count={limit}",
+                "--since=7 days ago",
                 "--pretty=format:%H|%ad|%s",
                 "--date=iso",
                 "--no-merges"
@@ -187,12 +188,22 @@ class DashboardDataCollector:
             return "release-management"
         elif msg_lower.startswith('bump:'):
             return "version-bump"
-        elif 'quality' in msg_lower:
-            return "quality-improvement"
-        elif 'dashboard' in msg_lower:
+        elif 'dashboard' in msg_lower or 'monitoring' in msg_lower:
             return "dashboard-improvement"
         elif 'git' in msg_lower or 'merge' in msg_lower:
             return "git-operation"
+        elif 'quality' in msg_lower or 'validation' in msg_lower:
+            return "quality-improvement"
+        elif 'learning' in msg_lower or 'pattern' in msg_lower:
+            return "learning-activity"
+        elif 'analysis' in msg_lower or 'analytics' in msg_lower:
+            return "project-analysis"
+        elif 'security' in msg_lower or 'audit' in msg_lower:
+            return "security-audit"
+        elif 'performance' in msg_lower or 'optimization' in msg_lower:
+            return "performance-optimization"
+        elif 'auto' in msg_lower or 'automatic' in msg_lower:
+            return "automation"
         else:
             return "general-maintenance"
 
@@ -574,6 +585,38 @@ class DashboardDataCollector:
             "total_tasks": sum(task_counts.values())
         }
 
+    def _determine_success_status(self, record: Dict[str, Any], source: str) -> bool:
+        """Determine success status with enhanced logic for different data sources."""
+        # Base success determination from explicit fields
+        if source == "quality_history":
+            # Quality assessments: use pass field primarily, fallback to score >= 70
+            if "pass" in record:
+                return record["pass"]
+            return record.get("overall_score", 0) >= 70
+
+        elif source == "performance_records":
+            # Performance records: use pass field, fallback to success_rate >= 70%
+            if "pass" in record:
+                return record["pass"]
+            if "success_rate" in record:
+                return record["success_rate"] >= 70
+            return record.get("overall_score", 0) >= 70
+
+        elif source == "legacy_patterns":
+            # Pattern data: use outcome.success primarily
+            outcome = record.get("outcome", {})
+            if "success" in outcome:
+                return outcome["success"]
+            # Fallback to quality score >= 70
+            return outcome.get("quality_score", 0) >= 70
+
+        elif source == "git_history":
+            # Git commits: always consider successful (commit made)
+            return True
+
+        # Default fallback
+        return record.get("success", record.get("pass", record.get("overall_score", 0) >= 70))
+
     def get_recent_activity(self, limit: int = 20) -> Dict[str, Any]:
         """Get recent task activity from all sources (quality_history, performance_records, patterns, git history).
         Shows ALL tasks regardless of score for complete history tracking."""
@@ -587,7 +630,7 @@ class DashboardDataCollector:
                 "task_type": assessment.get("task_type", "unknown"),
                 "description": assessment.get("task_description", assessment.get("details", {}).get("task_description", assessment.get("task_type", "Unknown Task"))),
                 "quality_score": assessment.get("overall_score", 0),
-                "success": assessment.get("pass", False),
+                "success": self._determine_success_status(assessment, "quality_history"),
                 "skills_used": assessment.get("skills_used", []),
                 "duration": assessment.get("details", {}).get("duration_seconds", 0),
                 "auto_generated": assessment.get("auto_generated", False),
@@ -603,7 +646,7 @@ class DashboardDataCollector:
                 "task_type": record.get("task_type", "unknown"),
                 "description": record.get("description", record.get("details", {}).get("description", record.get("task_type", "Unknown Task"))),
                 "quality_score": record.get("overall_score", 0),
-                "success": record.get("pass", False),
+                "success": self._determine_success_status(record, "performance_records"),
                 "skills_used": record.get("skills_used", []),
                 "duration": record.get("details", {}).get("duration_seconds", 0),
                 "auto_generated": record.get("auto_generated", True),
@@ -621,7 +664,7 @@ class DashboardDataCollector:
                 "task_type": pattern.get("task_type", "unknown"),
                 "description": pattern.get("description", pattern.get("task_type", "Unknown Task")),
                 "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
-                "success": pattern.get("outcome", {}).get("success", False),
+                "success": self._determine_success_status(pattern, "legacy_patterns"),
                 "skills_used": pattern.get("execution", {}).get("skills_used", []),
                 "duration": pattern.get("execution", {}).get("duration", 0),
                 "auto_generated": False,
@@ -793,6 +836,11 @@ class DashboardDataCollector:
         import os
         import platform
 
+        # Method 0: Check session file first (primary source of truth)
+        session_model = self.get_current_session_model()
+        if session_model:
+            return session_model
+
         # Method 1: Check environment variables
         model_env_vars = [
             'ANTHROPIC_MODEL',
@@ -846,8 +894,7 @@ class DashboardDataCollector:
             except:
                 pass
 
-        # Method 4: Default fallback based on current session context
-        # Since you're using GLM, default to a reasonable GLM version
+        # Method 4: Default fallback
         return "GLM-4.6"
 
     def _record_current_session_model(self):
@@ -1940,9 +1987,9 @@ DASHBOARD_HTML = """
                 </table>
             </div>
 
-            <!-- Recent Activity -->
+            <!-- Recent Activities -->
             <div class="table-container">
-                <div class="chart-title">Recent Activity</div>
+                <div class="chart-title">Recent Activities</div>
                 <table id="activity-table">
                     <thead>
                         <tr>
@@ -1979,6 +2026,24 @@ DASHBOARD_HTML = """
                         </thead>
                         <tbody id="performance-records-tbody"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Validation Results -->
+            <div class="table-container">
+                <div class="chart-title">Validation Results</div>
+                <div id="validation-summary" style="margin-bottom: 10px; color: #666; font-size: 0.9em;"></div>
+                <div id="validation-container">
+                    <div id="validation-status" style="margin-bottom: 15px;"></div>
+                    <div id="validation-findings" style="margin-bottom: 15px;">
+                        <h4 style="margin-bottom: 8px; color: #333;">Key Findings:</h4>
+                        <ul id="validation-findings-list" style="margin: 0; padding-left: 20px;"></ul>
+                    </div>
+                    <div id="validation-recommendations">
+                        <h4 style="margin-bottom: 8px; color: #333;">Top Recommendations:</h4>
+                        <ul id="validation-recommendations-list" style="margin: 0; padding-left: 20px;"></ul>
+                    </div>
+                    <div id="validation-report-info" style="margin-top: 10px; font-size: 0.85em; color: #888;"></div>
                 </div>
             </div>
 
@@ -2028,7 +2093,7 @@ DASHBOARD_HTML = """
 
         async function fetchDashboardData() {
             try {
-                const [overview, quality, skills, agents, tasks, activity, health, timeline, debuggingPerf, performanceRecords, currentModel] = await Promise.all([
+                const [overview, quality, skills, agents, tasks, activity, health, timeline, debuggingPerf, performanceRecords, currentModel, validationResults] = await Promise.all([
                     fetch('/api/overview').then(r => r.json()),
                     fetch('/api/quality-trends').then(r => r.json()),
                     fetch('/api/skills').then(r => r.json()),
@@ -2039,7 +2104,8 @@ DASHBOARD_HTML = """
                     fetch('/api/quality-timeline?days=30').then(r => r.json()),
                     fetch('/api/debugging-performance?days=30').then(r => r.json()),
                     fetch('/api/recent-performance-records').then(r => r.json()),
-                    fetch('/api/current-model').then(r => r.json())
+                    fetch('/api/current-model').then(r => r.json()),
+                    fetch('/api/validation-results').then(r => r.json())
                 ]);
 
                 // Update current model display
@@ -2055,6 +2121,7 @@ DASHBOARD_HTML = """
                 updateActivityTable(activity);
                 updateSystemHealth(health);
                 updatePerformanceRecordsTable(performanceRecords);
+                updateValidationResults(validationResults);
 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
@@ -3131,6 +3198,76 @@ DASHBOARD_HTML = """
             document.getElementById('performance-records-summary').innerHTML = summaryHtml;
         }
 
+        function updateValidationResults(data) {
+            const statusElement = document.getElementById('validation-status');
+            const findingsList = document.getElementById('validation-findings-list');
+            const recommendationsList = document.getElementById('validation-recommendations-list');
+            const reportInfo = document.getElementById('validation-report-info');
+
+            if (data.status === 'no_validation_files' || data.status === 'no_reports') {
+                statusElement.innerHTML = '<div style="color: #666; font-style: italic;">No validation results available</div>';
+                findingsList.innerHTML = '';
+                recommendationsList.innerHTML = '';
+                reportInfo.innerHTML = '';
+                return;
+            }
+
+            // Create status badge with color coding
+            const statusColors = {
+                'excellent': '#4CAF50',
+                'good': '#FFC107',
+                'needs_improvement': '#FF9800',
+                'critical': '#F44336'
+            };
+
+            const statusText = data.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const statusColor = statusColors[data.status] || '#666';
+
+            statusElement.innerHTML = `
+                <div style="
+                    display: inline-block;
+                    padding: 8px 16px;
+                    background-color: ${statusColor};
+                    color: white;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                ">
+                    ${statusText}
+                    ${data.validation_score ? ` - Score: ${data.validation_score.score}/${data.validation_score.max_score} (${data.validation_score.percentage}%)` : ''}
+                </div>
+            `;
+
+            // Display findings
+            if (data.findings && data.findings.length > 0) {
+                findingsList.innerHTML = data.findings.map(finding =>
+                    `<li style="margin-bottom: 5px;">${finding}</li>`
+                ).join('');
+            } else {
+                findingsList.innerHTML = '<li style="color: #666; font-style: italic;">No findings available</li>';
+            }
+
+            // Display recommendations
+            if (data.recommendations && data.recommendations.length > 0) {
+                recommendationsList.innerHTML = data.recommendations.map(rec =>
+                    `<li style="margin-bottom: 5px;">${rec}</li>`
+                ).join('');
+            } else {
+                recommendationsList.innerHTML = '<li style="color: #666; font-style: italic;">No recommendations available</li>';
+            }
+
+            // Display report info
+            if (data.report_file && data.timestamp) {
+                const reportDate = new Date(data.timestamp).toLocaleString();
+                reportInfo.innerHTML = `
+                    <div>Report: <strong>${data.report_file}</strong></div>
+                    <div>Last Validation: <strong>${reportDate}</strong></div>
+                `;
+            } else {
+                reportInfo.innerHTML = '';
+            }
+        }
+
         // Add event listener for quality period selector
         document.getElementById('quality-period').addEventListener('change', function(e) {
             const period = e.target.value;
@@ -3249,12 +3386,123 @@ def api_current_model():
     """Get the currently detected model."""
     current_model = data_collector.detect_current_model()
 
+    # Determine confidence based on detection source
+    session_file = data_collector.patterns_dir / "current_session.json"
+    if session_file.exists():
+        try:
+            with open(session_file, 'r', encoding='utf-8') as f:
+                session_data = json.load(f)
+                stored_model = session_data.get("current_model", "")
+                # High confidence if we have a session file with non-default model
+                confidence = "high" if stored_model and stored_model != "GLM-4.6" else "medium"
+                detection_method = "session_file"
+        except:
+            confidence = "medium"
+            detection_method = "fallback_detection"
+    else:
+        confidence = "low"
+        detection_method = "no_session_data"
+
     return jsonify({
         "current_model": current_model,
-        "detection_method": "multi_method_detection",
+        "detection_method": detection_method,
         "timestamp": datetime.now().isoformat(),
-        "confidence": "high" if current_model != "GLM-4.6" else "medium"
+        "confidence": confidence
     })
+
+
+@app.route('/api/validation-results')
+def api_validation_results():
+    """Get latest validation results."""
+    import glob
+    import re
+    from pathlib import Path
+
+    try:
+        # Look for validation reports in both .claude/reports/ and .claude-patterns/reports/
+        validation_files = []
+
+        # Check .claude/reports/ (validation controller saves here)
+        claude_reports = Path(".claude/reports")
+        if claude_reports.exists():
+            validation_files.extend(list(claude_reports.glob("validation-*.md")))
+            validation_files.extend(list(claude_reports.glob("comprehensive-validation-*.md")))
+
+        # Check .claude-patterns/reports/ (dashboard patterns dir)
+        patterns_reports = Path(data_collector.patterns_dir) / "reports"
+        if patterns_reports.exists():
+            validation_files.extend(list(patterns_reports.glob("validation-*.md")))
+            validation_files.extend(list(patterns_reports.glob("comprehensive-validation-*.md")))
+
+        if not validation_files:
+            return jsonify({
+                "status": "no_validation_files",
+                "message": "No validation files found",
+                "last_validation": None,
+                "validation_score": None,
+                "recommendations": []
+            })
+
+        # Sort by modification time and get the latest
+        latest_file = max(validation_files, key=lambda f: f.stat().st_mtime)
+
+        # Read and parse the validation report
+        with open(latest_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        # Extract validation score using regex
+        score_match = re.search(r'Overall Validation Score[:\s]*(\d+)/(\d+)', content, re.IGNORECASE)
+        validation_score = None
+        if score_match:
+            score = int(score_match.group(1))
+            max_score = int(score_match.group(2))
+            validation_score = {
+                "score": score,
+                "max_score": max_score,
+                "percentage": round((score / max_score) * 100, 1)
+            }
+
+        # Extract executive summary findings
+        findings = []
+        critical_section_match = re.search(r'### Critical Findings\n(.*?)(?=\n###|\n---|\Z)', content, re.DOTALL | re.IGNORECASE)
+        if critical_section_match:
+            findings_text = critical_section_match.group(1).strip()
+            for line in findings_text.split('\n'):
+                if line.strip().startswith('-'):
+                    findings.append(line.strip()[2:])  # Remove "- " prefix
+
+        # Extract recommendations
+        recommendations = []
+        rec_section_match = re.search(r'###\s*(?:Priority Fixes|Recommendations)(.*?)(?=\n###|\n---|\Z)', content, re.DOTALL | re.IGNORECASE)
+        if rec_section_match:
+            rec_text = rec_section_match.group(1).strip()
+            for line in rec_text.split('\n'):
+                if line.strip() and not line.startswith('#'):
+                    recommendations.append(line.strip())
+
+        # Determine status based on score
+        status = "excellent" if validation_score and validation_score["score"] >= 90 else \
+                "good" if validation_score and validation_score["score"] >= 70 else \
+                "needs_improvement" if validation_score and validation_score["score"] >= 50 else "critical"
+
+        return jsonify({
+            "status": status,
+            "last_validation": latest_file.stat().st_mtime,
+            "validation_score": validation_score,
+            "findings": findings[:5],  # Top 5 findings
+            "recommendations": recommendations[:3],  # Top 3 recommendations
+            "report_file": str(latest_file.name),
+            "timestamp": datetime.fromtimestamp(latest_file.stat().st_mtime).isoformat()
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"Error reading validation results: {str(e)}",
+            "last_validation": None,
+            "validation_score": None,
+            "recommendations": []
+        })
 
 
 @app.route('/api/models')
@@ -3442,7 +3690,7 @@ def api_recent_performance_records():
                 # Convert to dashboard format
                 dashboard_record = {
                     'timestamp': record.get('timestamp'),
-                    'model': record.get('model_used', 'Claude Sonnet 4.5'),
+                    'model': record.get('model', record.get('model_used', 'Claude Sonnet 4.5')),
                     'assessment_id': record.get('assessment_id'),
                     'task_type': record.get('task_type', 'unknown'),
                     'overall_score': record.get('overall_score', 0),
