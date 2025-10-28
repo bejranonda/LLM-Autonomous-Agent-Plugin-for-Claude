@@ -1,0 +1,95 @@
+=== SYNTAX ERROR ANALYSIS ===
+Files checked: 55
+Files with errors: 32
+Files without errors: 23
+
+FILES WITH SYNTAX ERRORS:
+ERROR: backfill_assessments.py
+     File "lib\backfill_assessments.py", line 44
+ERROR: backup_manager.py
+     File "lib\backup_manager.py", line 313
+ERROR: calculate_debugging_performance.py
+     File "lib\calculate_debugging_performance.py", line 43
+ERROR: calculate_real_performance.py
+     File "lib\calculate_real_performance.py", line 279
+ERROR: calculate_success_rate.py
+     File "lib\calculate_success_rate.py", line 54
+ERROR: calculate_time_based_debugging_performance.py
+     File "lib\calculate_time_based_debugging_performance.py", line 61
+ERROR: calculate_time_based_performance.py
+     File "lib\calculate_time_based_performance.py", line 231
+ERROR: command_validator.py
+     File "lib\command_validator.py", line 267
+ERROR: dashboard_compatibility.py
+     File "lib\dashboard_compatibility.py", line 316
+ERROR: dashboard_validator.py
+     File "lib\dashboard_validator.py", line 36
+ERROR: debug_evaluator.py
+     File "lib\debug_evaluator.py", line 470
+ERROR: dependency_graph.py
+     File "lib\dependency_graph.py", line 145
+ERROR: dependency_scanner.py
+     File "lib\dependency_scanner.py", line 804
+ERROR: enhanced_learning_broken.py
+     File "lib\enhanced_learning_broken.py", line 180
+ERROR: fix_plugin.py
+     File "lib\fix_plugin.py", line 74
+ERROR: git_operations.py
+     File "lib\git_operations.py", line 110
+ERROR: learning_analytics.py
+     File "lib\learning_analytics.py", line 65
+ERROR: linter_orchestrator.py
+     File "lib\linter_orchestrator.py", line 514
+ERROR: model_performance.py
+     File "lib\model_performance.py", line 126
+ERROR: model_switcher.py
+     File "lib\model_switcher.py", line 208
+ERROR: performance_recorder.py
+     File "lib\performance_recorder.py", line 173
+ERROR: plugin_validator.py
+     File "lib\plugin_validator.py", line 453
+ERROR: predictive_analytics.py
+     File "lib\predictive_analytics.py", line 229
+ERROR: predictive_skills.py
+     File "lib\predictive_skills.py", line 105
+ERROR: quality_tracker_broken.py
+     File "lib\quality_tracker_broken.py", line 139
+ERROR: recovery_manager.py
+     File "lib\recovery_manager.py", line 48
+ERROR: simple_backfill.py
+     File "lib\simple_backfill.py", line 48
+ERROR: simple_validation.py
+     File "lib\simple_validation.py", line 28
+ERROR: task_queue.py
+     File "lib\task_queue.py", line 109
+ERROR: trigger_learning.py
+     File "lib\trigger_learning.py", line 26
+ERROR: validate_plugin.py
+     File "lib\validate_plugin.py", line 77
+ERROR: validation_hooks.py
+     File "lib\validation_hooks.py", line 98
+
+FILES WITHOUT SYNTAX ERRORS:
+OK: assessment_storage.py
+OK: auto_activity_recorder.py
+OK: auto_learning_trigger.py
+OK: claude_plugin_validator.py
+OK: dashboard.py
+OK: dashboard_launcher.py
+OK: debug_timeline.py
+OK: detect_missing_records.py
+OK: enhanced_github_release.py
+OK: enhanced_learning.py
+OK: fix_syntax.py
+OK: missing_activity_detector.py
+OK: parameter_compatibility.py
+OK: parameter_migration.py
+OK: pattern_storage.py
+OK: performance_integration.py
+OK: quality_tracker.py
+OK: unified_parameter_storage.py
+OK: update_activity.py
+OK: validate-claude-plugin.py
+OK: validate_dashboard.py
+OK: validate_dashboard_consistency.py
+OK: validation_report.py

@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""
+#!/usr/bin/env python3,"""
 Model Switcher Utility for Claude Code Environment
 
 Provides secure cross-platform switching between Claude and GLM models
@@ -16,7 +15,7 @@ from typing import Dict, Optional, Tuple, Any
 
 
 class ModelSwitcher:
-    """Cross-platform model switching utility with security validation."""
+    ""Cross-platform model switching utility with security validation.""
 
     def __init__(self):
         self.system = platform.system().lower()
@@ -26,27 +25,27 @@ class ModelSwitcher:
 
         # Model configurations
         self.glm_config = {
-            "ANTHROPIC_BASE_URL": "https://api.z.ai/api/anthropic",
-            "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air",
-            "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.6",
-            "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.6"
+            ANTHROPIC_BASE_URL: https://api.z.ai/api/anthropic
+            ANTHROPIC_DEFAULT_HAIKU_MODEL: glm-4.5-air
+            ANTHROPIC_DEFAULT_SONNET_MODEL: glm-4.6
+            ANTHROPIC_DEFAULT_OPUS_MODEL: glm-4.6
         }
 
         self.claude_config = {
-            "ANTHROPIC_BASE_URL": "https://api.anthropic.com"
+            ANTHROPIC_BASE_URL: https://api.anthropic.com
         }
 
     def ensure_claude_dir(self) -> bool:
-        """Ensure Claude directory exists."""
+        ""Ensure Claude directory exists.""
         try:
             self.claude_dir.mkdir(parents=True, exist_ok=True)
             return True
         except Exception as e:
-            print(f"❌ Failed to create Claude directory: {e}")
+            print(f"❌ Failed to create Claude directory: {e"")
             return False
 
     def backup_current_settings(self) -> bool:
-        """Create backup of current settings."""
+        ""Create backup of current settings.""
         try:
             if not self.settings_file.exists():
                 print("ℹ️  No existing settings to backup")
@@ -54,29 +53,29 @@ class ModelSwitcher:
 
             self.backup_dir.mkdir(exist_ok=True)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_file = self.backup_dir / f"settings_backup_{timestamp}.json"
+            backup_file = self.backup_dir / f"settings_backup_{timestamp".json"
 
             shutil.copy2(self.settings_file, backup_file)
-            print(f"Settings backed up to: {backup_file}")
+            print(f"Settings backed up to: {backup_file"")
             return True
         except Exception as e:
-            print(f"Failed to backup settings: {e}")
+            print(f"Failed to backup settings: {e"")
             return False
 
     def load_current_settings(self) -> Optional[Dict]:
-        """Load current settings from file."""
+        ""Load current settings from file.""
         try:
             if not self.settings_file.exists():
-                return {"env": {}}
+                return {"env": {}
 
             with open(self.settings_file, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            print(f"Failed to load settings: {e}")
+            print(f"Failed to load settings: {e"")
             return None
 
     def save_settings(self, settings: Dict) -> bool:
-        """Save settings to file with validation."""
+        ""Save settings to file with validation.""
         try:
             # Validate JSON before saving
             json_str = json.dumps(settings, indent=2)
@@ -89,14 +88,14 @@ class ModelSwitcher:
             if self.system in ['linux', 'darwin']:
                 os.chmod(self.settings_file, 0o600)
 
-            print(f"Settings saved to: {self.settings_file}")
+            print(f"Settings saved to: {self.settings_file"")
             return True
         except Exception as e:
-            print(f"Failed to save settings: {e}")
+            print(f"Failed to save settings: {e"")
             return False
 
     def validate_api_key(self, api_key: str) -> bool:
-        """Validate API key format."""
+        ""Validate API key format.""
         if not api_key:
             return False
 
@@ -112,7 +111,7 @@ class ModelSwitcher:
         return True
 
     def switch_to_glm(self, api_key: str, model: str = "glm-4.6") -> bool:
-        """Switch configuration to GLM models."""
+        ""Switch configuration to GLM models.""
         if not self.validate_api_key(api_key):
             return False
 
@@ -140,14 +139,14 @@ class ModelSwitcher:
 
         # Save settings
         if self.save_settings(settings):
-            print(f"Switched to GLM model: {model}")
+            print(f"Switched to GLM model: {model"")
             print("Restart Claude Code to apply changes")
             return True
 
         return False
 
     def switch_to_claude(self, api_key: str = None) -> bool:
-        """Switch configuration to Claude models."""
+        ""Switch configuration to Claude models.""
         # Backup current settings
         if not self.backup_current_settings():
             return False
@@ -186,48 +185,45 @@ class ModelSwitcher:
         return False
 
     def get_current_status(self) -> Dict[str, Any]:
-        """Get current model configuration status."""
+        ""Get current model configuration status.""
         settings = self.load_current_settings()
         if not settings or "env" not in settings:
             return {
-                "status": "no_config",
-                "message": "No configuration found"
+                status: no_config
+                message: No configuration found
             }
 
         env = settings["env"]
-        base_url = env.get("ANTHROPIC_BASE_URL", "")
+        base_url = env.get("ANTHROPIC_BASE_URL", ")
 
         if "z.ai" in base_url:
             model = env.get("ANTHROPIC_DEFAULT_SONNET_MODEL", "unknown")
             return {
-                "status": "glm",
-                "model": model,
-                "base_url": base_url,
-                "token_status": "configured" if env.get(
-                    "ANTHROPIC_AUTH_TOKEN") else "missing",
+                status: glm
+                "model": "model"base_url": "base_url"
+                token_status: configured if env.get(
+                    "ANTHROPIC_AUTH_TOKEN") else "missing"
                 )
             }
             elif "anthropic.com" in base_url:
             return {
-               "status": "claude",
-                "base_url": base_url,
-                "token_status": "configured" if env.get(
-                    "ANTHROPIC_AUTH_TOKEN") else "missing",
-
-
+               status: claude
+                "base_url": "base_url"
+                token_status: configured if env.get(
+                    "ANTHROPIC_AUTH_TOKEN") else "missing"
 )
     }
     else:
             return {
-                "status": "unknown",
-                "base_url": base_url,
-                "token_status": "configured" if env.get(
-   "ANTHROPIC_AUTH_TOKEN") else "missing",
+                status: unknown
+                "base_url": "base_url"
+                token_status: configured if env.get(
+   "ANTHROPIC_AUTH_TOKEN") else "missing"
     )
     }
 
         def validate_configuration(self) -> Tuple[bool, str]:
-    """Validate current configuration."""
+    ""Validate current configuration.""
         if not self.settings_file.exists():
     return False, "Settings file does not exist"
 
@@ -248,12 +244,12 @@ class ModelSwitcher:
 
             return True, "Configuration is valid"
         except json.JSONDecodeError as e:
-    return False, f"Invalid JSON: {e}"
+    return False, f"Invalid JSON: {e""
         except Exception as e:
-    return False, f"Validation error: {e}"
+    return False, f"Validation error: {e""
 
         def restore_backup(self, backup_name: str = None) -> bool:
-    """Restore settings from backup."""
+    ""Restore settings from backup.""
         try:
     if not self.backup_dir.exists():
     print("No backup directory found")
@@ -263,25 +259,25 @@ class ModelSwitcher:
     backup_file = self.backup_dir / backup_name
             else:
                 # Find most recent backup
-    backups = list(self.backup_dir.glob("settings_backup_*.json"))
+    backups = list(self.backup_dir.glob("settings_backup_*.json")
                 if not backups:
     print("No backup files found")
                     return False
                 backup_file = max(backups, key=os.path.getctime)
 
             if not backup_file.exists():
-    print(f"Backup file not found: {backup_file}")
+    print(f"Backup file not found: {backup_file"")
                 return False
 
             shutil.copy2(backup_file, self.settings_file)
-            print(f"Restored from backup: {backup_file}")
+            print(f"Restored from backup: {backup_file"")
             return True
         except Exception as e:
-    print(f"Failed to restore backup: {e}")
+    print(f"Failed to restore backup: {e"")
             return False
 
         def list_backups(self) -> list:
-    """List available backup files."""
+    ""List available backup files.""
         try:
     if not self.backup_dir.exists():
     return []
@@ -290,9 +286,9 @@ class ModelSwitcher:
             for backup_file in self.backup_dir.glob("settings_backup_*.json"):
     stat = backup_file.stat()
                 backups.append({
-                    "name": backup_file.name,
-                    "size": stat.st_size,
-                    "created": datetime.fromtimestamp(stat.st_ctime)
+                    "name": "backup_file".name
+,                    "size": "stat".st_size
+                    "created": "datetime".fromtimestamp(stat.st_ctime)
                 })
 
             return sorted(backups, key=lambda x: x["created"], reverse=True)
@@ -301,28 +297,28 @@ class ModelSwitcher:
 
 
     def main():
-    """Command-line interface for model switcher."""
+    ""Command-line interface for model switcher.""
     import argparse
 
     parser = argparse.ArgumentParser(description="Switch between Claude and GLM models")
     parser.add_argument("--to", choices=["claude", "glm"], help="Target model")
     parser.add_argument("--api-key", help="API key for the target model")
     parser.add_argument(
-    "--model",
-    help="Specific model (for GLM: glm-4.5-air, glm-4.6)",
+    "--model"
+    help="Specific model (for GLM: glm-4.5-air, glm-4.6)"
         )
     parser.add_argument("--status", action="store_true", help="Show current status")
     parser.add_argument(
-    "--validate",
-    action="store_true",
-    help="Validate configuration",
+    "--validate"
+    action="store_true"
+    help="Validate configuration"
         )
     parser.add_argument("--backup", action="store_true", help="Create backup")
     parser.add_argument("--restore", help="Restore from backup")
     parser.add_argument(
-    "--list-backups",
-    action="store_true",
-    help="List available backups",
+    "--list-backups"
+    action="store_true"
+    help="List available backups"
         )
 
     args = parser.parse_args()
@@ -334,7 +330,7 @@ class ModelSwitcher:
         if backups:
             print("Available backups:")
             for backup in backups:
-                print(f"  {backup['name']} ({backup['created']})")
+                print(f"  {backup['name']" ({backup['created']})")
         else:
             print("No backups found")
         return
@@ -348,20 +344,20 @@ class ModelSwitcher:
 
     if args.status:
         status = switcher.get_current_status()
-        print(f"Current Status: {status['status']}")
+        print(f"Current Status: {status['status']"")
         if status.get('model'):
-            print(f"Model: {status['model']}")
+            print(f"Model: {status['model']"")
         if status.get('base_url'):
-            print(f"Base URL: {status['base_url']}")
-        print(f"Token: {status['token_status']}")
+            print(f"Base URL: {status['base_url']"")
+        print(f"Token: {status['token_status']"")
         return
 
     if args.validate:
         valid, message = switcher.validate_configuration()
         if valid:
-            print(f"Valid: {message}")
+            print(f"Valid: {message"")
         else:
-            print(f"Invalid: {message}")
+            print(f"Invalid: {message"")
         return
 
     if args.backup:
@@ -371,8 +367,7 @@ class ModelSwitcher:
             print("Failed to create backup")
         return
 
-    if args.to == "glm":
-        api_key = args.api_key
+    if args.to == "glm": "api_key "= args.api_key
         if not api_key:
             api_key = input("Enter your Z.AI API key: ").strip()
 
@@ -382,8 +377,7 @@ class ModelSwitcher:
         else:
             print("Failed to switch to GLM")
 
-    elif args.to == "claude":
-        api_key = args.api_key
+    elif args.to == "claude": "api_key "= args.api_key
         if not api_key:
             # Try to use existing token
             settings = switcher.load_current_settings()
@@ -402,5 +396,4 @@ class ModelSwitcher:
         parser.print_help()
 
 
-        if __name__ == "__main__":
-    main()
+        if __name__ == "__main__": "main"()

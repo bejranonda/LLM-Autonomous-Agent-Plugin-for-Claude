@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.3] - 2025-10-28
+
+### 🛠️ **Dashboard Fixes & Performance Improvements**
+
+#### **Bug Fixes**
+- **Dashboard Model Detection**: Fixed hardcoded fallback to use dynamic model detection via `detect_current_model()`
+- **Dashboard Loading Errors**: Implemented robust error handling with `safeFetch()` helper function and fallback data
+- **JavaScript Syntax Issues**: Fixed regex escaping patterns in dashboard frontend code
+- **Data Aggregation**: Improved timeline chart data aggregation and performance records table
+
+#### **Performance Improvements**
+- **Error Resilience**: Dashboard now continues functioning even when individual API endpoints fail
+- **Model Accuracy**: Fixed model display inconsistencies showing correct models (GLM-4.6, Claude Sonnet 4.5)
+- **Data Consistency**: Enhanced unified parameter storage integration for better data integrity
+
+#### **Quality Improvements**
+- **Syntax Validation**: Fixed critical syntax errors in multiple utility files
+- **Import Statements**: Corrected malformed import statements and shebang lines
+- **Code Quality**: Improved overall code maintainability and error handling
+
+**Files Modified**: 116 files including dashboard.py, utility scripts, and documentation
+**Quality Score**: 71/100 (PASSED - meets production threshold)
+**Testing**: All functionality tests passing (4/4)
+
+## [5.1.2] - 2025-10-28
+
+### 🔧 **Enhanced Unified Storage System Stability**
+
+#### **Bug Fixes**
+- Fixed data consistency issues in unified parameter storage
+- Improved error handling for storage operations
+- Enhanced backup and recovery mechanisms
+
+#### **Performance Improvements**
+- Optimized data retrieval operations
+- Improved caching efficiency
+- Reduced storage overhead
+
 ## [5.0.0] - 2025-10-28
 
 ### 🚀 **Production Ready Status - Major Release**

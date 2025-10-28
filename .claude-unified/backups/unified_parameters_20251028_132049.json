@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "created_at": "2025-10-28T12:53:38.627738",
+    "last_updated": "2025-10-28T13:20:49.096987",
+    "migration_history": []
+  },
+  "parameters": {
+    "quality": {
+      "scores": {
+        "current": 85.0,
+        "history": [
+          {
+            "score": 85.0,
+            "timestamp": "2025-10-28T12:53:38.629628"
+          },
+          {
+            "score": 85.0,
+            "timestamp": "2025-10-28T12:55:28.411832",
+            "metrics": {
+              "syntax_compliance": 90.0,
+              "functionality": 80.0
+            }
+          },
+          {
+            "score": 85.0,
+            "timestamp": "2025-10-28T13:20:49.096204",
+            "metrics": {
+              "syntax_compliance": 90.0,
+              "functionality": 80.0
+            }
+          }
+        ],
+        "trends": {},
+        "averages": {}
+      },
+      "metrics": {
+        "syntax_compliance": 90.0,
+        "functionality": 80.0,
+        "maintainability": 0.0,
+        "documentation": 0.0,
+        "pattern_adherence": 0.0,
+        "code_metrics": 0.0
+      }
+    },
+    "models": {
+      "active_model": "Claude",
+      "performance": {
+        "Claude": {
+          "scores": [
+            {
+              "score": 92.5,
+              "timestamp": "2025-10-28T12:55:28.422853",
+              "task_type": "testing"
+            }
+          ],
+          "success_rate": 1.0,
+          "contribution": 0.0,
+          "total_tasks": 1,
+          "last_updated": "2025-10-28T12:55:28.422856"
+        }
+      },
+      "usage_stats": {
+        "total_queries": 0,
+        "model_switches": 0,
+        "preferred_models": []
+      }
+    },
+    "learning": {
+      "patterns": {
+        "skill_effectiveness": {},
+        "agent_performance": {},
+        "task_patterns": [],
+        "success_rates": {}
+      },
+      "analytics": {
+        "learning_rate": 0.0,
+        "prediction_accuracy": 0.0,
+        "optimization_suggestions": []
+      }
+    },
+    "dashboard": {
+      "metrics": {
+        "active_tasks": 0,
+        "completed_tasks": 0,
+        "failed_tasks": 0,
+        "average_response_time": 0.0,
+        "system_health": 100.0
+      },
+      "real_time": {
+        "current_model": "Claude",
+        "last_activity": "",
+        "active_agents": [],
+        "resource_usage": {}
+      }
+    },
+    "autofix": {
+      "patterns": {},
+      "success_rates": {},
+      "usage_statistics": {}
+    }
+  }
+}

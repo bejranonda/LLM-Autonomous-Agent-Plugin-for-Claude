@@ -227,8 +227,7 @@ def fix_collection_definition(line, max_length):
 def wrap_generic_line(line, max_length):
     """Generic line wrapper"""
     # Try to break at logical points
-    break_points = [' and 
-        ', ' or ', ' if ', ' else ', ' in ', ' == ', ' != ', ' < ', ' > ', ' <= ', ' >= ']
+    break_points = [' and ', ' or ', ' if ', ' else ', ' in ', ' == ', ' != ', ' < ', ' > ', ' <= ', ' >= ']
 
     for bp in break_points:
         if bp in line:

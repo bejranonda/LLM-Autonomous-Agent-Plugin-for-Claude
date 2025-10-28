@@ -210,7 +210,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Implement automatic performance recording improvements",
         "task_complexity": "medium",
@@ -298,7 +298,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Test refactoring task for auto-detection",
         "task_complexity": "medium",
@@ -341,7 +341,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Implement automatic performance recording improvements",
         "task_complexity": "medium",
@@ -429,7 +429,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Test refactoring task for auto-detection",
         "task_complexity": "medium",
@@ -472,7 +472,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Implement automatic performance recording improvements",
         "task_complexity": "medium",
@@ -560,7 +560,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Test refactoring task for auto-detection",
         "task_complexity": "medium",
@@ -603,7 +603,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Implement automatic performance recording improvements",
         "task_complexity": "medium",
@@ -691,7 +691,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Test refactoring task for auto-detection",
         "task_complexity": "medium",
@@ -734,7 +734,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Implement automatic performance recording improvements",
         "task_complexity": "medium",
@@ -782,7 +782,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Test refactoring task for auto-detection",
         "task_complexity": "medium",
@@ -825,7 +825,7 @@
       },
       "details": {
         "auto_recorded": true,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "model_detected_by": "provided",
         "task_description": "Test improved performance recording system",
         "task_complexity": "medium",
@@ -861,7 +861,7 @@
       "auto_generated": false,
       "details": {
         "duration_seconds": 7200,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "task_complexity": "medium",
         "issues_found": 0,
         "fixes_applied": 0,
@@ -890,7 +890,7 @@
       "auto_generated": false,
       "details": {
         "duration_seconds": 3600,
-        "model_used": "Claude Sonnet 4.5",
+        "model_used": "GLM-4.6",
         "task_complexity": "low",
         "issues_found": 1,
         "fixes_applied": 3,

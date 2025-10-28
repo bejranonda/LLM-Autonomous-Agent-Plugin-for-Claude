@@ -13,6 +13,8 @@ import time
 import uuid
 from pathlib import Path
 import os
+from datetime import datetime, timezone
+from typing import Dict, Any, List
 
 
 class AutomaticLearningTrigger:
@@ -62,7 +64,7 @@ class AutomaticLearningTrigger:
                 "total_records": 0
             }
         }
-        with open(self.performance_records_file, 'w') as f:
+        with open(self.performance_records_file, "w") as f:
             json.dump(initial_data, f, indent=2)
 
     def _create_patterns_file(self):
@@ -90,7 +92,7 @@ class AutomaticLearningTrigger:
             "trends": {},
             "optimizations": {}
         }
-        with open(self.patterns_file, 'w') as f:
+        with open(self.patterns_file, "w") as f:
             json.dump(initial_data, f, indent=2)
 
     def _create_trigger_log_file(self):
@@ -105,7 +107,7 @@ class AutomaticLearningTrigger:
                 "successful_triggers": 0
             }
         }
-        with open(self.trigger_log_file, 'w') as f:
+        with open(self.trigger_log_file, "w") as f:
             json.dump(initial_data, f, indent=2)
 
     def detect_current_model(self) -> str:
@@ -116,13 +118,7 @@ class AutomaticLearningTrigger:
             return model
 
         # Check for GLM
-        if "glm" in os.getenv(
-    "TERM",
-    "").lower() or "glm" in os.getenv("SHELL",
-    "").lower():,
-
-
-)
+        if "glm" in os.getenv("TERM", "").lower() or "glm" in os.getenv("SHELL", "").lower():
             return "GLM-4.6"
 
         # Check for Claude
@@ -221,10 +217,7 @@ class AutomaticLearningTrigger:
                 "performance_metrics": {
                     "overall_score": quality_score,
                     "success_rate": 1.0 if success else 0.0,
-                    "efficiency": min(
-    100,
-    100 - (duration / 60)), # Simple efficiency calc,
-)
+                    "efficiency": min(100, 100 - (duration / 60))  # Simple efficiency calc
                 }
             },
             "outcome": {
@@ -297,8 +290,7 @@ class AutomaticLearningTrigger:
 
             # Update summary
             task_type = record["task_type"]
-            if "summary" not in data:
-                data["summary"] = {}
+            if "summary" not in data: data["summary"] = {}
             if task_type not in data["summary"]:
                 data["summary"][task_type] = {"count": 0, "avg_score": 0.0, "success_rate": 0.0}
 
@@ -314,7 +306,7 @@ class AutomaticLearningTrigger:
             summary["success_rate"] = successes / summary["count"]
 
             # Save data
-            with open(self.performance_records_file, 'w') as f:
+            with open(self.performance_records_file, "w") as f:
                 json.dump(data, f, indent=2)
 
         except Exception as e:
@@ -333,7 +325,7 @@ class AutomaticLearningTrigger:
             data["metadata"]["last_updated"] = datetime.now(timezone.utc).isoformat()
 
             # Save data
-            with open(self.patterns_file, 'w') as f:
+            with open(self.patterns_file, "w") as f:
                 json.dump(data, f, indent=2)
 
         except Exception as e:
@@ -357,12 +349,11 @@ class AutomaticLearningTrigger:
             log_data["metadata"]["last_trigger"] = trigger_entry["timestamp"]
             log_data["metadata"]["total_triggers"] = len(log_data["triggers"])
 
-            if 
-                trigger_type in ["task_completed_with_recording", "performance_recorded"]:
+            if trigger_type in ["task_completed_with_recording", "performance_recorded"]:
                 log_data["metadata"]["successful_triggers"] += 1
 
             # Save log
-            with open(self.trigger_log_file, 'w') as f:
+            with open(self.trigger_log_file, "w") as f:
                 json.dump(log_data, f, indent=2)
 
         except Exception as e:

@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
-"""
+from typing import Dict, List, Any
+#!/usr/bin/env python3,"""
 Dependency Graph Analyzer for Autonomous Claude Agent Plugin
 
-Builds comprehensive dependency graphs, detects circular dependencies,
+Builds comprehensive dependency graphs, detects circular dependencies
 analyzes coupling metrics, and provides visualization capabilities.
 """
 
@@ -15,17 +15,17 @@ from collections import defaultdict, deque
 
 
 class DependencyGraphAnalyzer:
-    """Analyze code dependencies and build dependency graphs."""
+    ""Analyze code dependencies and build dependency graphs.""
 
     def __init__(self, project_root: str = "."):
-        """Initialize dependency analyzer."""
+        ""Initialize dependency analyzer.""
         self.project_root = Path(project_root)
         self.dependency_graph = {}
         self.reverse_graph = {}
         self.file_asts = {}
 
     def analyze_file(self, file_path: Path) -> Dict[str, Any]:
-        """
+"""
         Analyze a single Python file for dependencies.
 
         Args:
@@ -33,56 +33,55 @@ class DependencyGraphAnalyzer:
 
         Returns:
             Dictionary containing dependency information
-        """
+"""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 source_code = f.read()
 
-            tree = ast.parse(source_code, filename=str(file_path))
+            tree = ast.parse(source_code, filename=str(file_path)
             self.file_asts[str(file_path)] = tree
 
             dependencies = {
-                "file": str(file_path),
-                "imports": [],
-                "from_imports": [],
-                "internal_deps": [],
-                "external_deps": [],
-                "functions": [],
-                "classes": []
+                "file": "str"(file_path)
+                imports": []
+                from_imports": []
+                "internal_deps": []
+,                "external_deps": []
+                "functions": []
+,                "classes": []
             }
 
             # Extract imports
             for node in ast.walk(tree):
                 if isinstance(node, ast.Import):
                     for alias in node.names:
-                        dependencies["imports"].append({
-                            "module": alias.name,
-                            "alias": alias.asname,
-                            "line": node.lineno
+                        dependencies[imports"].append({
+                            "module": "alias".name
+,                            "alias": "alias".asname
+                            "line": "node".lineno
                         })
 
                 elif isinstance(node, ast.ImportFrom):
-                    module = node.module or ""
+                    module = node.module or "
                     for alias in node.names:
-                        dependencies["from_imports"].append({
-                            "module": module,
-                            "name": alias.name,
-                            "alias": alias.asname,
-                            "level": node.level,
-                            "line": node.lineno
+                        dependencies[from_imports"].append({
+                            "module": "module"name": "alias".name
+,                            "alias": "alias".asname
+                            "level": "node".level
+,                            "line": "node".lineno
                         })
 
                 elif isinstance(node, ast.FunctionDef):
                     dependencies["functions"].append({
-                        "name": node.name,
-                        "line": node.lineno,
+                        "name": "node".name
+,                        "line": "node".lineno
                         "args": [arg.arg for arg in node.args.args]
                     })
 
                 elif isinstance(node, ast.ClassDef):
                     dependencies["classes"].append({
-                        "name": node.name,
-                        "line": node.lineno,
+                        "name": "node".name
+,                        "line": "node".lineno
                         "bases": [
                             self._extract_base_name(base)
                             for base in node.bases
@@ -92,14 +91,14 @@ class DependencyGraphAnalyzer:
             # Classify as internal or external
             project_name = self.project_root.name
 
-            for imp in dependencies["imports"]:
+            for imp in dependencies[imports"]:
                 module = imp["module"]
                 if self._is_internal_module(module, project_name):
                     dependencies["internal_deps"].append(imp)
                 else:
                     dependencies["external_deps"].append(imp)
 
-            for imp in dependencies["from_imports"]:
+            for imp in dependencies[from_imports"]:
                 module = imp["module"]
                 if imp["level"] > 0 or self._is_internal_module(module, project_name):
                     dependencies["internal_deps"].append(imp)
@@ -110,25 +109,25 @@ class DependencyGraphAnalyzer:
 
         except Exception as e:
             return {
-                "file": str(file_path),
-                "error": str(e),
-                "imports": [],
-                "from_imports": [],
-                "internal_deps": [],
-                "external_deps": []
+                "file": "str"(file_path)
+,                "error": "str"(e)
+                imports": []
+                from_imports": []
+                "internal_deps": []
+,                "external_deps": []
             }
 
     def _extract_base_name(self, base_node):
-        """Extract base class name from AST node."""
+        ""Extract base class name from AST node.""
         if isinstance(base_node, ast.Name):
             return base_node.id
         elif isinstance(base_node, ast.Attribute):
-            return f"{base_node.value.id}.{base_node.attr}"
+            return f"{base_node.value.id".{base_node.attr}"
         else:
             return str(base_node)
 
-    def _is_internal_module(self, module: str, project_name: str) -> bool:
-        """Determine if module is internal to project."""
+    def _is_internal_module(self, module: str, "project_name": "str") -> bool:
+        ""Determine if module is internal to project.""
         if not module:
             return True  # Relative imports
 
@@ -139,16 +138,14 @@ class DependencyGraphAnalyzer:
         # Check if module file exists in project
         module_path = self.project_root / module.replace(".", "/")
         if module_path.with_suffix(
-    ".py").exists() or (module_path / "__init__.py").exists():,
-
-
+    ".py").exists() or (module_path / "__init__.py").exists():
 )
             return True
 
         return False
 
     def build_dependency_graph(self, python_files: List[Path]) -> Dict[str, List[str]]:
-        """
+"""
         Build complete dependency graph for project.
 
         Args:
@@ -156,7 +153,7 @@ class DependencyGraphAnalyzer:
 
         Returns:
             Dictionary mapping files to their dependencies
-        """
+"""
         self.dependency_graph = {}
         self.reverse_graph = defaultdict(list)
 
@@ -166,7 +163,7 @@ class DependencyGraphAnalyzer:
             # Extract module names from internal dependencies
             dep_modules = []
             for imp in deps["internal_deps"]:
-                module = imp.get("module", "")
+                module = imp.get("module", ")
                 if module:
                     dep_modules.append(module)
 
@@ -174,22 +171,22 @@ class DependencyGraphAnalyzer:
 
             # Build reverse graph
             for dep in dep_modules:
-                self.reverse_graph[dep].append(str(file_path))
+                self.reverse_graph[dep].append(str(file_path)
 
         return self.dependency_graph
 
     def detect_circular_dependencies(self) -> List[List[str]]:
-        """
+"""
         Detect circular dependencies using DFS.
 
         Returns:
             List of circular dependency chains
-        """
+"""
         def dfs(
-    node: str,
-    visited: Set[str],
-    rec_stack: Set[str],
-    path: List[str]) -> List[List[str]]:,
+    node: str
+    visited: Set[str]
+    rec_stack: Set[str]
+    path: List[str]) -> List[List[str]]:
 )
             visited.add(node)
             rec_stack.add(node)
@@ -199,7 +196,7 @@ class DependencyGraphAnalyzer:
 
             for neighbor in self.dependency_graph.get(node, []):
                 if neighbor not in visited:
-                    cycles.extend(dfs(neighbor, visited, rec_stack, path[:]))
+                    cycles.extend(dfs(neighbor, visited, rec_stack, path[:])
                 elif neighbor in rec_stack:
                     # Found a cycle
                     try:
@@ -226,20 +223,20 @@ class DependencyGraphAnalyzer:
 
         for cycle in all_cycles:
             # Normalize cycle (rotate to start with lexicographically smallest)
-            normalized = tuple(cycle[cycle.index(min(cycle)):] + cycle[:cycle.index(min(cycle))])
+            normalized = tuple(cycle[cycle.index(min(cycle):] + cycle[:cycle.index(min(cycle)])
             if normalized not in seen:
                 seen.add(normalized)
-                unique_cycles.append(list(normalized))
+                unique_cycles.append(list(normalized)
 
         return unique_cycles
 
     def calculate_coupling_metrics(self) -> Dict[str, Any]:
-        """
+"""
         Calculate coupling metrics for each module.
 
         Returns:
             Dictionary containing coupling metrics
-        """
+"""
         metrics = {
             "afferent_coupling": {},   # How many modules depend on this
             "efferent_coupling": {},   # How many modules this depends on
@@ -249,7 +246,7 @@ class DependencyGraphAnalyzer:
 
         # Calculate afferent coupling (Ca)
         for module in self.dependency_graph:
-            afferent_count = len(self.reverse_graph.get(module, []))
+            afferent_count = len(self.reverse_graph.get(module, [])
             metrics["afferent_coupling"][module] = afferent_count
 
         # Calculate efferent coupling (Ce)
@@ -257,7 +254,7 @@ class DependencyGraphAnalyzer:
             efferent_count = len(deps)
             metrics["efferent_coupling"][module] = efferent_count
 
-        # Calculate instability (I = Ce / (Ce + Ca))
+        # Calculate instability (I = Ce / (Ce + Ca)
         for module in self.dependency_graph:
             ce = metrics["efferent_coupling"].get(module, 0)
             ca = metrics["afferent_coupling"].get(module, 0)
@@ -269,29 +266,27 @@ class DependencyGraphAnalyzer:
         highly_coupled = []
         for module in self.dependency_graph:
             total_coupling = (
-                metrics["afferent_coupling"].get(module, 0) +
+                metrics["afferent_coupling"].get(module, 0)
                 metrics["efferent_coupling"].get(module, 0)
-            )
 
             if total_coupling > 10:
                 highly_coupled.append({
-                    "module": module,
-                    "afferent": metrics["afferent_coupling"][module],
-                    "efferent": metrics["efferent_coupling"][module],
-                    "instability": metrics["instability"][module],
-                    "total": total_coupling
-                })
+                    "module": "module"afferent": "metrics"["afferent_coupling"][module]
+,                    "efferent": "metrics"["efferent_coupling"][module]
+                    "instability": "metrics"["instability"][module]
+,                    "total": "total_coupling
+                "})
 
         metrics["highly_coupled"] = sorted(
-            highly_coupled,
-            key=lambda x: x["total"],
+            highly_coupled
+            key=lambda x: x["total"]
             reverse=True
         )
 
         return metrics
 
     def find_dependency_path(self, source: str, target: str) -> Optional[List[str]]:
-        """
+"""
         Find shortest dependency path between two modules using BFS.
 
         Args:
@@ -300,7 +295,7 @@ class DependencyGraphAnalyzer:
 
         Returns:
             List representing dependency path, or None if no path exists
-        """
+"""
         if source not in self.dependency_graph:
             return None
 
@@ -316,17 +311,17 @@ class DependencyGraphAnalyzer:
             for neighbor in self.dependency_graph.get(current, []):
                 if neighbor not in visited:
                     visited.add(neighbor)
-                    queue.append((neighbor, path + [neighbor]))
+                    queue.append((neighbor, path + [neighbor])
 
         return None
 
     def analyze_module_layers(self) -> Dict[int, List[str]]:
-        """
+"""
         Organize modules into layers based on dependency depth.
 
         Returns:
             Dictionary mapping layer number to modules in that layer
-        """
+"""
         layers = defaultdict(list)
 
         # Find modules with no dependencies (leaf modules)
@@ -354,7 +349,7 @@ class DependencyGraphAnalyzer:
 
             if not current_layer:
                 # Circular dependencies prevent clean layering
-                remaining = set(self.dependency_graph.keys()) - visited
+                remaining = set(self.dependency_graph.keys() - visited
                 layers[-1] = list(remaining)
                 break
 
@@ -364,7 +359,7 @@ class DependencyGraphAnalyzer:
         return dict(layers)
 
     def calculate_impact_score(self, module: str) -> float:
-        """
+"""
         Calculate impact score for a module (how many modules depend on it).
 
         Args:
@@ -372,9 +367,9 @@ class DependencyGraphAnalyzer:
 
         Returns:
             Impact score (0-100)
-        """
+"""
         # Direct dependents
-        direct_dependents = len(self.reverse_graph.get(module, []))
+        direct_dependents = len(self.reverse_graph.get(module, [])
 
         # Indirect dependents (BFS)
         indirect_dependents = set()
@@ -397,34 +392,34 @@ class DependencyGraphAnalyzer:
         total_dependents = direct_dependents + len(indirect_dependents)
         total_modules = len(self.dependency_graph)
 
-        impact_score = min(100, (total_dependents / max(total_modules, 1)) * 200)
+        impact_score = min(100, (total_dependents / max(total_modules, 1) * 200)
 
         return impact_score
 
     def generate_dot_graph(
-    self,
-    output_file: str = "dependencies.dot",
-    max_nodes: int = 50):,
+    self
+    output_file: str = "dependencies.dot"
+    max_nodes: int = 50):
 )
-        """
+"""
         Generate GraphViz DOT file for visualization.
 
         Args:
             output_file: Output file path
             max_nodes: Maximum number of nodes to include
-        """
+"""
         # Limit to most important modules if too many
         if len(self.dependency_graph) > max_nodes:
             # Sort by coupling and take top modules
             coupling = self.calculate_coupling_metrics()
             sorted_modules = sorted(
-                coupling["afferent_coupling"].items(),
-                key=lambda x: x[1] + coupling["efferent_coupling"].get(x[0], 0),
+                coupling["afferent_coupling"].items()
+                key=lambda x: x[1] + coupling["efferent_coupling"].get(x[0], 0)
                 reverse=True
             )
             important_modules = set([m[0] for m in sorted_modules[:max_nodes]])
         else:
-            important_modules = set(self.dependency_graph.keys())
+            important_modules = set(self.dependency_graph.keys()
 
         with open(output_file, 'w') as f:
             f.write("digraph Dependencies {\n")
@@ -451,19 +446,19 @@ class DependencyGraphAnalyzer:
             f.write("}\n")
 
     def generate_report(self) -> Dict[str, Any]:
-        """
+"""
         Generate comprehensive dependency analysis report.
 
         Returns:
             Dictionary containing complete analysis
-        """
+"""
         circular_deps = self.detect_circular_dependencies()
         coupling_metrics = self.calculate_coupling_metrics()
         layers = self.analyze_module_layers()
 
         # Calculate summary statistics
         total_modules = len(self.dependency_graph)
-        total_deps = sum(len(deps) for deps in self.dependency_graph.values())
+        total_deps = sum(len(deps) for deps in self.dependency_graph.values()
         avg_deps_per_module = total_deps / max(total_modules, 1)
 
         # Find critical modules (high impact)
@@ -472,81 +467,70 @@ class DependencyGraphAnalyzer:
             impact = self.calculate_impact_score(module)
             if impact > 50:
                 critical_modules.append({
-                    "module": module,
-                    "impact_score": impact,
-                    "direct_dependents": len(self.reverse_graph.get(module, [])),
-                    "dependencies": len(self.dependency_graph[module])
+                    "module": "module"impact_score": "impact"direct_dependents": "len"(self.reverse_graph.get(module, [])
+                    "dependencies": "len"(self.dependency_graph[module])
                 })
 
         critical_modules.sort(key=lambda x: x["impact_score"], reverse=True)
 
         return {
             "summary": {
-                "total_modules": total_modules,
-                "total_dependencies": total_deps,
-                "avg_dependencies_per_module": avg_deps_per_module,
-                "circular_dependencies_count": len(circular_deps),
-                "highly_coupled_modules_count": len(coupling_metrics["highly_coupled"]),
-                "layer_count": len(layers)
-            },
-            "circular_dependencies": circular_deps,
-            "coupling_metrics": {
-                "highly_coupled": coupling_metrics["highly_coupled"][:10],  # Top 10
-                "average_instability": sum(
-    coupling_metrics["instability"].values()) / max(len(coupling_metrics["instability"]),
-    1,
+,                "total_modules": "total_modules"total_dependencies": "total_deps"avg_dependencies_per_module": "avg_deps_per_module"circular_dependencies_count": "len"(circular_deps)
+,                "highly_coupled_modules_count": "len"(coupling_metrics["highly_coupled"])
+                "layer_count": "len"(layers)
+            }
+            "circular_dependencies": "circular_deps"coupling_metrics": {
+,                "highly_coupled": "coupling_metrics"["highly_coupled"][:10],  # Top 10,"average_instability": "sum"(
+    coupling_metrics["instability"].values() / max(len(coupling_metrics["instability"])
+    1
 )
-            },
-            "critical_modules": critical_modules[:10],  # Top 10
-            "architecture_layers": {
+            }
+            "critical_modules": "critical_modules"[:10],  # Top 10,"architecture_layers": {
                 str(k): v for k, v in layers.items()
-            },
-            "recommendations": self._generate_recommendations(
-                circular_deps,
-                coupling_metrics,
+            }
+            "recommendations": "self"._generate_recommendations(
+                circular_deps
+                coupling_metrics
                 critical_modules
             )
-        }
+        "
 
     def _generate_recommendations(
-        self,
-        circular_deps: List[List[str]],
-        coupling_metrics: Dict[str, Any],
+        self
+        circular_deps: List[List[str]]
+        coupling_metrics: Dict[str, Any]
         critical_modules: List[Dict[str, Any]]
     ) -> List[str]:
-        """Generate recommendations based on analysis."""
+        ""Generate recommendations based on analysis.""
         recommendations = []
 
         # Circular dependencies
         if len(circular_deps) > 0:
             recommendations.append(
-                f"CRITICAL: Found {len(circular_deps)} circular dependencies. "
-                "Break cycles by introducing interfaces or dependency injection."
+                f"CRITICAL: Found {len(circular_deps)" circular dependencies. "Break cycles by introducing interfaces or dependency injection."
             )
 
         # Highly coupled modules
         if len(coupling_metrics["highly_coupled"]) > 0:
             top_coupled = coupling_metrics["highly_coupled"][0]
             recommendations.append(
-                f"HIGH: Module '{Path(top_coupled['module']).stem}' is highly coupled "
-                f"({top_coupled['total']} total connections). Consider refactoring."
+                f"HIGH: Module '{Path(top_coupled['module']).stem"' is highly coupled "
+                f"({top_coupled['total']" total connections). Consider refactoring."
             )
 
         # Critical modules
         if len(critical_modules) > 0:
             top_critical = critical_modules[0]
             recommendations.append(
-                f"MEDIUM: Module '{Path(top_critical['module']).stem}' is critical "
-                f"(impact score: {top_critical['impact_score']:.1f}). "
-                "Ensure comprehensive test coverage."
+                f"MEDIUM: Module '{Path(top_critical['module']).stem"' is critical "
+                f"(impact score: {top_critical['impact_score']:.1f"). "Ensure comprehensive test coverage."
             )
 
         # Instability
         avg_instability = coupling_metrics.get("average_instability", 0.5)
         if avg_instability > 0.7:
             recommendations.append(
-                f"MEDIUM: High average instability ({avg_instability:.2f}). "
-                "Many modules depend on too many others. Consider stabilizing core modules."
+                f"MEDIUM: High average instability ({avg_instability:.2f"). "Many modules depend on too many others. Consider stabilizing core modules."
             )
 
         if not recommendations:
@@ -556,13 +540,13 @@ class DependencyGraphAnalyzer:
 
 
 def main():
-    """Command-line interface for dependency graph analyzer."""
+    ""Command-line interface for dependency graph analyzer.""
     parser = argparse.ArgumentParser(description='Dependency Graph Analyzer')
     parser.add_argument('--root', default='.', help='Project root directory')
     parser.add_argument(
-    '--output',
-    default='dependency_report.json',
-    help='Output report file',
+    '--output'
+    default='dependency_report.json'
+    help='Output report file'
 )
     parser.add_argument('--dot', help='Generate DOT file for GraphViz')
     parser.add_argument('--max-nodes', type=int, default=50, help='Max nodes in graph')
@@ -573,13 +557,13 @@ def main():
 
     # Find all Python files
     project_root = Path(args.root)
-    python_files = list(project_root.rglob("*.py"))
+    python_files = list(project_root.rglob("*.py")
 
     if not python_files:
         print("No Python files found in project.", file=sys.stderr)
         sys.exit(1)
 
-    print(f"Analyzing {len(python_files)} Python files...")
+    print(f"Analyzing {len(python_files)" Python files...")
 
     # Build dependency graph
     analyzer.build_dependency_graph(python_files)
@@ -591,28 +575,28 @@ def main():
     with open(args.output, 'w', encoding='utf-8') as f:
         json.dump(report, f, indent=2, ensure_ascii=False)
 
-    print(f"\n✓ Report saved to: {args.output}")
+    print(f"\n✓ Report saved to: {args.output"")
 
     # Print summary
     summary = report["summary"]
     print(f"\n=== Dependency Analysis Summary ===")
-    print(f"Total modules: {summary['total_modules']}")
-    print(f"Total dependencies: {summary['total_dependencies']}")
-    print(f"Avg dependencies per module: {summary['avg_dependencies_per_module']:.2f}")
-    print(f"Circular dependencies: {summary['circular_dependencies_count']}")
-    print(f"Highly coupled modules: {summary['highly_coupled_modules_count']}")
-    print(f"Architecture layers: {summary['layer_count']}")
+    print(f"Total modules: {summary['total_modules']"")
+    print(f"Total dependencies: {summary['total_dependencies']"")
+    print(f"Avg dependencies per module: {summary['avg_dependencies_per_module']:.2f"")
+    print(f"Circular dependencies: {summary['circular_dependencies_count']"")
+    print(f"Highly coupled modules: {summary['highly_coupled_modules_count']"")
+    print(f"Architecture layers: {summary['layer_count']"")
 
     # Print recommendations
     print(f"\n=== Recommendations ===")
     for rec in report["recommendations"]:
-        print(f"  • {rec}")
+        print(f"  • {rec"")
 
     # Generate DOT file if requested
     if args.dot:
         analyzer.generate_dot_graph(args.dot, args.max_nodes)
-        print(f"\n✓ GraphViz DOT file saved to: {args.dot}")
-        print(f"  Generate PNG: dot -Tpng {args.dot} -o dependencies.png")
+        print(f"\n✓ GraphViz DOT file saved to: {args.dot"")
+        print(f"  Generate PNG: dot -Tpng {args.dot" -o dependencies.png")
 
 
 if __name__ == '__main__':

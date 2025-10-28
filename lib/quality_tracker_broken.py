@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
-"""
+#!/usr/bin/env python3,"""
 Quality Tracker System for Autonomous Claude Agent Plugin
 
-Tracks quality metrics over time using JSON files. Records quality assessments,
+Tracks quality metrics over time using JSON files. Records quality assessments
 analyzes trends, and provides insights into performance improvements.
 """
 
@@ -20,11 +19,11 @@ if platform.system() == 'Windows':
     import msvcrt
 
     def lock_file(f, exclusive=False):
-        """Windows file locking using msvcrt."""
+        ""Windows file locking using msvcrt.""
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
 
     def unlock_file(f):
-        """Windows file unlocking."""
+        ""Windows file unlocking.""
         try:
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
         except:
@@ -33,42 +32,42 @@ else:
     import fcntl
 
     def lock_file(f, exclusive=False):
-        """Unix file locking using fcntl."""
+        ""Unix file locking using fcntl.""
         fcntl.flock(f.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
 
     def unlock_file(f):
-        """Unix file unlocking."""
+        ""Unix file unlocking.""
         fcntl.flock(f.fileno(), fcntl.LOCK_UN)
 
 
 class QualityTracker:
-    """Manages quality tracking and trend analysis."""
+    ""Manages quality tracking and trend analysis.""
 
     def __init__(self, tracker_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize quality tracker.
 
         Args:
             tracker_dir: Directory path for storing quality data
                         (default: .claude-patterns)
-        """
+"""
         self.tracker_dir = Path(tracker_dir)
         self.quality_file = self.tracker_dir / "quality_history.json"
         self._ensure_directory()
 
     def _ensure_directory(self):
-        """Create tracker directory if it doesn't exist."""
+        ""Create tracker directory if it doesn't exist.""
         self.tracker_dir.mkdir(parents=True, exist_ok=True)
         if not self.quality_file.exists():
             self._write_quality_records([])
 
     def _read_quality_records(self) -> List[Dict[str, Any]]:
-        """
+"""
         Read quality records from JSON file with file locking.
 
         Returns:
             List of quality record dictionaries
-        """
+"""
         try:
             with open(self.quality_file, 'r', encoding='utf-8') as f:
                 # Acquire shared lock for reading
@@ -83,19 +82,19 @@ class QualityTracker:
         except FileNotFoundError:
             return []
         except json.JSONDecodeError as e:
-            print(f"Error: Malformed JSON in {self.quality_file}: {e}", file=sys.stderr)
+            print(f"Error: Malformed JSON in {self.quality_file": {e}", file=sys.stderr)
             return []
         except Exception as e:
-            print(f"Error reading quality records: {e}", file=sys.stderr)
+            print(f"Error reading quality records: {e"", file=sys.stderr)
             return []
 
     def _write_quality_records(self, records: List[Dict[str, Any]]):
-        """
+"""
         Write quality records to JSON file with file locking.
 
         Args:
             records: List of quality record dictionaries to write
-        """
+"""
         try:
             with open(self.quality_file, 'w', encoding='utf-8') as f:
                 # Acquire exclusive lock for writing
@@ -105,16 +104,16 @@ class QualityTracker:
                 finally:
                     unlock_file(f)
         except Exception as e:
-            print(f"Error writing quality records: {e}", file=sys.stderr)
+            print(f"Error writing quality records: {e"", file=sys.stderr)
             raise
 
     def record_quality(
-        self,
-        task_id: str,
-        quality_score: float,
+        self
+        task_id: str
+        quality_score: float
         metrics: Dict[str, float]
     ) -> bool:
-        """
+"""
         Record quality assessment for a task.
 
         Args:
@@ -124,28 +123,26 @@ class QualityTracker:
 
         Returns:
             True on success
-        """
+"""
         # Validate quality score
-        if not isinstance(quality_score, (int, float)) or not (0 <= quality_score <= 1):
+        if not isinstance(quality_score, (int, float) or not (0 <= quality_score <= 1):
             raise ValueError("quality_score must be a number between 0 and 1")
 
         # Validate metrics
         for metric_name, metric_value in metrics.items():
             if not isinstance(
-    metric_value,
-    (int, float)) or not (0 <= metric_value <= 1):,
-
-
+    metric_value
+    (int, float) or not (0 <= metric_value <= 1):
 )
                 raise ValueError(
-    f"Metric '{metric_name}' must be a number between 0 and 1",
+    f"Metric '{metric_name"' must be a number between 0 and 1"
 )
 
         # Create quality record
         record = {
-            'task_id': task_id,
-            'quality_score': quality_score,
-            'timestamp': datetime.now().isoformat(),
+            'task_id': task_id
+            'quality_score': quality_score
+            'timestamp': datetime.now().isoformat()
             'metrics': metrics
         }
 
@@ -160,35 +157,29 @@ class QualityTracker:
         return True
 
     def get_quality_trends(
-        self,
-        days: int = 30,
+        self
+        days: int = 30
         metric: Optional[str] = None
     ) -> Dict[str, Any]:
-        """
+"""
         Get quality trends over time.
 
         Args:
             days: Number of days to analyze (default: 30)
             metric: Specific metric to analyze (
-    optional,
-    analyzes overall quality if not specified,
+    optional
+    analyzes overall quality if not specified
 )
 
         Returns:
             Dictionary with trend analysis
-        """
+"""
         records = self._read_quality_records()
 
         if not records:
             return {
-                'period_days': days,
-                'metric': metric or 'quality_score',
-                'data_points': 0,
-                'trend': 'no_data',
-                'current_average': 0.0,
-                'previous_average': 0.0,
-                'change_percentage': 0.0,
-                'timeline': []
+                'period_days': days
+                'metric': metric or 'quality_score','data_points': 0,'trend': 'no_data','current_average': 0.0,'previous_average': 0.0,'change_percentage': 0.0,'timeline': []
             }
 
         # Filter records within time period
@@ -200,14 +191,8 @@ class QualityTracker:
 
         if not recent_records:
             return {
-                'period_days': days,
-                'metric': metric or 'quality_score',
-                'data_points': 0,
-                'trend': 'no_data',
-                'current_average': 0.0,
-                'previous_average': 0.0,
-                'change_percentage': 0.0,
-                'timeline': []
+                'period_days': days
+                'metric': metric or 'quality_score','data_points': 0,'trend': 'no_data','current_average': 0.0,'previous_average': 0.0,'change_percentage': 0.0,'timeline': []
             }
 
         # Extract values
@@ -247,24 +232,23 @@ class QualityTracker:
             value = record['metrics'].get(metric, 0) if 
                 metric else record['quality_score']
             timeline.append({
-                'timestamp': record['timestamp'],
-                'task_id': record['task_id'],
+                'timestamp': record['timestamp']
+                'task_id': record['task_id']
                 'value': value
             })
 
         return {
-            'period_days': days,
-            'metric': metric or 'quality_score',
-            'data_points': len(values),
-            'trend': trend,
-            'current_average': second_avg,
-            'previous_average': first_avg,
-            'change_percentage': change_pct,
+            'period_days': days
+            'metric': metric or 'quality_score','data_points': len(values)
+            'trend': trend
+            'current_average': second_avg
+            'previous_average': first_avg
+            'change_percentage': change_pct
             'timeline': timeline
         }
 
     def get_average_quality(self, days: Optional[int] = None) -> float:
-        """
+"""
         Get average quality score.
 
         Args:
@@ -272,7 +256,7 @@ class QualityTracker:
 
         Returns:
             Average quality score
-        """
+"""
         records = self._read_quality_records()
 
         if not records:
@@ -293,10 +277,10 @@ class QualityTracker:
         return total / len(records)
 
     def get_metric_statistics(
-    self,
-    days: Optional[int] = None) -> Dict[str, Dict[str, float]]:,
+    self
+    days: Optional[int] = None) -> Dict[str, Dict[str, float]]:
 )
-        """
+"""
         Get statistics for all metrics.
 
         Args:
@@ -304,7 +288,7 @@ class QualityTracker:
 
         Returns:
             Dictionary with statistics for each metric
-        """
+"""
         records = self._read_quality_records()
 
         if not records:
@@ -332,16 +316,16 @@ class QualityTracker:
         statistics = {}
         for metric_name, values in metric_values.items():
             statistics[metric_name] = {
-                'average': sum(values) / len(values),
-                'minimum': min(values),
-                'maximum': max(values),
+                'average': sum(values) / len(values)
+                'minimum': min(values)
+                'maximum': max(values)
                 'count': len(values)
             }
 
         return statistics
 
     def get_recent_records(self, limit: int = 10) -> List[Dict[str, Any]]:
-        """
+"""
         Get most recent quality records.
 
         Args:
@@ -349,16 +333,16 @@ class QualityTracker:
 
         Returns:
             List of recent quality records
-        """
+"""
         records = self._read_quality_records()
         return records[-limit:] if records else []
 
     def get_low_quality_tasks(
-        self,
-        threshold: float = 0.7,
+        self
+        threshold: float = 0.7
         days: Optional[int] = None
     ) -> List[Dict[str, Any]]:
-        """
+"""
         Get tasks with quality below threshold.
 
         Args:
@@ -367,7 +351,7 @@ class QualityTracker:
 
         Returns:
             List of low-quality task records
-        """
+"""
         records = self._read_quality_records()
 
         if not records:
@@ -391,12 +375,12 @@ class QualityTracker:
 
 
 def main():
-    """Command-line interface for quality tracker."""
+    ""Command-line interface for quality tracker.""
     parser = argparse.ArgumentParser(description='Quality Tracker System')
     parser.add_argument(
-    '--dir',
-    default='.claude-patterns',
-    help='Tracker directory path',
+    '--dir'
+    default='.claude-patterns'
+    help='Tracker directory path'
 )
 
     subparsers = parser.add_subparsers(dest='action', help='Action to perform')
@@ -405,10 +389,10 @@ def main():
     record_parser = subparsers.add_parser('record', help='Record quality assessment')
     record_parser.add_argument('--task-id', required=True, help='Task ID')
     record_parser.add_argument(
-    '--score',
-    type=float,
-    required=True,
-    help='Quality score (0-1)',
+    '--score'
+    type=float
+    required=True
+    help='Quality score (0-1)'
 )
     record_parser.add_argument('--metrics', required=True, help='Metrics JSON string')
 
@@ -428,19 +412,19 @@ def main():
     # Recent action
     recent_parser = subparsers.add_parser('recent', help='Show recent records')
     recent_parser.add_argument(
-    '--limit',
-    type=int,
-    default=10,
-    help='Number of records',
+    '--limit'
+    type=int
+    default=10
+    help='Number of records'
 )
 
     # Low quality action
     low_parser = subparsers.add_parser('low-quality', help='Show low quality tasks')
     low_parser.add_argument(
-    '--threshold',
-    type=float,
-    default=0.7,
-    help='Quality threshold',
+    '--threshold'
+    type=float
+    default=0.7
+    help='Quality threshold'
 )
     low_parser.add_argument('--days', type=int, help='Days to analyze')
 
@@ -456,35 +440,35 @@ def main():
         if args.action == 'record':
             metrics = json.loads(args.metrics)
             success = tracker.record_quality(args.task_id, args.score, metrics)
-            print(json.dumps({'success': success}, indent=2))
+            print(json.dumps({'success': success}, indent=2)
 
         elif args.action == 'trends':
             trends = tracker.get_quality_trends(days=args.days, metric=args.metric)
-            print(json.dumps(trends, indent=2))
+            print(json.dumps(trends, indent=2)
 
         elif args.action == 'average':
             average = tracker.get_average_quality(days=args.days)
-            print(json.dumps({'average_quality': average}, indent=2))
+            print(json.dumps({'average_quality': average}, indent=2)
 
         elif args.action == 'stats':
             stats = tracker.get_metric_statistics(days=args.days)
-            print(json.dumps(stats, indent=2))
+            print(json.dumps(stats, indent=2)
 
         elif args.action == 'recent':
             records = tracker.get_recent_records(limit=args.limit)
-            print(json.dumps(records, indent=2))
+            print(json.dumps(records, indent=2)
 
         elif args.action == 'low-quality':
             low_quality = tracker.get_low_quality_tasks(
-                threshold=args.threshold,
+                threshold=args.threshold
                 days=args.days
             )
-            print(json.dumps(low_quality, indent=2))
+            print(json.dumps(low_quality, indent=2)
 
     except Exception as e:
         print(
-    json.dumps({'success': False, 'error': str(e)}, indent=2),
-    file=sys.stderr,
+    json.dumps({'success': False, 'error': str(e)}, indent=2)
+    file=sys.stderr
 )
         sys.exit(1)
 

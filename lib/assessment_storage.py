@@ -8,6 +8,7 @@ for dashboard real-time monitoring and learning system improvement.
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Dict, Any, List
 
 
 class AssessmentStorage:
@@ -70,16 +71,14 @@ class AssessmentStorage:
             ),
         ]:
             if not file_path.exists():
-                with open(file_path, 'w') as f:
-                    json.dump(default_structure, f, indent=2)
+                with open(file_path, 'w') as f: json.dump(default_structure, f, indent=2)
 
     def store_assessment(self, assessment_data: Dict[str, Any]) -> bool:
         """
         Store assessment result from any command
 
         Args:
-            assessment_data: Dict containing:
-                - command_name: str (e.g., 'validate-claude-plugin', 'gui-debug')
+            assessment_data: Dict containing: - command_name: str (e.g., 'validate-claude-plugin', 'gui-debug')
                 - assessment_type: str (
     e.g.,
     'validation',
@@ -87,15 +86,15 @@ class AssessmentStorage:
     'gui-analysis',
 )
                 - overall_score: int (0-100)
-                - breakdown: Dict[str, int] (score breakdown)
-                - details: Dict[str, Any] (detailed findings)
-                - issues_found: List[str]
-                - recommendations: List[str]
-                - agents_used: List[str] (optional)
-                - skills_used: List[str] (optional)
+                - "breakdown": Dict[str, int] (score breakdown)
+                - "details": Dict[str, Any] (detailed findings)
+                - "issues_found": List[str]
+                - "recommendations": List[str]
+                - "agents_used": List[str] (optional)
+                - "skills_used": List[str] (optional)
                 - execution_time: float (optional, in minutes)
                 - pass_threshold_met: bool (optional)
-                - additional_metrics: Dict[str, Any] (optional)
+                - "additional_metrics": Dict[str, Any] (optional)
 
         Returns:
             bool: Success status
@@ -103,9 +102,7 @@ class AssessmentStorage:
         try:
             # Generate assessment ID
             timestamp = datetime.now(timezone.utc)
-            assessment_id = f"{
-    assessment_data['command_name']}-{
-        timestamp.strftime('%Y%m%d-%H%M%S')}"
+            assessment_id = f"{assessment_data['command_name']}-{timestamp.strftime('%Y%m%d-%H%M%S')}"
 
             # Create comprehensive assessment record
             assessment_record = {
@@ -114,8 +111,10 @@ class AssessmentStorage:
                 "command_name": assessment_data["command_name"],
                 "assessment_type": assessment_data.get("assessment_type", "general"),
                 "task_type": assessment_data.get(
-    "task_type",
-    assessment_data["command_name"])"overall_score": assessment_data["overall_score"],
+                    "task_type",
+                    assessment_data["command_name"]
+                ),
+                "overall_score": assessment_data["overall_score"],
                 "breakdown": assessment_data.get("breakdown", {}),
                 "details": assessment_data.get("details", {}),
                 "issues_found": assessment_data.get("issues_found", []),
@@ -124,8 +123,10 @@ class AssessmentStorage:
                 "skills_used": assessment_data.get("skills_used", []),
                 "execution_time_minutes": assessment_data.get("execution_time"),
                 "pass_threshold_met": assessment_data.get(
-    "pass_threshold_met",
-    assessment_data["overall_score"] >= 70)"additional_metrics": assessment_data.get("additional_metrics", {}),
+                    "pass_threshold_met",
+                    assessment_data["overall_score"] >= 70
+                ),
+                "additional_metrics": assessment_data.get("additional_metrics", {}),
                 "success": assessment_data["overall_score"] >= 70
             }
 
@@ -146,13 +147,11 @@ class AssessmentStorage:
             # Store in patterns file (for learning system)
             self._store_in_patterns_file(assessment_record)
 
-            print(
-    f"[+] Assessment stored: {assessment_id} (Score: {assessment_data['overall_score']}/100)",
-)
+            print(f"[+] Assessment stored: {assessment_id} (Score: {assessment_data['overall_score']}/100)")
             return True
 
         except Exception as e:
-            print(f"[-] Failed to store assessment: {e}")
+            print(f"Failed to store assessment: {e}")
             return False
 
     def _store_in_assessments_file(self, assessment_record: Dict[str, Any]):
@@ -193,9 +192,7 @@ class AssessmentStorage:
 
         cmd_metrics["last_execution"] = assessment_record["timestamp"]
 
-        with open(self.assessments_file, 'w') as f:
-            json.dump(data, f, indent=2)
-
+        with open(self.assessments_file, 'w') as f: json.dump(data, f, indent=2)
     def _store_in_quality_history(self, assessment_record: Dict[str, Any]):
         """Store in quality history file (for dashboard compatibility)"""
         with open(self.quality_history_file, 'r') as f:
@@ -224,15 +221,13 @@ class AssessmentStorage:
         data["statistics"] = {
             "avg_quality_score": sum(scores) / len(scores) if scores else 0,
             "total_assessments": total_assessments,
-            "passing_rate": sum(
-    1 for s in scores if s >= 70) / len(scores) if scores else 1.0"trend": "improving"  # Could be calculated more sophisticatedly
+            "passing_rate": sum(1 for s in scores if s >= 70) / len(scores) if scores else 1.0,
+            "trend": "improving"  # Could be calculated more sophisticatedly
         }
 
         data["metadata"]["last_assessment"] = assessment_record["timestamp"]
 
-        with open(self.quality_history_file, 'w') as f:
-            json.dump(data, f, indent=2)
-
+        with open(self.quality_history_file, 'w') as f: json.dump(data, f, indent=2)
     def _update_agent_metrics(self, assessment_record: Dict[str, Any]):
         """Update agent performance metrics"""
         with open(self.agent_metrics_file, 'r') as f:
@@ -244,7 +239,7 @@ class AssessmentStorage:
             "task_type": assessment_record["task_type"],
             "agents_involved": assessment_record["agents_used"],
             "execution_details": {},
-            "collaboration_effectiveness": "excellent" if 
+            collaboration_effectiveness: excellent if 
                 assessment_record["success"] else "needs_improvement",
             "integration_success": assessment_record["success"]
         }
@@ -252,9 +247,11 @@ class AssessmentStorage:
         # Add execution details for each agent
         for agent in assessment_record["agents_used"]:
             task_record["execution_details"][agent] = {
-                "role": "assessment_execution",
+                "role": assessment_execution,
                 "duration_seconds": int(
-    (assessment_record.get("execution_time_minutes", 0) or 0) * 60)"success": assessment_record["success"],
+                    (assessment_record.get("execution_time_minutes", 0) or 0) * 60
+                ),
+                "success": assessment_record["success"],
                 "quality_score": assessment_record["overall_score"]
             }
 
@@ -282,8 +279,7 @@ class AssessmentStorage:
             perf["avg_quality_score"] = ((current_avg * (total_tasks - 1)) + new_score) / total_tasks
 
             # Update total duration
-            duration = int((assessment_record.get("execution_time_minutes", 0) or 
-                0) * 60)
+            duration = int((assessment_record.get("execution_time_minutes", 0) or 0) * 60)
             perf["total_duration"] += duration
 
         data["last_updated"] = assessment_record["timestamp"]
@@ -291,9 +287,7 @@ class AssessmentStorage:
         data["overall_success_rate"] = sum(1 for t in data["quality_assessment_tasks"] if 
             t["integration_success"]) / len(data["quality_assessment_tasks"])
 
-        with open(self.agent_metrics_file, 'w') as f:
-            json.dump(data, f, indent=2)
-
+        with open(self.agent_metrics_file, 'w') as f: json.dump(data, f, indent=2)
     def _update_skill_metrics(self, assessment_record: Dict[str, Any]):
         """Update skill effectiveness metrics"""
         with open(self.skill_metrics_file, 'r') as f:
@@ -338,9 +332,7 @@ class AssessmentStorage:
         data["overall_success_rate"] = sum(1 for t in data["skill_usage_history"] if 
             t["overall_success"]) / len(data["skill_usage_history"])
 
-        with open(self.skill_metrics_file, 'w') as f:
-            json.dump(data, f, indent=2)
-
+        with open(self.skill_metrics_file, 'w') as f: json.dump(data, f, indent=2)
     def _store_in_patterns_file(self, assessment_record: Dict[str, Any]):
         """Store assessment pattern for learning system"""
         with open(self.patterns_file, 'r') as f:
@@ -361,18 +353,15 @@ class AssessmentStorage:
                 "skills_used": assessment_record.get("skills_used", []),
                 "agents_delegated": assessment_record.get("agents_used", []),
                 "approach": assessment_record["command_name"],
-                "duration_seconds": int(
-    (assessment_record.get("execution_time_minutes", 0) or 0) * 60)"score_achieved": assessment_record["overall_score"]
+                "duration_seconds": int((assessment_record.get("execution_time_minutes", 0) or 0) * 60),
+                "score_achieved": assessment_record["overall_score"]
             },
             "findings": {
                 "issues_count": len(assessment_record.get("issues_found", [])),
-                "recommendations_count": len(
-    assessment_record.get("recommendations", []))"key_issues": assessment_record.get(
-    "issues_found",
-    [])[:3],  # Top 3 issues,
-)
-                "success_factors": self._extract_success_factors(assessment_record)
+                "recommendations_count": len(assessment_record.get("recommendations", [])),
+                "key_issues": assessment_record.get("issues_found", [])[:3]  # Top 3 issues
             },
+            "success_factors": self._extract_success_factors(assessment_record),
             "outcome": {
                 "success": assessment_record["success"],
                 "quality_score": assessment_record["overall_score"],
@@ -387,9 +376,7 @@ class AssessmentStorage:
 
         data["patterns"].append(pattern)
 
-        with open(self.patterns_file, 'w') as f:
-            json.dump(data, f, indent=2)
-
+        with open(self.patterns_file, 'w') as f: json.dump(data, f, indent=2)
     def _extract_success_factors(self, assessment_record: Dict[str, Any]) -> List[str]:
         """Extract success factors from assessment"""
         factors = []

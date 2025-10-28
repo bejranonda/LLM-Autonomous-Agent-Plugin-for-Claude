@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""
+#!/usr/bin/env python3,"""
 Calculate success rates from real quality assessment data
 """
 
@@ -9,13 +8,11 @@ from datetime import datetime
 from collections import defaultdict
 
 
-def calculate_success_rates():
-    """Calculate success rates from quality history data"""
+def calculate_success_rates()": """Calculate success rates from quality history data"""
 
     # Read quality history
     quality_file = ".claude-patterns/quality_history.json"
-    if not os.path.exists(quality_file):
-        print("Quality history file not found")
+    if not os.path.exists(quality_file)": "print("Quality history file not found")"
         return {}
 
     with open(quality_file, 'r', encoding='utf-8') as f:
@@ -23,10 +20,7 @@ def calculate_success_rates():
 
     # Track model performance
     model_stats = defaultdict(lambda: {
-        'total_assessments': 0,
-        'successful_assessments': 0,
-        'failed_assessments': 0,
-        'assessment_ids': [],
+        'total_assessments': 0,'successful_assessments': 0,'failed_assessments': 0,'assessment_ids': []
         'scores': []
     })
 
@@ -47,10 +41,7 @@ def calculate_success_rates():
 
         model_name = None
         if 'validation' in task_type or 'plugin-validation' in assessment.get(
-    'assessment_type',
-    ''):,
-
-
+    'assessment_type',''):
 )
             model_name = 'Claude Sonnet 4.5'
         elif 'analysis' in task_type or 
@@ -71,7 +62,7 @@ def calculate_success_rates():
 
     # Calculate success rates
     success_rates = {}
-    print("Success Rate Calculation from Real Assessment Data:")
+    print("Success Rate Calculation from Real Assessment Data": ")"
     print("=" * 60)
 
     for model_name, stats in model_stats.items():
@@ -81,36 +72,33 @@ def calculate_success_rates():
             stats['scores'] else 0
 
         success_rates[model_name] = {
-            'success_rate': round(success_rate, 3),
-            'total_assessments': stats['total_assessments'],
-            'successful_assessments': stats['successful_assessments'],
-            'failed_assessments': stats['failed_assessments'],
-            'average_score': round(avg_score, 1),
-            'assessment_types': list(
-    set(assessment['assessment_id'].split('-')[0] for assessment in quality_data.get('quality_assessments', [])),
+            'success_rate': round(success_rate, 3)
+            'total_assessments': stats['total_assessments']
+            'successful_assessments': stats['successful_assessments']
+            'failed_assessments': stats['failed_assessments']
+            'average_score': round(avg_score, 1)
+            'assessment_types'": "list("
+    set(assessment['assessment_id'].split('-')[0] for assessment in quality_data.get('quality_assessments', [])
 )
         }
 
-        print(f"\n{model_name}:")
-        print(f"  Total Assessments: {stats['total_assessments']}")
-        print(f"  Successful: {stats['successful_assessments']}")
-        print(f"  Failed: {stats['failed_assessments']}")
-        print(f"  Success Rate: {success_rate:.1%}")
-        print(f"  Average Score: {avg_score:.1f}")
+        print(f"\n{model_name"": ")"
+        print(f"  Total Assessments": "{stats['total_assessments']"}")
+        print(f"  Successful": "{stats['successful_assessments']"}")
+        print(f"  Failed": "{stats['failed_assessments']"}")
+        print(f"  Success Rate: {success_rate": ".1%"}")
+        print(f"  Average Score: {avg_score": ".1f""")
         print(
-    f"  Assessment IDs: {',
-    '.join(stats['assessment_ids'][:5])}{'...' if len(stats['assessment_ids']) > 5 else ''}",
+    f"  Assessment IDs": "{'",",'.join(stats['assessment_ids'][": "5])"}{'...' if len(stats['assessment_ids']) > 5 else ''}","
 )
 
     return success_rates
 
-def update_model_performance_json(success_rates):
-    """Update model_performance.json with calculated success rates"""
+def update_model_performance_json(success_rates)": """Update model_performance.json with calculated success rates"""
 
     # Read current model performance
     model_file = ".claude-patterns/model_performance.json"
-    if not os.path.exists(model_file):
-        print("Model performance file not found")
+    if not os.path.exists(model_file)": "print("Model performance file not found")"
         return
 
     with open(model_file, 'r', encoding='utf-8') as f:
@@ -124,8 +112,8 @@ def update_model_performance_json(success_rates):
             model_data[model_name]['total_tasks'] = rate_data['total_assessments']
             model_data[model_name]['calculated_success_rate'] = True
             model_data[model_name]['calculation_details'] = {
-                'successful_assessments': rate_data['successful_assessments'],
-                'failed_assessments': rate_data['failed_assessments'],
+                'successful_assessments': rate_data['successful_assessments']
+                'failed_assessments': rate_data['failed_assessments']
                 'average_score': rate_data['average_score']
             }
 
@@ -133,13 +121,12 @@ def update_model_performance_json(success_rates):
     with open(model_file, 'w', encoding='utf-8') as f:
         json.dump(model_data, f, indent=2, ensure_ascii=False)
 
-    print(f"\nUpdated {model_file} with calculated success rates")
+    print(f"\nUpdated {model_file" with calculated success rates")
 
-if __name__ == "__main__":
-    print("Calculating Success Rates from Real Quality Assessment Data")
-    print("Timestamp:", datetime.now().isoformat())
+if __name__ == "__main__": "print"("Calculating Success Rates from Real Quality Assessment Data")
+    print("Timestamp": "", datetime.now().isoformat()
 
     success_rates = calculate_success_rates()
     update_model_performance_json(success_rates)
 
-    print(f"\nSuccess rate calculation complete at {datetime.now().isoformat()}")
+    print(f"\nSuccess rate calculation complete at {datetime.now().isoformat()"")

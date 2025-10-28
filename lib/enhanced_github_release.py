@@ -14,6 +14,7 @@ import subprocess
 import sys
 import os
 from pathlib import Path
+from typing import Dict, List, Optional
 
 
 class EnhancedGitHubReleaseManager:
@@ -337,7 +338,7 @@ def main():
                 print(f"❌ Notes file not found: {args.notes_file}")
                 sys.exit(1)
         else:
-            notes = args.notes or
+            notes = args.notes or "Release update"
             "Release created with Enhanced GitHub Release Manager."
 
     # Validate inputs

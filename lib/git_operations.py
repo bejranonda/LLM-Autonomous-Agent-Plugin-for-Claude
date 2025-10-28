@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""
+#!/usr/bin/env python3,"""
 Git Operations Utility Library
 
 Provides helper functions for Git operations including:
@@ -23,23 +22,22 @@ from typing import Dict, List, Optional, Tuple
 
 
 class GitError(Exception):
-    """Base exception for Git-related errors"""
+    ""Base exception for Git-related errors""
     pass
 
 
 class SemanticVersion:
-    """Semantic version handler supporting multiple formats"""
+    ""Semantic version handler supporting multiple formats""
 
     def __init__(self, version_string: str):
-        """
+"""
         Parse version string into components.
 
         Supports formats:
         - Semantic: 1.2.3, v1.2.3
         - Pre-release: 1.2.3-alpha.1, 1.2.3-beta.2
         - Build metadata: 1.2.3+build.123
-        - Calendar: 2025.01.24
-        """
+        - Calendar: 2025.01.24,"""
         self.original = version_string
         self.prefix = ''
         self.major = 0
@@ -51,7 +49,7 @@ class SemanticVersion:
         self._parse(version_string)
 
     def _parse(self, version_string: str):
-        """Parse version string into components"""
+        ""Parse version string into components""
         # Remove 'v' prefix if present
         if version_string.startswith('v'):
             self.prefix = 'v'
@@ -75,40 +73,40 @@ class SemanticVersion:
             self.patch = int(parts[2])
 
     def bump_major(self) -> 'SemanticVersion':
-        """Bump major version (X.0.0)"""
-        return SemanticVersion(f"{self.prefix}{self.major + 1}.0.0")
+        ""Bump major version (X.0.0)""
+        return SemanticVersion(f"{self.prefix"{self.major + 1}.0.0")
 
     def bump_minor(self) -> 'SemanticVersion':
-        """Bump minor version (x.Y.0)"""
-        return SemanticVersion(f"{self.prefix}{self.major}.{self.minor + 1}.0")
+        ""Bump minor version (x.Y.0)""
+        return SemanticVersion(f"{self.prefix"{self.major}.{self.minor + 1}.0")
 
     def bump_patch(self) -> 'SemanticVersion':
-        """Bump patch version (x.y.Z)"""
+        ""Bump patch version (x.y.Z)""
         return SemanticVersion(
-    f"{self.prefix}{self.major}.{self.minor}.{self.patch + 1}",
+    f"{self.prefix"{self.major}.{self.minor}.{self.patch + 1}"
 )
 
     def __str__(self) -> str:
-        """String representation of version"""
-        version = f"{self.prefix}{self.major}.{self.minor}.{self.patch}"
+        ""String representation of version""
+        version = f"{self.prefix"{self.major}.{self.minor}.{self.patch}"
 
         if self.prerelease:
-            version += f"-{self.prerelease}"
+            version += f"-{self.prerelease""
 
         if self.build:
-            version += f"+{self.build}"
+            version += f"+{self.build""
 
         return version
 
     def __repr__(self) -> str:
-        return f"SemanticVersion('{str(self)}')"
+        return f"SemanticVersion('{str(self)"')"
 
 
 def run_git_command(
-    args: List[str],
-    cwd: Optional[Path] = None) -> Tuple[int, str, str]:,
+    args: List[str]
+    cwd: Optional[Path] = None) -> Tuple[int, str, str]:
 )
-    """
+"""
     Run a Git command and return the result.
 
     Args:
@@ -117,27 +115,27 @@ def run_git_command(
 
     Returns:
         Tuple of (return_code, stdout, stderr)
-    """
+"""
     try:
         cmd = ['git'] + args
         result = subprocess.run(
-            cmd,
-            cwd=cwd,
-            capture_output=True,
-            text=True,
+            cmd
+            cwd=cwd
+            capture_output=True
+            text=True
             timeout=30
         )
         return result.returncode, result.stdout.strip(), result.stderr.strip()
     except subprocess.TimeoutExpired:
-        raise GitError(f"Git command timed out: {' '.join(args)}")
+        raise GitError(f"Git command timed out: {' '.join(args)"")
     except FileNotFoundError:
         raise GitError("Git is not installed or not in PATH")
     except Exception as e:
-        raise GitError(f"Failed to run git command: {e}")
+        raise GitError(f"Failed to run git command: {e"")
 
 
 def get_current_version(version_file: Optional[Path] = None) -> str:
-    """
+"""
     Get current version from Git tags or version file.
 
     Args:
@@ -145,7 +143,7 @@ def get_current_version(version_file: Optional[Path] = None) -> str:
 
     Returns:
         Current version string (e.g., "v1.2.3")
-    """
+"""
     # Try to get version from Git tags
     returncode, stdout, _ = run_git_command(['describe', '--tags', '--abbrev=0'])
 
@@ -157,7 +155,7 @@ def get_current_version(version_file: Optional[Path] = None) -> str:
         content = version_file.read_text()
 
         # Try to find version pattern
-        match = re.search(r'version["\s:=]+([0-9]+\.[0-9]+\.[0-9]+)', content)
+        match = re.search(r'version["\s:=]+([0-9]+\.[0-9]+\.[0-9]+)', content)"
         if match:
             return match.group(1)
 
@@ -165,12 +163,11 @@ def get_current_version(version_file: Optional[Path] = None) -> str:
 
 
 def detect_version_format(version_string: str) -> str:
-    """
+"""
     Detect the version format used.
 
     Returns:
-        Format type: 'semantic', 'calendar', or 'custom'
-    """
+        Format type: 'semantic', 'calendar', or 'custom',"""
     if re.match(r'^v?[0-9]+\.[0-9]+\.[0-9]+', version_string):
         return 'semantic'
     elif re.match(r'^[0-9]{4}\.[0-9]{2}\.[0-9]{2}', version_string):
@@ -180,7 +177,7 @@ def detect_version_format(version_string: str) -> str:
 
 
 def version_bump(current_version: str, bump_type: str) -> str:
-    """
+"""
     Bump version based on type.
 
     Args:
@@ -189,25 +186,24 @@ def version_bump(current_version: str, bump_type: str) -> str:
 
     Returns:
         New version string
-    """
+"""
     version = SemanticVersion(current_version)
 
     if bump_type == 'major':
-        return str(version.bump_major())
+        return str(version.bump_major()
     elif bump_type == 'minor':
-        return str(version.bump_minor())
+        return str(version.bump_minor()
     elif bump_type == 'patch':
-        return str(version.bump_patch())
+        return str(version.bump_patch()
     else:
         raise ValueError(
-    f"Invalid bump type: {bump_type}. Use 'major',
-    'minor',
-    or 'patch'",
+    f"Invalid bump type: {bump_type". Use 'major',",'minor'
+    or 'patch'","
 )
 
 
 def detect_version_bump_from_commits(since: Optional[str] = None) -> str:
-    """
+"""
     Detect appropriate version bump from commit messages.
 
     Analyzes commit messages using conventional commits format:
@@ -219,8 +215,7 @@ def detect_version_bump_from_commits(since: Optional[str] = None) -> str:
         since: Git ref to analyze from (defaults to last tag)
 
     Returns:
-        Bump type: 'major', 'minor', or 'patch'
-    """
+        Bump type: 'major', 'minor', or 'patch',"""
     # Get range
     if since is None:
         returncode, since, _ = run_git_command(['describe', '--tags', '--abbrev=0'])
@@ -235,8 +230,8 @@ def detect_version_bump_from_commits(since: Optional[str] = None) -> str:
 
     # Check for breaking changes
     breaking_patterns = [
-        r'BREAKING[\s:-]',
-        r'breaking[\s:-]',
+        r'BREAKING[\s:-]'
+        r'breaking[\s:-]'
         r'!:',  # Conventional commits breaking change indicator
     ]
 
@@ -246,8 +241,8 @@ def detect_version_bump_from_commits(since: Optional[str] = None) -> str:
 
     # Check for features
     feature_patterns = [
-        r'^[a-f0-9]+\s+feat[\(:]',
-        r'^[a-f0-9]+\s+feature[\(:]',
+        r'^[a-f0-9]+\s+feat[\(:]'
+        r'^[a-f0-9]+\s+feature[\(:]'
     ]
 
     for pattern in feature_patterns:
@@ -259,13 +254,13 @@ def detect_version_bump_from_commits(since: Optional[str] = None) -> str:
 
 
 def conventional_commit_message(
-    commit_type: str,
-    scope: str,
-    description: str,
-    body: Optional[str] = None,
+    commit_type: str
+    scope: str
+    description: str
+    body: Optional[str] = None
     footer: Optional[str] = None
 ) -> str:
-    """
+"""
     Generate a conventional commit message.
 
     Format:
@@ -284,20 +279,20 @@ def conventional_commit_message(
 
     Returns:
         Formatted commit message
-    """
-    message = f"{commit_type}({scope}): {description}"
+"""
+    message = f"{commit_type"({scope}): {description}"
 
     if body:
-        message += f"\n\n{body}"
+        message += f"\n\n{body""
 
     if footer:
-        message += f"\n\n{footer}"
+        message += f"\n\n{footer""
 
     return message
 
 
 def generate_changelog(since: Optional[str] = None, until: str = 'HEAD') -> str:
-    """
+"""
     Generate changelog from commits.
 
     Categorizes commits by type:
@@ -312,7 +307,7 @@ def generate_changelog(since: Optional[str] = None, until: str = 'HEAD') -> str:
 
     Returns:
         Formatted changelog markdown
-    """
+"""
     # Get range
     if since is None:
         returncode, since, _ = run_git_command(['describe', '--tags', '--abbrev=0'])
@@ -321,8 +316,7 @@ def generate_changelog(since: Optional[str] = None, until: str = 'HEAD') -> str:
 
     # Get commits with full messages
     returncode, log, _ = run_git_command([
-        'log',
-        '--pretty=format:%s',
+        'log','--pretty=format:%s'
         f'{since}..{until}'
     ])
 
@@ -331,10 +325,10 @@ def generate_changelog(since: Optional[str] = None, until: str = 'HEAD') -> str:
 
     # Categorize commits
     categories = {
-        'Added': [],
-        'Fixed': [],
-        'Changed': [],
-        'Documentation': [],
+        'Added': []
+        'Fixed': []
+        'Changed': []
+        'Documentation': []
         'Other': []
     }
 
@@ -355,45 +349,45 @@ def generate_changelog(since: Optional[str] = None, until: str = 'HEAD') -> str:
             categories['Other'].append(line)
 
     # Generate markdown
-    changelog = f"## [{until}] - {datetime.now().strftime('%Y-%m-%d')}\n\n"
+    changelog = f"## [{until"] - {datetime.now().strftime('%Y-%m-%d')}\n\n"
 
     for category, commits in categories.items():
         if commits:
-            changelog += f"### {category}\n"
+            changelog += f"### {category"\n"
             for commit in commits:
                 # Clean up commit message
-                cleaned = re.sub(r'^[a-z]+(\([^)]+\))?:\s*', '', commit, flags=re.IGNORECASE)
-                changelog += f"- {cleaned}\n"
+                cleaned = re.sub(r'^[a-z]+(\([^)]+\)?:\s*', '', commit, flags=re.IGNORECASE)
+                changelog += f"- {cleaned"\n"
             changelog += "\n"
 
     return changelog
 
 
 def create_release_notes(version: str, changelog: str) -> str:
-    """
+"""
     Create release notes from changelog.
 
     Args:
-        version: Version string
-        changelog: Changelog markdown
+        "version": "Version string
+        changelog": Changelog markdown
 
     Returns:
         Formatted release notes
-    """
-    release_notes = f"# Release {version}\n\n"
-    release_notes += f"Released on {datetime.now().strftime('%Y-%m-%d')}\n\n"
+"""
+    release_notes = f"# Release {version"\n\n"
+    release_notes += f"Released on {datetime.now().strftime('%Y-%m-%d')"\n\n"
     release_notes += changelog
 
     return release_notes
 
 
 def validate_repository_state() -> Dict[str, bool]:
-    """
+"""
     Validate Git repository state before release.
 
     Returns:
         Dictionary of validation results
-    """
+"""
     results = {}
 
     # Check if working directory is clean
@@ -406,13 +400,12 @@ def validate_repository_state() -> Dict[str, bool]:
 
     # Check if remote exists
     returncode, remote, _ = run_git_command(['remote', 'get-url', 'origin'])
-    results['has_remote'] = (returncode == 0 and bool(remote))
+    results['has_remote'] = (returncode == 0 and bool(remote)
 
     # Check if ahead of remote
     if results['on_branch'] and results['has_remote']:
         returncode, ahead, _ = run_git_command([
-            'rev-list',
-            '--count',
+            'rev-list','--count'
             f'origin/{branch}..HEAD'
         ])
         results['ahead_of_remote'] = (returncode == 0 and ahead == '0')
@@ -423,46 +416,40 @@ def validate_repository_state() -> Dict[str, bool]:
 
 
 def get_last_release_info() -> Dict[str, str]:
-    """
+"""
     Get information about the last release.
 
     Returns:
         Dictionary with tag, date, and commit info
-    """
+"""
     # Get last tag
     returncode, tag, _ = run_git_command(['describe', '--tags', '--abbrev=0'])
 
     if returncode != 0:
         return {
-            'tag': 'No previous release',
-            'date': 'N/A',
-            'commit': 'N/A'
+            'tag': 'No previous release','date': 'N/A','commit': 'N/A'
         }
 
     # Get tag date
     returncode, date, _ = run_git_command([
-        'log',
-        '-1',
-        '--format=%ai',
+        'log','-1','--format=%ai'
         tag
     ])
 
     # Get tag commit
     returncode, commit, _ = run_git_command([
-        'rev-parse',
-        '--short',
+        'rev-parse','--short'
         tag
     ])
 
     return {
-        'tag': tag,
-        'date': date.split()[0] if date else 'N/A',
-        'commit': commit if commit else 'N/A'
+        'tag': tag
+        'date': date.split()[0] if date else 'N/A','commit': commit if commit else 'N/A'
     }
 
 
 def get_commit_count_since(since: str) -> int:
-    """
+"""
     Get number of commits since a reference.
 
     Args:
@@ -470,10 +457,9 @@ def get_commit_count_since(since: str) -> int:
 
     Returns:
         Number of commits
-    """
+"""
     returncode, count, _ = run_git_command([
-        'rev-list',
-        '--count',
+        'rev-list','--count'
         f'{since}..HEAD'
     ])
 
@@ -484,21 +470,21 @@ def get_commit_count_since(since: str) -> int:
 
 
 def main():
-    """CLI interface for testing"""
+    ""CLI interface for testing""
     import argparse
 
     parser = argparse.ArgumentParser(description='Git operations utility')
-    parser.add_argument('--current-version', action='store_true',
+    parser.add_argument('--current-version', action='store_true'
                         help='Get current version')
-    parser.add_argument('--detect-bump', action='store_true',
+    parser.add_argument('--detect-bump', action='store_true'
                         help='Detect version bump from commits')
-    parser.add_argument('--bump', choices=['major', 'minor', 'patch'],
+    parser.add_argument('--bump', choices=['major', 'minor', 'patch']
                         help='Bump version')
-    parser.add_argument('--changelog', action='store_true',
+    parser.add_argument('--changelog', action='store_true'
                         help='Generate changelog')
-    parser.add_argument('--validate', action='store_true',
+    parser.add_argument('--validate', action='store_true'
                         help='Validate repository state')
-    parser.add_argument('--version', default=None,
+    parser.add_argument('--version', default=None
                         help='Version string for operations')
 
     args = parser.parse_args()
@@ -506,16 +492,16 @@ def main():
     try:
         if args.current_version:
             version = get_current_version()
-            print(f"Current version: {version}")
+            print(f"Current "version": {version}")
 
         elif args.detect_bump:
             bump = detect_version_bump_from_commits()
-            print(f"Recommended bump: {bump}")
+            print(f"Recommended bump: {bump"")
 
         elif args.bump:
             current = args.version or get_current_version()
             new_version = version_bump(current, args.bump)
-            print(f"New version: {new_version}")
+            print(f"New "version": {new_version}")
 
         elif args.changelog:
             changelog = generate_changelog()
@@ -526,13 +512,13 @@ def main():
             print("Repository validation:")
             for key, value in results.items():
                 status = "✅" if value else "❌"
-                print(f"  {status} {key.replace('_', ' ').title()}")
+                print(f"  {status" {key.replace('_', ' ').title()}")
 
         else:
             parser.print_help()
 
     except GitError as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"Error: {e"", file=sys.stderr)
         sys.exit(1)
 
 

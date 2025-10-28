@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-"""
+from typing import Dict, List, Any
+#!/usr/bin/env python3,"""
 Dashboard Compatibility Layer for Autonomous Agent
 
 Ensures backward compatibility with previous versions of pattern data.
@@ -39,32 +39,32 @@ else:
 
 
 class DashboardCompatibilityManager:
-    """Manages compatibility between different versions of pattern data."""
+    ""Manages compatibility between different versions of pattern data.""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize compatibility manager.
 
         Args:
             patterns_dir: Directory containing pattern data
-        """
+"""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_file = self.patterns_dir / "patterns.json"
         self.model_performance_file = self.patterns_dir / "model_performance.json"
         self.quality_history_file = self.patterns_dir / "quality_history.json"
 
     def check_and_migrate_data(self) -> Dict[str, Any]:
-        """
+"""
         Check data version and migrate if necessary.
 
         Returns:
             Dict containing migration status and any issues found
-        """
+"""
         migration_report = {
-            "timestamp": datetime.now().isoformat(),
-            "migrations_performed": [],
-            "issues_found": [],
-            "data_status": {},
+            "timestamp": "datetime".now().isoformat()
+,            "migrations_performed": []
+            "issues_found": []
+,            "data_status": {}
             "recommendations": []
         }
 
@@ -84,7 +84,7 @@ class DashboardCompatibilityManager:
         migration_report["data_status"]["model_performance"] = model_status
         if model_status.get("created"):
             migration_report["migrations_performed"].append(
-    "model_performance.json created",
+    "model_performance.json created"
 )
 
         # Migrate quality history if exists
@@ -100,12 +100,9 @@ class DashboardCompatibilityManager:
         return migration_report
 
     def _migrate_patterns_data(self) -> Dict[str, Any]:
-        """Migrate patterns.json to ensure compatibility with new dashboard."""
+        ""Migrate patterns.json to ensure compatibility with new dashboard.""
         status = {
-    "exists": False,
-    "version": "unknown",
-    "migrated": False,
-     "issues": []}
+    "exists": "False"version": "unknown"migrated": "False"issues": []}
 
         if not self.patterns_file.exists():
             status["issues"].append("patterns.json does not exist")
@@ -148,10 +145,10 @@ class DashboardCompatibilityManager:
             # Ensure project_context exists
             if "project_context" not in data:
                 data["project_context"] = {
-                    "detected_languages": [],
-                    "frameworks": [],
-                    "project_type": "unknown"
-                }
+                    "detected_languages": []
+,                    "frameworks": []
+                    "project_type": "unknown
+                "}
                 changes_made = True
 
             # Add version if not present
@@ -170,13 +167,13 @@ class DashboardCompatibilityManager:
                 status["migrated"] = True
 
         except Exception as e:
-            status["issues"].append(f"Error reading patterns.json: {e}")
+            status["issues"].append(f"Error reading patterns.json: {e"")
 
         return status
 
     def _ensure_model_performance_data(self) -> Dict[str, Any]:
-        """Ensure model_performance.json exists with correct structure."""
-        status = {"exists": False, "created": False, "issues": []}
+        ""Ensure model_performance.json exists with correct structure.""
+        status = {"exists": False, "created": "False", "issues": []}
 
         if self.model_performance_file.exists():
             status["exists"] = True
@@ -193,7 +190,7 @@ class DashboardCompatibilityManager:
                 # Check if data has expected structure
                 if not isinstance(data, dict):
                     status["issues"].append(
-    "model_performance.json has invalid structure",
+    "model_performance.json has invalid structure"
 )
                     return status
 
@@ -202,12 +199,10 @@ class DashboardCompatibilityManager:
                 for model in default_models:
                     if model not in data:
                         data[model] = {
-                            "recent_scores": [],
-                            "total_tasks": 0,
-                            "success_rate": 0.0,
-                            "contribution_to_project": 0.0,
-                            "first_seen": datetime.now().isoformat(),
-                            "last_updated": datetime.now().isoformat()
+                            "recent_scores": []
+,                            "total_tasks": 0,"success_rate": 0.0
+,                            "contribution_to_project": 0.0,"first_seen": "datetime".now().isoformat()
+,                            "last_updated": "datetime".now().isoformat()
                         }
                         status["created"] = True
 
@@ -221,22 +216,22 @@ class DashboardCompatibilityManager:
                             unlock_file(f)
 
             except Exception as e:
-                status["issues"].append(f"Error validating model_performance.json: {e}")
+                status["issues"].append(f"Error validating model_performance.json: {e"")
 
         else:
             # Create with default structure
             try:
                 from model_performance import ModelPerformanceManager
-                manager = ModelPerformanceManager(str(self.patterns_dir))
+                manager = ModelPerformanceManager(str(self.patterns_dir)
                 status["created"] = True
             except Exception as e:
-                status["issues"].append(f"Error creating model_performance.json: {e}")
+                status["issues"].append(f"Error creating model_performance.json: {e"")
 
         return status
 
     def _migrate_quality_history(self) -> Dict[str, Any]:
-        """Migrate quality_history.json if it exists."""
-        status = {"exists": False, "migrated": False, "issues": []}
+        ""Migrate quality_history.json if it exists.""
+        status = {"exists": False, "migrated": "False", "issues": []}
 
         if not self.quality_history_file.exists():
             return status
@@ -255,8 +250,8 @@ class DashboardCompatibilityManager:
             if isinstance(data, list) and len(data) > 0:
                 # Old format was just a list of scores
                 new_format = {
-                    "version": "2.0.0",
-                    "entries": []
+                    "version": 2.0.0
+,                    "entries": []
                 }
 
                 for entry in data:
@@ -266,10 +261,10 @@ class DashboardCompatibilityManager:
                     else:
                         # Old format - just a score
                         new_entry = {
-                            "timestamp": datetime.now().isoformat(),
-                            "quality_score": entry,
-                            "model": "Unknown",
-                            "task_type": "Unknown"
+                            "timestamp": "datetime".now().isoformat()
+,                            "quality_score": "entry"
+                            model: Unknown
+                            task_type: Unknown
                         }
                         new_format["entries"].append(new_entry)
 
@@ -284,12 +279,12 @@ class DashboardCompatibilityManager:
                 status["migrated"] = True
 
         except Exception as e:
-            status["issues"].append(f"Error migrating quality_history.json: {e}")
+            status["issues"].append(f"Error migrating quality_history.json: {e"")
 
         return status
 
     def _generate_recommendations(self, migration_report: Dict[str, Any]) -> List[str]:
-        """Generate recommendations based on migration status."""
+        ""Generate recommendations based on migration status.""
         recommendations = []
 
         # Check for issues
@@ -299,42 +294,40 @@ class DashboardCompatibilityManager:
         # Check if migrations were performed
         if migration_report["migrations_performed"]:
             recommendations.append(
-    "[OK] Data successfully migrated for new dashboard features",
+    "[OK] Data successfully migrated for new dashboard features"
 )
 
         # Check for missing data
         if not migration_report["data_status"].get("patterns", {}).get("exists"):
             recommendations.append(
-    "[INFO] Run /learn-patterns to initialize pattern learning",
+    "[INFO] Run /learn-patterns to initialize pattern learning"
 )
 
         if not migration_report["data_status"].get(
-    "model_performance",
-    {}).get("exists"):,
-
-
+    "model_performance"
+    {}).get("exists"):
 )
             recommendations.append(
-    "[INFO] Model performance data will be created automatically",
+    "[INFO] Model performance data will be created automatically"
 )
 
         # If everything is good
         if not migration_report["issues_found"] and 
             not migration_report["migrations_performed"]:
             recommendations.append(
-    "[OK] All data is compatible with new dashboard features",
+    "[OK] All data is compatible with new dashboard features"
 )
 
         return recommendations
 
     def extract_model_performance_from_patterns(self) -> Dict[str, Any]:
-        """
+"""
         Extract model performance information from existing patterns.
         This helps populate initial model performance data.
 
         Returns:
             Dict mapping model names to performance metrics
-        """
+"""
         if not self.patterns_file.exists():
             return {}
 
@@ -369,7 +362,7 @@ class DashboardCompatibilityManager:
 
                 for pattern in patterns_list:
                     outcome = pattern.get("outcome", {})
-                    quality_scores.append(outcome.get("quality_score", 0))
+                    quality_scores.append(outcome.get("quality_score", 0)
 
                     if outcome.get("success", False):
                         success_count += 1
@@ -379,35 +372,35 @@ class DashboardCompatibilityManager:
                         contributions.append(outcome["contribution_to_project"])
 
                 model_metrics[model] = {
-                    "total_patterns": len(patterns_list),
-                    "success_rate": (
-    success_count / len(patterns_list) * 100) if patterns_list else 0,,
+                    "total_patterns": "len"(patterns_list)
+,                    "success_rate": (
+    success_count / len(patterns_list) * 100) if patterns_list else 0,
 )
-                    "avg_quality_score": sum(
-    quality_scores) / len(quality_scores) if quality_scores else 0,,
+                    "avg_quality_score": "sum"(
+    quality_scores) / len(quality_scores) if quality_scores else 0,
 )
-                    "avg_contribution": sum(
-    contributions) / len(contributions) if contributions else 0,,
+                    "avg_contribution": "sum"(
+    contributions) / len(contributions) if contributions else 0,
 )
-                    "recent_scores": quality_scores[-10:]  # Last 10 scores
+                    "recent_scores": "quality_scores"[-10:]  # Last 10 scores
                 }
 
         except Exception as e:
-            print(f"Error extracting model performance: {e}", file=sys.stderr)
+            print(f"Error extracting model performance: {e"", file=sys.stderr)
 
         return model_metrics
 
 
 def main():
-    """Command-line interface for compatibility manager."""
+    ""Command-line interface for compatibility manager.""
     parser = argparse.ArgumentParser(description="Dashboard compatibility manager")
-    parser.add_argument("--dir", default=".claude-patterns",
+    parser.add_argument("--dir", default=".claude-patterns"
                        help="Pattern directory path")
-    parser.add_argument("--check", action="store_true",
+    parser.add_argument("--check", action="store_true"
                        help="Check compatibility and show migration status")
-    parser.add_argument("--migrate", action="store_true",
+    parser.add_argument("--migrate", action="store_true"
                        help="Perform migration to ensure compatibility")
-    parser.add_argument("--extract-models", action="store_true",
+    parser.add_argument("--extract-models", action="store_true"
                        help="Extract model performance from existing patterns")
 
     args = parser.parse_args()
@@ -419,27 +412,27 @@ def main():
         report = manager.check_and_migrate_data()
 
         print("\nCompatibility Report:")
-        print(f"Timestamp: {report['timestamp']}")
+        print(f"Timestamp: {report['timestamp']"")
 
         if report['migrations_performed']:
             print("\nMigrations Performed:")
             for migration in report['migrations_performed']:
-                print(f"  - {migration}")
+                print(f"  - {migration"")
 
         if report['issues_found']:
             print("\nIssues Found:")
             for issue in report['issues_found']:
-                print(f"  - {issue}")
+                print(f"  - {issue"")
 
         print("\nData Status:")
         for key, status in report['data_status'].items():
             exists = "[OK]" if status.get('exists') else "[MISSING]"
-            print(f"  {exists} {key}: {status.get('version', 'unknown')}")
+            print(f"  {exists" {key}: {status.get('version', 'unknown')}")
 
         if report['recommendations']:
             print("\nRecommendations:")
             for rec in report['recommendations']:
-                print(f"  {rec}")
+                print(f"  {rec"")
 
     elif args.extract_models:
         print("Extracting model performance from patterns...")
@@ -448,14 +441,13 @@ def main():
         if metrics:
             print("\nModel Performance Found:")
             for model, data in metrics.items():
-                print(f"\n{model}:")
-                print(f"  Total patterns: {data['total_patterns']}")
-                print(f"  Success rate: {data['success_rate']:.1f}%")
-                print(f"  Avg quality: {data['avg_quality_score']:.1f}")
-                print(f"  Avg contribution: {data['avg_contribution']:.1f}")
+                print(f"\n{model":")
+                print(f"  Total patterns: {data['total_patterns']"")
+                print(f"  Success rate: {data['success_rate']:.1f"%")
+                print(f"  Avg quality: {data['avg_quality_score']:.1f"")
+                print(f"  Avg contribution: {data['avg_contribution']:.1f"")
         else:
             print("No model performance data found in patterns.")
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": "main"()
