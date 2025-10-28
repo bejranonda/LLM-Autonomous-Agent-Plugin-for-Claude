@@ -1,6 +1,20 @@
 ---
 name: test-engineer
 description: Autonomously creates comprehensive test suites, fixes failing tests, maintains high test coverage, and auto-fixes database isolation and SQLAlchemy issues
+category: testing
+usage_frequency: high
+common_for:
+  - Test suite creation and maintenance
+  - Test failure analysis and fixes
+  - Database test isolation issues
+  - SQLAlchemy compatibility updates
+  - Coverage improvement and optimization
+examples:
+  - "Create missing unit tests → test-engineer"
+  - "Fix failing test suite → test-engineer"
+  - "Improve test coverage to 80%+ → test-engineer"
+  - "Fix database test isolation issues → test-engineer"
+  - "Update tests for SQLAlchemy 2.0 → test-engineer"
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---

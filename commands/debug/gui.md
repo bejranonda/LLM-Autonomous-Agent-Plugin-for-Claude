@@ -34,6 +34,9 @@ Run comprehensive validation, debugging, and performance analysis of the entire 
 ## 📋 Usage
 
 ```bash
+# Show help message
+/debug:gui --help
+
 # Complete GUI system validation (recommended for first time)
 /debug:gui
 
@@ -50,29 +53,100 @@ Run comprehensive validation, debugging, and performance analysis of the entire 
 /debug:gui --visual-components
 
 # Cross-platform compatibility testing
-/gui-debug --cross-platform
+/debug:gui --cross-platform
 
 # Accessibility compliance testing
-/gui-debug --accessibility
+/debug:gui --accessibility
 
 # Full system scan with detailed reporting
-/gui-debug --full-scan
+/debug:gui --full-scan
 
 # Real-time GUI monitoring mode (continuous)
-/gui-debug --monitor
+/debug:gui --monitor
 
 # Debug mode with enhanced logging
-/gui-debug --verbose
+/debug:gui --verbose
+
+# Show agent delegation process
+/debug:gui --verbose
+```
+
+## Help & Documentation
+
+### `--help` Option
+```bash
+# Display comprehensive help information
+/debug:gui --help
+```
+
+The `--help` option provides:
+- Complete command description and purpose
+- Detailed usage examples with syntax
+- Explanation of all available options and flags
+- Agent delegation information
+- Common use cases and recommendations
+- Troubleshooting guidance
+
+### Command Syntax
+```bash
+/debug:gui [OPTIONS]
+```
+
+### Agent Delegation
+This command delegates to the **orchestrator** agent, which:
+- Analyzes the GUI debugging request
+- Selects appropriate specialized agents (gui-validator, frontend-analyzer, etc.)
+- Manages the validation workflow
+- Ensures quality assessment and reporting
+- Stores learned patterns for future improvements
+
+### Verbose Mode
+```bash
+/debug:gui --verbose
+```
+Shows detailed agent selection and delegation process:
+```
+🔍 ORCHESTRATOR: Analyzing GUI debugging request...
+📋 ORCHESTRATOR: Task type identified: "comprehensive GUI validation"
+🎯 ORCHESTRATOR: Selecting agents: gui-validator, frontend-analyzer, performance-analytics
+🚀 GUI-VALIDATOR: Beginning systematic GUI analysis...
+📊 FRONTEND-ANALYZER: Analyzing frontend components...
+📈 PERFORMANCE-ANALYTICS: Monitoring GUI performance metrics...
+```
+### Getting Started
+1. **First Time**: Run `/debug:gui` for complete system validation
+2. **Quick Check**: Use `/debug:gui --quick-check` for rapid health assessment
+3. **Specific Issues**: Use targeted options (`--web-dashboard`, `--cli-interface`)
+4. **Monitor Mode**: Use `/debug:gui --monitor` for continuous oversight
+5. **Get Help**: Always available with `/debug:gui --help`
+
+### Common Issues & Solutions
+
+**Dashboard Loading Problems**:
+```bash
+/debug:gui --web-dashboard --verbose
+```
+
+**CLI Command Issues**:
+```bash
+/debug:gui --cli-interface --verbose
+```
+
+**Performance Issues**:
+```bash
+/debug:gui --visual-components --performance
+```
+
+**Cross-Platform Problems**:
+```bash
+/debug:gui --cross-platform --full-scan
 ```
 
 ## 🔧 Validation Options
 
 | Option | Description | Duration | When to Use |
-|
----
-
-
------|-------------|----------|-------------|
+|---------|-------------|----------|-------------|
+| `--help` | Show comprehensive help and usage information | Instant | First time use or guidance needed |
 | `--quick-check` | Basic health check for all GUI interfaces | 45s | Quick validation before use |
 | `--web-dashboard` | Web dashboard focused validation | 60s | Dashboard issues suspected |
 | `--cli-interface` | CLI interface focused validation | 30s | Command execution problems |

@@ -1,6 +1,20 @@
 ---
 name: learning-engine
 description: Universal learning engine with cross-model compatibility that automatically captures patterns, analyzes outcomes, and continuously improves decision-making based on historical performance across all tasks and models
+category: analytics
+usage_frequency: automatic
+common_for:
+  - Pattern capture and storage
+  - Performance analysis and optimization
+  - Skill effectiveness tracking
+  - Cross-model learning improvements
+  - Trend analysis and predictions
+examples:
+  - "Learn from task outcomes → learning-engine"
+  - "Analyze performance trends → learning-engine"
+  - "Optimize skill selection → learning-engine"
+  - "Track agent effectiveness → learning-engine"
+  - "Generate improvement recommendations → learning-engine"
 tools: Read,Write,Edit,Grep,Glob
 model: inherit
 ---

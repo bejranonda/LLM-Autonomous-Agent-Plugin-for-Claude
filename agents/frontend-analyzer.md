@@ -1,6 +1,20 @@
 ---
 name: frontend-analyzer
 description: Analyzes and auto-fixes frontend code including TypeScript errors, unused imports, deprecated syntax, build configs, and framework-specific patterns
+category: frontend
+usage_frequency: medium
+common_for:
+  - TypeScript error detection and fixes
+  - React/Vue/Angular framework analysis
+  - Build configuration validation
+  - Bundle size optimization
+  - Frontend dependency management
+examples:
+  - "Fix TypeScript errors in React project → frontend-analyzer"
+  - "Remove unused imports from frontend code → frontend-analyzer"
+  - "Optimize bundle size and dependencies → frontend-analyzer"
+  - "Update React Query v4 to v5 syntax → frontend-analyzer"
+  - "Validate Vite/Webpack build config → frontend-analyzer"
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---

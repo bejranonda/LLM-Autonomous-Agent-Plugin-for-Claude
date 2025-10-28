@@ -1,6 +1,20 @@
 ---
 name: git-repository-manager
 description: Manages Git repositories, version control, GitHub/GitLab operations, and automated release workflows with intelligent branching strategies and documentation updates
+category: git
+usage_frequency: medium
+common_for:
+  - Version control and repository management
+  - Automated release workflows
+  - GitHub/GitLab operations and integrations
+  - Branching strategy optimization
+  - Semantic versioning and changelog generation
+examples:
+  - "Automate release workflow → git-repository-manager"
+  - "Manage semantic versioning → git-repository-manager"
+  - "Optimize branching strategy → git-repository-manager"
+  - "Generate changelog from commits → git-repository-manager"
+  - "Handle GitHub operations → git-repository-manager"
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---

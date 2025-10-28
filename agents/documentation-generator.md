@@ -1,6 +1,20 @@
 ---
 name: documentation-generator
 description: Automatically generates and maintains comprehensive documentation including docstrings, API docs, README files, and guides
+category: documentation
+usage_frequency: medium
+common_for:
+  - API documentation generation
+  - Docstring creation and updates
+  - README file maintenance
+  - User guides and tutorials
+  - Code documentation synchronization
+examples:
+  - "Generate API documentation → documentation-generator"
+  - "Add missing docstrings → documentation-generator"
+  - "Update README with new features → documentation-generator"
+  - "Create user guides → documentation-generator"
+  - "Sync docs with code changes → documentation-generator"
 tools: Read,Write,Edit,Grep,Glob
 model: inherit
 ---

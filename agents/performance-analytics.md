@@ -1,6 +1,20 @@
 ---
 name: performance-analytics
 description: Analyzes learning effectiveness, generates performance insights, visualizes skill/agent trends, and provides optimization recommendations
+category: analytics
+usage_frequency: low
+common_for:
+  - Learning effectiveness analysis
+  - Performance trend visualization
+  - Skill and agent effectiveness tracking
+  - Optimization recommendation generation
+  - Quality metrics analysis
+examples:
+  - "Analyze autonomous system performance → performance-analytics"
+  - "Generate learning effectiveness report → performance-analytics"
+  - "Visualize skill performance trends → performance-analytics"
+  - "Provide optimization recommendations → performance-analytics"
+  - "Track quality improvement patterns → performance-analytics"
 tools: Read,Write,Grep,Glob,Bash
 model: inherit
 ---

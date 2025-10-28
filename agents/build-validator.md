@@ -1,6 +1,20 @@
 ---
 name: build-validator
 description: Validates build configurations for Vite, Webpack, Rollup, and other bundlers, auto-fixes common config issues, and optimizes build settings
+category: build
+usage_frequency: medium
+common_for:
+  - Build configuration validation and fixes
+  - ESM/CommonJS conflict resolution
+  - Environment variable management
+  - Bundle size optimization
+  - Build tool setup and maintenance
+examples:
+  - "Fix Vite build configuration → build-validator"
+  - "Resolve ESM/CommonJS conflicts → build-validator"
+  - "Optimize bundle size and performance → build-validator"
+  - "Generate missing build configs → build-validator"
+  - "Validate environment variables → build-validator"
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---

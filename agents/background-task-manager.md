@@ -1,6 +1,20 @@
 ---
 name: background-task-manager
 description: Manages and executes long-running background tasks like code analysis, optimization, and monitoring independently without blocking main workflow
+category: analysis
+usage_frequency: medium
+common_for:
+  - Parallel code analysis and monitoring
+  - Long-running optimization tasks
+  - Continuous quality monitoring
+  - Background security scanning
+  - Performance profiling
+examples:
+  - "Run security scan in background → background-task-manager"
+  - "Monitor code quality continuously → background-task-manager"
+  - "Profile performance bottlenecks → background-task-manager"
+  - "Analyze dependencies while coding → background-task-manager"
+  - "Generate documentation updates → background-task-manager"
 tools: Task,Read,Grep,Glob,Bash
 model: inherit
 ---

@@ -12,16 +12,72 @@ Measures AI debugging performance by analyzing and fixing real issues in the cod
 ## Usage
 
 ```bash
-/debug:eval <target>
+/debug:eval <target> [options]
+```
+
+### Options
+
+```bash
+--help                Show this help message
+--verbose             Show detailed agent selection process
+--dry-run            Preview actions without executing
+--report-only        Generate report without fixing issues
+--performance         Include detailed performance metrics
+```
+
+### Help Examples
+
+```bash
+# Show help
+/debug:eval --help
+
+# Debug with verbose output (shows agent selection)
+/debug:eval dashboard --verbose
+
+# Preview what would be fixed
+/debug:eval data-validation --dry-run
+
+# Generate report without fixing
+/debug:eval performance-index --report-only
 ```
 
 ## How It Works
 
-This command delegates to the **validation-controller** agent which:
+This command delegates to the **orchestrator** agent which:
 
-1. **Analyzes the specified debugging target** for issues
-2. **Identifies root causes** using systematic debugging methodology
-3. **Implements fixes** with proper quality controls
+1. **Analyzes the debugging request** and determines optimal approach
+2. **Selects appropriate specialized agents** based on task type and complexity
+3. **May delegate to validation-controller** for debugging-specific tasks:
+   - Issue identification and root cause analysis
+   - Systematic debugging methodology
+   - Fix implementation with quality controls
+4. **Measures debugging performance** using the comprehensive framework:
+   - Quality Improvement Score (QIS)
+   - Time Efficiency Score (TES)
+   - Success Rate tracking
+   - Regression detection
+   - Overall Performance Index calculation
+
+5. **Generates detailed performance report** with metrics and improvements
+
+### Agent Delegation Process
+
+When using `--verbose` flag, you'll see:
+```
+🔍 ORCHESTRATOR: Analyzing debugging request...
+📋 ORCHESTRATOR: Task type identified: "dashboard debugging"
+🎯 ORCHESTRATOR: Selecting agents: validation-controller, code-analyzer
+🚀 VALIDATION-CONTROLLER: Beginning systematic analysis...
+📊 CODE-ANALYZER: Analyzing code structure and patterns...
+```
+
+### Why Orchestrator Instead of Direct Validation-Controller?
+
+- **Better Task Analysis**: Orchestrator considers context, complexity, and interdependencies
+- **Multi-Agent Coordination**: Complex issues often require multiple specialized agents
+- **Quality Assurance**: Orchestrator ensures final results meet quality standards (≥70/100)
+- **Pattern Learning**: Successful approaches are stored for future optimization
+
 4. **Measures debugging performance** using the comprehensive framework:
    - Quality Improvement Score (QIS)
    - Time Efficiency Score (TES)

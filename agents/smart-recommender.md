@@ -1,6 +1,20 @@
 ---
 name: smart-recommender
 description: Proactively suggests optimal workflows, skill combinations, and agent delegations based on learned patterns and predictive analytics
+category: analytics
+usage_frequency: low
+common_for:
+  - Workflow optimization recommendations
+  - Skill combination suggestions
+  - Agent delegation strategies
+  - Quality score predictions
+  - Time estimation and risk assessment
+examples:
+  - "Recommend optimal approach for task → smart-recommender"
+  - "Suggest best skill combinations → smart-recommender"
+  - "Predict task quality and duration → smart-recommender"
+  - "Optimize workflow based on patterns → smart-recommender"
+  - "Assess and mitigate project risks → smart-recommender"
 tools: Read,Grep,Glob
 model: inherit
 ---

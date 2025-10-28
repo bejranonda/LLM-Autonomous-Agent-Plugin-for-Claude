@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v5.1.3
+# 🚀 Autonomous Agent for Claude Code v5.2.0
 
-[![Version](https://img.shields.io/badge/version-5.1.3-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v5.1.3)
+[![Version](https://img.shields.io/badge/version-5.2.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v5.2.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -271,6 +271,37 @@ This creates `.claude-patterns/` directory with the learning database.
 # Launch monitoring dashboard
 /monitor:dashboard
 ```
+
+### 🤖 Understanding Agents: How to Choose the Right One
+
+**⚠️ IMPORTANT**: Use simple agent names (like `orchestrator`, `code-analyzer`) - **NOT** prefixed names (like `autonomous-agent:orchestrator`).
+
+**🎯 Quick Agent Selection Guide:**
+
+| Task Type | Recommended Agent | Example Usage |
+|-----------|-------------------|---------------|
+| **General coordination** | `orchestrator` | Most complex tasks, multi-step workflows |
+| **Code analysis** | `code-analyzer` | Refactoring, architecture review, patterns |
+| **Quality fixes** | `quality-controller` | Code quality, standards, auto-fix |
+| **Testing** | `test-engineer` | Create tests, fix failures, coverage |
+| **Documentation** | `documentation-generator` | API docs, README, guides |
+| **Security** | `security-auditor` | Vulnerability scanning, security fixes |
+| **Validation** | `validation-controller` | Error prevention, consistency checks |
+
+**🔧 Getting Help with Agent Selection:**
+
+```bash
+# If you're unsure which agent to use
+python lib/agent_error_helper.py --suggest "your task description"
+
+# If you use wrong agent name, you'll get helpful suggestions
+Task agent="wrong-name" task description  # Shows suggestions
+
+# List all available agents
+python lib/agent_error_helper.py --list
+```
+
+**📖 Complete Reference**: See [AGENT_USAGE_GUIDE.md](AGENT_USAGE_GUIDE.md) for detailed agent documentation.
 
 ### Basic Commands
 

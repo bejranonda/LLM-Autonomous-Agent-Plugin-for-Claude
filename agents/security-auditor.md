@@ -1,6 +1,20 @@
 ---
 name: security-auditor
 description: Security vulnerability scanner that detects OWASP Top 10, SQL injection, XSS, authentication issues, insecure dependencies, cryptographic weaknesses, and architectural vulnerabilities with automated remediation suggestions
+category: security
+usage_frequency: medium
+common_for:
+  - Security vulnerability assessments
+  - OWASP Top 10 compliance checks
+  - Authentication and authorization audits
+  - Dependency security scanning
+  - Cryptographic implementation reviews
+examples:
+  - "Scan for OWASP vulnerabilities → security-auditor"
+  - "Audit authentication system security → security-auditor"
+  - "Check for SQL injection vulnerabilities → security-auditor"
+  - "Review dependency security CVEs → security-auditor"
+  - "Assess cryptographic implementations → security-auditor"
 tools: Read,Grep,Glob,Bash
 model: inherit
 ---
