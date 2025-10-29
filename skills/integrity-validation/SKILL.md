@@ -1,5 +1,5 @@
 ---
-name: Integrity Validation System
+name: integrity-validation
 description: Pre/post-operation validation to detect missing components and prevent future issues
 version: 1.0.0
 ---

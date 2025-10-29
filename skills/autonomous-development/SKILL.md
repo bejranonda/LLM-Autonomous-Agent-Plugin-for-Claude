@@ -1,5 +1,5 @@
 ---
-name: Autonomous Development
+name: autonomous-development
 description: Comprehensive autonomous development strategies including milestone planning, incremental implementation, auto-debugging, and continuous quality assurance for full development lifecycle management
 version: 1.0.0
 ---

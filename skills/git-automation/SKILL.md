@@ -1,5 +1,5 @@
 ---
-name: Git Automation
+name: git-automation
 description: Advanced Git operations automation including intelligent branching, commit optimization, release workflows, and repository health management
 version: 1.0.0
 ---

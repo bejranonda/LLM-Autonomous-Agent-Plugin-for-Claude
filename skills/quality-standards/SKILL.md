@@ -1,5 +1,5 @@
 ---
-name: Quality Standards
+name: quality-standards
 description: Defines code quality benchmarks, standards compliance, and best practices for maintaining high-quality codebases
 version: 1.0.0
 ---

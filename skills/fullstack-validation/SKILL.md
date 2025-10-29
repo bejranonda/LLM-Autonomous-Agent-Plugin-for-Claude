@@ -1,5 +1,5 @@
 ---
-name: Full-Stack Validation
+name: fullstack-validation
 description: Comprehensive validation methodology for multi-component applications including backend, frontend, database, and infrastructure
 version: 2.0.0
 ---

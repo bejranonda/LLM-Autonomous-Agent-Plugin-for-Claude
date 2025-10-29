@@ -776,4 +776,4 @@ python lib/enhanced_task_queue.py --dir .claude-patterns execute --task-id TASK_
 
 ---
 
-*This documentation is part of the Autonomous Agent Plugin v5.3.3*
+*This documentation is part of the Autonomous Agent Plugin v5.3.4*

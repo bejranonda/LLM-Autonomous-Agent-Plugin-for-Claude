@@ -1,5 +1,5 @@
 ---
-name: Testing Strategies
+name: testing-strategies
 description: Provides test design patterns, coverage strategies, and best practices for comprehensive test suite development
 version: 1.0.0
 ---

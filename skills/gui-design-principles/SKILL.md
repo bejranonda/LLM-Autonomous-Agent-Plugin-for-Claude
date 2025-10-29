@@ -1,5 +1,5 @@
 ---
-name: GUI Design Principles
+name: gui-design-principles
 description: Comprehensive design principles and best practices for creating beautiful, functional GUI applications including dashboards, web apps, and mobile apps
 version: 1.0.0
 ---

@@ -1,5 +1,5 @@
 ---
-name: Code Analysis
+name: code-analysis
 description: Provides methodologies, metrics, and best practices for analyzing code structure, complexity, and quality
 version: 1.0.0
 ---

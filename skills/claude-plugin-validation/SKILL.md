@@ -1,5 +1,5 @@
 ---
-name: Claude Plugin Validation
+name: claude-plugin-validation
 description: Comprehensive validation system for Claude Code plugins to ensure compliance with official plugin development guidelines and prevent installation failures
 version: 1.0.0
 ---

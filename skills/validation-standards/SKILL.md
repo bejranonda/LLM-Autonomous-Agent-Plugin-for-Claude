@@ -1,5 +1,5 @@
 ---
-name: Validation Standards
+name: validation-standards
 description: Tool usage requirements, failure patterns, consistency checks, and validation methodologies for Claude Code operations
 version: 1.0.0
 ---

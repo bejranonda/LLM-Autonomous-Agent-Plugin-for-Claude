@@ -1,5 +1,5 @@
 ---
-name: Pattern Learning
+name: pattern-learning
 description: Enables autonomous pattern recognition, storage, and retrieval at project level with self-learning capabilities for continuous improvement
 version: 1.0.0
 ---

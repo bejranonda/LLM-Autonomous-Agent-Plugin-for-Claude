@@ -1,5 +1,5 @@
 ---
-name: Documentation Best Practices
+name: documentation-best-practices
 description: Provides templates, standards, and best practices for writing clear, comprehensive technical documentation
 version: 1.0.0
 ---
