@@ -3990,9 +3990,60 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
             return jsonify({"error": str(e)}), 500
 
 
+def check_existing_dashboard(host: str, port_start: int = 5000, port_end: int = 5010) -> tuple:
+    """
+    Check if dashboard is already running on any port in the range.
+
+    Returns:
+        tuple: (is_running, found_port, found_url)
+    """
+    import requests
+
+    for port in range(port_start, port_end + 1):
+        url = f"http://{host}:{port}/api/overview"
+        try:
+            response = requests.get(url, timeout=2)
+            if response.status_code == 200:
+                return True, port, f"http://{host}:{port}"
+        except requests.exceptions.RequestException:
+            continue
+    return False, None, None
+
+def create_browser_lock_file(port: int) -> str:
+    """Create a unique lock file for the dashboard port."""
+    import tempfile
+    import os
+
+    lock_dir = tempfile.gettempdir()
+    lock_file = os.path.join(lock_dir, f"autonomous-agent-dashboard-{port}.lock")
+    return lock_file
+
+def is_browser_opened(port: int) -> bool:
+    """Check if browser was already opened for this dashboard instance."""
+    lock_file = create_browser_lock_file(port)
+    return os.path.exists(lock_file)
+
+def mark_browser_opened(port: int):
+    """Mark that browser has been opened for this dashboard instance."""
+    lock_file = create_browser_lock_file(port)
+    try:
+        with open(lock_file, 'w') as f:
+            f.write(f"Dashboard browser opened for port {port}\n")
+    except Exception:
+        pass  # Ignore lock file creation errors
+
+def cleanup_browser_lock(port: int):
+    """Clean up browser lock file."""
+    lock_file = create_browser_lock_file(port)
+    try:
+        if os.path.exists(lock_file):
+            os.remove(lock_file)
+    except Exception:
+        pass  # Ignore cleanup errors
+
 def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True):
     """
-    Run the dashboard server with robust error handling and port management.
+    Run the dashboard server with robust error handling and smart browser management.
 
     Args:
         host: Host to bind to
@@ -4005,6 +4056,7 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
     import threading
     import time
     import requests
+    import atexit
 
     global data_collector
     data_collector = DashboardDataCollector(patterns_dir)
@@ -4017,6 +4069,23 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
     except Exception as e:
         print(f"Note: Could not auto-detect model: {e}")
         print(f"      You can manually set it with: python lib/detect_current_model.py --set 'Model Name'")
+
+    # Check if dashboard is already running
+    is_existing, existing_port, existing_url = check_existing_dashboard(host, port, port + 10)
+    if is_existing:
+        print(f"Dashboard is already running at: {existing_url}")
+        if auto_open_browser and not is_browser_opened(existing_port):
+            # Open browser for existing dashboard if not already opened
+            try:
+                webbrowser.open(existing_url)
+                mark_browser_opened(existing_port)
+                print(f"Browser opened to existing dashboard: {existing_url}")
+            except Exception as e:
+                print(f"Could not open browser automatically: {e}")
+                print(f"Please manually navigate to: {existing_url}")
+        else:
+            print(f"Browser already opened for this dashboard instance.")
+        return
 
     # Find available port if the requested port is occupied
     try:
@@ -4035,23 +4104,34 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
     print(f"Dashboard URL: {server_url}")
     print(f"Pattern directory: {patterns_dir}")
 
-    # Function to open browser after server starts
+    # Register cleanup function to remove lock file on exit
+    atexit.register(cleanup_browser_lock, available_port)
+
+    # Function to open browser after server starts (smart opening)
     def open_browser_delayed():
-        time.sleep(1.5)  # Give server time to start
+        time.sleep(2.0)  # Give server more time to fully start
+
+        # Check if server is responding
         if validate_server_startup(f"{server_url}/api/overview"):
             print(f"Dashboard is running at: {server_url}")
-            # Open browser automatically
-            try:
-                webbrowser.open(server_url)
-                print(f"Browser opened to {server_url}")
-            except Exception as e:
-                print(f"Could not open browser automatically: {e}")
-                print(f"Please manually navigate to: {server_url}")
+
+            # Check if browser was already opened for this port
+            if not is_browser_opened(available_port):
+                # Open browser automatically for new instance
+                try:
+                    webbrowser.open(server_url)
+                    mark_browser_opened(available_port)
+                    print(f"Browser opened to {server_url}")
+                except Exception as e:
+                    print(f"Could not open browser automatically: {e}")
+                    print(f"Please manually navigate to: {server_url}")
+            else:
+                print(f"Browser already opened for dashboard on port {available_port}")
         else:
             print(f"Server validation failed. Please check the logs.")
             print(f"   Try accessing manually: {server_url}")
 
-    # Start browser opening in background thread (single browser launch)
+    # Start browser opening in background thread (smart single browser launch)
     if auto_open_browser:
         print(f"Opening browser automatically...")
         browser_thread = threading.Thread(target=open_browser_delayed, daemon=True)
@@ -4066,9 +4146,11 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
         app.run(host=host, port=available_port, debug=False, use_reloader=False)
     except KeyboardInterrupt:
         print(f"\nDashboard stopped by user")
+        cleanup_browser_lock(available_port)
     except Exception as e:
         print(f"\nError starting dashboard: {e}")
         print(f"Try using a different port: --port {available_port + 1}")
+        cleanup_browser_lock(available_port)
         sys.exit(1)
 
 

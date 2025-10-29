@@ -87,9 +87,45 @@ webbrowser.open(f"http://127.0.0.1:{port}")
 
 **Key Fix**: Removed `delegates-to: orchestrator` to prevent duplicate browser launches and agent delegation overhead.
 
+### Smart Browser Opening (Enhanced v1.0.2)
+
+**Prevents Double Browser Opening**:
+- **Existing Dashboard Detection**: Checks if dashboard is already running on ports 5000-5010
+- **Browser Lock Mechanism**: Uses lock files to track browser opening per port
+- **Single Browser Launch**: Opens browser only once per dashboard instance
+- **Multiple Instance Support**: Handles multiple dashboard instances gracefully
+
+**Browser Opening Logic**:
+1. **Check existing dashboard**: Scans for running dashboard on specified port range
+2. **Browser state tracking**: Uses temporary lock files to track browser opening state
+3. **Smart opening**: Opens browser only if not already opened for that specific instance
+4. **Automatic cleanup**: Removes lock files on dashboard shutdown
+
+**Edge Cases Handled**:
+- **Multiple dashboards**: Each port gets separate browser lock tracking
+- **Dashboard restarts**: Lock files are properly cleaned up and recreated
+- **Manual browser opening**: Respects existing browser states
+- **Cross-platform**: Works on Windows, Linux, and macOS
+
 ### Expected Command Output
 
-**No console output**. The command executes silently and all information is available through the web dashboard interface at `http://127.0.0.1:5000` (or next available port).
+**Smart console output**. The command provides intelligent feedback based on dashboard state:
+
+```
+# New dashboard instance:
+Starting Autonomous Agent Dashboard...
+Dashboard URL: http://127.0.0.1:5000
+Opening browser automatically...
+Browser opened to http://127.0.0.1:5000
+
+# Existing dashboard found:
+Dashboard is already running at: http://127.0.0.1:5000
+Browser already opened for this dashboard instance.
+
+# Browser opened for existing instance:
+Dashboard is already running at: http://127.0.0.1:5000
+Browser opened to existing dashboard: http://127.0.0.1:5000
+```
 
 ### Error Handling
 
@@ -462,9 +498,10 @@ cd /path/to/project
 
 ---
 
-**Version**: 1.0.1
+**Version**: 1.0.2
 **Integration**: Uses dashboard.py directly from lib/ directory (no delegation)
 **Dependencies**: Flask, Flask-CORS, Python 3.8+
 **Platform**: Cross-platform (Windows, Linux, Mac)
 **Learning**: Integrates with learning-engine for pattern analysis
-**Fix**: Removed agent delegation to prevent duplicate browser launches (v1.0.1)
+**Fix**: Enhanced smart browser opening with lock mechanism and existing dashboard detection (v1.0.2)
+**Previous**: Removed agent delegation to prevent duplicate browser launches (v1.0.1)
