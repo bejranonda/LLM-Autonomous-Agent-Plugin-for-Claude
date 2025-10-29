@@ -17,7 +17,8 @@ Streamlined release preparation and publishing workflow. This command automates 
 - **Documentation sync**: Updates all docs, README, changelog automatically
 - **Validation first**: Ensures quality before releasing
 - **Auto-commit & push**: Handles all Git operations automatically
-- **Multi-platform publishing**: GitHub, GitLab, npm, PyPI, Docker support
+- **GitHub release**: Creates GitHub release with comprehensive notes (DEFAULT)
+- **Multi-platform publishing**: GitLab, npm, PyPI, Docker support (optional)
 
 ## How It Works
 
@@ -28,7 +29,8 @@ Streamlined release preparation and publishing workflow. This command automates 
 5. **Validate Consistency**: Cross-checks all files for version consistency
 6. **Quality Check**: Runs validation to ensure quality ≥ 85/100
 7. **Git Operations**: Commits, tags, and pushes automatically
-8. **Create Release**: Publishes to GitHub/GitLab with release notes
+8. **Create GitHub Release**: Publishes to GitHub with comprehensive release notes (DEFAULT)
+9. **Optional Platforms**: Publishes to npm, PyPI, Docker, GitLab (if specified)
 
 ## Usage
 
@@ -43,7 +45,8 @@ Streamlined release preparation and publishing workflow. This command automates 
 # - Validate consistency across all files
 # - Run quality checks (must pass ≥ 85/100)
 # - Commit, tag, and push to remote
-# - Create GitHub/GitLab release automatically
+# - Create GitHub release with comprehensive notes (DEFAULT)
+# - Optional: Publish to npm, PyPI, Docker (if specified)
 ```
 
 ### Specify Version Type
@@ -82,15 +85,17 @@ Streamlined release preparation and publishing workflow. This command automates 
 
 ### Platform Options
 ```bash
-# Publish to specific platforms
-/dev:release --github      # GitHub only
-/dev:release --gitlab      # GitLab only
+# GitHub release is now created by DEFAULT
+/dev:release               # Creates GitHub release automatically
+
+# Additional platforms (optional)
 /dev:release --npm         # Also publish to npm
 /dev:release --pypi        # Also publish to PyPI
 /dev:release --docker      # Build and push Docker image
+/dev:release --gitlab      # GitLab instead of GitHub
 
 # Multi-platform release
-/dev:release --github --npm --docker
+/dev:release --npm --docker  # GitHub + npm + Docker
 ```
 
 ### Pre-release Options
@@ -276,20 +281,44 @@ Git Status: ✅ All operations successful
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Stage 7: Platform Publishing (15-30 seconds)
-Creates releases on configured platforms:
+### Stage 7: GitHub Repository Release (10-20 seconds)
+Creates GitHub release with comprehensive release notes:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚀 PLATFORM PUBLISHING
+🚀 GITHUB REPOSITORY RELEASE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-GitHub Release:
-├─ Creating release v3.4.0...
-├─ Title: "Release v3.4.0"
-├─ Release notes from RELEASE_NOTES.md
-├─ ✅ Published: https://github.com/user/repo/releases/tag/v3.4.0
-└─ Downloads: https://github.com/user/repo/archive/refs/tags/v3.4.0.zip
+GitHub Authentication Check:
+├─ ✅ GitHub CLI authenticated
+├─ ✅ Repository access verified
+└─ ✅ Release permissions confirmed
+
+Creating GitHub Release:
+├─ Version: v3.4.0
+├─ Title: "Release v3.4.0: [Release Summary]"
+├─ Release Notes: Generated from changelog
+├─ Assets: Source code archive
+└─ ✅ Published: https://github.com/user/repo/releases/tag/v3.4.0
+
+Release Details:
+├─ Release Type: [MAJOR/MINOR/PATCH]
+├─ Changes: [Number] commits included
+├─ Features: [Number] new features
+├─ Bug Fixes: [Number] bug fixes
+└─ Quality Score: [Score]/100
+
+GitHub Release Status: ✅ Successfully created
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### Stage 8: Optional Platform Publishing (15-30 seconds)
+Publishes to additional configured platforms (if specified):
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 OPTIONAL PLATFORM PUBLISHING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 npm Publishing:
 ├─ Building package...
@@ -301,11 +330,11 @@ Docker Publishing:
 ├─ Pushing to Docker Hub...
 └─ ✅ Published: docker pull user/autonomous-agent:3.4.0
 
-Release Status: ✅ All platforms published successfully
+Optional Release Status: ✅ Selected platforms published
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Stage 8: Learning Integration (5 seconds)
+### Stage 9: Learning Integration (5 seconds)
 Stores release pattern for future optimization:
 
 ```
@@ -346,15 +375,17 @@ Summary:
 ├─ 📚 Documentation synchronized
 ├─ ✅ Validation passed (92/100)
 ├─ 🔧 Git operations successful
-├─ 🚀 Published to 3 platforms
+├─ 🚀 GitHub release created
+├─ 📦 Optional platforms published (if configured)
 └─ 🧠 Pattern learned for future
 
-Total Time: 2m 15s
+Total Time: 2m 30s
 
 Links:
-├─ GitHub: https://github.com/user/repo/releases/tag/v3.4.0
-├─ npm: https://npmjs.com/package/autonomous-agent@3.4.0
-└─ Docker: docker pull user/autonomous-agent:3.4.0
+├─ GitHub Release: https://github.com/user/repo/releases/tag/v3.4.0
+├─ Source Archive: https://github.com/user/repo/archive/refs/tags/v3.4.0.zip
+├─ npm: https://npmjs.com/package/autonomous-agent@3.4.0 (if published)
+└─ Docker: docker pull user/autonomous-agent:3.4.0 (if published)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💡 SUGGESTED NEXT ACTIONS
@@ -493,7 +524,42 @@ The `/release-dev` command integrates with the autonomous learning system:
 /dev:release
 ```
 
+## GitHub Release Requirements
+
+**Required for GitHub Release Creation:**
+- **GitHub CLI**: Must be installed (`gh` command)
+- **Authentication**: Run `gh auth login` once
+- **Repository Access**: Must have push permissions to the repository
+- **Release Permissions**: Must be able to create releases
+
+**Authentication Setup:**
+```bash
+# One-time setup for GitHub CLI
+gh auth login
+
+# Verify authentication
+gh auth status
+
+# Test repository access
+gh repo view
+```
+
 ## Troubleshooting
+
+### GitHub Release Failed
+```bash
+# Check GitHub authentication
+gh auth status
+
+# Verify repository permissions
+gh repo view
+
+# Retry with verbose logging
+/dev:release --verbose --retry
+
+# Skip GitHub release (not recommended)
+/dev:release --skip-github
+```
 
 ### Quality Check Failed
 ```bash
@@ -562,7 +628,7 @@ docker info       # Docker
 
 ---
 
-**Version**: 1.0.0
+**Version**: 1.1.0
 **Integration**: Works with version-release-manager agent and git-automation skill
 **Platform**: Cross-platform (Windows, Linux, Mac)
-**Dependencies**: Git, GitHub CLI (gh) or GitLab CLI (glab) optional
+**Dependencies**: Git, GitHub CLI (gh) REQUIRED for release creation, GitLab CLI (glab) optional
