@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.1] - 2025-10-29
+
+### 🐛 **Bug Fixes: Assessment Recording & Dashboard Display**
+
+This patch release fixes critical issues with assessment recording integration and dashboard visualization to ensure complete data visibility and consistent user experience.
+
+#### **🔧 Assessment Recording Integration**
+
+**NEW: Unified Assessment Storage**
+- **Assessment Recorder Module**: New `lib/assessment_recorder.py` for unified assessment recording
+- **Agent Integration**: Added assessment recording to documentation-generator and git-repository-manager agents
+- **Dashboard Visibility**: All command executions now automatically record to unified storage
+- **Cross-Command Tracking**: Consistent assessment format across all 39 commands
+
+**Enhanced Agent Capabilities**
+- **Documentation Updates**: Auto-record documentation tasks with quality metrics
+- **Git Operations**: Auto-record commits and repository operations
+- **Learning Integration**: Assessments feed directly into pattern learning system
+- **Performance Tracking**: Complete visibility into command execution outcomes
+
+#### **📊 Dashboard Fixes**
+
+**Model Consistency Fix**
+- **Legend Consistency**: Fixed model ordering across all dashboard charts
+- **Chart Display**: Resolved inconsistent legend display in performance visualizations
+- **Sort Key Implementation**: Added `_get_model_sort_key()` for consistent model ordering
+- **Visual Consistency**: Claude models now consistently appear first in all charts
+
+**Recent Activities Fix**
+- **Today's Data**: Fixed issue where current day's activities weren't showing
+- **Timestamp Handling**: Enhanced timestamp parsing and normalization
+- **Activity Completeness**: All recent work now properly displayed in dashboard
+- **Real-Time Updates**: Dashboard now shows today's completed tasks immediately
+
+#### **🛠️ System Improvements**
+
+**Validation Controller Fix**
+- **Delegation Reference**: Fixed `validate:all` command delegation to proper agent path
+- **Command Resolution**: Corrected autonomous-agent prefix for validation operations
+- **System Consistency**: Ensured all command references follow proper naming convention
+
+**Enhanced Assessment Capabilities**
+- **Retroactive Recording**: New `lib/add_today_assessments.py` for historical data capture
+- **Model Detection**: Automatic detection of current AI model for assessments
+- **Cross-Platform**: Enhanced Windows compatibility for assessment storage
+- **Thread Safety**: Improved data integrity for concurrent operations
+
 ## [5.3.6] - 2025-10-29
 
 ### 🚀 **Enhancement: GitHub Release Workflow Automation**

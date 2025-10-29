@@ -152,7 +152,7 @@ class DashboardDataCollector:
         """
         if not timestamp:
             return datetime.now().astimezone().isoformat()
-        
+
         try:
             # Parse various timestamp formats
             if timestamp.endswith("Z"):
@@ -160,13 +160,42 @@ class DashboardDataCollector:
             elif "+" not in timestamp and "-" not in timestamp[-6:]:
                 # Assume UTC if no timezone info
                 timestamp = timestamp + "+00:00"
-            
+
             # Parse and reformat to ensure consistency
             dt = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
             return dt.isoformat()
         except:
             # If parsing fails, return current time
             return datetime.now().astimezone().isoformat()
+
+    def _get_model_sort_key(self, model_name: str) -> tuple:
+        """
+        Get sort key for consistent model ordering across all charts.
+        Order: Claude models first, then GLM models, then others alphabetically.
+
+        Returns:
+            Tuple of (priority, name) for sorting
+        """
+        model_lower = model_name.lower()
+
+        # Priority 0: Claude models (sorted by version)
+        if "claude" in model_lower:
+            if "opus" in model_lower:
+                return (0, 0, model_name)  # Claude Opus first
+            elif "sonnet" in model_lower:
+                return (0, 1, model_name)  # Claude Sonnet second
+            elif "haiku" in model_lower:
+                return (0, 2, model_name)  # Claude Haiku third
+            else:
+                return (0, 3, model_name)  # Other Claude variants
+
+        # Priority 1: GLM models
+        elif "glm" in model_lower:
+            return (1, 0, model_name)
+
+        # Priority 2: All other models alphabetically
+        else:
+            return (2, 0, model_name)
 
     def _load_unified_data(self) -> dict:
         """
@@ -323,9 +352,9 @@ class DashboardDataCollector:
             
             performance_rankings.append(model_metrics)
             detailed_metrics[model] = model_metrics
-        
-        # Sort by performance index (descending)
-        performance_rankings.sort(key=lambda x: x["performance_index"], reverse=True)
+
+        # Sort by consistent model order (Claude, GLM, others) for legend consistency
+        performance_rankings.sort(key=lambda x: self._get_model_sort_key(x["model"]))
         
         return {
             "analysis_timestamp": datetime.now().isoformat(),
@@ -1049,11 +1078,14 @@ class DashboardDataCollector:
                 }
             }
         
+        # Sort assessments by timestamp (newest first) BEFORE limiting
+        assessments.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+
         # Convert to activity format
         activities = []
         model_counts = defaultdict(int)
         task_type_counts = defaultdict(int)
-        
+
         for assessment in assessments[:limit]:  # Limit to requested number
             timestamp = assessment.get("timestamp", "")
             task_type = assessment.get("task_type", "unknown")
@@ -1093,10 +1125,9 @@ class DashboardDataCollector:
             activities.append(activity)
             model_counts[model_used] += 1
             task_type_counts[task_type] += 1
-        
-        # Sort by timestamp (newest first)
-        activities.sort(key=lambda x: x["timestamp"], reverse=True)
-        
+
+        # Activities are already sorted (assessments were sorted before loop)
+
         return {
             "activities": activities,
             "summary": {
@@ -1328,8 +1359,8 @@ class DashboardDataCollector:
             except:
                 pass
 
-        # Method 4: Default fallback
-        return "GLM-4.6"
+        # Method 4: Default fallback (prefer Claude as more common)
+        return "Claude Sonnet 4.5"
 
     def _record_current_session_model(self):
         """Record the current session model for accurate tracking."""
@@ -1387,16 +1418,29 @@ class DashboardDataCollector:
             print(f"Warning: Could not record session model: {e}")
 
     def get_current_session_model(self) -> str:
-        """Get the current session model from session file."""
+        """Get the current session model from session file, preferring model_id over current_model."""
         try:
             session_file = self.patterns_dir / "current_session.json"
             if session_file.exists():
                 with open(session_file, 'r', encoding='utf-8') as f:
                     session_data = json.load(f)
-                    return session_data.get("current_model", "GLM-4.6")
+
+                    # Prefer model_id as it's more accurate
+                    model_id = session_data.get("model_id", "")
+                    if model_id:
+                        # Convert model_id to display name
+                        if "claude-sonnet" in model_id.lower():
+                            return "Claude Sonnet 4.5"
+                        elif "claude-opus" in model_id.lower():
+                            return "Claude Opus 4"
+                        elif "claude-haiku" in model_id.lower():
+                            return "Claude Haiku 3.5"
+
+                    # Fallback to current_model
+                    return session_data.get("current_model", "Claude Sonnet 4.5")
         except:
             pass
-        return "GLM-4.6"
+        return "Claude Sonnet 4.5"
 
     def _generate_realistic_glm_data(self) -> Dict[str, Any]:
         """Generate realistic model performance data using actual historical data."""
@@ -1592,8 +1636,8 @@ class DashboardDataCollector:
                 "contributions": []
             }
 
-        # Prepare data for bar chart
-        models = list(model_summary.keys())
+        # Prepare data for bar chart with consistent model ordering
+        models = sorted(model_summary.keys(), key=lambda m: self._get_model_sort_key(m))
         scores = [model_summary[model]["average_score"] for model in models]
         success_rates = [model_summary[model]["success_rate"] * 100 for model in models]
 
@@ -1723,9 +1767,9 @@ class DashboardDataCollector:
         
         # Sort by timestamp
         timeline_data.sort(key=lambda x: x["timestamp"])
-        
-        # Calculate summary
-        unique_models = list(model_scores.keys())
+
+        # Calculate summary with consistent model ordering
+        unique_models = sorted(model_scores.keys(), key=lambda m: self._get_model_sort_key(m))
         
         return {
             "timeline_data": timeline_data,

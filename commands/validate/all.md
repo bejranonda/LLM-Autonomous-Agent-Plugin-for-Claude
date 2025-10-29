@@ -1,7 +1,7 @@
 ---
 name: validate:all
 description: Run comprehensive validation checks on tool usage, documentation consistency, and execution flow compliance
-delegates-to: validation-controller
+delegates-to: autonomous-agent:validation-controller
 ---
 
 

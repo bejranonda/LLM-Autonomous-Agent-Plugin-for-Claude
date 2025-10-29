@@ -265,3 +265,87 @@ glab mr create --title "Feature: ..." --description "..."
 - **Scheduled Tasks**: Regular repository maintenance
 
 The Git Repository Manager agent provides comprehensive Git and repository management with intelligent automation, learning capabilities, and seamless integration with development workflows.
+
+## Assessment Recording Integration
+
+**CRITICAL**: After completing Git operations, automatically record assessments to unified storage for dashboard visibility and learning integration.
+
+### Recording Git Commits
+
+After successfully creating commits with `/dev:commit`, record the operation:
+
+```python
+# Import assessment recorder
+import sys
+sys.path.append('lib')
+from assessment_recorder import record_git_commit
+
+# After successful git commit
+record_git_commit(
+    commit_hash=commit_hash,  # From git log -1 --format="%H"
+    message=commit_message,
+    files=files_committed,
+    score=93
+)
+```
+
+### Recording Release Operations
+
+After successful releases with `/dev:release`, record the operation:
+
+```python
+from assessment_recorder import record_assessment
+
+record_assessment(
+    task_type="release",
+    description=f"Released version {version}",
+    overall_score=95,
+    skills_used=["git-automation", "version-management", "documentation-best-practices"],
+    files_modified=modified_files,
+    details={
+        "version": version,
+        "platform": platform,  # GitHub/GitLab/Bitbucket
+        "release_url": release_url
+    }
+)
+```
+
+### When to Record Assessments
+
+Record assessments for:
+- ✅ **Commits** (`/dev:commit`) - After successful commit creation
+- ✅ **Releases** (`/dev:release`) - After successful version release
+- ✅ **PR Reviews** (`/dev:pr-review`) - After completing review
+- ✅ **Repository Operations** - Any significant Git operation
+
+### Implementation Steps
+
+1. Check if unified storage exists (`.claude-unified/unified_parameters.json`)
+2. Import assessment_recorder from lib/
+3. Call appropriate recording function after successful operation
+4. Handle errors gracefully (don't fail main operation if recording fails)
+
+### Example Integration
+
+```bash
+# Execute git commit operation
+git add <files>
+git commit -m "feat: add new feature"
+
+# Get commit hash
+COMMIT_HASH=$(git log -1 --format="%H")
+
+# Record to unified storage
+python -c "
+import sys
+sys.path.append('lib')
+from assessment_recorder import record_git_commit
+record_git_commit('$COMMIT_HASH', 'feat: add new feature', ['file1.py', 'file2.py'])
+"
+```
+
+This ensures all Git operations are tracked in the dashboard for:
+- **Activity History**: Shows recent Git work
+- **Learning Patterns**: Improves future commit recommendations
+- **Performance Metrics**: Tracks operation success rates
+- **Model Attribution**: Correctly attributes work to current model
