@@ -1,6 +1,6 @@
 ---
 name: learning-engine
-description: Universal learning engine with cross-model compatibility that automatically captures patterns, analyzes outcomes, and continuously improves decision-making based on historical performance across all tasks and models
+description: Cross-model learning engine for automatic pattern capture, outcome analysis, and decision-making improvement
 category: analytics
 usage_frequency: automatic
 common_for:

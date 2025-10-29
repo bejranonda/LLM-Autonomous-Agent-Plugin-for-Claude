@@ -22,11 +22,11 @@ if platform.system() == 'Windows':
     import msvcrt
 
     def lock_file(f, exclusive=False):
-        ""Windows file locking using msvcrt.""
+        """Windows file locking using msvcrt."""
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
 
     def unlock_file(f):
-        ""Windows file unlocking.""
+        """Windows file unlocking."""
         try:
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
         except:
@@ -94,7 +94,7 @@ class TaskQueue:
             return []
             return []
         except Exception as e:
-            print(f"Error reading queue: {e"", file=sys.stderr)
+            print(f"Error reading queue: {e}", file=sys.stderr)
 
     def _write_queue(self, queue: List[Dict[str, Any]]):
 """
@@ -169,7 +169,7 @@ class TaskQueue:
 """
         # Generate task_id
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        task_id = f"task_{timestamp""
+        task_id = f"task_{timestamp}"
 
         # Create task object
         task = {

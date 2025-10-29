@@ -524,6 +524,274 @@
             .chart-canvas-container {
                 height: 200px;
             }
+
+            /* Enhanced mobile styles */
+            .container {
+                padding: var(--space-sm);
+            }
+
+            .card {
+                margin-bottom: var(--space-md);
+                border-radius: var(--radius-md);
+            }
+
+            .card-header {
+                padding: var(--space-md);
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card-title {
+                font-size: var(--font-size-lg);
+                margin-bottom: var(--space-xs);
+            }
+
+            .btn {
+                padding: var(--space-sm) var(--space-md);
+                font-size: var(--font-size-sm);
+            }
+
+            .btn-icon {
+                width: 40px;
+                height: 40px;
+                font-size: var(--font-size-sm);
+            }
+
+            /* Mobile navigation improvements */
+            .header-controls {
+                flex-direction: column;
+                gap: var(--space-sm);
+                margin-top: var(--space-md);
+            }
+
+            /* Mobile table improvements */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table-wrapper {
+                min-width: 600px;
+            }
+
+            th, td {
+                padding: var(--space-xs) var(--space-sm);
+                font-size: var(--font-size-xs);
+            }
+
+            /* Mobile chart improvements */
+            .chart-controls {
+                flex-direction: column;
+                gap: var(--space-xs);
+                margin-bottom: var(--space-sm);
+            }
+
+            .chart-legend {
+                font-size: var(--font-size-xs);
+                padding: var(--space-xs);
+            }
+
+            /* Mobile metric cards */
+            .metrics-grid {
+                gap: var(--space-sm);
+            }
+
+            .metric-card {
+                padding: var(--space-md);
+            }
+
+            .metric-label {
+                font-size: var(--font-size-xs);
+            }
+
+            /* Mobile specific improvements */
+            .hide-mobile {
+                display: none !important;
+            }
+
+            .show-mobile {
+                display: block !important;
+            }
+
+            /* Touch-friendly targets */
+            .clickable {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            /* Improved text readability on mobile */
+            body {
+                font-size: var(--font-size-sm);
+                line-height: 1.5;
+            }
+
+            /* Mobile sidebar improvements */
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar-item {
+                padding: var(--space-md);
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            /* Mobile form improvements */
+            input, select, textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: var(--space-md);
+            }
+
+            /* Mobile modal improvements */
+            .modal-content {
+                width: 95%;
+                margin: var(--space-sm);
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* Ultra-small mobile devices */
+        @media (max-width: 360px) {
+            .header {
+                padding: var(--space-lg) var(--space-md);
+            }
+
+            .header h1 {
+                font-size: var(--font-size-lg);
+            }
+
+            .metric-value {
+                font-size: var(--font-size-xl);
+            }
+
+            .chart-canvas-container {
+                height: 180px;
+            }
+
+            .container {
+                padding: var(--space-xs);
+            }
+
+            .card {
+                padding: var(--space-sm);
+            }
+
+            .btn {
+                padding: var(--space-xs) var(--space-sm);
+                font-size: var(--font-size-xs);
+            }
+
+            /* Ultra-small specific improvements */
+            .metric-card {
+                padding: var(--space-sm);
+            }
+
+            .card-header {
+                padding: var(--space-sm);
+            }
+
+            .card-title {
+                font-size: var(--font-size-base);
+            }
+        }
+
+        /* Tablet devices */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .header h1 {
+                font-size: var(--font-size-2xl);
+            }
+
+            /* Tablet specific improvements */
+            .sidebar {
+                width: 250px;
+            }
+
+            .card {
+                margin-bottom: var(--space-lg);
+            }
+        }
+
+        /* Large tablets and small desktops */
+        @media (min-width: 1024px) and (max-width: 1280px) {
+            .metrics-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .chart-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .header {
+                padding: var(--space-md) var(--space-lg);
+            }
+
+            .header h1 {
+                font-size: var(--font-size-xl);
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-canvas-container {
+                height: 200px;
+            }
+
+            /* Landscape specific improvements */
+            .header-content {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .header-controls {
+                flex-direction: row;
+                margin-top: 0;
+                margin-left: var(--space-md);
+            }
+        }
+
+        /* Responsive images */
+        img, video, canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .chart-canvas-container canvas {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+
+        /* Dark mode mobile improvements */
+        @media (max-width: 768px) {
+            [data-theme="dark"] .header {
+                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            }
+
+            [data-theme="dark"] .card {
+                background: var(--color-surface);
+                border-color: var(--color-border);
+            }
         }
 
         /* Accessibility */

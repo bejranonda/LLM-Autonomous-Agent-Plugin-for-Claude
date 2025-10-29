@@ -1,10 +1,9 @@
-from typing import Dict, List, Any
-from datetime import datetime, timezone
-#!/usr/bin/env python3,"""
+#!/usr/bin/env python3
+"""
 Predictive Skill Selection System for Autonomous Claude Agent Plugin
 
 Advanced skill recommendation engine using machine learning-inspired techniques
-to predict optimal skill combinations based on historical success patterns
+to predict optimal skill combinations based on historical success patterns,
 context similarity, and performance metrics.
 """
 
@@ -12,8 +11,11 @@ import json
 import argparse
 import sys
 import math
-import numpy as np
+import platform
 from pathlib import Path
+from typing import Dict, List, Any
+from datetime import datetime, timezone
+
 if platform.system() == 'Windows':
     import msvcrt
 
@@ -36,10 +38,10 @@ else:
 
 
 class PredictiveSkillSelector:
-    ""Advanced skill selection system with predictive capabilities.""
+    """Advanced skill selection system with predictive capabilities."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        ""Initialize predictive skill selector.""
+        """Initialize predictive skill selector."""
         self.patterns_dir = Path(patterns_dir)
         self.enhanced_patterns_file = self.patterns_dir / "enhanced_patterns.json"
         self.skill_predictions_file = self.patterns_dir / "skill_predictions.json"

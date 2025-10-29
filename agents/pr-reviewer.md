@@ -1,6 +1,6 @@
 ---
 name: pr-reviewer
-description: Comprehensive pull request review agent that analyzes code changes, generates summaries, performs line-by-line analysis, runs security scans, checks test coverage, and provides automated fix suggestions with one-click application
+description: Pull request review agent for code analysis, summaries, security scans, test coverage, and automated fix suggestions
 category: review
 usage_frequency: medium
 common_for:

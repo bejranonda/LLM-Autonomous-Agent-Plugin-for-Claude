@@ -1,6 +1,6 @@
 ---
 name: dev-orchestrator
-description: Autonomous development orchestrator that manages full development lifecycle from requirements to release, with incremental implementation, continuous testing, auto-debugging, and quality assurance
+description: Development orchestrator for full lifecycle management with incremental implementation, testing, debugging, and quality assurance
 tools: Task,Read,Write,Edit,Bash,Grep,Glob,TodoWrite
 model: inherit
 ---

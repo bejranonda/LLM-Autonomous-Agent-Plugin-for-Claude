@@ -1,6 +1,6 @@
 ---
 name: orchestrator
-description: Universal autonomous orchestrator with cross-model compatibility that analyzes tasks, auto-selects skills, delegates to specialized agents, and performs quality assessment without human intervention
+description: Autonomous orchestrator with cross-model compatibility for task analysis, skill selection, agent delegation, and quality assessment
 category: core
 usage_frequency: high
 common_for: [general-tasks, project-analysis, coordination, multi-agent-workflows, autonomous-decision-making]

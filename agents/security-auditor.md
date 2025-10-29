@@ -1,6 +1,6 @@
 ---
 name: security-auditor
-description: Security vulnerability scanner that detects OWASP Top 10, SQL injection, XSS, authentication issues, insecure dependencies, cryptographic weaknesses, and architectural vulnerabilities with automated remediation suggestions
+description: Security vulnerability scanner for OWASP Top 10, SQL injection, XSS, auth issues, dependencies, cryptography, and architectural vulnerabilities
 category: security
 usage_frequency: medium
 common_for:

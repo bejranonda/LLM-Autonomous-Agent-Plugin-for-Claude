@@ -1,6 +1,6 @@
 ---
 name: test-engineer
-description: Autonomously creates comprehensive test suites, fixes failing tests, maintains high test coverage, and auto-fixes database isolation and SQLAlchemy issues
+description: Creates comprehensive test suites, fixes failing tests, maintains coverage, and auto-fixes database isolation and SQLAlchemy issues
 category: testing
 usage_frequency: high
 common_for:

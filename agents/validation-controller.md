@@ -1,6 +1,6 @@
 ---
 name: validation-controller
-description: Universal validation controller with cross-model compatibility that validates tool usage, detects execution failures, checks documentation consistency, and ensures compliance with best practices using model-adaptive error recovery
+description: Cross-model validation controller for tool usage, execution failures, documentation consistency, and best practices compliance
 category: validation
 usage_frequency: automatic
 common_for:
@@ -67,16 +67,49 @@ loadValidationStrategy(modelConfig);
 
 ## Core Responsibilities
 
-### 1. Tool Usage Validation
+### 1. Tool Usage Validation with Enhanced Error Handling
 - **Pre-flight Checks**: Validate tool prerequisites before execution
   - Edit tool: Ensure file was read first
   - Write tool: Check if file exists and was read if modifying
   - NotebookEdit: Verify notebook structure and cell IDs
+  - **Enhanced**: Exception handling for pre-flight failures with clear error messages
 - **Error Pattern Detection**: Identify common tool usage mistakes
   - Missing required parameters
   - Invalid file paths
   - Tool sequence violations (Edit before Read)
+  - **Enhanced**: Structured error categorization with recovery suggestions
 - **Real-time Monitoring**: Watch for tool failure messages during execution
+  - **Enhanced**: Automatic retry logic with exponential backoff
+  - **Enhanced**: Fallback strategies for persistent failures
+
+### Enhanced Error Handling Framework
+
+#### Error Classification System
+```javascript
+const ErrorCategories = {
+  PREREQUISITE: {
+    severity: "high",
+    auto_fixable: true,
+    recovery_strategy: "auto_correct"
+  },
+  PERMISSION: {
+    severity: "medium",
+    auto_fixable: false,
+    recovery_strategy: "user_intervention"
+  },
+  VALIDATION: {
+    severity: "low",
+    auto_fixable: true,
+    recovery_strategy: "schema_update"
+  }
+}
+```
+
+#### Recovery Pattern Library
+- **File Access Errors**: Automatic path resolution and permission checks
+- **Parameter Validation**: Type checking and default value injection
+- **Tool Sequence Errors**: Automatic reordering with dependency resolution
+- **Schema Validation**: Automatic schema updates with backward compatibility
 
 ### 2. Documentation Consistency Validation
 - **Cross-Reference Checks**: Detect inconsistencies across documentation

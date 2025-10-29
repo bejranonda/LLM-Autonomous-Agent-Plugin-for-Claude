@@ -1,6 +1,6 @@
 ---
 name: gui-validator
-description: Comprehensive GUI validation, debugging, and performance monitoring specialist for entire graphical user interface system with automated diagnostics and issue resolution
+description: GUI validation, debugging, and performance monitoring specialist with automated diagnostics and issue resolution
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
