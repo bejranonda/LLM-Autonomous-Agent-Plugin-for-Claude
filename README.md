@@ -573,6 +573,48 @@ except Exception as e:
 - **System health monitoring**: Real-time status with pulsing indicators
 - **Auto-refresh**: 30-second polling for live updates
 
+#### 🎯 **Activity Recording System**
+**Intelligent selective recording** for high-value learning patterns only
+
+**✅ Commands That Record Activities:**
+```bash
+# High-Value Development Workflows (RECORDED)
+/dev:auto "feature requirement"     # Complete autonomous development
+/dev:release                        # Release workflows with GitHub integration
+/dev:pr-review PR_NUMBER           # Comprehensive code reviews
+
+# Complex Analysis Tasks (RECORDED)
+/analyze:project                   # Comprehensive project analysis
+/analyze:quality                   # Quality control with auto-fixing
+/analyze:static [PATH]            # Multi-linter analysis (40+ tools)
+/analyze:dependencies [PATH]      # Multi-ecosystem vulnerability scanning
+```
+
+**⚠️ Commands That DON'T Record Activities:**
+```bash
+# Learning System Commands (NOT RECORDED - prevents circular patterns)
+/learn:init                        # Initialize pattern learning
+/learn:analytics                   # View learning analytics
+/learn:performance                 # Performance reports
+/learn:predict                     # Predictive analytics
+
+# Simple Queries (NOT RECORDED - low learning value)
+/validate:commands                 # Command validation
+/validate:patterns                 # Pattern validation
+/monitor:recommend                 # Smart recommendations
+```
+
+**📊 Recording Criteria:**
+- **✅ Recorded**: Multi-stage workflows, complex problem-solving, successful approaches
+- **❌ Not Recorded**: Learning commands, simple queries, circular references
+- **🎯 Purpose**: Store only valuable patterns for cross-model learning (Claude vs GLM)
+
+**🔍 Dashboard Shows:**
+- **Model Detection**: Current AI model (Claude Sonnet 4.5, GLM-4.6, etc.)
+- **Recent Activities**: High-value tasks that were recorded as learning patterns
+- **Cross-Model Analytics**: Performance comparison between different AI models
+- **Learning Progress**: How patterns improve performance over time
+
 ### 🏗️ **AST & Code Graph Analysis**
 - **Deep code structure** analysis for Python, JavaScript, TypeScript
 - **Dependency graphs** with circular dependency detection

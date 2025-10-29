@@ -1,36 +1,152 @@
 ---
 name: dev:release
-description: Command for dev release
-delegates-to: orchestrator
+description: Complete automated release workflow with platform detection (GitHub/GitLab/Bitbucket) and release creation
+delegates-to: version-release-manager
 ---
-
 
 # Release-Dev Command
 
 ## Command: `/dev:release`
 
+**CRITICAL**: This command MUST execute ALL steps from version detection through GitHub release creation. The version-release-manager agent MUST complete the entire workflow without stopping early.
+
 Streamlined release preparation and publishing workflow. This command automates the entire release process from version detection to GitHub/GitLab publishing with intelligent validation and automatic documentation updates.
+
+## MANDATORY EXECUTION STEPS
+
+**The version-release-manager agent MUST execute these steps in order and COMPLETE ALL OF THEM:**
+
+### Step 1: Analyze Changes (REQUIRED)
+- Run `git log --oneline` to review commits since last release
+- Categorize changes (features, fixes, breaking changes)
+- Determine version bump type (major/minor/patch)
+
+### Step 2: Determine Version (REQUIRED)
+- Read current version from `.claude-plugin/plugin.json`
+- Calculate new version based on changes
+- Confirm version follows semantic versioning
+
+### Step 3: Update Version Files (REQUIRED)
+- Update `.claude-plugin/plugin.json`
+- Update `README.md` (all version references)
+- Update `CLAUDE.md` (all version references)
+- Update any other files with version numbers
+
+### Step 4: Generate Documentation (REQUIRED)
+- Generate `CHANGELOG.md` entry from git commits
+- Create `RELEASE_NOTES_v{version}.md` with human-readable summary
+- Update feature counts and component lists
+
+### Step 5: Validate Consistency (REQUIRED)
+- Verify all version numbers match
+- Check documentation consistency
+- Validate no old version references remain
+
+### Step 6: Git Operations (REQUIRED)
+- Stage all changes: `git add .`
+- Create commit with message: `release: v{version} - {summary}`
+- Create git tag: `git tag v{version}`
+- Push to remote: `git push origin main`
+- Push tags: `git push origin v{version}`
+
+### Step 7: Create Repository Release (REQUIRED - DO NOT SKIP)
+**This step is MANDATORY and MUST be executed based on detected platform:**
+
+#### Step 7a: Detect Repository Platform (REQUIRED)
+```bash
+# Detect platform from git remote URL
+git remote get-url origin
+
+# Identify platform:
+# - Contains "github.com" → GitHub
+# - Contains "gitlab.com" or "gitlab" → GitLab
+# - Contains "bitbucket.org" → Bitbucket
+# - Others → Generic git repository (skip release creation)
+```
+
+#### Step 7b: Create Platform Release (REQUIRED if platform detected)
+
+**For GitHub repositories:**
+```bash
+# Verify GitHub CLI is authenticated
+gh auth status
+
+# Create GitHub release
+gh release create v{version} \
+  --title "Release v{version}: {title}" \
+  --notes-file RELEASE_NOTES_v{version}.md \
+  --latest
+```
+
+**For GitLab repositories:**
+```bash
+# Verify GitLab CLI is authenticated
+glab auth status
+
+# Create GitLab release
+glab release create v{version} \
+  --name "Release v{version}: {title}" \
+  --notes "$(cat RELEASE_NOTES_v{version}.md)"
+```
+
+**For Bitbucket repositories:**
+```bash
+# Bitbucket uses git tags (already created in Step 6)
+# No additional CLI command needed
+echo "✅ Release created via git tag (Bitbucket)"
+```
+
+**For other git repositories:**
+```bash
+# Generic git repository without platform-specific features
+echo "✅ Release created via git tag"
+```
+
+### Step 8: Verify Release (REQUIRED)
+**Platform-specific verification:**
+
+**For GitHub:**
+```bash
+gh release view v{version}
+echo "✅ GitHub Release: https://github.com/{owner}/{repo}/releases/tag/v{version}"
+```
+
+**For GitLab:**
+```bash
+glab release view v{version}
+echo "✅ GitLab Release: https://gitlab.com/{owner}/{repo}/-/releases/v{version}"
+```
+
+**For others:**
+```bash
+git tag -l v{version}
+echo "✅ Git tag created: v{version}"
+```
+
+- Store release pattern for learning
 
 **🚀 Quick Release Features:**
 - **One-command release**: Automated end-to-end release workflow
 - **Smart version detection**: Automatically determines version bump needed
+- **Platform detection**: Automatically detects GitHub, GitLab, Bitbucket, or generic git
+- **Platform-specific releases**: Creates releases using appropriate CLI (gh, glab, etc.)
 - **Documentation sync**: Updates all docs, README, changelog automatically
 - **Validation first**: Ensures quality before releasing
 - **Auto-commit & push**: Handles all Git operations automatically
-- **GitHub release**: Creates GitHub release with comprehensive notes (DEFAULT)
-- **Multi-platform publishing**: GitLab, npm, PyPI, Docker support (optional)
+- **Multi-platform support**: GitHub, GitLab, Bitbucket, and generic git repositories
 
 ## How It Works
+
+The workflow executes 8 MANDATORY steps in sequence:
 
 1. **Analyze Changes**: Reviews all changes since last release
 2. **Determine Version**: Auto-detects major/minor/patch based on commits
 3. **Update Version Files**: Updates plugin.json, package.json, setup.py, etc.
 4. **Sync Documentation**: Updates README, CHANGELOG, RELEASE_NOTES
 5. **Validate Consistency**: Cross-checks all files for version consistency
-6. **Quality Check**: Runs validation to ensure quality ≥ 85/100
-7. **Git Operations**: Commits, tags, and pushes automatically
-8. **Create GitHub Release**: Publishes to GitHub with comprehensive release notes (DEFAULT)
-9. **Optional Platforms**: Publishes to npm, PyPI, Docker, GitLab (if specified)
+6. **Git Operations**: Commits, tags, and pushes automatically
+7. **Create Platform Release**: Detects platform (GitHub/GitLab/Bitbucket) and creates appropriate release
+8. **Verify Release**: Confirms release was created successfully on detected platform
 
 ## Usage
 
@@ -524,41 +640,57 @@ The `/release-dev` command integrates with the autonomous learning system:
 /dev:release
 ```
 
-## GitHub Release Requirements
+## Platform Requirements
 
-**Required for GitHub Release Creation:**
-- **GitHub CLI**: Must be installed (`gh` command)
+The command automatically detects your repository platform and uses the appropriate CLI tool:
+
+### GitHub Repositories
+**Required:**
+- **GitHub CLI** (`gh` command) - Install: https://cli.github.com/
 - **Authentication**: Run `gh auth login` once
-- **Repository Access**: Must have push permissions to the repository
-- **Release Permissions**: Must be able to create releases
+- **Permissions**: Push access and release creation permissions
 
-**Authentication Setup:**
+**Setup:**
 ```bash
-# One-time setup for GitHub CLI
 gh auth login
-
-# Verify authentication
 gh auth status
-
-# Test repository access
-gh repo view
 ```
+
+### GitLab Repositories
+**Required:**
+- **GitLab CLI** (`glab` command) - Install: https://gitlab.com/gitlab-org/cli
+- **Authentication**: Run `glab auth login` once
+- **Permissions**: Push access and release creation permissions
+
+**Setup:**
+```bash
+glab auth login
+glab auth status
+```
+
+### Bitbucket Repositories
+**No additional CLI required** - Uses git tags only
+
+### Generic Git Repositories
+**No additional CLI required** - Uses git tags only
 
 ## Troubleshooting
 
-### GitHub Release Failed
+### Platform Release Failed
 ```bash
-# Check GitHub authentication
+# For GitHub
 gh auth status
-
-# Verify repository permissions
 gh repo view
+/dev:release --retry
 
-# Retry with verbose logging
-/dev:release --verbose --retry
+# For GitLab
+glab auth status
+glab repo view
+/dev:release --retry
 
-# Skip GitHub release (not recommended)
-/dev:release --skip-github
+# For any platform
+git remote -v  # Check remote URL
+git tag -l     # List existing tags
 ```
 
 ### Quality Check Failed

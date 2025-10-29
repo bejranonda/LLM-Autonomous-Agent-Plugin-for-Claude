@@ -541,31 +541,49 @@ class DashboardDataCollector:
         return {}
 
     def get_overview_metrics(self) -> Dict[str, Any]:
-        """Get high-level overview metrics from all sources."""
-        # Load all data sources
+        """Get high-level overview metrics from unified storage."""
+        # Load all data sources from unified storage
         patterns = self._load_json_file("patterns.json", "patterns")
         quality_history = self._load_json_file("quality_history.json", "quality")
         perf_data = self._load_json_file("performance_records.json", "performance_records")
+        skill_metrics = self._load_json_file("skill_metrics.json", "skill_metrics")
+        agent_metrics = self._load_json_file("agent_metrics.json", "agent_metrics")
+        assessments = self._load_json_file("assessments.json", "assessments")
 
-        # Count total patterns from all sources
-        total_patterns = (
-            len(patterns.get("patterns", [])) +
-            len(quality_history.get("quality_assessments", [])) +
-            len(perf_data.get("records", []))
-        )
+        # Count total patterns from all sources (handle unified storage format)
+        total_patterns = 0
 
-        total_skills = len(patterns.get("skill_effectiveness", {}))
-        total_agents = len(patterns.get("agent_effectiveness", {}))
+        # From patterns.json (unified storage - it's an array)
+        if isinstance(patterns, list):
+            total_patterns += len(patterns)
+        elif isinstance(patterns, dict):
+            total_patterns += len(patterns.get("patterns", []))
+
+        # From other sources
+        total_patterns += len(quality_history.get("quality_assessments", []))
+        total_patterns += len(perf_data.get("records", []))
+        total_patterns += len(assessments.get("assessments", []))
+
+        # Get skills and agents from unified storage
+        total_skills = len(skill_metrics.get("skill_effectiveness", {}))
+        total_agents = len(agent_metrics.get("agent_effectiveness", {}))
 
         # Calculate average quality score from all sources
         quality_scores = []
 
-        # From patterns.json
-        quality_scores.extend([
-            p.get("outcome", {}).get("quality_score", 0)
-            for p in patterns.get("patterns", [])
-            if p.get("outcome", {}).get("quality_score") is not None
-        ])
+        # From patterns.json (handle both array and dict formats)
+        if isinstance(patterns, list):
+            quality_scores.extend([
+                p.get("outcome", {}).get("quality_score", 0)
+                for p in patterns
+                if p.get("outcome", {}).get("quality_score") is not None
+            ])
+        elif isinstance(patterns, dict):
+            quality_scores.extend([
+                p.get("outcome", {}).get("quality_score", 0)
+                for p in patterns.get("patterns", [])
+                if p.get("outcome", {}).get("quality_score") is not None
+            ])
 
         # From quality_history.json
         quality_scores.extend([
@@ -581,6 +599,13 @@ class DashboardDataCollector:
             if r.get("overall_score") is not None
         ])
 
+        # From assessments.json
+        quality_scores.extend([
+            a.get("overall_score", 0)
+            for a in assessments.get("assessments", [])
+            if a.get("overall_score") is not None
+        ])
+
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
         # Calculate learning velocity from quality history (preferred)
@@ -588,7 +613,10 @@ class DashboardDataCollector:
 
         # Fallback to pattern-based calculation if quality history is insufficient
         if learning_velocity == "insufficient_data":
-            recent_patterns = patterns.get("patterns", [])[-20:] if patterns.get("patterns") else []
+            if isinstance(patterns, list):
+                recent_patterns = patterns[-20:] if patterns else []
+            else:
+                recent_patterns = patterns.get("patterns", [])[-20:] if patterns.get("patterns") else []
             learning_velocity = self._calculate_learning_velocity(recent_patterns)
 
         # Get model performance metrics
@@ -808,22 +836,50 @@ class DashboardDataCollector:
         }
 
     def get_skill_performance(self, top_k: int = 10) -> Dict[str, Any]:
-        """Get top performing skills."""
-        patterns = self._load_json_file("patterns.json", "patterns")
+        """Get top performing skills from unified storage."""
+        # Load from unified skill metrics file
+        skill_metrics = self._load_json_file("skill_metrics.json", "skill_metrics")
 
         skills_data = []
-        for skill_name, metrics in patterns.get("skill_effectiveness", {}).items():
+
+        # Primary source: skill_metrics.json skill_effectiveness
+        for skill_name, metrics in skill_metrics.get("skill_effectiveness", {}).items():
             success_rate = metrics.get("success_rate", 0) or 0
             usage_count = metrics.get("total_uses", 0) or 0
-            avg_quality = metrics.get("avg_quality_impact", 0)
+            avg_quality = metrics.get("avg_contribution_score", 0)
 
             skills_data.append({
                 "name": skill_name,
                 "success_rate": round(success_rate * 100, 1),
                 "usage_count": usage_count,
                 "avg_quality_impact": round(avg_quality, 1),
-                "recommended_for": metrics.get("recommended_for", [])
+                "recommended_for": []  # Not available in current format
             })
+
+        # Secondary source: Extract from skill_usage_history if needed
+        if not skills_data:
+            skill_usage = skill_metrics.get("skill_usage_history", [])
+            skill_counts = {}
+            skill_success = {}
+
+            for usage in skill_usage:
+                for skill in usage.get("skills_used", []):
+                    skill_counts[skill] = skill_counts.get(skill, 0) + 1
+                    if usage.get("overall_success", False):
+                        skill_success[skill] = skill_success.get(skill, 0) + 1
+
+            for skill_name, count in skill_counts.items():
+                success_count = skill_success.get(skill_name, 0)
+                success_rate = success_count / count if count > 0 else 0
+                avg_quality = usage.get("quality_score", 0)
+
+                skills_data.append({
+                    "name": skill_name,
+                    "success_rate": round(success_rate * 100, 1),
+                    "usage_count": count,
+                    "avg_quality_impact": round(avg_quality, 1),
+                    "recommended_for": []
+                })
 
         # Sort by success rate
         skills_data.sort(key=lambda x: x["success_rate"], reverse=True)
@@ -834,23 +890,46 @@ class DashboardDataCollector:
         }
 
     def get_agent_performance(self, top_k: int = 10) -> Dict[str, Any]:
-        """Get top performing agents."""
-        patterns = self._load_json_file("patterns.json", "patterns")
+        """Get top performing agents from unified storage."""
+        # Load from unified agent metrics file
+        agent_metrics = self._load_json_file("agent_metrics.json", "agent_metrics")
 
         agents_data = []
-        for agent_name, metrics in patterns.get("agent_effectiveness", {}).items():
-            success_rate = metrics.get("success_rate", 0) or 0
-            usage_count = metrics.get("total_uses", 0) or 0
-            avg_duration = metrics.get("avg_duration", 0)
-            reliability = metrics.get("reliability_score", 0)
+        agent_stats = {}
 
-            agents_data.append({
-                "name": agent_name,
-                "success_rate": round(success_rate * 100, 1),
-                "usage_count": usage_count,
-                "avg_duration": round(avg_duration, 1),
-                "reliability": round(reliability * 100, 1)
-            })
+        # Extract agent performance from quality_assessment_tasks
+        for task in agent_metrics.get("quality_assessment_tasks", []):
+            for agent_name, details in task.get("execution_details", {}).items():
+                if agent_name not in agent_stats:
+                    agent_stats[agent_name] = {
+                        "success_count": 0,
+                        "total_count": 0,
+                        "total_duration": 0,
+                        "total_quality": 0
+                    }
+
+                agent_stats[agent_name]["total_count"] += 1
+                agent_stats[agent_name]["total_duration"] += details.get("duration_seconds", 0)
+                agent_stats[agent_name]["total_quality"] += details.get("quality_score", 0)
+
+                if details.get("success", False):
+                    agent_stats[agent_name]["success_count"] += 1
+
+        # Convert to dashboard format
+        for agent_name, stats in agent_stats.items():
+            if stats["total_count"] > 0:
+                success_rate = stats["success_count"] / stats["total_count"]
+                avg_duration = stats["total_duration"] / stats["total_count"]
+                avg_quality = stats["total_quality"] / stats["total_count"]
+                reliability = success_rate * (avg_quality / 100)  # Combined reliability metric
+
+                agents_data.append({
+                    "name": agent_name,
+                    "success_rate": round(success_rate * 100, 1),
+                    "usage_count": stats["total_count"],
+                    "avg_duration": round(avg_duration, 1),
+                    "reliability": round(reliability * 100, 1)
+                })
 
         # Sort by reliability
         agents_data.sort(key=lambda x: x["reliability"], reverse=True)
@@ -861,17 +940,41 @@ class DashboardDataCollector:
         }
 
     def get_task_distribution(self) -> Dict[str, Any]:
-        """Get distribution of task types."""
+        """Get distribution of task types from unified storage."""
+        # Load from multiple unified sources
         patterns = self._load_json_file("patterns.json", "patterns")
+        skill_metrics = self._load_json_file("skill_metrics.json", "skill_metrics")
+        perf_records = self._load_json_file("performance_records.json", "performance_records")
 
         task_counts = defaultdict(int)
         success_by_task = defaultdict(list)
 
-        for pattern in patterns.get("patterns", []):
-            task_type = pattern.get("task_type", "unknown")
-            task_counts[task_type] += 1
+        # Process patterns.json (handle both array and dict formats)
+        if isinstance(patterns, list):
+            for pattern in patterns:
+                task_type = pattern.get("task_type", "unknown")
+                task_counts[task_type] += 1
+                success = pattern.get("outcome", {}).get("success", False)
+                success_by_task[task_type].append(1 if success else 0)
+        elif isinstance(patterns, dict):
+            for pattern in patterns.get("patterns", []):
+                task_type = pattern.get("task_type", "unknown")
+                task_counts[task_type] += 1
+                success = pattern.get("outcome", {}).get("success", False)
+                success_by_task[task_type].append(1 if success else 0)
 
-            success = pattern.get("outcome", {}).get("success", False)
+        # Process skill_usage_history
+        for usage in skill_metrics.get("skill_usage_history", []):
+            task_type = usage.get("task_type", "unknown")
+            task_counts[task_type] += 1
+            success = usage.get("overall_success", False)
+            success_by_task[task_type].append(1 if success else 0)
+
+        # Process performance_records
+        for record in perf_records.get("records", []):
+            task_type = record.get("task_type", "unknown")
+            task_counts[task_type] += 1
+            success = record.get("pass", False)
             success_by_task[task_type].append(1 if success else 0)
 
         distribution = []
@@ -1028,13 +1131,30 @@ class DashboardDataCollector:
                 "success": record.get("pass", False)
             })
 
-        # 3. Load legacy patterns
+        # 3. Load unified patterns
         patterns = self._load_json_file("patterns.json", "patterns")
-        for pattern in patterns.get("patterns", []):
+        if isinstance(patterns, list):
+            for pattern in patterns:
+                all_records.append({
+                    "timestamp": pattern.get("timestamp", ""),
+                    "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
+                    "success": pattern.get("outcome", {}).get("success", False)
+                })
+        elif isinstance(patterns, dict):
+            for pattern in patterns.get("patterns", []):
+                all_records.append({
+                    "timestamp": pattern.get("timestamp", ""),
+                    "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
+                    "success": pattern.get("outcome", {}).get("success", False)
+                })
+
+        # 4. Load assessments
+        assessments = self._load_json_file("assessments.json", "assessments")
+        for assessment in assessments.get("assessments", []):
             all_records.append({
-                "timestamp": pattern.get("timestamp", ""),
-                "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
-                "success": pattern.get("outcome", {}).get("success", False)
+                "timestamp": assessment.get("timestamp", ""),
+                "quality_score": assessment.get("overall_score", 0),
+                "success": assessment.get("pass", False)
             })
 
         # Sort by timestamp and get last 50
@@ -1049,9 +1169,14 @@ class DashboardDataCollector:
         quality_scores = [r.get("quality_score", 0) for r in recent_tasks if r.get("quality_score")]
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
-        # Storage size (all data files)
+        # Storage size (all unified storage files)
         total_size = 0
-        for file in ["patterns.json", "quality_history.json", "performance_records.json"]:
+        unified_files = [
+            "patterns.json", "quality_history.json", "performance_records.json",
+            "skill_metrics.json", "agent_metrics.json", "assessments.json",
+            "debugging_performance.json", "release_patterns.json"
+        ]
+        for file in unified_files:
             filepath = self.patterns_dir / file
             if filepath.exists():
                 total_size += os.path.getsize(filepath)
@@ -1727,6 +1852,15 @@ DASHBOARD_HTML = """
             overflow-x: auto;
         }
 
+        .info-panel {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -1971,6 +2105,24 @@ DASHBOARD_HTML = """
                     </thead>
                     <tbody id="agents-tbody"></tbody>
                 </table>
+            </div>
+
+            <!-- Activity Recording Guide -->
+            <div class="info-panel">
+                <div class="chart-title">🎯 Activity Recording Guide</div>
+                <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
+                    <strong>✅ Commands That Record:</strong>
+                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/dev:auto</code>
+                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/dev:release</code>
+                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/analyze:project</code>
+                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/analyze:quality</code>
+                </div>
+                <div style="font-size: 12px; color: #888;">
+                    <strong>⚠️ Commands That DON'T Record:</strong>
+                    <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px;">/learn:*</code>
+                    <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px;">/validate:*</code>
+                    <span style="color: #666; font-size: 11px;">(prevents circular patterns)</span>
+                </div>
             </div>
 
             <!-- Recent Activities -->
@@ -4009,41 +4161,10 @@ def check_existing_dashboard(host: str, port_start: int = 5000, port_end: int = 
             continue
     return False, None, None
 
-def create_browser_lock_file(port: int) -> str:
-    """Create a unique lock file for the dashboard port."""
-    import tempfile
-    import os
-
-    lock_dir = tempfile.gettempdir()
-    lock_file = os.path.join(lock_dir, f"autonomous-agent-dashboard-{port}.lock")
-    return lock_file
-
-def is_browser_opened(port: int) -> bool:
-    """Check if browser was already opened for this dashboard instance."""
-    lock_file = create_browser_lock_file(port)
-    return os.path.exists(lock_file)
-
-def mark_browser_opened(port: int):
-    """Mark that browser has been opened for this dashboard instance."""
-    lock_file = create_browser_lock_file(port)
-    try:
-        with open(lock_file, 'w') as f:
-            f.write(f"Dashboard browser opened for port {port}\n")
-    except Exception:
-        pass  # Ignore lock file creation errors
-
-def cleanup_browser_lock(port: int):
-    """Clean up browser lock file."""
-    lock_file = create_browser_lock_file(port)
-    try:
-        if os.path.exists(lock_file):
-            os.remove(lock_file)
-    except Exception:
-        pass  # Ignore cleanup errors
 
 def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True):
     """
-    Run the dashboard server with robust error handling and smart browser management.
+    Run the dashboard server with simple browser opening.
 
     Args:
         host: Host to bind to
@@ -4055,8 +4176,6 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
     import webbrowser
     import threading
     import time
-    import requests
-    import atexit
 
     global data_collector
     data_collector = DashboardDataCollector(patterns_dir)
@@ -4074,17 +4193,16 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
     is_existing, existing_port, existing_url = check_existing_dashboard(host, port, port + 10)
     if is_existing:
         print(f"Dashboard is already running at: {existing_url}")
-        if auto_open_browser and not is_browser_opened(existing_port):
-            # Open browser for existing dashboard if not already opened
+        if auto_open_browser:
+            # Open browser for existing dashboard
             try:
                 webbrowser.open(existing_url)
-                mark_browser_opened(existing_port)
                 print(f"Browser opened to existing dashboard: {existing_url}")
             except Exception as e:
                 print(f"Could not open browser automatically: {e}")
                 print(f"Please manually navigate to: {existing_url}")
         else:
-            print(f"Browser already opened for this dashboard instance.")
+            print(f"Please manually navigate to: {existing_url}")
         return
 
     # Find available port if the requested port is occupied
@@ -4104,34 +4222,24 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
     print(f"Dashboard URL: {server_url}")
     print(f"Pattern directory: {patterns_dir}")
 
-    # Register cleanup function to remove lock file on exit
-    atexit.register(cleanup_browser_lock, available_port)
-
-    # Function to open browser after server starts (smart opening)
+    # Function to open browser after server starts
     def open_browser_delayed():
-        time.sleep(2.0)  # Give server more time to fully start
+        time.sleep(2.0)  # Give server time to start
 
-        # Check if server is responding
         if validate_server_startup(f"{server_url}/api/overview"):
             print(f"Dashboard is running at: {server_url}")
-
-            # Check if browser was already opened for this port
-            if not is_browser_opened(available_port):
-                # Open browser automatically for new instance
+            if auto_open_browser:
                 try:
                     webbrowser.open(server_url)
-                    mark_browser_opened(available_port)
                     print(f"Browser opened to {server_url}")
                 except Exception as e:
                     print(f"Could not open browser automatically: {e}")
                     print(f"Please manually navigate to: {server_url}")
-            else:
-                print(f"Browser already opened for dashboard on port {available_port}")
         else:
             print(f"Server validation failed. Please check the logs.")
             print(f"   Try accessing manually: {server_url}")
 
-    # Start browser opening in background thread (smart single browser launch)
+    # Start browser opening in background thread
     if auto_open_browser:
         print(f"Opening browser automatically...")
         browser_thread = threading.Thread(target=open_browser_delayed, daemon=True)
@@ -4146,11 +4254,9 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
         app.run(host=host, port=available_port, debug=False, use_reloader=False)
     except KeyboardInterrupt:
         print(f"\nDashboard stopped by user")
-        cleanup_browser_lock(available_port)
     except Exception as e:
         print(f"\nError starting dashboard: {e}")
         print(f"Try using a different port: --port {available_port + 1}")
-        cleanup_browser_lock(available_port)
         sys.exit(1)
 
 

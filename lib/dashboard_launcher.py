@@ -16,6 +16,7 @@ import argparse
 from pathlib import Path
 import signal
 import logging
+from typing import Tuple, Optional
 
 # Ensure log directory exists
 log_dir = Path(".claude/logs")
@@ -231,7 +232,7 @@ class DashboardLauncher:
             if self.restart_count >= self.max_restarts:
                 logger.error(f"Max restart attempts ({self.max_restarts}) reached")
 
-    def run(self, open_browser: bool = True) -> Tuple[bool, str, int]:
+    def run(self) -> Tuple[bool, str, int]:
         """Run the dashboard with monitoring."""
         try:
             # Start dashboard
@@ -239,16 +240,8 @@ class DashboardLauncher:
             if not success:
                 return False, message, 0
 
-            # Open browser if requested
-            if open_browser:
-                try:
-                    import webbrowser
-
-                    dashboard_url = f"http://{self.host}:{port}"
-                    webbrowser.open(dashboard_url)
-                    logger.info(f"Opened browser at {dashboard_url}")
-                except Exception as e:
-                    logger.warning(f"Failed to open browser: {e}")
+            # Browser opening is handled by dashboard.py itself
+            # dashboard_launcher.py calls dashboard.py with --no-browser flag
 
             # Start monitoring in background if auto-restart enabled
             if self.auto_restart:
@@ -313,7 +306,6 @@ def main():
         default=".claude-patterns",
         help="Pattern directory",
     )
-    parser.add_argument("--no-browser", action="store_true", help="Don't open browser")
     parser.add_argument(
         "--no-restart",
         action="store_true",
@@ -333,7 +325,7 @@ def main():
         auto_restart=not args.no_restart,
     )
 
-    success, message, port = launcher.run(open_browser=not args.no_browser)
+    success, message, port = launcher.run()
 
     if not success:
         print(f"ERROR: Failed to start dashboard: {message}")

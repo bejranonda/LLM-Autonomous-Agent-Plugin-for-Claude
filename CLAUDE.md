@@ -57,9 +57,10 @@ skills/                              # 17 knowledge packages
 ├── security-patterns/              # Security analysis and patterns (v3.0+)
 ├── [Plus 5 additional specialized skills]
 
-commands/                            # 32 slash commands (8 categories with colon notation)
+commands/                            # 39 slash commands (8 categories with colon notation)
 ├── dev/                           # Development commands
 │   ├── auto.md                    # Autonomous development workflow (/dev:auto)
+│   ├── commit.md                  # Intelligent commit management (/dev:commit) (NEW v5.4+)
 │   ├── release.md                 # Release management workflow (/dev:release)
 │   ├── model-switch.md            # Model switching (/dev:model-switch)
 │   └── pr-review.md              # Pull request review (/dev:pr-review)
@@ -67,7 +68,9 @@ commands/                            # 32 slash commands (8 categories with colo
 │   ├── project.md                 # Autonomous project analysis (/analyze:project)
 │   ├── quality.md                 # Comprehensive quality control (/analyze:quality)
 │   ├── static.md                  # Static code analysis (/analyze:static)
-│   └── dependencies.md           # Dependency vulnerability scanning (/analyze:dependencies)
+│   ├── dependencies.md           # Dependency vulnerability scanning (/analyze:dependencies)
+│   ├── explain.md                 # Explain task without modification (NEW v5.4+)
+│   └── repository.md             # Analyze external repositories (NEW v5.4+)
 ├── validate/                       # Validation commands
 │   ├── all.md                     # Comprehensive validation audit (/validate:all)
 │   ├── fullstack.md               # Full-stack validation & auto-fix (/validate:fullstack)
@@ -80,12 +83,17 @@ commands/                            # 32 slash commands (8 categories with colo
 │   ├── init.md                    # Initialize pattern learning (/learn:init)
 │   ├── analytics.md               # Learning analytics (/learn:analytics)
 │   ├── performance.md             # Performance analytics dashboard (/learn:performance)
-│   └── predict.md                # Predictive analytics (/learn:predict)
+│   ├── predict.md                # Predictive analytics (/learn:predict)
+│   ├── history.md                 # Learn from repository history (NEW v5.4+)
+│   └── clone.md                  # Clone features from external repos (NEW v5.4+)
 ├── workspace/                      # Workspace commands
 │   ├── organize.md                # Workspace organization (/workspace:organize)
 │   ├── reports.md                 # Report organization (/workspace:reports)
-│   └── improve.md                # Plugin improvement (/workspace:improve)
+│   ├── improve.md                # Plugin improvement (/workspace:improve)
+│   ├── update-readme.md          # Intelligent README updates (NEW v5.4+)
+│   └── update-about.md           # GitHub About section updates (NEW v5.4+)
 ├── monitor/                        # Monitoring commands
+│   ├── dashboard.md               # Real-time monitoring dashboard (/monitor:dashboard)
 │   └── recommend.md               # Smart workflow recommendations (/monitor:recommend)
 └── git-release-workflow.md        # Git release workflow (special case)
 
