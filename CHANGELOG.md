@@ -5,6 +5,72 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.6] - 2025-10-29
+
+### 🚀 **Enhancement: GitHub Release Workflow Automation**
+
+This enhancement adds automatic GitHub repository release creation to the `/dev:release` command, providing true one-command release workflow with comprehensive release notes.
+
+#### **🔧 Enhanced Release Command**
+
+**NEW: Default GitHub Release Creation**
+- **One-Command Release**: `/dev:release` now creates GitHub releases automatically
+- **Comprehensive Notes**: Auto-generated release notes from changelog
+- **Authentication Validation**: Pre-flight checks for GitHub access
+- **Error Handling**: Enhanced troubleshooting for GitHub operations
+
+**Updated Workflow Stages**
+- **Stage 7**: GitHub Repository Release (NEW 10-20 second stage)
+- **Authentication Check**: Verifies GitHub CLI and permissions
+- **Release Creation**: Professional GitHub releases with proper formatting
+- **Automatic Links**: Direct links to release and source archive
+
+#### **📋 Enhanced Documentation**
+
+**Updated Requirements**
+- **GitHub CLI**: Now REQUIRED for release creation
+- **Authentication**: One-time setup with `gh auth login`
+- **Permissions**: Repository push and release creation verified
+
+**Better Troubleshooting**
+- **GitHub-Specific Errors**: Enhanced error handling and recovery
+- **Authentication Issues**: Clear guidance for setup problems
+- **Permission Errors**: Step-by-step resolution guide
+
+#### **⚡ User Experience Improvements**
+
+**True Automation**
+- **Zero Manual Steps**: Complete release lifecycle handled automatically
+- **Professional Releases**: Consistent formatting and comprehensive notes
+- **Time Savings**: Eliminates manual GitHub release creation steps
+- **Error Prevention**: Automated validation prevents common mistakes
+
+**Developer Productivity**
+- **Streamlined Process**: Single command handles entire release workflow
+- **Enhanced Tracking**: Complete release history in GitHub
+- **Consistent Quality**: Professional releases every time
+- **Better Documentation**: Clear usage guidance and examples
+
+## [5.3.5] - 2025-10-29
+
+### 🔧 **Patch Release: Dashboard Browser Auto-Opening Enhancement**
+
+This patch release enhances the monitoring dashboard to automatically open in the default browser when launched, eliminating the need for manual URL navigation and improving user experience.
+
+#### **🖥️ Dashboard Auto-Opening Feature**
+
+**NEW: Automatic Browser Launch**
+- **Zero-Friction Access**: Dashboard automatically opens in default browser
+- **Cross-Platform Support**: Works on Windows, macOS, and Linux
+- **User Notification**: Clear message with dashboard URL
+- **Fallback Option**: Manual URL access if auto-opening fails
+
+**Enhanced User Experience**
+- **Instant Access**: No manual URL copying and pasting required
+- **Better Visibility**: Immediate visual feedback when dashboard starts
+- **Improved Workflow**: Seamless integration into development process
+- **Professional Presentation**: Web-based dashboard with modern UI
+
 ## [5.3.4] - 2025-10-29
 
 ### 🔧 **Patch Release: Naming Consistency Fixes**
