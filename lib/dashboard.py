@@ -56,23 +56,152 @@ class DashboardDataCollector:
         Args:
             patterns_dir: Directory containing pattern data (legacy parameter)
         """
-        self.patterns_dir = Path(patterns_dir)
+        current_dir = Path(__file__).parent
         self.cache = {}
         self.cache_ttl = 60  # Cache for 60 seconds
         self.last_update = {}
 
+        # Detect dashboard location and set up paths accordingly
+        if current_dir.name == '.claude-patterns':
+            # Case 1: Running from .claude-patterns (local copy)
+            print("Dashboard running from local .claude-patterns directory")
+            self.patterns_dir = current_dir
+            self.project_root = current_dir.parent
+            self.is_local_copy = True
+        elif current_dir.name == 'lib':
+            # Case 2: Running from plugin lib directory
+            print("Dashboard running from plugin lib directory")
+            self.patterns_dir = self._discover_patterns_dir()
+            self.project_root = self._discover_project_root()
+            self.is_local_copy = False
+        else:
+            # Case 3: Unknown location - use discovery
+            print("Dashboard running from unknown location - using discovery")
+            self.patterns_dir = self._discover_patterns_dir()
+            self.project_root = self._discover_project_root()
+            self.is_local_copy = False
+
+        print(f"Dashboard initialized with:")
+        print(f"  Current dir: {current_dir}")
+        print(f"  Patterns dir: {self.patterns_dir}")
+        print(f"  Project root: {self.project_root}")
+        print(f"  Local copy: {self.is_local_copy}")
+
         # Initialize unified parameter storage if available
         if UNIFIED_STORAGE_AVAILABLE:
-            # Use absolute path to project root to avoid path issues when running from /lib
-            project_root = Path(__file__).parent.parent
-            storage_dir = project_root / ".claude-unified"
-            self.unified_storage = UnifiedParameterStorage(str(storage_dir))
-            self.use_unified_storage = True
-            # Enable compatibility mode for seamless transition
-            enable_compatibility_mode(auto_patch=False, monkey_patch=False)
-        else:
             self.unified_storage = None
             self.use_unified_storage = False
+
+            if self.is_local_copy:
+                # For local copy, check current and parent directories
+                storage_dirs = [
+                    self.patterns_dir / '.claude-unified',
+                    self.project_root / '.claude-unified',
+                    self.patterns_dir,
+                    self.project_root
+                ]
+            else:
+                # For plugin, check multiple possible locations
+                storage_dirs = [
+                    self.project_root / '.claude-unified',
+                    self.patterns_dir / '.claude-unified',
+                    current_dir / '.claude-unified',
+                    self.project_root / '.claude-patterns',
+                    self.patterns_dir
+                ]
+
+            for storage_dir in storage_dirs:
+                if storage_dir.exists():
+                    try:
+                        self.unified_storage = UnifiedParameterStorage(str(storage_dir))
+                        self.use_unified_storage = True
+                        # Enable compatibility mode for seamless transition
+                        enable_compatibility_mode(auto_patch=False, monkey_patch=False)
+                        print(f"  Unified storage: {storage_dir}")
+                        break
+                    except Exception as e:
+                        print(f"  Unified storage failed at {storage_dir}: {e}")
+                        continue
+
+            if not self.unified_storage:
+                print("  Unified storage: Not available")
+        else:
+            print("  Unified storage: Not available")
+            self.unified_storage = None
+            self.use_unified_storage = False
+
+    def _discover_project_root(self) -> Path:
+        """Discover the project root directory when running from plugin."""
+        current_dir = Path(__file__).parent
+
+        # List of potential project root indicators
+        indicators = [
+            '.claude-plugin',
+            'README.md',
+            'CLAUDE.md',
+            '.git',
+            'requirements.txt',
+            'setup.py',
+            'package.json'
+        ]
+
+        # Search upward from current location
+        search_dir = current_dir
+        max_depth = 10  # Prevent infinite loops
+
+        for _ in range(max_depth):
+            # Check if this directory has any indicators
+            if any((search_dir / indicator).exists() for indicator in indicators):
+                print(f"Found project root at: {search_dir}")
+                return search_dir
+
+            # Move up one directory
+            parent = search_dir.parent
+            if parent == search_dir:  # Reached filesystem root
+                break
+            search_dir = parent
+
+        # Fallback to current directory if nothing found
+        print(f"No project root indicators found, using current directory: {current_dir}")
+        return current_dir
+
+    def _discover_patterns_dir(self) -> Path:
+        """Discover patterns directory when running from plugin."""
+        current_dir = Path(__file__).parent
+
+        # Priority order for patterns directory when running from plugin
+        potential_dirs = [
+            # 1. Project root patterns (most likely)
+            current_dir.parent / '.claude-patterns',
+
+            # 2. Current directory patterns
+            current_dir / '.claude-patterns',
+
+            # 3. Plugin lib patterns
+            current_dir / 'patterns',
+
+            # 4. Parent project patterns
+            current_dir.parent.parent / '.claude-patterns',
+
+            # 5. Create new patterns directory in project root
+            current_dir.parent / '.claude-patterns'
+        ]
+
+        for patterns_dir in potential_dirs:
+            if patterns_dir.exists():
+                # Check if it has actual data files
+                data_files = ['patterns.json', 'quality_history.json', 'task_queue.json', 'config.json']
+                if any((patterns_dir / file).exists() for file in data_files):
+                    print(f"Found existing patterns directory with data: {patterns_dir}")
+                    return patterns_dir
+                else:
+                    print(f"Found patterns directory but no data files: {patterns_dir}")
+
+        # Create the best directory if none exist
+        best_dir = current_dir.parent / '.claude-patterns'
+        best_dir.mkdir(parents=True, exist_ok=True)
+        print(f"Created new patterns directory: {best_dir}")
+        return best_dir
 
     def _deterministic_score(self, base_score: float, variance: float, seed_data: str) -> float:
         """Generate deterministic scores based on seed data."""
@@ -791,11 +920,11 @@ class DashboardDataCollector:
         if improvement > 3:
             return "accelerating [ROCKET]"
         elif improvement > 0:
-            return "improving 📈"
+            return "improving [UP]"
         elif improvement > -3:
             return "stable [CHART]"
         else:
-            return "declining 📉"
+            return "declining [DOWN]"
 
     def get_quality_trends(self, days: int = 30) -> Dict[str, Any]:
         """Get quality score trends over time with exact timestamps from multiple data sources."""
@@ -2115,7 +2244,7 @@ DASHBOARD_HTML = """
                 </div>
                 <canvas id="timelineChart" style="max-height: 400px;"></canvas>
                 <div style="margin-top: 10px; font-size: 12px; color: #666; text-align: center;">
-                    📈 Line chart shows quality score progression | [CHART] Bars show model performance contributions at specific times
+                    [UP] Line chart shows quality score progression | [CHART] Bars show model performance contributions at specific times
                 </div>
             </div>
 
@@ -2162,7 +2291,7 @@ DASHBOARD_HTML = """
                         </table>
                     </div>
                     <div style="margin-top: 8px; font-size: 11px; color: #6c757d; text-align: center;">
-                        💡 Compare model performance indices side by side
+                        [IDEA] Compare model performance indices side by side
                     </div>
                 </div>
             </div>
@@ -2217,9 +2346,9 @@ DASHBOARD_HTML = """
 
             <!-- Activity Recording Guide -->
             <div class="info-panel">
-                <div class="chart-title">🎯 Activity Recording Guide</div>
+                <div class="chart-title">[TARGET] Activity Recording Guide</div>
                 <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
-                    <strong>✅ Commands That Record Activity & Quality:</strong>
+                    <strong>[CHECK] Commands That Record Activity & Quality:</strong>
                     <div style="margin: 4px 0;">
                         <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/analyze:quality</code>
                         <span style="color: #666; font-size: 11px;">(creates quality_history.json)</span>
@@ -2537,12 +2666,12 @@ DASHBOARD_HTML = """
             const container = document.getElementById('overview-metrics');
             const velocityBadge = {
                 'accelerating [ROCKET]': '[ROCKET] Accelerating',
-                'improving 📈': '📈 Improving',
+                'improving [UP]': '[UP] Improving',
                 'stable [CHART]': '[CHART] Stable',
-                'declining 📉': '📉 Declining',
-                'accelerating': '📈 Accelerating',
+                'declining [DOWN]': '[DOWN] Declining',
+                'accelerating': '[UP] Accelerating',
                 'stable': '➡️ Stable',
-                'declining': '📉 Declining',
+                'declining': '[DOWN] Declining',
                 'insufficient_data': '⏳ Learning'
             }[data.learning_velocity];
 
@@ -2586,7 +2715,7 @@ DASHBOARD_HTML = """
                         data.days >= 3650 ? 'All Time' : `${data.days} Days`;
 
             const latestPoint = data.trend_data[data.trend_data.length - 1];
-            debugDiv.innerHTML = `✅ Quality data (${periodText}): ${data.trend_data.length} assessments | Overall avg: ${data.overall_average} | Latest: ${latestPoint.score} (${latestPoint.display_time})`;
+            debugDiv.innerHTML = `[CHECK] Quality data (${periodText}): ${data.trend_data.length} assessments | Overall avg: ${data.overall_average} | Latest: ${latestPoint.score} (${latestPoint.display_time})`;
 
             const ctx = document.getElementById('qualityChart').getContext('2d');
 
@@ -3035,7 +3164,7 @@ DASHBOARD_HTML = """
                                     if (dayData) {
                                         tooltipLines.push(`[CHART] Assessments: ${dayData["Assessments Count"]}`);
                                         if (dayData["Task Types"] && dayData["Task Types"].length > 0) {
-                                            tooltipLines.push(`🔧 Task Types: ${dayData["Task Types"].slice(0, 3).join(", ")}${dayData["Task Types"].length > 3 ? "..." : ""}`);
+                                            tooltipLines.push(`[TOOL] Task Types: ${dayData["Task Types"].slice(0, 3).join(", ")}${dayData["Task Types"].length > 3 ? "..." : ""}`);
                                         }
                                     }
 
@@ -3322,7 +3451,7 @@ DASHBOARD_HTML = """
             // Row 1: Performance Index
             formulasHtml += `<tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
-                    🎯 Performance Index
+                    [TARGET] Performance Index
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
                         (0.40 × QIS) + (0.35 × TES) + (0.25 × SR) − Penalty
                     </div>
@@ -3348,7 +3477,7 @@ DASHBOARD_HTML = """
             // Row 2: QIS (Quality Improvement Score)
             formulasHtml += `<tr style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
-                    📈 QIS
+                    [UP] QIS
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
                         (0.6 × Final Quality) + (0.4 × Gap Closed %)
                     </div>
@@ -3394,7 +3523,7 @@ DASHBOARD_HTML = """
             // Row 4: Success Rate
             formulasHtml += `<tr style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
-                    ✅ Success Rate
+                    [CHECK] Success Rate
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
                         Successful tasks / Total tasks
                     </div>
