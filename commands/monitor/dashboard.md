@@ -75,90 +75,61 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ### Implementation
 
-**Direct Python Execution with Built-in Discovery**:
+**Smart Local Copy with Plugin Fallback (Most Efficient)**:
 ```bash
-# Self-contained Python command that finds plugin AND runs dashboard:
-# Windows, Linux, macOS - works from ANY directory
+# Step 1: Try local copy (fastest, most reliable)
+if [ -f ".claude-patterns/dashboard.py" ]; then
+    echo "🚀 Starting dashboard from local copy..."
+    python .claude-patterns/dashboard.py --patterns-dir .claude-patterns "$@"
+    exit 0
+fi
 
-python -c "
-import sys, os, subprocess, platform
-from pathlib import Path
+# Step 2: Local copy doesn't exist, try plugin discovery
+echo "🔍 Local dashboard not found, checking plugin installation..."
 
-def find_plugin():
-    home = Path.home()
-    plugin_name = 'LLM-Autonomous-Agent-Plugin-for-Claude'
+# Cross-platform plugin discovery
+if command -v find >/dev/null 2>&1; then
+    # Unix-like systems (Linux, macOS, Git Bash on Windows)
+    PLUGIN_DIR=$(find ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
+elif command -v where >/dev/null 2>&1; then
+    # Windows (cmd.exe)
+    PLUGIN_DIR=$(for /f "delims=" %f" %i in ('dir /b /s "%USERPROFILE%\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\lib\dashboard.py" 2^>nul') do echo %%~dpi && goto :done)
+else
+    echo "❌ ERROR: Unable to locate files on this system"
+    exit 1
+fi
 
-    # Marketplace paths (priority)
-    search_paths = [
-        home / '.claude' / 'plugins' / 'marketplaces' / plugin_name,
-        home / '.config' / 'claude' / 'plugins' / 'marketplaces' / plugin_name,
-        home / '.claude' / 'plugins' / 'marketplace' / plugin_name,
-        home / '.config' / 'claude' / 'plugins' / 'marketplace' / plugin_name,
-    ]
+# Step 3: If plugin found, copy dashboard locally
+if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
+    echo "📁 Creating local patterns directory..."
+    mkdir -p .claude-patterns
 
-    # Platform-specific paths
-    if platform.system() == 'Windows':
-        appdata = Path(os.environ.get('APPDATA', ''))
-        localappdata = Path(os.environ.get('LOCALAPPDATA', ''))
-        if appdata:
-            search_paths.extend([
-                appdata / 'Claude' / 'plugins' / 'marketplaces' / plugin_name,
-                appdata / 'Claude' / 'plugins' / 'autonomous-agent',
-            ])
-        if localappdata:
-            search_paths.extend([
-                localappdata / 'Claude' / 'plugins' / 'marketplaces' / plugin_name,
-                localappdata / 'Claude' / 'plugins' / 'autonomous-agent',
-            ])
-    else:
-        search_paths.extend([
-            Path('/usr/local/share/claude/plugins/marketplaces') / plugin_name,
-            Path('/opt/claude/plugins/marketplaces') / plugin_name,
-        ])
+    echo "📋 Copying dashboard to local project..."
+    cp "$PLUGIN_DIR/lib/dashboard.py" ".claude-patterns/dashboard.py"
 
-    # Development/local installations (fallback)
-    search_paths.extend([
-        home / '.claude' / 'plugins' / 'autonomous-agent',
-        home / '.config' / 'claude' / 'plugins' / 'autonomous-agent',
-    ])
+    echo "✅ Dashboard copied successfully"
+    echo "   From: $PLUGIN_DIR/lib/dashboard.py"
+    echo "   To: .claude-patterns/dashboard.py"
 
-    # Search for plugin
-    for path in search_paths:
-        if path and (path / '.claude-plugin' / 'plugin.json').exists():
-            return path
+    # Step 4: Execute local copy
+    echo "🚀 Starting dashboard from local copy..."
+    python .claude-patterns/dashboard.py --patterns-dir .claude-patterns "$@"
+else
+    echo "❌ ERROR: Plugin installation not found"
+    echo "   Please install the LLM Autonomous Agent Plugin from marketplace"
+    echo "   Or ensure you're in a valid project directory"
+    exit 1
+fi
 
-    # Development mode - check current directory and parents
-    current = Path.cwd()
-    for parent in [current] + list(current.parents):
-        if (parent / '.claude-plugin' / 'plugin.json').exists():
-            return parent
+# Benefits of this approach:
+# 1. ✅ FASTEST PERFORMANCE - local copy avoids plugin discovery overhead
+# 2. ✅ RELIABLE - works even if plugin installation changes
+# 3. ✅ SELF-CONTAINED - each project has its own dashboard instance
+# 4. ✅ OFFLINE CAPABLE - works completely without plugin after initial setup
+# 5. ✅ EASY DEBUGGING - local copy can be modified and tested
 
-    return None
-
-# Main execution
-plugin_path = find_plugin()
-if not plugin_path:
-    print('ERROR: Plugin installation not found', file=sys.stderr)
-    print('Please install the LLM Autonomous Agent Plugin from marketplace', file=sys.stderr)
-    sys.exit(1)
-
-dashboard_script = plugin_path / 'lib' / 'dashboard.py'
-if not dashboard_script.exists():
-    print(f'ERROR: Dashboard script not found at {dashboard_script}', file=sys.stderr)
-    sys.exit(1)
-
-# Execute dashboard with current directory for pattern data
-args = ['--patterns-dir', '.claude-patterns'] + sys.argv[1:]
-cmd = [sys.executable, str(dashboard_script)] + args
-result = subprocess.run(cmd, cwd=Path.cwd())
-sys.exit(result.returncode)
-" --port 5000
-
-# This single command:
-# 1. Finds the plugin installation automatically
-# 2. Locates dashboard.py within the plugin
-# 3. Uses current directory for pattern data
-# 4. Works across all platforms and installation methods
+# For custom arguments:
+# python .claude-patterns/dashboard.py --port 8080 --host 0.0.0.0
 ```
 
 **Platform Support**:
