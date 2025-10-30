@@ -75,21 +75,90 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ### Implementation
 
-**Universal Dashboard Launcher (Works Everywhere)**:
+**Direct Python Execution with Built-in Discovery**:
 ```bash
-# Simple Python launcher - works from ANY directory on ALL platforms:
-# Windows, Linux, macOS - no complex shell scripting required
+# Self-contained Python command that finds plugin AND runs dashboard:
+# Windows, Linux, macOS - works from ANY directory
 
-python lib/universal_dashboard_launcher.py
+python -c "
+import sys, os, subprocess, platform
+from pathlib import Path
 
-# With arguments (port, host, etc.):
-python lib/universal_dashboard_launcher.py --port 8080 --host 0.0.0.0
+def find_plugin():
+    home = Path.home()
+    plugin_name = 'LLM-Autonomous-Agent-Plugin-for-Claude'
 
-# The launcher automatically:
-# 1. Finds the plugin installation
-# 2. Locates dashboard.py script
-# 3. Uses current directory for pattern data (.claude-patterns)
-# 4. Handles all platforms and installation methods
+    # Marketplace paths (priority)
+    search_paths = [
+        home / '.claude' / 'plugins' / 'marketplaces' / plugin_name,
+        home / '.config' / 'claude' / 'plugins' / 'marketplaces' / plugin_name,
+        home / '.claude' / 'plugins' / 'marketplace' / plugin_name,
+        home / '.config' / 'claude' / 'plugins' / 'marketplace' / plugin_name,
+    ]
+
+    # Platform-specific paths
+    if platform.system() == 'Windows':
+        appdata = Path(os.environ.get('APPDATA', ''))
+        localappdata = Path(os.environ.get('LOCALAPPDATA', ''))
+        if appdata:
+            search_paths.extend([
+                appdata / 'Claude' / 'plugins' / 'marketplaces' / plugin_name,
+                appdata / 'Claude' / 'plugins' / 'autonomous-agent',
+            ])
+        if localappdata:
+            search_paths.extend([
+                localappdata / 'Claude' / 'plugins' / 'marketplaces' / plugin_name,
+                localappdata / 'Claude' / 'plugins' / 'autonomous-agent',
+            ])
+    else:
+        search_paths.extend([
+            Path('/usr/local/share/claude/plugins/marketplaces') / plugin_name,
+            Path('/opt/claude/plugins/marketplaces') / plugin_name,
+        ])
+
+    # Development/local installations (fallback)
+    search_paths.extend([
+        home / '.claude' / 'plugins' / 'autonomous-agent',
+        home / '.config' / 'claude' / 'plugins' / 'autonomous-agent',
+    ])
+
+    # Search for plugin
+    for path in search_paths:
+        if path and (path / '.claude-plugin' / 'plugin.json').exists():
+            return path
+
+    # Development mode - check current directory and parents
+    current = Path.cwd()
+    for parent in [current] + list(current.parents):
+        if (parent / '.claude-plugin' / 'plugin.json').exists():
+            return parent
+
+    return None
+
+# Main execution
+plugin_path = find_plugin()
+if not plugin_path:
+    print('ERROR: Plugin installation not found', file=sys.stderr)
+    print('Please install the LLM Autonomous Agent Plugin from marketplace', file=sys.stderr)
+    sys.exit(1)
+
+dashboard_script = plugin_path / 'lib' / 'dashboard.py'
+if not dashboard_script.exists():
+    print(f'ERROR: Dashboard script not found at {dashboard_script}', file=sys.stderr)
+    sys.exit(1)
+
+# Execute dashboard with current directory for pattern data
+args = ['--patterns-dir', '.claude-patterns'] + sys.argv[1:]
+cmd = [sys.executable, str(dashboard_script)] + args
+result = subprocess.run(cmd, cwd=Path.cwd())
+sys.exit(result.returncode)
+" --port 5000
+
+# This single command:
+# 1. Finds the plugin installation automatically
+# 2. Locates dashboard.py within the plugin
+# 3. Uses current directory for pattern data
+# 4. Works across all platforms and installation methods
 ```
 
 **Platform Support**:
@@ -99,53 +168,37 @@ python lib/universal_dashboard_launcher.py --port 8080 --host 0.0.0.0
 - **All Installation Methods**: ✅ Marketplace, development, system-wide
 
 **How It Works**:
-1. The launcher automatically discovers plugin installation across all standard locations
-2. Falls back to development mode if marketplace not found
-3. Preserves current working directory for project data access
-4. Provides clear error messages if plugin not found
+1. **Built-in Discovery**: The Python script automatically searches for plugin installation across all standard locations
+2. **Marketplace Priority**: Prioritizes marketplace installations over development/local installations
+3. **Platform-Aware**: Uses OS-specific environment variables and paths (Windows: APPDATA/LOCALAPPDATA, Linux/macOS: standard directories)
+4. **Fallback Support**: Falls back to development mode if marketplace installation not found
+5. **Current Directory Access**: Preserves current working directory for pattern data access (.claude-patterns/)
 
-**Development Mode (Fallback)**:
-```bash
-# When running from development repository
-python lib/exec_plugin_script.py dashboard.py
+**Discovery Order**:
+1. **Marketplace Installations** (Primary):
+   - Windows: `%USERPROFILE%\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\`
+   - macOS/Linux: `~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
+   - Alternative paths in `.config/claude/plugins/`
 
-# Or direct execution when in plugin directory
-python lib/dashboard.py
-```
+2. **Platform-Specific Paths**:
+   - Windows: `APPDATA\Claude\plugins\marketplaces\`, `LOCALAPPDATA\Claude\plugins\marketplaces\`
+   - Linux/macOS: `/usr/local/share/claude/plugins/marketplaces/`, `/opt/claude/plugins/marketplaces/`
 
-**How It Works**:
+3. **Development/Local Installations** (Fallback):
+   - `~/.claude/plugins/autonomous-agent/`
+   - Current directory and parent directories (development mode)
 
-1. **Self-Contained Discovery**: Each command finds its own plugin root using bash
-2. **Script Location**: Runs `dashboard.py` from the discovered plugin directory
-3. **Data Location**: Current working directory provides access to `.claude-patterns/`
-4. **Cross-Platform**: Bash discovery works on Windows, Linux, macOS
-5. **No Hardcoded Paths**: Plugin path discovered relative to script location
-
-**Key Innovation**: The command discovers the plugin installation relative to its own location, eliminating the need for templates or complex path resolution. It runs the script from the plugin directory while preserving the current working directory for project-specific data.
-
-**Discovery Process**:
-1. Command finds its own script location using `${BASH_SOURCE[0]}`
-2. Goes up one directory to find plugin root
-3. Executes `dashboard.py` from `plugin_root/lib/`
-4. Uses current working directory for pattern data access
-
-**Path Resolution**:
-- **Plugin Root**: Found dynamically relative to script location
-- **Windows**: Uses cmd.exe or PowerShell equivalents
-- **Linux/macOS**: Uses bash `${BASH_SOURCE[0]}` approach
-- **Universal**: Works regardless of installation location
-
-**Data Access**: Pattern data always comes from current project directory (`./.claude-patterns/`), while the script runs from the plugin installation directory.
+**Data Access**: Pattern data always comes from current project directory (`./.claude-patterns/`), while the dashboard script runs from the plugin installation directory.
 
 **Benefits**:
-- ✅ No template system required
-- ✅ No Python discovery needed
-- ✅ Self-contained and reliable
-- ✅ Works from any directory
-- ✅ Cross-platform compatible
-- ✅ Simple and maintainable
+- ✅ Self-contained - no external launcher files needed
+- ✅ Works from any user project directory
+- ✅ Cross-platform compatible (Windows, Linux, macOS)
+- ✅ Automatic plugin discovery - no hardcoded paths
+- ✅ Marketplace installation priority
+- ✅ Clear error messages with installation guidance
 
-**Key Fix**: Removed `delegates-to: orchestrator` to prevent duplicate browser launches and agent delegation overhead.
+**Key Fix**: Eliminates path resolution issues by embedding discovery logic directly in the command rather than relying on external launcher files that don't exist in user project directories.
 
 ### Smart Browser Opening (Enhanced v1.0.2)
 
