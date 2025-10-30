@@ -789,11 +789,11 @@ class DashboardDataCollector:
 
         # Calculate velocity based on improvement rate
         if improvement > 3:
-            return "accelerating 🚀"
+            return "accelerating [ROCKET]"
         elif improvement > 0:
             return "improving 📈"
         elif improvement > -3:
-            return "stable 📊"
+            return "stable [CHART]"
         else:
             return "declining 📉"
 
@@ -2115,7 +2115,7 @@ DASHBOARD_HTML = """
                 </div>
                 <canvas id="timelineChart" style="max-height: 400px;"></canvas>
                 <div style="margin-top: 10px; font-size: 12px; color: #666; text-align: center;">
-                    📈 Line chart shows quality score progression | 📊 Bars show model performance contributions at specific times
+                    📈 Line chart shows quality score progression | [CHART] Bars show model performance contributions at specific times
                 </div>
             </div>
 
@@ -2141,7 +2141,7 @@ DASHBOARD_HTML = """
 
                 <!-- Calculation Formulas -->
                 <div style="margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
-                    <div style="font-size: 13px; font-weight: bold; color: #495057; margin-bottom: 10px;">📊 Calculation Formulas - Model Comparison</div>
+                    <div style="font-size: 13px; font-weight: bold; color: #495057; margin-bottom: 10px;">[CHART] Calculation Formulas - Model Comparison</div>
                     <div id="calculation-formulas-container" style="overflow-x: auto;">
                         <table id="calculation-formulas-table" style="width: 100%; font-size: 12px; color: #6c757d; border-collapse: collapse; min-width: 600px;">
                             <thead>
@@ -2242,7 +2242,7 @@ DASHBOARD_HTML = """
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #888; margin-bottom: 8px;">
-                    <strong>📊 quality_history.json Creation:</strong>
+                    <strong>[CHART] quality_history.json Creation:</strong>
                     <div style="margin: 4px 0;">
                         <code style="background: #e8f8e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/learn:init</code>
                         <span style="color: #666; font-size: 11px;">→ Creates file & structure</span>
@@ -2536,9 +2536,9 @@ DASHBOARD_HTML = """
         function updateOverviewMetrics(data) {
             const container = document.getElementById('overview-metrics');
             const velocityBadge = {
-                'accelerating 🚀': '🚀 Accelerating',
+                'accelerating [ROCKET]': '[ROCKET] Accelerating',
                 'improving 📈': '📈 Improving',
-                'stable 📊': '📊 Stable',
+                'stable [CHART]': '[CHART] Stable',
                 'declining 📉': '📉 Declining',
                 'accelerating': '📈 Accelerating',
                 'stable': '➡️ Stable',
@@ -2574,7 +2574,7 @@ DASHBOARD_HTML = """
             const debugDiv = document.getElementById('quality-debug');
 
             if (!data || !data.trend_data || data.trend_data.length === 0) {
-                debugDiv.innerHTML = '❌ No quality trend data available';
+                debugDiv.innerHTML = '[X] No quality trend data available';
                 return;
             }
 
@@ -3029,11 +3029,11 @@ DASHBOARD_HTML = """
 
                                         if (modelInfo) {
                                             tooltipLines.push(`📋 Total Tasks: ${modelInfo.total_tasks}`);
-                                            tooltipLines.push(`📊 Data Source: ${modelInfo.data_source}`);
+                                            tooltipLines.push(`[CHART] Data Source: ${modelInfo.data_source}`);
                                     }
 
                                     if (dayData) {
-                                        tooltipLines.push(`📊 Assessments: ${dayData["Assessments Count"]}`);
+                                        tooltipLines.push(`[CHART] Assessments: ${dayData["Assessments Count"]}`);
                                         if (dayData["Task Types"] && dayData["Task Types"].length > 0) {
                                             tooltipLines.push(`🔧 Task Types: ${dayData["Task Types"].slice(0, 3).join(", ")}${dayData["Task Types"].length > 3 ? "..." : ""}`);
                                         }
@@ -3418,7 +3418,7 @@ DASHBOARD_HTML = """
             // Row 5: Quality Improvement (Initial → Final)
             formulasHtml += `<tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
-                    📊 Quality Change
+                    [CHART] Quality Change
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
                         Initial → Final (Gap Closed %)
                     </div>
