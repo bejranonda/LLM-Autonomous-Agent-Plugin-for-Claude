@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v5.4.1
+# 🚀 Autonomous Agent for Claude Code v5.5.2
 
-[![Version](https://img.shields.io/badge/version-5.4.1-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v5.4.1)
+[![Version](https://img.shields.io/badge/version-5.5.2-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v5.5.2)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -25,8 +25,9 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 **Complete Workflow Example:**
 ```bash
-/dev:auto "add user authentication"    # Implement (45-90 min)
-# Type "2" for quick release action
+# What do you need
+/dev:auto "add user authentication"    # Implement 
+# Prove and Release the project
 /dev:release --minor                   # Release (2-3 min)
 # Done! From requirement to released
 ```
@@ -1443,7 +1444,7 @@ claude
 
 ## 🎉 Conclusion
 
-**Autonomous Agent v5.4.0** represents a breakthrough in advanced learning capabilities and platform-agnostic release automation:
+**Autonomous Agent v5.5.2** represents a breakthrough in advanced learning capabilities and platform-agnostic release automation:
 
 ✅ **🧠 7 New Commands** - Advanced repository learning, external analysis, and workspace automation (NEW v5.4.0)
 ✅ **🌐 Platform-Agnostic Releases** - Auto-detects GitHub, GitLab, or Bitbucket for unified workflow (NEW v5.4.0)
