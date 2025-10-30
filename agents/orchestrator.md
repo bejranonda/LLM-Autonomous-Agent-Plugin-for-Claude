@@ -977,115 +977,176 @@ def handle_special_command(command_info):
             return False
 
     elif command_info['command'] == 'learn_init':
-        # DELEGATE to learning-engine agent for learning system initialization
+        # TOKEN-EFFICIENT: AI reasoning + Python script for file operations
         import os
+        import subprocess
+        import json
+        import sys
         from pathlib import Path
+        from datetime import datetime
 
         print("🧠 Initializing Learning System...")
 
-        # Prepare task data for learning-engine agent
-        task_data = {
-            "command": "/learn:init",
-            "action": "initialize_learning_system",
-            "context": {
-                "current_directory": os.getcwd(),
-                "patterns_directory": ".claude-patterns",
-                "init_type": "full_initialization"
-            },
-            "requirements": [
-                "Scan project structure and identify patterns",
-                "Initialize pattern database (.claude-patterns/patterns.json)",
-                "Initialize quality history (.claude-patterns/quality_history.json)",
-                "Initialize task queue (.claude-patterns/task_queue.json)",
-                "Initialize configuration (.claude-patterns/config.json)",
-                "Detect frameworks, languages, and project type",
-                "Establish baseline metrics for learning"
-            ]
+        # AI REASONING: Analyze project and prepare context
+        print("   🧠 Analyzing project structure...")
+
+        current_dir = Path.cwd()
+        project_context = {
+            "location": str(current_dir),
+            "name": current_dir.name,
+            "type": "unknown",
+            "frameworks": [],
+            "languages": [],
+            "total_files": 0,
+            "detected_at": datetime.now().isoformat()
         }
 
-        # Delegate to learning-engine agent
+        # Efficient project analysis (lightweight scanning)
         try:
-            print("   📋 Scanning project structure...")
-            print("   🗃️  Initializing pattern databases...")
-            print("   📊 Setting up quality tracking...")
-            print("   ⚙️  Configuring learning system...")
+            python_files = list(current_dir.rglob("*.py"))
+            js_files = list(current_dir.rglob("*.js"))
+            ts_files = list(current_dir.rglob("*.ts"))
 
-            # Call learning-engine agent
-            await delegate_to_learning_engine({
-                "task": task_data,
-                "init_mode": True,
-                "create_files": True,
-                "detect_patterns": True,
-                "establish_baselines": True
-            })
+            project_context["languages"] = []
+            if python_files: project_context["languages"].append("python")
+            if js_files: project_context["languages"].append("javascript")
+            if ts_files: project_context["languages"].append("typescript")
 
-            # Present results as required by command specification
-            print("\n═══════════════════════════════════════════════════════")
-            print("  PATTERN LEARNING INITIALIZED")
-            print("═══════════════════════════════════════════════════════")
+            project_context["total_files"] = len(python_files) + len(js_files) + len(ts_files)
 
-            # Project Analysis
-            print("┌─ Project Analysis ───────────────────────────────────┐")
-            print(f"│ Location: {os.getcwd()}                              │")
-            print("│ Type: Analyzing project structure...                │")
-            print("│ Languages: Detecting...                            │")
-            print("│ Frameworks: Scanning...                            │")
-            print("│ Total Files: Calculating...                        │")
-            print("│ Project Structure: Determining...                   │")
-            print("└───────────────────────────────────────────────────────┘")
+            # Quick framework detection
+            all_files = python_files + js_files + ts_files
+            for file_path in all_files[:20]:  # Check first 20 files for efficiency
+                try:
+                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                        content = f.read().lower()
+                        if 'fastapi' in content: project_context["frameworks"].append("fastapi")
+                        elif 'flask' in content: project_context["frameworks"].append("flask")
+                        elif 'django' in content: project_context["frameworks"].append("django")
+                        elif 'react' in content: project_context["frameworks"].append("react")
+                        elif 'vue' in content: project_context["frameworks"].append("vue")
+                except:
+                    continue
 
-            # Pattern Database Created
-            patterns_dir = Path(".claude-patterns")
-            if patterns_dir.exists():
-                files_count = len(list(patterns_dir.glob("*.json")))
-                print("┌─ Pattern Database Created ───────────────────────────┐")
-                print(f"│ Location: {patterns_dir}                         │")
-                print("│                                                       │")
-                print("│ Files Created:                                        │")
-                print("│ ✓ patterns.json          (pattern storage)           │")
-                print("│ ✓ quality_history.json   (quality tracking)          │")
-                print("│ ✓ task_queue.json        (task management)           │")
-                print("│ ✓ config.json            (configuration)             │")
-                print("│                                                       │")
-                print("│ Status: Ready for pattern capture                     │")
-                print("└───────────────────────────────────────────────────────┘")
+            # Determine project type
+            if project_context["frameworks"]:
+                project_context["type"] = f"{project_context['frameworks'][0]}-application"
+            elif "python" in project_context["languages"]:
+                project_context["type"] = "python-project"
+            elif "javascript" in project_context["languages"] or "typescript" in project_context["languages"]:
+                project_context["type"] = "web-application"
 
-                # Initial Patterns Detected
-                print("┌─ Initial Patterns Detected ──────────────────────────┐")
-                print("│ • Project structure patterns                          │")
-                print("│ • File organization patterns                         │")
-                print("│ • Configuration patterns                            │")
-                print("│ • Build/dependency patterns                         │")
-                print("└───────────────────────────────────────────────────────┘")
+        except Exception as e:
+            print(f"   ⚠️  Project analysis limited: {e}")
 
-                # Baseline Metrics
-                print("┌─ Baseline Metrics ───────────────────────────────────┐")
-                print("│ Skill Effectiveness: Baseline established            │")
-                print("│ Quality Baseline: Will update after first task       │")
-                print("│ Coverage Baseline: Will update after first task      │")
-                print("│ Agent Performance: Will track from first delegation  │")
-                print("└───────────────────────────────────────────────────────┘")
+        # DELEGATE TO PYTHON SCRIPT: Efficient file operations
+        print("   🗃️  Creating learning databases...")
 
-                # Next Steps
-                print("┌─ Next Steps ─────────────────────────────────────────┐")
-                print("│ 1. Run /analyze:quality to establish quality baseline │")
-                print("│ 2. Run /analyze:project to analyze project quality   │")
-                print("│ 3. Start working on tasks - learning begins!         │")
-                print("│ 4. Each task improves the system automatically       │")
-                print("└───────────────────────────────────────────────────────┘")
+        try:
+            # Find plugin installation and execute learning_engine.py
+            home = Path.home()
+            plugin_name = "LLM-Autonomous-Agent-Plugin-for-Claude"
 
-                # File Report Info
-                report_file = patterns_dir / "learning_init_report.md"
-                print(f"\n📄 Detailed report saved to: {report_file}")
-                print("   (Contains complete project analysis and pattern details)")
+            # Search for plugin
+            search_paths = [
+                home / ".claude" / "plugins" / "marketplaces" / plugin_name,
+                home / ".config" / "claude" / "plugins" / "marketplaces" / plugin_name,
+                home / ".claude" / "plugins" / "autonomous-agent",
+            ]
 
-                print("Skills Loaded: pattern-learning, code-analysis")
-                print("🚀 Learning system ready! Pattern capture will begin with your first task.")
+            plugin_path = None
+            for path in search_paths:
+                if path and (path / ".claude-plugin" / "plugin.json").exists():
+                    plugin_path = path
+                    break
 
-                return True
+            if not plugin_path:
+                # Fallback to current directory
+                plugin_path = Path.cwd()
 
+            learning_script = plugin_path / "lib" / "learning_engine.py"
+
+            if learning_script.exists():
+                # Execute efficient Python script for file operations
+                cmd = [
+                    sys.executable, str(learning_script),
+                    "init",
+                    "--data-dir", ".claude-patterns",
+                    "--project-context", json.dumps(project_context)
+                ]
+
+                result = subprocess.run(cmd, capture_output=True, text=True, cwd=Path.cwd())
+
+                if result.returncode == 0:
+                    # Parse JSON result from script
+                    init_result = json.loads(result.stdout)
+
+                    if init_result.get("status") == "initialized":
+                        print("   ✅ Learning databases created successfully")
+
+                        # Present results as required by command specification
+                        print("\n═══════════════════════════════════════════════════════")
+                        print("  PATTERN LEARNING INITIALIZED")
+                        print("═══════════════════════════════════════════════════════")
+
+                        # Project Analysis (from AI reasoning)
+                        print("┌─ Project Analysis ───────────────────────────────────┐")
+                        print(f"│ Location: {project_context['location']}            │")
+                        print(f"│ Type: {project_context['type']}                      │")
+                        print(f"│ Languages: {', '.join(project_context['languages']) or 'None detected'} │")
+                        print(f"│ Frameworks: {', '.join(project_context['frameworks']) or 'None detected'} │")
+                        print(f"│ Total Files: {project_context['total_files']}          │")
+                        print("│ Project Structure: Scanned successfully              │")
+                        print("└───────────────────────────────────────────────────────┘")
+
+                        # Pattern Database Created (from script result)
+                        print("┌─ Pattern Database Created ───────────────────────────┐")
+                        print(f"│ Location: .claude-patterns/                         │")
+                        print("│                                                       │")
+                        print("│ Files Created:                                        │")
+                        for file_name in init_result.get("files_created", []):
+                            print(f"│ ✓ {file_name:<20} ({'storage' if 'config' in file_name else 'tracking' if 'quality' in file_name else 'data'})            │")
+                        print("│                                                       │")
+                        print("│ Status: Ready for pattern capture                     │")
+                        print("└───────────────────────────────────────────────────────┘")
+
+                        # Initial Patterns Detected
+                        print("┌─ Initial Patterns Detected ──────────────────────────┐")
+                        print("│ • Project structure patterns                          │")
+                        print("│ • File organization patterns                         │")
+                        if project_context["frameworks"]:
+                            print(f"│ • {project_context['frameworks'][0]} framework patterns │")
+                        print("│ • Configuration patterns                            │")
+                        print("└───────────────────────────────────────────────────────┘")
+
+                        # Baseline Metrics
+                        print("┌─ Baseline Metrics ───────────────────────────────────┐")
+                        print("│ Skill Effectiveness: Baseline established            │")
+                        print("│ Quality Baseline: Will update after first task       │")
+                        print("│ Coverage Baseline: Will update after first task      │")
+                        print("│ Agent Performance: Will track from first delegation  │")
+                        print("└───────────────────────────────────────────────────────┘")
+
+                        # Next Steps
+                        print("┌─ Next Steps ─────────────────────────────────────────┐")
+                        print("│ 1. Run /analyze:quality to establish quality baseline │")
+                        print("│ 2. Run /analyze:project to analyze project quality   │")
+                        print("│ 3. Start working on tasks - learning begins!         │")
+                        print("│ 4. Each task improves the system automatically       │")
+                        print("└───────────────────────────────────────────────────────┘")
+
+                        print("Skills Loaded: pattern-learning, code-analysis")
+                        print("🚀 Learning system ready! Pattern capture will begin with your first task.")
+
+                        return True
+                    else:
+                        print(f"❌ Script failed: {init_result.get('message', 'Unknown error')}")
+                        return False
+                else:
+                    print(f"❌ Script execution failed: {result.stderr}")
+                    return False
             else:
-                print("❌ Failed to create .claude-patterns directory")
+                print(f"❌ Learning script not found: {learning_script}")
                 return False
 
         except Exception as e:
