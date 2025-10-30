@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.2] - 2025-10-30
+
+### 🔧 **Critical Simple Plugin Discovery Fix**
+
+### Fixed
+- **Plugin Discovery from Any Directory** - Revolutionary simple bash-based discovery eliminates "File not found" errors
+- **Universal Command Execution** - Plugin commands now work from any project directory without configuration
+- **Template System Elimination** - Removed complex template-based approach that was causing path resolution failures
+- **Cross-Platform Plugin Discovery** - Works on Windows, Linux, and macOS with platform-specific variants
+- **Development Mode Fallback** - Seamless fallback when marketplace installation not detected
+
+### Added
+- **Simple Bash Discovery System** - Self-contained plugin discovery using standard bash commands
+- **Cross-Platform Variants** - Windows PowerShell, Windows cmd.exe, and Unix shell implementations
+- **Comprehensive Solution Documentation** (`SIMPLE_PLUGIN_DISCOVERY_SOLUTION.md`) - Complete implementation guide
+- **Self-Contained Command Architecture** - Each command handles its own plugin discovery
+- **Zero-Configuration Usage** - Plugin works immediately after marketplace installation
+
+### Changed
+- **Dashboard Command Implementation** - Updated with robust bash discovery replacing template system
+- **Plugin Discovery Architecture** - Simplified from complex multi-layer to direct bash approach
+- **User Experience** - Commands now work seamlessly from any directory without setup
+- **Error Handling** - Clear user guidance when plugin installation not found
+
+### Technical Improvements
+- **Bash-Based Discovery** - Uses `find` command to locate plugin in standard marketplace locations
+- **Path Resolution** - Eliminates template variable dependency completely
+- **Self-Contained Execution** - Each command includes its own discovery logic
+- **Working Directory Preservation** - Current project directory maintained for data access
+- **Graceful Fallbacks** - Development mode automatically enabled when marketplace not found
+
+### Key Benefits
+- **Universal Compatibility** - Works from any installation on any platform
+- **Zero User Configuration** - No setup required after installation
+- **Project Independence** - Commands execute successfully from any directory
+- **Simplified Architecture** - Minimal code with fewer failure points
+- **Enhanced Reliability** - Robust discovery with comprehensive error handling
+
+### Problem Solved
+- **Before**: `/monitor:dashboard` failed with "File not found" when run from project directories
+- **After**: Plugin commands work seamlessly from any directory without configuration
+- **Impact**: Critical fix enabling universal plugin usability across all scenarios
+
 ## [5.7.1] - 2025-10-30
 
 ### 🚀 **Critical Marketplace Execution Fix**

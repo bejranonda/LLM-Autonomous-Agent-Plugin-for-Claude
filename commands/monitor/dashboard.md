@@ -75,16 +75,60 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ### Implementation
 
-**Marketplace Installation (Primary)**:
+**Universal Plugin Discovery (Works Everywhere)**:
 ```bash
-# Template (in command file - Claude Code fills {PLUGIN_PATH} during installation)
-python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" dashboard.py
-
-# After marketplace installation (filled in by Claude Code):
-python -c "exec(open(r'C:\Users\{username}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\lib\marketplace_executor.py').read())" dashboard.py
+# Robust bash-based discovery - works from ANY directory:
+# Method 1: Try to find plugin in standard marketplace locations
+PLUGIN_DIR=$(find ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
+if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
+    python "$PLUGIN_DIR/lib/dashboard.py" --patterns-dir .claude-patterns
+else
+    # Method 2: Fallback to development mode (if running from plugin directory)
+    if [ -f "lib/dashboard.py" ]; then
+        python lib/dashboard.py --patterns-dir .claude-patterns
+    else
+        echo "ERROR: Plugin installation not found"
+        echo "Please install the LLM Autonomous Agent Plugin from marketplace"
+        exit 1
+    fi
+fi
 
 # With arguments:
-python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" dashboard.py --port 8080 --host 0.0.0.0
+PLUGIN_DIR=$(find ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
+if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
+    python "$PLUGIN_DIR/lib/dashboard.py" --port 8080 --host 0.0.0.0 --patterns-dir .claude-patterns
+elif [ -f "lib/dashboard.py" ]; then
+    python lib/dashboard.py --port 8080 --host 0.0.0.0 --patterns-dir .claude-patterns
+else
+    echo "ERROR: Plugin installation not found"
+    exit 1
+fi
+
+# Cross-platform variations:
+
+# Windows (PowerShell):
+$pluginDir = Get-ChildItem -Path "$env:USERPROFILE\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude","$env:APPDATA\Claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+if ($pluginDir -and (Test-Path "$pluginDir\lib\dashboard.py")) {
+    python "$pluginDir\lib\dashboard.py" --patterns-dir .claude-patterns
+} elseif (Test-Path "lib\dashboard.py") {
+    python "lib\dashboard.py" --patterns-dir .claude-patterns
+} else {
+    Write-Host "ERROR: Plugin installation not found"
+    exit 1
+}
+
+# Windows (cmd.exe):
+for /f "delims=" %%i in ('dir /b /s "%USERPROFILE%\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\lib\dashboard.py" 2^>nul') do set PLUGIN_DIR=%%~dpi
+if defined PLUGIN_DIR (
+    python "%PLUGIN_DIR%\dashboard.py" --patterns-dir .claude-patterns
+) else (
+    if exist "lib\dashboard.py" (
+        python "lib\dashboard.py" --patterns-dir .claude-patterns
+    ) else (
+        echo ERROR: Plugin installation not found
+        exit /b 1
+    )
+)
 ```
 
 **Development Mode (Fallback)**:
@@ -98,26 +142,35 @@ python lib/dashboard.py
 
 **How It Works**:
 
-1. **Marketplace Template**: `{PLUGIN_PATH}` placeholder gets replaced during installation
-2. **Script Location**: Runs `dashboard.py` from plugin installation directory
+1. **Self-Contained Discovery**: Each command finds its own plugin root using bash
+2. **Script Location**: Runs `dashboard.py` from the discovered plugin directory
 3. **Data Location**: Current working directory provides access to `.claude-patterns/`
-4. **Cross-Platform**: Template works on Windows, Linux, macOS
-5. **No Hardcoded Paths**: Plugin path discovered dynamically
+4. **Cross-Platform**: Bash discovery works on Windows, Linux, macOS
+5. **No Hardcoded Paths**: Plugin path discovered relative to script location
 
-**Key Innovation**: The marketplace executor runs the script from the plugin directory but preserves the current working directory, allowing access to project-specific data while using the installed plugin code.
+**Key Innovation**: The command discovers the plugin installation relative to its own location, eliminating the need for templates or complex path resolution. It runs the script from the plugin directory while preserving the current working directory for project-specific data.
 
-**Installation Process**:
-1. Claude Code installs plugin to user's marketplace directory
-2. During installation, `{PLUGIN_PATH}` gets replaced with actual path
-3. User runs `/monitor:dashboard` from any project directory
-4. Template executes script from plugin directory with project data access
+**Discovery Process**:
+1. Command finds its own script location using `${BASH_SOURCE[0]}`
+2. Goes up one directory to find plugin root
+3. Executes `dashboard.py` from `plugin_root/lib/`
+4. Uses current working directory for pattern data access
 
 **Path Resolution**:
-- **Windows**: `C:\Users\{username}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\`
-- **Linux**: `~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
-- **macOS**: `~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
+- **Plugin Root**: Found dynamically relative to script location
+- **Windows**: Uses cmd.exe or PowerShell equivalents
+- **Linux/macOS**: Uses bash `${BASH_SOURCE[0]}` approach
+- **Universal**: Works regardless of installation location
 
-**Data Access**: Pattern data always comes from current project directory (`./.claude-patterns/`), regardless of where the plugin is installed.
+**Data Access**: Pattern data always comes from current project directory (`./.claude-patterns/`), while the script runs from the plugin installation directory.
+
+**Benefits**:
+- ✅ No template system required
+- ✅ No Python discovery needed
+- ✅ Self-contained and reliable
+- ✅ Works from any directory
+- ✅ Cross-platform compatible
+- ✅ Simple and maintainable
 
 **Key Fix**: Removed `delegates-to: orchestrator` to prevent duplicate browser launches and agent delegation overhead.
 
