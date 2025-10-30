@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v5.5.3
+# 🚀 Autonomous Agent for Claude Code v5.6.0
 
-[![Version](https://img.shields.io/badge/version-5.5.3-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v5.5.3)
+[![Version](https://img.shields.io/badge/version-5.6.0-red.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v5.6.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -1444,7 +1444,7 @@ claude
 
 ## 🎉 Conclusion
 
-**Autonomous Agent v5.5.3** represents a breakthrough in production-ready quality and comprehensive code cleanup:
+**Autonomous Agent v5.6.0** represents a revolutionary breakthrough in unified data integration and architectural excellence:
 
 ✅ **🧠 7 New Commands** - Advanced repository learning, external analysis, and workspace automation (NEW v5.4.0)
 ✅ **🌐 Platform-Agnostic Releases** - Auto-detects GitHub, GitLab, or Bitbucket for unified workflow (NEW v5.4.0)

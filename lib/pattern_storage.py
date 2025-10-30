@@ -127,6 +127,9 @@ class PatternStorage:
                     if existing_structure:
                         # Preserve existing structure, update patterns array
                         existing_structure["patterns"] = patterns
+                        # Update metadata if it exists, otherwise create it
+                        if "metadata" not in existing_structure:
+                            existing_structure["metadata"] = {}
                         existing_structure["metadata"]["last_updated"] = datetime.now().isoformat()
                         existing_structure["metadata"]["total_patterns"] = len(patterns)
                         json.dump(existing_structure, f, indent=2, ensure_ascii=False)
@@ -381,6 +384,282 @@ class PatternStorage:
 )
         }
 
+    def _load_unified_data(self) -> Dict[str, Any]:
+        """
+        Load unified data from unified_data.json file.
+
+        Returns:
+            Unified data dictionary with default structure
+        """
+        unified_file = self.patterns_dir / "unified_data.json"
+
+        if not unified_file.exists():
+            return {
+                "version": "1.0.0",
+                "created": datetime.now().isoformat(),
+                "last_updated": datetime.now().isoformat(),
+                "patterns": [],
+                "skill_metrics": {"skill_effectiveness": {}, "skill_usage_history": []},
+                "agent_metrics": {"agent_effectiveness": {}, "agent_performance": []},
+                "quality_history": {"quality_assessments": []},
+                "performance_records": {"records": []},
+                "model_performance": {"models": {}},
+                "system_health": {"status": "unknown"},
+                "project_context": {
+                    "detected_languages": [],
+                    "frameworks": [],
+                    "project_type": "unknown"
+                }
+            }
+
+        try:
+            with open(unified_file, 'r', encoding='utf-8') as f:
+                lock_file(f, exclusive=False)
+                try:
+                    return json.load(f)
+                finally:
+                    unlock_file(f)
+        except Exception as e:
+            print(f"Warning: Could not load unified data: {e}", file=sys.stderr)
+            return self._load_unified_data()  # Return default structure
+
+    def _save_unified_data(self, unified_data: Dict[str, Any]) -> bool:
+        """
+        Save unified data to unified_data.json file.
+
+        Args:
+            unified_data: Complete unified data dictionary
+
+        Returns:
+            True if successful, False otherwise
+        """
+        unified_file = self.patterns_dir / "unified_data.json"
+
+        # Update timestamp
+        unified_data["last_updated"] = datetime.now().isoformat()
+
+        try:
+            with open(unified_file, 'w', encoding='utf-8') as f:
+                lock_file(f, exclusive=True)
+                try:
+                    json.dump(unified_data, f, indent=2, ensure_ascii=False)
+                    return True
+                finally:
+                    unlock_file(f)
+        except Exception as e:
+            print(f"Error saving unified data: {e}", file=sys.stderr)
+            return False
+
+    def store_to_unified(self, data_type: str, data: Dict[str, Any]) -> bool:
+        """
+        Store data directly to unified structure.
+
+        Args:
+            data_type: Type of data (skill_metrics, agent_performance, etc.)
+            data: Data to store
+
+        Returns:
+            True if successful, False otherwise
+        """
+        unified = self._load_unified_data()
+
+        try:
+            if data_type == "skill_metrics":
+                if "skill_effectiveness" in data:
+                    unified["skill_metrics"]["skill_effectiveness"].update(data["skill_effectiveness"])
+                if "skill_usage_history" in data:
+                    unified["skill_metrics"]["skill_usage_history"].extend(data.get("skill_usage_history", []))
+
+            elif data_type == "agent_performance":
+                if "agent_effectiveness" in data:
+                    unified["agent_metrics"]["agent_effectiveness"].update(data["agent_effectiveness"])
+                if "agent_performance" in data:
+                    unified["agent_metrics"]["agent_performance"].extend(data.get("agent_performance", []))
+
+            elif data_type == "quality_history":
+                if isinstance(data, dict) and "quality_assessments" in data:
+                    unified["quality_history"]["quality_assessments"].extend(data["quality_assessments"])
+                else:
+                    unified["quality_history"]["quality_assessments"].append(data)
+
+            elif data_type == "performance_records":
+                if isinstance(data, dict) and "records" in data:
+                    unified["performance_records"]["records"].extend(data["records"])
+                else:
+                    unified["performance_records"]["records"].append(data)
+
+            elif data_type == "model_performance":
+                unified["model_performance"].update(data)
+
+            elif data_type == "system_health":
+                unified["system_health"].update(data)
+
+            elif data_type == "project_context":
+                unified["project_context"].update(data)
+
+            else:
+                print(f"Warning: Unknown data_type '{data_type}' for unified storage", file=sys.stderr)
+                return False
+
+            return self._save_unified_data(unified)
+
+        except Exception as e:
+            print(f"Error storing to unified data: {e}", file=sys.stderr)
+            return False
+
+    def consolidate_all_data(self) -> bool:
+        """
+        Consolidate all scattered data files into unified_data.json.
+
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            # Start with empty unified structure
+            unified = self._load_unified_data()
+
+            # 1. Load patterns (already in right format)
+            unified["patterns"] = self._read_patterns()
+
+            # 2. Load skill metrics
+            skill_file = self.patterns_dir / "skill_metrics.json"
+            if skill_file.exists():
+                try:
+                    with open(skill_file, 'r', encoding='utf-8') as f:
+                        skill_data = json.load(f)
+                        unified["skill_metrics"] = skill_data
+                except Exception as e:
+                    print(f"Warning: Could not load skill_metrics.json: {e}", file=sys.stderr)
+
+            # 3. Load agent metrics
+            agent_file = self.patterns_dir / "agent_metrics.json"
+            if agent_file.exists():
+                try:
+                    with open(agent_file, 'r', encoding='utf-8') as f:
+                        agent_data = json.load(f)
+                        unified["agent_metrics"] = agent_data
+                except Exception as e:
+                    print(f"Warning: Could not load agent_metrics.json: {e}", file=sys.stderr)
+
+            # 4. Load quality history
+            quality_file = self.patterns_dir / "quality_history.json"
+            if quality_file.exists():
+                try:
+                    with open(quality_file, 'r', encoding='utf-8') as f:
+                        quality_data = json.load(f)
+                        unified["quality_history"] = quality_data
+                except Exception as e:
+                    print(f"Warning: Could not load quality_history.json: {e}", file=sys.stderr)
+
+            # 5. Load performance records
+            perf_file = self.patterns_dir / "performance_records.json"
+            if perf_file.exists():
+                try:
+                    with open(perf_file, 'r', encoding='utf-8') as f:
+                        perf_data = json.load(f)
+                        unified["performance_records"] = perf_data
+                except Exception as e:
+                    print(f"Warning: Could not load performance_records.json: {e}", file=sys.stderr)
+
+            # 6. Load model performance if exists
+            model_file = self.patterns_dir / "model_performance.json"
+            if model_file.exists():
+                try:
+                    with open(model_file, 'r', encoding='utf-8') as f:
+                        model_data = json.load(f)
+                        unified["model_performance"] = model_data
+                except Exception as e:
+                    print(f"Warning: Could not load model_performance.json: {e}", file=sys.stderr)
+
+            # 7. Update project context from patterns
+            if unified["patterns"]:
+                # Extract languages and frameworks from patterns
+                languages = set()
+                frameworks = set()
+
+                for pattern in unified["patterns"]:
+                    context = pattern.get("context", {})
+                    if isinstance(context, dict):
+                        if "languages" in context:
+                            languages.update(context["languages"])
+                        if "frameworks" in context:
+                            frameworks.update(context["frameworks"])
+
+                unified["project_context"]["detected_languages"] = list(languages)
+                unified["project_context"]["frameworks"] = list(frameworks)
+                unified["project_context"]["project_type"] = "autonomous-agent-plugin"
+
+            # 8. Update system health
+            unified["system_health"] = {
+                "status": "healthy",
+                "total_patterns": len(unified["patterns"]),
+                "total_skills": len(unified["skill_metrics"].get("skill_effectiveness", {})),
+                "total_agents": len(unified["agent_metrics"].get("agent_effectiveness", {})),
+                "last_consolidated": datetime.now().isoformat()
+            }
+
+            # Save the consolidated data
+            return self._save_unified_data(unified)
+
+        except Exception as e:
+            print(f"Error consolidating data: {e}", file=sys.stderr)
+            return False
+
+    def store_pattern_enhanced(self, pattern: Dict[str, Any]) -> str:
+        """
+        Enhanced pattern storage that also updates unified data.
+
+        Args:
+            pattern: Pattern dictionary
+
+        Returns:
+            pattern_id of stored pattern
+        """
+        # Store pattern using existing method
+        pattern_id = self.store_pattern(pattern)
+
+        # Also update unified data
+        try:
+            unified = self._load_unified_data()
+
+            # Add pattern to unified structure
+            unified["patterns"].append(pattern)
+
+            # Update skill metrics if pattern has skills
+            if "skills_used" in pattern:
+                for skill in pattern["skills_used"]:
+                    if "skill_effectiveness" not in unified["skill_metrics"]:
+                        unified["skill_metrics"]["skill_effectiveness"] = {}
+
+                    if skill not in unified["skill_metrics"]["skill_effectiveness"]:
+                        unified["skill_metrics"]["skill_effectiveness"][skill] = {
+                            "total_uses": 0,
+                            "successful_uses": 0,
+                            "success_rate": 0.0,
+                            "avg_contribution_score": 0.0
+                        }
+
+                    skill_metrics = unified["skill_metrics"]["skill_effectiveness"][skill]
+                    skill_metrics["total_uses"] += 1
+
+                    if pattern.get("quality_score", 0) > 0.7:  # Consider 70%+ as success
+                        skill_metrics["successful_uses"] += 1
+
+                    # Update success rate
+                    skill_metrics["success_rate"] = skill_metrics["successful_uses"] / skill_metrics["total_uses"]
+
+                    # Update avg contribution score
+                    current_avg = skill_metrics["avg_contribution_score"]
+                    pattern_score = pattern.get("quality_score", 0)
+                    skill_metrics["avg_contribution_score"] = (current_avg + pattern_score) / 2
+
+            self._save_unified_data(unified)
+
+        except Exception as e:
+            print(f"Warning: Could not update unified data: {e}", file=sys.stderr)
+
+        return pattern_id
+
 
 def main():
     """Command-line interface for pattern storage."""
@@ -432,6 +711,18 @@ def main():
     # Statistics action
     subparsers.add_parser('stats', help='Show pattern statistics')
 
+    # Unified data actions
+    # Consolidate action
+    subparsers.add_parser('consolidate', help='Consolidate all data into unified_data.json')
+
+    # Store to unified action
+    unified_parser = subparsers.add_parser('store-unified', help='Store data to unified structure')
+    unified_parser.add_argument('--type', required=True,
+                               choices=['skill_metrics', 'agent_performance', 'quality_history',
+                                       'performance_records', 'model_performance', 'system_health', 'project_context'],
+                               help='Type of data to store')
+    unified_parser.add_argument('--data', required=True, help='Data JSON string')
+
     args = parser.parse_args()
 
     if not args.action:
@@ -462,6 +753,21 @@ def main():
         elif args.action == 'stats':
             stats = storage.get_statistics()
             print(json.dumps(stats, indent=2))
+
+        elif args.action == 'consolidate':
+            success = storage.consolidate_all_data()
+            if success:
+                print(json.dumps({'success': True, 'message': 'Data consolidated successfully'}, indent=2))
+            else:
+                print(json.dumps({'success': False, 'error': 'Consolidation failed'}, indent=2))
+
+        elif args.action == 'store-unified':
+            data = json.loads(args.data)
+            success = storage.store_to_unified(args.type, data)
+            if success:
+                print(json.dumps({'success': True, 'message': f'Data stored to unified structure'}, indent=2))
+            else:
+                print(json.dumps({'success': False, 'error': 'Failed to store data'}, indent=2))
 
     except Exception as e:
         print(

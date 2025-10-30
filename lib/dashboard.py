@@ -547,15 +547,56 @@ class DashboardDataCollector:
 
 
     def _load_json_file(self, filename: str, cache_key: str) -> Dict[str, Any]:
-        """Load JSON file with caching."""
-        filepath = self.patterns_dir / filename
+        """Load JSON file with unified data priority and caching."""
 
-        # Check cache
+        # Check cache first
         if cache_key in self.cache:
             if time.time() - self.last_update.get(cache_key, 0) < self.cache_ttl:
                 return self.cache[cache_key]
 
-        # Load from file
+        # Priority 1: Try to load from unified_data.json
+        unified_file = self.patterns_dir / "unified_data.json"
+        if unified_file.exists():
+            try:
+                # Check if unified file was modified since last cache
+                unified_mtime = unified_file.stat().st_mtime
+                if hasattr(self, '_unified_mtime') and unified_mtime > self._unified_mtime:
+                    self._unified_data_updated()
+                self._unified_mtime = unified_mtime
+
+                with open(unified_file, 'r') as f:
+                    unified_data = json.load(f)
+
+                    # Map filename to unified data structure
+                    if filename == "patterns.json":
+                        data = {"patterns": unified_data.get("patterns", [])}
+                    elif filename == "skill_metrics.json":
+                        data = unified_data.get("skill_metrics", {})
+                    elif filename == "agent_metrics.json":
+                        data = unified_data.get("agent_metrics", {})
+                    elif filename == "quality_history.json":
+                        data = unified_data.get("quality_history", {})
+                    elif filename == "performance_records.json":
+                        data = unified_data.get("performance_records", {})
+                    elif filename == "model_performance.json":
+                        data = unified_data.get("model_performance", {})
+                    elif filename == "assessments.json":
+                        # Create assessments from quality history for compatibility
+                        data = {"assessments": unified_data.get("quality_history", {}).get("quality_assessments", [])}
+                    else:
+                        data = unified_data.get(filename.replace(".json", ""), {})
+
+                    # Cache and return unified data
+                    self.cache[cache_key] = data
+                    self.last_update[cache_key] = time.time()
+                    return data
+
+            except Exception as e:
+                print(f"Warning: Could not load from unified_data.json: {e}")
+                # Fall through to scattered file loading
+
+        # Priority 2: Fallback to scattered files
+        filepath = self.patterns_dir / filename
         if filepath.exists():
             try:
                 with open(filepath, 'r') as f:
@@ -567,7 +608,30 @@ class DashboardDataCollector:
                 print(f"Error loading {filename}: {e}")
                 return {}
 
-        return {}
+        # Priority 3: Return empty structure
+        # Return appropriate default structure based on file type
+        if filename == "patterns.json":
+            return {"patterns": []}
+        elif filename == "skill_metrics.json":
+            return {"skill_effectiveness": {}, "skill_usage_history": []}
+        elif filename == "agent_metrics.json":
+            return {"agent_effectiveness": {}, "agent_performance": []}
+        elif filename == "quality_history.json":
+            return {"quality_assessments": []}
+        elif filename == "performance_records.json":
+            return {"records": []}
+        elif filename == "model_performance.json":
+            return {"models": {}}
+        elif filename == "assessments.json":
+            return {"assessments": []}
+        else:
+            return {}
+
+    def _unified_data_updated(self):
+        """Clear cache when unified data is updated."""
+        # Clear all cached data since unified data was updated
+        self.cache.clear()
+        self.last_update.clear()
 
     def get_overview_metrics(self) -> Dict[str, Any]:
         """Get high-level overview metrics from unified storage."""

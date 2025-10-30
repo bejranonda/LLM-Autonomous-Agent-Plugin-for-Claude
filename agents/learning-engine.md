@@ -1472,3 +1472,188 @@ Task Completion → Performance Recording → Pattern Learning →
 Better Recommendations → Improved Task Performance →
 Better Learning Data → [Continuous Improvement Cycle]
 ```
+
+### 6. Unified Data Integration (Enhanced v1.1+)
+
+**Integrate with Unified Data Storage System**:
+```javascript
+async function capture_pattern_with_unified_storage(task_data, performance_data) {
+  // 1. Create enhanced pattern with all data
+  const enhanced_pattern = await create_enhanced_pattern_with_performance(task_data, performance_data)
+
+  // 2. Store pattern using existing pattern_storage.py
+  await store_pattern(enhanced_pattern)
+
+  // 3. NEW: Store to unified_data.json using enhanced pattern storage
+  const pattern_storage = new PatternStorage(".claude-patterns")
+  await pattern_storage.store_pattern_enhanced(enhanced_pattern)
+
+  // 4. Update skill metrics in unified storage
+  const skill_metrics = compile_skill_metrics_from_task(task_data, performance_data)
+  await pattern_storage.store_to_unified("skill_metrics", skill_metrics)
+
+  // 5. Update agent performance in unified storage
+  const agent_metrics = compile_agent_metrics_from_task(task_data, performance_data)
+  await pattern_storage.store_to_unified("agent_performance", agent_metrics)
+
+  // 6. Update quality history in unified storage
+  const quality_record = create_quality_record(task_data, performance_data)
+  await pattern_storage.store_to_unified("quality_history", quality_record)
+
+  // 7. Update performance records in unified storage
+  const performance_record = create_performance_record(task_data, performance_data)
+  await pattern_storage.store_to_unified("performance_records", performance_record)
+
+  // 8. Update model performance in unified storage
+  const model_perf = create_model_performance_record(task_data, performance_data)
+  await pattern_storage.store_to_unified("model_performance", model_perf)
+
+  // 9. Update system health
+  const health_update = create_system_health_update(task_data, performance_data)
+  await pattern_storage.store_to_unified("system_health", health_update)
+
+  // 10. Periodically consolidate all data (every 25 tasks)
+  if (task_data.task_number % 25 === 0) {
+    await pattern_storage.consolidate_all_data()
+  }
+
+  return enhanced_pattern
+}
+
+// Helper functions for unified data integration
+async function compile_skill_metrics_from_task(task_data, performance_data) {
+  const metrics = {}
+
+  for (const skill of task_data.skills_used || []) {
+    metrics[skill] = {
+      total_uses: (metrics[skill]?.total_uses || 0) + 1,
+      successful_uses: (metrics[skill]?.successful_uses || 0) + (task_data.success ? 1 : 0),
+      success_rate: 0,
+      avg_contribution_score: ((metrics[skill]?.avg_contribution_score || 0) + performance_data.quality_score) / 2,
+      last_used: performance_data.timestamp,
+      recommended_for: [task_data.task_type]
+    }
+
+    metrics[skill].success_rate = metrics[skill].successful_uses / metrics[skill].total_uses
+  }
+
+  return { skill_effectiveness: metrics }
+}
+
+async function compile_agent_metrics_from_task(task_data, performance_data) {
+  const metrics = {}
+
+  for (const agent of task_data.agents_delegated || []) {
+    metrics[agent] = {
+      total_delegations: (metrics[agent]?.total_delegations || 0) + 1,
+      successful_completions: (metrics[agent]?.successful_completions || 0) + (task_data.success ? 1 : 0),
+      success_rate: 0,
+      avg_execution_time: ((metrics[agent]?.avg_execution_time || 0) + performance_data.duration_seconds) / 2,
+      avg_quality_score: ((metrics[agent]?.avg_quality_score || 0) + performance_data.quality_score) / 2,
+      reliability_score: 0
+    }
+
+    metrics[agent].success_rate = metrics[agent].successful_completions / metrics[agent].total_delegations
+    metrics[agent].reliability_score = metrics[agent].success_rate * (metrics[agent].avg_quality_score / 100)
+  }
+
+  return { agent_effectiveness: metrics }
+}
+
+async function create_quality_record(task_data, performance_data) {
+  return {
+    assessment_id: `qa_${Date.now()}`,
+    timestamp: performance_data.timestamp,
+    task_type: task_data.task_type,
+    overall_score: performance_data.quality_score,
+    components: {
+      standards: task_data.standards_score,
+      tests: task_data.tests_passing ? 100 : 0,
+      documentation: task_data.docs_coverage,
+      pattern_adherence: performance_data.pattern_adherence_score || 85
+    },
+    issues: task_data.errors || [],
+    model_used: performance_data.model_used,
+    success: task_data.success
+  }
+}
+
+async function create_performance_record(task_data, performance_data) {
+  return {
+    record_id: `perf_${Date.now()}`,
+    timestamp: performance_data.timestamp,
+    task_id: task_data.task_id,
+    task_type: task_data.task_type,
+    duration_seconds: performance_data.duration_seconds,
+    quality_score: performance_data.quality_score,
+    performance_index: performance_data.performance_index,
+    model_used: performance_data.model_used,
+    skills_used: task_data.skills_used || [],
+    agents_delegated: task_data.agents_delegated || [],
+    success: task_data.success,
+    files_modified: performance_data.files_modified,
+    lines_changed: performance_data.lines_changed
+  }
+}
+
+async function create_model_performance_record(task_data, performance_data) {
+  const model = performance_data.model_used || "unknown"
+
+  return {
+    [model]: {
+      total_tasks: (existing_model_data[model]?.total_tasks || 0) + 1,
+      successful_tasks: (existing_model_data[model]?.successful_tasks || 0) + (task_data.success ? 1 : 0),
+      avg_quality_score: ((existing_model_data[model]?.avg_quality_score || 0) + performance_data.quality_score) / 2,
+      avg_execution_time: ((existing_model_data[model]?.avg_execution_time || 0) + performance_data.duration_seconds) / 2,
+      task_types: {
+        ...existing_model_data[model]?.task_types,
+        [task_data.task_type]: (existing_model_data[model]?.task_types?.[task_data.task_type] || 0) + 1
+      },
+      last_updated: performance_data.timestamp
+    }
+  }
+}
+
+async function create_system_health_update(task_data, performance_data) {
+  return {
+    status: performance_data.quality_score > 70 ? "healthy" : "needs_attention",
+    last_task: {
+      success: task_data.success,
+      quality_score: performance_data.quality_score,
+      timestamp: performance_data.timestamp
+    },
+    active_skills: task_data.skills_used?.length || 0,
+    active_agents: task_data.agents_delegated?.length || 0,
+    learning_active: true,
+    unified_data_active: true
+  }
+}
+```
+
+### Unified Data Integration Benefits
+
+**Single Source of Truth**:
+- **Unified Storage**: All learning data in one `unified_data.json` file
+- **Dashboard Ready**: Direct compatibility with dashboard visualization
+- **Backward Compatible**: Maintains existing scattered files during transition
+- **Incremental Updates**: Real-time unified data updates after each task
+
+**Enhanced Learning Analytics**:
+- **Cross-Reference Analysis**: Skills, agents, and patterns in unified structure
+- **Performance Correlation**: Direct links between skills used and outcomes achieved
+- **Trend Visualization**: Time-series data ready for dashboard charts
+- **Model Comparison**: Performance metrics across different models
+
+**Data Integrity**:
+- **Atomic Updates**: Unified data updated consistently
+- **No Synchronization Issues**: Single file prevents data drift
+- **Consolidation Safety**: Automatic consolidation from scattered files
+- **Fallback Support**: Dashboard can read both unified and scattered data
+
+**Implementation Timeline**:
+1. **Phase 1**: Use enhanced `pattern_storage.py` with unified methods
+2. **Phase 2**: Learning-engine calls unified storage after each task
+3. **Phase 3**: Dashboard prioritizes unified data with fallback
+4. **Phase 4**: Gradual retirement of scattered files (optional)
+
+This integration ensures the learning engine becomes the primary source of unified data for the dashboard, eliminating data synchronization issues and providing real-time learning insights.

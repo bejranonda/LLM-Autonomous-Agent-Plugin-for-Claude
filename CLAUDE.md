@@ -19,7 +19,7 @@ This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous 
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest with metadata (v5.5.3)
+.claude-plugin/plugin.json          # Plugin manifest with metadata (v5.6.0)
 
 agents/                              # 22 specialized subagents
 ├── orchestrator.md                 # Main autonomous controller
