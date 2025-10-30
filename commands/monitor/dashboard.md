@@ -79,13 +79,13 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 ```bash
 # Step 1: Try local copy (fastest, most reliable)
 if [ -f ".claude-patterns/dashboard.py" ]; then
-    echo "🚀 Starting dashboard from local copy..."
+    echo "Starting dashboard from local copy..."
     python .claude-patterns/dashboard.py --patterns-dir .claude-patterns "$@"
     exit 0
 fi
 
 # Step 2: Local copy doesn't exist, try plugin discovery
-echo "🔍 Local dashboard not found, checking plugin installation..."
+echo "Local dashboard not found, checking plugin installation..."
 
 # Cross-platform plugin discovery
 if command -v find >/dev/null 2>&1; then
@@ -95,27 +95,27 @@ elif command -v where >/dev/null 2>&1; then
     # Windows (cmd.exe)
     PLUGIN_DIR=$(for /f "delims=" %f" %i in ('dir /b /s "%USERPROFILE%\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\lib\dashboard.py" 2^>nul') do echo %%~dpi && goto :done)
 else
-    echo "❌ ERROR: Unable to locate files on this system"
+    echo "ERROR: Unable to locate files on this system"
     exit 1
 fi
 
 # Step 3: If plugin found, copy dashboard locally
 if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
-    echo "📁 Creating local patterns directory..."
+    echo "Creating local patterns directory..."
     mkdir -p .claude-patterns
 
-    echo "📋 Copying dashboard to local project..."
+    echo "Copying dashboard to local project..."
     cp "$PLUGIN_DIR/lib/dashboard.py" ".claude-patterns/dashboard.py"
 
-    echo "✅ Dashboard copied successfully"
+    echo "Dashboard copied successfully"
     echo "   From: $PLUGIN_DIR/lib/dashboard.py"
     echo "   To: .claude-patterns/dashboard.py"
 
     # Step 4: Execute local copy
-    echo "🚀 Starting dashboard from local copy..."
+    echo "Starting dashboard from local copy..."
     python .claude-patterns/dashboard.py --patterns-dir .claude-patterns "$@"
 else
-    echo "❌ ERROR: Plugin installation not found"
+    echo "ERROR: Plugin installation not found"
     echo "   Please install the LLM Autonomous Agent Plugin from marketplace"
     echo "   Or ensure you're in a valid project directory"
     exit 1
