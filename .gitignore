@@ -1,6 +1,7 @@
 # Ignore claude AI files
 .claude/
 .claude-patterns/
+.claude-unified/
 
 # Ignore generated reports
 docs/reports/generated/
@@ -8,6 +9,14 @@ docs/reports/generated/
 # Ignore temporary files
 *.tmp
 *.log
-
-# Ignore OS generated fileslib/__pycache__/
 *.backup
+
+# Ignore OS generated files
+lib/__pycache__/
+*~
+
+# Ignore user-specific data
+.reports/
+patterns/
+local_config.json
+user_settings.json

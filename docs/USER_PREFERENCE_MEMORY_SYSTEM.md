@@ -438,7 +438,7 @@ ls -la .claude-preferences/
 export CLAUDE_DEBUG=true
 
 # Check system compatibility
-python lib/user_preference_memory.py --profile
+python <plugin_path>/lib/user_preference_memory.py --profile
 ```
 
 ## API Reference
@@ -507,10 +507,10 @@ engine.record_suggestion_response(suggestions[0], accepted=True)
 ### Data Migration
 ```bash
 # Export old preferences
-python lib/user_preference_memory.py --export old_prefs.json
+python <plugin_path>/lib/user_preference_memory.py --export old_prefs.json
 
 # Import to new system
-python lib/user_preference_memory.py --import old_prefs.json --strategy merge
+python <plugin_path>/lib/user_preference_memory.py --import old_prefs.json --strategy merge
 ```
 
 ## Future Enhancements

@@ -311,13 +311,13 @@ This creates `.claude-patterns/` directory with the learning database.
 
 ```bash
 # If you're unsure which agent to use
-python lib/agent_error_helper.py --suggest "your task description"
+python <plugin_path>/lib/agent_error_helper.py --suggest "your task description"
 
 # If you use wrong agent name, you'll get helpful suggestions
 Task agent="wrong-name" task description  # Shows suggestions
 
 # List all available agents
-python lib/agent_error_helper.py --list
+python <plugin_path>/lib/agent_error_helper.py --list
 ```
 
 **📖 Complete Reference**: See [AGENT_USAGE_GUIDE.md](AGENT_USAGE_GUIDE.md) for detailed agent documentation.

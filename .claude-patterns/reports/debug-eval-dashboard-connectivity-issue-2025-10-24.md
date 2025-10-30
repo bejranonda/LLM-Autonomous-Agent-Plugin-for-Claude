@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Successfully debugged and resolved dashboard connectivity issue. The root cause was that the `/dashboard` command initiated the dashboard process but it terminated prematurely. Manually starting the dashboard with `python lib/dashboard.py` resolved the issue.
+Successfully debugged and resolved dashboard connectivity issue. The root cause was that the `/dashboard` command initiated the dashboard process but it terminated prematurely. Manually starting the dashboard with `python <plugin_path>/lib/dashboard.py` resolved the issue.
 
 **Resolution Time**: 4.5 minutes
 **Quality Improvement**: Service restored from 0% to 100% availability
@@ -68,7 +68,7 @@ The `/dashboard` slash command successfully invoked `dashboard.py` in the backgr
 Started dashboard directly using Python interpreter:
 
 ```bash
-python lib/dashboard.py
+python <plugin_path>/lib/dashboard.py
 ```
 
 **Configuration**:

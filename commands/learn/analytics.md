@@ -21,7 +21,8 @@ Display comprehensive analytics about the autonomous agent's learning progress, 
 Generate and display the learning analytics report:
 
 ```bash
-python lib/learning_analytics.py show --dir .claude-patterns
+# Auto-detects plugin path whether in development or installed from marketplace
+python <plugin_path>/lib/learning_analytics.py show --dir .claude-patterns
 ```
 
 ## Output Format
@@ -135,12 +136,14 @@ The command produces a comprehensive terminal dashboard with:
 
 ### Export as JSON
 ```bash
-python lib/learning_analytics.py export-json --output reports/analytics.json --dir .claude-patterns
+# Auto-detects plugin path
+python <plugin_path>/lib/learning_analytics.py export-json --output reports/analytics.json --dir .claude-patterns
 ```
 
 ### Export as Markdown
 ```bash
-python lib/learning_analytics.py export-md --output reports/analytics.md --dir .claude-patterns
+# Auto-detects plugin path
+python <plugin_path>/lib/learning_analytics.py export-md --output reports/analytics.md --dir .claude-patterns
 ```
 
 ## Usage Scenarios
@@ -154,7 +157,8 @@ Review learning progress and identify areas needing attention:
 ### Weekly Review
 Export comprehensive report for documentation:
 ```bash
-python lib/learning_analytics.py export-md --output weekly_analytics.md
+# Auto-detects plugin path
+python <plugin_path>/lib/learning_analytics.py export-md --output weekly_analytics.md
 ```
 
 ### Performance Investigation

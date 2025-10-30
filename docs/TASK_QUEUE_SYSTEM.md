@@ -556,7 +556,7 @@ def should_retry(task, error):
 /queue:status --verbose
 
 # Monitor execution trends
-python lib/enhanced_task_queue.py --dir .claude-patterns stats
+python <plugin_path>/lib/enhanced_task_queue.py --dir .claude-patterns stats
 ```
 
 ## Integration Points
@@ -710,7 +710,7 @@ export CLAUDE_QUEUE_AUTO_EXECUTE="false"
 /queue:list --status queued --format detailed
 
 # Check for stuck execution
-python lib/enhanced_task_queue.py --dir .claude-patterns status
+python <plugin_path>/lib/enhanced_task_queue.py --dir .claude-patterns status
 ```
 
 #### High Failure Rate
@@ -731,7 +731,7 @@ python lib/enhanced_task_queue.py --dir .claude-patterns status
 /queue:status --verbose
 
 # Monitor system resources
-python lib/enhanced_task_queue.py --dir .claude-patterns stats
+python <plugin_path>/lib/enhanced_task_queue.py --dir .claude-patterns stats
 
 # Clean up old tasks
 /queue:clear --older-than 48
@@ -743,10 +743,10 @@ python lib/enhanced_task_queue.py --dir .claude-patterns stats
 export CLAUDE_DEBUG=true
 
 # Check queue integrity
-python lib/enhanced_task_queue.py --dir .claude-patterns --validate
+python <plugin_path>/lib/enhanced_task_queue.py --dir .claude-patterns --validate
 
 # Manual task execution
-python lib/enhanced_task_queue.py --dir .claude-patterns execute --task-id TASK_ID
+python <plugin_path>/lib/enhanced_task_queue.py --dir .claude-patterns execute --task-id TASK_ID
 ```
 
 ## Best Practices

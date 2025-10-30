@@ -177,10 +177,10 @@ insights = [
 /learning-analytics
 
 # Export JSON
-python lib/learning_analytics.py export-json --output analytics.json
+python <plugin_path>/lib/learning_analytics.py export-json --output analytics.json
 
 # Export Markdown
-python lib/learning_analytics.py export-md --output analytics.md
+python <plugin_path>/lib/learning_analytics.py export-md --output analytics.md
 ```
 
 **Output Sections**:
@@ -509,26 +509,26 @@ Result + Silent Learning
 
 ```bash
 # View learning analytics
-python lib/learning_analytics.py show
+python <plugin_path>/lib/learning_analytics.py show
 
 # Get skill predictions
-python lib/predictive_skills.py predict --context '{...json...}'
+python <plugin_path>/lib/predictive_skills.py predict --context '{...json...}'
 
 # Capture enhanced pattern
-python lib/enhanced_learning.py capture --pattern '{...json...}'
+python <plugin_path>/lib/enhanced_learning.py capture --pattern '{...json...}'
 
 # View analytics report
-python lib/enhanced_learning.py analytics
+python <plugin_path>/lib/enhanced_learning.py analytics
 
 # Train prediction models
-python lib/predictive_skills.py update
+python <plugin_path>/lib/predictive_skills.py update
 
 # Analyze skill combinations
-python lib/predictive_skills.py analyze-combinations
+python <plugin_path>/lib/predictive_skills.py analyze-combinations
 
 # Export reports
-python lib/learning_analytics.py export-json --output report.json
-python lib/learning_analytics.py export-md --output report.md
+python <plugin_path>/lib/learning_analytics.py export-json --output report.json
+python <plugin_path>/lib/learning_analytics.py export-md --output report.md
 ```
 
 ---
@@ -571,13 +571,13 @@ python lib/learning_analytics.py export-md --output report.md
 **Solutions**:
 ```bash
 # Check pattern count
-python lib/enhanced_learning.py analytics | grep "total_patterns"
+python <plugin_path>/lib/enhanced_learning.py analytics | grep "total_patterns"
 
 # Retrain models
-python lib/predictive_skills.py update
+python <plugin_path>/lib/predictive_skills.py update
 
 # Verify context extraction
-python lib/predictive_skills.py predict --context '{...}' | jq '.reasoning'
+python <plugin_path>/lib/predictive_skills.py predict --context '{...}' | jq '.reasoning'
 ```
 
 ### No Similar Patterns Found

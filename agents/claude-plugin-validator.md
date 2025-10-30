@@ -354,7 +354,7 @@ immediate release.
 • Version format can be normalized
 • File encoding can be converted to UTF-8
 
-🔧 Run: python lib/claude-plugin-validator.py --auto-fix
+🔧 Run: python <plugin_path>/lib/claude-plugin-validator.py --auto-fix
 ```
 
 ## Quality Standards
@@ -407,7 +407,7 @@ else:
 ```yaml
 - name: Validate Claude Plugin
   run: |
-    python lib/claude-plugin-validator.py --strict
+    python <plugin_path>/lib/claude-plugin-validator.py --strict
     if [ $? -ne 0 ]; then
       echo "Plugin validation failed - blocking release"
       exit 1

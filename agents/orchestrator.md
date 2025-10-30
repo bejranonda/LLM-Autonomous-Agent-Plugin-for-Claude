@@ -970,7 +970,7 @@ def handle_special_command(command_info):
             print(f"❌ Error generating learning analytics: {e}")
             if e.stderr:
                 print(f"   Error details: {e.stderr}")
-            print(f"   Try running manually: python lib/learning_analytics.py show")
+            print(f"   Try running manually: python <plugin_path>/lib/learning_analytics.py show")
             return False
         except Exception as e:
             print(f"❌ Error: {e}")
@@ -1327,8 +1327,8 @@ New Task Received
     │   ↓
     │   [DIRECT EXECUTION] Run command handler immediately
     │   ↓
-    │   ├─→ Dashboard: Execute python lib/dashboard.py
-    │   ├─→ Learning Analytics: Execute python lib/learning_analytics.py
+    │   ├─→ Dashboard: Execute python <plugin_path>/lib/dashboard.py
+    │   ├─→ Learning Analytics: Execute python <plugin_path>/lib/learning_analytics.py
     │   └─→ Other special commands: Execute respective handlers
     │
     └─→ NO: Continue with normal autonomous workflow

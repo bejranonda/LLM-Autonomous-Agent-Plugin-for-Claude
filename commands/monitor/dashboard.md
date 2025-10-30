@@ -67,7 +67,7 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 **CRITICAL**: This command executes the dashboard directly without agent delegation to prevent duplicate launches.
 
-1. **Direct Python Call**: `python lib/dashboard.py` (no agents involved)
+1. **Direct Python Call**: `python <plugin_path>/lib/dashboard.py` (no agents involved)
 2. **Background Process**: Runs Flask server completely in background
 3. **Auto Browser**: Opens browser automatically (once only)
 4. **Silent Operation**: No console reporting or status messages
@@ -77,13 +77,19 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ```bash
 # Direct execution with background process (no delegation):
-python lib/dashboard.py --host 127.0.0.1 --port <available_port>
+# The command automatically detects plugin installation path
+python <plugin_path>/lib/dashboard.py --host 127.0.0.1 --port <available_port>
 
 # Browser opens automatically (once only):
 webbrowser.open(f"http://127.0.0.1:{port}")
 
 # No console reporting - dashboard handles all user feedback
 ```
+
+**Path Resolution**: The command uses `plugin_path_resolver.py` to automatically find the correct script path whether:
+- Running in development mode (local repository)
+- Installed from marketplace (user's plugin directory)
+- Running on Windows, Linux, or macOS
 
 **Key Fix**: Removed `delegates-to: orchestrator` to prevent duplicate browser launches and agent delegation overhead.
 
@@ -397,8 +403,8 @@ ls -la .claude-patterns/
 # Check Python dependencies
 pip install flask flask-cors
 
-# Verify dashboard script
-python lib/dashboard.py --test
+# Verify dashboard script (auto-detects plugin path)
+python <plugin_path>/lib/dashboard.py --test
 
 # Check system resources
 free -h  # Memory
@@ -425,8 +431,8 @@ df -h    # Disk space
 # Check log files
 tail -f .claude/logs/dashboard.log
 
-# Validate installation
-python lib/dashboard.py --validate
+# Validate installation (auto-detects plugin path)
+python <plugin_path>/lib/dashboard.py --validate
 ```
 
 ## Best Practices

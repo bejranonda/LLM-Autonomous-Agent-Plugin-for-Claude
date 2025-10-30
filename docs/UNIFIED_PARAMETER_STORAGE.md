@@ -148,22 +148,22 @@ dashboard_data = storage.get_dashboard_data()
 
 ```bash
 # Set quality score
-python lib/unified_parameter_storage.py set-quality --score 85.5
+python <plugin_path>/lib/unified_parameter_storage.py set-quality --score 85.5
 
 # Set active model
-python lib/unified_parameter_storage.py set-model --model Claude
+python <plugin_path>/lib/unified_parameter_storage.py set-model --model Claude
 
 # Migrate from legacy storage
-python lib/unified_parameter_storage.py migrate
+python <plugin_path>/lib/unified_parameter_storage.py migrate
 
 # Get storage statistics
-python lib/unified_parameter_storage.py stats
+python <plugin_path>/lib/unified_parameter_storage.py stats
 
 # Validate data integrity
-python lib/unified_parameter_storage.py validate
+python <plugin_path>/lib/unified_parameter_storage.py validate
 
 # Export data
-python lib/unified_parameter_storage.py export --path backup.json --format json
+python <plugin_path>/lib/unified_parameter_storage.py export --path backup.json --format json
 ```
 
 ## API Reference

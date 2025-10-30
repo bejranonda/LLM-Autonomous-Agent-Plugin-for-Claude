@@ -327,7 +327,7 @@ commands/                            # 15 slash commands (+8 since v1.0)
 **Integration**: Add to CI/CD pipeline or pre-release checklist:
 ```bash
 # Run validation before release
-python lib/claude-plugin-validator.py --strict
+python <plugin_path>/lib/claude-plugin-validator.py --strict
 ```
 
 **Effort**: One-time setup (15 minutes)

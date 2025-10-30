@@ -72,13 +72,13 @@ The enhanced Autonomous Agent Dashboard now includes comprehensive model perform
 
 ```bash
 # Basic usage (default port 5000)
-python lib/dashboard.py
+python <plugin_path>/lib/dashboard.py
 
 # Custom port and pattern directory
-python lib/dashboard.py --port 8080 --patterns-dir .claude-patterns
+python <plugin_path>/lib/dashboard.py --port 8080 --patterns-dir .claude-patterns
 
 # Allow external access
-python lib/dashboard.py --host 0.0.0.0 --port 8080
+python <plugin_path>/lib/dashboard.py --host 0.0.0.0 --port 8080
 ```
 
 ### Accessing the Dashboard
@@ -93,7 +93,7 @@ Open your web browser and navigate to:
 
 ```bash
 # Add a new performance score
-python lib/model_performance.py --dir .claude-patterns add \
+python <plugin_path>/lib/model_performance.py --dir .claude-patterns add \
   --model Claude \
   --score 92.5 \
   --task-type dashboard_enhancement \
@@ -110,24 +110,24 @@ python lib/model_performance.py --dir .claude-patterns add \
 
 ```bash
 # Generate 30 days of sample historical data
-python lib/model_performance.py --dir .claude-patterns generate-sample --days 30
+python <plugin_path>/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
 ```
 
 #### Viewing Performance Summaries
 
 ```bash
 # View all models summary
-python lib/model_performance.py --dir .claude-patterns summary
+python <plugin_path>/lib/model_performance.py --dir .claude-patterns summary
 
 # View specific model summary
-python lib/model_performance.py --dir .claude-patterns model-summary --model Claude
+python <plugin_path>/lib/model_performance.py --dir .claude-patterns model-summary --model Claude
 ```
 
 #### Clearing Data
 
 ```bash
 # Clear all model performance data
-python lib/model_performance.py --dir .claude-patterns clear
+python <plugin_path>/lib/model_performance.py --dir .claude-patterns clear
 ```
 
 ## API Endpoints
@@ -235,7 +235,7 @@ The model performance charts integrate seamlessly with existing dashboard featur
 1. **No Model Data Displayed**:
    ```bash
    # Generate sample data
-   python lib/model_performance.py --dir .claude-patterns generate-sample --days 30
+   python <plugin_path>/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
    ```
 
 2. **Chart Loading Errors**:

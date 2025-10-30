@@ -533,7 +533,7 @@ Stores detailed skill effectiveness data used by predictive models.
 
 ```bash
 # CLI usage
-python lib/predictive_skills.py predict --context '{
+python <plugin_path>/lib/predictive_skills.py predict --context '{
   "task_type": "refactoring",
   "languages": ["python"],
   "frameworks": ["flask"],
@@ -566,7 +566,7 @@ python lib/predictive_skills.py predict --context '{
 
 ```bash
 # CLI usage
-python lib/enhanced_learning.py capture --pattern '{
+python <plugin_path>/lib/enhanced_learning.py capture --pattern '{
   "task_type": "refactoring",
   "complexity": "medium",
   "domain": "authentication",
@@ -601,7 +601,7 @@ python lib/enhanced_learning.py capture --pattern '{
 
 ```bash
 # CLI usage
-python lib/enhanced_learning.py analytics
+python <plugin_path>/lib/enhanced_learning.py analytics
 
 # Output
 {
@@ -691,7 +691,7 @@ python lib/enhanced_learning.py analytics
 1. Ensure at least 20 patterns captured before trusting predictions
 2. Check pattern quality - remove low-quality patterns
 3. Verify context extraction is capturing relevant information
-4. Retrain models: `python lib/predictive_skills.py update`
+4. Retrain models: `python <plugin_path>/lib/predictive_skills.py update`
 
 ### Pattern Match Failures
 

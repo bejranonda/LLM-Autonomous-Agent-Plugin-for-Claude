@@ -35,7 +35,7 @@ All file operations now have comprehensive error handling:
 ### Pattern Storage (`lib/pattern_storage.py`)
 ```bash
 # Works on Windows, Linux, and Mac!
-python lib/pattern_storage.py --dir .claude-patterns stats
+python <plugin_path>/lib/pattern_storage.py --dir .claude-patterns stats
 ```
 
 ✅ Cross-platform file locking
@@ -45,7 +45,7 @@ python lib/pattern_storage.py --dir .claude-patterns stats
 ### Task Queue (`lib/task_queue.py`)
 ```bash
 # Priority-based task management on any OS
-python lib/task_queue.py --dir .claude-patterns status
+python <plugin_path>/lib/task_queue.py --dir .claude-patterns status
 ```
 
 ✅ Windows-compatible locks
@@ -55,7 +55,7 @@ python lib/task_queue.py --dir .claude-patterns status
 ### Quality Tracker (`lib/quality_tracker.py`)
 ```bash
 # Track quality metrics on Windows too!
-python lib/quality_tracker.py --dir .claude-patterns trends --days 30
+python <plugin_path>/lib/quality_tracker.py --dir .claude-patterns trends --days 30
 ```
 
 ✅ Platform-aware operations
@@ -202,13 +202,13 @@ Then restart Claude Code.
 cd C:\Users\YourName\your-project
 
 # Try the pattern storage
-python lib/pattern_storage.py --dir .claude-patterns stats
+python <plugin_path>/lib/pattern_storage.py --dir .claude-patterns stats
 
 # Try the task queue
-python lib/task_queue.py --dir .claude-patterns status
+python <plugin_path>/lib/task_queue.py --dir .claude-patterns status
 
 # Try the quality tracker
-python lib/quality_tracker.py --dir .claude-patterns trends --days 7
+python <plugin_path>/lib/quality_tracker.py --dir .claude-patterns trends --days 7
 ```
 
 ### Test the Python Utilities (Linux/Mac)
@@ -218,13 +218,13 @@ python lib/quality_tracker.py --dir .claude-patterns trends --days 7
 cd ~/your-project
 
 # Try the pattern storage
-python lib/pattern_storage.py --dir .claude-patterns stats
+python <plugin_path>/lib/pattern_storage.py --dir .claude-patterns stats
 
 # Try the task queue
-python lib/task_queue.py --dir .claude-patterns status
+python <plugin_path>/lib/task_queue.py --dir .claude-patterns status
 
 # Try the quality tracker
-python lib/quality_tracker.py --dir .claude-patterns trends --days 7
+python <plugin_path>/lib/quality_tracker.py --dir .claude-patterns trends --days 7
 ```
 
 ---

@@ -446,9 +446,9 @@ def check_storage_health():
 - [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
 
 ### Tools
-- Migration CLI: `python lib/parameter_migration.py`
-- Validation CLI: `python lib/unified_parameter_storage.py validate`
-- Export CLI: `python lib/unified_parameter_storage.py export`
+- Migration CLI: `python <plugin_path>/lib/parameter_migration.py`
+- Validation CLI: `python <plugin_path>/lib/unified_parameter_storage.py validate`
+- Export CLI: `python <plugin_path>/lib/unified_parameter_storage.py export`
 
 ### Community
 - Issue Tracker: Report migration issues

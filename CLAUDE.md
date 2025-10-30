@@ -461,7 +461,7 @@ All Python scripts in `lib/` directory feature Windows compatibility (v1.4):
 
 - All scripts use `--dir` parameter to specify data directory (default: `.claude-patterns`)
 - JSON-based data storage for easy inspection and debugging
-- Each script has a complete CLI interface accessible via `python lib/<script>.py --help`
+- Each script has a complete CLI interface accessible via `python <plugin_path>/lib/<script>.py --help`
 - Scripts are designed to be used both programmatically and via command line
 
 ## Result Presentation Requirements
