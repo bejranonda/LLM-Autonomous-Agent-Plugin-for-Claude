@@ -76,20 +76,29 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 ### Implementation
 
 ```bash
-# Direct execution with background process (no delegation):
-# The command automatically detects plugin installation path
-python <plugin_path>/lib/dashboard.py --host 127.0.0.1 --port <available_port>
+# Direct execution using the plugin script executor (works everywhere):
+python lib/exec_plugin_script.py dashboard.py --host 127.0.0.1 --port 5000
 
-# Browser opens automatically (once only):
-webbrowser.open(f"http://127.0.0.1:{port}")
+# Alternative: If lib/ is not in current directory, use plugin_path_resolver
+python -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path.home() / '.claude' / 'plugins' / 'marketplaces' / 'LLM-Autonomous-Agent-Plugin-for-Claude' / 'lib')); from exec_plugin_script import execute_plugin_script; import sys; sys.exit(execute_plugin_script('dashboard.py', ['--host', '127.0.0.1', '--port', '5000']))"
 
-# No console reporting - dashboard handles all user feedback
+# Simplest approach (RECOMMENDED for slash commands):
+# From the plugin directory, just call the executor:
+python lib/exec_plugin_script.py dashboard.py
 ```
 
-**Path Resolution**: The command uses `plugin_path_resolver.py` to automatically find the correct script path whether:
-- Running in development mode (local repository)
-- Installed from marketplace (user's plugin directory)
-- Running on Windows, Linux, or macOS
+**How It Works**:
+1. `exec_plugin_script.py` automatically finds the plugin installation using `plugin_path_resolver.py`
+2. Works in development mode (local repository) or marketplace installation
+3. Cross-platform: Windows, Linux, macOS
+4. No hardcoded paths - discovers installation dynamically
+5. Browser opens automatically via dashboard.py itself
+
+**Path Resolution**: The `exec_plugin_script.py` wrapper automatically finds scripts whether:
+- Running in development mode (`D:\Git\Werapol\AutonomousAgent`)
+- Installed from marketplace (`~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`)
+- Installed locally (`~/.claude/plugins/autonomous-agent/`)
+- System-wide installation (`/usr/local/share/claude/plugins/`)
 
 **Key Fix**: Removed `delegates-to: orchestrator` to prevent duplicate browser launches and agent delegation overhead.
 

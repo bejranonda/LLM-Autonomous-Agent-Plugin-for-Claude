@@ -59,13 +59,53 @@ def get_plugin_path() -> Optional[Path]:
 
     # Try standard plugin locations
     home = Path.home()
+
+    # Marketplace plugin name
+    marketplace_plugin_name = "LLM-Autonomous-Agent-Plugin-for-Claude"
+
     plugin_locations = [
+        # Development/local installations
         home / ".config" / "claude" / "plugins" / "autonomous-agent",
         home / ".claude" / "plugins" / "autonomous-agent",
+
+        # Marketplace installations (primary)
+        home / ".claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+        home / ".config" / "claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+
+        # Alternative marketplace paths
+        home / ".claude" / "plugins" / "marketplace" / marketplace_plugin_name,
+        home / ".config" / "claude" / "plugins" / "marketplace" / marketplace_plugin_name,
+
+        # System-wide installations (Linux/Mac)
         Path("/usr/local/share/claude/plugins/autonomous-agent"),
-        Path("C:\\Program Files\\Claude\\plugins\\autonomous-agent") if sys.platform == "win32" else None,
-        Path(os.environ.get("APPDATA", "")) / "Claude" / "plugins" / "autonomous-agent" if sys.platform == "win32" else None,
+        Path("/usr/local/share/claude/plugins/marketplaces") / marketplace_plugin_name,
+        Path("/opt/claude/plugins/autonomous-agent"),
+        Path("/opt/claude/plugins/marketplaces") / marketplace_plugin_name,
     ]
+
+    # Windows-specific paths (using environment variables, not hardcoded)
+    if sys.platform == "win32":
+        appdata = Path(os.environ.get("APPDATA", ""))
+        localappdata = Path(os.environ.get("LOCALAPPDATA", ""))
+        programfiles = Path(os.environ.get("PROGRAMFILES", ""))
+
+        if appdata:
+            plugin_locations.extend([
+                appdata / "Claude" / "plugins" / "autonomous-agent",
+                appdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+            ])
+
+        if localappdata:
+            plugin_locations.extend([
+                localappdata / "Claude" / "plugins" / "autonomous-agent",
+                localappdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+            ])
+
+        if programfiles:
+            plugin_locations.extend([
+                programfiles / "Claude" / "plugins" / "autonomous-agent",
+                programfiles / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+            ])
 
     for location in plugin_locations:
         if location and (location / ".claude-plugin" / "plugin.json").exists():

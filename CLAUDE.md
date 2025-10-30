@@ -19,7 +19,7 @@ This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous 
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest with metadata (v5.6.0)
+.claude-plugin/plugin.json          # Plugin manifest with metadata (v5.7.0)
 
 agents/                              # 22 specialized subagents
 ├── orchestrator.md                 # Main autonomous controller
@@ -99,7 +99,53 @@ commands/                            # 39 slash commands (8 categories with colo
 
 patterns/                            # Auto-fix pattern database (NEW v2.0)
 └── autofix-patterns.json           # 24 patterns with 89% avg success rate
+
+lib/                                 # Python utilities and path resolution (v5.6+)
+├── exec_plugin_script.py           # Cross-platform script executor
+├── plugin_path_resolver.py         # Dynamic plugin path discovery
+└── [110+ utility scripts]
 ```
+
+### Cross-Platform Plugin Path Resolution (v5.6+)
+
+The plugin uses a three-layer architecture to execute Python scripts across all platforms and installation methods:
+
+**Layer 1: Script Executor** (`lib/exec_plugin_script.py`):
+- Automatically finds plugin installation location
+- Executes target scripts from `lib/` directory
+- Forwards all arguments to target script
+- Works in development, marketplace, and system-wide installations
+
+**Layer 2: Path Resolver** (`lib/plugin_path_resolver.py`):
+- Dynamically discovers plugin installation across platforms
+- Checks development directories (current working directory and parents)
+- Checks marketplace paths (`~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`)
+- Checks local installations (`~/.claude/plugins/autonomous-agent/`)
+- Checks system-wide paths (`/usr/local/share/claude/plugins/`, Windows Program Files, etc.)
+- Respects `CLAUDE_PLUGIN_PATH` environment variable for custom locations
+- Validates installation by checking for `.claude-plugin/plugin.json`
+
+**Layer 3: Command Execution**:
+```bash
+# All slash commands use this pattern:
+python lib/exec_plugin_script.py {script_name} {arguments}
+
+# Example:
+python lib/exec_plugin_script.py dashboard.py --port 5000
+```
+
+**Why This Matters**:
+- ✅ No hardcoded paths - works on any user's machine
+- ✅ Cross-platform - Windows, Linux, macOS
+- ✅ Installation-agnostic - development, marketplace, system-wide
+- ✅ User-independent - no assumptions about home directories
+- ✅ Clear errors - shows searched locations if plugin not found
+
+**Key Files**:
+- `lib/exec_plugin_script.py` - Execute scripts with automatic path resolution
+- `lib/plugin_path_resolver.py` - Find plugin installation dynamically
+- `docs/CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md` - Complete architecture documentation
+- `docs/COMMAND_UPDATE_GUIDE.md` - Guide for updating slash commands
 
 ## Key Architectural Principles
 
