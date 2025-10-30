@@ -1,22 +1,61 @@
-# Ignore claude AI files
+# Claude AI local directories (computer-specific)
 .claude/
 .claude-patterns/
 .claude-unified/
+.claude-preferences/
+.claude-quality/
+.claude-test/
+.claude-reports/
+.claudereports/
 
-# Ignore generated reports
-docs/reports/generated/
-
-# Ignore temporary files
-*.tmp
-*.log
-*.backup
-
-# Ignore OS generated files
-lib/__pycache__/
-*~
-
-# Ignore user-specific data
+# User-specific reports and data
 .reports/
+.reportscurrent/
+.reportscurrentvalidation/
+
+# Local patterns and performance data (computer-specific)
 patterns/
 local_config.json
 user_settings.json
+*performance*.json
+*metrics*.json
+quality_history*.json
+debugging_performance*.json
+dashboard_*.json
+*_backup*
+
+# Temporary and backup files
+*.tmp
+*.log
+*.backup
+*~
+.DS_Store
+Thumbs.db
+
+# OS generated files
+lib/__pycache__/
+__pycache__/
+*.pyc
+*.pyo
+
+# Test files (local only)
+dashboard_test.html
+*.test.*
+test_.*
+
+# Local development files
+.env.local
+.env.local.*
+local_settings.json
+settings.local.json
+
+# Ignore generated reports (keep structure, clean content)
+docs/reports/generated/*
+!docs/reports/generated/.gitkeep
+
+# Python cache and environment
+*.egg-info/
+.venv/
+venv/
+env/
+ENV/
