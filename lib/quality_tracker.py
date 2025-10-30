@@ -151,6 +151,80 @@ class QualityTracker:
         self._write_quality_records(records)
         return True
 
+    # Alias for backward compatibility with tests
+    def record_quality_score(self, task_id: str = None, quality_score: float = None,
+                           score: float = None, task_type: str = None,
+                           components: Dict[str, float] = None, metrics: Dict[str, float] = None) -> bool:
+        """Flexible method for recording quality scores for backward compatibility."""
+        # Handle different parameter names
+        final_task_id = task_id or task_type or "unknown"
+        final_score = quality_score or score or 0.0
+        final_metrics = metrics or components or {}
+
+        # Convert scores from 0-100 scale to 0-1 scale if needed
+        if final_score > 1.0:
+            final_score = final_score / 100.0
+
+        # Convert metric values from 0-100 scale to 0-1 scale if needed
+        final_metrics = {k: (v/100.0 if v > 1.0 else v) for k, v in final_metrics.items()}
+
+        return self.record_quality(final_task_id, final_score, final_metrics)
+
+    def get_quality_history(self, limit: int = 10) -> List[Dict[str, Any]]:
+        """Get recent quality history."""
+        records = self._read_quality_records()
+        # Convert back to 0-100 scale for tests
+        for record in records:
+            record['score'] = record['quality_score'] * 100
+        return records[-limit:]
+
+    def get_quality_trend(self) -> Dict[str, Any]:
+        """Calculate quality trend."""
+        records = self._read_quality_records()
+        if len(records) < 2:
+            return {"direction": "stable", "average": 0.0, "improvement": 0.0}
+
+        recent_scores = [r['quality_score'] for r in records[-5:]]
+        older_scores = [r['quality_score'] for r in records[-10:-5]] if len(records) >= 10 else recent_scores
+
+        recent_avg = sum(recent_scores) / len(recent_scores)
+        older_avg = sum(older_scores) / len(older_scores)
+
+        improvement = recent_avg - older_avg
+        direction = "improving" if improvement > 0.05 else "declining" if improvement < -0.05 else "stable"
+
+        return {
+            "direction": direction,
+            "average": recent_avg * 100,  # Convert to 0-100 scale
+            "improvement": improvement * 100  # Convert to 0-100 scale
+        }
+
+    def get_task_type_performance(self) -> Dict[str, Any]:
+        """Get performance by task type."""
+        records = self._read_quality_records()
+        performance = {}
+
+        for record in records:
+            task_type = record.get('task_id', 'unknown')
+            if task_type not in performance:
+                performance[task_type] = {
+                    'count': 0,
+                    'total_score': 0.0,
+                    'avg_score': 0.0
+                }
+
+            performance[task_type]['count'] += 1
+            performance[task_type]['total_score'] += record['quality_score']
+
+        for task_type in performance:
+            if performance[task_type]['count'] > 0:
+                performance[task_type]['avg_score'] = (
+                    performance[task_type]['total_score'] / performance[task_type]['count']
+                ) * 100  # Convert to 0-100 scale
+                performance[task_type]['average_score'] = performance[task_type]['avg_score']
+
+        return performance
+
     def get_quality_trends(
         self,
         days: int = 30,

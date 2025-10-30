@@ -169,7 +169,7 @@ class PatternStorage:
             raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
 
         # Validate task_type
-        valid_task_types = ['feature_implementation', 'bug_fix', 'refactoring', 'testing', 'dashboard-improvement', 'quality-improvement', 'learning-activity', 'project-analysis', 'security-audit', 'performance-optimization', 'automation']
+        valid_task_types = ['feature_implementation', 'bug_fix', 'refactoring', 'testing', 'debugging', 'dashboard-improvement', 'quality-improvement', 'learning-activity', 'project-analysis', 'security-audit', 'performance-optimization', 'automation']
         if pattern['task_type'] not in valid_task_types:
             raise ValueError(f"Invalid task_type. Must be one of: {', '.join(valid_task_types)}")
 
@@ -256,6 +256,49 @@ class PatternStorage:
 
         # Return top N matches
         return [match['pattern'] for match in matches[:limit]]
+
+    # Alias for backward compatibility with tests
+    def get_patterns(self) -> List[Dict[str, Any]]:
+        """Alias to get all patterns for backward compatibility."""
+        return self._read_patterns()
+
+    def get_similar_patterns(self, task_type: str = None, context: Dict[str, Any] = None,
+                           min_quality: float = 0.8, limit: int = 5) -> List[Dict[str, Any]]:
+        """Alias for retrieve_patterns method for backward compatibility."""
+        context_str = str(context) if context else ""
+        return self.retrieve_patterns(context_str, task_type, min_quality, limit)
+
+    def get_skill_effectiveness(self, skill_name: str) -> Dict[str, Any]:
+        """Calculate skill effectiveness from stored patterns."""
+        patterns = self._read_patterns()
+
+        skill_usage = 0
+        successful_usage = 0
+        total_quality = 0.0
+
+        for pattern in patterns:
+            skills_used = pattern.get('skills_used', [])
+            if skill_name in skills_used:
+                skill_usage += 1
+                quality_score = pattern.get('quality_score', 0)
+                total_quality += quality_score
+                if quality_score >= 0.7:  # Consider 70%+ as success
+                    successful_usage += 1
+
+        if skill_usage == 0:
+            return {
+                'skill': skill_name,
+                'usage_count': 0,
+                'success_rate': 0.0,
+                'avg_quality': 0.0
+            }
+
+        return {
+            'skill': skill_name,
+            'usage_count': skill_usage,
+            'success_rate': successful_usage / skill_usage,
+            'avg_quality': total_quality / skill_usage
+        }
 
     def update_usage(self, pattern_id: str, success: bool = True) -> bool:
         """

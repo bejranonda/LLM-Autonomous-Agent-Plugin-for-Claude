@@ -1,6 +1,6 @@
 ---
 name: build-validator
-description: Validates build configurations for Vite, Webpack, Rollup, and other bundlers, auto-fixes common config issues, and optimizes build settings
+description: Validates build configurations for major bundlers and optimizes build settings
 category: build
 usage_frequency: medium
 common_for:

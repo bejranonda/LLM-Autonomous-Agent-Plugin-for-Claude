@@ -239,7 +239,7 @@ class AssessmentStorage:
             "task_type": assessment_record["task_type"],
             "agents_involved": assessment_record["agents_used"],
             "execution_details": {},
-            collaboration_effectiveness: excellent if 
+            "collaboration_effectiveness": "excellent" if
                 assessment_record["success"] else "needs_improvement",
             "integration_success": assessment_record["success"]
         }
@@ -247,7 +247,7 @@ class AssessmentStorage:
         # Add execution details for each agent
         for agent in assessment_record["agents_used"]:
             task_record["execution_details"][agent] = {
-                "role": assessment_execution,
+                "role": "assessment_execution",
                 "duration_seconds": int(
                     (assessment_record.get("execution_time_minutes", 0) or 0) * 60
                 ),

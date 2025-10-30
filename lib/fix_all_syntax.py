@@ -98,10 +98,10 @@ def main():
             
         if fix_file(filepath):
             if test_file_syntax(filepath):
-                print("FIXED ✓")
+                print("FIXED ")
                 fixed_files.append(filepath.name)
             else:
-                print("Still broken ✗")
+                print("Still broken ")
                 still_broken.append(filepath.name)
         else:
             print("No changes made")
@@ -115,12 +115,12 @@ def main():
     if fixed_files:
         print("\nFixed files:")
         for f in fixed_files:
-            print(f"  ✓ {f}")
+            print(f"   {f}")
     
     if still_broken:
         print("\nStill broken files:")
         for f in still_broken:
-            print(f"  ✗ {f}")
+            print(f"   {f}")
 
 if __name__ == "__main__":
     main()

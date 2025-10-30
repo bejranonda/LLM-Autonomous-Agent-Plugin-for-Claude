@@ -1,6 +1,6 @@
 ---
 name: background-task-manager
-description: Manages and executes long-running background tasks like code analysis, optimization, and monitoring independently without blocking main workflow
+description: Manages background tasks for code analysis and monitoring without blocking main workflow
 category: analysis
 usage_frequency: medium
 common_for:

@@ -162,13 +162,13 @@ def main():
                     if has_syntax_errors(filepath):
                         error_files.append(filepath.name)
                     else:
-                        print(f"    ✓ Fixed successfully")
+                        print(f"     Fixed successfully")
                 else:
                     error_files.append(filepath.name)
-                    print(f"    ✗ Could not fix")
+                    print(f"     Could not fix")
             except Exception as e:
                 error_files.append(filepath.name)
-                print(f"    ✗ Error: {e}")
+                print(f"     Error: {e}")
 
     print(f"\nSummary:")
     print(f"  Total files checked: {len(py_files)}")

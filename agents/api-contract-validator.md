@@ -1,6 +1,6 @@
 ---
 name: api-contract-validator
-description: Validates API contracts between frontend and backend, ensures type synchronization, detects missing endpoints, and auto-generates client code
+description: Validates API contracts, synchronizes types, and auto-generates client code
 category: api
 usage_frequency: medium
 common_for:

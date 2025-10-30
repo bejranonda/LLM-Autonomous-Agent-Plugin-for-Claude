@@ -59,8 +59,9 @@ class TestPatternStorage(unittest.TestCase):
             "task_type": "refactoring",
             "context": {"language": "python"},
             "skills_used": ["code-analysis"],
+            "approach": "Refactored code structure for better maintainability",
             "success": True,
-            "quality_score": 95
+            "quality_score": 0.95
         }
 
         result = self.storage.store_pattern(pattern)
@@ -79,15 +80,17 @@ class TestPatternStorage(unittest.TestCase):
                 "task_type": "refactoring",
                 "context": {"language": "python"},
                 "skills_used": ["code-analysis"],
+                "approach": "Refactored code structure for better maintainability",
                 "success": True,
-                "quality_score": 95
+                "quality_score": 0.95
             },
             {
                 "task_type": "debugging",
                 "context": {"language": "python"},
                 "skills_used": ["code-analysis"],
+                "approach": "Debugged issues through systematic code analysis",
                 "success": True,
-                "quality_score": 88
+                "quality_score": 0.88
             }
         ]
 
@@ -107,9 +110,30 @@ class TestPatternStorage(unittest.TestCase):
         """Test skill effectiveness tracking."""
         # Store patterns with different outcomes
         patterns = [
-            {"skills_used": ["code-analysis"], "success": True, "quality_score": 95},
-            {"skills_used": ["code-analysis"], "success": True, "quality_score": 90},
-            {"skills_used": ["code-analysis"], "success": False, "quality_score": 60},
+            {
+                "task_type": "refactoring",
+                "context": {"language": "python"},
+                "skills_used": ["code-analysis"],
+                "approach": "Refactored code structure for better maintainability",
+                "success": True,
+                "quality_score": 0.95
+            },
+            {
+                "task_type": "debugging",
+                "context": {"language": "python"},
+                "skills_used": ["code-analysis"],
+                "approach": "Debugged issues through systematic code analysis",
+                "success": True,
+                "quality_score": 0.90
+            },
+            {
+                "task_type": "testing",
+                "context": {"language": "python"},
+                "skills_used": ["code-analysis"],
+                "approach": "Tested code with comprehensive test coverage",
+                "success": False,
+                "quality_score": 0.60
+            },
         ]
 
         for pattern in patterns:
@@ -570,15 +594,17 @@ class TestUtilityIntegration(unittest.TestCase):
                     "task_type": "refactoring",
                     "context": {"language": "python", "framework": "flask"},
                     "skills_used": ["code-analysis", "quality-standards"],
+                    "approach": "Refactored Flask application for better maintainability",
                     "success": True,
-                    "quality_score": 95
+                    "quality_score": 0.95
                 },
                 {
                     "task_type": "refactoring",
                     "context": {"language": "python", "framework": "django"},
                     "skills_used": ["code-analysis", "validation-standards"],
+                    "approach": "Refactored Django application for improved structure",
                     "success": True,
-                    "quality_score": 90
+                    "quality_score": 0.90
                 }
             ]
 

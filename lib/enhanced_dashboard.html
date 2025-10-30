@@ -775,7 +775,14 @@
         }
 
         /* High DPI displays */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        @media (-webkit-min-device-pixel-ratio: 2) {
+            .chart-canvas-container canvas {
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
+            }
+        }
+
+        @media (min-resolution: 192dpi) {
             .chart-canvas-container canvas {
                 image-rendering: -webkit-optimize-contrast;
                 image-rendering: crisp-edges;

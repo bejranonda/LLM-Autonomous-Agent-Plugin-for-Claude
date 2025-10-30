@@ -1,0 +1,87 @@
+{
+  "assessments": [
+    {
+      "assessment_id": "test-20251030-120742",
+      "timestamp": "2025-10-30T12:07:42.425104+00:00",
+      "command_name": "test",
+      "assessment_type": "quality",
+      "task_type": "test",
+      "overall_score": 85,
+      "breakdown": {},
+      "details": {
+        "cli_stored": true
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "agents_used": [
+        "test-engineer"
+      ],
+      "skills_used": [
+        "quality-standards"
+      ],
+      "execution_time_minutes": 0.5,
+      "pass_threshold_met": true,
+      "additional_metrics": {},
+      "success": true
+    },
+    {
+      "assessment_id": "test-20251030-120759",
+      "timestamp": "2025-10-30T12:07:59.776046+00:00",
+      "command_name": "test",
+      "assessment_type": "quality",
+      "task_type": "test",
+      "overall_score": 85,
+      "breakdown": {},
+      "details": {
+        "cli_stored": true
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "agents_used": [
+        "test-engineer"
+      ],
+      "skills_used": [
+        "quality-standards"
+      ],
+      "execution_time_minutes": 0.5,
+      "pass_threshold_met": true,
+      "additional_metrics": {},
+      "success": true
+    },
+    {
+      "assessment_id": "test-20251030-120808",
+      "timestamp": "2025-10-30T12:08:08.705905+00:00",
+      "command_name": "test",
+      "assessment_type": "quality",
+      "task_type": "test",
+      "overall_score": 85,
+      "breakdown": {},
+      "details": {
+        "cli_stored": true
+      },
+      "issues_found": [],
+      "recommendations": [],
+      "agents_used": [
+        "test-engineer"
+      ],
+      "skills_used": [
+        "quality-standards"
+      ],
+      "execution_time_minutes": 0.5,
+      "pass_threshold_met": true,
+      "additional_metrics": {},
+      "success": true
+    }
+  ],
+  "command_performance": {
+    "test": {
+      "total_executions": 3,
+      "successful_executions": 3,
+      "avg_score": 85.0,
+      "avg_execution_time": 0.5,
+      "last_execution": "2025-10-30T12:08:08.705905+00:00"
+    }
+  },
+  "last_updated": "2025-10-30T12:08:08.705905+00:00",
+  "total_assessments": 3
+}

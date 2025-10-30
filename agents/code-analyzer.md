@@ -1,6 +1,6 @@
 ---
 name: code-analyzer
-description: Analyzes code structure, identifies refactoring opportunities, detects patterns, and assesses code quality autonomously
+description: Analyzes code structure, identifies refactoring opportunities, and assesses code quality
 category: analysis
 usage_frequency: high
 common_for:

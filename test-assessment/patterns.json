@@ -1,0 +1,46 @@
+{
+  "project_context": {},
+  "patterns": [
+    {
+      "pattern_id": "test-20251030-120808",
+      "timestamp": "2025-10-30T12:08:08.705905+00:00",
+      "task_type": "test",
+      "task_description": "test command execution",
+      "context": {
+        "command_name": "test",
+        "assessment_type": "quality",
+        "score": 85,
+        "success": true
+      },
+      "execution": {
+        "skills_used": [
+          "quality-standards"
+        ],
+        "agents_delegated": [
+          "test-engineer"
+        ],
+        "approach": "test",
+        "duration_seconds": 30,
+        "score_achieved": 85
+      },
+      "findings": {
+        "issues_count": 0,
+        "recommendations_count": 0,
+        "key_issues": []
+      },
+      "success_factors": [
+        "efficient_execution",
+        "no_issues_detected",
+        "effective_agent_coordination",
+        "optimal_skill_application"
+      ],
+      "outcome": {
+        "success": true,
+        "quality_score": 85,
+        "threshold_met": true
+      },
+      "reuse_count": 0,
+      "confidence_boost": 0.1
+    }
+  ]
+}

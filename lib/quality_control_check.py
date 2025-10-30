@@ -345,23 +345,23 @@ class QualityController:
         print("Running Comprehensive Quality Assessment...")
 
         # Run all analyses
-        print("  • Analyzing Python syntax...")
+        print("   Analyzing Python syntax...")
         self.results["component_scores"]["syntax"] = self.analyze_python_syntax()
 
-        print("  • Analyzing project structure...")
+        print("   Analyzing project structure...")
         self.results["component_scores"]["structure"] = self.analyze_project_structure()
 
-        print("  • Analyzing documentation...")
+        print("   Analyzing documentation...")
         self.results["component_scores"]["documentation"] = self.analyze_documentation()
 
-        print("  • Analyzing patterns...")
+        print("   Analyzing patterns...")
         self.results["component_scores"]["patterns"] = self.analyze_patterns()
 
-        print("  • Testing functionality...")
+        print("   Testing functionality...")
         self.results["component_scores"]["functionality"] = self.test_functionity()
 
         # Calculate scores
-        print("  • Calculating quality scores...")
+        print("   Calculating quality scores...")
         self.results["overall_score"] = self.calculate_overall_score()
 
         # Generate recommendations

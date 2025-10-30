@@ -1,4 +1,5 @@
-#!/usr/bin/env python3,"""
+#!/usr/bin/env python3
+"""
 Auto-fix script for autonomous-agent plugin critical issues
 """
 
@@ -6,11 +7,11 @@ import re
 from pathlib import Path
 
 def fix_validate_claude_plugin():
-    ""Fix the broken delegation in validate-claude-plugin.md""
+    """Fix the broken delegation in validate-claude-plugin.md"""
     file_path = Path('commands/validate-claude-plugin.md')
 
     if not file_path.exists():
-        print(f"ERROR: {file_path" not found")
+        print(f"ERROR: {file_path} not found")
         return False
 
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -19,7 +20,7 @@ def fix_validate_claude_plugin():
     # Fix the broken YAML frontmatter
     if content.startswith('---\n\n'):
         # Replace incomplete frontmatter with proper one
-        new_frontmatter = ""---"
+        new_frontmatter = """---
 name: validate-claude-plugin
 description: Validate Claude Code plugin against official guidelines
 delegates-to: autonomous-agent:orchestrator
@@ -31,29 +32,32 @@ delegates-to: autonomous-agent:orchestrator
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(content)
 
-    print(f"FIXED: {file_path" - Added proper YAML frontmatter")
+    print(f"FIXED: {file_path} - Added proper YAML frontmatter")
     return True
 
 def add_delegation_to_commands():
-    ""Add delegates-to fields to commands missing them""
+    """Add delegates-to fields to commands missing them"""
     commands_dir = Path('commands')
 
     # Commands that should delegate to orchestrator
     orchestrator_commands = [
-        'auto-analyze.md','dev-auto.md','dashboard.md','improve-plugin.md','release-dev.md','learn-patterns.md','organize-workspace.md','performance-report.md','recommend.md','validate-patterns.md','validate-fullstack.md','static-analysis.md','scan-dependencies.md','learning-analytics.md','organize-reports.md','predictive-analytics.md','gui-debug.md','eval-debug.md'
+        'auto-analyze.md','dev-auto.md','dashboard.md','improve-plugin.md','release-dev.md',
+        'learn-patterns.md','organize-workspace.md','performance-report.md','recommend.md',
+        'validate-patterns.md','validate-fullstack.md','static-analysis.md','scan-dependencies.md',
+        'learning-analytics.md','organize-reports.md','predictive-analytics.md','gui-debug.md','eval-debug.md'
     ]
 
     # Commands that should delegate to specialized agents
     specialized_delegation = {
-        'pr-review.md': 'autonomous-agent:pr-reviewer','git-release-workflow.md': 'autonomous-agent:git-repository-manager'
+        'pr-review.md': 'autonomous-agent:pr-reviewer',
+        'git-release-workflow.md': 'autonomous-agent:git-repository-manager'
     }
 
     fixed_count = 0
 
     for cmd_file in commands_dir.glob('*.md'):
         # Skip already fixed files
-        if :
-            cmd_file.name in ['quality-check.md', 'validate.md', 'validate-claude-plugin.md']:
+        if cmd_file.name in ['quality-check.md', 'validate.md', 'validate-claude-plugin.md']:
             continue
 
         with open(cmd_file, 'r', encoding='utf-8') as f:
@@ -83,13 +87,13 @@ def add_delegation_to_commands():
                 if '\n---' in before:
                     before = before.replace('\n---', f'\ndelegates-to: {delegates_to}\n---')
                 else:
-                    before = f"{before"\ndelegates-to: {delegates_to}"
+                    before = f"{before}\ndelegates-to: {delegates_to}"
 
                 content = before + after
         else:
             # Create new frontmatter
             cmd_name = cmd_file.stem
-            new_frontmatter = f""---"
+            new_frontmatter = f"""---
 name: {cmd_name}
 description: Command for {cmd_name.replace('-', ' ')}
 delegates-to: {delegates_to}
@@ -101,20 +105,20 @@ delegates-to: {delegates_to}
         with open(cmd_file, 'w', encoding='utf-8') as f:
             f.write(content)
 
-        print(f"FIXED: {cmd_file.name" - Added delegation to {delegates_to}")
+        print(f"FIXED: {cmd_file.name} - Added delegation to {delegates_to}")
         fixed_count += 1
 
     return fixed_count
 
 def generate_delegation_report():
-    ""Generate a report of all command delegations""
+    """Generate a report of all command delegations"""
     commands_dir = Path('commands')
     report = []
 
     report.append("# Command Delegation Report\n")
     report.append("Generated after auto-fix application\n")
 
-    for cmd_file in sorted(commands_dir.glob('*.md'):
+    for cmd_file in sorted(commands_dir.glob('*.md')):
         with open(cmd_file, 'r', encoding='utf-8') as f:
             content = f.read()
 
@@ -127,7 +131,7 @@ def generate_delegation_report():
             delegates_to = "MISSING"
             status = "❌"
 
-        report.append(f"{status" `{cmd_file.name}` → `{delegates_to}`")
+        report.append(f"{status} `{cmd_file.name}` → `{delegates_to}`")
 
     report_text = "\n".join(report)
 
@@ -146,7 +150,7 @@ def main():
 
     print("\n2. Adding delegation to missing commands...")
     fixed_count = add_delegation_to_commands()
-    print(f"Fixed {fixed_count" command files")
+    print(f"Fixed {fixed_count} command files")
 
     print("\n3. Generating delegation report...")
     generate_delegation_report()

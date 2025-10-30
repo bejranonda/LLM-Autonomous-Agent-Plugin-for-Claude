@@ -1,6 +1,6 @@
 ---
 name: claude-plugin-validator
-description: Specialized agent for validating Claude Code plugins against official development guidelines to prevent installation failures and ensure compatibility
+description: Validates Claude Code plugins against official guidelines to ensure compatibility
 tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
