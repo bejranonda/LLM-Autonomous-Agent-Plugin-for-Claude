@@ -2219,17 +2219,51 @@ DASHBOARD_HTML = """
             <div class="info-panel">
                 <div class="chart-title">🎯 Activity Recording Guide</div>
                 <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
-                    <strong>✅ Commands That Record:</strong>
-                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/dev:auto</code>
-                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/dev:release</code>
-                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/analyze:project</code>
-                    <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px;">/analyze:quality</code>
+                    <strong>✅ Commands That Record Activity & Quality:</strong>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/analyze:quality</code>
+                        <span style="color: #666; font-size: 11px;">(creates quality_history.json)</span>
+                    </div>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/learn:init</code>
+                        <span style="color: #666; font-size: 11px;">(initializes quality_history.json)</span>
+                    </div>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/dev:auto</code>
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/dev:release</code>
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/analyze:project</code>
+                        <span style="color: #666; font-size: 11px;">(via learning-engine)</span>
+                    </div>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/validate:fullstack</code>
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/workspace:improve</code>
+                        <code style="background: #e8f5e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/monitor:recommend</code>
+                        <span style="color: #666; font-size: 11px;">(orchestrator commands)</span>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #888; margin-bottom: 8px;">
+                    <strong>📊 quality_history.json Creation:</strong>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #e8f8e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/learn:init</code>
+                        <span style="color: #666; font-size: 11px;">→ Creates file & structure</span>
+                    </div>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #e8f8e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/analyze:quality</code>
+                        <span style="color: #666; font-size: 11px;">→ Adds quality scores & metrics</span>
+                    </div>
                 </div>
                 <div style="font-size: 12px; color: #888;">
                     <strong>⚠️ Commands That DON'T Record:</strong>
-                    <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px;">/learn:*</code>
-                    <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px;">/validate:*</code>
-                    <span style="color: #666; font-size: 11px;">(prevents circular patterns)</span>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/monitor:dashboard</code>
+                        <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/analyze:explain</code>
+                        <span style="color: #666; font-size: 11px;">(read-only commands)</span>
+                    </div>
+                    <div style="margin: 4px 0;">
+                        <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/debug:eval</code>
+                        <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/debug:gui</code>
+                        <span style="color: #666; font-size: 11px;">(debugging tools)</span>
+                    </div>
                 </div>
             </div>
 
