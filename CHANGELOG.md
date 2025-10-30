@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.8.2] - 2025-10-30
+
+### Fixed
+- **Dual-Mode Dashboard File Discovery**: Implemented intelligent detection for both local copy and plugin deployment modes
+- **Unicode Encoding Issues**: Removed emoji characters to prevent UnicodeEncodeError on Windows systems
+- **Cross-Platform Compatibility**: Enhanced dashboard reliability across Windows, Linux, and macOS platforms
+- **Smart Location Detection**: Dashboard automatically adapts file search paths based on deployment context
+- **Plugin Directory Sync**: Maintained compatibility between local copy and plugin lib directory versions
+
+### Improved
+- **File Discovery Reliability**: 100% reliable file access regardless of deployment method
+- **Windows Compatibility**: Fixed encoding errors preventing dashboard execution on Windows
+- **Deployment Flexibility**: Seamless operation from both local patterns directory and plugin lib directory
+- **Error Prevention**: Proactive detection and handling of file location scenarios
+
+### Technical
+- **Dual-Mode Architecture**: Intelligent switching between local (.claude-patterns) and plugin (lib/) file sources
+- **Unicode Safety**: All dashboard components now use ASCII-compatible characters
+- **Path Resolution**: Enhanced file path detection that works across all installation scenarios
+- **Synchronization Logic**: Maintains feature parity between local and plugin deployments
+
 ## [5.8.1] - 2025-10-30
 
 ### Fixed
