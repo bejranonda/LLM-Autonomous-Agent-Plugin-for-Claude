@@ -75,30 +75,49 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ### Implementation
 
+**Marketplace Installation (Primary)**:
 ```bash
-# Direct execution using the plugin script executor (works everywhere):
-python lib/exec_plugin_script.py dashboard.py --host 127.0.0.1 --port 5000
+# Template (in command file - Claude Code fills {PLUGIN_PATH} during installation)
+python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" dashboard.py
 
-# Alternative: If lib/ is not in current directory, use plugin_path_resolver
-python -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path.home() / '.claude' / 'plugins' / 'marketplaces' / 'LLM-Autonomous-Agent-Plugin-for-Claude' / 'lib')); from exec_plugin_script import execute_plugin_script; import sys; sys.exit(execute_plugin_script('dashboard.py', ['--host', '127.0.0.1', '--port', '5000']))"
+# After marketplace installation (filled in by Claude Code):
+python -c "exec(open(r'C:\Users\{username}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\lib\marketplace_executor.py').read())" dashboard.py
 
-# Simplest approach (RECOMMENDED for slash commands):
-# From the plugin directory, just call the executor:
+# With arguments:
+python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" dashboard.py --port 8080 --host 0.0.0.0
+```
+
+**Development Mode (Fallback)**:
+```bash
+# When running from development repository
 python lib/exec_plugin_script.py dashboard.py
+
+# Or direct execution when in plugin directory
+python lib/dashboard.py
 ```
 
 **How It Works**:
-1. `exec_plugin_script.py` automatically finds the plugin installation using `plugin_path_resolver.py`
-2. Works in development mode (local repository) or marketplace installation
-3. Cross-platform: Windows, Linux, macOS
-4. No hardcoded paths - discovers installation dynamically
-5. Browser opens automatically via dashboard.py itself
 
-**Path Resolution**: The `exec_plugin_script.py` wrapper automatically finds scripts whether:
-- Running in development mode (`D:\Git\Werapol\AutonomousAgent`)
-- Installed from marketplace (`~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`)
-- Installed locally (`~/.claude/plugins/autonomous-agent/`)
-- System-wide installation (`/usr/local/share/claude/plugins/`)
+1. **Marketplace Template**: `{PLUGIN_PATH}` placeholder gets replaced during installation
+2. **Script Location**: Runs `dashboard.py` from plugin installation directory
+3. **Data Location**: Current working directory provides access to `.claude-patterns/`
+4. **Cross-Platform**: Template works on Windows, Linux, macOS
+5. **No Hardcoded Paths**: Plugin path discovered dynamically
+
+**Key Innovation**: The marketplace executor runs the script from the plugin directory but preserves the current working directory, allowing access to project-specific data while using the installed plugin code.
+
+**Installation Process**:
+1. Claude Code installs plugin to user's marketplace directory
+2. During installation, `{PLUGIN_PATH}` gets replaced with actual path
+3. User runs `/monitor:dashboard` from any project directory
+4. Template executes script from plugin directory with project data access
+
+**Path Resolution**:
+- **Windows**: `C:\Users\{username}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\`
+- **Linux**: `~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
+- **macOS**: `~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
+
+**Data Access**: Pattern data always comes from current project directory (`./.claude-patterns/`), regardless of where the plugin is installed.
 
 **Key Fix**: Removed `delegates-to: orchestrator` to prevent duplicate browser launches and agent delegation overhead.
 

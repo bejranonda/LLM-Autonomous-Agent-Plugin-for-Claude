@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.1] - 2025-10-30
+
+### 🚀 **Critical Marketplace Execution Fix**
+
+### Fixed
+- **Marketplace Template System** - Revolutionary template-based execution for marketplace installations
+- **Universal Script Executor** (`lib/marketplace_executor.py`) - Handles plugin execution from any directory on any platform
+- **Cross-Platform Marketplace Support** - Plugin now works after marketplace installation on Windows, Linux, and macOS
+- **Template Path Resolution** - `{PLUGIN_PATH}` placeholder automatically filled during installation
+- **Working Directory Preservation** - Scripts access plugin code while maintaining project data access
+- **Zero-Configuration Marketplace** - Users can install from marketplace and use commands immediately
+
+### Added
+- **Marketplace Executor** - Universal script executor for marketplace installations using template system
+- **Comprehensive Solution Documentation** (`MARKETPLACE_EXECUTION_SOLUTION.md`) - 251-line complete implementation guide
+- **Template Execution Pattern** - `python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" dashboard.py`
+- **Platform-Agnostic Templates** - Works regardless of installation location across all platforms
+
+### Changed
+- **Dashboard Command Documentation** - Updated with marketplace template approach as primary method
+- **Installation Experience** - Seamless marketplace installation with immediate functionality
+- **Cross-Platform Compatibility** - Enhanced support for all marketplace installation scenarios
+
+### Technical Improvements
+- **Template Processing** - Automatic `{PLUGIN_PATH}` replacement during marketplace installation
+- **Smart Path Discovery** - Fallback plugin detection when template execution context unavailable
+- **Project Data Access** - Current working directory preserved for `.claude-patterns/` access
+- **Error Handling** - Comprehensive error messages for plugin not found and script execution failures
+
+### Key Benefits
+- **Universal Marketplace Compatibility** - Works from any installation location on any platform
+- **Zero Manual Configuration** - No setup required after marketplace installation
+- **Project Independence** - Commands work from any project directory
+- **Clean Architecture** - Template-based maintainable approach
+- **Backward Compatibility** - Development mode remains fully functional
+
+### Problem Solved
+- **Before**: Plugin commands failed after marketplace installation
+- **After**: Plugin works seamlessly from any directory after marketplace installation
+- **Impact**: Critical fix enabling proper marketplace distribution
+
 ## [5.7.0] - 2025-10-30
 
 ### 🌐 **Revolutionary Cross-Platform Plugin Architecture**
