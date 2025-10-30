@@ -75,61 +75,34 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ### Implementation
 
-**Universal Plugin Discovery (Works Everywhere)**:
+**Universal Dashboard Launcher (Works Everywhere)**:
 ```bash
-# Robust bash-based discovery - works from ANY directory:
-# Method 1: Try to find plugin in standard marketplace locations
-PLUGIN_DIR=$(find ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
-if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
-    python "$PLUGIN_DIR/lib/dashboard.py" --patterns-dir .claude-patterns
-else
-    # Method 2: Fallback to development mode (if running from plugin directory)
-    if [ -f "lib/dashboard.py" ]; then
-        python lib/dashboard.py --patterns-dir .claude-patterns
-    else
-        echo "ERROR: Plugin installation not found"
-        echo "Please install the LLM Autonomous Agent Plugin from marketplace"
-        exit 1
-    fi
-fi
+# Simple Python launcher - works from ANY directory on ALL platforms:
+# Windows, Linux, macOS - no complex shell scripting required
 
-# With arguments:
-PLUGIN_DIR=$(find ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
-if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
-    python "$PLUGIN_DIR/lib/dashboard.py" --port 8080 --host 0.0.0.0 --patterns-dir .claude-patterns
-elif [ -f "lib/dashboard.py" ]; then
-    python lib/dashboard.py --port 8080 --host 0.0.0.0 --patterns-dir .claude-patterns
-else
-    echo "ERROR: Plugin installation not found"
-    exit 1
-fi
+python lib/universal_dashboard_launcher.py
 
-# Cross-platform variations:
+# With arguments (port, host, etc.):
+python lib/universal_dashboard_launcher.py --port 8080 --host 0.0.0.0
 
-# Windows (PowerShell):
-$pluginDir = Get-ChildItem -Path "$env:USERPROFILE\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude","$env:APPDATA\Claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
-if ($pluginDir -and (Test-Path "$pluginDir\lib\dashboard.py")) {
-    python "$pluginDir\lib\dashboard.py" --patterns-dir .claude-patterns
-} elseif (Test-Path "lib\dashboard.py") {
-    python "lib\dashboard.py" --patterns-dir .claude-patterns
-} else {
-    Write-Host "ERROR: Plugin installation not found"
-    exit 1
-}
-
-# Windows (cmd.exe):
-for /f "delims=" %%i in ('dir /b /s "%USERPROFILE%\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\lib\dashboard.py" 2^>nul') do set PLUGIN_DIR=%%~dpi
-if defined PLUGIN_DIR (
-    python "%PLUGIN_DIR%\dashboard.py" --patterns-dir .claude-patterns
-) else (
-    if exist "lib\dashboard.py" (
-        python "lib\dashboard.py" --patterns-dir .claude-patterns
-    ) else (
-        echo ERROR: Plugin installation not found
-        exit /b 1
-    )
-)
+# The launcher automatically:
+# 1. Finds the plugin installation
+# 2. Locates dashboard.py script
+# 3. Uses current directory for pattern data (.claude-patterns)
+# 4. Handles all platforms and installation methods
 ```
+
+**Platform Support**:
+- **Windows**: ✅ Native support (cmd.exe, PowerShell, Git Bash)
+- **Linux**: ✅ Native support (bash, sh)
+- **macOS**: ✅ Native support (bash, zsh)
+- **All Installation Methods**: ✅ Marketplace, development, system-wide
+
+**How It Works**:
+1. The launcher automatically discovers plugin installation across all standard locations
+2. Falls back to development mode if marketplace not found
+3. Preserves current working directory for project data access
+4. Provides clear error messages if plugin not found
 
 **Development Mode (Fallback)**:
 ```bash

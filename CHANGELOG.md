@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.3] - 2025-10-30
+
+### 🚀 Added
+- **Universal Dashboard Launcher** - Single Python command works on all platforms from any directory
+- **Cross-Platform Compatibility** - Eliminates PowerShell/bash syntax errors on Windows, Linux, macOS
+- **Automatic Plugin Discovery** - Finds marketplace installations across all standard locations
+- **Enhanced Error Messages** - Clear guidance when plugin installation not found
+
+### 📝 Changed
+- **Dashboard Command** (`/monitor:dashboard`) - Simplified to single universal launcher command
+- **Plugin Discovery Architecture** - Replaced complex shell scripting with Python-based solution
+
+### 🔧 Fixed
+- **Cross-Platform Dashboard Access** - Users can now run `/monitor:dashboard` from any directory without errors
+- **Windows PowerShell Compatibility** - Eliminates mixed bash/cmd.exe syntax conflicts
+- **Marketplace Installation Detection** - Robust discovery across all installation methods
+
+### 💡 Technical Details
+- **New File**: `lib/universal_dashboard_launcher.py` - 140-line cross-platform launcher
+- **Updated File**: `commands/monitor/dashboard.md` - Simplified command structure
+- **Documentation**: `CROSS_PLATFORM_DASHBOARD_SOLUTION.md` - Complete solution overview
+
+### 🎯 Impact
+- **User Experience**: Single command `python lib/universal_dashboard_launcher.py` works everywhere
+- **Platform Support**: Windows (cmd.exe, PowerShell, Git Bash, WSL), Linux, macOS
+- **Installation Methods**: Marketplace, development, system-wide installations all supported
+- **Error Reduction**: Eliminates confusing shell syntax errors for users
+
+---
+
 ## [5.7.2] - 2025-10-30
 
 ### 🔧 **Critical Simple Plugin Discovery Fix**
