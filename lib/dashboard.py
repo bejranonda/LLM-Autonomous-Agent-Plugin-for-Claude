@@ -763,80 +763,86 @@ class DashboardDataCollector:
         self.last_update.clear()
 
     def get_overview_metrics(self) -> Dict[str, Any]:
-        """Get high-level overview metrics from unified storage."""
-        # Load all data sources from unified storage
-        patterns = self._load_json_file("patterns.json", "patterns")
-        quality_history = self._load_json_file("quality_history.json", "quality")
-        perf_data = self._load_json_file("performance_records.json", "performance_records")
-        skill_metrics = self._load_json_file("skill_metrics.json", "skill_metrics")
-        agent_metrics = self._load_json_file("agent_metrics.json", "agent_metrics")
-        assessments = self._load_json_file("assessments.json", "assessments")
+        """Get high-level overview metrics from unified storage only."""
+        # Load unified data - this is the ONLY data source
+        unified_data = self._load_unified_data()
 
-        # Count total patterns from all sources (handle unified storage format)
+        # Extract data from unified storage structure
+        quality_data = unified_data.get("quality", {})
+        patterns_data = unified_data.get("patterns", {})
+        performance_data = unified_data.get("performance", {})
+
+        # Get assessments from unified storage
+        assessment_history = quality_data.get("assessments", {}).get("history", [])
+        current_assessment = quality_data.get("assessments", {}).get("current", {})
+
+        # Count total patterns from unified storage
         total_patterns = 0
 
-        # From patterns.json (unified storage - it's an array)
-        if isinstance(patterns, list):
-            total_patterns += len(patterns)
-        elif isinstance(patterns, dict):
-            total_patterns += len(patterns.get("patterns", []))
+        # From patterns data
+        if isinstance(patterns_data, list):
+            total_patterns += len(patterns_data)
+        elif isinstance(patterns_data, dict):
+            total_patterns += len(patterns_data.get("patterns", []))
 
-        # From other sources
-        total_patterns += len(quality_history.get("quality_assessments", []))
-        total_patterns += len(perf_data.get("records", []))
-        total_patterns += len(assessments.get("assessments", []))
+        # From assessment history
+        total_patterns += len(assessment_history)
+
+        # From performance records
+        performance_records = performance_data.get("records", [])
+        total_patterns += len(performance_records)
 
         # Get skills and agents from unified storage
-        total_skills = len(skill_metrics.get("skill_effectiveness", {}))
-        total_agents = len(agent_metrics.get("agent_effectiveness", {}))
+        skills_data = unified_data.get("skills", {})
+        agents_data = unified_data.get("agents", {})
 
-        # Calculate average quality score from all sources
+        total_skills = len(skills_data.get("skill_effectiveness", {}))
+        total_agents = len(agents_data.get("agent_effectiveness", {}))
+
+        # Calculate average quality score from unified assessments
         quality_scores = []
 
-        # From patterns.json (handle both array and dict formats)
-        if isinstance(patterns, list):
+        # From patterns data (handle both array and dict formats)
+        if isinstance(patterns_data, list):
             quality_scores.extend([
                 p.get("outcome", {}).get("quality_score", 0)
-                for p in patterns
+                for p in patterns_data
                 if p.get("outcome", {}).get("quality_score") is not None
             ])
-        elif isinstance(patterns, dict):
+        elif isinstance(patterns_data, dict):
             quality_scores.extend([
                 p.get("outcome", {}).get("quality_score", 0)
-                for p in patterns.get("patterns", [])
+                for p in patterns_data.get("patterns", [])
                 if p.get("outcome", {}).get("quality_score") is not None
             ])
 
-        # From quality_history.json
+        # From assessment history in unified storage
         quality_scores.extend([
             a.get("overall_score", 0)
-            for a in quality_history.get("quality_assessments", [])
+            for a in assessment_history
             if a.get("overall_score") is not None
         ])
 
-        # From performance_records.json
+        # From current assessment if available
+        if current_assessment and current_assessment.get("overall_score") is not None:
+            quality_scores.append(current_assessment.get("overall_score", 0))
+
+        # From performance records in unified storage
         quality_scores.extend([
             r.get("overall_score", 0)
-            for r in perf_data.get("records", [])
+            for r in performance_records
             if r.get("overall_score") is not None
-        ])
-
-        # From assessments.json
-        quality_scores.extend([
-            a.get("overall_score", 0)
-            for a in assessments.get("assessments", [])
-            if a.get("overall_score") is not None
         ])
 
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
-        # Calculate learning velocity from quality history (preferred)
-        learning_velocity = self._calculate_learning_velocity_from_quality(quality_history)
+        # Calculate learning velocity from unified assessments (preferred)
+        learning_velocity = self._calculate_learning_velocity_from_unified_assessments(assessment_history)
 
-        # Fallback to pattern-based calculation if quality history is insufficient
+        # Fallback to pattern-based calculation if unified assessments are insufficient
         if learning_velocity == "insufficient_data":
-            if isinstance(patterns, list):
-                recent_patterns = patterns[-20:] if patterns else []
+            if isinstance(patterns_data, list):
+                recent_patterns = patterns_data[-20:] if patterns_data else []
             else:
                 recent_patterns = patterns.get("patterns", [])[-20:] if patterns.get("patterns") else []
             learning_velocity = self._calculate_learning_velocity(recent_patterns)
@@ -926,14 +932,59 @@ class DashboardDataCollector:
         else:
             return "declining [DOWN]"
 
+    def _calculate_learning_velocity_from_unified_assessments(self, assessment_history: list) -> str:
+        """Calculate learning velocity from unified assessment history."""
+        if len(assessment_history) < 3:
+            return "insufficient_data"
+
+        # Sort assessments by timestamp
+        assessment_history.sort(key=lambda x: x.get("timestamp", ""))
+
+        # Split into halves
+        mid = len(assessment_history) // 2
+        first_half = assessment_history[:mid]
+        second_half = assessment_history[mid:]
+
+        # Calculate average quality scores
+        first_avg = statistics.mean([
+            a.get("overall_score", 0)
+            for a in first_half
+            if a.get("overall_score") is not None
+        ]) if first_half else 0
+
+        second_avg = statistics.mean([
+            a.get("overall_score", 0)
+            for a in second_half
+            if a.get("overall_score") is not None
+        ]) if second_half else 0
+
+        improvement = second_avg - first_avg
+
+        # Calculate velocity based on improvement rate
+        if improvement > 3:
+            return "accelerating [ROCKET]"
+        elif improvement > 0:
+            return "improving [UP]"
+        elif improvement > -3:
+            return "stable [CHART]"
+        else:
+            return "declining [DOWN]"
+
     def get_quality_trends(self, days: int = 30) -> Dict[str, Any]:
-        """Get quality score trends over time with exact timestamps from multiple data sources."""
+        """Get quality score trends over time from unified storage only."""
         trend_data = []
         cutoff_date = datetime.now() - timedelta(days=days)
 
-        # Source 1: Quality history assessments (primary source - new enhanced data)
-        quality_history = self._load_json_file("quality_history.json", "quality")
-        for assessment in quality_history.get("quality_assessments", []):
+        # Load unified data - this is the ONLY data source
+        unified_data = self._load_unified_data()
+        quality_data = unified_data.get("quality", {})
+
+        # Get assessments from unified storage
+        assessment_history = quality_data.get("assessments", {}).get("history", [])
+        current_assessment = quality_data.get("assessments", {}).get("current", {})
+
+        # Process assessment history from unified storage
+        for assessment in assessment_history:
             timestamp = assessment.get("timestamp")
             quality_score = assessment.get("overall_score")
             task_type = assessment.get("task_type", "unknown")
@@ -1058,19 +1109,20 @@ class DashboardDataCollector:
         }
 
     def get_skill_performance(self, top_k: int = 10) -> Dict[str, Any]:
-        """Get top performing skills from unified storage."""
-        # Load from unified skill metrics file
-        skill_metrics = self._load_json_file("skill_metrics.json", "skill_metrics")
+        """Get top performing skills from unified storage only."""
+        # Load unified data - this is the ONLY data source
+        unified_data = self._load_unified_data()
+        skills_data = unified_data.get("skills", {})
 
-        skills_data = []
+        skills_performance = []
 
-        # Primary source: skill_metrics.json skill_effectiveness
-        for skill_name, metrics in skill_metrics.get("skill_effectiveness", {}).items():
+        # Primary source: unified storage skill_effectiveness
+        for skill_name, metrics in skills_data.get("skill_effectiveness", {}).items():
             success_rate = metrics.get("success_rate", 0) or 0
             usage_count = metrics.get("total_uses", 0) or 0
             avg_quality = metrics.get("avg_contribution_score", 0)
 
-            skills_data.append({
+            skills_performance.append({
                 "name": skill_name,
                 "success_rate": round(success_rate * 100, 1),
                 "usage_count": usage_count,
@@ -1079,8 +1131,8 @@ class DashboardDataCollector:
             })
 
         # Secondary source: Extract from skill_usage_history if needed
-        if not skills_data:
-            skill_usage = skill_metrics.get("skill_usage_history", [])
+        if not skills_performance:
+            skill_usage = skills_data.get("skill_usage_history", [])
             skill_counts = {}
             skill_success = {}
 
@@ -1112,16 +1164,18 @@ class DashboardDataCollector:
         }
 
     def get_agent_performance(self, top_k: int = 10) -> Dict[str, Any]:
-        """Get top performing agents from unified storage."""
-        # Load from unified agent metrics file
-        agent_metrics = self._load_json_file("agent_metrics.json", "agent_metrics")
+        """Get top performing agents from unified storage only."""
+        # Load unified data - this is the ONLY data source
+        unified_data = self._load_unified_data()
+        agents_data = unified_data.get("agents", {})
 
-        agents_data = []
+        agents_performance = []
         agent_stats = {}
 
-        # Extract agent performance from quality_assessment_tasks
-        for task in agent_metrics.get("quality_assessment_tasks", []):
-            for agent_name, details in task.get("execution_details", {}).items():
+        # Extract agent performance from assessment history
+        assessment_history = unified_data.get("quality", {}).get("assessments", {}).get("history", [])
+        for assessment in assessment_history:
+            for agent_name, details in assessment.get("execution_details", {}).items():
                 if agent_name not in agent_stats:
                     agent_stats[agent_name] = {
                         "success_count": 0,
@@ -1145,7 +1199,7 @@ class DashboardDataCollector:
                 avg_quality = stats["total_quality"] / stats["total_count"]
                 reliability = success_rate * (avg_quality / 100)  # Combined reliability metric
 
-                agents_data.append({
+                agents_performance.append({
                     "name": agent_name,
                     "success_rate": round(success_rate * 100, 1),
                     "usage_count": stats["total_count"],
@@ -1154,19 +1208,22 @@ class DashboardDataCollector:
                 })
 
         # Sort by reliability
-        agents_data.sort(key=lambda x: x["reliability"], reverse=True)
+        agents_performance.sort(key=lambda x: x["reliability"], reverse=True)
 
         return {
-            "top_agents": agents_data[:top_k],
-            "total_agents": len(agents_data)
+            "top_agents": agents_performance[:top_k],
+            "total_agents": len(agents_performance)
         }
 
     def get_task_distribution(self) -> Dict[str, Any]:
-        """Get distribution of task types from unified storage."""
-        # Load from multiple unified sources
-        patterns = self._load_json_file("patterns.json", "patterns")
-        skill_metrics = self._load_json_file("skill_metrics.json", "skill_metrics")
-        perf_records = self._load_json_file("performance_records.json", "performance_records")
+        """Get distribution of task types from unified storage only."""
+        # Load unified data - this is the ONLY data source
+        unified_data = self._load_unified_data()
+
+        # Extract data from unified storage
+        patterns_data = unified_data.get("patterns", {})
+        performance_data = unified_data.get("performance", {})
+        quality_data = unified_data.get("quality", {})
 
         task_counts = defaultdict(int)
         success_by_task = defaultdict(list)
