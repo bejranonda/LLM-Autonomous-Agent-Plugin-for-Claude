@@ -18,6 +18,11 @@
 
 The autonomous agent is now smarter and more organized than ever, with **revolutionary category-based commands** that learn from every task! 🚀
 
+## 📚 Documentation
+
+- **[Development & Distribution Architecture](docs/DEVELOPMENT_DISTRIBUTION_ARCHITECTURE.md)** - Comprehensive guide for developers on dual-mode dashboard system
+- **[Distribution Validation Report](DISTRIBUTION_VALIDATION_REPORT.md)** - Complete validation of distribution deployment process
+
 <img width="1464" height="552" alt="image" src="https://github.com/user-attachments/assets/a4f84e19-1fa7-4f97-ab3e-9366bb1adaf3" />
 
 *Autonomous Agent Dashboard check-in! 🤖 7 Active Agents, 5 Skills, and a 97.5/100 Quality Score.*

@@ -8,6 +8,37 @@ This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous 
 
 **Platform**: Claude Code CLI only (uses subagents, not compatible with claude.ai web/mobile)
 
+## Development Guidelines
+
+### 🏗️ Development & Distribution Architecture
+
+**IMPORTANT**: This project uses a dual-mode dashboard system that supports both development and distribution environments. Before making changes to dashboard functionality, please read:
+
+- **[Development & Distribution Architecture](docs/DEVELOPMENT_DISTRIBUTION_ARCHITECTURE.md)** - Complete guide to dual-mode system
+- **[Distribution Validation Report](DISTRIBUTION_VALIDATION_REPORT.md)** - Validation results and testing procedures
+
+#### Quick Reference for Dashboard Changes
+
+**Development Mode**: `lib/dashboard.py`
+- Primary development environment
+- Direct plugin access
+- Unified storage integration
+
+**Distribution Mode**: `.claude-patterns/dashboard.py`
+- User distribution (auto-copied)
+- Local copy optimization
+- Graceful fallback handling
+
+**Testing Both Modes**:
+```bash
+# Test development mode
+python lib/dashboard.py --no-browser --port 5000
+
+# Test distribution mode
+cp lib/dashboard.py .claude-patterns/dashboard.py
+python .claude-patterns/dashboard.py --no-browser --port 5001
+```
+
 ## Architecture
 
 ### Brain-Hand Collaboration Model
