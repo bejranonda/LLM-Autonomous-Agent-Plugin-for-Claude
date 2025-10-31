@@ -844,7 +844,7 @@ class DashboardDataCollector:
             if isinstance(patterns_data, list):
                 recent_patterns = patterns_data[-20:] if patterns_data else []
             else:
-                recent_patterns = patterns.get("patterns", [])[-20:] if patterns.get("patterns") else []
+                recent_patterns = patterns_data.get("patterns", [])[-20:] if patterns_data.get("patterns") else []
             learning_velocity = self._calculate_learning_velocity(recent_patterns)
 
         # Get model performance metrics
@@ -1156,11 +1156,11 @@ class DashboardDataCollector:
                 })
 
         # Sort by success rate
-        skills_data.sort(key=lambda x: x["success_rate"], reverse=True)
+        skills_performance.sort(key=lambda x: x["success_rate"], reverse=True)
 
         return {
-            "top_skills": skills_data[:top_k],
-            "total_skills": len(skills_data)
+            "top_skills": skills_performance[:top_k],
+            "total_skills": len(skills_performance)
         }
 
     def get_agent_performance(self, top_k: int = 10) -> Dict[str, Any]:
