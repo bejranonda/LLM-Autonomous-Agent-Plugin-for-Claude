@@ -50,7 +50,7 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest with metadata (v5.8.2)
+.claude-plugin/plugin.json          # Plugin manifest with metadata (v5.8.3)
 
 agents/                              # 22 specialized subagents
 ├── orchestrator.md                 # Main autonomous controller

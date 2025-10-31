@@ -34,6 +34,13 @@ import subprocess
 
 # Import unified parameter storage system
 try:
+    # Add lib directory to Python path for imports
+    import sys
+    from pathlib import Path
+    lib_dir = Path(__file__).parent
+    if str(lib_dir) not in sys.path:
+        sys.path.insert(0, str(lib_dir))
+
     from unified_parameter_storage import UnifiedParameterStorage
     from parameter_compatibility import enable_compatibility_mode
     UNIFIED_STORAGE_AVAILABLE = True
@@ -1147,7 +1154,7 @@ class DashboardDataCollector:
                 success_rate = success_count / count if count > 0 else 0
                 avg_quality = usage.get("quality_score", 0)
 
-                skills_data.append({
+                skills_performance.append({
                     "name": skill_name,
                     "success_rate": round(success_rate * 100, 1),
                     "usage_count": count,
@@ -1235,8 +1242,8 @@ class DashboardDataCollector:
                 task_counts[task_type] += 1
                 success = pattern.get("outcome", {}).get("success", False)
                 success_by_task[task_type].append(1 if success else 0)
-        elif isinstance(patterns, dict):
-            for pattern in patterns.get("patterns", []):
+        elif isinstance(patterns_data, dict):
+            for pattern in patterns_data.get("patterns", []):
                 task_type = pattern.get("task_type", "unknown")
                 task_counts[task_type] += 1
                 success = pattern.get("outcome", {}).get("success", False)
@@ -1421,8 +1428,8 @@ class DashboardDataCollector:
                     "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
                     "success": pattern.get("outcome", {}).get("success", False)
                 })
-        elif isinstance(patterns, dict):
-            for pattern in patterns.get("patterns", []):
+        elif isinstance(patterns_data, dict):
+            for pattern in patterns_data.get("patterns", []):
                 all_records.append({
                     "timestamp": pattern.get("timestamp", ""),
                     "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
