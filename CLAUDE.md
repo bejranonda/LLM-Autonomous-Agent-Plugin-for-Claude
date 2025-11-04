@@ -41,16 +41,56 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 
 ## Architecture
 
-### Brain-Hand Collaboration Model
+### Two-Tier Agent Architecture (v6.0.0+)
 
-- **Brain (Orchestrator)**: `agents/orchestrator.md` - Makes all strategic decisions autonomously, delegates to specialized agents, manages quality assessment, and handles pattern learning
-- **Hand (Skills + Specialized Agents)**: Provide domain expertise and execute focused tasks
-- **Pattern Learning**: Project-level pattern database stores successful approaches in `.claude-patterns/patterns.json`
+**NEW**: Explicit separation of analysis and execution for optimal performance and continuous learning.
+
+#### **Tier 1: Analysis & Recommendation Agents** (The "Brain")
+These agents analyze, suggest, and provide insights **WITHOUT executing changes**:
+
+- **code-analyzer**: Analyzes code structure and identifies issues
+- **smart-recommender**: Suggests optimal workflows based on patterns
+- **security-auditor**: Identifies security vulnerabilities
+- **performance-analytics**: Analyzes performance trends
+- **pr-reviewer**: Reviews pull requests and suggests improvements
+- **learning-engine**: Captures patterns and learns from outcomes
+- **validation-controller**: Validates approaches before execution
+
+#### **Tier 2: Execution & Decision Agents** (The "Hand")
+These agents **evaluate Tier 1 recommendations, make decisions, and execute changes**:
+
+- **quality-controller**: Evaluates quality and executes auto-fixes
+- **test-engineer**: Creates and fixes tests based on analysis
+- **frontend-analyzer**: Fixes TypeScript/React issues
+- **documentation-generator**: Creates documentation
+- **build-validator**: Validates and fixes build configurations
+- **git-repository-manager**: Executes git operations
+- **api-contract-validator**: Synchronizes API contracts
+- **gui-validator**: Validates and fixes GUI issues
+- **dev-orchestrator**: Orchestrates development workflows
+- **version-release-manager**: Manages releases
+- **workspace-organizer**: Organizes workspace files
+- **claude-plugin-validator**: Validates plugin compliance
+
+#### **Orchestrator**: Master Controller
+`agents/orchestrator.md` - Coordinates the two-tier workflow:
+1. Delegates to Tier 1 for analysis and recommendations
+2. Loads user preferences
+3. Delegates to Tier 2 for execution with context
+4. Captures feedback loops between tiers
+5. Records performance metrics and user interactions
+
+#### **Automatic Learning Systems**
+
+**Pattern Learning**: `.claude-patterns/patterns.json` - Stores successful approaches
+**Agent Feedback**: `.claude-patterns/agent_feedback.json` - Cross-tier communication
+**Agent Performance**: `.claude-patterns/agent_performance.json` - Individual agent metrics
+**User Preferences**: `.claude-patterns/user_preferences.json` - Learned user preferences
 
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest with metadata (v5.8.3)
+.claude-plugin/plugin.json          # Plugin manifest with metadata (v6.0.0)
 
 agents/                              # 22 specialized subagents
 ├── orchestrator.md                 # Main autonomous controller
@@ -134,6 +174,10 @@ patterns/                            # Auto-fix pattern database (NEW v2.0)
 lib/                                 # Python utilities and path resolution (v5.6+)
 ├── exec_plugin_script.py           # Cross-platform script executor
 ├── plugin_path_resolver.py         # Dynamic plugin path discovery
+├── agent_feedback_system.py        # Agent-to-agent feedback (NEW v5.9+)
+├── agent_performance_tracker.py    # Individual agent metrics (NEW v5.9+)
+├── user_preference_learner.py      # User preference learning (NEW v5.9+)
+├── dashboard_unified_adapter.py    # Dashboard integration with two-tier metrics
 └── [110+ utility scripts]
 ```
 
@@ -365,21 +409,157 @@ Skills use a three-tier loading system:
 2. **Markdown body** - Loaded when skill is activated
 3. **Resources** (REFERENCE.md, etc.) - Loaded only when needed
 
-## Autonomous Workflow Example
+## Two-Tier Learning Systems (v5.9.0+)
+
+### Agent Feedback System
+
+**Purpose**: Enable explicit feedback exchange between analysis and execution agents for continuous improvement.
+
+**Location**: `lib/agent_feedback_system.py` + `.claude-patterns/agent_feedback.json`
+
+**How It Works**:
+1. **Tier 1 Agent** (e.g., code-analyzer) provides recommendations
+2. **Tier 2 Agent** (e.g., quality-controller) executes and evaluates
+3. **Feedback Captured**: Effectiveness, quality improvement, recommendations followed
+4. **Learning Applied**: Tier 1 learns what recommendations work best
+
+**Key Features**:
+- Feedback types: success, improvement, warning, error
+- Collaboration matrix tracking
+- Effectiveness metrics
+- Learning insights extraction
+
+**Example**:
+```python
+# Tier 2 provides feedback to Tier 1
+add_feedback(
+  from_agent="quality-controller",
+  to_agent="code-analyzer",
+  task_id="pattern_20251104_001",
+  feedback_type="success",
+  message="Recommendations were highly effective. Quality score improved +12 points",
+  impact="quality_score +12"
+)
+```
+
+### Agent Performance Tracking
+
+**Purpose**: Track individual agent performance metrics for specialization identification and continuous improvement.
+
+**Location**: `lib/agent_performance_tracker.py` + `.claude-patterns/agent_performance.json`
+
+**Metrics Tracked**:
+- Success rate per agent
+- Average quality score
+- Average execution time
+- Task specializations
+- Performance trends (improving/declining/stable)
+- Recommendations followed (for Tier 1 agents)
+- Auto-fix success rate (for Tier 2 agents)
+
+**Key Features**:
+- Top performer identification
+- Weak performer detection
+- Specialization discovery (agent X excels at refactoring)
+- Performance rating (Excellent/Good/Satisfactory/Needs Improvement/Poor)
+
+**Example**:
+```python
+record_task_execution(
+  agent_name="test-engineer",
+  task_id="task_123",
+  task_type="testing",
+  success=True,
+  quality_score=94.0,
+  execution_time_seconds=120,
+  iterations=1
+)
+# Result: test-engineer identified as "Excellent" performer for testing tasks
+```
+
+### User Preference Learning
+
+**Purpose**: Learn user preferences over time to adapt agent behavior for personalized experience.
+
+**Location**: `lib/user_preference_learner.py` + `.claude-patterns/user_preferences.json`
+
+**Preferences Learned**:
+
+**Coding Style**:
+- Verbosity (concise/balanced/verbose)
+- Comment level (minimal/moderate/extensive)
+- Documentation level (minimal/standard/comprehensive)
+
+**Workflow Preferences**:
+- Auto-fix confidence threshold (0.85-0.95)
+- Confirmation required for: breaking_changes, security_fixes
+- Parallel execution preference
+- Quality threshold
+
+**Quality Weights**:
+- Tests importance (0-1)
+- Documentation importance (0-1)
+- Code quality importance (0-1)
+- Standards importance (0-1)
+- Patterns importance (0-1)
+
+**Communication Style**:
+- Detail level (brief/balanced/detailed)
+- Technical depth (low/medium/high)
+- Explanation preference (minimal/when_needed/always)
+
+**How It Learns**:
+```python
+# User approves changes
+record_interaction(
+  interaction_type="approval",
+  task_id="task_456",
+  user_feedback="Good",
+  context={
+    "code_style": {"verbosity": "concise"},
+    "quality_focus": {"tests": 0.40, "documentation": 0.25}
+  }
+)
+# Result: System adapts to prefer concise code and higher test coverage
+```
+
+**Learning Confidence**: Increases with more interactions (0-100%)
+
+### Integration with Dashboard
+
+All three systems integrate seamlessly with the monitoring dashboard:
+- **Agent Feedback**: Shows collaboration effectiveness
+- **Agent Performance**: Displays top/weak performers, trends
+- **User Preferences**: Shows learned patterns and confidence level
+
+## Autonomous Workflow Example (Two-Tier)
 
 ```
 User: "Refactor the authentication module"
     ↓
-Orchestrator (autonomous execution):
-    1. Analyzes → Type: refactoring, Context: auth (security-critical)
-    2. Auto-loads skills → code-analysis, quality-standards, pattern-learning
-    3. Checks patterns → Found similar task (95% success rate)
-    4. Delegates → code-analyzer for structure analysis
-    5. Launches background → security scan in parallel
-    6. Executes refactoring
-    7. Auto quality check → Score: 96/100 ✓
-    8. Stores pattern → For future similar tasks
-    9. Returns → Refactored code + quality report
+Orchestrator (two-tier autonomous execution):
+
+    === TIER 1: ANALYSIS ===
+    1. Loads user preferences → Prefers concise code, tests priority 40%
+    2. Delegates to code-analyzer → Analyzes auth module structure
+    3. Delegates to security-auditor → Identifies security concerns
+    4. Delegates to smart-recommender → Suggests optimal approach
+    5. Collects recommendations → 3 recommendations with confidence scores
+
+    === TIER 2: EXECUTION ===
+    6. Evaluates recommendations → Filters by user preferences
+    7. Delegates to quality-controller → Executes refactoring with context
+    8. Auto quality check → Score: 96/100 ✓
+    9. Records agent performance → quality-controller: +1 success
+
+    === FEEDBACK LOOP ===
+    10. Tier 2 → Tier 1 feedback → "Recommendations effective, +12 quality"
+    11. Records user approval → Updates preference: refactoring style
+    12. Stores pattern → For future similar tasks
+    13. Updates agent specializations → code-analyzer excels at auth
+
+    === RESULT ===
+    14. Returns → Refactored code + quality report + learned preferences
 ```
 
 ## Quality Control Integration

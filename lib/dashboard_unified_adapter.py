@@ -152,7 +152,9 @@ class DashboardUnifiedAdapter:
                 if scores:
                     stats["average_score"] = sum(s.get("score", 0) for s in scores) / len(scores)
                     stats["recent_score"] = scores[-1].get("score", 0) if scores else 0
-                    stats["score_trend"] = "stable"  # TODO: Calculate actual trend
+                    # Calculate actual trend from score history
+                    score_values = [s.get("score", 0) for s in scores]
+                    stats["score_trend"] = self._calculate_trend(score_values)
                 else:
                     stats["average_score"] = 0.0
                     stats["recent_score"] = 0.0
@@ -206,7 +208,7 @@ class DashboardUnifiedAdapter:
                 "average_score": statistics.get("average_score", sum(scores) / len(scores) if scores else 0),
                 "pass_rate": statistics.get("pass_rate", 0),
                 "latest_timestamp": current_assessment.get("timestamp"),
-                "trend_direction": "stable",  # TODO: Calculate actual trend
+                "trend_direction": self._calculate_trend(scores),
                 "score_distribution": self._calculate_score_distribution(scores),
                 "recent_performance": self._calculate_recent_performance(scores)
             }
@@ -239,6 +241,13 @@ class DashboardUnifiedAdapter:
             skill_effectiveness = patterns.get("skill_effectiveness", {})
             agent_performance = patterns.get("agent_performance", {})
 
+            # Calculate learning trend from pattern success rates over time
+            pattern_success_values = []
+            for pattern in pattern_list:
+                quality_score = pattern.get("outcome", {}).get("quality_score", 0)
+                if quality_score > 0:
+                    pattern_success_values.append(quality_score)
+
             analytics = {
                 "total_patterns": len(pattern_list),
                 "skill_effectiveness": skill_effectiveness,
@@ -247,7 +256,7 @@ class DashboardUnifiedAdapter:
                 "recent_patterns": pattern_list[-10:],  # Last 10 patterns
                 "pattern_success_rate": self._calculate_pattern_success_rate(pattern_list),
                 "top_skills": self._get_top_skills(skill_effectiveness),
-                "learning_trend": "improving"  # TODO: Calculate actual trend
+                "learning_trend": self._calculate_trend(pattern_success_values)
             }
 
             self._set_cached_data(cache_key, analytics)
@@ -281,6 +290,10 @@ class DashboardUnifiedAdapter:
             latest_validation = recent_validations[-1] if recent_validations else {}
             latest_plugin_validation = plugin_validations[-1] if plugin_validations else {}
 
+            # Calculate validation trend from historical scores
+            validation_scores = [v.get("overall_score", 0) for v in recent_validations
+                               if v.get("overall_score", 0) > 0]
+
             status = {
                 "latest_validation": latest_validation,
                 "latest_plugin_validation": latest_plugin_validation,
@@ -290,7 +303,7 @@ class DashboardUnifiedAdapter:
                 "validation_score": latest_validation.get("overall_score", 0),
                 "plugin_ready": latest_plugin_validation.get("overall_score", 0) >= 70,
                 "last_validation_time": latest_validation.get("timestamp"),
-                "validation_trend": "stable"  # TODO: Calculate actual trend
+                "validation_trend": self._calculate_trend(validation_scores)
             }
 
             self._set_cached_data(cache_key, status)
@@ -299,6 +312,102 @@ class DashboardUnifiedAdapter:
         except Exception as e:
             print(f"Error getting validation status: {e}", file=sys.stderr)
             return {"validation_score": 0, "total_validations": 0, "plugin_ready": False}
+
+    def get_agent_feedback_metrics(self) -> Dict[str, Any]:
+        """
+        Get agent feedback and collaboration metrics.
+
+        Returns:
+            Dictionary with feedback metrics
+        """
+        cache_key = "agent_feedback_metrics"
+        cached = self._get_cached_data(cache_key)
+        if cached:
+            return cached
+
+        try:
+            unified_data = self.storage._read_data()
+            feedback_data = unified_data.get("agent_feedback", {})
+
+            metrics = {
+                "total_feedbacks": len(feedback_data.get("exchanges", [])),
+                "collaboration_matrix": feedback_data.get("collaboration_matrix", {}),
+                "learning_insights": feedback_data.get("learning_insights", {}),
+                "effectiveness_metrics": feedback_data.get("effectiveness_metrics", {}),
+                "recent_feedbacks": feedback_data.get("exchanges", [])[-10:] if feedback_data.get("exchanges") else []
+            }
+
+            self._set_cached_data(cache_key, metrics)
+            return metrics
+
+        except Exception as e:
+            print(f"Error getting agent feedback metrics: {e}", file=sys.stderr)
+            return {"total_feedbacks": 0}
+
+    def get_agent_performance_metrics(self) -> Dict[str, Any]:
+        """
+        Get agent performance metrics and trends.
+
+        Returns:
+            Dictionary with agent performance data
+        """
+        cache_key = "agent_performance_metrics"
+        cached = self._get_cached_data(cache_key)
+        if cached:
+            return cached
+
+        try:
+            unified_data = self.storage._read_data()
+            performance_data = unified_data.get("agent_performance", {})
+
+            metrics = {
+                "individual_metrics": performance_data.get("individual_metrics", {}),
+                "top_performers": performance_data.get("top_performers", []),
+                "weak_performers": performance_data.get("weak_performers", []),
+                "specializations": performance_data.get("specializations", {}),
+                "performance_trends": performance_data.get("performance_trends", {}),
+                "recent_tasks": performance_data.get("task_history", [])[-20:] if performance_data.get("task_history") else []
+            }
+
+            self._set_cached_data(cache_key, metrics)
+            return metrics
+
+        except Exception as e:
+            print(f"Error getting agent performance metrics: {e}", file=sys.stderr)
+            return {"individual_metrics": {}}
+
+    def get_user_preference_summary(self) -> Dict[str, Any]:
+        """
+        Get user preference learning summary.
+
+        Returns:
+            Dictionary with user preferences
+        """
+        cache_key = "user_preference_summary"
+        cached = self._get_cached_data(cache_key)
+        if cached:
+            return cached
+
+        try:
+            unified_data = self.storage._read_data()
+            pref_data = unified_data.get("user_preferences", {})
+
+            summary = {
+                "learning_confidence": pref_data.get("learning_confidence", 0.0),
+                "coding_style": pref_data.get("coding_style", {}),
+                "workflow_preferences": pref_data.get("workflow_preferences", {}),
+                "quality_weights": pref_data.get("quality_weights", {}),
+                "communication_style": pref_data.get("communication_style", {}),
+                "task_preferences": pref_data.get("task_preferences", {}),
+                "total_interactions": len(pref_data.get("interaction_history", []))
+            }
+
+            self._set_cached_data(cache_key, summary)
+            return summary
+
+        except Exception as e:
+            print(f"Error getting user preference summary: {e}", file=sys.stderr)
+            return {"learning_confidence": 0.0}
 
     def get_dashboard_summary(self) -> Dict[str, Any]:
         """
@@ -321,7 +430,11 @@ class DashboardUnifiedAdapter:
                 "quality_timeline": self.get_quality_timeline_data(30),
                 "learning_analytics": self.get_learning_analytics(),
                 "validation_status": self.get_validation_status(),
-                "system_health": self._calculate_system_health()
+                "system_health": self._calculate_system_health(),
+                # NEW: Two-tier agent architecture metrics
+                "agent_feedback": self.get_agent_feedback_metrics(),
+                "agent_performance": self.get_agent_performance_metrics(),
+                "user_preferences": self.get_user_preference_summary()
             }
 
             self._set_cached_data(cache_key, summary)
@@ -404,6 +517,45 @@ class DashboardUnifiedAdapter:
                 skills.append({"skill": skill, "effectiveness": effectiveness})
 
         return sorted(skills, key=lambda x: x["effectiveness"], reverse=True)[:5]
+
+    def _calculate_trend(self, values: List[float], min_data_points: int = 3) -> str:
+        """
+        Calculate trend direction based on historical values.
+
+        Args:
+            values: List of numerical values ordered chronologically
+            min_data_points: Minimum data points required for trend calculation
+
+        Returns:
+            Trend direction: "improving", "declining", "stable", or "no_data"
+        """
+        if not values or len(values) < min_data_points:
+            return "no_data"
+
+        # Compare recent half vs older half
+        mid_point = len(values) // 2
+        older_half = values[:mid_point]
+        recent_half = values[mid_point:]
+
+        if not older_half or not recent_half:
+            return "stable"
+
+        avg_older = sum(older_half) / len(older_half)
+        avg_recent = sum(recent_half) / len(recent_half)
+
+        # Calculate percentage change
+        if avg_older == 0:
+            return "stable"
+
+        change_pct = ((avg_recent - avg_older) / avg_older) * 100
+
+        # Classify trend based on change threshold
+        if change_pct > 5:  # More than 5% improvement
+            return "improving"
+        elif change_pct < -5:  # More than 5% decline
+            return "declining"
+        else:
+            return "stable"
 
     def _calculate_system_health(self) -> Dict[str, Any]:
         """Calculate overall system health metrics."""

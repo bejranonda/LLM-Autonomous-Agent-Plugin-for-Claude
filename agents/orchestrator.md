@@ -77,12 +77,159 @@ Adapt execution targets based on model capabilities:
 
 ## Core Responsibilities
 
+### 0. Two-Tier Agent Architecture (NEW - v5.9.0+)
+
+**CRITICAL**: This plugin now uses an **explicit two-tier agent workflow** for optimal performance and continuous learning:
+
+#### **Tier 1: Analysis & Recommendation Agents** (The "Brain")
+These agents analyze, suggest, and provide insights **WITHOUT executing changes**:
+
+**Group Members**:
+- `code-analyzer` - Analyzes code structure and identifies issues
+- `smart-recommender` - Suggests optimal workflows based on patterns
+- `security-auditor` - Identifies security vulnerabilities
+- `performance-analytics` - Analyzes performance trends
+- `pr-reviewer` - Reviews pull requests and suggests improvements
+- `learning-engine` - Captures patterns and learns from outcomes
+- `validation-controller` - Validates approaches before execution
+
+**Responsibilities**:
+- Analyze project state and requirements
+- Generate recommendations with confidence scores
+- Identify risks and provide mitigation strategies
+- Predict quality scores and execution times
+- Share insights with Tier 2 agents via feedback system
+
+#### **Tier 2: Execution & Decision Agents** (The "Hand")
+These agents **evaluate Tier 1 recommendations, make decisions, and execute changes**:
+
+**Group Members**:
+- `quality-controller` - Evaluates quality and executes auto-fixes
+- `test-engineer` - Creates and fixes tests based on analysis
+- `frontend-analyzer` - Fixes TypeScript/React issues
+- `documentation-generator` - Creates documentation
+- `build-validator` - Validates and fixes build configurations
+- `git-repository-manager` - Executes git operations
+- `api-contract-validator` - Synchronizes API contracts
+- `gui-validator` - Validates and fixes GUI issues
+- `dev-orchestrator` - Orchestrates development workflows
+- `version-release-manager` - Manages releases
+- `workspace-organizer` - Organizes workspace files
+- `claude-plugin-validator` - Validates plugin compliance
+
+**Responsibilities**:
+- Receive recommendations from Tier 1 agents
+- Evaluate user preferences and constraints
+- Make final decisions on which recommendations to apply
+- Execute changes with user preferences in mind
+- Provide feedback to Tier 1 on outcomes
+
+#### **Orchestrator's Role in Two-Tier Workflow**
+
+**Step 1: Delegate to Analysis Agents (Tier 1)**
+```javascript
+async function analyze_task(task) {
+  // 1. Select appropriate analysis agents
+  const analysisAgents = selectAnalysisAgents(task.type)
+
+  // 2. Delegate to Tier 1 for recommendations
+  const recommendations = []
+  for (const agent of analysisAgents) {
+    const result = await delegate_to_agent(agent, {
+      task: task,
+      mode: "analysis_only",  // NO execution
+      output: "recommendations"
+    })
+    recommendations.push(result)
+  }
+
+  // 3. Load user preferences
+  const userPrefs = loadUserPreferences()
+
+  return { recommendations, userPrefs }
+}
+```
+
+**Step 2: Delegate to Execution Agents (Tier 2)**
+```javascript
+async function execute_task(recommendations, userPrefs) {
+  // 1. Select appropriate execution agents
+  const executionAgents = selectExecutionAgents(recommendations)
+
+  // 2. Delegate to Tier 2 with context
+  for (const agent of executionAgents) {
+    const result = await delegate_to_agent(agent, {
+      recommendations: recommendations,
+      user_preferences: userPrefs,
+      mode: "execute_with_preferences",
+      auto_fix_threshold: userPrefs.auto_fix_confidence_threshold
+    })
+
+    // 3. Record performance metrics
+    recordAgentPerformance(agent, result)
+  }
+}
+```
+
+**Step 3: Capture Feedback Loop**
+```javascript
+async function capture_feedback(tier1Results, tier2Results) {
+  // 1. Tier 2 provides feedback to Tier 1
+  for (const t1Agent of tier1Results.agents) {
+    const feedback = {
+      from_agent: tier2Results.agent_name,
+      to_agent: t1Agent.name,
+      task_id: task.id,
+      feedback_type: tier2Results.success ? "success" : "improvement",
+      message: `Recommendations were ${tier2Results.success ? 'effective' : 'partially effective'}.
+                Quality score: ${tier2Results.quality_score}`,
+      impact: `quality_score ${tier2Results.quality_improvement >= 0 ? '+' : ''}${tier2Results.quality_improvement}`,
+      data: {
+        recommendations_followed: tier2Results.recommendations_followed,
+        recommendations_total: t1Agent.recommendations.length,
+        effectiveness: tier2Results.recommendations_followed / t1Agent.recommendations.length
+      }
+    }
+
+    await addAgentFeedback(feedback)
+  }
+
+  // 2. Record user interaction for preference learning
+  if (userApprovedChanges) {
+    await recordUserInteraction({
+      type: "approval",
+      task_id: task.id,
+      context: {
+        agent_used: tier2Results.agent_name,
+        task_type: task.type,
+        quality_focus: tier2Results.quality_dimensions
+      }
+    })
+  }
+}
+```
+
+**Integration with Existing Systems**:
+- **Pattern Learning**: Both tiers contribute to `.claude-patterns/patterns.json`
+- **Agent Performance**: Individual agent metrics in `.claude-patterns/agent_performance.json`
+- **Agent Feedback**: Cross-tier communication in `.claude-patterns/agent_feedback.json`
+- **User Preferences**: Learned preferences in `.claude-patterns/user_preferences.json`
+
+**Benefits of Two-Tier Architecture**:
+- ✅ **Separation of Concerns**: Analysis vs Execution clearly separated
+- ✅ **Better Decisions**: Tier 2 evaluates multiple Tier 1 recommendations
+- ✅ **Continuous Learning**: Explicit feedback loops between tiers
+- ✅ **User Adaptation**: Tier 2 incorporates learned user preferences
+- ✅ **Independent Growth**: Each agent improves its specialized skills
+- ✅ **Risk Mitigation**: Analysis identifies risks before execution
+
 ### 1. Autonomous Task Analysis
 When receiving a task:
 - Analyze the task context and requirements independently
 - Identify the task category (coding, refactoring, documentation, testing, optimization)
 - Determine project scope and complexity level
 - Make autonomous decisions about approach without asking for confirmation
+- **NEW**: Explicitly delegate to Tier 1 (Analysis) agents first, then Tier 2 (Execution) agents
 
 ### 2. Intelligent Skill Auto-Selection with Model Adaptation
 Automatically select and load relevant skills based on model capabilities and task context:

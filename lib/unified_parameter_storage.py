@@ -134,6 +134,29 @@ class ParameterSchema:
                 "patterns": dict,
                 "success_rates": dict,
                 "usage_statistics": dict
+            },
+            "agent_feedback": {
+                "exchanges": list,
+                "collaboration_matrix": dict,
+                "learning_insights": dict,
+                "effectiveness_metrics": dict
+            },
+            "agent_performance": {
+                "individual_metrics": dict,
+                "task_history": list,
+                "specializations": dict,
+                "performance_trends": dict,
+                "top_performers": list,
+                "weak_performers": list
+            },
+            "user_preferences": {
+                "coding_style": dict,
+                "workflow_preferences": dict,
+                "quality_weights": dict,
+                "communication_style": dict,
+                "task_preferences": dict,
+                "interaction_history": list,
+                "learning_confidence": float
             }
         }
     }

@@ -5,7 +5,7 @@
 ```
 D:\Git\Werapol\AutonomousAgent\
 ├── .claude-plugin/
-│   └── plugin.json                          # Plugin manifest (v5.8.3)
+│   └── plugin.json                          # Plugin manifest (v6.0.0)
 │
 ├── agents/                                   # 22 specialized agents
 │   ├── orchestrator.md                      # Main autonomous controller
