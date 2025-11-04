@@ -1236,28 +1236,25 @@ class DashboardDataCollector:
         success_by_task = defaultdict(list)
 
         # Process patterns.json (handle both array and dict formats)
-        if isinstance(patterns, list):
-            for pattern in patterns:
-                task_type = pattern.get("task_type", "unknown")
-                task_counts[task_type] += 1
-                success = pattern.get("outcome", {}).get("success", False)
-                success_by_task[task_type].append(1 if success else 0)
-        elif isinstance(patterns_data, dict):
-            for pattern in patterns_data.get("patterns", []):
+        patterns_list = patterns_data.get("patterns", [])
+        if isinstance(patterns_list, list):
+            for pattern in patterns_list:
                 task_type = pattern.get("task_type", "unknown")
                 task_counts[task_type] += 1
                 success = pattern.get("outcome", {}).get("success", False)
                 success_by_task[task_type].append(1 if success else 0)
 
-        # Process skill_usage_history
-        for usage in skill_metrics.get("skill_usage_history", []):
+        # Process skill_usage_history from unified data
+        skill_metrics_data = unified_data.get("skill_metrics", {})
+        for usage in skill_metrics_data.get("skill_usage_history", []):
             task_type = usage.get("task_type", "unknown")
             task_counts[task_type] += 1
             success = usage.get("overall_success", False)
             success_by_task[task_type].append(1 if success else 0)
 
-        # Process performance_records
-        for record in perf_records.get("records", []):
+        # Process performance_records from unified data
+        perf_records_data = performance_data.get("performance_records", {})
+        for record in perf_records_data.get("records", []):
             task_type = record.get("task_type", "unknown")
             task_counts[task_type] += 1
             success = record.get("pass", False)
@@ -1428,8 +1425,8 @@ class DashboardDataCollector:
                     "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
                     "success": pattern.get("outcome", {}).get("success", False)
                 })
-        elif isinstance(patterns_data, dict):
-            for pattern in patterns_data.get("patterns", []):
+        elif isinstance(patterns, dict):
+            for pattern in patterns.get("patterns", []):
                 all_records.append({
                     "timestamp": pattern.get("timestamp", ""),
                     "quality_score": pattern.get("outcome", {}).get("quality_score", 0),

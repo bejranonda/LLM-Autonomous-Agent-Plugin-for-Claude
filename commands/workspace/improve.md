@@ -1,6 +1,6 @@
 ---
 name: workspace:improve
-description: Command for improve plugin
+description: Analyze plugin and suggest improvements based on best practices and patterns
 delegates-to: orchestrator
 ---
 

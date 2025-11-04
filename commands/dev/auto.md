@@ -1,6 +1,6 @@
 ---
 name: dev:auto
-description: Command for dev auto
+description: Fully autonomous development from requirements to production-ready code with testing and validation
 delegates-to: orchestrator
 ---
 

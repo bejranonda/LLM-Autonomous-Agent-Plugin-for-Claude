@@ -1,8 +1,8 @@
 ---
 name: workspace:update-about
-description: Update GitHub repository About section with current project info and SEO optimization
-
+description: Update GitHub About section with SEO-optimized description, topics, and links
 delegates-to: documentation-generator
+---
 
 # Workspace Update-About Command
 

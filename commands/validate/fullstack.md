@@ -1,6 +1,6 @@
 ---
 name: validate:fullstack
-description: Command for validate fullstack
+description: Validate full-stack app (backend, frontend, database, API contracts) with auto-fix
 delegates-to: orchestrator
 ---
 

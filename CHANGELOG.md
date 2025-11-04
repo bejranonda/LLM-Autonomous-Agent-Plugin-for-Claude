@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.1] - 2025-01-04
+
+### 🔧 Patch Release - Documentation and Dashboard Improvements
+
+This patch release includes documentation updates, dashboard enhancements, and various command improvements to enhance the user experience and system reliability.
+
+#### ✨ **Enhanced Documentation**
+- **Updated Command Documentation**: Improved documentation for 26 command files with clearer instructions
+- **Enhanced Analysis Commands**: Better explanations for `/analyze:dependencies`, `/analyze:explain`, `/analyze:repository`, and `/analyze:static`
+- **Improved Debug Commands**: Updated `/debug:eval` and `/debug:gui` with enhanced examples
+- **Refined Development Commands**: Better `/dev:auto`, `/dev:model-switch`, and `/dev:pr-review` documentation
+
+#### 📊 **Dashboard Improvements**
+- **Enhanced Dashboard**: Updated `lib/dashboard.py` with improved functionality and performance
+- **Test Data Addition**: Added `lib/test_dashboard_data.py` for enhanced testing capabilities
+- **Better Data Visualization**: Improved dashboard analytics and data presentation
+- **Performance Optimizations**: Faster dashboard startup and responsive interactions
+
+#### 🛠️ **System Refinements**
+- **Command Updates**: Refined workspace commands for better organization and reports
+- **Learning Enhancements**: Updated learning analytics and performance tracking commands
+- **Validation Improvements**: Enhanced validation commands with better error handling
+- **Monitoring Updates**: Improved monitoring and recommendation systems
+
+#### 📝 **Documentation Consistency**
+- **Version Synchronization**: Updated all version references to v6.1.1
+- **Readme Updates**: Improved feature descriptions and installation instructions
+- **Architecture Updates**: Updated architecture documentation to reflect latest improvements
+
 ## [6.1.0] - 2025-01-04
 
 ### 🚀 ADVANCED OPTIMIZATION RELEASE - Multi-Project Learning and Performance Excellence

@@ -1,8 +1,8 @@
 ---
 name: validate:patterns
-description: Validate pattern learning system and generate comprehensive reports
-
+description: Validate pattern learning database integrity and generate health reports
 delegates-to: orchestrator
+---
 
 # Command: `/validate:patterns`
 

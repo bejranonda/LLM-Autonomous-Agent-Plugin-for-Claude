@@ -1,6 +1,6 @@
 ---
 name: workspace:reports
-description: Command for organize reports
+description: Organize and consolidate scattered reports into clean directory structure
 delegates-to: orchestrator
 ---
 

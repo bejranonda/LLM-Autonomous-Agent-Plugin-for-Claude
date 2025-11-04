@@ -1,6 +1,6 @@
 ---
 name: debug:eval
-description: Command for eval debug
+description: Debug and evaluate performance issues with detailed diagnostics and fixes
 delegates-to: orchestrator
 ---
 

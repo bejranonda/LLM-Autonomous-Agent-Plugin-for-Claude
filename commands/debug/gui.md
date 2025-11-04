@@ -1,8 +1,8 @@
 ---
 name: debug:gui
-description: Comprehensive GUI validation, debugging, and performance monitoring for entire graphical user interface system (web dashboard, CLI interface, visual components) with automated diagnostics and issue resolution
-
+description: Debug and validate GUI systems (dashboard, CLI, web) with automated diagnostics
 delegates-to: orchestrator
+---
 
 # GUI Debug & Validation Command
 

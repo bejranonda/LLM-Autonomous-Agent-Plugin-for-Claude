@@ -1,6 +1,6 @@
 ---
 name: monitor:recommend
-description: Command for recommend
+description: Get smart workflow and optimization recommendations based on learned patterns
 delegates-to: orchestrator
 ---
 

@@ -1,8 +1,8 @@
 ---
 name: workspace:distribution-ready
-description: Prepare repository for marketplace distribution by cleaning computer-specific files and optimizing structure
-
+description: Clean and optimize repository for marketplace/public distribution
 delegates-to: workspace-organizer
+---
 
 # Command: `/workspace:distribution-ready`
 

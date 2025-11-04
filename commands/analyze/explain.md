@@ -1,8 +1,8 @@
 ---
 name: analyze:explain
-description: Explain task, event, or code without making any modifications - analysis and review only
-
+description: Explain and analyze task, event, or code without making modifications - read-only review
 delegates-to: orchestrator
+---
 
 # Analyze-Explain Command
 

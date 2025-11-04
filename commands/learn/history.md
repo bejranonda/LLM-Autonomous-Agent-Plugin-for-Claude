@@ -1,8 +1,8 @@
 ---
 name: learn:history
-description: Analyze repository commit history to learn debugging and development patterns for improving current project
-
+description: Learn from commit history to identify patterns, debugging strategies, and improvement areas
 delegates-to: orchestrator
+---
 
 # Learn-History Command
 

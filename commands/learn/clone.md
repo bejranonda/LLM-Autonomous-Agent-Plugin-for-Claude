@@ -1,8 +1,8 @@
 ---
 name: learn:clone
-description: Analyze and learn features from external repositories to implement similar capabilities in current project
-
+description: Clone and learn features from external repos to implement in current project
 delegates-to: dev-orchestrator
+---
 
 # Learn-Clone Command
 

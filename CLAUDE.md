@@ -41,7 +41,7 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 
 ## Architecture
 
-### Enhanced Two-Tier Agent Architecture (v6.1.0+)
+### Enhanced Two-Tier Agent Architecture (v6.1.1+)
 
 **ENHANCED**: Optimized separation of analysis and execution with advanced multi-project learning and performance optimization systems.
 
@@ -90,7 +90,7 @@ These agents **evaluate Tier 1 recommendations, make decisions, and execute chan
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest with metadata (v6.0.0)
+.claude-plugin/plugin.json          # Plugin manifest with metadata (v6.1.1)
 
 agents/                              # 22 specialized subagents
 ├── orchestrator.md                 # Main autonomous controller

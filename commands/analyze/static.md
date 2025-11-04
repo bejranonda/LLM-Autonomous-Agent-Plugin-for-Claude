@@ -1,8 +1,8 @@
 ---
 name: analyze:static
-description: Run comprehensive static analysis with 40+ linters across all languages, synthesize results, and provide unified quality report
-
+description: Run 40+ linters across all languages with intelligent deduplication and unified reporting
 delegates-to: orchestrator
+---
 
 # Static Analysis Command
 

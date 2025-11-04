@@ -1,8 +1,8 @@
 ---
 name: learn:predict
-description: Generate advanced predictive insights and optimization recommendations using machine learning-inspired analytics
-
+description: Generate ML-powered predictive insights and optimization recommendations from patterns
 delegates-to: orchestrator
+---
 
 # Predictive Analytics Command
 

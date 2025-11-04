@@ -1,8 +1,8 @@
 ---
 name: learn:analytics
-description: Display comprehensive learning analytics dashboard showing pattern learning progress, skill effectiveness, prediction accuracy, and improvement trends
-
+description: Display learning analytics dashboard with pattern progress, skill effectiveness, and trends
 delegates-to: orchestrator
+---
 
 # Learning Analytics Dashboard
 

@@ -1,8 +1,8 @@
 ---
 name: analyze:dependencies
-description: Scan project dependencies for known vulnerabilities across all package managers (Python, npm, Ruby, Go, Rust, Java, PHP, .NET)
-
+description: Scan dependencies for CVE vulnerabilities across 11 package managers with fix recommendations
 delegates-to: orchestrator
+---
 
 # Dependency Vulnerability Scanner
 

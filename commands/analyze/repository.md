@@ -1,8 +1,8 @@
 ---
 name: analyze:repository
-description: Analyze external GitHub/GitLab repository for strengths, weaknesses, features, and plugin enhancement opportunities
-
+description: Analyze external GitHub/GitLab repo for insights, patterns, and improvement opportunities
 delegates-to: orchestrator
+---
 
 # Analyze-Repository Command
 

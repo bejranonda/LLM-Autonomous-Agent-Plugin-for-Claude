@@ -1,8 +1,8 @@
 ---
 name: dev:pr-review
-description: Comprehensive pull request review with summaries, line-by-line analysis, security scanning, and automated fixes
-
+description: CodeRabbit-style PR review with security scanning, test coverage, and one-click fixes
 delegates-to: pr-reviewer
+---
 
 # Pull Request Review Command
 

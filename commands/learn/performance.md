@@ -1,6 +1,6 @@
 ---
 name: learn:performance
-description: Command for performance report
+description: Display performance analytics dashboard with metrics, trends, and optimization recommendations
 delegates-to: orchestrator
 ---
 
