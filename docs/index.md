@@ -17,6 +17,7 @@ This directory contains organized documentation for the Autonomous Agent Plugin.
 - **generated/** - Historical validation and analysis reports
 
 ### 🔧 **docs/implementation/** - Implementation Documentation
+- [`PHASE1_OPTIMIZATION_COMPLETE.md`](implementation/PHASE1_OPTIMIZATION_COMPLETE.md) - **🆕 Complete Phase 1 v6.0.0 Two-Tier Architecture Documentation**
 - [`IMPLEMENTATION_SUMMARY.md`](implementation/IMPLEMENTATION_SUMMARY.md) - Complete implementation overview and architecture
 - [`LEARNING_SYSTEM_IMPLEMENTATION.md`](implementation/LEARNING_SYSTEM_IMPLEMENTATION.md) - Learning engine implementation details
 - [`FULL_STACK_VALIDATION_IMPLEMENTATION.md`](implementation/FULL_STACK_VALIDATION_IMPLEMENTATION.md) - Full-stack validation system implementation
@@ -78,8 +79,9 @@ This directory contains organized documentation for the Autonomous Agent Plugin.
 | Looking for... | Location |
 |----------------|----------|
 | **How to use the plugin** | [README.md](../README.md) |
+| **🆕 Two-Tier Architecture (v6.0.0)** | [PHASE1_OPTIMIZATION_COMPLETE.md](implementation/PHASE1_OPTIMIZATION_COMPLETE.md) |
 | **System architecture** | [IMPLEMENTATION_SUMMARY.md](implementation/IMPLEMENTATION_SUMMARY.md) |
-| **Latest features** | [RELEASE_NOTES_V3.3.0.md](releases/RELEASE_NOTES_V3.3.0.md) |
+| **Latest features** | [CHANGELOG.md](releases/CHANGELOG.md) (v6.0.0) |
 | **Validation results** | [reports/](reports/) directory |
 | **Implementation details** | [implementation/](implementation/) directory |
 | **Best practices** | [guidelines/](guidelines/) directory |
@@ -99,6 +101,7 @@ All documentation follows these principles:
 
 ---
 
-**Last Updated**: 2025-10-23
-**Plugin Version**: 3.3.0
-**Total Documents**: 40+ files across 4 directories
+**Last Updated**: 2025-01-04
+**Plugin Version**: 6.0.0
+**Total Documents**: 50+ files across 4 directories
+**🆕 Latest Addition**: Complete Phase 1 Two-Tier Architecture Documentation
