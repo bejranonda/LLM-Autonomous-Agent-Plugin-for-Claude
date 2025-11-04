@@ -41,9 +41,9 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 
 ## Architecture
 
-### Two-Tier Agent Architecture (v6.0.0+)
+### Enhanced Two-Tier Agent Architecture (v6.1.0+)
 
-**NEW**: Explicit separation of analysis and execution for optimal performance and continuous learning.
+**ENHANCED**: Optimized separation of analysis and execution with advanced multi-project learning and performance optimization systems.
 
 #### **Tier 1: Analysis & Recommendation Agents** (The "Brain")
 These agents analyze, suggest, and provide insights **WITHOUT executing changes**:

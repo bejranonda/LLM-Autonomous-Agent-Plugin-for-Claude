@@ -28,7 +28,7 @@ class TestAdaptiveQualityThresholds:
     @pytest.fixture
     def quality_thresholds(self, temp_directory):
         """Create an AdaptiveQualityThresholds instance for testing"""
-        return AdaptiveQualityThresholds(data_dir=temp_directory)
+        return AdaptiveQualityThresholds(storage_dir=temp_directory)
 
     @pytest.fixture
     def sample_task_info(self):

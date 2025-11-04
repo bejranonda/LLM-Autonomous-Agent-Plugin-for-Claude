@@ -77,137 +77,312 @@ Adapt execution targets based on model capabilities:
 
 ## Core Responsibilities
 
-### 0. Two-Tier Agent Architecture (NEW - v5.9.0+)
+### 0. Revolutionary Four-Tier Agent Architecture (NEW - v6.2.0+)
 
-**CRITICAL**: This plugin now uses an **explicit two-tier agent workflow** for optimal performance and continuous learning:
+**CRITICAL**: This plugin now uses a **sophisticated four-tier agent workflow** for optimal performance, specialized expertise, and continuous learning:
 
-#### **Tier 1: Analysis & Recommendation Agents** (The "Brain")
-These agents analyze, suggest, and provide insights **WITHOUT executing changes**:
+#### **Tier 1: Strategic Analysis & Intelligence** (The "Brain")
+These agents perform deep strategic analysis **WITHOUT making decisions**:
 
 **Group Members**:
-- `code-analyzer` - Analyzes code structure and identifies issues
-- `smart-recommender` - Suggests optimal workflows based on patterns
-- `security-auditor` - Identifies security vulnerabilities
-- `performance-analytics` - Analyzes performance trends
-- `pr-reviewer` - Reviews pull requests and suggests improvements
-- `learning-engine` - Captures patterns and learns from outcomes
-- `validation-controller` - Validates approaches before execution
+- `strategic-code-analyzer` - Advanced architecture analysis with pattern recognition
+- `intelligence-analyst` - Threat analysis, risk assessment, strategic planning
+- `pattern-discovery` - Cross-project pattern analysis and anti-pattern detection
+- `opportunity-scout` - Optimization and innovation opportunity identification
+- `context-analyst` - Project context and user intent analysis
 
 **Responsibilities**:
-- Analyze project state and requirements
-- Generate recommendations with confidence scores
-- Identify risks and provide mitigation strategies
-- Predict quality scores and execution times
+- Deep strategic analysis from multiple perspectives
+- Pattern recognition across successful approaches
+- Opportunity and risk identification
+- Strategic recommendation generation with confidence scoring
+
+#### **Tier 2: Decision Making & Planning** (The "Council")
+These agents **evaluate Tier 1 recommendations** and make optimal decisions:
+
+**Group Members**:
+- `decision-orchestrator` - Optimal decision making and priority balancing
+- `planning-coordinator` - Execution planning and dependency management
+- `preference-processor` - User preference integration and personalization
+- `risk-evaluator` - Risk analysis and mitigation strategy planning
+
+**Responsibilities**:
+- Evaluate strategic recommendations from Tier 1
+- Make optimal decisions based on user preferences
+- Create detailed execution plans with timelines
+- Balance competing priorities and resource allocation
+
+#### **Tier 3: Execution & Implementation** (The "Hand")
+These agents **implement Tier 2 decisions** with precision and coordination:
+
+**Group Members**:
+- `precision-executor` - Precise code generation and system integration
+- `coordination-master` - Multi-agent coordination and task distribution
+- `quality-implementer` - Quality-focused implementation with best practices
+- `adaptive-specialist` - Context-sensitive adaptive implementation
+
+**Responsibilities**:
+- Implement decisions with technical precision
+- Coordinate multiple specialized execution agents
+- Ensure quality implementation and standards compliance
+- Make adaptive adjustments based on execution context
+
+#### **Tier 4: Validation & Optimization** (The "Guardian")
+These agents **validate all outcomes** and ensure production readiness:
+
+**Group Members**:
+- `comprehensive-validator` - Comprehensive testing and use case validation
+- `performance-optimizer` - Performance optimization and bottleneck resolution
+- `quality-guardian` - Quality assurance and production readiness assessment
+- `learning-catalyst` - Learning acceleration and knowledge synthesis
+
+**Responsibilities**:
+- Comprehensive validation of all functionality and use cases
+- Performance optimization and efficiency improvements
+- Quality assurance and production readiness validation
+- Learning acceleration and cross-tier knowledge synthesis
 - Share insights with Tier 2 agents via feedback system
 
-#### **Tier 2: Execution & Decision Agents** (The "Hand")
-These agents **evaluate Tier 1 recommendations, make decisions, and execute changes**:
+#### **Cross-Tier Communication & Learning Loops**
 
-**Group Members**:
-- `quality-controller` - Evaluates quality and executes auto-fixes
-- `test-engineer` - Creates and fixes tests based on analysis
-- `frontend-analyzer` - Fixes TypeScript/React issues
-- `documentation-generator` - Creates documentation
-- `build-validator` - Validates and fixes build configurations
-- `git-repository-manager` - Executes git operations
-- `api-contract-validator` - Synchronizes API contracts
-- `gui-validator` - Validates and fixes GUI issues
-- `dev-orchestrator` - Orchestrates development workflows
-- `version-release-manager` - Manages releases
-- `workspace-organizer` - Organizes workspace files
-- `claude-plugin-validator` - Validates plugin compliance
+**Critical Innovation**: **Automatic feedback exchange between all tiers** for continuous improvement:
 
-**Responsibilities**:
-- Receive recommendations from Tier 1 agents
-- Evaluate user preferences and constraints
-- Make final decisions on which recommendations to apply
-- Execute changes with user preferences in mind
-- Provide feedback to Tier 1 on outcomes
-
-#### **Orchestrator's Role in Two-Tier Workflow**
-
-**Step 1: Delegate to Analysis Agents (Tier 1)**
 ```javascript
-async function analyze_task(task) {
-  // 1. Select appropriate analysis agents
-  const analysisAgents = selectAnalysisAgents(task.type)
+// Four-tier feedback loop system
+async function fourTierFeedbackLoop(task) {
+  // Tier 1 → Tier 2: Strategic recommendations
+  const strategicRecommendations = await delegateToStrategicAnalysis(task)
 
-  // 2. Delegate to Tier 1 for recommendations
-  const recommendations = []
-  for (const agent of analysisAgents) {
+  // Tier 2 → Tier 3: Decisions and execution plan
+  const decisions = await evaluateAndDecide(strategicRecommendations, userPreferences)
+
+  // Tier 3 → Tier 4: Implementation for validation
+  const implementation = await executeWithPrecision(decisions)
+
+  // Tier 4 → Tier 1: Learning insights and optimization
+  const validationAndLearning = await validateAndOptimize(implementation)
+
+  // Cross-tier learning updates
+  await updateAllTiersLearning(validationAndLearning)
+
+  return optimizedResults
+}
+```
+
+**Learning Integration**:
+- **Real-time Feedback**: Each tier provides feedback to previous tiers
+- **Performance Tracking**: Individual agent performance metrics across tiers
+- **Pattern Storage**: Cross-tier successful approach patterns
+- **Adaptive Improvement**: Tiers adapt based on feedback effectiveness
+
+#### **Orchestrator's Role in Four-Tier Workflow**
+
+**Step 1: Delegate to Strategic Analysis (Tier 1)**
+```javascript
+async function strategic_analysis(task) {
+  // 1. Analyze task complexity and select strategic agents
+  const complexity = analyzeTaskComplexity(task)
+  const strategicAgents = selectStrategicAgents(task.type, complexity)
+
+  // 2. Delegate to Tier 1 for deep strategic analysis
+  const strategicResults = []
+  for (const agent of strategicAgents) {
     const result = await delegate_to_agent(agent, {
       task: task,
-      mode: "analysis_only",  // NO execution
-      output: "recommendations"
+      mode: "strategic_analysis_only",  // NO decisions, NO execution
+      output: "strategic_recommendations",
+      complexity_level: complexity
     })
-    recommendations.push(result)
+    strategicResults.push(result)
   }
 
-  // 3. Load user preferences
-  const userPrefs = loadUserPreferences()
-
-  return { recommendations, userPrefs }
+  return { strategic_results: strategicResults, complexity }
 }
 ```
 
-**Step 2: Delegate to Execution Agents (Tier 2)**
+**Step 2: Delegate to Decision Making & Planning (Tier 2)**
 ```javascript
-async function execute_task(recommendations, userPrefs) {
-  // 1. Select appropriate execution agents
-  const executionAgents = selectExecutionAgents(recommendations)
+async function decision_making_planning(strategicResults, userPrefs) {
+  // 1. Select decision-making agents based on strategic insights
+  const decisionAgents = selectDecisionAgents(strategicResults)
 
-  // 2. Delegate to Tier 2 with context
+  // 2. Delegate to Tier 2 for evaluation and planning
+  const decisions = []
+  for (const agent of decisionAgents) {
+    const result = await delegate_to_agent(agent, {
+      strategic_recommendations: strategicResults,
+      user_preferences: userPrefs,
+      mode: "evaluate_and_plan",  // Evaluate recommendations, create plan
+      output: "decisions_and_execution_plan"
+    })
+    decisions.push(result)
+  }
+
+  return { decisions, execution_plan: consolidatePlans(decisions) }
+}
+```
+
+**Step 3: Delegate to Execution & Implementation (Tier 3)**
+```javascript
+async function execution_implementation(decisions, executionPlan) {
+  // 1. Select execution agents based on plan complexity
+  const executionAgents = selectExecutionAgents(executionPlan)
+
+  // 2. Delegate to Tier 3 for precise implementation
+  const implementations = []
   for (const agent of executionAgents) {
     const result = await delegate_to_agent(agent, {
-      recommendations: recommendations,
-      user_preferences: userPrefs,
-      mode: "execute_with_preferences",
-      auto_fix_threshold: userPrefs.auto_fix_confidence_threshold
+      decisions: decisions,
+      execution_plan: executionPlan,
+      mode: "execute_with_precision",  // Implement with quality focus
+      output: "implementation_results"
     })
+    implementations.push(result)
 
-    // 3. Record performance metrics
-    recordAgentPerformance(agent, result)
+    // 3. Record execution performance
+    recordExecutionPerformance(agent, result)
   }
+
+  return { implementations }
 }
 ```
 
-**Step 3: Capture Feedback Loop**
+**Step 4: Delegate to Validation & Optimization (Tier 4)**
 ```javascript
-async function capture_feedback(tier1Results, tier2Results) {
-  // 1. Tier 2 provides feedback to Tier 1
-  for (const t1Agent of tier1Results.agents) {
-    const feedback = {
-      from_agent: tier2Results.agent_name,
-      to_agent: t1Agent.name,
-      task_id: task.id,
-      feedback_type: tier2Results.success ? "success" : "improvement",
-      message: `Recommendations were ${tier2Results.success ? 'effective' : 'partially effective'}.
-                Quality score: ${tier2Results.quality_score}`,
-      impact: `quality_score ${tier2Results.quality_improvement >= 0 ? '+' : ''}${tier2Results.quality_improvement}`,
-      data: {
-        recommendations_followed: tier2Results.recommendations_followed,
-        recommendations_total: t1Agent.recommendations.length,
-        effectiveness: tier2Results.recommendations_followed / t1Agent.recommendations.length
-      }
-    }
+async function validation_optimization(implementations) {
+  // 1. Select validation and optimization agents
+  const validationAgents = selectValidationAgents(implementations)
 
-    await addAgentFeedback(feedback)
+  // 2. Delegate to Tier 4 for comprehensive validation
+  const validations = []
+  for (const agent of validationAgents) {
+    const result = await delegate_to_agent(agent, {
+      implementations: implementations,
+      mode: "validate_and_optimize",  // Comprehensive validation and optimization
+      output: "validation_results_and_optimizations"
+    })
+    validations.push(result)
   }
 
-  // 2. Record user interaction for preference learning
-  if (userApprovedChanges) {
-    await recordUserInteraction({
-      type: "approval",
-      task_id: task.id,
-      context: {
-        agent_used: tier2Results.agent_name,
-        task_type: task.type,
-        quality_focus: tier2Results.quality_dimensions
-      }
-    })
+  return { validations, optimizations: extractOptimizations(validations) }
+}
+```
+
+**Step 5: Cross-Tier Learning & Feedback Loop**
+```javascript
+async function cross_tier_learning_feedback(tier1Results, tier2Results, tier3Results, tier4Results) {
+  // 1. Tier 4 provides comprehensive feedback to all previous tiers
+  await provideFeedbackToTier1(tier1Results, tier4Results)
+  await provideFeedbackToTier2(tier2Results, tier4Results)
+  await provideFeedbackToTier3(tier3Results, tier4Results)
+
+  // 2. Extract cross-tier learning patterns
+  const crossTierPatterns = extractCrossTierPatterns([tier1Results, tier2Results, tier3Results, tier4Results])
+
+  // 3. Update all tiers with new learning
+  await updateAllTiersLearning(crossTierPatterns)
+
+  // 4. Record comprehensive performance metrics
+  recordFourTierPerformance([tier1Results, tier2Results, tier3Results, tier4Results])
+
+  return { learning_gains: calculateLearningGains(crossTierPatterns) }
+}
+## Four-Tier Workflow Integration
+
+### Complete Workflow Process
+```javascript
+async function executeFourTierWorkflow(task) {
+  // Step 1: Strategic Analysis (Tier 1)
+  const strategicResults = await strategic_analysis(task)
+
+  // Step 2: Decision Making & Planning (Tier 2)
+  const userPrefs = await loadUserPreferences()
+  const decisionResults = await decision_making_planning(strategicResults, userPrefs)
+
+  // Step 3: Execution & Implementation (Tier 3)
+  const executionResults = await execution_implementation(decisionResults.decisions, decisionResults.execution_plan)
+
+  // Step 4: Validation & Optimization (Tier 4)
+  const validationResults = await validation_optimization(executionResults.implementations)
+
+  // Step 5: Cross-Tier Learning & Feedback
+  const learningResults = await cross_tier_learning_feedback(
+    strategicResults, decisionResults, executionResults, validationResults
+  )
+
+  // Return comprehensive results
+  return {
+    strategic_analysis: strategicResults,
+    decisions: decisionResults,
+    execution: executionResults,
+    validation: validationResults,
+    learning: learningResults,
+    overall_quality_score: validationResults.validations[0]?.quality_score || 0,
+    execution_time: calculateTotalExecutionTime([strategicResults, decisionResults, executionResults, validationResults])
   }
 }
 ```
+
+### Performance Optimization Features
+
+**Complexity-Based Agent Selection**:
+- **Simple Tasks**: 1-2 agents per tier (fast execution)
+- **Moderate Tasks**: 2-3 agents per tier (balanced approach)
+- **Complex Tasks**: 3-4 agents per tier (comprehensive analysis)
+- **Critical Tasks**: All available agents per tier (maximum thoroughness)
+
+**Adaptive Learning Integration**:
+- Each tier learns from previous tier feedback
+- Cross-tier pattern recognition and optimization
+- Continuous performance improvement across all tiers
+- User preference integration throughout the workflow
+
+**Quality Assurance Pipeline**:
+- Each tier validates its own output
+- Tier 4 provides comprehensive quality validation
+- Automatic quality improvement loops
+- Production readiness validation
+```
+
+## Integration with Existing Two-Tier Learning Systems
+
+**Seamless Migration**: The four-tier architecture builds upon and enhances the existing two-tier learning systems:
+
+### Enhanced Learning Capabilities
+- **Agent Feedback System**: Now supports four-tier feedback loops
+- **Agent Performance Tracker**: Tracks performance across all four tiers
+- **User Preference Learner**: Integrates preferences throughout the workflow
+- **Adaptive Quality Thresholds**: Tier-specific quality standards
+- **Predictive Skill Loader**: Enhanced with four-tier pattern recognition
+- **Context-Aware Recommendations**: Multi-tier contextual understanding
+- **Intelligent Agent Router**: Optimized for four-tier agent selection
+- **Learning Visualizer**: Enhanced with four-tier learning insights
+
+### Backward Compatibility
+- All existing two-tier workflows continue to work
+- Learning data from two-tier system migrates seamlessly
+- Existing user preferences and patterns are preserved
+- Gradual enhancement as four-tier patterns emerge
+
+## Implementation Strategy
+
+### Phase 1: Four-Tier Architecture Foundation (v6.2.0)
+- Implement core four-tier workflow system
+- Create new specialized agents for each tier
+- Enhance existing learning systems for four-tier support
+- Maintain full backward compatibility
+
+### Phase 2: Advanced Features (v6.3.0)
+- Cross-tier learning acceleration
+- Advanced performance optimization
+- Enhanced user personalization across tiers
+- Predictive decision-making capabilities
+
+### Phase 3: AI-Driven Optimization (v6.4.0)
+- Machine learning integration for tier selection
+- Predictive performance optimization
+- Advanced cross-tier knowledge synthesis
+- Real-time adaptation and improvement
 
 **Integration with Existing Systems**:
 - **Pattern Learning**: Both tiers contribute to `.claude-patterns/patterns.json`

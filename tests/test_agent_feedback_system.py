@@ -28,7 +28,7 @@ class TestAgentFeedbackSystem:
     @pytest.fixture
     def feedback_system(self, temp_directory):
         """Create an AgentFeedbackSystem instance for testing"""
-        return AgentFeedbackSystem(data_dir=temp_directory)
+        return AgentFeedbackSystem(storage_dir=temp_directory)
 
     @pytest.fixture
     def sample_feedback(self):
@@ -159,7 +159,7 @@ class TestAgentFeedbackSystem:
         feedback_system.add_feedback(**sample_feedback)
 
         # Create new instance with same data directory
-        new_system = AgentFeedbackSystem(data_dir=feedback_system.data_dir)
+        new_system = AgentFeedbackSystem(storage_dir=feedback_system.data_dir)
 
         # Check feedback is available
         feedback_list = new_system.get_feedback_for_agent(
@@ -172,7 +172,7 @@ class TestAgentFeedbackSystem:
 
     def test_feedback_file_creation(self, temp_directory, sample_feedback):
         """Test that feedback file is created correctly"""
-        feedback_system = AgentFeedbackSystem(data_dir=temp_directory)
+        feedback_system = AgentFeedbackSystem(storage_dir=temp_directory)
 
         # Add feedback
         feedback_system.add_feedback(**sample_feedback)

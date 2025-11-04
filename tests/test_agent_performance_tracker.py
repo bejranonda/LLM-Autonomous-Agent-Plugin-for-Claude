@@ -28,7 +28,7 @@ class TestAgentPerformanceTracker:
     @pytest.fixture
     def performance_tracker(self, temp_directory):
         """Create an AgentPerformanceTracker instance for testing"""
-        return AgentPerformanceTracker(data_dir=temp_directory)
+        return AgentPerformanceTracker(storage_dir=temp_directory)
 
     @pytest.fixture
     def sample_performance_data(self):
