@@ -109,17 +109,24 @@ class DashboardDataCollector:
                 ]
             else:
                 # For plugin, check multiple possible locations
+                # IMPORTANT: Prioritize .claude-patterns which has the actual data
                 storage_dirs = [
-                    self.project_root / '.claude-unified',
-                    self.patterns_dir / '.claude-unified',
-                    current_dir / '.claude-unified',
+                    self.patterns_dir,  # First priority: .claude-patterns with unified_data.json
                     self.project_root / '.claude-patterns',
-                    self.patterns_dir
+                    self.patterns_dir / '.claude-unified',
+                    self.project_root / '.claude-unified',
+                    current_dir / '.claude-unified'
                 ]
 
             for storage_dir in storage_dirs:
                 if storage_dir.exists():
                     try:
+                        # Check if this directory has actual data
+                        has_data = self._validate_storage_has_data(storage_dir)
+                        if not has_data:
+                            print(f"  Skipping {storage_dir}: No data found")
+                            continue
+
                         self.unified_storage = UnifiedParameterStorage(str(storage_dir))
                         self.use_unified_storage = True
                         # Enable compatibility mode for seamless transition
@@ -209,6 +216,78 @@ class DashboardDataCollector:
         best_dir.mkdir(parents=True, exist_ok=True)
         print(f"Created new patterns directory: {best_dir}")
         return best_dir
+
+    def _validate_storage_has_data(self, storage_dir: Path) -> bool:
+        """
+        Validate that a storage directory contains actual data.
+
+        Checks for:
+        1. unified_data.json with quality_assessments
+        2. quality_history.json with assessments
+        3. patterns.json with patterns
+
+        Returns True if any meaningful data is found.
+        """
+        # Check for unified_data.json (new format)
+        unified_file = storage_dir / "unified_data.json"
+        if unified_file.exists():
+            try:
+                with open(unified_file, 'r') as f:
+                    data = json.load(f)
+                    # Check if quality_history has assessments
+                    assessments = data.get("quality_history", {}).get("quality_assessments", [])
+                    if assessments and len(assessments) > 0:
+                        return True
+                    # Check if patterns exist
+                    patterns = data.get("patterns", [])
+                    if patterns and len(patterns) > 0:
+                        return True
+            except:
+                pass
+
+        # Check for quality_history.json (scattered files)
+        quality_file = storage_dir / "quality_history.json"
+        if quality_file.exists():
+            try:
+                with open(quality_file, 'r') as f:
+                    data = json.load(f)
+                    assessments = data.get("quality_assessments", [])
+                    if assessments and len(assessments) > 0:
+                        return True
+            except:
+                pass
+
+        # Check for patterns.json
+        patterns_file = storage_dir / "patterns.json"
+        if patterns_file.exists():
+            try:
+                with open(patterns_file, 'r') as f:
+                    data = json.load(f)
+                    # Handle both array and dict formats
+                    patterns = data if isinstance(data, list) else data.get("patterns", [])
+                    if patterns and len(patterns) > 0:
+                        return True
+            except:
+                pass
+
+        # Check for unified_parameters.json (new unified storage format)
+        unified_params = storage_dir / "unified_parameters.json"
+        if unified_params.exists():
+            try:
+                with open(unified_params, 'r') as f:
+                    data = json.load(f)
+                    # Check if there's actual data (not just defaults)
+                    quality_scores = data.get("parameters", {}).get("quality", {}).get("scores", {})
+                    history = quality_scores.get("history", [])
+                    if history and len(history) > 0:
+                        return True
+                    # Check current score is not zero
+                    if quality_scores.get("current", 0.0) > 0:
+                        return True
+            except:
+                pass
+
+        return False
 
     def _deterministic_score(self, base_score: float, variance: float, seed_data: str) -> float:
         """Generate deterministic scores based on seed data."""
@@ -335,17 +414,60 @@ class DashboardDataCollector:
 
     def _load_unified_data(self) -> dict:
         """
-        Load data from unified parameter storage.
+        Load data from unified storage (unified_data.json).
         This is the PRIMARY data source for all dashboard APIs.
         """
         if not self.use_unified_storage or not self.unified_storage:
-            print("Warning: Unified storage not available, using empty data", file=sys.stderr)
+            print("Error: Unified storage not available", file=sys.stderr)
             return {"quality": {"assessments": {"history": [], "current": {}}}, "patterns": {}}
 
         try:
-            # Read unified data
-            unified_data = self.unified_storage._read_data()
+            # Read directly from unified_data.json
+            unified_file = self.patterns_dir / "unified_data.json"
+            if not unified_file.exists():
+                print(f"Error: unified_data.json not found at {unified_file}", file=sys.stderr)
+                return {"quality": {"assessments": {"history": [], "current": {}}}, "patterns": {}}
+
+            with open(unified_file, 'r') as f:
+                file_data = json.load(f)
+
+            # Convert old unified format to new format expected by dashboard
+            unified_data = {
+                "quality": {"assessments": {"history": [], "current": {}}},
+                "patterns": [],
+                "skills": {},
+                "agents": {},
+                "performance": {"records": []}
+            }
+
+            # Map quality_history to new format
+            quality_history_data = file_data.get("quality_history", {})
+            assessments = quality_history_data.get("quality_assessments", [])
+            if assessments:
+                unified_data["quality"]["assessments"]["history"] = assessments
+
+            # Patterns
+            patterns = file_data.get("patterns", [])
+            if patterns:
+                unified_data["patterns"] = patterns
+
+            # Skills
+            skill_metrics = file_data.get("skill_metrics", {})
+            if skill_metrics:
+                unified_data["skills"] = skill_metrics
+
+            # Agents
+            agent_metrics = file_data.get("agent_metrics", {})
+            if agent_metrics:
+                unified_data["agents"] = agent_metrics
+
+            # Performance records
+            performance_records = file_data.get("performance_records", {})
+            if performance_records:
+                unified_data["performance"] = performance_records
+
             return unified_data
+
         except Exception as e:
             print(f"Error loading unified data: {e}", file=sys.stderr)
             return {"quality": {"assessments": {"history": [], "current": {}}}, "patterns": {}}
@@ -1236,13 +1358,18 @@ class DashboardDataCollector:
         success_by_task = defaultdict(list)
 
         # Process patterns.json (handle both array and dict formats)
-        patterns_list = patterns_data.get("patterns", [])
-        if isinstance(patterns_list, list):
-            for pattern in patterns_list:
-                task_type = pattern.get("task_type", "unknown")
-                task_counts[task_type] += 1
-                success = pattern.get("outcome", {}).get("success", False)
-                success_by_task[task_type].append(1 if success else 0)
+        if isinstance(patterns_data, list):
+            patterns_list = patterns_data
+        elif isinstance(patterns_data, dict):
+            patterns_list = patterns_data.get("patterns", [])
+        else:
+            patterns_list = []
+
+        for pattern in patterns_list:
+            task_type = pattern.get("task_type", "unknown")
+            task_counts[task_type] += 1
+            success = pattern.get("outcome", {}).get("success", False)
+            success_by_task[task_type].append(1 if success else 0)
 
         # Process skill_usage_history from unified data
         skill_metrics_data = unified_data.get("skill_metrics", {})
