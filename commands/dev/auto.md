@@ -1,7 +1,7 @@
 ---
 name: dev:auto
 description: Fully autonomous development from requirements to production-ready code with testing and validation
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

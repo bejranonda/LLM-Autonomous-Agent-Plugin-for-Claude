@@ -1,7 +1,7 @@
 ---
 name: workspace:improve
 description: Analyze plugin and suggest improvements based on best practices and patterns
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

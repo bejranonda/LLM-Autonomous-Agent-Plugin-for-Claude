@@ -1,7 +1,7 @@
 ---
 name: validate:plugin
 description: Validate Claude Code plugin against official guidelines
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

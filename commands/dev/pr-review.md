@@ -1,7 +1,7 @@
 ---
 name: dev:pr-review
 description: CodeRabbit-style PR review with security scanning, test coverage, and one-click fixes
-delegates-to: pr-reviewer
+delegates-to: autonomous-agent:pr-reviewer
 ---
 
 # Pull Request Review Command

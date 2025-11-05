@@ -1,7 +1,7 @@
 ---
 name: debug:eval
 description: Debug and evaluate performance issues with detailed diagnostics and fixes
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

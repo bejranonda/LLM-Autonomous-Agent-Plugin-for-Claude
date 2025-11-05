@@ -1,7 +1,7 @@
 ---
 name: workspace:update-readme
 description: Smart README update that learns your style and reflects current project state
-delegates-to: documentation-generator
+delegates-to: autonomous-agent:documentation-generator
 ---
 
 # Workspace Update-README Command

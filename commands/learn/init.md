@@ -2,7 +2,7 @@
 name: learn:init
 description: Initialize pattern learning database and analyze project patterns
 
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 
 # Learn Patterns Command
 

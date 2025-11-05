@@ -1,7 +1,7 @@
 ---
 name: validate:patterns
 description: Validate pattern learning database integrity and generate health reports
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Command: `/validate:patterns`

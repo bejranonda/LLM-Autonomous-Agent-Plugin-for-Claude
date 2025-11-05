@@ -1,7 +1,7 @@
 ---
 name: workspace:reports
 description: Organize and consolidate scattered reports into clean directory structure
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

@@ -1,7 +1,7 @@
 ---
 name: learn:predict
 description: Generate ML-powered predictive insights and optimization recommendations from patterns
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Predictive Analytics Command

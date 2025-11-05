@@ -1,7 +1,7 @@
 ---
 name: dev:model-switch
 description: Switch between Claude and GLM AI models with secure token management
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

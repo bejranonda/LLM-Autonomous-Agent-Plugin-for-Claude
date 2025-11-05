@@ -1,7 +1,7 @@
 ---
 name: workspace:update-about
 description: Update GitHub About section with SEO-optimized description, topics, and links
-delegates-to: documentation-generator
+delegates-to: autonomous-agent:documentation-generator
 ---
 
 # Workspace Update-About Command

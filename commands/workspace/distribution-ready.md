@@ -1,7 +1,7 @@
 ---
 name: workspace:distribution-ready
 description: Clean and optimize repository for marketplace/public distribution
-delegates-to: workspace-organizer
+delegates-to: autonomous-agent:workspace-organizer
 ---
 
 # Command: `/workspace:distribution-ready`

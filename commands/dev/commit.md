@@ -1,7 +1,7 @@
 ---
 name: dev:commit
 description: Intelligent commit management with automatic staging, conventional commits, and learning integration
-delegates-to: git-repository-manager
+delegates-to: autonomous-agent:git-repository-manager
 ---
 
 # Dev-Commit Command

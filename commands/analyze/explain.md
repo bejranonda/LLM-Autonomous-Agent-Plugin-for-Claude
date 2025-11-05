@@ -1,7 +1,7 @@
 ---
 name: analyze:explain
 description: Explain and analyze task, event, or code without making modifications - read-only review
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Analyze-Explain Command

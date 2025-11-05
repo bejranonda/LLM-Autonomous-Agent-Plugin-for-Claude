@@ -1,7 +1,7 @@
 ---
 name: analyze:quality
 description: Run comprehensive quality control with autonomous auto-fixing
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

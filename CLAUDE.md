@@ -7,9 +7,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous AI behavior through pattern learning, skill auto-selection, background task execution, comprehensive quality control, and advanced token optimization. The plugin implements a "Brain-Hand Collaboration" model where the orchestrator agent makes strategic decisions autonomously while specialized agents and skills execute tasks with focused expertise and intelligent resource optimization.
 
 **Platform**: Claude Code CLI only (uses subagents, not compatible with claude.ai web/mobile)
-**Version**: 7.4.0 with comprehensive token optimization framework (60-70% cost reduction)
+**Version**: 7.4.1 with cross-platform compatibility fixes and encoding improvements
 
 ## Development Guidelines
+
+### ⚠️ **CRITICAL: Cross-Platform Encoding Guidelines**
+
+**EMOJI BAN**: DO NOT use emoji characters in Python scripts. This causes `UnicodeEncodeError` on Windows systems.
+
+**✅ SAFE: Use ASCII alternatives**
+```python
+print("[OK] Success completed")      # ✅ Works on Windows
+print("[ERROR] Failed operation")    # ✅ Works on Windows
+print("[WARN] Warning message")       # ✅ Works on Windows
+```
+
+**❌ PROBLEMATIC: Emojis cause Windows failures**
+```python
+print("✅ Success completed")         # ❌ Fails on Windows
+print("❌ Failed operation")          # ❌ Fails on Windows
+print("⚠️ Warning message")           # ❌ Fails on Windows
+```
+
+**Why this matters:**
+- Windows Command Prompt uses legacy code pages (cp1252)
+- Python on Windows may default to incompatible encoding
+- Emojis and Unicode symbols cause `UnicodeEncodeError`
+- Cross-platform compatibility requires ASCII-only output
+
+**Validation:**
+Run `python detect_fix_emojis.py --directory lib` to check for emoji usage.
 
 ### 🏗️ Development & Distribution Architecture
 

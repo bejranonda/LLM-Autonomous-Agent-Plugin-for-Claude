@@ -1,7 +1,7 @@
 ---
 name: monitor:recommend
 description: Get smart workflow and optimization recommendations based on learned patterns
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

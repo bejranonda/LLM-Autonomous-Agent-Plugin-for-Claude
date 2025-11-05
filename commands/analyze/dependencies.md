@@ -1,7 +1,7 @@
 ---
 name: analyze:dependencies
 description: Scan dependencies for CVE vulnerabilities across 11 package managers with fix recommendations
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Dependency Vulnerability Scanner

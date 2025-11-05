@@ -1,7 +1,7 @@
 ---
 name: learn:history
 description: Learn from commit history to identify patterns, debugging strategies, and improvement areas
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Learn-History Command

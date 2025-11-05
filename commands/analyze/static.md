@@ -1,7 +1,7 @@
 ---
 name: analyze:static
 description: Run 40+ linters across all languages with intelligent deduplication and unified reporting
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Static Analysis Command

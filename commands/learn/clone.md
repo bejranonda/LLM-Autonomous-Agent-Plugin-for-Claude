@@ -1,7 +1,7 @@
 ---
 name: learn:clone
 description: Clone and learn features from external repos to implement in current project
-delegates-to: dev-orchestrator
+delegates-to: autonomous-agent:dev-orchestrator
 ---
 
 # Learn-Clone Command

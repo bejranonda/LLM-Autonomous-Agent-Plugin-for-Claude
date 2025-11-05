@@ -1,7 +1,7 @@
 ---
 name: debug:gui
 description: Debug and validate GUI systems (dashboard, CLI, web) with automated diagnostics
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # GUI Debug & Validation Command

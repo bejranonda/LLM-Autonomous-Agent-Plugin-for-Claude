@@ -1,7 +1,7 @@
 ---
 name: learn:performance
 description: Display performance analytics dashboard with metrics, trends, and optimization recommendations
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 

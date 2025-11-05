@@ -1,7 +1,7 @@
 ---
 name: evolve:transcendent
 description: Experimental: Push AI boundaries with next-gen capabilities and revolutionary systems
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # /evolve:transcendent - Autonomous Transcendent Evolution Command

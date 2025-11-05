@@ -1,7 +1,7 @@
 ---
 name: dev:release
 description: Complete automated release workflow with platform detection (GitHub/GitLab/Bitbucket) and release creation
-delegates-to: version-release-manager
+delegates-to: autonomous-agent:version-release-manager
 ---
 
 # Release-Dev Command

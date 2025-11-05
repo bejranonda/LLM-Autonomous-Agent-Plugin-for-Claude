@@ -1,7 +1,7 @@
 ---
 name: analyze:repository
 description: Analyze external GitHub/GitLab repo for insights, patterns, and improvement opportunities
-delegates-to: orchestrator
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Analyze-Repository Command
