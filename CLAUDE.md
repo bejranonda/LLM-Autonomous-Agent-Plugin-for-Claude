@@ -43,241 +43,53 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 
 ### Four-Tier Agent Architecture (v7.0.0)
 
-**NEW**: Revolutionary four-tier group architecture separating analysis, decision-making, execution, and validation into specialized collaborative groups with automatic inter-group learning.
+**Revolutionary architecture separating analysis, decision-making, execution, and validation into specialized collaborative groups with automatic inter-group learning.**
 
-#### **Group 1: Strategic Analysis & Intelligence** (The "Brain")
-These agents **analyze and recommend** without executing changes:
+#### Group Overview
+- **Group 1 (Brain)**: Strategic Analysis & Intelligence - Analyzes and recommends
+- **Group 2 (Council)**: Decision Making & Planning - Evaluates and plans
+- **Group 3 (Hand)**: Execution & Implementation - Executes plans
+- **Group 4 (Guardian)**: Validation & Optimization - Validates and provides feedback
 
-- **code-analyzer**: Analyzes code structure and identifies refactoring opportunities
-- **security-auditor**: Identifies security vulnerabilities and recommends fixes
-- **smart-recommender**: Suggests optimal workflows based on learned patterns
-- **performance-analytics**: Analyzes performance trends and bottlenecks
-- **pr-reviewer**: Reviews pull requests and suggests improvements
-- **learning-engine**: Captures patterns and learns from outcomes
-- **validation-controller**: Validates approaches before execution
+#### Key Features
+- 27 specialized agents across 4 groups + 1 orchestrator
+- Automatic inter-group learning and feedback loops
+- User preference integration and pattern learning
+- Five-layer validation framework (Functional, Quality, Performance, Integration, UX)
 
-**Output**: Recommendations with confidence scores (0.0-1.0), priority levels, and estimated effort
-
-#### **Group 2: Decision Making & Planning** (The "Council")
-These agents **evaluate recommendations and create execution plans**:
-
-- **strategic-planner**: Master decision-maker evaluating Group 1 recommendations
-- **preference-coordinator**: Applies user preferences to decisions (coding style, quality priorities, risk tolerance)
-
-**Process**: Evaluate recommendations → Apply user preferences → Create prioritized execution plan
-**Output**: Execution plans with priorities, constraints, and user preference integration
-
-#### **Group 3: Execution & Implementation** (The "Hand")
-These agents **execute plans from Group 2**:
-
-- **quality-controller**: Executes quality improvements and auto-fixes
-- **test-engineer**: Creates and fixes tests, improves coverage
-- **frontend-analyzer**: Fixes TypeScript/React issues
-- **documentation-generator**: Creates and updates documentation
-- **build-validator**: Validates and fixes build configurations
-- **git-repository-manager**: Executes git operations
-- **api-contract-validator**: Synchronizes API contracts
-- **gui-validator**: Validates and fixes GUI issues
-- **dev-orchestrator**: Orchestrates development workflows
-- **version-release-manager**: Manages releases
-- **workspace-organizer**: Organizes workspace files
-- **claude-plugin-validator**: Validates plugin compliance
-
-**Input**: Execution plans with priorities, targets, and preferences
-**Output**: Execution results with metrics (before/after), changes made, and statistics
-
-#### **Group 4: Validation & Optimization** (The "Guardian")
-These agents **validate results and provide feedback**:
-
-- **post-execution-validator**: Five-layer validation (Functional, Quality, Performance, Integration, UX)
-- **performance-optimizer**: Analyzes performance and suggests optimizations
-- **continuous-improvement**: Identifies improvement opportunities and propagates patterns
-
-**Process**: Validate execution → Provide feedback → Share learnings
-**Output**: Validation results (GO/NO-GO), feedback to all groups, improvement suggestions
-
-#### **Orchestrator**: Four-Tier Coordinator
-`agents/orchestrator.md` - Coordinates the complete four-tier workflow:
-1. **Group 1**: Delegates analysis tasks, collects recommendations with confidence scores
-2. **Group 2**: Sends recommendations for evaluation, receives prioritized execution plan
-3. **Group 3**: Sends execution plan, receives results with metrics
-4. **Group 4**: Sends results for validation, receives feedback and GO/NO-GO decision
-5. **Learning Loop**: Captures feedback from Group 4 to all groups for continuous improvement
-
-#### **Inter-Group Learning Systems**
-
-**Group Collaboration**: `.claude-patterns/group_collaboration.json` - Inter-group communication tracking
-**Agent Feedback**: `.claude-patterns/agent_feedback.json` - Cross-group feedback loops
-**Agent Performance**: `.claude-patterns/agent_performance.json` - Individual agent specialization metrics
-**User Preferences**: `.claude-patterns/user_preferences.json` - Learned user preferences
-**Pattern Learning**: `.claude-patterns/patterns.json` - Successful approaches and patterns
-**Knowledge Transfer**: `.claude-patterns/knowledge_transfer.json` - Shared knowledge across groups
-**Group Specialization**: `.claude-patterns/group_specialization.json` - Group expertise profiles
-**Decision Explanations**: `.claude-patterns/decision_explanations.json` - Transparent decision reasoning
-**Proactive Suggestions**: `.claude-patterns/proactive_suggestions.json` - System-initiated improvements
+**See**: [Four-Tier Architecture Documentation](docs/FOUR_TIER_ARCHITECTURE.md) for complete agent descriptions, workflows, and communication patterns.
 
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest with metadata (v7.0.0)
+.claude-plugin/plugin.json          # Plugin manifest (v7.1.0)
 
-agents/                              # 27 specialized subagents (4 groups)
-├── orchestrator.md                 # Four-tier coordinator (v7.0)
-│
-├── Group 1: Strategic Analysis & Intelligence (The "Brain")
-│   ├── code-analyzer.md            # Code structure analysis (v7.0)
-│   ├── security-auditor.md         # Security vulnerability detection (v7.0)
-│   ├── smart-recommender.md        # Intelligent workflow recommendations
-│   ├── performance-analytics.md    # Performance trend analysis
-│   ├── pr-reviewer.md              # Pull request review
-│   ├── learning-engine.md          # Pattern learning (v1.1+)
-│   └── validation-controller.md    # Proactive validation (v1.7+)
-│
-├── Group 2: Decision Making & Planning (The "Council")
-│   ├── strategic-planner.md        # Master decision-maker (NEW v7.0)
-│   └── preference-coordinator.md   # User preference specialist (NEW v7.0)
-│
-├── Group 3: Execution & Implementation (The "Hand")
-│   ├── quality-controller.md       # Quality assurance with auto-fix (v7.0)
-│   ├── test-engineer.md            # Test generation, fixing, DB isolation (v7.0)
-│   ├── frontend-analyzer.md        # TypeScript, React, build validation (v2.0)
-│   ├── documentation-generator.md  # Documentation maintenance
-│   ├── build-validator.md          # Build configuration validation (v2.0)
-│   ├── git-repository-manager.md   # Git operations and release management
-│   ├── api-contract-validator.md   # API synchronization & type generation (v2.0)
-│   ├── gui-validator.md            # GUI debugging and validation (v5.x)
-│   ├── dev-orchestrator.md         # Development workflow orchestration (v5.x)
-│   ├── version-release-manager.md  # Version and release management (v4.1.0)
-│   ├── workspace-organizer.md      # Workspace file organization
-│   └── claude-plugin-validator.md  # Plugin validation specialist (v2.1.2)
-│
-└── Group 4: Validation & Optimization (The "Guardian")
-    ├── post-execution-validator.md # Five-layer validation framework (NEW v7.0)
-    ├── performance-optimizer.md    # Performance analysis & optimization (NEW v7.0)
-    ├── continuous-improvement.md   # Improvement identification (NEW v7.0)
-    └── report-management-organizer.md # Report organization (v5.x)
+agents/                              # 27 specialized agents (4 groups)
+├── orchestrator.md                 # Four-tier coordinator
+├── [Group 1] 7 analysis agents     # Strategic Analysis & Intelligence
+├── [Group 2] 2 decision agents     # Decision Making & Planning
+├── [Group 3] 12 execution agents   # Execution & Implementation
+└── [Group 4] 4 validation agents   # Validation & Optimization
 
 skills/                              # 19 knowledge packages
-├── pattern-learning/               # Pattern recognition system
-├── code-analysis/                  # Code analysis methodologies
-├── quality-standards/              # Quality benchmarks
-├── testing-strategies/             # Test design patterns
-├── documentation-best-practices/   # Documentation standards
-├── validation-standards/           # Tool validation & consistency checks (v1.7+)
-├── fullstack-validation/           # Full-stack validation methodology (v2.0)
-├── model-detection/                # Cross-model compatibility detection (v3.0+)
-├── performance-scaling/            # Model-specific performance optimization (v3.0+)
-├── contextual-pattern-learning/    # Enhanced pattern learning with context (v3.0+)
-├── ast-analyzer/                   # Abstract syntax tree analysis (v3.0+)
-├── security-patterns/              # Security analysis and patterns (v3.0+)
-├── group-collaboration/            # Inter-group communication patterns (NEW v7.0)
-├── decision-frameworks/            # Decision-making methodologies (NEW v7.0)
-├── [Plus 5 additional specialized skills]
-
-commands/                            # 39 slash commands (8 categories with colon notation)
-├── dev/                           # Development commands
-│   ├── auto.md                    # Autonomous development workflow (/dev:auto)
-│   ├── commit.md                  # Intelligent commit management (/dev:commit) (NEW v5.4+)
-│   ├── release.md                 # Release management workflow (/dev:release)
-│   ├── model-switch.md            # Model switching (/dev:model-switch)
-│   └── pr-review.md              # Pull request review (/dev:pr-review)
-├── analyze/                       # Analysis commands
-│   ├── project.md                 # Autonomous project analysis (/analyze:project)
-│   ├── quality.md                 # Comprehensive quality control (/analyze:quality)
-│   ├── static.md                  # Static code analysis (/analyze:static)
-│   ├── dependencies.md           # Dependency vulnerability scanning (/analyze:dependencies)
-│   ├── explain.md                 # Explain task without modification (NEW v5.4+)
-│   └── repository.md             # Analyze external repositories (NEW v5.4+)
-├── validate/                       # Validation commands
-│   ├── all.md                     # Comprehensive validation audit (/validate:all)
-│   ├── fullstack.md               # Full-stack validation & auto-fix (/validate:fullstack)
-│   ├── plugin.md                 # Claude plugin validation (/validate:plugin)
-│   └── patterns.md               # Pattern validation (/validate:patterns)
-├── debug/                          # Debugging commands
-│   ├── eval.md                    # Evaluation debugging (/debug:eval)
-│   └── gui.md                    # GUI debugging (/debug:gui)
-├── learn/                          # Learning commands
-│   ├── init.md                    # Initialize pattern learning (/learn:init)
-│   ├── analytics.md               # Learning analytics (/learn:analytics)
-│   ├── performance.md             # Performance analytics dashboard (/learn:performance)
-│   ├── predict.md                # Predictive analytics (/learn:predict)
-│   ├── history.md                 # Learn from repository history (NEW v5.4+)
-│   └── clone.md                  # Clone features from external repos (NEW v5.4+)
-├── workspace/                      # Workspace commands
-│   ├── organize.md                # Workspace organization (/workspace:organize)
-│   ├── reports.md                 # Report organization (/workspace:reports)
-│   ├── improve.md                # Plugin improvement (/workspace:improve)
-│   ├── update-readme.md          # Intelligent README updates (NEW v5.4+)
-│   └── update-about.md           # GitHub About section updates (NEW v5.4+)
-├── monitor/                        # Monitoring commands
-│   ├── dashboard.md               # Real-time monitoring dashboard (/monitor:dashboard)
-│   └── recommend.md               # Smart workflow recommendations (/monitor:recommend)
-└── git-release-workflow.md        # Git release workflow (special case)
-
-patterns/                            # Auto-fix pattern database (NEW v2.0)
-└── autofix-patterns.json           # 24 patterns with 89% avg success rate
-
-lib/                                 # Python utilities and path resolution (v5.6+)
-├── exec_plugin_script.py           # Cross-platform script executor
-├── plugin_path_resolver.py         # Dynamic plugin path discovery
-│
-├── Four-Tier Learning Systems (v7.0)
-│   ├── group_collaboration_system.py      # Inter-group communication tracking (NEW v7.0)
-│   ├── group_performance_tracker.py       # Group-level performance metrics (NEW v7.0)
-│   ├── inter_group_knowledge_transfer.py  # Knowledge sharing across groups (NEW v7.0)
-│   ├── group_specialization_learner.py    # Group expertise profiling (NEW v7.0)
-│   ├── decision_explainer.py              # Decision transparency system (NEW v7.0)
-│   └── proactive_suggester.py             # Proactive improvement suggestions (NEW v7.0)
-│
-├── Agent Learning Systems (v5.9+)
-│   ├── agent_feedback_system.py           # Agent-to-agent feedback
-│   ├── agent_performance_tracker.py       # Individual agent metrics
-│   └── user_preference_learner.py         # User preference learning
-│
-├── dashboard_unified_adapter.py    # Dashboard integration with four-tier metrics (v7.0)
-└── [110+ utility scripts]
+commands/                            # 39 slash commands (8 categories)
+patterns/autofix-patterns.json      # 24 auto-fix patterns
+lib/                                 # 110+ Python utilities
 ```
+
+**See**: [Component Structure Details](docs/FOUR_TIER_ARCHITECTURE.md) for complete agent/skill/command listings.
 
 ### Cross-Platform Plugin Path Resolution (v5.6+)
 
-The plugin uses a three-layer architecture to execute Python scripts across all platforms and installation methods:
+Three-layer architecture executing Python scripts across all platforms and installation methods:
 
-**Layer 1: Script Executor** (`lib/exec_plugin_script.py`):
-- Automatically finds plugin installation location
-- Executes target scripts from `lib/` directory
-- Forwards all arguments to target script
-- Works in development, marketplace, and system-wide installations
+**Layer 1**: Script executor (`lib/exec_plugin_script.py`) - finds installation, executes scripts
+**Layer 2**: Path resolver (`lib/plugin_path_resolver.py`) - discovers plugin across platforms
+**Layer 3**: Command execution - `python lib/exec_plugin_script.py {script_name} {args}`
 
-**Layer 2: Path Resolver** (`lib/plugin_path_resolver.py`):
-- Dynamically discovers plugin installation across platforms
-- Checks development directories (current working directory and parents)
-- Checks marketplace paths (`~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`)
-- Checks local installations (`~/.claude/plugins/autonomous-agent/`)
-- Checks system-wide paths (`/usr/local/share/claude/plugins/`, Windows Program Files, etc.)
-- Respects `CLAUDE_PLUGIN_PATH` environment variable for custom locations
-- Validates installation by checking for `.claude-plugin/plugin.json`
+**Benefits**: Cross-platform (Windows/Linux/macOS), installation-agnostic, no hardcoded paths
 
-**Layer 3: Command Execution**:
-```bash
-# All slash commands use this pattern:
-python lib/exec_plugin_script.py {script_name} {arguments}
-
-# Example:
-python lib/exec_plugin_script.py dashboard.py --port 5000
-```
-
-**Why This Matters**:
-- ✅ No hardcoded paths - works on any user's machine
-- ✅ Cross-platform - Windows, Linux, macOS
-- ✅ Installation-agnostic - development, marketplace, system-wide
-- ✅ User-independent - no assumptions about home directories
-- ✅ Clear errors - shows searched locations if plugin not found
-
-**Key Files**:
-- `lib/exec_plugin_script.py` - Execute scripts with automatic path resolution
-- `lib/plugin_path_resolver.py` - Find plugin installation dynamically
-- `docs/CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md` - Complete architecture documentation
-- `docs/COMMAND_UPDATE_GUIDE.md` - Guide for updating slash commands
+**Key Files**: `lib/exec_plugin_script.py`, `lib/plugin_path_resolver.py`, `docs/CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md`
 
 ## Key Architectural Principles
 
@@ -295,35 +107,7 @@ The orchestrator agent operates **without human approval** at each step:
 
 **Location**: `.claude-patterns/` (auto-created in user projects, NOT in this repo)
 
-**Pattern Database Schema**:
-```json
-{
-  "project_context": {
-    "detected_languages": ["python", "javascript"],
-    "frameworks": ["flask", "react"],
-    "project_type": "web-application"
-  },
-  "patterns": [{
-    "task_type": "refactoring",
-    "context": {...},
-    "execution": {
-      "skills_used": ["code-analysis", "quality-standards"],
-      "agents_delegated": ["code-analyzer"]
-    },
-    "outcome": {
-      "success": true,
-      "quality_score": 96
-    },
-    "reuse_count": 5
-  }],
-  "skill_effectiveness": {
-    "code-analysis": {
-      "success_rate": 0.93,
-      "recommended_for": ["refactoring", "bug-fix"]
-    }
-  }
-}
-```
+Stores project context, successful patterns, skill effectiveness, and agent performance for future optimization.
 
 ### 3. Skill Auto-Selection Algorithm
 
@@ -339,18 +123,8 @@ The orchestrator agent operates **without human approval** at each step:
 
 ### 4. Quality Score System
 
-```
-Quality Score (0-100) =
-  Tests Passing      (30 points) +
-  Standards          (25 points) +
-  Documentation      (20 points) +
-  Pattern Adherence  (15 points) +
-  Code Metrics       (10 points)
-
-Threshold: 70/100
-If score < 70: Auto-correction loop triggered
-If score ≥ 70: Task marked complete
-```
+**Scoring** (0-100): Tests (30) + Standards (25) + Documentation (20) + Patterns (15) + Code Metrics (10)
+**Threshold**: 70/100 (auto-correct if below, complete if above)
 
 ### 5. Agent Delegation Strategy
 
@@ -365,294 +139,70 @@ If score ≥ 70: Task marked complete
 
 ### Testing the Plugin
 
-Since this is a plugin definition (not executable code), testing involves:
+**Plugin definition testing** (not executable code):
 
-1. **Install plugin in Claude Code**:
-   ```bash
-   # Copy to Claude Code plugins directory
-   cp -r . ~/.config/claude/plugins/autonomous-agent/
-   ```
-
-2. **Test in a sample project**:
-   ```bash
-   # Navigate to test project
-   cd /path/to/test-project
-
-   # Initialize pattern learning
-   /learn:init
-
-   # Run autonomous analysis
-   /analyze:project
-
-   # Test quality control
-   /analyze:quality
-   ```
-
-3. **Verify pattern storage**:
-   ```bash
-   # Check pattern database was created
-   cat .claude-patterns/patterns.json
-   ```
+1. Install: `cp -r . ~/.config/claude/plugins/autonomous-agent/`
+2. Test: `/learn:init`, `/analyze:project`, `/analyze:quality`
+3. Verify: `cat .claude-patterns/patterns.json`
 
 ### Modifying Plugin Components
 
-**IMPORTANT**: Claude Code uses convention-based discovery. The `plugin.json` manifest only contains metadata and does NOT explicitly list components.
+**Convention-based discovery** (no explicit listing in plugin.json):
 
-**Adding a new agent**:
-1. Create `agents/new-agent.md` following the YAML frontmatter format
-2. Claude Code automatically discovers it from the `agents/` directory
-3. Reference relevant skills in the agent's system prompt
-
-**Adding a new skill**:
-1. Create `skills/new-skill/SKILL.md` with YAML frontmatter
-2. Claude Code automatically discovers it from `skills/*/SKILL.md`
-3. Reference from agent system prompts using skill name
-
-**Adding a new command**:
-1. Create `commands/new-command.md` with command description
-2. Claude Code automatically discovers it from the `commands/` directory
+- **Agent**: Create `agents/new-agent.md` with YAML frontmatter
+- **Skill**: Create `skills/new-skill/SKILL.md` with YAML frontmatter
+- **Command**: Create `commands/new-command.md` with description
 
 ## Important Patterns and Conventions
 
-### Agent System Prompt Structure
+### Agent & Skill Structure
 
-All agents follow this pattern:
-```markdown
----
-name: agent-name
-description: When to invoke this agent (action-oriented)
-tools: Read,Write,Edit,Bash,Grep,Glob  # Optional
-model: inherit  # Optional
----
-
-# Agent Title
-
-Core responsibilities...
-
-## Skills Integration
-Reference skills by name...
-
-## Approach
-Detailed instructions...
-
-## Handoff Protocol
-How to return results...
-```
-
-### Skill Structure
-
-All skills follow this pattern:
-```markdown
----
-name: Skill Name
-description: What this skill provides (200 char max)
-version: 1.0.0
----
-
-## Overview
-What, when, and why...
-
-## [Domain-Specific Sections]
-2-5 sections with guidelines, examples, standards...
-
-## When to Apply
-Trigger conditions...
-```
-
-### Progressive Disclosure
-
-Skills use a three-tier loading system:
-1. **Metadata** (YAML frontmatter) - Always loaded for relevance check
-2. **Markdown body** - Loaded when skill is activated
-3. **Resources** (REFERENCE.md, etc.) - Loaded only when needed
+**Agents**: YAML frontmatter + title + skills + approach + handoff protocol
+**Skills**: YAML frontmatter + overview + domain sections + when to apply
+**Loading**: Three-tier system (metadata → body → resources) for efficiency
 
 ## Four-Tier Learning Systems (v7.0.0+)
 
-### Group Collaboration System (NEW v7.0)
+**Comprehensive learning infrastructure supporting continuous improvement across all four agent groups.**
 
-**Purpose**: Track and optimize inter-group communication across all four groups for continuous improvement.
+### Core Learning Components
 
-**Location**: `lib/group_collaboration_system.py` + `.claude-patterns/group_collaboration.json`
-
-**How It Works**:
-1. **Group 1 → Group 2**: Analysis recommendations with confidence scores
-2. **Group 2 → Group 3**: Execution plans with priorities and user preferences
-3. **Group 3 → Group 4**: Execution results with metrics
-4. **Group 4 → All Groups**: Validation feedback and learning insights
-
-**Key Features**:
-- Inter-group communication tracking (all 6 communication paths)
-- Communication success rate monitoring
-- Knowledge transfer effectiveness
-- Collaboration quality metrics
+**Group Collaboration System** (NEW v7.0):
+- Inter-group communication tracking across all 6 paths
+- Communication success rate monitoring and optimization
+- Knowledge transfer effectiveness metrics
 - Feedback loop cycle time tracking
 
-**Example**:
-```python
-# Group 1 → Group 2 communication
-record_communication(
-  from_agent="code-analyzer",
-  to_agent="strategic-planner",
-  task_id=task_id,
-  communication_type="recommendation",
-  message="Code analysis complete with 5 recommendations",
-  data={"quality_score": 72, "recommendations": [...], "confidence": 0.92}
-)
-```
-
-### Agent Feedback System (v5.9.0+)
-
-**Purpose**: Enable explicit feedback exchange between all agents across groups for continuous improvement.
-
-**Location**: `lib/agent_feedback_system.py` + `.claude-patterns/agent_feedback.json`
-
-**How It Works**:
-1. **Group 1 Agent** (e.g., code-analyzer) provides recommendations
-2. **Group 3 Agent** (e.g., quality-controller) executes based on Group 2 plan
-3. **Group 4 Agent** (e.g., post-execution-validator) validates and provides feedback
-4. **Feedback Captured**: Effectiveness, quality improvement, recommendations followed
-5. **Learning Applied**: All groups learn what works best
-
-**Key Features**:
-- Feedback types: success, improvement, warning, error
+**Agent Feedback System** (v5.9.0+):
+- Explicit feedback exchange between all agents across groups
 - Four-tier collaboration matrix tracking
-- Effectiveness metrics per group
-- Learning insights extraction across groups
+- Effectiveness metrics and learning insights extraction
+- Success/improvement/warning/error feedback types
 
-**Example**:
-```python
-# Group 4 provides feedback to Group 1
-add_feedback(
-  from_agent="post-execution-validator",
-  to_agent="code-analyzer",
-  task_id="pattern_20251104_001",
-  feedback_type="success",
-  message="Recommendations were highly effective. Quality score improved +18 points",
-  impact="quality_score +18"
-)
-```
+**Agent Performance Tracking**:
+- Individual agent specialization identification
+- Success rates, quality scores, execution time tracking
+- Performance trends and top/weak performer identification
+- Task specialization discovery and metrics
 
-### Agent Performance Tracking
+**User Preference Learning**:
+- Coding style, workflow, and quality weight preferences
+- Automatic adaptation based on user interactions
+- Confidence tracking (improves with more interactions)
+- Personalized behavior optimization
 
-**Purpose**: Track individual agent performance metrics for specialization identification and continuous improvement.
+**Performance Improvements**:
+- Inter-group communication efficiency: +25% after 20 tasks
+- Recommendation accuracy: 78% → 94% after 25 tasks
+- User satisfaction: 78% → 95% after 30 tasks
+- Agent specialization: Identified in 92% of agents after 20 tasks
 
-**Location**: `lib/agent_performance_tracker.py` + `.claude-patterns/agent_performance.json`
-
-**Metrics Tracked**:
-- Success rate per agent
-- Average quality score
-- Average execution time
-- Task specializations
-- Performance trends (improving/declining/stable)
-- Recommendations followed (for Group 1 agents)
-- Auto-fix success rate (for Group 3 agents)
-- Decision accuracy (for Group 2 agents)
-- Validation effectiveness (for Group 4 agents)
-
-**Key Features**:
-- Top performer identification
-- Weak performer detection
-- Specialization discovery (agent X excels at refactoring)
-- Performance rating (Excellent/Good/Satisfactory/Needs Improvement/Poor)
-
-**Example**:
-```python
-record_task_execution(
-  agent_name="test-engineer",
-  task_id="task_123",
-  task_type="testing",
-  success=True,
-  quality_score=94.0,
-  execution_time_seconds=120,
-  iterations=1
-)
-# Result: test-engineer identified as "Excellent" performer for testing tasks
-```
-
-### User Preference Learning
-
-**Purpose**: Learn user preferences over time to adapt agent behavior for personalized experience.
-
-**Location**: `lib/user_preference_learner.py` + `.claude-patterns/user_preferences.json`
-
-**Preferences Learned**:
-
-**Coding Style**:
-- Verbosity (concise/balanced/verbose)
-- Comment level (minimal/moderate/extensive)
-- Documentation level (minimal/standard/comprehensive)
-
-**Workflow Preferences**:
-- Auto-fix confidence threshold (0.85-0.95)
-- Confirmation required for: breaking_changes, security_fixes
-- Parallel execution preference
-- Quality threshold
-
-**Quality Weights**:
-- Tests importance (0-1)
-- Documentation importance (0-1)
-- Code quality importance (0-1)
-- Standards importance (0-1)
-- Patterns importance (0-1)
-
-**Communication Style**:
-- Detail level (brief/balanced/detailed)
-- Technical depth (low/medium/high)
-- Explanation preference (minimal/when_needed/always)
-
-**How It Learns**:
-```python
-# User approves changes
-record_interaction(
-  interaction_type="approval",
-  task_id="task_456",
-  user_feedback="Good",
-  context={
-    "code_style": {"verbosity": "concise"},
-    "quality_focus": {"tests": 0.40, "documentation": 0.25}
-  }
-)
-# Result: System adapts to prefer concise code and higher test coverage
-```
-
-**Learning Confidence**: Increases with more interactions (0-100%)
-
-### Integration with Dashboard
-
-All three systems integrate seamlessly with the monitoring dashboard:
-- **Agent Feedback**: Shows collaboration effectiveness
-- **Agent Performance**: Displays top/weak performers, trends
-- **User Preferences**: Shows learned patterns and confidence level
+**See**: [Learning Systems Documentation](docs/LEARNING_SYSTEMS.md) for complete implementation details, code examples, and integration patterns.
 
 ## Autonomous Workflow Example (Two-Tier)
 
-```
-User: "Refactor the authentication module"
-    ↓
-Orchestrator (two-tier autonomous execution):
-
-    === TIER 1: ANALYSIS ===
-    1. Loads user preferences → Prefers concise code, tests priority 40%
-    2. Delegates to code-analyzer → Analyzes auth module structure
-    3. Delegates to security-auditor → Identifies security concerns
-    4. Delegates to smart-recommender → Suggests optimal approach
-    5. Collects recommendations → 3 recommendations with confidence scores
-
-    === TIER 2: EXECUTION ===
-    6. Evaluates recommendations → Filters by user preferences
-    7. Delegates to quality-controller → Executes refactoring with context
-    8. Auto quality check → Score: 96/100 ✓
-    9. Records agent performance → quality-controller: +1 success
-
-    === FEEDBACK LOOP ===
-    10. Tier 2 → Tier 1 feedback → "Recommendations effective, +12 quality"
-    11. Records user approval → Updates preference: refactoring style
-    12. Stores pattern → For future similar tasks
-    13. Updates agent specializations → code-analyzer excels at auth
-
-    === RESULT ===
-    14. Returns → Refactored code + quality report + learned preferences
-```
+**User**: "Refactor authentication module"
+**Process**: Load preferences → Analyze (code/security/smart) → Execute (quality control) → Quality check (96/100) → Store patterns → Return refactored code + report
 
 ## Quality Control Integration
 
@@ -893,115 +443,34 @@ Threshold: 70/100 minimum
 
 ## Full-Stack Validation System (v2.0+)
 
-### Purpose
-Comprehensive validation and auto-fix for full-stack applications. Validates backend, frontend, database, and infrastructure in parallel while automatically fixing 80-90% of common issues.
+**Comprehensive validation and auto-fix for full-stack applications with 80-90% automatic issue resolution.**
 
-### Key Features
-
-**Full-Stack Validation** (`/validate:fullstack`):
+### Validation Layers
 - **Backend**: Dependencies, type hints, tests, API schema, database migrations, SQLAlchemy 2.0 compatibility
 - **Frontend**: TypeScript, builds, dependencies, bundle size, ESM/CommonJS conflicts
 - **API Contracts**: Frontend ↔ Backend endpoint matching, type synchronization, error handling
 - **Database**: Schema integrity, test isolation, query efficiency, CASCADE fixes
 - **Infrastructure**: Docker services, environment variables, volume validation
 
-**24 Auto-Fix Patterns** (`patterns/autofix-patterns.json`):
-- **Always Auto-Fixed (12 patterns)**: unused imports, SQLAlchemy text(), ESM conflicts, missing configs
-- **Suggested Fixes (12 patterns)**: React Query v4→v5, type hints, error handling, bundle optimization
-- **89% Average Success Rate**: Validated across multiple project types
+### Key Features
+- **24 Auto-Fix Patterns**: 89% average success rate across project types
+- **Parallel Validation**: All layers validated simultaneously (4x faster)
+- **Smart Prioritization**: Auto-fix (confidence > 90%), suggest (70-90%), report (< 70%)
+- **Learning Integration**: Improves validation success rates over time
 
-### New Specialized Agents
-
-**frontend-analyzer**:
-- TypeScript validation with auto-fix (unused imports, missing types)
-- React Query syntax migration (v4 → v5)
-- Build configuration validation (Vite, Webpack, Rollup)
-- Bundle size analysis with optimization recommendations
-- ESM/CommonJS conflict resolution
-
-**api-contract-validator**:
-- Backend API schema extraction (OpenAPI/Swagger)
-- Frontend API call discovery and matching
-- Auto-generate TypeScript types from backend schemas
-- Auto-generate missing API client methods
-- Cross-validate parameter types and HTTP methods
-
-**build-validator**:
-- Build tool detection and config validation
-- Environment variable tracking and .env.example generation
-- Module system conflict detection (ESM vs CommonJS)
-- Bundle analysis with optimization suggestions
-- Auto-generate missing config files
-
-**test-engineer (enhanced)**:
-- Database test isolation validation
-- SQLAlchemy 2.0 compatibility auto-fix (text() wrapper)
-- Database CASCADE auto-fix for teardown issues
-- pytest fixture generation
-- View/trigger dependency detection
-
-### Auto-Fix Decision Matrix
-
-**Priority Levels**:
-- `auto`: Fix automatically without confirmation (success rate > 90%)
-- `suggest`: Suggest fix and ask for confirmation (success rate 70-90%)
-- `report`: Report issue, manual fix required (success rate < 70%)
-
-**Example Auto-Fixes**:
-```python
-# SQLAlchemy text() wrapper (100% success)
-execute("SELECT *")  →  execute(text("SELECT *"))
-
-# Database CASCADE (100% success)
-DROP TABLE users;  →  DROP TABLE users CASCADE;
-
-# TypeScript unused imports (100% success)
-import { unused } from 'lib';  →  (removed)
-
-# ESM in .js file (95% success)
-postcss.config.js  →  postcss.config.mjs
-```
-
-### Validation Workflow
-
-1. **Project Detection** (5-10s): Identify all tech stack components
-2. **Parallel Validation** (30-120s): Backend, frontend, database simultaneously
-3. **Cross-Component Validation** (15-30s): API contracts, env vars, auth flow
-4. **Auto-Fix Application** (10-30s): Apply high-confidence fixes
-5. **Quality Assessment** (5-10s): Calculate score and generate report
+### Specialized Agents
+- **frontend-analyzer**: TypeScript validation, React Query migration, build config
+- **api-contract-validator**: API schema extraction, type synchronization, client generation
+- **build-validator**: Build tool detection, environment variable tracking, module conflicts
+- **test-engineer (enhanced)**: Database isolation, SQLAlchemy 2.0 fixes, fixture generation
 
 ### Performance Metrics
-
 - **Time Savings**: 45-60 min manual → 2-3 min automated (93-95% reduction)
 - **Auto-Fix Success**: 80-90% of issues fixed automatically
-- **Issue Detection**: 92% after 10 similar projects (learns over time)
+- **Issue Detection**: 92% accuracy after 10 similar projects
 - **Quality Score**: 87/100 average for production-ready projects
 
-### Integration with Learning System
-
-Full-stack validation integrates with pattern learning:
-- Captures project structure patterns (FastAPI + React + PostgreSQL)
-- Learns common issue frequencies (unused imports, SQL text() wrapper)
-- Stores auto-fix success rates for continuous improvement
-- Optimizes validation workflow based on project type
-
-### Quality Score Calculation (v2.0)
-
-```
-Total Score (0-100):
-├─ Component Scores (60 points):
-│  ├─ Backend: 20 points
-│  ├─ Frontend: 20 points
-│  └─ Integration: 20 points
-├─ Test Coverage (15 points): 70%+ = 15
-├─ Auto-Fix Success (15 points): All fixed = 15
-└─ Best Practices (10 points): Docs, types, standards
-
-Thresholds:
-✅ 70-100: Production Ready
-⚠️  50-69: Needs Improvement
-❌ 0-49: Critical Issues
-```
+**See**: [Full-Stack Validation Documentation](docs/FULL_STACK_VALIDATION.md) for complete auto-fix patterns, validation workflows, and performance metrics.
 
 ## Notes for Future Claude Instances
 
