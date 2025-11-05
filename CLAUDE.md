@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous AI behavior through pattern learning, skill auto-selection, background task execution, comprehensive quality control, and advanced token optimization. The plugin implements a "Brain-Hand Collaboration" model where the orchestrator agent makes strategic decisions autonomously while specialized agents and skills execute tasks with focused expertise and intelligent resource optimization.
 
 **Platform**: Claude Code CLI only (uses subagents, not compatible with claude.ai web/mobile)
-**Version**: 7.4.1 with cross-platform compatibility fixes and encoding improvements
+**Version**: 7.5.0 with unified dashboard system consolidating all monitoring interfaces into a single comprehensive view
 
 ## Development Guidelines
 
