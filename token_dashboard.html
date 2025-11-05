@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Optimization Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            background: #48bb78;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-label {
+            color: #718096;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .metric-change {
+            color: #48bb78;
+            font-size: 0.9rem;
+        }
+
+        .metric-change.negative {
+            color: #f56565;
+        }
+
+        .alerts-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .alerts-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .alert-item {
+            background: #f7fafc;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-item.warning {
+            border-left-color: #ed8936;
+        }
+
+        .alert-item.critical {
+            border-left-color: #f56565;
+        }
+
+        .alert-message {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .alert-time {
+            color: #718096;
+            font-size: 0.85rem;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #ed8936, #dd6b20);
+        }
+
+        .progress-fill.danger {
+            background: linear-gradient(90deg, #f56565, #e53e3e);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        .refresh-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin: 20px 0;
+        }
+
+        .refresh-button:hover {
+            transform: scale(1.05);
+        }
+
+        .no-alerts {
+            color: #48bb78;
+            font-weight: 500;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .metric-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <div class="status-indicator"></div>
+                Token Optimization Dashboard
+            </h1>
+            <div class="subtitle">Real-time monitoring and analytics</div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Tokens Used (Last Hour)</div>
+                <div class="metric-value">0</div>
+                <div class="metric-change">Active usage</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0.0%"></div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Tokens Saved (Last Hour)</div>
+                <div class="metric-value">0</div>
+                <div class="metric-change">Cost optimization</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0.0%"></div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Cost Savings</div>
+                <div class="metric-value">$0.00</div>
+                <div class="metric-change">This hour</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0.0%"></div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Compression Ratio</div>
+                <div class="metric-value">0.0%</div>
+                <div class="metric-change ">Optimization efficiency</div>
+                <div class="progress-bar">
+                    <div class="progress-fill  " style="width: 0.0%"></div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Cache Hit Rate</div>
+                <div class="metric-value">0.0%</div>
+                <div class="metric-change negative">Performance metric</div>
+                <div class="progress-bar">
+                    <div class="progress-fill warning danger" style="width: 0.0%"></div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">System Health</div>
+                <div class="metric-value">100.0%</div>
+                <div class="metric-change">Overall status</div>
+                <div class="progress-bar">
+                    <div class="progress-fill  " style="width: 100.0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Optimization Effectiveness</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-label">Best Compression</span>
+                    <span class="stat-value">0.0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Average Compression</span>
+                    <span class="stat-value">0.0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Optimizations</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Best Cache Hit Rate</span>
+                    <span class="stat-value">0.0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Average Hit Rate</span>
+                    <span class="stat-value">0.0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Cache Hits</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Tokens Saved</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Cost Savings Rate</span>
+                    <span class="stat-value">0.0%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="alerts-section">
+            <div class="alerts-header">
+                <h2>Recent Alerts</h2>
+            </div>
+            <div class="no-alerts">✅ No recent alerts - System operating normally</div>
+        </div>
+
+        <center>
+            <button class="refresh-button" onclick="location.reload()">
+                🔄 Refresh Dashboard
+            </button>
+        </center>
+
+        <div class="chart-container">
+            <h2>System Information</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-label">Active Users</span>
+                    <span class="stat-value">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Response Time</span>
+                    <span class="stat-value">0.0ms</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Alerts (1h)</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Uptime</span>
+                    <span class="stat-value">100.0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Last Updated</span>
+                    <span class="stat-value">16:37:38</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">System Status</span>
+                    <span class="stat-value" style="color: #48bb78;">🟢 Operational</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh every 30 seconds
+        setTimeout(() => {
+            location.reload();
+        }, 30000);
+
+        // Add some interactivity
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
+        

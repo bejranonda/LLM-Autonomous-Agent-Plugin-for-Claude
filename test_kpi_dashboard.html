@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Optimization KPI Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease backwards;
+        }
+
+        .summary-card:nth-child(1) { animation-delay: 0.1s; }
+        .summary-card:nth-child(2) { animation-delay: 0.2s; }
+        .summary-card:nth-child(3) { animation-delay: 0.3s; }
+        .summary-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .summary-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .summary-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease backwards;
+        }
+
+        .section:nth-child(odd) { animation-delay: 0.2s; }
+        .section:nth-child(even) { animation-delay: 0.4s; }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .kpi-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .kpi-card.critical {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
+        }
+
+        .kpi-card.poor {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, #fff 0%, #fffbf0 100%);
+        }
+
+        .kpi-card.good {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #fff 0%, #f0fff4 100%);
+        }
+
+        .kpi-card.excellent {
+            border-color: #2ecc71;
+            background: linear-gradient(135deg, #fff 0%, #f0fff4 100%);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .kpi-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .kpi-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-excellent {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .status-good {
+            background: #3498db;
+            color: white;
+        }
+
+        .status-fair {
+            background: #f39c12;
+            color: white;
+        }
+
+        .status-poor {
+            background: #e67e22;
+            color: white;
+        }
+
+        .status-critical {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .kpi-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .kpi-metric {
+            text-align: center;
+        }
+
+        .kpi-metric .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .kpi-metric .label {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .kpi-progress {
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-excellent { background: #2ecc71; }
+        .progress-good { background: #3498db; }
+        .progress-fair { background: #f39c12; }
+        .progress-poor { background: #e67e22; }
+        .progress-critical { background: #e74c3c; }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .recommendations-list, .actions-list {
+            list-style: none;
+        }
+
+        .recommendations-list li, .actions-list li {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .recommendations-list li:hover, .actions-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .action-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-details {
+            flex: 1;
+        }
+
+        .action-meta {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .priority-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #f39c12;
+            color: white;
+        }
+
+        .priority-low {
+            background: #27ae60;
+            color: white;
+        }
+
+        .effort-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            background: #ecf0f1;
+            color: #333;
+        }
+
+        .system-health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .health-metric {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .health-metric .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .health-metric .label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .trend-improving {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .trend-stable {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .trend-declining {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .action-meta {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Token Optimization KPI Dashboard</h1>
+            <div class="subtitle">Performance Metrics & Insights • Daily View</div>
+        </div>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Overall Score</h3>
+                <div class="value" style="color: #e74c3c">34.4</div>
+                <div class="label">out of 100</div>
+            </div>
+            <div class="summary-card">
+                <h3>Critical Issues</h3>
+                <div class="value" style="color: #e74c3c">3</div>
+                <div class="label">need attention</div>
+            </div>
+            <div class="summary-card">
+                <h3>Improving Trends</h3>
+                <div class="value" style="color: #27ae60">0</div>
+                <div class="label">KPIs improving</div>
+            </div>
+            <div class="summary-card">
+                <h3>Active Actions</h3>
+                <div class="value" style="color: #667eea">2</div>
+                <div class="label">recommended</div>
+            </div>
+        </div>
+
+        
+        <div class="section">
+            <h2>System Health Overview</h2>
+            <div class="system-health-grid">
+        
+            <div class="health-metric">
+                <div class="value" style="color: #e74c3c">34.42429450308859</div>
+                <div class="label">Overall Score</div>
+            </div>
+            
+            <div class="health-metric">
+                <div class="value" style="color: #e74c3c">3</div>
+                <div class="label">Critical Issues</div>
+            </div>
+            
+            <div class="health-metric">
+                <div class="value" style="color: #667eea">0</div>
+                <div class="label">Improving Trends</div>
+            </div>
+            
+            <div class="health-metric">
+                <div class="value" style="color: #667eea">0</div>
+                <div class="label">Declining Trends</div>
+            </div>
+            </div></div>
+
+        <div class="section">
+            <h2>Key Performance Indicators</h2>
+            <div class="kpi-grid">
+            <div class="kpi-card poor">
+                <div class="kpi-header">
+                    <div class="kpi-title">Token Reduction Rate</div>
+                    <div class="kpi-status status-poor">poor</div>
+                </div>
+
+                <div class="kpi-metrics">
+                    <div class="kpi-metric">
+                        <div class="value">33.50</div>
+                        <div class="label">Current (%)</div>
+                    </div>
+                    <div class="kpi-metric">
+                        <div class="value">60.00</div>
+                        <div class="label">Target (%)</div>
+                    </div>
+                </div>
+
+                <div class="kpi-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-poor" style="width: 41.871921182266%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.8em;">
+                        <span>Achievement: 41.9%</span>
+                        <span class="trend-indicator trend-stable">
+                            Stable
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kpi-card critical">
+                <div class="kpi-header">
+                    <div class="kpi-title">Cache Hit Rate</div>
+                    <div class="kpi-status status-critical">critical</div>
+                </div>
+
+                <div class="kpi-metrics">
+                    <div class="kpi-metric">
+                        <div class="value">0.00</div>
+                        <div class="label">Current (%)</div>
+                    </div>
+                    <div class="kpi-metric">
+                        <div class="value">80.00</div>
+                        <div class="label">Target (%)</div>
+                    </div>
+                </div>
+
+                <div class="kpi-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-critical" style="width: 0.0%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.8em;">
+                        <span>Achievement: 0.0%</span>
+                        <span class="trend-indicator trend-stable">
+                            Stable
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kpi-card critical">
+                <div class="kpi-header">
+                    <div class="kpi-title">Daily Cost Savings</div>
+                    <div class="kpi-status status-critical">critical</div>
+                </div>
+
+                <div class="kpi-metrics">
+                    <div class="kpi-metric">
+                        <div class="value">0.01</div>
+                        <div class="label">Current ($)</div>
+                    </div>
+                    <div class="kpi-metric">
+                        <div class="value">50.00</div>
+                        <div class="label">Target ($)</div>
+                    </div>
+                </div>
+
+                <div class="kpi-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-critical" style="width: 0.0272%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.8em;">
+                        <span>Achievement: 0.0%</span>
+                        <span class="trend-indicator trend-stable">
+                            Stable
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kpi-card critical">
+                <div class="kpi-header">
+                    <div class="kpi-title">System Availability</div>
+                    <div class="kpi-status status-critical">critical</div>
+                </div>
+
+                <div class="kpi-metrics">
+                    <div class="kpi-metric">
+                        <div class="value">1.00</div>
+                        <div class="label">Current (%)</div>
+                    </div>
+                    <div class="kpi-metric">
+                        <div class="value">99.50</div>
+                        <div class="label">Target (%)</div>
+                    </div>
+                </div>
+
+                <div class="kpi-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-critical" style="width: 0.5102040816326531%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.8em;">
+                        <span>Achievement: 0.5%</span>
+                        <span class="trend-indicator trend-stable">
+                            Stable
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kpi-card excellent">
+                <div class="kpi-header">
+                    <div class="kpi-title">Error Rate</div>
+                    <div class="kpi-status status-excellent">excellent</div>
+                </div>
+
+                <div class="kpi-metrics">
+                    <div class="kpi-metric">
+                        <div class="value">99.00</div>
+                        <div class="label">Current (%)</div>
+                    </div>
+                    <div class="kpi-metric">
+                        <div class="value">1.00</div>
+                        <div class="label">Target (%)</div>
+                    </div>
+                </div>
+
+                <div class="kpi-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-excellent" style="width: 150.0%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.8em;">
+                        <span>Achievement: 150.0%</span>
+                        <span class="trend-indicator trend-stable">
+                            Stable
+                        </span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Performance Trends</h2>
+            <div class="trend-charts">
+                <div style="margin-bottom: 30px;">
+                    <h3>Token Reduction Rate Trend</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-token_reduction_rate"></canvas>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3>Cache Hit Rate Trend</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-cache_hit_rate"></canvas>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3>Daily Cost Savings Trend</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-daily_cost_savings"></canvas>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3>System Availability Trend</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-system_availability"></canvas>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3>Error Rate Trend</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-error_rate"></canvas>
+                    </div>
+                </div>
+                
+        </div>
+
+        <div class="section">
+            <h2>Recommendations</h2>
+            <ul class="recommendations-list"><li>URGENT: Cache hit rate is too low. Increase cache size or review cache policies.</li><li>URGENT: Cost savings are below target. Check budget constraints.</li><li>CRITICAL: Overall system performance is poor. Immediate attention required.</li></ul>
+        </div>
+
+        <div class="section">
+            <h2>Action Items</h2>
+            <ul class="actions-list">
+            <li>
+                <div class="action-item">
+                    <div class="action-details">
+                        <strong>Optimize progressive loading tiers</strong>
+                        <div style="color: #666; margin-top: 5px;">
+                            Expected Impact: 15-25% token reduction • Timeline: 1-2 days
+                        </div>
+                    </div>
+                    <div class="action-meta">
+                        <span class="priority-badge priority-high">high</span>
+                        <span class="effort-badge">medium effort</span>
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <div class="action-item">
+                    <div class="action-details">
+                        <strong>Increase cache size and tune policies</strong>
+                        <div style="color: #666; margin-top: 5px;">
+                            Expected Impact: 10-20% performance improvement • Timeline: 2-4 hours
+                        </div>
+                    </div>
+                    <div class="action-meta">
+                        <span class="priority-badge priority-high">high</span>
+                        <span class="effort-badge">low effort</span>
+                    </div>
+                </div>
+            </li>
+            </ul>
+        </div>
+
+        <div class="last-updated">
+            Last updated: 2025-11-05 16:53:48
+        </div>
+    </div>
+
+    <script>
+        // Dashboard data
+        const dashboardData = {"current_scores": {"individual_kpis": {"token_reduction_rate": {"current_value": 33.497536945812804, "target_value": 60.0, "minimum_acceptable": 40.0, "optimal_value": 75.0, "achievement_rate": 41.871921182266, "trend": "stable", "category": "performance", "weight": 2.0, "unit": "%", "status": "poor"}, "cache_hit_rate": {"current_value": 0.0, "target_value": 80.0, "minimum_acceptable": 60.0, "optimal_value": 90.0, "achievement_rate": 0.0, "trend": "stable", "category": "performance", "weight": 1.5, "unit": "%", "status": "critical"}, "daily_cost_savings": {"current_value": 0.0136, "target_value": 50.0, "minimum_acceptable": 25.0, "optimal_value": 100.0, "achievement_rate": 0.0272, "trend": "stable", "category": "cost", "weight": 2.0, "unit": "$", "status": "critical"}, "system_availability": {"current_value": 1.0, "target_value": 99.5, "minimum_acceptable": 98.0, "optimal_value": 99.9, "achievement_rate": 0.5102040816326531, "trend": "stable", "category": "system_health", "weight": 2.0, "unit": "%", "status": "critical"}, "error_rate": {"current_value": 99.0, "target_value": 1.0, "minimum_acceptable": 3.0, "optimal_value": 0.1, "achievement_rate": 150.0, "trend": "stable", "category": "system_health", "weight": 1.5, "unit": "%", "status": "excellent"}}, "overall_score": 34.42429450308859, "overall_achievement_rate": 34.42429450308859, "total_kpis_tracked": 5, "period": "daily", "calculated_at": "2025-11-05T16:53:48.809912"}, "historical_trends": {"token_reduction_rate": [{"timestamp": "2025-11-05T16:53:48.612752", "value": 33.497536945812804, "achievement_rate": 41.871921182266, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.649219", "value": 33.497536945812804, "achievement_rate": 41.871921182266, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.690429", "value": 33.497536945812804, "achievement_rate": 41.871921182266, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.731167", "value": 33.497536945812804, "achievement_rate": 41.871921182266, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.777113", "value": 33.497536945812804, "achievement_rate": 41.871921182266, "trend": "stable"}], "cache_hit_rate": [{"timestamp": "2025-11-05T16:53:48.619494", "value": 0.0, "achievement_rate": 0.0, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.655976", "value": 0.0, "achievement_rate": 0.0, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.697063", "value": 0.0, "achievement_rate": 0.0, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.737697", "value": 0.0, "achievement_rate": 0.0, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.784428", "value": 0.0, "achievement_rate": 0.0, "trend": "stable"}], "daily_cost_savings": [{"timestamp": "2025-11-05T16:53:48.626090", "value": 0.0136, "achievement_rate": 0.0272, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.662363", "value": 0.0136, "achievement_rate": 0.0272, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.707647", "value": 0.0136, "achievement_rate": 0.0272, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.744501", "value": 0.0136, "achievement_rate": 0.0272, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.791289", "value": 0.0136, "achievement_rate": 0.0272, "trend": "stable"}], "system_availability": [{"timestamp": "2025-11-05T16:53:48.632281", "value": 1.0, "achievement_rate": 0.5102040816326531, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.669294", "value": 1.0, "achievement_rate": 0.5102040816326531, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.714463", "value": 1.0, "achievement_rate": 0.5102040816326531, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.751178", "value": 1.0, "achievement_rate": 0.5102040816326531, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.797872", "value": 1.0, "achievement_rate": 0.5102040816326531, "trend": "stable"}], "error_rate": [{"timestamp": "2025-11-05T16:53:48.638896", "value": 99.0, "achievement_rate": 150.0, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.676023", "value": 99.0, "achievement_rate": 150.0, "trend": "insufficient_data"}, {"timestamp": "2025-11-05T16:53:48.720961", "value": 99.0, "achievement_rate": 150.0, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.757434", "value": 99.0, "achievement_rate": 150.0, "trend": "stable"}, {"timestamp": "2025-11-05T16:53:48.804384", "value": 99.0, "achievement_rate": 150.0, "trend": "stable"}]}, "system_snapshot": {"timestamp": "2025-11-05T16:53:48.859690", "metrics": {"progressive_loader": {"total_requests": 0, "avg_compression_ratio": 0.0, "token_savings": 0, "avg_optimization_time": 0.0, "user_patterns": 0, "cached_items": 0, "performance_improvement": 0.0}, "smart_cache": {"hit_rate": 0.0, "total_hits": 0, "total_misses": 0, "cache_size": 0, "memory_usage": 0, "prediction_accuracy": 0.0, "policy_performance": {}, "evictions": 0}, "token_monitoring": {"total_tokens_used": 13500, "total_tokens_saved": 6800, "savings_rate": 33.497536945812804, "cost_savings": 0.0136, "avg_compression_ratio": 0.75, "avg_cache_hit_rate": 0.8833333333333333, "active_alerts": 0, "system_health": 1.0}, "budget_manager": {"error": "Budget manager error: No item with that key"}, "timestamp": "2025-11-05T16:53:48.814305", "aggregated": {"total_tokens_processed": 20300, "total_tokens_saved": 6800, "overall_savings_rate": 33.497536945812804, "total_cost_savings": 0.0136, "overall_cache_hit_rate": 0.0, "overall_compression_ratio": 0.75, "system_health_score": 1.0, "error_rate": 99.0}}, "kpi_scores": {"individual_kpis": {"token_reduction_rate": {"current_value": 33.497536945812804, "target_value": 60.0, "minimum_acceptable": 40.0, "optimal_value": 75.0, "achievement_rate": 41.871921182266, "trend": "stable", "category": "performance", "weight": 2.0, "unit": "%", "status": "poor"}, "cache_hit_rate": {"current_value": 0.0, "target_value": 80.0, "minimum_acceptable": 60.0, "optimal_value": 90.0, "achievement_rate": 0.0, "trend": "stable", "category": "performance", "weight": 1.5, "unit": "%", "status": "critical"}, "daily_cost_savings": {"current_value": 0.0136, "target_value": 50.0, "minimum_acceptable": 25.0, "optimal_value": 100.0, "achievement_rate": 0.0272, "trend": "stable", "category": "cost", "weight": 2.0, "unit": "$", "status": "critical"}, "system_availability": {"current_value": 1.0, "target_value": 99.5, "minimum_acceptable": 98.0, "optimal_value": 99.9, "achievement_rate": 0.5102040816326531, "trend": "stable", "category": "system_health", "weight": 2.0, "unit": "%", "status": "critical"}, "error_rate": {"current_value": 99.0, "target_value": 1.0, "minimum_acceptable": 3.0, "optimal_value": 0.1, "achievement_rate": 150.0, "trend": "stable", "category": "system_health", "weight": 1.5, "unit": "%", "status": "excellent"}}, "overall_score": 34.42429450308859, "overall_achievement_rate": 34.42429450308859, "total_kpis_tracked": 5, "period": "daily", "calculated_at": "2025-11-05T16:53:48.859659"}, "system_health": {"overall_score": 34.42429450308859, "critical_issues": 3, "improving_trends": 0, "declining_trends": 0}, "recommendations": ["URGENT: Cache hit rate is too low. Increase cache size or review cache policies.", "URGENT: Cost savings are below target. Check budget constraints.", "CRITICAL: Overall system performance is poor. Immediate attention required."], "next_actions": [{"action": "Optimize progressive loading tiers", "priority": "high", "expected_impact": "15-25% token reduction", "effort": "medium", "timeline": "1-2 days"}, {"action": "Increase cache size and tune policies", "priority": "high", "expected_impact": "10-20% performance improvement", "effort": "low", "timeline": "2-4 hours"}]}, "period": "daily", "generated_at": "2025-11-05T16:53:48.865045", "summary": {"overall_score": 34.42429450308859, "critical_issues": 3, "improving_trends": 0, "total_recommendations": 3, "total_actions": 2}};
+
+        // Initialize charts when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTrendCharts();
+            startAutoRefresh();
+        });
+
+        function initializeTrendCharts() {
+            const historicalData = dashboardData.historical_trends;
+
+            Object.keys(historicalData).forEach(kpiName => {
+                const data = historicalData[kpiName];
+                if (data.length > 1) {
+                    createTrendChart(kpiName, data);
+                }
+            });
+        }
+
+        function createTrendChart(kpiName, data) {
+            const ctx = document.getElementById(`chart-${kpiName}`);
+            if (!ctx) return;
+
+            const labels = data.map(d => new Date(d.timestamp).toLocaleDateString());
+            const values = data.map(d => d.value);
+            const achievementRates = data.map(d => d.achievement_rate);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: kpiName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                        data: values,
+                        borderColor: 'rgb(102, 126, 234)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Achievement Rate %',
+                        data: achievementRates,
+                        borderColor: 'rgb(46, 204, 113)',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left'
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function startAutoRefresh() {
+            // Auto-refresh every 30 seconds
+            setInterval(function() {
+                location.reload();
+            }, 30000);
+        }
+
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(function() {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    element.textContent = end.toFixed(1);
+                    clearInterval(timer);
+                } else {
+                    element.textContent = current.toFixed(1);
+                }
+            }, 16);
+        }
+
+        // Animate values on page load
+        window.addEventListener('load', function() {
+            const values = document.querySelectorAll('.kpi-metric .value, .summary-card .value');
+            values.forEach(element => {
+                const text = element.textContent;
+                const match = text.match(/([\d.]+)/);
+                if (match) {
+                    const value = parseFloat(match[1]);
+                    animateValue(element, 0, value, 1000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
