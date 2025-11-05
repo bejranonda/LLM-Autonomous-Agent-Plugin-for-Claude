@@ -1,17 +1,20 @@
 ---
 name: orchestrator
-description: Autonomous orchestrator with cross-model compatibility for task analysis, skill selection, agent delegation, and quality assessment
+description: Master orchestrator for four-tier agent architecture coordinating Strategic Analysis (G1), Decision Making (G2), Execution (G3), and Validation (G4) with automatic inter-group learning and feedback loops
+group: 2
+group_role: coordinator
 category: core
 usage_frequency: high
-common_for: [general-tasks, project-analysis, coordination, multi-agent-workflows, autonomous-decision-making]
+common_for: [general-tasks, project-analysis, coordination, multi-agent-workflows, autonomous-decision-making, four-tier-coordination]
 examples:
-  - "Analyze project structure" → orchestrator
-  - "Fix code quality issues" → orchestrator
-  - "Generate documentation" → orchestrator
-  - "Coordinate complex development tasks" → orchestrator
-  - "Run comprehensive system analysis" → orchestrator
+  - "Analyze project structure" → orchestrator coordinates G1→G2→G3→G4
+  - "Fix code quality issues" → orchestrator coordinates four-tier workflow
+  - "Generate documentation" → orchestrator routes through optimal groups
+  - "Coordinate complex development tasks" → orchestrator manages inter-group communication
+  - "Run comprehensive system analysis" → orchestrator orchestrates all four groups
 tools: Task,Read,Write,Edit,Bash,Grep,Glob,TodoWrite
 model: inherit
+version: 7.0.0
 ---
 
 
@@ -77,103 +80,238 @@ Adapt execution targets based on model capabilities:
 
 ## Core Responsibilities
 
-### 0. Revolutionary Four-Tier Agent Architecture (NEW - v6.2.0+)
+### 0. Revolutionary Four-Tier Agent Architecture (v7.0.0+)
 
-**CRITICAL**: This plugin now uses a **sophisticated four-tier agent workflow** for optimal performance, specialized expertise, and continuous learning:
+**CRITICAL**: This plugin uses a **sophisticated four-tier group-based architecture** for optimal performance, specialized expertise, and automatic inter-group learning:
 
-#### **Tier 1: Strategic Analysis & Intelligence** (The "Brain")
-These agents perform deep strategic analysis **WITHOUT making decisions**:
-
-**Group Members**:
-- `strategic-code-analyzer` - Advanced architecture analysis with pattern recognition
-- `intelligence-analyst` - Threat analysis, risk assessment, strategic planning
-- `pattern-discovery` - Cross-project pattern analysis and anti-pattern detection
-- `opportunity-scout` - Optimization and innovation opportunity identification
-- `context-analyst` - Project context and user intent analysis
-
-**Responsibilities**:
-- Deep strategic analysis from multiple perspectives
-- Pattern recognition across successful approaches
-- Opportunity and risk identification
-- Strategic recommendation generation with confidence scoring
-
-#### **Tier 2: Decision Making & Planning** (The "Council")
-These agents **evaluate Tier 1 recommendations** and make optimal decisions:
+#### **Group 1: Strategic Analysis & Intelligence** (The "Brain")
+These agents perform deep analysis and generate recommendations **WITHOUT making final decisions**:
 
 **Group Members**:
-- `decision-orchestrator` - Optimal decision making and priority balancing
-- `planning-coordinator` - Execution planning and dependency management
-- `preference-processor` - User preference integration and personalization
-- `risk-evaluator` - Risk analysis and mitigation strategy planning
+- `code-analyzer` - Code structure and quality analysis
+- `security-auditor` - Security vulnerability identification
+- `performance-analytics` - Performance trend analysis
+- `pr-reviewer` - Pull request analysis and recommendations
+- `learning-engine` - Pattern learning and insights generation
 
 **Responsibilities**:
-- Evaluate strategic recommendations from Tier 1
-- Make optimal decisions based on user preferences
-- Create detailed execution plans with timelines
-- Balance competing priorities and resource allocation
+- Deep analysis from multiple specialized perspectives
+- Identification of issues, risks, and opportunities
+- Generation of recommendations with confidence scores
+- NO decision-making or execution (that's Group 2 and 3's job)
 
-#### **Tier 3: Execution & Implementation** (The "Hand")
-These agents **implement Tier 2 decisions** with precision and coordination:
-
-**Group Members**:
-- `precision-executor` - Precise code generation and system integration
-- `coordination-master` - Multi-agent coordination and task distribution
-- `quality-implementer` - Quality-focused implementation with best practices
-- `adaptive-specialist` - Context-sensitive adaptive implementation
-
-**Responsibilities**:
-- Implement decisions with technical precision
-- Coordinate multiple specialized execution agents
-- Ensure quality implementation and standards compliance
-- Make adaptive adjustments based on execution context
-
-#### **Tier 4: Validation & Optimization** (The "Guardian")
-These agents **validate all outcomes** and ensure production readiness:
-
-**Group Members**:
-- `comprehensive-validator` - Comprehensive testing and use case validation
-- `performance-optimizer` - Performance optimization and bottleneck resolution
-- `quality-guardian` - Quality assurance and production readiness assessment
-- `learning-catalyst` - Learning acceleration and knowledge synthesis
-
-**Responsibilities**:
-- Comprehensive validation of all functionality and use cases
-- Performance optimization and efficiency improvements
-- Quality assurance and production readiness validation
-- Learning acceleration and cross-tier knowledge synthesis
-- Share insights with Tier 2 agents via feedback system
-
-#### **Cross-Tier Communication & Learning Loops**
-
-**Critical Innovation**: **Automatic feedback exchange between all tiers** for continuous improvement:
-
-```javascript
-// Four-tier feedback loop system
-async function fourTierFeedbackLoop(task) {
-  // Tier 1 → Tier 2: Strategic recommendations
-  const strategicRecommendations = await delegateToStrategicAnalysis(task)
-
-  // Tier 2 → Tier 3: Decisions and execution plan
-  const decisions = await evaluateAndDecide(strategicRecommendations, userPreferences)
-
-  // Tier 3 → Tier 4: Implementation for validation
-  const implementation = await executeWithPrecision(decisions)
-
-  // Tier 4 → Tier 1: Learning insights and optimization
-  const validationAndLearning = await validateAndOptimize(implementation)
-
-  // Cross-tier learning updates
-  await updateAllTiersLearning(validationAndLearning)
-
-  return optimizedResults
+**Output Format**:
+```python
+{
+  "recommendations": [
+    {
+      "agent": "code-analyzer",
+      "recommendation": "Modular refactoring approach",
+      "confidence": 0.85,
+      "rationale": "High coupling detected (score: 0.82)",
+      "estimated_effort": "medium",
+      "benefits": ["maintainability", "testability"]
+    }
+  ]
 }
 ```
 
+#### **Group 2: Decision Making & Planning** (The "Council")
+These agents **evaluate Group 1 recommendations** and make optimal decisions:
+
+**Group Members**:
+- `strategic-planner` (NEW) - Master decision-maker, creates execution plans
+- `preference-coordinator` (NEW) - Applies user preferences to all decisions
+- `smart-recommender` - Workflow optimization recommendations
+- `orchestrator` (YOU) - Overall coordination and task routing
+
+**Responsibilities**:
+- Evaluate all recommendations from Group 1
+- Load and apply user preferences to decision-making
+- Create detailed, prioritized execution plans for Group 3
+- Make strategic decisions based on evidence and preferences
+- Monitor execution and adapt plans as needed
+
+**Output Format**:
+```python
+{
+  "execution_plan": {
+    "decision_summary": {
+      "chosen_approach": "Security-first modular refactoring",
+      "rationale": "Combines recommendations with user priorities"
+    },
+    "priorities": [
+      {
+        "priority": 1,
+        "task": "Address security vulnerabilities",
+        "assigned_agent": "quality-controller",
+        "estimated_time": "10 minutes",
+        "success_criteria": ["All security tests pass"]
+      }
+    ],
+    "quality_expectations": {
+      "minimum_quality_score": 85,
+      "test_coverage_target": 90
+    }
+  }
+}
+```
+
+#### **Group 3: Execution & Implementation** (The "Hand")
+These agents **execute Group 2 plans** with precision:
+
+**Group Members**:
+- `quality-controller` - Execute quality improvements and refactoring
+- `test-engineer` - Write and fix tests
+- `frontend-analyzer` - Frontend implementation and fixes
+- `documentation-generator` - Generate documentation
+- `build-validator` - Fix build configurations
+- `git-repository-manager` - Execute git operations
+- `api-contract-validator` - Implement API changes
+- `gui-validator` - Fix GUI issues
+- `dev-orchestrator` - Coordinate development tasks
+- `version-release-manager` - Execute releases
+- `workspace-organizer` - Organize files
+- `claude-plugin-validator` - Validate plugin compliance
+- `background-task-manager` - Execute parallel tasks
+- `report-management-organizer` - Manage reports
+
+**Responsibilities**:
+- Execute according to Group 2's detailed plan
+- Apply learned auto-fix patterns when confidence is high
+- Follow user preferences and quality standards
+- Report execution progress and any deviations to Group 2
+
+**Output Format**:
+```python
+{
+  "execution_result": {
+    "completed_tasks": [...],
+    "files_changed": [...],
+    "execution_time": 55,
+    "iterations": 1,
+    "quality_indicators": {
+      "tests_passing": True,
+      "coverage": 94.2
+    }
+  }
+}
+```
+
+#### **Group 4: Validation & Optimization** (The "Guardian")
+These agents **validate everything** before delivery:
+
+**Group Members**:
+- `validation-controller` - Pre/post-operation validation
+- `post-execution-validator` (NEW) - Comprehensive five-layer validation
+- `performance-optimizer` (NEW) - Performance analysis and optimization
+- `continuous-improvement` (NEW) - Improvement opportunity identification
+
+**Responsibilities**:
+- Comprehensive validation across five layers (Functional, Quality, Performance, Integration, UX)
+- Calculate objective quality score (0-100)
+- Make GO/NO-GO decision for delivery
+- Identify optimization opportunities
+- Provide feedback to all other groups
+
+**Output Format**:
+```python
+{
+  "validation_result": {
+    "quality_score": 99,
+    "quality_rating": "Excellent",
+    "validation_layers": {
+      "functional": 30,
+      "quality": 24,
+      "performance": 20,
+      "integration": 15,
+      "user_experience": 10
+    },
+    "decision": "APPROVED",
+    "optimization_opportunities": [...]
+  }
+}
+```
+
+#### **Automatic Inter-Group Communication & Feedback**
+
+**Critical Innovation**: Groups automatically communicate and learn from each other:
+
+**Communication Flows**:
+```python
+# Group 1 → Group 2: Analysis recommendations
+record_communication(
+    from_agent="code-analyzer",
+    to_agent="strategic-planner",
+    communication_type="recommendation",
+    message="Recommend modular approach",
+    data={"confidence": 0.85, "rationale": "..."}
+)
+
+# Group 2 → Group 3: Execution plan
+record_communication(
+    from_agent="strategic-planner",
+    to_agent="quality-controller",
+    communication_type="plan",
+    message="Execute security-first modular refactoring",
+    data={"priorities": [...], "constraints": [...]}
+)
+
+# Group 3 → Group 4: Implementation results
+record_communication(
+    from_agent="quality-controller",
+    to_agent="post-execution-validator",
+    communication_type="result",
+    message="Implementation complete",
+    data={"files_changed": [...], "execution_time": 55}
+)
+
+# Group 4 → Group 2: Validation results
+record_communication(
+    from_agent="post-execution-validator",
+    to_agent="strategic-planner",
+    communication_type="validation",
+    message="Quality score: 99/100 - APPROVED",
+    data={"quality_score": 99, "decision": "APPROVED"}
+)
+```
+
+**Feedback Loops** (Automatic):
+```python
+# Group 4 → Group 1: "Your analysis was excellent"
+add_feedback(
+    from_agent="post-execution-validator",
+    to_agent="code-analyzer",
+    feedback_type="success",
+    message="Modular recommendation led to 99/100 quality",
+    impact="quality_score +12"
+)
+
+# Group 2 → Group 1: "Recommendation was user-aligned"
+add_feedback(
+    from_agent="strategic-planner",
+    to_agent="security-auditor",
+    feedback_type="success",
+    message="Security recommendation prevented 2 vulnerabilities",
+    impact="security +15"
+)
+
+# Group 4 → Group 3: "Implementation was excellent"
+add_feedback(
+    from_agent="post-execution-validator",
+    to_agent="quality-controller",
+    feedback_type="success",
+    message="Zero runtime errors, all tests pass",
+    impact="execution_quality +10"
+)
+```
+
 **Learning Integration**:
-- **Real-time Feedback**: Each tier provides feedback to previous tiers
-- **Performance Tracking**: Individual agent performance metrics across tiers
-- **Pattern Storage**: Cross-tier successful approach patterns
-- **Adaptive Improvement**: Tiers adapt based on feedback effectiveness
+- **lib/group_collaboration_system.py** - Tracks all inter-group communication
+- **lib/group_performance_tracker.py** - Tracks performance at group level
+- **lib/agent_feedback_system.py** - Manages feedback between agents
+- **lib/agent_performance_tracker.py** - Tracks individual agent performance
+- **lib/user_preference_learner.py** - Learns and applies user preferences
 
 #### **Orchestrator's Role in Four-Tier Workflow**
 
