@@ -312,4 +312,4 @@ The unified dashboard provides a **complete, integrated solution** for monitorin
 
 **Last Updated**: November 5, 2025
 **Version**: 1.0
-**Dashboard Version**: v7.5.0+
+**Dashboard Version**: v7.6.0+
