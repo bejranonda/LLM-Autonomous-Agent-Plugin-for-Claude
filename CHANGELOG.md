@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.2] - 2025-11-06
+
+### 🌟 ENHANCEMENT
+- **Comprehensive Web Crawling** - Enhanced web page validation with automatic subpage discovery and analysis
+- **Site-wide Validation** - Complete website validation with configurable crawling depth and page limits
+- **Smart Path Filtering** - Include/exclude specific paths using pattern matching for targeted analysis
+- **Progress Tracking** - Real-time crawling progress with detailed status updates and error aggregation
+
+### 🏗️ NEW FUNCTIONALITY
+- **Crawl Command Options** - `--crawl`, `--max-depth`, `--max-pages`, `--include`, `--exclude` parameters
+- **Comprehensive Reports** - Detailed crawling validation reports with site-wide error aggregation
+- **Link Extraction** - Automatic discovery and validation of all internal links from analyzed pages
+- **Performance Optimization** - Intelligent crawling with rate limiting and resource management
+
+### 📱 IMPROVED USER EXPERIENCE
+- **Single Command Site Analysis** - Validate entire websites with `/validate:web URL --crawl`
+- **Configurable Scope** - Control crawling behavior with depth limits (default: 3 levels) and page limits (default: 50 pages)
+- **Pattern-based Filtering** - Target specific sections of websites using glob patterns (e.g., `/api/*,/docs/*`)
+- **Comprehensive Metrics** - Success rates, error counts, and warnings across all discovered pages
+
+### 🔧 TECHNICAL IMPROVEMENTS
+- **Enhanced Error Detection** - JavaScript errors aggregated across all crawled pages with prioritized reporting
+- **Smart Link Discovery** - Automatic extraction of href, action, and src attributes for comprehensive crawling
+- **Resource Optimization** - Skip non-HTML resources (CSS, JS, images) for focused validation
+- **Domain Restriction** - Optional same-domain-only crawling for security and relevance
+
+---
+
 ## [7.6.1] - 2025-11-06
 
 ### 🔧 MAINTENANCE
