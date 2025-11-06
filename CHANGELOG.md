@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.1] - 2025-11-05
+
+### 🔧 FIXED
+- **JavaScript Syntax Errors** - Fixed literal newlines in CSV export code causing `Uncaught SyntaxError`
+- **Template Literal Issues** - Escaped dollar signs and newlines in JavaScript strings
+- **Dashboard Launch Process** - Simplified `/monitor:dashboard` to always copy latest plugin version
+- **Background Process** - Enhanced Windows compatibility with CREATE_NO_WINDOW flag
+
+### 🚀 IMPROVED
+- **Unified Dashboard Reliability** - Command now guarantees latest version with all fixes
+- **Cross-Platform Compatibility** - Platform-specific subprocess handling for Windows/Unix
+- **Error Messages** - Added detailed path discovery debugging for troubleshooting
+- **Token Efficiency** - Removed complex version checking logic
+
+### 📝 CHANGES
+- Fixed line 4341: `'$0'` → `'$0'` (removed raw string for dollar sign in template literal)
+- Fixed lines 4338, 4346, 4355+: `'\n'` → `r'\n'` (used raw strings for JavaScript newlines)
+- `/monitor:dashboard` now always copies `lib/dashboard.py` to `.claude-patterns/dashboard.py`
+- Enhanced subprocess creation with platform-specific flags
+- Added PID display for debugging
+- **JavaScript String Escaping Fix** - Used Python raw strings (`r'...'`) to preserve `\n` escape sequences in JavaScript
+
 ## [7.5.0] - 2025-11-05
 
 ### 🎉 MAJOR FEATURE

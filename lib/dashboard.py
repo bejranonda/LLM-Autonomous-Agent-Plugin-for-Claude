@@ -4335,7 +4335,7 @@ DASHBOARD_HTML = """
             // Generate CSV based on active tab
             switch(tabName) {
                 case 'tokens':
-                    csvContent = 'Metric,Value\n';
+                    csvContent = r'Metric,Value\n';
                     csvContent += `Token Savings,${document.getElementById('token-savings')?.textContent || '0'}\n`;
                     csvContent += `Compression Ratio,${document.getElementById('compression-ratio')?.textContent || '0%'}\n`;
                     csvContent += `Cost Savings,${document.getElementById('cost-savings')?.textContent || '$0'}\n`;
@@ -4343,7 +4343,7 @@ DASHBOARD_HTML = """
                     filename = `token-metrics-${new Date().toISOString().split('T')[0]}.csv`;
                     break;
                 case 'kpi':
-                    csvContent = 'Category,Metric,Value\n';
+                    csvContent = r'Category,Metric,Value\n';
                     csvContent += `Performance,Overall Score,${document.getElementById('overall-score')?.textContent || '0'}\n`;
                     csvContent += `Performance,Quality Score,${document.getElementById('kpi-quality')?.textContent || '0'}\n`;
                     csvContent += `Performance,Success Rate,${document.getElementById('kpi-success')?.textContent || '0%'}\n`;
@@ -4352,7 +4352,7 @@ DASHBOARD_HTML = """
                     filename = `kpi-metrics-${new Date().toISOString().split('T')[0]}.csv`;
                     break;
                 case 'system':
-                    csvContent = 'Category,Metric,Value\n';
+                    csvContent = r'Category,Metric,Value\n';
                     csvContent += `Data Integrity,Consistency Score,${document.getElementById('consistency-score')?.textContent || '0'}\n`;
                     csvContent += `Data Integrity,Missing Records,${document.getElementById('missing-records')?.textContent || '0'}\n`;
                     csvContent += `Data Integrity,Inconsistent Data,${document.getElementById('inconsistent-data')?.textContent || '0'}\n`;

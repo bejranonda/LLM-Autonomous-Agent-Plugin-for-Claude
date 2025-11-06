@@ -13,13 +13,15 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 ## How It Works
 
-1. **Silent Launch**: Command executes dashboard.py directly with no console output
-2. **Background Process**: Starts Flask server in background without blocking
-3. **Auto Browser**: Opens default browser to dashboard URL automatically
-4. **Zero Reporting**: No performance metrics or console output
-5. **Direct Access**: Dashboard provides all analytics through web interface
+1. **Always Fresh**: Copies latest dashboard from plugin installation every time
+2. **No Version Checks**: Simple direct copy ensures you always run the newest version
+3. **Silent Launch**: Command executes dashboard.py with minimal console output
+4. **Background Process**: Starts Flask server in background without blocking
+5. **Auto Browser**: Opens default browser to dashboard URL automatically
 
-**CRITICAL**: This command executes silently with no console reporting. All analytics and metrics are available through the web dashboard interface only.
+**NEW v7.5.1**: Always copies latest dashboard from plugin to ensure unified version with all 5 tabs.
+
+**CRITICAL**: This command executes with minimal console reporting. Dashboard interface shows all metrics.
 
 ## Usage
 
@@ -80,48 +82,49 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 # Try bash approach first (Unix-like systems)
 if command -v bash >/dev/null 2>&1; then
     bash -c '
-    # Step 1: Try local copy (fastest, most reliable)
-    if [ -f ".claude-patterns/dashboard.py" ]; then
-        echo "Starting dashboard from local copy..."
-        python .claude-patterns/dashboard.py --patterns-dir .claude-patterns "$@"
+    # Step 1: Discover plugin installation
+    if command -v find >/dev/null 2>&1; then
+        PLUGIN_DIR=$(find ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
+    elif command -v where >/dev/null 2>&1; then
+        PLUGIN_DIR=$(find /c/Users/*/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
+    fi
+
+    if [ -z "$PLUGIN_DIR" ] || [ ! -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
+        echo "ERROR: Plugin installation not found"
+        exit 1
+    fi
+
+    # Step 2: Always copy latest version from plugin (ensures all fixes are applied)
+    echo "Copying latest dashboard from plugin..."
+    mkdir -p .claude-patterns
+    cp "$PLUGIN_DIR/lib/dashboard.py" ".claude-patterns/dashboard.py"
+    echo "[OK] Dashboard ready with all JavaScript fixes"
+
+    # Step 3: Check if dashboard already running
+    if curl -s http://127.0.0.1:5000/api/overview >/dev/null 2>&1; then
+        echo "Dashboard is already running at: http://127.0.0.1:5000"
+        echo "Opening browser..."
         exit 0
     fi
 
-    # Step 2: Local copy does not exist, try plugin discovery
-    echo "Local dashboard not found, checking plugin installation..."
+    # Step 4: Start dashboard in background
+    echo "Starting dashboard server..."
+    python .claude-patterns/dashboard.py --patterns-dir .claude-patterns >/dev/null 2>&1 &
+    DASHBOARD_PID=$!
+    echo "Dashboard started successfully (PID: $DASHBOARD_PID)"
+    echo "Dashboard URL: http://127.0.0.1:5000"
 
-    # Cross-platform plugin discovery
-    if command -v find >/dev/null 2>&1; then
-        # Unix-like systems (Linux, macOS, Git Bash on Windows)
-        PLUGIN_DIR=$(find ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude ~/.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
-    elif command -v where >/dev/null 2>&1; then
-        # Windows (cmd.exe) - simplified approach
-        PLUGIN_DIR=$(find /c/Users/*/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude 2>/dev/null | head -1)
-    else
-        echo "ERROR: Unable to locate files on this system"
-        exit 1
-    fi
+    # Step 5: Wait for server and open browser
+    sleep 2
+    echo "Opening browser automatically..."
 
-    # Step 3: If plugin found, copy dashboard locally
-    if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
-        echo "Creating local patterns directory..."
-        mkdir -p .claude-patterns
-
-        echo "Copying dashboard to local project..."
-        cp "$PLUGIN_DIR/lib/dashboard.py" ".claude-patterns/dashboard.py"
-
-        echo "Dashboard copied successfully"
-        echo "   From: $PLUGIN_DIR/lib/dashboard.py"
-        echo "   To: .claude-patterns/dashboard.py"
-
-        # Step 4: Execute local copy
-        echo "Starting dashboard from local copy..."
-        python .claude-patterns/dashboard.py --patterns-dir .claude-patterns "$@"
-    else
-        echo "ERROR: Plugin installation not found"
-        echo "   Please install the LLM Autonomous Agent Plugin from marketplace"
-        echo "   Or ensure you are in a valid project directory"
-        exit 1
+    # Open browser (cross-platform)
+    if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "http://127.0.0.1:5000" >/dev/null 2>&1
+    elif command -v open >/dev/null 2>&1; then
+        open "http://127.0.0.1:5000"
+    elif command -v start >/dev/null 2>&1; then
+        start "http://127.0.0.1:5000"
     fi
     ' "$@"
     BASH_SUCCESS=$?
@@ -145,25 +148,15 @@ import time
 from pathlib import Path
 
 def launch_dashboard():
-    '''Launch dashboard with cross-platform compatibility.'''
+    '''Launch dashboard - always uses latest plugin version with all fixes.'''
 
-    # Step 1: Try local copy (fastest, most reliable)
-    local_dashboard = Path('.claude-patterns/dashboard.py')
-    if local_dashboard.exists():
-        print('Starting dashboard from local copy...')
-        return start_dashboard(str(local_dashboard), '.claude-patterns')
-
-    # Step 2: Local copy does not exist, try plugin discovery
-    print('Local dashboard not found, checking plugin installation...')
-
-    # Cross-platform plugin discovery
+    # Step 1: Discover plugin installation
     plugin_paths = [
         Path.home() / '.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude',
         Path.home() / '.config/claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude',
         Path.home() / '.claude/plugins/autonomous-agent',
     ]
 
-    # Windows-specific paths
     if os.name == 'nt':
         plugin_paths.extend([
             Path(os.environ.get('APPDATA', '')) / 'Claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude',
@@ -177,33 +170,26 @@ def launch_dashboard():
             plugin_dashboard = potential_dashboard
             break
 
-    # Step 3: If plugin found, copy dashboard locally
-    if plugin_dashboard:
-        try:
-            print('Creating local patterns directory...')
-            Path('.claude-patterns').mkdir(exist_ok=True)
+    if not plugin_dashboard:
+        print('ERROR: Plugin installation not found')
+        print('   Searched paths:', [str(p) for p in plugin_paths])
+        return False
 
-            print('Copying dashboard to local project...')
-            shutil.copy2(plugin_dashboard, local_dashboard)
+    # Step 2: Always copy latest version from plugin (ensures all fixes are applied)
+    local_dashboard = Path('.claude-patterns/dashboard.py')
 
-            print('Dashboard copied successfully')
-            print(f'   From: {plugin_dashboard}')
-            print(f'   To: {local_dashboard}')
+    try:
+        print('Copying latest dashboard from plugin...')
+        Path('.claude-patterns').mkdir(exist_ok=True)
+        shutil.copy2(plugin_dashboard, local_dashboard)
+        print('[OK] Dashboard ready with all JavaScript fixes')
+    except Exception as e:
+        print(f'ERROR: Failed to copy dashboard: {e}')
+        return False
 
-            # Step 4: Execute local copy
-            print('Starting dashboard from local copy...')
-            return start_dashboard(str(local_dashboard), '.claude-patterns')
-
-        except Exception as e:
-            print(f'Error copying dashboard: {e}')
-            print('Falling back to plugin dashboard...')
-            return start_dashboard(str(plugin_dashboard), '.claude-patterns')
-
-    # Step 5: No dashboard found
-    print('ERROR: Plugin installation not found')
-    print('   Please install the LLM Autonomous Agent Plugin from marketplace')
-    print('   Or ensure you are in a valid project directory')
-    return False
+    # Step 3: Start dashboard from local copy
+    print('Starting dashboard server...')
+    return start_dashboard(str(local_dashboard), '.claude-patterns')
 
 def start_dashboard(dashboard_path: str, patterns_dir: str) -> bool:
     '''Start the dashboard server.'''
@@ -225,11 +211,27 @@ def start_dashboard(dashboard_path: str, patterns_dir: str) -> bool:
         if len(sys.argv) > 1:
             cmd.extend(sys.argv[1:])
 
-        subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # Platform-specific background process creation
+        if os.name == 'nt':
+            # Windows: Use CREATE_NO_WINDOW to run silently
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                creationflags=subprocess.CREATE_NO_WINDOW if hasattr(subprocess, 'CREATE_NO_WINDOW') else 0
+            )
+        else:
+            # Unix-like: Standard background process
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
 
-        print('Dashboard started successfully in background')
+        print(f'Dashboard started successfully (PID: {process.pid})')
+        print('Dashboard URL: http://127.0.0.1:5000')
         print('Opening browser automatically...')
-        time.sleep(1.5)  # Give server time to start
+        time.sleep(2)  # Give server time to start
         webbrowser.open('http://127.0.0.1:5000')
 
         return True
