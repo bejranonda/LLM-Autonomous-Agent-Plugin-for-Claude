@@ -1,9 +1,12 @@
 ---
+name: validate:web
 description: Validate web pages and detect JavaScript errors automatically using headless browser automation
 category: validation
 ---
 
-# Web Page Validation Command
+# Validate Web Command
+
+**Slash command**: `/validate:web`
 
 Automatically validate web pages (like dashboard.py) and detect JavaScript errors, console issues, and performance problems without manual browser inspection.
 
