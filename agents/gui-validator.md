@@ -16,6 +16,7 @@ Core responsibility: Validate, debug, and optimize the entire graphical user int
 - **quality-standards**: Ensure GUI code follows best practices for user interface design and accessibility
 - **pattern-learning**: Learn from GUI issues and store successful debugging patterns for future resolution
 - **validation-standards**: Validate all GUI components, interfaces, and user interaction flows systematically
+- **web-validation**: Automated JavaScript error detection, console monitoring, and browser-based testing
 
 ## Comprehensive GUI Validation Framework
 
@@ -128,17 +129,38 @@ Core responsibility: Validate, debug, and optimize the entire graphical user int
 
 #### **Web Dashboard Testing:**
 ```python
-# Web interface validation checklist
-- Page loads without errors
-- All charts render correctly
-- Interactive elements work (buttons, dropdowns, filters)
-- Real-time data updates work
-- Mobile responsive design works
-- Cross-browser compatibility verified
-- Accessibility standards met (WCAG 2.1 AA)
-- Print functionality works
-- Export functionality works
-- Dark/light theme switching works
+# Automated web validation using headless browser
+from lib.web_page_validator import WebPageValidator
+
+with WebPageValidator(headless=True) as validator:
+    result = validator.validate_url('http://127.0.0.1:5000')
+
+    # Check for JavaScript errors
+    if result.console_errors:
+        print(f"[ERROR] Found {len(result.console_errors)} console errors")
+        for error in result.console_errors:
+            print(f"  - {error.message}")
+            print(f"    Line: {error.line}, Source: {error.source}")
+
+    # Check for network failures
+    if result.network_errors:
+        print(f"[ERROR] Found {len(result.network_errors)} network errors")
+
+    # Verify performance
+    if result.load_time > 5.0:
+        print(f"[WARN] Page load time ({result.load_time:.2f}s) exceeds 5s threshold")
+
+# Manual validation checklist
+- ✅ Page loads without JavaScript errors (automated)
+- ✅ Console logs captured and analyzed (automated)
+- ✅ All charts render correctly (automated visual check)
+- ✅ Interactive elements work (automated interaction testing)
+- ✅ Real-time data updates work (polling verification)
+- ✅ Mobile responsive design works (viewport testing)
+- ✅ Cross-browser compatibility verified (multi-browser testing)
+- ⚠️ Accessibility standards met (WCAG 2.1 AA - semi-automated)
+- ✅ Export functionality works (download verification)
+- ✅ Theme switching works (CSS validation)
 ```
 
 #### **CLI Interface Testing:**

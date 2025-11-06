@@ -114,11 +114,22 @@ if command -v bash >/dev/null 2>&1; then
     echo "Dashboard started successfully (PID: $DASHBOARD_PID)"
     echo "Dashboard URL: http://127.0.0.1:5000"
 
-    # Step 5: Wait for server and open browser
-    sleep 2
-    echo "Opening browser automatically..."
+    # Step 5: Wait for server and validate
+    sleep 3
 
-    # Open browser (cross-platform)
+    # Quick validation check (optional but recommended)
+    if [ -f "$PLUGIN_DIR/lib/web_page_validator.py" ]; then
+        echo "[INFO] Running automatic validation..."
+        if python "$PLUGIN_DIR/lib/web_page_validator.py" "http://127.0.0.1:5000" --timeout 10 >/dev/null 2>&1; then
+            echo "[OK] Dashboard validation passed - no JavaScript errors detected"
+        else
+            echo "[WARN] Dashboard validation detected issues"
+            echo "[INFO] Run /validate:web http://127.0.0.1:5000 for details"
+        fi
+    fi
+
+    # Step 6: Open browser
+    echo "Opening browser automatically..."
     if command -v xdg-open >/dev/null 2>&1; then
         xdg-open "http://127.0.0.1:5000" >/dev/null 2>&1
     elif command -v open >/dev/null 2>&1; then
@@ -230,8 +241,40 @@ def start_dashboard(dashboard_path: str, patterns_dir: str) -> bool:
 
         print(f'Dashboard started successfully (PID: {process.pid})')
         print('Dashboard URL: http://127.0.0.1:5000')
+
+        # Wait for server to be ready
+        time.sleep(3)
+
+        # Auto-validate dashboard for JavaScript errors (optional but recommended)
+        try:
+            import urllib.request
+            # Quick connectivity check
+            urllib.request.urlopen('http://127.0.0.1:5000', timeout=2)
+            print('[OK] Dashboard server is responding')
+
+            # Try to run validation if available
+            try:
+                validator_path = Path(plugin_dashboard).parent / 'web_page_validator.py'
+                if validator_path.exists():
+                    print('[INFO] Running automatic validation...')
+                    validation_result = subprocess.run(
+                        [sys.executable, str(validator_path), 'http://127.0.0.1:5000', '--timeout', '10'],
+                        capture_output=True,
+                        text=True,
+                        timeout=15
+                    )
+                    if validation_result.returncode == 0:
+                        print('[OK] Dashboard validation passed - no JavaScript errors detected')
+                    else:
+                        print('[WARN] Dashboard validation detected issues')
+                        print('[INFO] Run /validate:web http://127.0.0.1:5000 for details')
+            except Exception:
+                pass  # Validation is optional, don't fail if unavailable
+
+        except Exception:
+            pass  # Server will still open in browser
+
         print('Opening browser automatically...')
-        time.sleep(2)  # Give server time to start
         webbrowser.open('http://127.0.0.1:5000')
 
         return True
