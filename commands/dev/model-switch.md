@@ -4,7 +4,6 @@ description: Switch between Claude and GLM AI models with secure token managemen
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Development Model Switch Command
 
 Switch between Claude and GLM models in your Claude Code environment with secure token management and cross-platform compatibility.

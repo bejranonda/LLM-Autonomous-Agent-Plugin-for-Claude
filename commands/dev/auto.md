@@ -4,7 +4,6 @@ description: Fully autonomous development from requirements to production-ready 
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Dev-Auto Command
 
 ## Command: `/dev:auto`

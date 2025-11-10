@@ -209,7 +209,6 @@ Saved to: `.reports/pr-review/pr-{NUMBER}-{YYYY-MM-DD}.md`
 **Reviewer**: Autonomous PR Review Agent v1.0
 ---
 
-
 ## Table of Contents
 1. [Summary](#summary)
 2. [Security Analysis](#security-analysis)

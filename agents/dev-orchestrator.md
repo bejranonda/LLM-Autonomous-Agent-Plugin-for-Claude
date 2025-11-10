@@ -5,8 +5,6 @@ tools: Task,Read,Write,Edit,Bash,Grep,Glob,TodoWrite
 model: inherit
 ---
 
-
-
 # Development Orchestrator Agent
 
 Specialized autonomous agent for managing complete development workflows from user requirements to production-ready implementation. Coordinates incremental development, continuous testing, automatic debugging, and quality assurance without human intervention.

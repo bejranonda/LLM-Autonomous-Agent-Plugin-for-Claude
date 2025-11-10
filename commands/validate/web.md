@@ -76,7 +76,6 @@ try:
 except ImportError:
     CRAWLING_AVAILABLE = False
 
-
 def crawl_and_validate(validator, start_url, max_depth=3, max_pages=50,
                        include_patterns=None, exclude_patterns=None,
                        same_domain=True, wait_for_load=3, verbose=False):
@@ -167,7 +166,6 @@ def crawl_and_validate(validator, start_url, max_depth=3, max_pages=50,
 
     return results
 
-
 def should_crawl_url(url, include_patterns=None, exclude_patterns=None):
     """Check if URL should be crawled based on include/exclude patterns."""
     from urllib.parse import urlparse
@@ -194,7 +192,6 @@ def should_crawl_url(url, include_patterns=None, exclude_patterns=None):
             return False
 
     return True
-
 
 def extract_links_from_page(base_url, page_content):
     """Extract all valid links from page content."""
@@ -225,7 +222,6 @@ def extract_links_from_page(base_url, page_content):
                 links.add(absolute_url)
 
     return list(links)
-
 
 def display_crawling_results(results):
     """Display comprehensive crawling results."""
@@ -315,7 +311,6 @@ def display_crawling_results(results):
 
     print("=" * 80)
 
-
 def save_crawling_report(results, base_url):
     """Save comprehensive crawling report to file."""
     from datetime import datetime
@@ -331,7 +326,6 @@ def save_crawling_report(results, base_url):
 
     report_file.write_text(content, encoding='utf-8')
     print(f"[OK] Comprehensive crawling report saved to: {report_file}")
-
 
 def generate_crawling_report_content(results, base_url):
     """Generate comprehensive markdown report for crawling results."""
@@ -455,7 +449,6 @@ WEB CRAWLING VALIDATION REPORT
 """
 
     return content
-
 
 def main():
     """Main execution function"""
@@ -663,7 +656,6 @@ def main():
         import traceback
         traceback.print_exc()
         return 1
-
 
 if __name__ == '__main__':
     sys.exit(main())

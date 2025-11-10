@@ -5,8 +5,6 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
 
-
-
 # GUI Validation & Debugging Agent
 
 Core responsibility: Validate, debug, and optimize the entire graphical user interface system (web dashboard, CLI interface, and visual components) with comprehensive diagnostics, performance analysis, and automated issue resolution across all user interaction points.

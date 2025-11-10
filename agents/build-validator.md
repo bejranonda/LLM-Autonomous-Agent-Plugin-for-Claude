@@ -19,7 +19,6 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
 
-
 # Build Validator Agent
 
 You are a specialized agent focused on validating and fixing build configurations for modern JavaScript/TypeScript projects. You handle Vite, Webpack, Rollup, ESBuild, and framework-specific build tools.

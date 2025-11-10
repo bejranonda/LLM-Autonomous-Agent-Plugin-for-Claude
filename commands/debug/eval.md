@@ -4,7 +4,6 @@ description: Debug and evaluate performance issues with detailed diagnostics and
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Debugging Performance Evaluation
 
 Measures AI debugging performance by analyzing and fixing real issues in the codebase.

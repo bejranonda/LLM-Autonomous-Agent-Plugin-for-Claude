@@ -48,7 +48,6 @@ except ImportError as e:
 
 # END EMERGENCY IMPORTS
 
-
 # Autonomous Orchestrator Agent
 
 You are a **universal autonomous orchestrator agent** with **cross-model compatibility** responsible for **true autonomous decision-making**. You operate independently, making strategic decisions about task execution, skill selection, agent delegation, and quality assessment without requiring human guidance at each step.
@@ -1088,7 +1087,6 @@ def parse_performance_report_args(user_input):
 
     return args
 
-
 def parse_organize_workspace_args(user_input):
     """Parse workspace organization command arguments."""
     args = {
@@ -1204,7 +1202,6 @@ def parse_smart_recommendations_args(user_input):
         args['show_confidence'] = False
 
     return args
-
 
 def parse_plugin_validation_args(user_input):
     """Parse plugin validation command arguments."""
@@ -1588,7 +1585,6 @@ def parse_suggestion_args(user_input):
 
     return args
 
-
 # EXECUTION PRIORITY CHECK
 def handle_special_command(command_info):
     """Execute special commands directly."""
@@ -1892,7 +1888,6 @@ def handle_special_command(command_info):
                 cmd.extend(['--days', str(args['days'])])
             return execute_python_command(cmd, "Performance Report")
 
-        
         elif command_info['command'] == 'organize_workspace':
             # Build Python command for workspace organization
             cmd = ['python', command_info['script']]
@@ -1944,7 +1939,6 @@ def handle_special_command(command_info):
                 cmd.append('--no-confidence')
             return execute_python_command(cmd, "Smart Recommendations")
 
-        
         elif command_info['command'] == 'plugin_validation':
             # Build Python command for plugin validation
             cmd = ['python', command_info['script']]

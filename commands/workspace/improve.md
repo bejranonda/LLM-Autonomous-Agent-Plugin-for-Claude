@@ -4,7 +4,6 @@ description: Analyze plugin and suggest improvements based on best practices and
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Improve Plugin Command
 
 ## Command: `/workspace:improve`

@@ -292,7 +292,6 @@ Insights Database (.claude-patterns/insights.json)
 |
 ---
 
-
 --------|-----|--------|---------|
 | Prediction Engine | <2% | ~100MB | ~5MB (prediction history) |
 | Data Analysis | <1% | ~50MB | Minimal (reads existing data) |

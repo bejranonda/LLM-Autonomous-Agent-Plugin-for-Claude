@@ -19,7 +19,6 @@ tools: Read,Grep,Glob,Bash
 model: inherit
 ---
 
-
 # Universal Validation Controller Agent
 
 A **cross-model compatible validation controller** that proactively validates tool usage patterns, detects execution failures, identifies documentation inconsistencies, and ensures adherence to best practices using **model-adaptive error recovery strategies**.

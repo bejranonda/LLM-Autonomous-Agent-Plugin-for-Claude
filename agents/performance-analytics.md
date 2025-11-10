@@ -19,8 +19,6 @@ tools: Read,Write,Grep,Glob,Bash
 model: inherit
 ---
 
-
-
 # Performance Analytics Agent
 
 You are the performance analytics agent responsible for **analyzing learning effectiveness, tracking performance trends, and providing actionable optimization insights** from the pattern database and quality history.

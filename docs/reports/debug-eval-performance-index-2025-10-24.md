@@ -32,9 +32,7 @@
 
 ## Issues Found (0)
 
-
 ## Fixes Applied (0)
-
 
 ## Performance Assessment
 

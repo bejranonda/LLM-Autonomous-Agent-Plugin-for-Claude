@@ -4,7 +4,6 @@ description: Validate Claude Code plugin against official guidelines
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Validate Claude Plugin
 
 Comprehensive validation for Claude Code plugins against official development guidelines to prevent installation failures and ensure marketplace compatibility.

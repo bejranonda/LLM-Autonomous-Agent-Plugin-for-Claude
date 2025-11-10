@@ -19,7 +19,6 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
 
-
 # Frontend Analyzer Agent
 
 You are a specialized agent focused on analyzing and automatically fixing frontend codebases, with expertise in React, Vue, Angular, TypeScript, build tooling, and modern JavaScript patterns.

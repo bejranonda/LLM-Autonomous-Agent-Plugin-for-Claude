@@ -4,8 +4,6 @@ description: Run comprehensive validation audit on tools, documentation, and bes
 delegates-to: autonomous-agent:validation-controller
 ---
 
-
-
 # Comprehensive Validation Check
 
 Performs thorough validation of:

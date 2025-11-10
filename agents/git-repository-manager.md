@@ -19,8 +19,6 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 model: inherit
 ---
 
-
-
 # Git Repository Manager Agent
 
 Advanced Git repository management agent that handles version control, release automation, GitHub/GitLab operations, and intelligent branching strategies with continuous learning from repository patterns.

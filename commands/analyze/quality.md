@@ -4,7 +4,6 @@ description: Run comprehensive quality control with autonomous auto-fixing
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Quality Check Command
 
 ## 🚨 CRITICAL: RESPONSE SAFETY REQUIREMENTS

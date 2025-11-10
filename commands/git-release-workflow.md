@@ -6,7 +6,6 @@ deprecated: true
 redirects-to: dev:release
 ---
 
-
 # Git Release Workflow Command [DEPRECATED]
 
 **This command has been deprecated and merged into `/dev:release`.**

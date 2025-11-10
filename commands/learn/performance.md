@@ -4,7 +4,6 @@ description: Display performance analytics dashboard with metrics, trends, and o
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Performance Report Command
 
 Generate comprehensive performance analytics report showing learning effectiveness, skill/agent performance trends, quality improvements, and optimization recommendations.

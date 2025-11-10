@@ -42,7 +42,6 @@ description: Example description
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Command Title
 This causes empty text blocks!
 ```

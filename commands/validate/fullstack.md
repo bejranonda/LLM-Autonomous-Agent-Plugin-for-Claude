@@ -4,7 +4,6 @@ description: Validate full-stack app (backend, frontend, database, API contracts
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Validate Full-Stack Command
 
 **Slash command**: `/validate:fullstack`

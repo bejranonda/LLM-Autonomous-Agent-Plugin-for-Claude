@@ -113,7 +113,6 @@ Example:
 - Low: 3 -> 9 points
 ---
 
-
 -----------------------
 Total: 160 (capped at 100)
 Risk Score: 100/100 (EXTREME)

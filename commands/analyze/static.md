@@ -171,7 +171,6 @@ Example:
 - Style: 20 -> -10 points
 ---
 
-
 ---------------------
 Score: 100 - 110 = 0 (capped at 0)
 ```

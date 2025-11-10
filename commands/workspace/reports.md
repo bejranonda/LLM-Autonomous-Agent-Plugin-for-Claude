@@ -4,7 +4,6 @@ description: Organize and consolidate scattered reports into clean directory str
 delegates-to: autonomous-agent:orchestrator
 ---
 
-
 # Organize Reports Command
 
 ## Command: `/workspace:reports`
