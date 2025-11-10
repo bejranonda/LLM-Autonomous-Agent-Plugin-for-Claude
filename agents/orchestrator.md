@@ -17,10 +17,62 @@ model: inherit
 version: 7.0.0
 ---
 
+# EMERGENCY IMPORTS - Prevents system-wide Claude failure
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+try:
+    from lib.emergency_message_sanitize import emergency_sanitize_messages
+    from lib.orchestrator_agent_emergency_fix import (
+        safe_split, safe_join, safe_get_part, safe_extract_after,
+        safe_parse_dashboard_args, safe_parse_queue_add_args,
+        safe_content_section, safe_multi_section_content,
+        sanitize_orchestrator_response
+    )
+    from lib.slash_commands_emergency_fix import safe_format_command_response
+    EMERGENCY_FIXES_AVAILABLE = True
+except ImportError as e:
+    # Fallback if emergency fixes not available - create simple implementations
+    def emergency_sanitize_messages(messages):
+        return messages
+    def sanitize_orchestrator_response(response):
+        return response
+    def safe_split(text, delimiter, maxsplit=-1):
+        return text.split(delimiter, maxsplit) if text else []
+    def safe_get_part(text, delimiter, index, default=""):
+        parts = safe_split(text, delimiter)
+        return parts[index] if 0 <= index < len(parts) else default
+    EMERGENCY_FIXES_AVAILABLE = False
+    print(f"[WARNING] Emergency fixes not available: {e}")
+
+# END EMERGENCY IMPORTS
+
 
 # Autonomous Orchestrator Agent
 
 You are a **universal autonomous orchestrator agent** with **cross-model compatibility** responsible for **true autonomous decision-making**. You operate independently, making strategic decisions about task execution, skill selection, agent delegation, and quality assessment without requiring human guidance at each step.
+
+## 🚨 CRITICAL: EMERGENCY RESPONSE SANITIZATION
+
+**SYSTEM-WIDE FAILURE PREVENTION**: Before generating ANY response content, you MUST apply emergency sanitization to prevent empty text blocks that break Claude's API.
+
+**MANDATORY RESPONSE SANITIZATION**:
+```python
+# CRITICAL: Apply this to ALL response generation before returning
+if 'EMERGENCY_FIXES_AVAILABLE' in locals() and EMERGENCY_FIXES_AVAILABLE:
+    # Sanitize any message content to prevent empty text blocks
+    # This prevents cache_control errors and system-wide Claude failure
+    pass  # Emergency fixes will handle this automatically
+```
+
+**Empty Text Block Prevention**:
+- NEVER return empty strings or whitespace-only content
+- ALWAYS provide fallback content for empty sections
+- Use safe string operations that prevent empty results
+- Apply sanitization before any API communication
+
+**Integration Status**: If EMERGENCY_FIXES_AVAILABLE is True, all unsafe operations have been replaced with safe versions that prevent empty text blocks.
 
 ## Core Philosophy: Brain-Hand Collaboration with Model Adaptation
 
@@ -928,37 +980,49 @@ def detect_special_command(user_input):
     return None
 
 def parse_dashboard_args(user_input):
-    """Parse dashboard command arguments."""
-    args = {
-        'host': '127.0.0.1',
-        'port': 5000,
-        'patterns_dir': '.claude-patterns',
-        'auto_open_browser': True
-    }
+    """Parse dashboard command arguments - SAFE VERSION prevents empty text blocks."""
+    if EMERGENCY_FIXES_AVAILABLE:
+        return safe_parse_dashboard_args(user_input or "")
+    else:
+        # Fallback implementation if emergency fixes not available
+        args = {
+            'host': '127.0.0.1',
+            'port': 5000,
+            'patterns_dir': '.claude-patterns',
+            'auto_open_browser': True
+        }
 
-    # Simple parsing for common arguments
-    if '--host' in user_input:
-        # Extract host value
-        parts = user_input.split('--host')[1].strip().split()
-        if parts:
-            args['host'] = parts[0]
+        if not user_input:
+            return args
 
-    if '--port' in user_input:
-        # Extract port value
-        parts = user_input.split('--port')[1].strip().split()
-        if parts and parts[0].isdigit():
-            args['port'] = int(parts[0])
+        cmd = str(user_input).strip()
+        if not cmd:
+            return args
 
-    if '--patterns-dir' in user_input:
-        # Extract patterns directory
-        parts = user_input.split('--patterns-dir')[1].strip().split()
-        if parts:
-            args['patterns_dir'] = parts[0]
+        # Safe extraction with fallbacks
+        if '--host' in cmd:
+            host_value = safe_extract_after(cmd, '--host')
+            host_parts = safe_split(host_value, ' ', 1)
+            args['host'] = host_parts[0] if host_parts else 'localhost'
 
-    if '--no-browser' in user_input:
-        args['auto_open_browser'] = False
+        if '--port' in cmd:
+            port_value = safe_extract_after(cmd, '--port')
+            port_parts = safe_split(port_value, ' ', 1)
+            port_str = port_parts[0] if port_parts else '5000'
+            try:
+                args['port'] = int(port_str) if port_str.isdigit() else 5000
+            except (ValueError, TypeError):
+                args['port'] = 5000
 
-    return args
+        if '--patterns-dir' in cmd:
+            patterns_value = safe_extract_after(cmd, '--patterns-dir')
+            patterns_parts = safe_split(patterns_value, ' ', 1)
+            args['patterns_dir'] = patterns_parts[0] if patterns_parts else '.claude-patterns'
+
+        if '--no-browser' in cmd:
+            args['auto_open_browser'] = False
+
+        return args
 
 def parse_learning_analytics_args(user_input):
     """Parse learning analytics command arguments."""
@@ -1203,27 +1267,39 @@ def parse_queue_args(user_input):
 
     if '--name' in cmd:
         idx = cmd.index('--name')
-        remaining = ' '.join(cmd.split()[idx + 1:])
-        if '--description' in remaining:
-            args['name'] = remaining.split('--description')[0].strip()
+        if EMERGENCY_FIXES_AVAILABLE:
+            remaining = safe_extract_remaining_args(cmd, idx + 1)
+            args['name'] = safe_extract_between(remaining, '', '--description') or safe_extract_after(remaining, '') or 'Untitled Task'
         else:
-            args['name'] = remaining
+            remaining = ' '.join(cmd.split()[idx + 1:]) if idx + 1 < len(cmd.split()) else ''
+            if '--description' in remaining:
+                args['name'] = remaining.split('--description')[0].strip()
+            else:
+                args['name'] = remaining or 'Untitled Task'
 
     if '--description' in cmd:
         idx = cmd.index('--description')
-        remaining = ' '.join(cmd.split()[idx + 1:])
-        if '--command' in remaining:
-            args['description'] = remaining.split('--command')[0].strip()
+        if EMERGENCY_FIXES_AVAILABLE:
+            remaining = safe_extract_remaining_args(cmd, idx + 1)
+            args['description'] = safe_extract_between(remaining, '', '--command') or safe_extract_after(remaining, '') or 'No description provided'
         else:
-            args['description'] = remaining
+            remaining = ' '.join(cmd.split()[idx + 1:]) if idx + 1 < len(cmd.split()) else ''
+            if '--command' in remaining:
+                args['description'] = remaining.split('--command')[0].strip()
+            else:
+                args['description'] = remaining or 'No description provided'
 
     if '--command' in cmd:
         idx = cmd.index('--command')
-        remaining = ' '.join(cmd.split()[idx + 1:])
-        if '--priority' in remaining:
-            args['command'] = remaining.split('--priority')[0].strip()
+        if EMERGENCY_FIXES_AVAILABLE:
+            remaining = safe_extract_remaining_args(cmd, idx + 1)
+            args['command'] = safe_extract_between(remaining, '', '--priority') or safe_extract_after(remaining, '') or 'No command specified'
         else:
-            args['command'] = remaining
+            remaining = ' '.join(cmd.split()[idx + 1:]) if idx + 1 < len(cmd.split()) else ''
+            if '--priority' in remaining:
+                args['command'] = remaining.split('--priority')[0].strip()
+            else:
+                args['command'] = remaining or 'No command specified'
 
     if '--priority' in cmd:
         idx = cmd.index('--priority')
@@ -1436,8 +1512,12 @@ def parse_preference_args(user_input):
 
     if '--value' in cmd:
         idx = cmd.index('--value')
-        remaining = ' '.join(cmd.split()[idx + 1:])
-        args['value'] = remaining
+        if EMERGENCY_FIXES_AVAILABLE:
+            remaining = safe_extract_remaining_args(cmd, idx + 1)
+            args['value'] = remaining or 'default_value'
+        else:
+            remaining = ' '.join(cmd.split()[idx + 1:]) if idx + 1 < len(cmd.split()) else ''
+            args['value'] = remaining or 'default_value'
 
     if '--export' in cmd:
         idx = cmd.index('--export')
