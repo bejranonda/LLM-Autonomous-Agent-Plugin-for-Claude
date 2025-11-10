@@ -48,8 +48,8 @@ class EnhancedGitHubReleaseManager:
             return url
 
         except subprocess.CalledProcessError:
-            print("❌ Could not determine repository URL")
-            print("💡 Make sure you're in a git repository with remote 'origin'")
+            print("[ERROR] Could not determine repository URL")
+            print("[INFO] Make sure you're in a git repository with remote 'origin'")
             return None
 
     def _check_github_cli_auth(self) -> bool:
@@ -87,11 +87,11 @@ class EnhancedGitHubReleaseManager:
                 cmd.append("--draft")
 
             result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-            print(f"✅ Release created successfully with GitHub CLI")
+            print(f"[OK] Release created successfully with GitHub CLI")
             return True
 
         except subprocess.CalledProcessError as e:
-            print(f"❌ GitHub CLI release failed: {e.stderr}")
+            print(f"[ERROR] GitHub CLI release failed: {e.stderr}")
             return False
 
     def _create_release_with_curl(
@@ -103,18 +103,18 @@ class EnhancedGitHubReleaseManager:
             draft: bool = False) -> bool:
         """Create release using curl and GitHub API (fallback method)."""
         if not self.token:
-            print("❌ GITHUB_TOKEN environment variable required for API method")
+            print("[ERROR] GITHUB_TOKEN environment variable required for API method")
             return False
 
         # Extract owner/repo from URL
         if "github.com" in self.repo_url:
             parts = self.repo_url.split("github.com/")
             if len(parts) != 2:
-                print("❌ Invalid GitHub repository URL")
+                print("[ERROR] Invalid GitHub repository URL")
                 return False
             owner_repo = parts[1]
         else:
-            print("❌ Not a GitHub repository")
+            print("[ERROR] Not a GitHub repository")
             return False
 
         api_url = f"https://api.github.com/repos/{owner_repo}/releases"
@@ -137,15 +137,15 @@ class EnhancedGitHubReleaseManager:
             response = requests.post(api_url, headers=headers, json=data, timeout=30)
 
             if response.status_code == 201:
-                print(f"✅ Release created successfully via API")
+                print(f"[OK] Release created successfully via API")
                 return True
             else:
-                print(f"❌ API request failed: {response.status_code}")
+                print(f"[ERROR] API request failed: {response.status_code}")
                 print(f"Response: {response.text}")
                 return False
 
         except requests.RequestException as e:
-            print(f"❌ API request error: {e}")
+            print(f"[ERROR] API request error: {e}")
             return False
 
     def _verify_release_exists(self, tag: str) -> bool:
@@ -178,7 +178,7 @@ class EnhancedGitHubReleaseManager:
         Returns:
             True if successful, False otherwise
         """
-        print(f"🚀 Creating GitHub release: {tag}")
+        print(f"[START] Creating GitHub release: {tag}")
         print(f"   Repository: {self.repo_url}")
         print(f"   Title: {title}")
         print(f"   Prerelease: {prerelease}")
@@ -187,33 +187,33 @@ class EnhancedGitHubReleaseManager:
 
         # Method 1: GitHub CLI (preferred)
         if self._check_github_cli_auth():
-            print("📱 Using GitHub CLI...")
+            print("[PHONE] Using GitHub CLI...")
             if self._create_release_with_gh_cli(tag, title, notes, prerelease, draft):
                 if verify and self._verify_release_exists(tag):
-                    print(f"✅ Release {tag} verified on GitHub")
+                    print(f"[OK] Release {tag} verified on GitHub")
                     return True
                 elif not verify:
                     return True
                 else:
-                    print("⚠️  Release created but verification failed")
+                    print("[WARN]  Release created but verification failed")
                     return False
         else:
-            print("❌ GitHub CLI not authenticated")
-            print("💡 Run: gh auth login")
+            print("[ERROR] GitHub CLI not authenticated")
+            print("[INFO] Run: gh auth login")
 
         # Method 2: API fallback
         print("🌐 Trying API fallback...")
         if self._create_release_with_curl(tag, title, notes, prerelease, draft):
             if verify and self._verify_release_exists(tag):
-                print(f"✅ Release {tag} verified on GitHub")
+                print(f"[OK] Release {tag} verified on GitHub")
                 return True
             elif not verify:
                 return True
             else:
-                print("⚠️  Release created but verification failed")
+                print("[WARN]  Release created but verification failed")
                 return False
 
-        print("❌ All release methods failed")
+        print("[ERROR] All release methods failed")
         return False
 
     def auto_detect_version_and_changes(self) -> Dict[str, str]:
@@ -277,7 +277,7 @@ class EnhancedGitHubReleaseManager:
             }
 
         except Exception as e:
-            print(f"❌ Auto-detection failed: {e}")
+            print(f"[ERROR] Auto-detection failed: {e}")
             return {
                 "version": "v1.0.0",
                 "title": "Release v1.0.0",
@@ -335,7 +335,7 @@ def main():
                 with open(args.notes_file, 'r') as f:
                     notes = f.read()
             except FileNotFoundError:
-                print(f"❌ Notes file not found: {args.notes_file}")
+                print(f"[ERROR] Notes file not found: {args.notes_file}")
                 sys.exit(1)
         else:
             notes = args.notes or "Release update"
@@ -343,7 +343,7 @@ def main():
 
     # Validate inputs
     if not tag:
-        print("❌ Release tag is required")
+        print("[ERROR] Release tag is required")
         sys.exit(1)
 
     # Create the release
@@ -357,7 +357,7 @@ def main():
     )
 
     if success:
-        print(f"🎉 Release {tag} completed successfully!")
+        print(f"[PARTY] Release {tag} completed successfully!")
         print(f"🔗 View at: {release_manager.repo_url}/releases/tag/{tag}")
         sys.exit(0)
     else:

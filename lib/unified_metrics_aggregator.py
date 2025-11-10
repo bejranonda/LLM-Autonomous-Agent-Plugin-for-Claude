@@ -825,7 +825,7 @@ class UnifiedMetricsAggregator:
         # Check declining trends
         for kpi_name, kpi_data in individual_kpis.items():
             if kpi_data.get("trend") == "declining":
-                recommendations.append(f"⚠️ {kpi_name.replace('_', ' ').title()} is declining. Investigate root cause.")
+                recommendations.append(f"[WARN] {kpi_name.replace('_', ' ').title()} is declining. Investigate root cause.")
 
         # Overall recommendations
         overall_score = kpi_scores.get("overall_score", 0)
@@ -835,7 +835,7 @@ class UnifiedMetricsAggregator:
             recommendations.append("System performance needs improvement. Focus on underperforming KPIs.")
 
         if not recommendations:
-            recommendations.append("✅ All systems performing well. Continue monitoring.")
+            recommendations.append("[OK] All systems performing well. Continue monitoring.")
 
         return recommendations
 
@@ -977,9 +977,9 @@ class UnifiedMetricsAggregator:
             }.get(kpi_data.get("status"), "⚪")
 
             trend_emoji = {
-                "improving": "📈",
+                "improving": "[TREND]",
                 "declining": "📉",
-                "stable": "➡️"
+                "stable": "[RIGHT]"
             }.get(kpi_data.get("trend"), "❓")
 
             report += f"""
@@ -1055,35 +1055,35 @@ def main():
     aggregator = UnifiedMetricsAggregator()
 
     # Collect metrics from all systems
-    print("\n📊 Collecting metrics from all systems...")
+    print("\n[DATA] Collecting metrics from all systems...")
     metrics = aggregator.collect_metrics_from_all_systems()
 
-    print(f"✅ Collected metrics from {len(metrics)} systems")
+    print(f"[OK] Collected metrics from {len(metrics)} systems")
 
     # Store aggregated metrics
-    print("\n💾 Storing aggregated metrics...")
+    print("\n[SAVE] Storing aggregated metrics...")
     aggregator.store_aggregated_metrics(metrics.get("aggregated", {}))
 
     # Calculate KPI scores
-    print("\n🎯 Calculating KPI scores...")
+    print("\n[TARGET] Calculating KPI scores...")
     kpi_scores = aggregator.calculate_kpi_scores()
 
-    print(f"📈 Overall Score: {kpi_scores['overall_score']:.1f}/100")
-    print(f"📊 KPIs Tracked: {kpi_scores['total_kpis_tracked']}")
+    print(f"[TREND] Overall Score: {kpi_scores['overall_score']:.1f}/100")
+    print(f"[DATA] KPIs Tracked: {kpi_scores['total_kpis_tracked']}")
 
     # Create system snapshot
     print("\n📸 Creating system snapshot...")
     snapshot = aggregator.create_system_snapshot()
 
-    print(f"✅ System health score: {snapshot['system_health']['overall_score']:.1f}/100")
-    print(f"⚠️ Critical issues: {snapshot['system_health']['critical_issues']}")
+    print(f"[OK] System health score: {snapshot['system_health']['overall_score']:.1f}/100")
+    print(f"[WARN] Critical issues: {snapshot['system_health']['critical_issues']}")
 
     # Generate dashboard data
-    print("\n📋 Generating dashboard data...")
+    print("\n[LIST] Generating dashboard data...")
     dashboard_data = aggregator.get_kpi_dashboard_data()
 
-    print(f"📈 Improving trends: {dashboard_data['summary']['improving_trends']}")
-    print(f"💡 Recommendations: {dashboard_data['summary']['total_recommendations']}")
+    print(f"[TREND] Improving trends: {dashboard_data['summary']['improving_trends']}")
+    print(f"[INFO] Recommendations: {dashboard_data['summary']['total_recommendations']}")
 
     # Generate performance report
     print("\n📄 Generating performance report...")
@@ -1094,7 +1094,7 @@ def main():
     with open(report_file, "w") as f:
         f.write(report)
 
-    print(f"✅ Performance report saved to: {report_file.absolute()}")
+    print(f"[OK] Performance report saved to: {report_file.absolute()}")
 
     # Export metrics as JSON
     print("\n📤 Exporting metrics as JSON...")
@@ -1104,16 +1104,16 @@ def main():
     with open(json_file, "w") as f:
         f.write(json_data)
 
-    print(f"✅ Metrics exported to: {json_file.absolute()}")
+    print(f"[OK] Metrics exported to: {json_file.absolute()}")
 
     # Show summary
-    print("\n📊 Summary:")
+    print("\n[DATA] Summary:")
     print(f"   Overall Score: {kpi_scores['overall_score']:.1f}/100")
     print(f"   Tokens Saved: {metrics.get('aggregated', {}).get('total_tokens_saved', 0):,}")
     print(f"   Cost Savings: ${metrics.get('aggregated', {}).get('total_cost_savings', 0):.2f}")
     print(f"   Cache Hit Rate: {metrics.get('aggregated', {}).get('overall_cache_hit_rate', 0):.1f}%")
 
-    print("\n🎉 Unified Metrics Aggregator demo completed!")
+    print("\n[PARTY] Unified Metrics Aggregator demo completed!")
 
 
 if __name__ == "__main__":

@@ -990,7 +990,7 @@ def main():
 
         elif args.action == 'update-profile':
             profile = memory.update_system_profile(force=True)
-            print(f"✅ Profile updated at {profile.get('timestamp')}")
+            print(f"[OK] Profile updated at {profile.get('timestamp')}")
 
         elif args.action == 'set':
             # Try to parse as JSON, fallback to string
@@ -999,7 +999,7 @@ def main():
             except json.JSONDecodeError:
                 value = args.value
             memory.set_preference(args.category, args.key, value)
-            print(f"✅ Set {args.category}.{args.key} = {value}")
+            print(f"[OK] Set {args.category}.{args.key} = {value}")
 
         elif args.action == 'get':
             value = memory.get_preference(args.category, args.key)
@@ -1011,11 +1011,11 @@ def main():
 
         elif args.action == 'export':
             success = memory.export_preferences(args.path, args.include_sensitive)
-            print(f"✅ Export {'successful' if success else 'failed'}")
+            print(f"[OK] Export {'successful' if success else 'failed'}")
 
         elif args.action == 'import':
             success = memory.import_preferences(args.path, args.strategy)
-            print(f"✅ Import {'successful' if success else 'failed'}")
+            print(f"[OK] Import {'successful' if success else 'failed'}")
 
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)

@@ -742,7 +742,7 @@ class TaskQueue:
 
     def _execute_sequential_tasks(self, stop_on_error: bool):
         """Execute tasks sequentially in background thread."""
-        print("🚀 Starting sequential task execution...")
+        print("[START] Starting sequential task execution...")
 
         while not self._stop_execution.is_set():
             # Get next task
@@ -752,7 +752,7 @@ class TaskQueue:
                 break
 
             self._current_task = task['task_id']
-            print(f"⚡ Executing task: {task['name']} (ID: {task['task_id']})")
+            print(f"[BOLT] Executing task: {task['name']} (ID: {task['task_id']})")
 
             # Update status to running
             self.update_task_status(task['task_id'], self.STATUS_RUNNING)
@@ -798,7 +798,7 @@ class TaskQueue:
                         error=error,
                         execution_time=execution_time
                     )
-                    print(f"⚠️ Task failed, retrying: {task['name']} ({error})")
+                    print(f"[WARN] Task failed, retrying: {task['name']} ({error})")
                     time.sleep(2)  # Brief delay before retry
                     continue
                 else:
@@ -808,7 +808,7 @@ class TaskQueue:
                         error=error,
                         execution_time=execution_time
                     )
-                    print(f"❌ Task failed: {task['name']} ({error})")
+                    print(f"[ERROR] Task failed: {task['name']} ({error})")
 
                     if stop_on_error:
                         print("🛑 Stopping execution due to error")
@@ -816,7 +816,7 @@ class TaskQueue:
 
             self._current_task = None
 
-        print("🏁 Sequential execution completed")
+        print("[FINISH] Sequential execution completed")
 
     def _execute_slash_command(self, task: Dict[str, Any]) -> tuple[bool, str, str]:
         """Execute a slash command task."""
@@ -1001,9 +1001,9 @@ def main():
         elif args.action == 'execute':
             if queue.start_sequential_execution(args.stop_on_error):
                 if args.background:
-                    print("🚀 Sequential execution started in background")
+                    print("[START] Sequential execution started in background")
                 else:
-                    print("🚀 Sequential execution started... (Ctrl+C to stop)")
+                    print("[START] Sequential execution started... (Ctrl+C to stop)")
                     try:
                         # Wait for execution to complete or be interrupted
                         while queue._execution_thread and queue._execution_thread.is_alive():
@@ -1012,7 +1012,7 @@ def main():
                         print("\n🛑 Stopping execution...")
                         queue.stop_execution()
             else:
-                print("❌ Failed to start execution")
+                print("[ERROR] Failed to start execution")
                 sys.exit(1)
 
         elif args.action == 'stop':

@@ -132,7 +132,7 @@ class TokenOptimizationSection(UnifiedDashboardSection):
                 </div>
 
                 <div class="metric-card token-card">
-                    <div class="metric-icon">📊</div>
+                    <div class="metric-icon">[DATA]</div>
                     <div class="metric-value" id="compression-ratio">0%</div>
                     <div class="metric-label">Compression Ratio</div>
                     <div class="metric-change positive" id="compression-change">+0%</div>
@@ -146,7 +146,7 @@ class TokenOptimizationSection(UnifiedDashboardSection):
                 </div>
 
                 <div class="metric-card token-card">
-                    <div class="metric-icon">⚡</div>
+                    <div class="metric-icon">[BOLT]</div>
                     <div class="metric-value" id="cache-hit-rate">0%</div>
                     <div class="metric-label">Cache Hit Rate</div>
                     <div class="metric-change positive" id="cache-change">+0%</div>
@@ -208,7 +208,7 @@ class KPISection(UnifiedDashboardSection):
         return '''
         <div id="kpi-section" class="dashboard-section" style="display: none;">
             <div class="section-header">
-                <h2>📈 KPI & Executive Metrics</h2>
+                <h2>[TREND] KPI & Executive Metrics</h2>
                 <div class="section-controls">
                     <button id="export-kpi-report" class="btn btn-primary">Export Report</button>
                     <select id="kpi-period" class="period-selector">
@@ -222,7 +222,7 @@ class KPISection(UnifiedDashboardSection):
             <div class="kpi-overview-grid">
                 <div class="kpi-card">
                     <div class="kpi-header">
-                        <h3>🎯 Overall Performance</h3>
+                        <h3>[TARGET] Overall Performance</h3>
                         <div class="kpi-score" id="overall-score">0</div>
                     </div>
                     <div class="kpi-metrics">
@@ -310,7 +310,7 @@ class SystemHealthSection(UnifiedDashboardSection):
         return '''
         <div id="system-section" class="dashboard-section" style="display: none;">
             <div class="section-header">
-                <h2>🔧 System Health & Validation</h2>
+                <h2>[FIX] System Health & Validation</h2>
                 <div class="section-controls">
                     <button id="run-health-check" class="btn btn-primary">Run Health Check</button>
                     <span class="health-status" id="health-status">Checking...</span>
@@ -319,7 +319,7 @@ class SystemHealthSection(UnifiedDashboardSection):
 
             <div class="health-grid">
                 <div class="health-card">
-                    <h3>🖥️ System Resources</h3>
+                    <h3>[DESKTOP] System Resources</h3>
                     <div class="resource-metrics">
                         <div class="resource-metric">
                             <span>CPU Usage</span>
@@ -346,7 +346,7 @@ class SystemHealthSection(UnifiedDashboardSection):
                 </div>
 
                 <div class="health-card">
-                    <h3>✅ Data Integrity</h3>
+                    <h3>[OK] Data Integrity</h3>
                     <div class="integrity-metrics">
                         <div class="integrity-score">
                             <div class="score-circle" id="consistency-score">0</div>
@@ -3307,16 +3307,16 @@ DASHBOARD_HTML = """
                 🏠 Overview
             </button>
             <button class="tab-button" data-tab="analytics" onclick="switchTab('analytics')">
-                📊 Analytics
+                [DATA] Analytics
             </button>
             <button class="tab-button" data-tab="tokens" onclick="switchTab('tokens')">
                 💰 Token Optimization
             </button>
             <button class="tab-button" data-tab="kpi" onclick="switchTab('kpi')">
-                📈 KPI & Reports
+                [TREND] KPI & Reports
             </button>
             <button class="tab-button" data-tab="system" onclick="switchTab('system')">
-                🔧 System Health
+                [FIX] System Health
             </button>
         </div>
 
@@ -3506,7 +3506,7 @@ DASHBOARD_HTML = """
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #888;">
-                    <strong>⚠️ Commands That DON'T Record:</strong>
+                    <strong>[WARN] Commands That DON'T Record:</strong>
                     <div style="margin: 4px 0;">
                         <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/monitor:dashboard</code>
                         <code style="background: #fff3cd; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/analyze:explain</code>
@@ -4473,7 +4473,7 @@ DASHBOARD_HTML = """
                         </div>
 
                         <div class="metric-card token-card">
-                            <div class="metric-icon">📊</div>
+                            <div class="metric-icon">[DATA]</div>
                             <div class="metric-value" id="compression-ratio">0%</div>
                             <div class="metric-label">Compression Ratio</div>
                             <div class="metric-change positive" id="compression-change">+0%</div>
@@ -4487,7 +4487,7 @@ DASHBOARD_HTML = """
                         </div>
 
                         <div class="metric-card token-card">
-                            <div class="metric-icon">⚡</div>
+                            <div class="metric-icon">[BOLT]</div>
                             <div class="metric-value" id="cache-hit-rate">0%</div>
                             <div class="metric-label">Cache Hit Rate</div>
                             <div class="metric-change positive" id="cache-change">+0%</div>
@@ -4511,7 +4511,7 @@ DASHBOARD_HTML = """
             dynamicSectionsContainer.innerHTML += `
                 <div id="kpi-section" class="dashboard-section" style="display: none;">
                     <div class="section-header">
-                        <h2>📈 KPI & Executive Metrics</h2>
+                        <h2>[TREND] KPI & Executive Metrics</h2>
                         <div class="section-controls">
                             <button id="export-kpi-report" class="btn btn-primary" onclick="generateReportPDF()">Export PDF</button>
                             <button onclick="exportDataAsJSON()" class="btn btn-primary" style="margin-left: 5px;">Export JSON</button>
@@ -4527,7 +4527,7 @@ DASHBOARD_HTML = """
                     <div class="kpi-overview-grid">
                         <div class="kpi-card">
                             <div class="kpi-header">
-                                <h3>🎯 Overall Performance</h3>
+                                <h3>[TARGET] Overall Performance</h3>
                                 <div class="kpi-score" id="overall-score">0</div>
                             </div>
                             <div class="kpi-metrics">
@@ -4585,7 +4585,7 @@ DASHBOARD_HTML = """
             dynamicSectionsContainer.innerHTML += `
                 <div id="system-section" class="dashboard-section" style="display: none;">
                     <div class="section-header">
-                        <h2>🔧 System Health & Validation</h2>
+                        <h2>[FIX] System Health & Validation</h2>
                         <div class="section-controls">
                             <button id="run-health-check" class="btn btn-primary" onclick="loadSystemHealthData()">Refresh</button>
                             <button onclick="exportDataAsJSON()" class="btn btn-primary" style="margin-left: 5px;">Export JSON</button>
@@ -4596,7 +4596,7 @@ DASHBOARD_HTML = """
 
                     <div class="health-grid">
                         <div class="health-card">
-                            <h3>🖥️ System Resources</h3>
+                            <h3>[DESKTOP] System Resources</h3>
                             <div class="resource-metrics">
                                 <div class="resource-metric">
                                     <span>CPU Usage</span>
@@ -4623,7 +4623,7 @@ DASHBOARD_HTML = """
                         </div>
 
                         <div class="health-card">
-                            <h3>✅ Data Integrity</h3>
+                            <h3>[OK] Data Integrity</h3>
                             <div class="integrity-metrics">
                                 <div class="integrity-score">
                                     <div class="score-circle" id="consistency-score">0</div>
@@ -4721,7 +4721,7 @@ DASHBOARD_HTML = """
             notice.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: start;">
                     <div>
-                        <strong>🎉 Unified Dashboard Active!</strong>
+                        <strong>[PARTY] Unified Dashboard Active!</strong>
                         <p style="margin: 8px 0 0 0; font-size: 13px;">
                             All dashboard features are now available in this single interface.
                             Legacy dashboards have been consolidated.
@@ -4915,7 +4915,7 @@ DASHBOARD_HTML = """
                 'stable [CHART]': '[CHART] Stable',
                 'declining [DOWN]': '[DOWN] Declining',
                 'accelerating': '[UP] Accelerating',
-                'stable': '➡️ Stable',
+                'stable': '[RIGHT] Stable',
                 'declining': '[DOWN] Declining',
                 'insufficient_data': '⏳ Learning'
             }[data.learning_velocity];
@@ -5402,7 +5402,7 @@ DASHBOARD_HTML = """
                                         let tooltipLines = [];
 
                                         if (modelInfo) {
-                                            tooltipLines.push(`📋 Total Tasks: ${modelInfo.total_tasks}`);
+                                            tooltipLines.push(`[LIST] Total Tasks: ${modelInfo.total_tasks}`);
                                             tooltipLines.push(`[CHART] Data Source: ${modelInfo.data_source}`);
                                     }
 
@@ -5746,7 +5746,7 @@ DASHBOARD_HTML = """
             // Row 3: TES (Time Efficiency Score)
             formulasHtml += `<tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
-                    ⚡ TES
+                    [BOLT] TES
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
                         Time Efficiency Score
                     </div>
@@ -5823,7 +5823,7 @@ DASHBOARD_HTML = """
             if (hasPenalties) {
                 formulasHtml += `<tr style="background-color: #fff5f5; border-bottom: 1px solid #e9ecef;">
                     <td style="padding: 8px 12px; font-weight: bold; color: #dc3545; background-color: #f8f9fa;">
-                        ⚠️ Regression Penalty
+                        [WARN] Regression Penalty
                         <div style="font-size: 10px; color: #dc3545; font-weight: normal; margin-top: 2px;">
                             Deduction for quality regressions
                         </div>
@@ -6534,7 +6534,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
     def get_unified_quality_api():
         """API endpoint for unified quality data."""
         try:
-            data = collector.get_unified_quality_data()
+            data = data_collector.get_unified_quality_data()
             return jsonify(data)
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
@@ -6543,7 +6543,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
     def get_unified_models_api():
         """API endpoint for unified model performance data."""
         try:
-            data = collector.get_unified_model_data()
+            data = data_collector.get_unified_model_data()
             return jsonify(data)
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
@@ -6552,7 +6552,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
     def get_unified_dashboard_api():
         """API endpoint for complete unified dashboard data."""
         try:
-            data = collector.get_unified_dashboard_data()
+            data = data_collector.get_unified_dashboard_data()
             return jsonify(data)
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
@@ -6561,7 +6561,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
     def get_unified_stats_api():
         """API endpoint for unified storage statistics."""
         try:
-            data = collector.get_unified_storage_stats()
+            data = data_collector.get_unified_storage_stats()
             return jsonify(data)
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
@@ -6581,7 +6581,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
             if not isinstance(score, (int, float)) or not (0 <= score <= 100):
                 return jsonify({"error": "Score must be between 0 and 100"}), 400
 
-            collector.record_quality_to_unified(score, metrics, task_id)
+            data_collector.record_quality_to_unified(score, metrics, task_id)
             return jsonify({"success": True, "message": f"Quality score {score} recorded"})
 
         except Exception as e:
@@ -6602,7 +6602,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
             if not isinstance(score, (int, float)) or not (0 <= score <= 100):
                 return jsonify({"error": "Score must be between 0 and 100"}), 400
 
-            collector.update_model_performance_unified(model, score, task_type)
+            data_collector.update_model_performance_unified(model, score, task_type)
             return jsonify({"success": True, "message": f"Model performance for {model} updated"})
 
         except Exception as e:
@@ -6618,7 +6618,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
             if not metrics:
                 return jsonify({"error": "Metrics dictionary is required"}), 400
 
-            collector.update_unified_dashboard_metrics(metrics)
+            data_collector.update_unified_dashboard_metrics(metrics)
             return jsonify({"success": True, "message": "Dashboard metrics updated"})
 
         except Exception as e:
@@ -6636,7 +6636,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
 
             # Trigger migration
             from parameter_migration import MigrationManager
-            migration_manager = MigrationManager(collector.unified_storage)
+            migration_manager = MigrationManager(data_collector.unified_storage)
             result = migration_manager.execute_gradual_migration(force=force)
 
             return jsonify(result)
@@ -6651,7 +6651,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
             if not UNIFIED_STORAGE_AVAILABLE:
                 return jsonify({"error": "Unified storage not available"}), 503
 
-            validation = collector.unified_storage.validate_data_integrity()
+            validation = data_collector.unified_storage.validate_data_integrity()
             return jsonify(validation)
 
         except Exception as e:
@@ -6663,7 +6663,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
 def api_tokens_overview():
     """Get token optimization overview data."""
     try:
-        tokens_section = collector.dashboard_sections.get('tokens')
+        tokens_section = data_collector.dashboard_sections.get('tokens')
         if tokens_section:
             data = tokens_section.get_data()
             return jsonify(data)
@@ -6676,7 +6676,7 @@ def api_tokens_overview():
 def api_kpi_overview():
     """Get KPI overview data."""
     try:
-        kpi_section = collector.dashboard_sections.get('kpi')
+        kpi_section = data_collector.dashboard_sections.get('kpi')
         if kpi_section:
             data = kpi_section.get_data()
             return jsonify(data)
@@ -6689,7 +6689,7 @@ def api_kpi_overview():
 def api_unified_system_health():
     """Get unified system health data."""
     try:
-        system_section = collector.dashboard_sections.get('system')
+        system_section = data_collector.dashboard_sections.get('system')
         if system_section:
             data = system_section.get_data()
             return jsonify(data)
@@ -6698,11 +6698,22 @@ def api_unified_system_health():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/favicon.ico')
+def favicon():
+    """Return favicon - simple SVG icon to avoid 404 errors."""
+    from flask import Response
+    svg_favicon = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="14" fill="#667eea"/>
+        <text x="16" y="20" text-anchor="middle" fill="white" font-family="Arial" font-size="14" font-weight="bold">AI</text>
+    </svg>'''
+    return Response(svg_favicon, mimetype='image/svg+xml')
+
+
 @app.route('/api/sections/<section_name>')
 def api_section_data(section_name):
     """Get data for a specific dashboard section."""
     try:
-        section = collector.dashboard_sections.get(section_name)
+        section = data_collector.dashboard_sections.get(section_name)
         if section:
             data = section.get_data()
             return jsonify(data)

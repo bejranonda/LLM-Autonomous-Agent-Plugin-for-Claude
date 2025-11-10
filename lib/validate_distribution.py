@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 try:
     from plugin_path_resolver import get_plugin_path, get_script_path, validate_plugin_installation
 except ImportError as e:
-    print(f"❌ Error: Could not import plugin_path_resolver: {e}")
+    print(f"[ERROR] Error: Could not import plugin_path_resolver: {e}")
     sys.exit(1)
 
 

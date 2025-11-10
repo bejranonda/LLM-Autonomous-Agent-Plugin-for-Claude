@@ -468,7 +468,7 @@ class QualityController:
             f.write("# Quality Control Report\n\n")
             f.write(f"**Generated:** {self.results['timestamp']}\n")
             f.write(f"**Overall Score:** {self.results['overall_score']}/100\n")
-            f.write(f"**Status:** {'✅ PASSED' if self.results['overall_score'] >= 70 else '❌ FAILED'}\n")
+            f.write(f"**Status:** {'[OK] PASSED' if self.results['overall_score'] >= 70 else '[ERROR] FAILED'}\n")
             f.write(f"**Execution Time:** {self.results['execution_time']:.2f} seconds\n\n")
 
             # Component Details
@@ -522,7 +522,7 @@ class QualityController:
             if func_results.get('test_details'):
                 f.write("\n**Test Results:**\n")
                 for test in func_results['test_details']:
-                    status_icon = "✅" if test["status"] == "PASS" else "❌"
+                    status_icon = "[OK]" if test["status"] == "PASS" else "[ERROR]"
                     f.write(f"- {status_icon} {test['component']}: {test['message']}\n")
 
             # Recommendations
@@ -540,9 +540,9 @@ class QualityController:
             f.write(f"- **Improvement:** +{improvement} points ({improvement/58*100:.1f}%)\n")
 
             if improvement > 0:
-                f.write("- **Status:** ✅ QUALITY IMPROVED\n")
+                f.write("- **Status:** [OK] QUALITY IMPROVED\n")
             else:
-                f.write("- **Status:** ❌ QUALITY DEGRADED\n")
+                f.write("- **Status:** [ERROR] QUALITY DEGRADED\n")
 
             # Full Results JSON
             f.write("\n## Full Results (JSON)\n\n")

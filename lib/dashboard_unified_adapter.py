@@ -648,7 +648,7 @@ def main():
         # Test all
         print("Testing Dashboard Unified Adapter...")
         summary = adapter.get_dashboard_summary()
-        print(f"✅ Summary generated successfully")
+        print(f"[OK] Summary generated successfully")
         print(f"   System Health: {summary['system_health']['overall_score']:.1f}%")
         print(f"   Quality Score: {summary['quality_metrics']['current_score']}")
         print(f"   Active Model: {summary['model_performance']['active_model']}")

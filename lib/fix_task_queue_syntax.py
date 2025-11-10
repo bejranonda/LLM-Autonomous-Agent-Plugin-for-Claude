@@ -51,10 +51,10 @@ def fix_task_queue():
     # Test syntax
     try:
         compile(content, str(task_queue_path), 'exec')
-        print("✅ task_queue.py syntax fixed successfully")
+        print("[OK] task_queue.py syntax fixed successfully")
         return True
     except SyntaxError as e:
-        print(f"❌ Syntax error still exists: {e}")
+        print(f"[ERROR] Syntax error still exists: {e}")
         return False
 
 if __name__ == "__main__":

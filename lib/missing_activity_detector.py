@@ -231,15 +231,15 @@ class MissingActivityDetector:
 
     def detect_missing_activities(self, since_hours: int = 24) -> List[Dict[str, Any]]:
         """Main method to detect missing activities from performance records."""
-        print(f"🔍 Detecting missing activities since {since_hours} hours ago...")
+        print(f"[SEARCH] Detecting missing activities since {since_hours} hours ago...")
 
         # Load existing records
         existing = self.load_existing_records()
-        print(f"📊 Found {len(existing['assessment_ids'])} existing assessment IDs")
+        print(f"[DATA] Found {len(existing['assessment_ids'])} existing assessment IDs")
 
         # Get recent commits
         commits = self.get_git_commits_since(since_hours)
-        print(f"📝 Found {len(commits)} recent commits")
+        print(f"[NOTE] Found {len(commits)} recent commits")
 
         missing_activities = []
 
@@ -293,16 +293,16 @@ class MissingActivityDetector:
 
             missing_activities.append(missing_activity)
 
-        print(f"❌ Found {len(missing_activities)} missing activities")
+        print(f"[ERROR] Found {len(missing_activities)} missing activities")
         return missing_activities
 
     def create_missing_records(self, missing_activities: List[Dict[str, Any]]) -> None:
         """Add missing activities to performance records file."""
         if not missing_activities:
-            print("✅ No missing activities to record")
+            print("[OK] No missing activities to record")
             return
 
-        print(f"📝 Creating {len(missing_activities)} missing performance records...")
+        print(f"[NOTE] Creating {len(missing_activities)} missing performance records...")
 
         # Load existing performance records
         performance_data = {"records": [], "version": "2.0.0"}
@@ -348,10 +348,10 @@ class MissingActivityDetector:
         with open(self.performance_records_file, 'w', encoding='utf-8') as f:
             json.dump(performance_data, f, indent=2, ensure_ascii=False)
 
-        print(f"✅ Added {len(missing_activities)} missing records to performance_records.json")
+        print(f"[OK] Added {len(missing_activities)} missing records to performance_records.json")
 
         # Display summary
-        print("\n📊 Summary of Added Records:")
+        print("\n[DATA] Summary of Added Records:")
         for activity in missing_activities[:5]:  # Show first 5
             print(f"  • {activity['task_type']}: {activity['description'][:60]}...")
             print(f"    Score: {activity['overall_score']}/100, Duration: {activity['time_elapsed_minutes']:.1f}min")
@@ -364,7 +364,7 @@ def main():
     detector = MissingActivityDetector()
 
     print("=" * 60)
-    print("🔍 MISSING PERFORMANCE RECORDS DETECTOR")
+    print("[SEARCH] MISSING PERFORMANCE RECORDS DETECTOR")
     print("=" * 60)
 
     # Detect missing activities
@@ -391,11 +391,11 @@ def main():
         print("🤖 Auto-creating missing records...")
         detector.create_missing_records(missing_activities)
 
-        print(f"\n✅ Missing performance records detection complete!")
-        print(f"📈 Total records now available: {len(missing_activities) + detector.load_existing_records()['assessment_ids']}")
+        print(f"\n[OK] Missing performance records detection complete!")
+        print(f"[TREND] Total records now available: {len(missing_activities) + detector.load_existing_records()['assessment_ids']}")
 
     else:
-        print("\n✅ No missing activities found. All commits are properly recorded.")
+        print("\n[OK] No missing activities found. All commits are properly recorded.")
 
     print("=" * 60)
 

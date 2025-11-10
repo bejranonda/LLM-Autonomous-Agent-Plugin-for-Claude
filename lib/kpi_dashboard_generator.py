@@ -739,7 +739,7 @@ class KPIDashboardGenerator:
     def _generate_recommendations_section(self, recommendations: List[str]) -> str:
         """Generate recommendations section"""
         if not recommendations:
-            return '<p style="text-align: center; color: #27ae60; font-weight: bold;">✅ All systems performing well!</p>'
+            return '<p style="text-align: center; color: #27ae60; font-weight: bold;">[OK] All systems performing well!</p>'
 
         html = '<ul class="recommendations-list">'
         for rec in recommendations:

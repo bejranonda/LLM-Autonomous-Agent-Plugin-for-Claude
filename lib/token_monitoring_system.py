@@ -678,9 +678,9 @@ class TokenMonitoringSystem:
 
         # Add recommendations based on trends
         if consumption_analytics.get('trend') == 'increasing':
-            analysis += "\n⚠️ **Recommendation**: Token consumption is increasing. Consider enabling optimization features.\n"
+            analysis += "\n[WARN] **Recommendation**: Token consumption is increasing. Consider enabling optimization features.\n"
         elif consumption_analytics.get('trend') == 'decreasing':
-            analysis += "\n✅ **Good**: Token consumption is decreasing. Current optimization strategy is effective.\n"
+            analysis += "\n[OK] **Good**: Token consumption is decreasing. Current optimization strategy is effective.\n"
 
         return analysis
 

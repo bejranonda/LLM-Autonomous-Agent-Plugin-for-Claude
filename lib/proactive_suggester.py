@@ -617,20 +617,20 @@ class ProactiveSuggester:
         }
 
         impact_icons = {
-            "high": "⬆️⬆️⬆️",
-            "medium": "⬆️⬆️",
-            "low": "⬆️"
+            "high": "[UP][UP][UP]",
+            "medium": "[UP][UP]",
+            "low": "[UP]"
         }
 
         category_labels = {
-            "critical_quick_win": "🎯 CRITICAL QUICK WIN",
-            "quick_win": "⚡ QUICK WIN",
-            "strategic_improvement": "📈 STRATEGIC",
-            "nice_to_have": "💡 NICE TO HAVE"
+            "critical_quick_win": "[TARGET] CRITICAL QUICK WIN",
+            "quick_win": "[BOLT] QUICK WIN",
+            "strategic_improvement": "[TREND] STRATEGIC",
+            "nice_to_have": "[INFO] NICE TO HAVE"
         }
 
         output = []
-        output.append(f"\n{category_labels.get(suggestion['category'], '📋 SUGGESTION')}")
+        output.append(f"\n{category_labels.get(suggestion['category'], '[LIST] SUGGESTION')}")
         output.append(f"Priority: {suggestion['priority_score']}/100")
         output.append(f"\n{urgency_icons.get(suggestion['urgency'], '⚪')} {suggestion['title']}")
         output.append(f"\nType: {suggestion['type'].replace('_', ' ').title()}")
@@ -735,7 +735,7 @@ if __name__ == "__main__":
             count=args.count,
             consider_preferences=not args.no_preferences
         )
-        print(f"\n🎯 Top {len(suggestions)} Priority Suggestions:\n")
+        print(f"\n[TARGET] Top {len(suggestions)} Priority Suggestions:\n")
         for suggestion in suggestions:
             print(suggester.format_suggestion_for_display(suggestion))
 
@@ -759,7 +759,7 @@ if __name__ == "__main__":
 
     elif args.command == "stats":
         stats = suggester.get_statistics()
-        print("\n📊 Proactive Suggester Statistics\n")
+        print("\n[DATA] Proactive Suggester Statistics\n")
         print(f"Total Suggestions: {stats['total_suggestions']}")
         print(f"Pending: {stats['pending']}")
         print(f"Accepted: {stats['accepted']}")

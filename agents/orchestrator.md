@@ -874,6 +874,53 @@ def detect_special_command(user_input):
             'args': parse_plugin_validation_args(user_input)
         }
 
+    # Learning initialization - direct Python execution (simple tool)
+    if cmd.startswith('/learn:init'):
+        return {
+            'type': 'direct_execution',
+            'command': 'learn_init',
+            'args': parse_learn_init_args(user_input)
+        }
+
+    # Note: Complex analytical commands like /debug:eval, /debug:gui, and /validate:commands
+    # should go through full autonomous analysis for pattern learning, skill selection, and quality control
+
+    if cmd.startswith('/validate:web'):
+        return {
+            'type': 'direct_execution',
+            'command': 'validate_web',
+            'script': 'lib/web_validator.py',
+            'args': parse_web_validation_args(user_input)
+        }
+
+    # Workspace commands - direct Python execution (workspace utilities)
+    if cmd.startswith('/workspace:distribution-ready'):
+        return {
+            'type': 'direct_execution',
+            'command': 'workspace_distribution_ready',
+            'script': 'lib/distribution_preparer.py',
+            'args': parse_workspace_distribution_ready_args(user_input)
+        }
+
+    # Note: /workspace:improve is a complex analytical command that should go through
+    # full autonomous analysis for pattern learning and improvement generation
+
+    if cmd.startswith('/workspace:update-about'):
+        return {
+            'type': 'direct_execution',
+            'command': 'workspace_update_about',
+            'script': 'lib/about_updater.py',
+            'args': parse_about_update_args(user_input)
+        }
+
+    if cmd.startswith('/workspace:update-readme'):
+        return {
+            'type': 'direct_execution',
+            'command': 'workspace_update_readme',
+            'script': 'lib/readme_updater.py',
+            'args': parse_readme_update_args(user_input)
+        }
+
     # All other commands should go through full autonomous analysis
     # Complex commands like /dev:auto, /analyze:project, /validate:fullstack, etc.
     # benefit from pattern learning, skill selection, and quality control
@@ -1221,6 +1268,135 @@ def parse_queue_args(user_input):
 
     return args
 
+def parse_web_validation_args(user_input):
+    """Parse web validation command arguments."""
+    args = {
+        'url': None,
+        'comprehensive': False,
+        'debug': False,
+        'auto_fix': False
+    }
+
+    cmd = user_input.strip()
+
+    # Extract URL from command
+    if len(cmd.split()) > 1:
+        potential_url = cmd.split()[1]
+        if potential_url.startswith(('http://', 'https://')):
+            args['url'] = potential_url
+
+    # Parse flags
+    if '--comprehensive' in cmd:
+        args['comprehensive'] = True
+    if '--debug' in cmd:
+        args['debug'] = True
+    if '--auto-fix' in cmd:
+        args['auto_fix'] = True
+
+    return args
+
+def parse_about_update_args(user_input):
+    """Parse about update command arguments."""
+    args = {
+        'repo': None,
+        'description': None,
+        'topics': None
+    }
+
+    cmd = user_input.strip()
+
+    if '--repo' in cmd:
+        parts = cmd.split('--repo')[1].strip().split()
+        if parts:
+            args['repo'] = parts[0]
+
+    if '--description' in cmd:
+        parts = cmd.split('--description')[1].strip().split()
+        if parts:
+            args['description'] = ' '.join(parts)
+
+    if '--topics' in cmd:
+        parts = cmd.split('--topics')[1].strip().split()
+        if parts:
+            args['topics'] = parts[0]
+
+    return args
+
+def parse_readme_update_args(user_input):
+    """Parse README update command arguments."""
+    args = {
+        'style': 'smart',
+        'sections': None
+    }
+
+    cmd = user_input.strip()
+
+    if '--style' in cmd:
+        parts = cmd.split('--style')[1].strip().split()
+        if parts:
+            args['style'] = parts[0]
+
+    if '--sections' in cmd:
+        parts = cmd.split('--sections')[1].strip().split()
+        if parts:
+            args['sections'] = parts[0]
+
+    return args
+
+def parse_learn_init_args(user_input):
+    """Parse learn init command arguments."""
+    args = {
+        'dir': '.claude-patterns',
+        'force': False,
+        'verbose': False
+    }
+
+    cmd = user_input.strip()
+
+    # Parse directory argument
+    if '--dir' in cmd:
+        parts = cmd.split('--dir')[1].strip().split()
+        if parts:
+            args['dir'] = parts[0]
+
+    # Parse flags
+    if '--force' in cmd:
+        args['force'] = True
+    if '--verbose' in cmd:
+        args['verbose'] = True
+
+    return args
+
+# Parser functions for complex analytical commands removed - they now go through autonomous analysis
+# These commands benefit from pattern learning, skill selection, and quality control
+
+def parse_workspace_distribution_ready_args(user_input):
+    """Parse workspace distribution ready command arguments."""
+    args = {
+        'target': '.',
+        'clean': False,
+        'validate': True,
+        'output': None
+    }
+
+    cmd = user_input.strip()
+
+    # Parse target directory
+    if len(cmd.split()) > 1:
+        args['target'] = cmd.split()[1]
+
+    # Parse flags
+    if '--clean' in cmd:
+        args['clean'] = True
+    if '--no-validate' in cmd:
+        args['validate'] = False
+    if '--output' in cmd:
+        parts = cmd.split('--output')[1].strip().split()
+        if parts:
+            args['output'] = parts[0]
+
+    return args
+
 def parse_preference_args(user_input):
     """Parse preference command arguments."""
     args = {
@@ -1445,6 +1621,9 @@ def handle_special_command(command_info):
         from pathlib import Path
         from datetime import datetime
 
+        args = command_info['args']
+        patterns_dir = args['dir']
+
         print("🧠 Initializing Learning System...")
 
         # AI REASONING: Analyze project and prepare context
@@ -1531,9 +1710,15 @@ def handle_special_command(command_info):
                 cmd = [
                     sys.executable, str(learning_script),
                     "init",
-                    "--data-dir", ".claude-patterns",
+                    "--data-dir", patterns_dir,
                     "--project-context", json.dumps(project_context)
                 ]
+
+                # Add optional flags
+                if args['force']:
+                    cmd.append("--force")
+                if args['verbose']:
+                    cmd.append("--verbose")
 
                 result = subprocess.run(cmd, capture_output=True, text=True, cwd=Path.cwd())
 
@@ -1691,6 +1876,61 @@ def handle_special_command(command_info):
             if args['output_format'] != 'table':
                 cmd.extend(['--format', args['output_format']])
             return execute_python_command(cmd, "Plugin Validation")
+
+        # Removed: debug_eval, debug_gui, and validate_commands now go through autonomous analysis
+        # These complex analytical commands benefit from pattern learning, skill selection, and quality control
+
+        elif command_info['command'] == 'validate_web':
+            # Build Python command for web validation
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['url']:
+                cmd.append(args['url'])
+            if args['comprehensive']:
+                cmd.append('--comprehensive')
+            if args['debug']:
+                cmd.append('--debug')
+            if args['auto_fix']:
+                cmd.append('--auto-fix')
+            return execute_python_command(cmd, "Web Validation")
+
+        elif command_info['command'] == 'workspace_distribution_ready':
+            # Build Python command for distribution preparation
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['target'] != '.':
+                cmd.append(args['target'])
+            if args['clean']:
+                cmd.append('--clean')
+            if not args['validate']:
+                cmd.append('--no-validate')
+            if args['output']:
+                cmd.extend(['--output', args['output']])
+            return execute_python_command(cmd, "Distribution Preparation")
+
+        # Removed: workspace_improve now goes through autonomous analysis for complex pattern analysis
+
+        elif command_info['command'] == 'workspace_update_about':
+            # Build Python command for About section update
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['repo']:
+                cmd.extend(['--repo', args['repo']])
+            if args['description']:
+                cmd.extend(['--description', args['description']])
+            if args['topics']:
+                cmd.extend(['--topics', args['topics']])
+            return execute_python_command(cmd, "About Section Update")
+
+        elif command_info['command'] == 'workspace_update_readme':
+            # Build Python command for README update
+            cmd = ['python', command_info['script']]
+            args = command_info['args']
+            if args['style'] != 'smart':
+                cmd.extend(['--style', args['style']])
+            if args['sections']:
+                cmd.extend(['--sections', args['sections']])
+            return execute_python_command(cmd, "README Update")
 
         elif command_info['command'].startswith('queue_'):
             # Build Python command for queue operations

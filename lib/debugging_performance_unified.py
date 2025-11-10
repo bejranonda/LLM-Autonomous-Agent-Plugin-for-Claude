@@ -349,7 +349,7 @@ class DebuggingPerformanceProvider:
                 }
 
                 # Store pattern for future learning (this would integrate with the learning system)
-                print(f"🧠 Stored debugging pattern: QIS={performance_metrics.get('qis', 0):.1f}, PI={performance_metrics.get('performance_index', 0):.1f}")
+                print(f"[BRAIN] Stored debugging pattern: QIS={performance_metrics.get('qis', 0):.1f}, PI={performance_metrics.get('performance_index', 0):.1f}")
 
             except Exception as e:
                 print(f"Error storing debugging pattern: {e}")

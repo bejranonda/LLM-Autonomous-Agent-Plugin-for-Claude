@@ -411,7 +411,7 @@ class WebDashboard:
 
         <center>
             <button class="refresh-button" onclick="location.reload()">
-                🔄 Refresh Dashboard
+                [RETRY] Refresh Dashboard
             </button>
         </center>
 
@@ -470,7 +470,7 @@ class WebDashboard:
     def _generate_alerts_html(self, alerts) -> str:
         """Generate HTML for alerts section."""
         if not alerts:
-            return '<div class="no-alerts">✅ No recent alerts - System operating normally</div>'
+            return '<div class="no-alerts">[OK] No recent alerts - System operating normally</div>'
 
         alerts_html = ""
         for alert in alerts:
@@ -519,9 +519,9 @@ class WebDashboard:
 
             # Start server
             with socketserver.TCPServer(("", self.port), handler_class) as httpd:
-                print(f"🚀 Token Optimization Dashboard")
-                print(f"📊 Server running at: http://localhost:{self.port}")
-                print(f"🔄 Auto-refresh every 30 seconds")
+                print(f"[START] Token Optimization Dashboard")
+                print(f"[DATA] Server running at: http://localhost:{self.port}")
+                print(f"[RETRY] Auto-refresh every 30 seconds")
                 print(f"⏹ Press Ctrl+C to stop")
                 print()
 

@@ -930,11 +930,11 @@ def main():
                     args.description, args.command,
                     {}, {}  # Empty conditions and weights for CLI
                 )
-                print(f"✅ Template {'created' if success else 'already exists'}")
+                print(f"[OK] Template {'created' if success else 'already exists'}")
 
             elif args.template_action == 'delete':
                 success = engine.delete_template(args.id)
-                print(f"✅ Template {'deleted' if success else 'not found'}")
+                print(f"[OK] Template {'deleted' if success else 'not found'}")
 
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)

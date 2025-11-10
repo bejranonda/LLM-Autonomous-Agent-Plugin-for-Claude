@@ -1,6 +1,7 @@
 ---
 name: monitor:dashboard
 description: Launch real-time monitoring dashboard for autonomous agent system metrics and learning analytics
+delegates-to: autonomous-agent:orchestrator
 model: inherit
 tools: Read,Write,Edit,Bash,Grep,Glob
 ---

@@ -126,10 +126,10 @@ def generate_delegation_report():
         delegates_match = re.search(r'delegates-to:\s*(.+)', content, re.IGNORECASE)
         if delegates_match:
             delegates_to = delegates_match.group(1).strip()
-            status = "✅"
+            status = "[OK]"
         else:
             delegates_to = "MISSING"
-            status = "❌"
+            status = "[ERROR]"
 
         report.append(f"{status} `{cmd_file.name}` → `{delegates_to}`")
 

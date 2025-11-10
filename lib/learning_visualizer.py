@@ -496,15 +496,15 @@ class LearningVisualizer:
     def generate_learning_notification(self, event: Dict[str, Any]) -> str:
         """Generate a non-intrusive learning notification."""
         emoji_map = {
-            LearningEventType.PATTERN_ACQUIRED: "🧠",
-            LearningEventType.QUALITY_IMPROVEMENT_ACHIEVED: "✅",
-            LearningEventType.AGENT_PERFORMANCE_IMPROVED: "📈",
+            LearningEventType.PATTERN_ACQUIRED: "[BRAIN]",
+            LearningEventType.QUALITY_IMPROVEMENT_ACHIEVED: "[OK]",
+            LearningEventType.AGENT_PERFORMANCE_IMPROVED: "[TREND]",
             LearningEventType.USER_PREFERENCE_LEARNED: "👤",
-            LearningEventType.SPECIALIZATION_IDENTIFIED: "🎯",
+            LearningEventType.SPECIALIZATION_IDENTIFIED: "[TARGET]",
             LearningEventType.COLLABORATION_INSIGHT: "🤝"
         }
 
-        emoji = emoji_map.get(event["event_type"], "📊")
+        emoji = emoji_map.get(event["event_type"], "[DATA]")
         description = event["description"]
         impact = event.get("impact", "")
 

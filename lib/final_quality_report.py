@@ -70,7 +70,7 @@ Analysis Type: Full Quality Control with Autonomous Fixing
 
 ┌─ EXECUTIVE SUMMARY ────────────────────────────────────┐
 │ Overall Quality Score: {total_score:.1f}/100              │
-│ Status: {'⚠️  NEEDS IMPROVEMENT' if total_score < 70 else '✅ PRODUCTION READY'}                    │
+│ Status: {'[WARN]  NEEDS IMPROVEMENT' if total_score < 70 else '[OK] PRODUCTION READY'}                    │
 │ Auto-fixes Applied: 1                                  │
 │ Critical Issues: 31 syntax errors                      │
 │ Test Coverage: 4% (Target: 50%+)                       │
@@ -109,8 +109,8 @@ Analysis Type: Full Quality Control with Autonomous Fixing
 
 ┌─ STANDARDS COMPLIANCE ─────────────────────────────────┐
 │ JSON Structure Validation:                             │
-│ • Plugin Manifest (.claude-plugin/plugin.json): ✅ VALID │
-│ • Auto-fix Patterns (patterns/autofix-patterns.json): ✅ VALID │
+│ • Plugin Manifest (.claude-plugin/plugin.json): [OK] VALID │
+│ • Auto-fix Patterns (patterns/autofix-patterns.json): [OK] VALID │
 │ • Total JSON Files: {metrics['json_validation']['total_json_files']}                             │
 │ • Valid Files: {metrics['json_validation']['valid_files']}                               │
 │                                                       │
@@ -131,20 +131,20 @@ Analysis Type: Full Quality Control with Autonomous Fixing
 │ • Docs Directory Files: {metrics['documentation']['docs_directory_files']}                 │
 │                                                       │
 │ Documentation Quality:                                │
-│ • README.md: ✅ PRESENT                                │
-│ • STRUCTURE.md: ✅ PRESENT                             │
-│ • CHANGELOG.md: ✅ PRESENT                             │
-│ • API Documentation: ✅ COMPLETE                        │
-│ • Component Guides: ✅ COMPLETE                         │
+│ • README.md: [OK] PRESENT                                │
+│ • STRUCTURE.md: [OK] PRESENT                             │
+│ • CHANGELOG.md: [OK] PRESENT                             │
+│ • API Documentation: [OK] COMPLETE                        │
+│ • Component Guides: [OK] COMPLETE                         │
 └─────────────────────────────────────────────────────────┘
 
 ┌─ PLUGIN ARCHITECTURE VALIDATION ──────────────────────┐
 │ Required Structure Compliance:                         │
-│ • .claude-plugin/: ✅ PRESENT                          │
-│ • agents/: ✅ PRESENT                                  │
-│ • skills/: ✅ PRESENT                                  │
-│ • commands/: ✅ PRESENT                                │
-│ • lib/: ✅ PRESENT                                     │
+│ • .claude-plugin/: [OK] PRESENT                          │
+│ • agents/: [OK] PRESENT                                  │
+│ • skills/: [OK] PRESENT                                  │
+│ • commands/: [OK] PRESENT                                │
+│ • lib/: [OK] PRESENT                                     │
 │                                                       │
 │ Component Distribution:                                │
 │ • Total Agents: {metrics['plugin_structure']['component_counts']['agents']} (Specialized)                 │
@@ -157,7 +157,7 @@ Analysis Type: Full Quality Control with Autonomous Fixing
 │ Autonomous Repairs Completed:                         │
 │                                                       │
 │ 1. File Restoration:                                  │
-│    • lib/task_queue.py: ✅ RESTORED                    │
+│    • lib/task_queue.py: [OK] RESTORED                    │
 │    • Action: Created minimal working version          │
 │    • Reason: Original file had syntax errors          │
 │                                                       │
