@@ -1608,9 +1608,13 @@ def handle_special_command(command_info):
             import sys
 
             try:
-                print(f"[OK] Starting Autonomous Agent Dashboard...")
-                print(f"   Dashboard URL: http://{args['host']}:{args['port']}")
-                print(f"   Pattern directory: {args['patterns_dir']}")
+                # Consolidate dashboard startup output to prevent empty content blocks
+                dashboard_output = [
+                    f"[OK] Starting Autonomous Agent Dashboard...",
+                    f"   Dashboard URL: http://{args['host']}:{args['port']}",
+                    f"   Pattern directory: {args['patterns_dir']}"
+                ]
+                print("\n".join(dashboard_output))
 
                 # Run in background to not block
                 process = subprocess.Popen(cmd,
@@ -1622,8 +1626,10 @@ def handle_special_command(command_info):
                 time.sleep(1)
 
                 if process.poll() is None:
-                    print(f"[OK] Dashboard started successfully!")
-                    print(f"   Access at: http://{args['host']}:{args['port']}")
+                    success_output = [
+                        f"[OK] Dashboard started successfully!",
+                        f"   Access at: http://{args['host']}:{args['port']}"
+                    ]
 
                     # Auto-open browser if enabled
                     if args['auto_open_browser']:
@@ -1632,11 +1638,12 @@ def handle_special_command(command_info):
                             import time
                             time.sleep(1)  # Give server time to start
                             webbrowser.open(f"http://{args['host']}:{args['port']}")
-                            print(f"   [WEB] Browser opened automatically")
+                            success_output.append(f"   [WEB] Browser opened automatically")
                         except Exception:
-                            print(f"   [FOLDER] Manual browser access required")
+                            success_output.append(f"   [FOLDER] Manual browser access required")
 
-                    print(f"   Press Ctrl+C in the terminal to stop the server")
+                    success_output.append(f"   Press Ctrl+C in the terminal to stop the server")
+                    print("\n".join(success_output))
                     return True
                 else:
                     print(f"[ERROR] Dashboard failed to start")
@@ -1664,29 +1671,36 @@ def handle_special_command(command_info):
         import sys
 
         try:
-            print(f"[REPORT] Generating Learning Analytics Report...")
-            print(f"   Command: {' '.join(cmd)}")
+                # Consolidate learning analytics output to prevent empty content blocks
+                analytics_output = [
+                    f"[REPORT] Generating Learning Analytics Report...",
+                    f"   Command: {' '.join(cmd)}"
+                ]
+                print("\n".join(analytics_output))
 
-            # Run and capture output
-            result = subprocess.run(cmd,
-                                   capture_output=True,
-                                   text=True,
-                                   check=True)
+                # Run and capture output
+                result = subprocess.run(cmd,
+                                       capture_output=True,
+                                       text=True,
+                                       check=True)
 
-            # Display the output
-            print(result.stdout)
+                # Display the output
+                print(result.stdout)
 
-            return True
+                return True
 
-        except subprocess.CalledProcessError as e:
-            print(f"[ERROR] Error generating learning analytics: {e}")
-            if e.stderr:
-                print(f"   Error details: {e.stderr}")
-            print(f"   Try running manually: python <plugin_path>/lib/learning_analytics.py show")
-            return False
-        except Exception as e:
-            print(f"[ERROR] Error: {e}")
-            return False
+            except subprocess.CalledProcessError as e:
+                error_output = [
+                    f"[ERROR] Error generating learning analytics: {e}"
+                ]
+                if e.stderr:
+                    error_output.append(f"   Error details: {e.stderr}")
+                error_output.append(f"   Try running manually: python <plugin_path>/lib/learning_analytics.py show")
+                print("\n".join(error_output))
+                return False
+            except Exception as e:
+                print(f"[ERROR] Error: {e}")
+                return False
 
     elif command_info['command'] == 'learn_init':
         # TOKEN-EFFICIENT: AI reasoning + Python script for file operations
@@ -1806,58 +1820,72 @@ def handle_special_command(command_info):
                         print("   [OK] Learning databases created successfully")
 
                         # Present results as required by command specification
-                        print("\n=======================================================")
-                        print("  PATTERN LEARNING INITIALIZED")
-                        print("=======================================================")
+                        # Consolidate all output into a single block to prevent empty content blocks
+                        output_lines = [
+                            "",
+                            "=======================================================",
+                            "  PATTERN LEARNING INITIALIZED",
+                            "=======================================================",
+                            "",
+                            "== Project Analysis ====================================",
+                            f"= Location: {project_context['location']}            =",
+                            f"= Type: {project_context['type']}                      =",
+                            f"= Languages: {', '.join(project_context['languages']) or 'None detected'} =",
+                            f"= Frameworks: {', '.join(project_context['frameworks']) or 'None detected'} =",
+                            f"= Total Files: {project_context['total_files']}          =",
+                            "= Project Structure: Scanned successfully              =",
+                            "=========================================================",
+                            "",
+                            "== Pattern Database Created ============================",
+                            "= Location: .claude-patterns/                         =",
+                            "=                                                       =",
+                            "= Files Created:                                        ="
+                        ]
 
-                        # Project Analysis (from AI reasoning)
-                        print("== Project Analysis ====================================")
-                        print(f"= Location: {project_context['location']}            =")
-                        print(f"= Type: {project_context['type']}                      =")
-                        print(f"= Languages: {', '.join(project_context['languages']) or 'None detected'} =")
-                        print(f"= Frameworks: {', '.join(project_context['frameworks']) or 'None detected'} =")
-                        print(f"= Total Files: {project_context['total_files']}          =")
-                        print("= Project Structure: Scanned successfully              =")
-                        print("=========================================================")
-
-                        # Pattern Database Created (from script result)
-                        print("== Pattern Database Created ============================")
-                        print(f"= Location: .claude-patterns/                         =")
-                        print("=                                                       =")
-                        print("= Files Created:                                        =")
+                        # Add files created dynamically
                         for file_name in init_result.get("files_created", []):
-                            print(f"= [OK] {file_name:<20} ({'storage' if 'config' in file_name else 'tracking' if 'quality' in file_name else 'data'})            =")
-                        print("=                                                       =")
-                        print("= Status: Ready for pattern capture                     =")
-                        print("=========================================================")
+                            file_type = 'storage' if 'config' in file_name else 'tracking' if 'quality' in file_name else 'data'
+                            output_lines.append(f"= [OK] {file_name:<20} {file_type:<8}            =")
 
-                        # Initial Patterns Detected
-                        print("== Initial Patterns Detected ===========================")
-                        print("= • Project structure patterns                          =")
-                        print("= • File organization patterns                         =")
+                        # Continue with the rest of the output
+                        output_lines.extend([
+                            "=                                                       =",
+                            "= Status: Ready for pattern capture                     =",
+                            "=========================================================",
+                            "",
+                            "== Initial Patterns Detected ===========================",
+                            "= • Project structure patterns                          =",
+                            "= • File organization patterns                         ="
+                        ])
+
+                        # Add framework line if frameworks exist
                         if project_context["frameworks"]:
-                            print(f"= • {project_context['frameworks'][0]} framework patterns =")
-                        print("= • Configuration patterns                            =")
-                        print("=========================================================")
+                            output_lines.append(f"= • {project_context['frameworks'][0]} framework patterns =")
 
-                        # Baseline Metrics
-                        print("== Baseline Metrics ====================================")
-                        print("= Skill Effectiveness: Baseline established            =")
-                        print("= Quality Baseline: Will update after first task       =")
-                        print("= Coverage Baseline: Will update after first task      =")
-                        print("= Agent Performance: Will track from first delegation  =")
-                        print("=========================================================")
+                        output_lines.extend([
+                            "= • Configuration patterns                            =",
+                            "=========================================================",
+                            "",
+                            "== Baseline Metrics ====================================",
+                            "= Skill Effectiveness: Baseline established            =",
+                            "= Quality Baseline: Will update after first task       =",
+                            "= Coverage Baseline: Will update after first task      =",
+                            "= Agent Performance: Will track from first delegation  =",
+                            "=========================================================",
+                            "",
+                            "== Next Steps ==========================================",
+                            "= 1. Run /analyze:quality to establish quality baseline =",
+                            "= 2. Run /analyze:project to analyze project quality   =",
+                            "= 3. Start working on tasks - learning begins!         =",
+                            "= 4. Each task improves the system automatically       =",
+                            "=========================================================",
+                            "",
+                            "Skills Loaded: pattern-learning, code-analysis",
+                            "[OK] Learning system ready! Pattern capture will begin with your first task."
+                        ])
 
-                        # Next Steps
-                        print("== Next Steps ==========================================")
-                        print("= 1. Run /analyze:quality to establish quality baseline =")
-                        print("= 2. Run /analyze:project to analyze project quality   =")
-                        print("= 3. Start working on tasks - learning begins!         =")
-                        print("= 4. Each task improves the system automatically       =")
-                        print("=========================================================")
-
-                        print("Skills Loaded: pattern-learning, code-analysis")
-                        print("[OK] Learning system ready! Pattern capture will begin with your first task.")
+                        # Print single consolidated output block
+                        print("\n".join(output_lines))
 
                         return True
                     else:
@@ -2136,8 +2164,12 @@ def execute_python_command(cmd, command_name):
     import subprocess
 
     try:
-        print(f"[EXEC] Executing {command_name}...")
-        print(f"   Command: {' '.join(cmd)}")
+        # Consolidate command execution output to prevent empty content blocks
+        exec_output = [
+            f"[EXEC] Executing {command_name}...",
+            f"   Command: {' '.join(cmd)}"
+        ]
+        print("\n".join(exec_output))
 
         result = subprocess.run(cmd,
                                capture_output=True,
@@ -2152,22 +2184,31 @@ def execute_python_command(cmd, command_name):
         return True
 
     except subprocess.CalledProcessError as e:
-        print(f"[ERROR] Error executing {command_name}: {e}")
+        error_lines = [
+            f"[ERROR] Error executing {command_name}: {e}"
+        ]
         if e.stderr:
-            print(f"   Error details: {e.stderr}")
-        print(f"   Try running manually: {' '.join(cmd)}")
+            error_lines.append(f"   Error details: {e.stderr}")
+        error_lines.append(f"   Try running manually: {' '.join(cmd)}")
+        print("\n".join(error_lines))
         return False
 
     except FileNotFoundError:
         script_name = cmd[1].split('/')[-1] if len(cmd) > 1 else 'script'
-        print(f"[ERROR] Script not found: {script_name}")
-        print(f"   Ensure {script_name} exists in lib/ directory")
-        print(f"   Try running manually: {' '.join(cmd)}")
+        not_found_lines = [
+            f"[ERROR] Script not found: {script_name}",
+            f"   Ensure {script_name} exists in lib/ directory",
+            f"   Try running manually: {' '.join(cmd)}"
+        ]
+        print("\n".join(not_found_lines))
         return False
 
     except Exception as e:
-        print(f"[ERROR] Unexpected error: {e}")
-        print(f"   Try running manually: {' '.join(cmd)}")
+        exception_lines = [
+            f"[ERROR] Unexpected error: {e}",
+            f"   Try running manually: {' '.join(cmd)}"
+        ]
+        print("\n".join(exception_lines))
         return False
 ```
 
