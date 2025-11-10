@@ -75,7 +75,6 @@ Look for patterns like this:
 ```markdown
 ## Section Title
 
-
 ### Subsection Title
 ```
 
