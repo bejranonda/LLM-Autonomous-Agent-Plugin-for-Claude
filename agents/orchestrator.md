@@ -581,12 +581,12 @@ async function executeFourTierWorkflow(task) {
 - **User Preferences**: Learned preferences in `.claude-patterns/user_preferences.json`
 
 **Benefits of Two-Tier Architecture**:
-- ✅ **Separation of Concerns**: Analysis vs Execution clearly separated
-- ✅ **Better Decisions**: Tier 2 evaluates multiple Tier 1 recommendations
-- ✅ **Continuous Learning**: Explicit feedback loops between tiers
-- ✅ **User Adaptation**: Tier 2 incorporates learned user preferences
-- ✅ **Independent Growth**: Each agent improves its specialized skills
-- ✅ **Risk Mitigation**: Analysis identifies risks before execution
+- [OK] **Separation of Concerns**: Analysis vs Execution clearly separated
+- [OK] **Better Decisions**: Tier 2 evaluates multiple Tier 1 recommendations
+- [OK] **Continuous Learning**: Explicit feedback loops between tiers
+- [OK] **User Adaptation**: Tier 2 incorporates learned user preferences
+- [OK] **Independent Growth**: Each agent improves its specialized skills
+- [OK] **Risk Mitigation**: Analysis identifies risks before execution
 
 ### 1. Autonomous Task Analysis
 When receiving a task:
@@ -1612,7 +1612,7 @@ def handle_special_command(command_info):
             import sys
 
             try:
-                print(f"🚀 Starting Autonomous Agent Dashboard...")
+                print(f"[OK] Starting Autonomous Agent Dashboard...")
                 print(f"   Dashboard URL: http://{args['host']}:{args['port']}")
                 print(f"   Pattern directory: {args['patterns_dir']}")
 
@@ -1626,7 +1626,7 @@ def handle_special_command(command_info):
                 time.sleep(1)
 
                 if process.poll() is None:
-                    print(f"✅ Dashboard started successfully!")
+                    print(f"[OK] Dashboard started successfully!")
                     print(f"   Access at: http://{args['host']}:{args['port']}")
 
                     # Auto-open browser if enabled
@@ -1636,18 +1636,18 @@ def handle_special_command(command_info):
                             import time
                             time.sleep(1)  # Give server time to start
                             webbrowser.open(f"http://{args['host']}:{args['port']}")
-                            print(f"   🌐 Browser opened automatically")
+                            print(f"   [WEB] Browser opened automatically")
                         except Exception:
-                            print(f"   📂 Manual browser access required")
+                            print(f"   [FOLDER] Manual browser access required")
 
                     print(f"   Press Ctrl+C in the terminal to stop the server")
                     return True
                 else:
-                    print(f"❌ Dashboard failed to start")
+                    print(f"[ERROR] Dashboard failed to start")
                     return False
 
             except Exception as e:
-                print(f"❌ Error starting dashboard: {e}")
+                print(f"[ERROR] Error starting dashboard: {e}")
                 return False
 
     elif command_info['command'] == 'learning_analytics':
@@ -1668,7 +1668,7 @@ def handle_special_command(command_info):
         import sys
 
         try:
-            print(f"📊 Generating Learning Analytics Report...")
+            print(f"[REPORT] Generating Learning Analytics Report...")
             print(f"   Command: {' '.join(cmd)}")
 
             # Run and capture output
@@ -1683,13 +1683,13 @@ def handle_special_command(command_info):
             return True
 
         except subprocess.CalledProcessError as e:
-            print(f"❌ Error generating learning analytics: {e}")
+            print(f"[ERROR] Error generating learning analytics: {e}")
             if e.stderr:
                 print(f"   Error details: {e.stderr}")
             print(f"   Try running manually: python <plugin_path>/lib/learning_analytics.py show")
             return False
         except Exception as e:
-            print(f"❌ Error: {e}")
+            print(f"[ERROR] Error: {e}")
             return False
 
     elif command_info['command'] == 'learn_init':
@@ -1704,10 +1704,10 @@ def handle_special_command(command_info):
         args = command_info['args']
         patterns_dir = args['dir']
 
-        print("🧠 Initializing Learning System...")
+        print("[OK] Initializing Learning System...")
 
         # AI REASONING: Analyze project and prepare context
-        print("   🧠 Analyzing project structure...")
+        print("   [OK] Analyzing project structure...")
 
         current_dir = Path.cwd()
         project_context = {
@@ -1756,10 +1756,10 @@ def handle_special_command(command_info):
                 project_context["type"] = "web-application"
 
         except Exception as e:
-            print(f"   ⚠️  Project analysis limited: {e}")
+            print(f"   [WARN]  Project analysis limited: {e}")
 
         # DELEGATE TO PYTHON SCRIPT: Efficient file operations
-        print("   🗃️  Creating learning databases...")
+        print("   [STORAGE]  Creating learning databases...")
 
         try:
             # Find plugin installation and execute learning_engine.py
@@ -1807,7 +1807,7 @@ def handle_special_command(command_info):
                     init_result = json.loads(result.stdout)
 
                     if init_result.get("status") == "initialized":
-                        print("   ✅ Learning databases created successfully")
+                        print("   [OK] Learning databases created successfully")
 
                         # Present results as required by command specification
                         print("\n=======================================================")
@@ -1830,7 +1830,7 @@ def handle_special_command(command_info):
                         print("=                                                       =")
                         print("= Files Created:                                        =")
                         for file_name in init_result.get("files_created", []):
-                            print(f"= ✓ {file_name:<20} ({'storage' if 'config' in file_name else 'tracking' if 'quality' in file_name else 'data'})            =")
+                            print(f"= [OK] {file_name:<20} ({'storage' if 'config' in file_name else 'tracking' if 'quality' in file_name else 'data'})            =")
                         print("=                                                       =")
                         print("= Status: Ready for pattern capture                     =")
                         print("=========================================================")
@@ -1861,21 +1861,21 @@ def handle_special_command(command_info):
                         print("=========================================================")
 
                         print("Skills Loaded: pattern-learning, code-analysis")
-                        print("🚀 Learning system ready! Pattern capture will begin with your first task.")
+                        print("[OK] Learning system ready! Pattern capture will begin with your first task.")
 
                         return True
                     else:
-                        print(f"❌ Script failed: {init_result.get('message', 'Unknown error')}")
+                        print(f"[ERROR] Script failed: {init_result.get('message', 'Unknown error')}")
                         return False
                 else:
-                    print(f"❌ Script execution failed: {result.stderr}")
+                    print(f"[ERROR] Script execution failed: {result.stderr}")
                     return False
             else:
-                print(f"❌ Learning script not found: {learning_script}")
+                print(f"[ERROR] Learning script not found: {learning_script}")
                 return False
 
         except Exception as e:
-            print(f"❌ Error initializing learning system: {e}")
+            print(f"[ERROR] Error initializing learning system: {e}")
             print("   Please check permissions and disk space")
             return False
 
@@ -2142,7 +2142,7 @@ def execute_python_command(cmd, command_name):
     import subprocess
 
     try:
-        print(f"⚡ Executing {command_name}...")
+        print(f"[EXEC] Executing {command_name}...")
         print(f"   Command: {' '.join(cmd)}")
 
         result = subprocess.run(cmd,
@@ -2154,11 +2154,11 @@ def execute_python_command(cmd, command_name):
         if result.stdout:
             print(result.stdout)
 
-        print(f"✅ {command_name} completed successfully")
+        print(f"[OK] {command_name} completed successfully")
         return True
 
     except subprocess.CalledProcessError as e:
-        print(f"❌ Error executing {command_name}: {e}")
+        print(f"[ERROR] Error executing {command_name}: {e}")
         if e.stderr:
             print(f"   Error details: {e.stderr}")
         print(f"   Try running manually: {' '.join(cmd)}")
@@ -2166,13 +2166,13 @@ def execute_python_command(cmd, command_name):
 
     except FileNotFoundError:
         script_name = cmd[1].split('/')[-1] if len(cmd) > 1 else 'script'
-        print(f"❌ Script not found: {script_name}")
+        print(f"[ERROR] Script not found: {script_name}")
         print(f"   Ensure {script_name} exists in lib/ directory")
         print(f"   Try running manually: {' '.join(cmd)}")
         return False
 
     except Exception as e:
-        print(f"❌ Unexpected error: {e}")
+        print(f"[ERROR] Unexpected error: {e}")
         print(f"   Try running manually: {' '.join(cmd)}")
         return False
 ```
@@ -2885,15 +2885,15 @@ function classify_task(description) {
 ### Task Types Tracked
 
 **Automatically Recorded**:
-- ✅ **Refactoring** - Code improvements and restructuring
-- ✅ **Coding** - New feature implementation
-- ✅ **Debugging** - Bug fixes and issue resolution
-- ✅ **Documentation** - Documentation updates and creation
-- ✅ **Testing** - Test creation and improvement
-- ✅ **Analysis** - Code reviews and analysis
-- ✅ **Optimization** - Performance and efficiency improvements
-- ✅ **Validation** - Quality checks and compliance
-- ✅ **General** - Any other task type
+- [OK] **Refactoring** - Code improvements and restructuring
+- [OK] **Coding** - New feature implementation
+- [OK] **Debugging** - Bug fixes and issue resolution
+- [OK] **Documentation** - Documentation updates and creation
+- [OK] **Testing** - Test creation and improvement
+- [OK] **Analysis** - Code reviews and analysis
+- [OK] **Optimization** - Performance and efficiency improvements
+- [OK] **Validation** - Quality checks and compliance
+- [OK] **General** - Any other task type
 
 **Performance Metrics Per Task Type**:
 - **Completion Rate** - Success/failure ratio
@@ -3168,7 +3168,7 @@ Based on analysis, here are recommended next steps:
    ⏱ Estimated: 1 minute
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚡ QUICK ACTIONS
+[EXEC] QUICK ACTIONS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Choose a number to execute instantly, or type custom command:
@@ -3281,7 +3281,7 @@ sensitive project information.
 
 Would you like to add them to .gitignore?
 
-1. ✅ Yes, keep private (recommended)
+1. [OK] Yes, keep private (recommended)
    → Adds to .gitignore, excludes from Git
    → Best for: Private projects, sensitive data
 
@@ -3363,7 +3363,7 @@ async function add_all_to_gitignore(folders) {
   }
 
   if (to_add.length === 0) {
-    console.log('✅ All folders already in .gitignore')
+    console.log('[OK] All folders already in .gitignore')
     return
   }
 
@@ -3377,7 +3377,7 @@ ${to_add.join('\n')}
   // Append to .gitignore
   await Write(gitignore_path, content + addition)
 
-  console.log(`✅ Added ${to_add.length} folders to .gitignore`)
+  console.log(`[OK] Added ${to_add.length} folders to .gitignore`)
   console.log('   Folders: ' + to_add.join(', '))
 }
 ```
@@ -3472,7 +3472,7 @@ Prompt for .gitignore when:
 ### Best Practices Recommendations
 
 **For Private/Solo Projects**:
-- ✅ Add all Claude folders to .gitignore
+- [OK] Add all Claude folders to .gitignore
 - Reason: Learning data is personalized
 - Security: Avoid exposing patterns
 
@@ -3483,7 +3483,7 @@ Prompt for .gitignore when:
 - `.claude/`: Ignore (local config)
 
 **For Open Source**:
-- ✅ Add all to .gitignore
+- [OK] Add all to .gitignore
 - Reason: Learning data varies per developer
 - Privacy: Avoid exposing development patterns
 
@@ -3607,10 +3607,10 @@ async function generate_health_suggestions(health_score) {
 
 ```
 🏥 Workspace Health Report
-├= Overall Score: 78/100 ⚠️ (Good, but can improve)
+├= Overall Score: 78/100 [WARN] (Good, but can improve)
 ├= Root Directory: 18/30 (7 report files)
 ├= Report Organization: 20/25 (partial structure)
-├= Pattern Storage: 25/25 ✅ (.claude-patterns/ active)
+├= Pattern Storage: 25/25 [OK] (.claude-patterns/ active)
 == Link Health: 15/20 (2 broken links)
 
 📈 Trend: Improving (+8 points since last check)
