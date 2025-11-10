@@ -16,6 +16,8 @@ UNICODE_TO_ASCII = {
     '↑': '^', '↓': 'v', '→': '->', '←': '<-',
     '✓': '[PASS]', '✗': '[FAIL]', '⚠': '[WARN]', '★': '[STAR]',
     '•': '*', '○': '[ ]', '●': '[X]', '□': '[ ]', '■': '[X]',
+    # Critical mathematical symbols found in contamination
+    'Δ': 'Delta', '×': '*', 'π': 'pi', '°': 'deg',
 }
 
 def fix_directory(directory):
