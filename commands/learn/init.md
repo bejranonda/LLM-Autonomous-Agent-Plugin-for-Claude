@@ -6,6 +6,23 @@ delegates-to: autonomous-agent:orchestrator
 
 # Learn Patterns Command
 
+## 🚨 CRITICAL: RESPONSE SAFETY REQUIREMENTS
+
+**SYSTEM-WIDE FAILURE PREVENTION**: When generating ANY response content for this command, you MUST ensure:
+
+1. **NEVER generate empty text blocks** - All content blocks must have non-empty text
+2. **NEVER use Unicode box characters** (═, ║, ╔, ╗, etc.) - Use safe ASCII alternatives
+3. **ALWAYS provide fallback content** for any section that might be empty
+4. **VALIDATE all content blocks** before finalizing response
+
+**SAFE RESPONSE PATTERN**:
+- Use ASCII characters instead of Unicode box drawing
+- Ensure every content section has meaningful content
+- Provide default values for any missing data
+- Never return empty strings or whitespace-only content
+
+**FAILURE TO COMPLY**: Will cause `cache_control cannot be set for empty text blocks` errors and break ALL Claude functionality.
+
 Analyze project patterns and build the pattern learning database. This will:
 
 - Scan entire project structure
@@ -48,56 +65,52 @@ The command creates the `.claude-patterns/` directory with:
 
 ## Example Output
 
-The orchestrator MUST present results in this format:
+The orchestrator MUST present results in this SAFE format:
 
 ```
-═══════════════════════════════════════════════════════
+============================================================
   PATTERN LEARNING INITIALIZED
-═══════════════════════════════════════════════════════
+============================================================
 
-┌─ Project Analysis ───────────────────────────────────┐
-│ Type: Python project with FastAPI framework          │
-│ Languages: Python 3.9+                                │
-│ Frameworks: FastAPI, SQLAlchemy, Pydantic            │
-│ Total Files: 127                                      │
-│ Project Structure: Backend API with modular design   │
-└───────────────────────────────────────────────────────┘
+PROJECT ANALYSIS:
+Type: Python project with FastAPI framework
+Languages: Python 3.9+
+Frameworks: FastAPI, SQLAlchemy, Pydantic
+Total Files: 127
+Project Structure: Backend API with modular design
 
-┌─ Pattern Database Created ───────────────────────────┐
-│ Location: .claude-patterns/                          │
-│                                                       │
-│ Files Created:                                        │
-│ ✓ patterns.json          (pattern storage)           │
-│ ✓ task_queue.json        (task management)           │
-│ ✓ quality_history.json   (quality tracking)          │
-│ ✓ config.json            (configuration)             │
-│                                                       │
-│ Status: Ready for pattern capture                     │
-└───────────────────────────────────────────────────────┘
+PATTERN DATABASE CREATED:
+Location: .claude-patterns/
+Files Created:
+- patterns.json (pattern storage)
+- task_queue.json (task management)
+- quality_history.json (quality tracking)
+- config.json (configuration)
+Status: Ready for pattern capture
 
-┌─ Initial Patterns Detected ──────────────────────────┐
-│ • RESTful API endpoint pattern (23 instances)        │
-│ • Database model pattern (15 models)                  │
-│ • Pydantic schema pattern (18 schemas)               │
-│ • Error handling pattern (consistent across modules) │
-│ • Authentication decorator pattern                    │
-└───────────────────────────────────────────────────────┘
+INITIAL PATTERNS DETECTED:
+- RESTful API endpoint pattern (23 instances)
+- Database model pattern (15 models)
+- Pydantic schema pattern (18 schemas)
+- Error handling pattern (consistent across modules)
+- Authentication decorator pattern
 
-┌─ Baseline Metrics ───────────────────────────────────┐
-│ Skill Effectiveness: Baseline established            │
-│ Quality Baseline: Will update after first task       │
-│ Coverage Baseline: Will update after first task      │
-│ Agent Performance: Will track from first delegation  │
-└───────────────────────────────────────────────────────┘
+BASELINE METRICS:
+Skill Effectiveness: Baseline established
+Quality Baseline: Will update after first task
+Coverage Baseline: Will update after first task
+Agent Performance: Will track from first delegation
 
-┌─ Next Steps ─────────────────────────────────────────┐
-│ 1. Run /auto-analyze to analyze project quality      │
-│ 2. Run /quality-check to establish quality baseline  │
-│ 3. Start working on tasks - learning begins!         │
-│ 4. Each task improves the system automatically       │
-└───────────────────────────────────────────────────────┘
+NEXT STEPS:
+1. Run /auto-analyze to analyze project quality
+2. Run /quality-check to establish quality baseline
+3. Start working on tasks - learning begins!
+4. Each task improves the system automatically
 
 Skills Loaded: pattern-learning, code-analysis
+```
+
+**CRITICAL**: Use only ASCII characters and ensure all sections have content. Never leave empty sections.
 Agents Used: code-analyzer, learning-engine
 Pattern Database: .claude-patterns/ (initialized)
 Initialization Time: 0.8 minutes

@@ -7,6 +7,25 @@ delegates-to: autonomous-agent:orchestrator
 
 # Quality Check Command
 
+## 🚨 CRITICAL: RESPONSE SAFETY REQUIREMENTS
+
+**SYSTEM-WIDE FAILURE PREVENTION**: When generating ANY response content for this command, you MUST ensure:
+
+1. **NEVER generate empty text blocks** - All content blocks must have non-empty text
+2. **NEVER use Unicode box characters** (═, ║, ╔, ╗, etc.) - Use safe ASCII alternatives
+3. **ALWAYS provide fallback content** for any section that might be empty
+4. **VALIDATE all content blocks** before finalizing response
+5. **NEVER leave sections empty** - Provide default values for missing data
+
+**SAFE RESPONSE PATTERN**:
+- Use ASCII characters instead of Unicode box drawing
+- Ensure every score section has actual numeric values
+- Provide default content when data is missing
+- Never return empty strings or whitespace-only content
+- Always include actionable recommendations
+
+**FAILURE TO COMPLY**: Will cause `cache_control cannot be set for empty text blocks` errors and break ALL Claude functionality.
+
 Run comprehensive quality control check with autonomous fixing. This will:
 
 - Run all tests and analyze coverage
