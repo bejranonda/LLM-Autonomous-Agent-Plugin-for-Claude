@@ -14,7 +14,7 @@ model: inherit
 
 # Queue Execute Command
 
-Execute all queued tasks sequentially without requiring user intervention between tasks. Tasks are executed in priority order (critical → high → medium → low) and can run in the background.
+Execute all queued tasks sequentially without requiring user intervention between tasks. Tasks are executed in priority order (critical -> high -> medium -> low) and can run in the background.
 
 ## Usage
 

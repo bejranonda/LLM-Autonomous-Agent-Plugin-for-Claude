@@ -1810,55 +1810,55 @@ def handle_special_command(command_info):
                         print("   ✅ Learning databases created successfully")
 
                         # Present results as required by command specification
-                        print("\n═══════════════════════════════════════════════════════")
+                        print("\n=======================================================")
                         print("  PATTERN LEARNING INITIALIZED")
-                        print("═══════════════════════════════════════════════════════")
+                        print("=======================================================")
 
                         # Project Analysis (from AI reasoning)
-                        print("┌─ Project Analysis ───────────────────────────────────┐")
-                        print(f"│ Location: {project_context['location']}            │")
-                        print(f"│ Type: {project_context['type']}                      │")
-                        print(f"│ Languages: {', '.join(project_context['languages']) or 'None detected'} │")
-                        print(f"│ Frameworks: {', '.join(project_context['frameworks']) or 'None detected'} │")
-                        print(f"│ Total Files: {project_context['total_files']}          │")
-                        print("│ Project Structure: Scanned successfully              │")
-                        print("└───────────────────────────────────────────────────────┘")
+                        print("== Project Analysis ====================================")
+                        print(f"= Location: {project_context['location']}            =")
+                        print(f"= Type: {project_context['type']}                      =")
+                        print(f"= Languages: {', '.join(project_context['languages']) or 'None detected'} =")
+                        print(f"= Frameworks: {', '.join(project_context['frameworks']) or 'None detected'} =")
+                        print(f"= Total Files: {project_context['total_files']}          =")
+                        print("= Project Structure: Scanned successfully              =")
+                        print("=========================================================")
 
                         # Pattern Database Created (from script result)
-                        print("┌─ Pattern Database Created ───────────────────────────┐")
-                        print(f"│ Location: .claude-patterns/                         │")
-                        print("│                                                       │")
-                        print("│ Files Created:                                        │")
+                        print("== Pattern Database Created ============================")
+                        print(f"= Location: .claude-patterns/                         =")
+                        print("=                                                       =")
+                        print("= Files Created:                                        =")
                         for file_name in init_result.get("files_created", []):
-                            print(f"│ ✓ {file_name:<20} ({'storage' if 'config' in file_name else 'tracking' if 'quality' in file_name else 'data'})            │")
-                        print("│                                                       │")
-                        print("│ Status: Ready for pattern capture                     │")
-                        print("└───────────────────────────────────────────────────────┘")
+                            print(f"= ✓ {file_name:<20} ({'storage' if 'config' in file_name else 'tracking' if 'quality' in file_name else 'data'})            =")
+                        print("=                                                       =")
+                        print("= Status: Ready for pattern capture                     =")
+                        print("=========================================================")
 
                         # Initial Patterns Detected
-                        print("┌─ Initial Patterns Detected ──────────────────────────┐")
-                        print("│ • Project structure patterns                          │")
-                        print("│ • File organization patterns                         │")
+                        print("== Initial Patterns Detected ===========================")
+                        print("= • Project structure patterns                          =")
+                        print("= • File organization patterns                         =")
                         if project_context["frameworks"]:
-                            print(f"│ • {project_context['frameworks'][0]} framework patterns │")
-                        print("│ • Configuration patterns                            │")
-                        print("└───────────────────────────────────────────────────────┘")
+                            print(f"= • {project_context['frameworks'][0]} framework patterns =")
+                        print("= • Configuration patterns                            =")
+                        print("=========================================================")
 
                         # Baseline Metrics
-                        print("┌─ Baseline Metrics ───────────────────────────────────┐")
-                        print("│ Skill Effectiveness: Baseline established            │")
-                        print("│ Quality Baseline: Will update after first task       │")
-                        print("│ Coverage Baseline: Will update after first task      │")
-                        print("│ Agent Performance: Will track from first delegation  │")
-                        print("└───────────────────────────────────────────────────────┘")
+                        print("== Baseline Metrics ====================================")
+                        print("= Skill Effectiveness: Baseline established            =")
+                        print("= Quality Baseline: Will update after first task       =")
+                        print("= Coverage Baseline: Will update after first task      =")
+                        print("= Agent Performance: Will track from first delegation  =")
+                        print("=========================================================")
 
                         # Next Steps
-                        print("┌─ Next Steps ─────────────────────────────────────────┐")
-                        print("│ 1. Run /analyze:quality to establish quality baseline │")
-                        print("│ 2. Run /analyze:project to analyze project quality   │")
-                        print("│ 3. Start working on tasks - learning begins!         │")
-                        print("│ 4. Each task improves the system automatically       │")
-                        print("└───────────────────────────────────────────────────────┘")
+                        print("== Next Steps ==========================================")
+                        print("= 1. Run /analyze:quality to establish quality baseline =")
+                        print("= 2. Run /analyze:project to analyze project quality   =")
+                        print("= 3. Start working on tasks - learning begins!         =")
+                        print("= 4. Each task improves the system automatically       =")
+                        print("=========================================================")
 
                         print("Skills Loaded: pattern-learning, code-analysis")
                         print("🚀 Learning system ready! Pattern capture will begin with your first task.")
@@ -2281,15 +2281,15 @@ New Task Received
     ↓
 [COMMAND CHECK] Is this a special slash command?
     ↓
-    ├─→ YES (e.g., /monitor:dashboard, /learn:analytics):
-    │   ↓
-    │   [DIRECT EXECUTION] Run command handler immediately
-    │   ↓
-    │   ├─→ Dashboard: Execute python <plugin_path>/lib/dashboard.py
-    │   ├─→ Learning Analytics: Execute python <plugin_path>/lib/learning_analytics.py
-    │   └─→ Other special commands: Execute respective handlers
-    │
-    └─→ NO: Continue with normal autonomous workflow
+    ├=→ YES (e.g., /monitor:dashboard, /learn:analytics):
+    =   ↓
+    =   [DIRECT EXECUTION] Run command handler immediately
+    =   ↓
+    =   ├=→ Dashboard: Execute python <plugin_path>/lib/dashboard.py
+    =   ├=→ Learning Analytics: Execute python <plugin_path>/lib/learning_analytics.py
+    =   ==→ Other special commands: Execute respective handlers
+    =
+    ==→ NO: Continue with normal autonomous workflow
         ↓
         [ANALYZE] Task type, context, complexity
         ↓
@@ -2297,14 +2297,14 @@ New Task Received
         ↓
         [DECIDE] Execution strategy (direct vs delegate)
         ↓
-        ├─→ Simple task: Execute directly with loaded skills
-        │   ↓
-        │   [PRE-FLIGHT VALIDATION] Before Edit/Write operations
-        │   ↓
-        │   ├─→ Validation fails: Auto-fix (e.g., Read file first)
-        │   └─→ Validation passes: Execute operation
-        │
-        └─→ Complex task:
+        ├=→ Simple task: Execute directly with loaded skills
+        =   ↓
+        =   [PRE-FLIGHT VALIDATION] Before Edit/Write operations
+        =   ↓
+        =   ├=→ Validation fails: Auto-fix (e.g., Read file first)
+        =   ==→ Validation passes: Execute operation
+        =
+        ==→ Complex task:
             ↓
             [DELEGATE] To specialized agent(s)
             ↓
@@ -2312,40 +2312,40 @@ New Task Received
             ↓
             [MONITOR] Agent progress and results
             ↓
-            ├─→ Tool error detected: Delegate to validation-controller
-            │   ↓
-            │   [ANALYZE ERROR] Get root cause and fix
-            │   ↓
-            │   [APPLY FIX] Execute corrective action
-            │   ↓
-            │   [RETRY] Original operation
-            │
-            └─→ Success: Continue
+            ├=→ Tool error detected: Delegate to validation-controller
+            =   ↓
+            =   [ANALYZE ERROR] Get root cause and fix
+            =   ↓
+            =   [APPLY FIX] Execute corrective action
+            =   ↓
+            =   [RETRY] Original operation
+            =
+            ==→ Success: Continue
                 ↓
                 [INTEGRATE] Results from all agents
                 ↓
         [QUALITY CHECK] Auto-run all quality controls
             ↓
-            ├─→ Quality < 70%: Auto-fix via quality-controller
-            │   ↓
-            │   [RETRY] Quality check
-            │
-            └─→ Quality ≥ 70%: Continue
+            ├=→ Quality < 70%: Auto-fix via quality-controller
+            =   ↓
+            =   [RETRY] Quality check
+            =
+            ==→ Quality ≥ 70%: Continue
                 ↓
         [VALIDATION] If documentation changed: Check consistency
             ↓
-            ├─→ Inconsistencies found: Auto-fix or alert
-            └─→ All consistent: Continue
+            ├=→ Inconsistencies found: Auto-fix or alert
+            ==→ All consistent: Continue
                 ↓
         [LEARN] Store successful pattern
                 ↓
         [ASSESSMENT STORAGE] If command generated assessment results:
             ↓
-            ├─→ Store assessment data using lib/assessment_storage.py
-            ├─→ Include command_name, assessment_type, overall_score
-            ├─→ Store breakdown, details, issues_found, recommendations
-            ├─→ Record agents_used, skills_used, execution_time
-            └─→ Update pattern database for dashboard real-time monitoring
+            ├=→ Store assessment data using lib/assessment_storage.py
+            ├=→ Include command_name, assessment_type, overall_score
+            ├=→ Store breakdown, details, issues_found, recommendations
+            ├=→ Record agents_used, skills_used, execution_time
+            ==→ Update pattern database for dashboard real-time monitoring
                 ↓
         [COMPLETE] Return final result
 ```
@@ -2529,25 +2529,25 @@ Top Recommendations:
 
 **File Report Format** (.claude/reports/[task-name]-YYYY-MM-DD.md):
 ```
-═══════════════════════════════════════════════════════
+=======================================================
   [TASK NAME] DETAILED REPORT
-═══════════════════════════════════════════════════════
+=======================================================
 Generated: YYYY-MM-DD HH:MM:SS
 
-┌─ Complete Results ───────────────────────────────────┐
-│ [All metrics, findings, and analysis]                 │
-│ [Charts and visualizations]                           │
-└───────────────────────────────────────────────────────┘
+== Complete Results ====================================
+= [All metrics, findings, and analysis]                 =
+= [Charts and visualizations]                           =
+=========================================================
 
-┌─ All Recommendations ────────────────────────────────┐
-│ [All recommendations with full details]               │
-└───────────────────────────────────────────────────────┘
+== All Recommendations =================================
+= [All recommendations with full details]               =
+=========================================================
 
 Agents Used: [agent1, agent2]
 Skills Loaded: [skill1, skill2]
 Patterns Stored: X new patterns in .claude-patterns/
 
-═══════════════════════════════════════════════════════
+=======================================================
 ```
 
 **Examples by Command Type**:
@@ -3272,9 +3272,9 @@ async function detect_claude_folders(files_modified) {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Found new directories:
-├─ .claude/patterns/ (learning data)
-├─ .claude/reports/ (analysis reports)
-└─ .claude-patterns/ (project patterns)
+├= .claude/patterns/ (learning data)
+├= .claude/reports/ (analysis reports)
+== .claude-patterns/ (project patterns)
 
 These contain local learning patterns and may include
 sensitive project information.
@@ -3607,11 +3607,11 @@ async function generate_health_suggestions(health_score) {
 
 ```
 🏥 Workspace Health Report
-├─ Overall Score: 78/100 ⚠️ (Good, but can improve)
-├─ Root Directory: 18/30 (7 report files)
-├─ Report Organization: 20/25 (partial structure)
-├─ Pattern Storage: 25/25 ✅ (.claude-patterns/ active)
-└─ Link Health: 15/20 (2 broken links)
+├= Overall Score: 78/100 ⚠️ (Good, but can improve)
+├= Root Directory: 18/30 (7 report files)
+├= Report Organization: 20/25 (partial structure)
+├= Pattern Storage: 25/25 ✅ (.claude-patterns/ active)
+== Link Health: 15/20 (2 broken links)
 
 📈 Trend: Improving (+8 points since last check)
 

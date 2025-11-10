@@ -19,7 +19,7 @@ Automatically organizes your workspace by moving files to appropriate directorie
 ## What It Does
 
 ### 1. **Report File Organization** (15-30 seconds)
-- Move `*.md` reports from root → `docs/reports/generated/`
+- Move `*.md` reports from root -> `docs/reports/generated/`
 - Consolidate `.reports*` directories into single location
 - Archive reports older than 30 days to `docs/reports/archive/`
 - Create/update `docs/reports/README.md` index
@@ -73,11 +73,11 @@ Automatically organizes your workspace by moving files to appropriate directorie
 ### Terminal Summary (concise)
 ```
 Workspace Organization Complete
-├─ Health Score: 78/100 → 92/100 ✅ (+14)
-├─ Files Organized: 7 files moved
-├─ Links Fixed: 3 links updated
-├─ Reports Archived: 2 files
-└─ Duration: 1m 23s
++- Health Score: 78/100 -> 92/100 ✅ (+14)
++- Files Organized: 7 files moved
++- Links Fixed: 3 links updated
++- Reports Archived: 2 files
++- Duration: 1m 23s
 
 📄 Detailed report: .claude/reports/organize-workspace-2025-01-15.md
 ```
@@ -93,16 +93,16 @@ Workspace Organization Complete
 
 ```
 project/
-├── docs/
-│   └── reports/
-│       ├── README.md           # Report index
-│       ├── generated/          # Auto-generated reports
-│       └── archive/            # Old reports (>30 days)
-├── lib/                        # Python utilities
-│   └── README.md               # Utility documentation
-├── .claude-patterns/           # Learning patterns
-├── .claude/                    # Claude Code data
-└── [other project files]
++-- docs/
+|   +-- reports/
+|       +-- README.md           # Report index
+|       +-- generated/          # Auto-generated reports
+|       +-- archive/            # Old reports (>30 days)
++-- lib/                        # Python utilities
+|   +-- README.md               # Utility documentation
++-- .claude-patterns/           # Learning patterns
++-- .claude/                    # Claude Code data
++-- [other project files]
 ```
 
 ## Integration
@@ -128,7 +128,7 @@ User: /organize-workspace
 
 System: Moved 3 reports to docs/reports/generated/
         Fixed 2 broken links in README.md
-        Health score improved: 65/100 → 85/100
+        Health score improved: 65/100 -> 85/100
 ```
 
 ### Example 2: With Cleanup

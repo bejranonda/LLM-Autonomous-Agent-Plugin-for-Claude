@@ -104,40 +104,40 @@ Fully autonomous development from requirements to release-ready implementation. 
 User Request: "add MQTT broker with certificate support"
 
 Requirement Breakdown:
-├─ 1. MQTT Broker Setup
-│  ├─ Dependencies: paho-mqtt or similar
-│  ├─ Configuration: broker URL, port, credentials
-│  └─ Complexity: Medium
-│
-├─ 2. Certificate Management
-│  ├─ SSL/TLS certificate loading
-│  ├─ Certificate validation
-│  ├─ Secure storage of credentials
-│  └─ Complexity: Medium
-│
-├─ 3. Connection Management
-│  ├─ Connect/disconnect logic
-│  ├─ Reconnection handling
-│  ├─ Connection state monitoring
-│  └─ Complexity: Medium
-│
-├─ 4. Message Publishing/Subscribing
-│  ├─ Topic management
-│  ├─ QoS handling
-│  ├─ Error handling
-│  └─ Complexity: Medium
-│
-└─ 5. Testing & Documentation
-   ├─ Unit tests
-   ├─ Integration tests
-   ├─ Documentation
-   └─ Complexity: Simple
++- 1. MQTT Broker Setup
+|  +- Dependencies: paho-mqtt or similar
+|  +- Configuration: broker URL, port, credentials
+|  +- Complexity: Medium
+|
++- 2. Certificate Management
+|  +- SSL/TLS certificate loading
+|  +- Certificate validation
+|  +- Secure storage of credentials
+|  +- Complexity: Medium
+|
++- 3. Connection Management
+|  +- Connect/disconnect logic
+|  +- Reconnection handling
+|  +- Connection state monitoring
+|  +- Complexity: Medium
+|
++- 4. Message Publishing/Subscribing
+|  +- Topic management
+|  +- QoS handling
+|  +- Error handling
+|  +- Complexity: Medium
+|
++- 5. Testing & Documentation
+   +- Unit tests
+   +- Integration tests
+   +- Documentation
+   +- Complexity: Simple
 
 Technology Stack Detected:
-├─ Language: Python (detected from project)
-├─ Framework: Flask/FastAPI (if web API)
-├─ MQTT Library: paho-mqtt (recommended)
-└─ Testing: pytest
++- Language: Python (detected from project)
++- Framework: Flask/FastAPI (if web API)
++- MQTT Library: paho-mqtt (recommended)
++- Testing: pytest
 
 Estimated Time: 45-90 minutes
 Milestones: 5 major milestones
@@ -154,49 +154,49 @@ Milestones: 5 major milestones
 Development Strategy: Incremental with milestones
 
 Milestone 1: Dependencies & Configuration
-├─ Install paho-mqtt library
-├─ Create configuration module
-├─ Add certificate path configuration
-├─ Estimated: 10 minutes
-└─ Commit: "feat: add MQTT dependencies and configuration"
++- Install paho-mqtt library
++- Create configuration module
++- Add certificate path configuration
++- Estimated: 10 minutes
++- Commit: "feat: add MQTT dependencies and configuration"
 
 Milestone 2: Certificate Management
-├─ Implement certificate loader
-├─ Add certificate validation
-├─ Implement secure storage
-├─ Estimated: 15 minutes
-└─ Commit: "feat: implement certificate management for MQTT"
++- Implement certificate loader
++- Add certificate validation
++- Implement secure storage
++- Estimated: 15 minutes
++- Commit: "feat: implement certificate management for MQTT"
 
 Milestone 3: MQTT Connection Layer
-├─ Implement connection class
-├─ Add connect/disconnect methods
-├─ Implement reconnection logic
-├─ Add connection state monitoring
-├─ Estimated: 20 minutes
-└─ Commit: "feat: implement MQTT connection with auto-reconnect"
++- Implement connection class
++- Add connect/disconnect methods
++- Implement reconnection logic
++- Add connection state monitoring
++- Estimated: 20 minutes
++- Commit: "feat: implement MQTT connection with auto-reconnect"
 
 Milestone 4: Publish/Subscribe Interface
-├─ Implement publish method
-├─ Implement subscribe method
-├─ Add topic management
-├─ Handle QoS levels
-├─ Estimated: 20 minutes
-└─ Commit: "feat: add MQTT publish/subscribe interface"
++- Implement publish method
++- Implement subscribe method
++- Add topic management
++- Handle QoS levels
++- Estimated: 20 minutes
++- Commit: "feat: add MQTT publish/subscribe interface"
 
 Milestone 5: Testing & Documentation
-├─ Write unit tests
-├─ Write integration tests
-├─ Update documentation
-├─ Add usage examples
-├─ Estimated: 15 minutes
-└─ Commit: "test: add comprehensive MQTT tests and docs"
++- Write unit tests
++- Write integration tests
++- Update documentation
++- Add usage examples
++- Estimated: 15 minutes
++- Commit: "test: add comprehensive MQTT tests and docs"
 
 Success Criteria:
-├─ ✅ All tests pass (100%)
-├─ ✅ Certificate validation works
-├─ ✅ Reconnection logic tested
-├─ ✅ Documentation complete
-└─ ✅ Quality score ≥ 85/100
++- ✅ All tests pass (100%)
++- ✅ Certificate validation works
++- ✅ Reconnection logic tested
++- ✅ Documentation complete
++- ✅ Quality score ≥ 85/100
 
 Starting development in 3 seconds...
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -213,39 +213,39 @@ Each milestone follows this loop:
 
 [IMPLEMENTATION]
 Creating mqtt_config.py...
-├─ ✅ Configuration class created
-├─ ✅ Environment variable support added
-├─ ✅ Certificate path validation added
-└─ ✅ Default values configured
++- ✅ Configuration class created
++- ✅ Environment variable support added
++- ✅ Certificate path validation added
++- ✅ Default values configured
 
 Creating requirements.txt entry...
-├─ ✅ Added: paho-mqtt==1.6.1
-└─ ✅ Updated lock file
++- ✅ Added: paho-mqtt==1.6.1
++- ✅ Updated lock file
 
 [VALIDATION]
 Parameter Consistency Check:
-├─ ✅ Config parameter names consistent
-├─ ✅ Type hints correct
-└─ ✅ No undefined variables
++- ✅ Config parameter names consistent
++- ✅ Type hints correct
++- ✅ No undefined variables
 
 [TESTING]
 Running unit tests...
-├─ test_config_loading: ✅ PASS
-├─ test_certificate_path_validation: ✅ PASS
-├─ test_env_variable_loading: ✅ PASS
-└─ Test Coverage: 95% (target: 80%)
++- test_config_loading: ✅ PASS
++- test_certificate_path_validation: ✅ PASS
++- test_env_variable_loading: ✅ PASS
++- Test Coverage: 95% (target: 80%)
 
 [QUALITY CHECK]
-├─ Code Quality: 92/100 ✅
-├─ Standards: ✅ PEP 8 compliant
-├─ Documentation: ✅ Docstrings present
-└─ Security: ✅ No vulnerabilities
++- Code Quality: 92/100 ✅
++- Standards: ✅ PEP 8 compliant
++- Documentation: ✅ Docstrings present
++- Security: ✅ No vulnerabilities
 
 [COMMIT]
-├─ Staging files: 3 files
-├─ Commit message: "feat: add MQTT dependencies and configuration"
-├─ Commit hash: abc1234
-└─ ✅ Pushed to origin/main
++- Staging files: 3 files
++- Commit message: "feat: add MQTT dependencies and configuration"
++- Commit hash: abc1234
++- ✅ Pushed to origin/main
 
 Milestone 1: ✅ COMPLETE (elapsed: 8m 32s)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -256,50 +256,50 @@ Milestone 1: ✅ COMPLETE (elapsed: 8m 32s)
 
 [IMPLEMENTATION]
 Creating mqtt_certificates.py...
-├─ ✅ CertificateLoader class created
-├─ ✅ SSL context configuration
-├─ ✅ Certificate validation logic
-└─ ✅ Error handling added
++- ✅ CertificateLoader class created
++- ✅ SSL context configuration
++- ✅ Certificate validation logic
++- ✅ Error handling added
 
 [VALIDATION]
 Parameter Consistency Check:
-├─ ✅ Certificate parameters match config
-├─ ✅ SSL context options consistent
-└─ ✅ Error messages standardized
++- ✅ Certificate parameters match config
++- ✅ SSL context options consistent
++- ✅ Error messages standardized
 
 [TESTING]
 Running unit tests...
-├─ test_certificate_loading: ✅ PASS
-├─ test_invalid_certificate: ✅ PASS
-├─ test_certificate_validation: ❌ FAIL
-│  └─ Error: SSL certificate verification failed
-└─ Test Coverage: 88%
++- test_certificate_loading: ✅ PASS
++- test_invalid_certificate: ✅ PASS
++- test_certificate_validation: ❌ FAIL
+|  +- Error: SSL certificate verification failed
++- Test Coverage: 88%
 
 [DEBUG LOOP - Iteration 1]
 Analyzing failure...
-├─ Root Cause: Certificate path mismatch
-├─ Issue: Using absolute path instead of relative
-└─ Fix: Update certificate path resolution
++- Root Cause: Certificate path mismatch
++- Issue: Using absolute path instead of relative
++- Fix: Update certificate path resolution
 
 Applying fix...
-├─ ✅ Updated path resolution logic
-└─ ✅ Added path normalization
++- ✅ Updated path resolution logic
++- ✅ Added path normalization
 
 Re-running tests...
-├─ test_certificate_loading: ✅ PASS
-├─ test_invalid_certificate: ✅ PASS
-├─ test_certificate_validation: ✅ PASS
-└─ Test Coverage: 92%
++- test_certificate_loading: ✅ PASS
++- test_invalid_certificate: ✅ PASS
++- test_certificate_validation: ✅ PASS
++- Test Coverage: 92%
 
 [QUALITY CHECK]
-├─ Code Quality: 90/100 ✅
-├─ Security: ✅ No hardcoded credentials
-└─ Documentation: ✅ Complete
++- Code Quality: 90/100 ✅
++- Security: ✅ No hardcoded credentials
++- Documentation: ✅ Complete
 
 [COMMIT]
-├─ Commit message: "feat: implement certificate management for MQTT"
-├─ Commit hash: def5678
-└─ ✅ Pushed to origin/main
++- Commit message: "feat: implement certificate management for MQTT"
++- Commit hash: def5678
++- ✅ Pushed to origin/main
 
 Milestone 2: ✅ COMPLETE (elapsed: 12m 45s)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -317,37 +317,37 @@ Milestone 2: ✅ COMPLETE (elapsed: 12m 45s)
 Original Request: "add MQTT broker with certificate support"
 
 Implementation Checklist:
-├─ ✅ MQTT broker connection implemented
-│  ├─ ✅ Connect method working
-│  ├─ ✅ Disconnect method working
-│  └─ ✅ Auto-reconnection implemented
-│
-├─ ✅ Certificate support implemented
-│  ├─ ✅ SSL/TLS certificates loaded
-│  ├─ ✅ Certificate validation working
-│  └─ ✅ Secure credential storage
-│
-├─ ✅ Message handling implemented
-│  ├─ ✅ Publish method working
-│  ├─ ✅ Subscribe method working
-│  └─ ✅ QoS levels supported
-│
-├─ ✅ Error handling complete
-│  ├─ ✅ Connection errors handled
-│  ├─ ✅ Certificate errors handled
-│  └─ ✅ Message errors handled
-│
-└─ ✅ Testing complete
-   ├─ ✅ Unit tests: 24/24 passing
-   ├─ ✅ Integration tests: 6/6 passing
-   └─ ✅ Test coverage: 94%
++- ✅ MQTT broker connection implemented
+|  +- ✅ Connect method working
+|  +- ✅ Disconnect method working
+|  +- ✅ Auto-reconnection implemented
+|
++- ✅ Certificate support implemented
+|  +- ✅ SSL/TLS certificates loaded
+|  +- ✅ Certificate validation working
+|  +- ✅ Secure credential storage
+|
++- ✅ Message handling implemented
+|  +- ✅ Publish method working
+|  +- ✅ Subscribe method working
+|  +- ✅ QoS levels supported
+|
++- ✅ Error handling complete
+|  +- ✅ Connection errors handled
+|  +- ✅ Certificate errors handled
+|  +- ✅ Message errors handled
+|
++- ✅ Testing complete
+   +- ✅ Unit tests: 24/24 passing
+   +- ✅ Integration tests: 6/6 passing
+   +- ✅ Test coverage: 94%
 
 Quality Metrics:
-├─ Code Quality: 92/100 ✅ (threshold: 85)
-├─ Test Coverage: 94% ✅ (threshold: 80%)
-├─ Documentation: 90/100 ✅
-├─ Security: 95/100 ✅
-└─ Overall: 92/100 ✅
++- Code Quality: 92/100 ✅ (threshold: 85)
++- Test Coverage: 94% ✅ (threshold: 80%)
++- Documentation: 90/100 ✅
++- Security: 95/100 ✅
++- Overall: 92/100 ✅
 
 Completeness: 100% ✅
 All requirements satisfied!
@@ -367,65 +367,65 @@ All requirements satisfied!
 📊 Final Quality: 92/100
 
 ✨ Implemented:
-├─ MQTT broker connection with auto-reconnect
-├─ SSL/TLS certificate management and validation
-├─ Publish/Subscribe interface with QoS support
-├─ Comprehensive error handling
-└─ Complete documentation and usage examples
++- MQTT broker connection with auto-reconnect
++- SSL/TLS certificate management and validation
++- Publish/Subscribe interface with QoS support
++- Comprehensive error handling
++- Complete documentation and usage examples
 
 📦 Files Created/Modified:
-├─ mqtt_config.py (new)
-├─ mqtt_certificates.py (new)
-├─ mqtt_client.py (new)
-├─ tests/test_mqtt.py (new)
-├─ requirements.txt (modified)
-└─ README.md (modified)
++- mqtt_config.py (new)
++- mqtt_certificates.py (new)
++- mqtt_client.py (new)
++- tests/test_mqtt.py (new)
++- requirements.txt (modified)
++- README.md (modified)
 
 ✅ Tests: 30/30 passing (100%)
-├─ Unit tests: 24/24
-└─ Integration tests: 6/6
++- Unit tests: 24/24
++- Integration tests: 6/6
 
 📚 Documentation: 90/100
-├─ API documentation complete
-├─ Usage examples added
-└─ Configuration guide included
++- API documentation complete
++- Usage examples added
++- Configuration guide included
 
 🔒 Security: 95/100
-├─ No hardcoded credentials
-├─ Secure certificate storage
-└─ Proper SSL/TLS configuration
++- No hardcoded credentials
++- Secure certificate storage
++- Proper SSL/TLS configuration
 
 🐛 Issues Fixed: 1
-└─ Certificate path resolution (Milestone 2)
++- Certificate path resolution (Milestone 2)
 
 📊 Code Metrics:
-├─ Lines Added: 486
-├─ Lines Modified: 23
-├─ Test Coverage: 94%
-└─ Cyclomatic Complexity: Low
++- Lines Added: 486
++- Lines Modified: 23
++- Test Coverage: 94%
++- Cyclomatic Complexity: Low
 
 🔄 Commits: 5 incremental commits
-├─ abc1234: feat: add MQTT dependencies and configuration
-├─ def5678: feat: implement certificate management for MQTT
-├─ ghi9012: feat: implement MQTT connection with auto-reconnect
-├─ jkl3456: feat: add MQTT publish/subscribe interface
-└─ mno7890: test: add comprehensive MQTT tests and docs
++- abc1234: feat: add MQTT dependencies and configuration
++- def5678: feat: implement certificate management for MQTT
++- ghi9012: feat: implement MQTT connection with auto-reconnect
++- jkl3456: feat: add MQTT publish/subscribe interface
++- mno7890: test: add comprehensive MQTT tests and docs
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💡 SUGGESTED NEXT ACTIONS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. [High Priority] Test MQTT integration end-to-end
-   → /dev:auto "add integration tests for MQTT with real broker"
+   -> /dev:auto "add integration tests for MQTT with real broker"
 
 2. [Recommended] Release this feature
-   → /dev:release --minor
+   -> /dev:release --minor
 
 3. [Optional] Add monitoring for MQTT connection
-   → /dev:auto "add prometheus metrics for MQTT"
+   -> /dev:auto "add prometheus metrics for MQTT"
 
 4. [Learning] View development analytics
-   → /learn:performance
+   -> /learn:performance
 
 Choose option (1-4) or type custom command:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -444,8 +444,8 @@ Triggering /dev:release...
 
 Release: v3.5.1 ✅
 Links:
-├─ GitHub: https://github.com/user/repo/releases/tag/v3.5.1
-└─ Changelog: https://github.com/user/repo/blob/main/CHANGELOG.md
++- GitHub: https://github.com/user/repo/releases/tag/v3.5.1
++- Changelog: https://github.com/user/repo/blob/main/CHANGELOG.md
 
 Total Time (dev + release): 51m 15s
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -461,42 +461,42 @@ When tests fail, the debug loop automatically:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Test Failure Detected:
-├─ Test: test_mqtt_publish
-├─ Error: ConnectionRefusedError: [Errno 111] Connection refused
-└─ Stack Trace: [truncated for brevity]
++- Test: test_mqtt_publish
++- Error: ConnectionRefusedError: [Errno 111] Connection refused
++- Stack Trace: [truncated for brevity]
 
 [ANALYSIS]
 Root Cause Analysis:
-├─ Category: Integration Error
-├─ Specific Issue: MQTT broker not running
-├─ Affected Component: mqtt_client.py:45
-└─ Similar Patterns: Found 3 similar issues in patterns
++- Category: Integration Error
++- Specific Issue: MQTT broker not running
++- Affected Component: mqtt_client.py:45
++- Similar Patterns: Found 3 similar issues in patterns
 
 Recommended Fix:
-├─ Option 1: Add connection retry logic (recommended)
-├─ Option 2: Mock MQTT broker for tests
-└─ Option 3: Skip integration tests in CI
++- Option 1: Add connection retry logic (recommended)
++- Option 2: Mock MQTT broker for tests
++- Option 3: Skip integration tests in CI
 
 Selected Fix: Option 1 (best success rate: 95%)
 
 [IMPLEMENTATION]
 Applying fix...
-├─ ✅ Added exponential backoff retry
-├─ ✅ Maximum 3 retry attempts
-├─ ✅ Configurable retry delay
-└─ ✅ Logging for retry attempts
++- ✅ Added exponential backoff retry
++- ✅ Maximum 3 retry attempts
++- ✅ Configurable retry delay
++- ✅ Logging for retry attempts
 
 [VALIDATION]
 Parameter Consistency:
-├─ ✅ Retry parameters consistent
-├─ ✅ Timeout values aligned
-└─ ✅ Error messages standardized
++- ✅ Retry parameters consistent
++- ✅ Timeout values aligned
++- ✅ Error messages standardized
 
 [RE-TEST]
 Running tests again...
-├─ test_mqtt_publish: ✅ PASS
-├─ test_mqtt_subscribe: ✅ PASS
-└─ All tests: 30/30 passing
++- test_mqtt_publish: ✅ PASS
++- test_mqtt_subscribe: ✅ PASS
++- All tests: 30/30 passing
 
 Debug Loop: ✅ SUCCESS (resolved in 1 iteration)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -506,16 +506,16 @@ If debug loop fails after max iterations:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚠️  DEBUG LOOP - MAX ITERATIONS REACHED (5/5)
+[WARN]️  DEBUG LOOP - MAX ITERATIONS REACHED (5/5)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Unable to resolve issue automatically.
 
 Issue Summary:
-├─ Test: test_complex_reconnection_logic
-├─ Error: Intermittent connection timeout
-├─ Attempts: 5 different fixes tried
-└─ Success Rate: 0/5
++- Test: test_complex_reconnection_logic
++- Error: Intermittent connection timeout
++- Attempts: 5 different fixes tried
++- Success Rate: 0/5
 
 Attempted Fixes:
 1. Increased timeout values - Failed
@@ -559,31 +559,31 @@ Critical validation performed automatically:
 Checking parameter consistency across codebase...
 
 Function Call Analysis:
-├─ mqtt_connect(broker_url, port, username, password)
-├─ Used in 8 locations
-└─ ✅ All parameters match function signature
++- mqtt_connect(broker_url, port, username, password)
++- Used in 8 locations
++- ✅ All parameters match function signature
 
 Configuration Validation:
-├─ Config file: mqtt_config.py
-├─ Environment variables: .env
-├─ Function parameters: mqtt_client.py
-└─ ✅ All parameter names consistent
++- Config file: mqtt_config.py
++- Environment variables: .env
++- Function parameters: mqtt_client.py
++- ✅ All parameter names consistent
 
 Type Safety Check:
-├─ Type hints present: ✅ 100%
-├─ Type consistency: ✅ All correct
-└─ ✅ No type mismatches found
++- Type hints present: ✅ 100%
++- Type consistency: ✅ All correct
++- ✅ No type mismatches found
 
 Null Safety Check:
-├─ Null checks present: ✅ All critical paths
-├─ Default values defined: ✅ All optional params
-└─ ✅ No null pointer risks
++- Null checks present: ✅ All critical paths
++- Default values defined: ✅ All optional params
++- ✅ No null pointer risks
 
 Common Failure Patterns:
-├─ ✅ No undefined variables
-├─ ✅ No parameter name typos
-├─ ✅ No missing required parameters
-└─ ✅ No type conversion errors
++- ✅ No undefined variables
++- ✅ No parameter name typos
++- ✅ No missing required parameters
++- ✅ No type conversion errors
 
 Parameter Validation: ✅ PASS (100%)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

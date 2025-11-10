@@ -70,55 +70,55 @@ Automated report organization and management system that categorizes, archives, 
 ### Target Directory Structure
 ```
 .reports/
-├── current/                    # Active reports (last 30 days)
-│   ├── validation/            # Plugin validation reports
-│   │   ├── plugin-validation-2024-01-15.md
-│   │   ├── claude-plugin-validation-2024-01-14.md
-│   │   └── installation-validation-2024-01-13.md
-│   ├── quality/               # Quality assessment reports
-│   │   ├── code-quality-2024-01-15.md
-│   │   ├── standards-compliance-2024-01-14.md
-│   │   └── best-practices-2024-01-13.md
-│   ├── performance/           # Performance analysis reports
-│   │   ├── execution-time-analysis-2024-01-15.md
-│   │   └── resource-usage-2024-01-14.md
-│   ├── security/              # Security scan reports
-│   │   ├── vulnerability-scan-2024-01-15.md
-│   │   └── dependency-security-2024-01-14.md
-│   ├── testing/               # Test execution reports
-│   │   ├── test-coverage-2024-01-15.md
-│   │   └── test-results-2024-01-14.md
-│   └── summary/               # Executive summary reports
-│       ├── weekly-summary-2024-01-15.md
-│       └── monthly-report-2024-01-01.md
-├── recent/                     # Recent reports (30-90 days)
-│   ├── 2024-01/               # Monthly organization
-│   │   ├── validation/
-│   │   ├── quality/
-│   │   └── performance/
-│   └── 2023-12/
-├── archive/                    # Archived reports (90+ days)
-│   ├── 2023/                  # Yearly organization
-│   │   ├── Q1/               # Quarterly organization
-│   │   │   ├── validation/
-│   │   │   ├── quality/
-│   │   │   └── performance/
-│   │   ├── Q2/
-│   │   ├── Q3/
-│   │   └── Q4/
-│   └── 2022/
-├── templates/                  # Report templates
-│   ├── validation-template.md
-│   ├── quality-template.md
-│   └── performance-template.md
-├── metrics/                    # Aggregated metrics and trends
-│   ├── quality-trends.json
-│   ├── performance-metrics.json
-│   └── validation-history.json
-└── index/                      # Search indices and metadata
-    ├── reports-index.json
-    ├── search-index.json
-    └── metadata-db.json
++-- current/                    # Active reports (last 30 days)
+|   +-- validation/            # Plugin validation reports
+|   |   +-- plugin-validation-2024-01-15.md
+|   |   +-- claude-plugin-validation-2024-01-14.md
+|   |   +-- installation-validation-2024-01-13.md
+|   +-- quality/               # Quality assessment reports
+|   |   +-- code-quality-2024-01-15.md
+|   |   +-- standards-compliance-2024-01-14.md
+|   |   +-- best-practices-2024-01-13.md
+|   +-- performance/           # Performance analysis reports
+|   |   +-- execution-time-analysis-2024-01-15.md
+|   |   +-- resource-usage-2024-01-14.md
+|   +-- security/              # Security scan reports
+|   |   +-- vulnerability-scan-2024-01-15.md
+|   |   +-- dependency-security-2024-01-14.md
+|   +-- testing/               # Test execution reports
+|   |   +-- test-coverage-2024-01-15.md
+|   |   +-- test-results-2024-01-14.md
+|   +-- summary/               # Executive summary reports
+|       +-- weekly-summary-2024-01-15.md
+|       +-- monthly-report-2024-01-01.md
++-- recent/                     # Recent reports (30-90 days)
+|   +-- 2024-01/               # Monthly organization
+|   |   +-- validation/
+|   |   +-- quality/
+|   |   +-- performance/
+|   +-- 2023-12/
++-- archive/                    # Archived reports (90+ days)
+|   +-- 2023/                  # Yearly organization
+|   |   +-- Q1/               # Quarterly organization
+|   |   |   +-- validation/
+|   |   |   +-- quality/
+|   |   |   +-- performance/
+|   |   +-- Q2/
+|   |   +-- Q3/
+|   |   +-- Q4/
+|   +-- 2022/
++-- templates/                  # Report templates
+|   +-- validation-template.md
+|   +-- quality-template.md
+|   +-- performance-template.md
++-- metrics/                    # Aggregated metrics and trends
+|   +-- quality-trends.json
+|   +-- performance-metrics.json
+|   +-- validation-history.json
++-- index/                      # Search indices and metadata
+    +-- reports-index.json
+    +-- search-index.json
+    +-- metadata-db.json
 ```
 
 ## Command Line Options
@@ -208,24 +208,24 @@ REPORT DISCOVERY
 ============================================================
 
 📁 Report Files Found: 18
-├─ Root Directory: 3 files
-├─ Subdirectories: 15 files
-└─ Hidden Reports: 0 files
++- Root Directory: 3 files
++- Subdirectories: 15 files
++- Hidden Reports: 0 files
 
 📊 Report Types Detected:
-├─ Validation Reports: 6
-├─ Quality Reports: 4
-├─ Performance Reports: 3
-├─ Plugin Reports: 2
-├─ Security Reports: 1
-└─ Summary Reports: 2
++- Validation Reports: 6
++- Quality Reports: 4
++- Performance Reports: 3
++- Plugin Reports: 2
++- Security Reports: 1
++- Summary Reports: 2
 
 🔍 Analysis Results:
-├─ Total Size: 2.4 MB
-├─ Duplicate Files: 2
-├─ Obsolete Reports: 1
-├─ Critical Reports: 3
-└─ High Importance: 7
++- Total Size: 2.4 MB
++- Duplicate Files: 2
++- Obsolete Reports: 1
++- Critical Reports: 3
++- High Importance: 7
 
 ⏱ Discovery completed in 23 seconds
 ```
@@ -245,31 +245,31 @@ CATEGORIZATION ANALYSIS
 ============================================================
 
 📋 Classification Results:
-├─ Current Reports (≤30 days): 8 files
-├─ Recent Reports (30-90 days): 6 files
-├─ Archive Candidates (>90 days): 4 files
-└─ Template Files: 0 files
++- Current Reports (≤30 days): 8 files
++- Recent Reports (30-90 days): 6 files
++- Archive Candidates (>90 days): 4 files
++- Template Files: 0 files
 
 🎯 Importance Distribution:
-├─ Critical Issues: 3 reports
-│  ├─ Security vulnerabilities
-│  ├─ Breaking validation failures
-│  └─ Critical quality issues
-├─ High Priority: 7 reports
-├─ Medium Priority: 5 reports
-└─ Low Priority: 3 reports
++- Critical Issues: 3 reports
+|  +- Security vulnerabilities
+|  +- Breaking validation failures
+|  +- Critical quality issues
++- High Priority: 7 reports
++- Medium Priority: 5 reports
++- Low Priority: 3 reports
 
 🔗 Report Relationships:
-├─ Related Report Groups: 4
-├─ Duplicate Pairs: 2
-├─ Sequential Reports: 3
-└─ Cross-References: 12
++- Related Report Groups: 4
++- Duplicate Pairs: 2
++- Sequential Reports: 3
++- Cross-References: 12
 
 📈 Quality Metrics:
-├─ Average Report Score: 82/100
-├─ Completeness Rate: 94%
-├─ Consistency Score: 88%
-└─ Actionability Index: 76%
++- Average Report Score: 82/100
++- Completeness Rate: 94%
++- Consistency Score: 88%
++- Actionability Index: 76%
 
 ⏱ Categorization completed in 47 seconds
 ```
@@ -289,37 +289,37 @@ ORGANIZATION EXECUTION
 ============================================================
 
 📂 Directory Structure Created:
-├─ .reports/current/validation/ ✓
-├─ .reports/current/quality/ ✓
-├─ .reports/current/performance/ ✓
-├─ .reports/recent/2024-01/ ✓
-├─ .reports/archive/2023/Q4/ ✓
-└─ .reports/metrics/ ✓
++- .reports/current/validation/ [PASS]
++- .reports/current/quality/ [PASS]
++- .reports/current/performance/ [PASS]
++- .reports/recent/2024-01/ [PASS]
++- .reports/archive/2023/Q4/ [PASS]
++- .reports/metrics/ [PASS]
 
 📁 Files Organized:
-├─ Current Reports: 8 files moved
-├─ Recent Reports: 6 files moved
-├─ Archived Reports: 4 files moved
-├─ Duplicates Removed: 2 files
-└─ Obsolete Reports: 1 file removed
++- Current Reports: 8 files moved
++- Recent Reports: 6 files moved
++- Archived Reports: 4 files moved
++- Duplicates Removed: 2 files
++- Obsolete Reports: 1 file removed
 
 🏷️ File Naming Applied:
-├─ Standardized format: {type}-{date}-{id}.md
-├─ Consistent date format: YYYY-MM-DD
-├─ Unique identifiers added: 12 files
-└─ Metadata embedded: 18 files
++- Standardized format: {type}-{date}-{id}.md
++- Consistent date format: YYYY-MM-DD
++- Unique identifiers added: 12 files
++- Metadata embedded: 18 files
 
 🔗 Cross-References Created:
-├─ Related reports linked: 12 links
-├─ Sequential reports grouped: 3 groups
-├─ Summary reports updated: 2 summaries
-└─ Index entries created: 18 entries
++- Related reports linked: 12 links
++- Sequential reports grouped: 3 groups
++- Summary reports updated: 2 summaries
++- Index entries created: 18 entries
 
 📊 Storage Optimization:
-├─ Space Saved: 156 KB (6.5% reduction)
-├─ Compression Applied: 4 files
-├─ Duplicates Removed: 320 KB
-└─ Index Size: 45 KB
++- Space Saved: 156 KB (6.5% reduction)
++- Compression Applied: 4 files
++- Duplicates Removed: 320 KB
++- Index Size: 45 KB
 
 🎯 Organization Status: SUCCESS
 ⏱ Organization completed in 2.1 minutes
@@ -340,36 +340,36 @@ SEARCH INDEX CREATION
 ============================================================
 
 🔍 Search Index Built:
-├─ Full-Text Index: 18 documents indexed
-├─ Metadata Database: 18 records
-├─ Cross-Reference Map: 32 relationships
-└─ Trend Data: 6 months of history
++- Full-Text Index: 18 documents indexed
++- Metadata Database: 18 records
++- Cross-Reference Map: 32 relationships
++- Trend Data: 6 months of history
 
 📊 Index Statistics:
-├─ Total Terms: 3,247 unique terms
-├─ Document Count: 18 reports
-├─ Average Document Size: 15.2 KB
-├─ Index Size: 127 KB
-└─ Search Speed: <50ms average
++- Total Terms: 3,247 unique terms
++- Document Count: 18 reports
++- Average Document Size: 15.2 KB
++- Index Size: 127 KB
++- Search Speed: <50ms average
 
 🎯 Search Capabilities:
-├─ Content Search: Full-text search across all reports
-├─ Metadata Search: Search by type, date, importance
-├─ Trend Analysis: Track metrics over time
-├─ Comparative Analysis: Compare similar reports
-└─ Custom Queries: Advanced search with filters
++- Content Search: Full-text search across all reports
++- Metadata Search: Search by type, date, importance
++- Trend Analysis: Track metrics over time
++- Comparative Analysis: Compare similar reports
++- Custom Queries: Advanced search with filters
 
 📈 Analytics Data Generated:
-├─ Quality Trends: Monthly quality score progression
-├─ Issue Patterns: Common issues and frequencies
-├─ Resolution Times: Average time to address issues
-└─ Improvement Metrics: Progress tracking over time
++- Quality Trends: Monthly quality score progression
++- Issue Patterns: Common issues and frequencies
++- Resolution Times: Average time to address issues
++- Improvement Metrics: Progress tracking over time
 
 🔗 Integration Ready:
-├─ CLI Search Interface: Available
-├─ Web Dashboard: Optional
-├─ API Access: RESTful API available
-└─ Export Formats: JSON, CSV, PDF
++- CLI Search Interface: Available
++- Web Dashboard: Optional
++- API Access: RESTful API available
++- Export Formats: JSON, CSV, PDF
 
 🎯 Index Creation: SUCCESS
 ⏱ Index creation completed in 54 seconds

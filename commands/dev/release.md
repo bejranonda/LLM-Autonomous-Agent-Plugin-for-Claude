@@ -58,10 +58,10 @@ Streamlined release preparation and publishing workflow. This command automates 
 git remote get-url origin
 
 # Identify platform:
-# - Contains "github.com" → GitHub
-# - Contains "gitlab.com" or "gitlab" → GitLab
-# - Contains "bitbucket.org" → Bitbucket
-# - Others → Generic git repository (skip release creation)
+# - Contains "github.com" -> GitHub
+# - Contains "gitlab.com" or "gitlab" -> GitLab
+# - Contains "bitbucket.org" -> Bitbucket
+# - Others -> Generic git repository (skip release creation)
 ```
 
 #### Step 7b: Create Platform Release (REQUIRED if platform detected)
@@ -240,16 +240,16 @@ Last Release: 2025-01-15 (9 days ago)
 Commits Since Release: 24
 
 Change Breakdown:
-├─ 🎉 Features: 3 commits
-│  ├─ feat: add /dev-auto command
-│  ├─ feat: add interactive suggestions
-│  └─ feat: .gitignore management
-├─ 🐛 Bug Fixes: 2 commits
-│  ├─ fix: validation error handling
-│  └─ fix: documentation typos
-├─ 📚 Documentation: 5 commits
-├─ ♻️  Refactoring: 1 commit
-└─ ⚠️  Breaking Changes: None
++- 🎉 Features: 3 commits
+|  +- feat: add /dev-auto command
+|  +- feat: add interactive suggestions
+|  +- feat: .gitignore management
++- 🐛 Bug Fixes: 2 commits
+|  +- fix: validation error handling
+|  +- fix: documentation typos
++- 📚 Documentation: 5 commits
++- ♻️  Refactoring: 1 commit
++- [WARN]️  Breaking Changes: None
 
 Recommended Version: v3.4.0 (MINOR)
 Reason: New features added, no breaking changes
@@ -264,14 +264,14 @@ Updates version across all project files:
 📦 VERSION UPDATE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Updating version: v3.3.2 → v3.4.0
+Updating version: v3.3.2 -> v3.4.0
 
 Files Updated:
-├─ ✅ .claude-plugin/plugin.json
-├─ ✅ README.md (4 references)
-├─ ✅ CLAUDE.md (2 references)
-├─ ✅ package.json
-└─ ✅ docs/IMPLEMENTATION_SUMMARY.md
++- ✅ .claude-plugin/plugin.json
++- ✅ README.md (4 references)
++- ✅ CLAUDE.md (2 references)
++- ✅ package.json
++- ✅ docs/IMPLEMENTATION_SUMMARY.md
 
 Total: 5 files, 8 version references updated
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -286,24 +286,24 @@ Automatically updates all documentation:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 README.md:
-├─ Updated version badge
-├─ Updated feature list
-└─ Updated installation instructions
++- Updated version badge
++- Updated feature list
++- Updated installation instructions
 
 CHANGELOG.md:
-├─ Generated from commit history
-├─ Categorized changes:
-│  ├─ Added (3 features)
-│  ├─ Fixed (2 bugs)
-│  ├─ Changed (1 refactor)
-│  └─ Documentation (5 docs)
-└─ Release date: 2025-01-24
++- Generated from commit history
++- Categorized changes:
+|  +- Added (3 features)
+|  +- Fixed (2 bugs)
+|  +- Changed (1 refactor)
+|  +- Documentation (5 docs)
++- Release date: 2025-01-24
 
 RELEASE_NOTES.md:
-├─ Human-readable summary
-├─ Feature highlights
-├─ Bug fix details
-└─ Upgrade instructions
++- Human-readable summary
++- Feature highlights
++- Bug fix details
++- Upgrade instructions
 
 Documentation Status: ✅ All files synchronized
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -318,21 +318,21 @@ Cross-checks all files for consistency:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Version Consistency:
-├─ ✅ All version references match: v3.4.0
-├─ ✅ No old version numbers found
-└─ ✅ Version format consistent
++- ✅ All version references match: v3.4.0
++- ✅ No old version numbers found
++- ✅ Version format consistent
 
 Documentation Consistency:
-├─ ✅ Feature counts match across files
-├─ ✅ Component counts accurate
-├─ ✅ All links valid
-└─ ✅ Examples up-to-date
++- ✅ Feature counts match across files
++- ✅ Component counts accurate
++- ✅ All links valid
++- ✅ Examples up-to-date
 
 Structure Consistency:
-├─ ✅ All agents registered (20)
-├─ ✅ All skills registered (14)
-├─ ✅ All commands registered (18)
-└─ ✅ Plugin.json valid
++- ✅ All agents registered (20)
++- ✅ All skills registered (14)
++- ✅ All commands registered (18)
++- ✅ Plugin.json valid
 
 Validation Score: 100/100 ✅
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -347,21 +347,21 @@ Runs comprehensive quality validation:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Code Quality:
-├─ ✅ Plugin structure valid
-├─ ✅ All YAML frontmatter valid
-├─ ✅ All JSON files valid
-└─ ✅ No syntax errors
++- ✅ Plugin structure valid
++- ✅ All YAML frontmatter valid
++- ✅ All JSON files valid
++- ✅ No syntax errors
 
 Documentation Quality:
-├─ ✅ README complete (95/100)
-├─ ✅ All commands documented
-├─ ✅ All agents documented
-└─ ✅ Examples working
++- ✅ README complete (95/100)
++- ✅ All commands documented
++- ✅ All agents documented
++- ✅ Examples working
 
 Standards Compliance:
-├─ ✅ Follows plugin guidelines
-├─ ✅ Naming conventions correct
-└─ ✅ File structure correct
++- ✅ Follows plugin guidelines
++- ✅ Naming conventions correct
++- ✅ File structure correct
 
 Quality Score: 92/100 ✅ (Threshold: 85)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -376,22 +376,22 @@ Commits, tags, and pushes automatically:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Staging Changes:
-├─ ✅ 5 files staged
-└─ ✅ No unexpected changes
++- ✅ 5 files staged
++- ✅ No unexpected changes
 
 Creating Commit:
-├─ Message: "release: v3.4.0 - Add /dev-auto and suggestions"
-├─ Files: 5 modified
-└─ ✅ Commit created: abc1234
++- Message: "release: v3.4.0 - Add /dev-auto and suggestions"
++- Files: 5 modified
++- ✅ Commit created: abc1234
 
 Creating Tag:
-├─ Tag: v3.4.0
-├─ Message: "Release v3.4.0"
-└─ ✅ Tag created
++- Tag: v3.4.0
++- Message: "Release v3.4.0"
++- ✅ Tag created
 
 Pushing to Remote:
-├─ ✅ Pushed to origin/main
-└─ ✅ Pushed tags
++- ✅ Pushed to origin/main
++- ✅ Pushed tags
 
 Git Status: ✅ All operations successful
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -406,23 +406,23 @@ Creates GitHub release with comprehensive release notes:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 GitHub Authentication Check:
-├─ ✅ GitHub CLI authenticated
-├─ ✅ Repository access verified
-└─ ✅ Release permissions confirmed
++- ✅ GitHub CLI authenticated
++- ✅ Repository access verified
++- ✅ Release permissions confirmed
 
 Creating GitHub Release:
-├─ Version: v3.4.0
-├─ Title: "Release v3.4.0: [Release Summary]"
-├─ Release Notes: Generated from changelog
-├─ Assets: Source code archive
-└─ ✅ Published: https://github.com/user/repo/releases/tag/v3.4.0
++- Version: v3.4.0
++- Title: "Release v3.4.0: [Release Summary]"
++- Release Notes: Generated from changelog
++- Assets: Source code archive
++- ✅ Published: https://github.com/user/repo/releases/tag/v3.4.0
 
 Release Details:
-├─ Release Type: [MAJOR/MINOR/PATCH]
-├─ Changes: [Number] commits included
-├─ Features: [Number] new features
-├─ Bug Fixes: [Number] bug fixes
-└─ Quality Score: [Score]/100
++- Release Type: [MAJOR/MINOR/PATCH]
++- Changes: [Number] commits included
++- Features: [Number] new features
++- Bug Fixes: [Number] bug fixes
++- Quality Score: [Score]/100
 
 GitHub Release Status: ✅ Successfully created
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -437,14 +437,14 @@ Publishes to additional configured platforms (if specified):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 npm Publishing:
-├─ Building package...
-├─ Running npm publish...
-└─ ✅ Published: https://npmjs.com/package/autonomous-agent@3.4.0
++- Building package...
++- Running npm publish...
++- ✅ Published: https://npmjs.com/package/autonomous-agent@3.4.0
 
 Docker Publishing:
-├─ Building image: user/autonomous-agent:3.4.0
-├─ Pushing to Docker Hub...
-└─ ✅ Published: docker pull user/autonomous-agent:3.4.0
++- Building image: user/autonomous-agent:3.4.0
++- Pushing to Docker Hub...
++- ✅ Published: docker pull user/autonomous-agent:3.4.0
 
 Optional Release Status: ✅ Selected platforms published
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -459,17 +459,17 @@ Stores release pattern for future optimization:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Pattern Stored:
-├─ Task Type: release
-├─ Version Bump: minor (3.3.2 → 3.4.0)
-├─ Files Updated: 5
-├─ Quality Score: 92/100
-├─ Time Taken: 2m 15s
-└─ ✅ Stored to .claude-patterns/
++- Task Type: release
++- Version Bump: minor (3.3.2 -> 3.4.0)
++- Files Updated: 5
++- Quality Score: 92/100
++- Time Taken: 2m 15s
++- ✅ Stored to .claude-patterns/
 
 Future Improvements:
-├─ Faster documentation sync (learned shortcuts)
-├─ Better changelog categorization
-└─ Optimized validation checks
++- Faster documentation sync (learned shortcuts)
++- Better changelog categorization
++- Optimized validation checks
 
 Learning Status: ✅ Pattern captured
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -487,37 +487,37 @@ Previous: v3.3.2
 Type: MINOR (new features)
 
 Summary:
-├─ 📦 Version updated across 5 files
-├─ 📚 Documentation synchronized
-├─ ✅ Validation passed (92/100)
-├─ 🔧 Git operations successful
-├─ 🚀 GitHub release created
-├─ 📦 Optional platforms published (if configured)
-└─ 🧠 Pattern learned for future
++- 📦 Version updated across 5 files
++- 📚 Documentation synchronized
++- ✅ Validation passed (92/100)
++- 🔧 Git operations successful
++- 🚀 GitHub release created
++- 📦 Optional platforms published (if configured)
++- 🧠 Pattern learned for future
 
 Total Time: 2m 30s
 
 Links:
-├─ GitHub Release: https://github.com/user/repo/releases/tag/v3.4.0
-├─ Source Archive: https://github.com/user/repo/archive/refs/tags/v3.4.0.zip
-├─ npm: https://npmjs.com/package/autonomous-agent@3.4.0 (if published)
-└─ Docker: docker pull user/autonomous-agent:3.4.0 (if published)
++- GitHub Release: https://github.com/user/repo/releases/tag/v3.4.0
++- Source Archive: https://github.com/user/repo/archive/refs/tags/v3.4.0.zip
++- npm: https://npmjs.com/package/autonomous-agent@3.4.0 (if published)
++- Docker: docker pull user/autonomous-agent:3.4.0 (if published)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💡 SUGGESTED NEXT ACTIONS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Monitor release metrics
-   → /learn:performance
+   -> /learn:performance
 
 2. Announce release to team
-   → Draft announcement with highlights
+   -> Draft announcement with highlights
 
 3. Create next milestone
-   → Plan features for v3.5.2
+   -> Plan features for v3.5.2
 
 4. Update project board
-   → Close completed issues
+   -> Close completed issues
 
 Choose option (1-4) or type custom command:
 ```

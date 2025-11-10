@@ -76,83 +76,83 @@ Get intelligent recommendations for optimal workflows, skill combinations, and a
 The orchestrator MUST present the full recommendation report. The example output in this file demonstrates the EXACT format expected. Do NOT summarize - show the complete recommendations:
 
 ```
-════════════════════════════════════════════════════════
+========================================================
   SMART RECOMMENDATIONS
-════════════════════════════════════════════════════════
+========================================================
 
 Task: "Refactor authentication module"
 Analyzed as: feature-implementation, medium-high complexity
 
-┌─ 🎯 RECOMMENDED APPROACH (92% confidence) ─────────────┐
-│                                                         │
-│ Expected Quality: 94/100 (+19 from baseline)          │
-│ Estimated Time:   12-15 minutes                        │
-│                                                         │
-│ Recommended Skills:                                     │
-│ 1. ✓ code-analysis (91% success rate)                 │
-│    → Proven effective for refactoring tasks            │
-│ 2. ✓ quality-standards (88% success rate)             │
-│    → Validation and compliance checking                │
-│ 3. ✓ pattern-learning (95% success rate)              │
-│    → Captures refactoring patterns for reuse           │
-│                                                         │
-│ Recommended Agents:                                     │
-│ • code-analyzer → Structure analysis and mapping       │
-│ • quality-controller → Validation + auto-fix           │
-│                                                         │
-│ Parallelization:                                        │
-│ • background-task-manager → Security scan (parallel)   │
-│   Expected time savings: 25%                           │
-│                                                         │
-│ Based on: 3 similar successful patterns                │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
++- 🎯 RECOMMENDED APPROACH (92% confidence) -------------+
+|                                                         |
+| Expected Quality: 94/100 (+19 from baseline)          |
+| Estimated Time:   12-15 minutes                        |
+|                                                         |
+| Recommended Skills:                                     |
+| 1. [PASS] code-analysis (91% success rate)                 |
+|    -> Proven effective for refactoring tasks            |
+| 2. [PASS] quality-standards (88% success rate)             |
+|    -> Validation and compliance checking                |
+| 3. [PASS] pattern-learning (95% success rate)              |
+|    -> Captures refactoring patterns for reuse           |
+|                                                         |
+| Recommended Agents:                                     |
+| * code-analyzer -> Structure analysis and mapping       |
+| * quality-controller -> Validation + auto-fix           |
+|                                                         |
+| Parallelization:                                        |
+| * background-task-manager -> Security scan (parallel)   |
+|   Expected time savings: 25%                           |
+|                                                         |
+| Based on: 3 similar successful patterns                |
+|                                                         |
++---------------------------------------------------------+
 
-┌─ 📊 ALTERNATIVE APPROACHES ────────────────────────────┐
-│                                                         │
-│ 2. Minimal Approach (65% confidence)                   │
-│    Quality: 82/100 | Time: 10 min                     │
-│    Skills: code-analysis only                          │
-│    ⚠ Lower quality but faster                          │
-│                                                         │
-│ 3. Comprehensive Approach (78% confidence)             │
-│    Quality: 91/100 | Time: 20 min                     │
-│    Skills: All 5 skills loaded                         │
-│    ⚠ Higher quality but slower                         │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
++- 📊 ALTERNATIVE APPROACHES ----------------------------+
+|                                                         |
+| 2. Minimal Approach (65% confidence)                   |
+|    Quality: 82/100 | Time: 10 min                     |
+|    Skills: code-analysis only                          |
+|    [WARN] Lower quality but faster                          |
+|                                                         |
+| 3. Comprehensive Approach (78% confidence)             |
+|    Quality: 91/100 | Time: 20 min                     |
+|    Skills: All 5 skills loaded                         |
+|    [WARN] Higher quality but slower                         |
+|                                                         |
++---------------------------------------------------------+
 
-┌─ ⚠️  RISK ASSESSMENT ────────────────────────────────────┐
-│                                                         │
-│ Overall Risk: MEDIUM (62/100)                          │
-│                                                         │
-│ 1. [HIGH] Legacy Code Complexity                       │
-│    → Mitigation: Use code-analyzer first               │
-│    → Add 5 minutes to estimate                         │
-│                                                         │
-│ 2. [MEDIUM] Security Critical                          │
-│    → Mitigation: Add testing-strategies skill          │
-│    → Increase quality threshold to 90/100              │
-│                                                         │
-│ Adjusted Prediction:                                    │
-│ Quality: 91/100 | Time: 19 min | Success: 89%         │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
++- [WARN]️  RISK ASSESSMENT ------------------------------------+
+|                                                         |
+| Overall Risk: MEDIUM (62/100)                          |
+|                                                         |
+| 1. [HIGH] Legacy Code Complexity                       |
+|    -> Mitigation: Use code-analyzer first               |
+|    -> Add 5 minutes to estimate                         |
+|                                                         |
+| 2. [MEDIUM] Security Critical                          |
+|    -> Mitigation: Add testing-strategies skill          |
+|    -> Increase quality threshold to 90/100              |
+|                                                         |
+| Adjusted Prediction:                                    |
+| Quality: 91/100 | Time: 19 min | Success: 89%         |
+|                                                         |
++---------------------------------------------------------+
 
-┌─ 💡 KEY INSIGHTS ──────────────────────────────────────┐
-│                                                         │
-│ ✓ Using code-analysis improves quality by +9 points    │
-│ ✓ Delegating to quality-controller saves 30% time      │
-│ ✓ Pattern reuse success rate: 87%                      │
-│ ✓ 3-skill combinations outperform single skills by 12pts│
-│ ⚠ First-time auth task: expect learning curve          │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
++- 💡 KEY INSIGHTS --------------------------------------+
+|                                                         |
+| [PASS] Using code-analysis improves quality by +9 points    |
+| [PASS] Delegating to quality-controller saves 30% time      |
+| [PASS] Pattern reuse success rate: 87%                      |
+| [PASS] 3-skill combinations outperform single skills by 12pts|
+| [WARN] First-time auth task: expect learning curve          |
+|                                                         |
++---------------------------------------------------------+
 
-════════════════════════════════════════════════════════
+========================================================
   RECOMMENDATION: Proceed with recommended approach
   Orchestrator will auto-apply if confidence > 80%
-════════════════════════════════════════════════════════
+========================================================
 ```
 
 ## Use Cases

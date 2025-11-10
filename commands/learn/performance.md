@@ -68,73 +68,73 @@ Generate comprehensive performance analytics report showing learning effectivene
 The orchestrator MUST present the full performance report. The example output in this file demonstrates the EXACT format expected. Do NOT summarize - show the complete report:
 
 ```
-═══════════════════════════════════════════════════════
+=======================================================
   PERFORMANCE ANALYTICS REPORT
-═══════════════════════════════════════════════════════
+=======================================================
 Generated: 2025-10-21 11:30:00
 
-┌─ Executive Summary ──────────────────────────────────┐
-│ Learning Status: ✓ Active and highly effective      │
-│ Total Patterns:  47 patterns across 8 task types    │
-│ Quality Trend:   ↑ +18% improvement (30 days)       │
-│ Pattern Reuse:   67% reuse rate (excellent)         │
-└──────────────────────────────────────────────────────┘
++- Executive Summary ----------------------------------+
+| Learning Status: [PASS] Active and highly effective      |
+| Total Patterns:  47 patterns across 8 task types    |
+| Quality Trend:   ^ +18% improvement (30 days)       |
+| Pattern Reuse:   67% reuse rate (excellent)         |
++------------------------------------------------------+
 
-┌─ Learning Effectiveness ─────────────────────────────┐
-│ Knowledge Growth:    3.2 patterns/week               │
-│ Coverage:           8/10 common task types           │
-│ Improvement Rate:   +1.2 quality points/week        │
-│ Time to Competency: ~5 similar tasks                │
-└──────────────────────────────────────────────────────┘
++- Learning Effectiveness -----------------------------+
+| Knowledge Growth:    3.2 patterns/week               |
+| Coverage:           8/10 common task types           |
+| Improvement Rate:   +1.2 quality points/week        |
+| Time to Competency: ~5 similar tasks                |
++------------------------------------------------------+
 
-┌─ Skill Performance ──────────────────────────────────┐
-│ pattern-learning          ████████████ 92% (12)     │
-│ quality-standards         ███████████░ 88% (15)     │
-│ code-analysis            ██████████░░ 85% (8)      │
-│ documentation-practices   ████████░░░░ 78% (6)      │
-│ testing-strategies       ███████░░░░░ 72% (5)      │
-│                                                      │
-│ Top Combination: pattern-learning + quality → 94/100│
-└──────────────────────────────────────────────────────┘
++- Skill Performance ----------------------------------+
+| pattern-learning          ████████████ 92% (12)     |
+| quality-standards         ███████████░ 88% (15)     |
+| code-analysis            ██████████░░ 85% (8)      |
+| documentation-practices   ████████░░░░ 78% (6)      |
+| testing-strategies       ███████░░░░░ 72% (5)      |
+|                                                      |
+| Top Combination: pattern-learning + quality -> 94/100|
++------------------------------------------------------+
 
-┌─ Quality Trends (30 Days) ───────────────────────────┐
-│ 100 │                            ●                   │
-│  90 │        ●──●──●        ●──●─┘                   │
-│  80 │    ●──┘              ┌┘                        │
-│  70 │●───┘                 │ (threshold)             │
-│  60 │                                                │
-│     └────────────────────────────────────           │
-│     Week 1  Week 2  Week 3  Week 4                  │
-│                                                      │
-│ ✓ Quality improved 23% from baseline (65 → 92)     │
-│ ✓ Consistently above threshold for 3 weeks         │
-│ ✓ 15% improvement after learning 10+ patterns      │
-└──────────────────────────────────────────────────────┘
++- Quality Trends (30 Days) ---------------------------+
+| 100 |                            [X]                   |
+|  90 |        [X]--[X]--[X]        [X]--[X]-+                   |
+|  80 |    [X]--+              ++                        |
+|  70 |[X]---+                 | (threshold)             |
+|  60 |                                                |
+|     +------------------------------------           |
+|     Week 1  Week 2  Week 3  Week 4                  |
+|                                                      |
+| [PASS] Quality improved 23% from baseline (65 -> 92)     |
+| [PASS] Consistently above threshold for 3 weeks         |
+| [PASS] 15% improvement after learning 10+ patterns      |
++------------------------------------------------------+
 
-┌─ Top Recommendations ────────────────────────────────┐
-│ 1. [HIGH] Use pattern-learning skill more often     │
-│    → +12 points avg quality improvement             │
-│    → 95% success rate (highest)                     │
-│                                                      │
-│ 2. [HIGH] Run quality-controller before completion  │
-│    → +13 points with quality check vs without       │
-│    → 88% auto-fix success rate                      │
-│                                                      │
-│ 3. [MED] Delegate testing to test-engineer          │
-│    → 91% success vs 76% manual                      │
-│    → 35% time savings                               │
-│                                                      │
-│ 4. [MED] Combine pattern-learning + quality skills  │
-│    → Best combination: 94/100 avg quality           │
-│                                                      │
-│ 5. [LOW] Archive patterns with reuse_count = 0     │
-│    → Free up 15% storage, improve query speed       │
-└──────────────────────────────────────────────────────┘
++- Top Recommendations --------------------------------+
+| 1. [HIGH] Use pattern-learning skill more often     |
+|    -> +12 points avg quality improvement             |
+|    -> 95% success rate (highest)                     |
+|                                                      |
+| 2. [HIGH] Run quality-controller before completion  |
+|    -> +13 points with quality check vs without       |
+|    -> 88% auto-fix success rate                      |
+|                                                      |
+| 3. [MED] Delegate testing to test-engineer          |
+|    -> 91% success vs 76% manual                      |
+|    -> 35% time savings                               |
+|                                                      |
+| 4. [MED] Combine pattern-learning + quality skills  |
+|    -> Best combination: 94/100 avg quality           |
+|                                                      |
+| 5. [LOW] Archive patterns with reuse_count = 0     |
+|    -> Free up 15% storage, improve query speed       |
++------------------------------------------------------+
 
-═══════════════════════════════════════════════════════
+=======================================================
   CONCLUSION: Learning system performing excellently
   Continue current approach, implement recommendations
-═══════════════════════════════════════════════════════
+=======================================================
 ```
 
 ## Use Cases

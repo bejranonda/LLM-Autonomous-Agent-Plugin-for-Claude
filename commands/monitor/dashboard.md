@@ -454,13 +454,13 @@ All error handling and status information is available through the web dashboard
 
 ### Main Navigation
 ```
-🏠 Overview    → System health and key metrics
-📊 Analytics  → Detailed performance analytics
-🎯 Skills      → Skill effectiveness analysis
-🤖 Agents      → Agent performance comparison
-📚 Learning    → Learning progress and patterns
-🔧 System      → Resource usage and health
-⚙️  Settings   → Configuration and preferences
+🏠 Overview    -> System health and key metrics
+📊 Analytics  -> Detailed performance analytics
+🎯 Skills      -> Skill effectiveness analysis
+🤖 Agents      -> Agent performance comparison
+📚 Learning    -> Learning progress and patterns
+🔧 System      -> Resource usage and health
+⚙️  Settings   -> Configuration and preferences
 ```
 
 ### Key Dashboard Sections

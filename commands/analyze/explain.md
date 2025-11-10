@@ -87,9 +87,9 @@ Task: "add user authentication with JWT"
 Complexity: Medium | Estimated Time: 3-4 hours | Risk Level: Medium
 
 Key Findings:
-• No existing authentication system detected
-• 8 endpoints would need protection
-• JWT library not in dependencies
+* No existing authentication system detected
+* 8 endpoints would need protection
+* JWT library not in dependencies
 
 Critical Considerations:
 1. Token storage strategy (localStorage vs httpOnly cookies)
@@ -106,285 +106,285 @@ Recommended Approach:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Next Steps:
-• Review full analysis report
-• Use /dev:auto "add JWT auth" to implement
-• Use /analyze:quality to validate after implementation
+* Review full analysis report
+* Use /dev:auto "add JWT auth" to implement
+* Use /analyze:quality to validate after implementation
 ```
 
 ### Detailed Report (.claude/reports/)
 
 ```markdown
-═══════════════════════════════════════════════════════
+=======================================================
   TASK ANALYSIS REPORT - READ-ONLY
-═══════════════════════════════════════════════════════
+=======================================================
 Generated: 2025-10-29 16:30:00
 Task: "add user authentication with JWT"
 Status: ANALYSIS ONLY - NO MODIFICATIONS MADE
 
-┌─ Task Understanding ─────────────────────────────────┐
-│ Request: Implement JWT-based authentication system   │
-│                                                       │
-│ Requirements Breakdown:                               │
-│ 1. User registration endpoint                         │
-│ 2. Login endpoint with JWT token generation          │
-│ 3. Token validation middleware                        │
-│ 4. Token refresh mechanism                            │
-│ 5. Logout functionality (token invalidation)         │
-│ 6. Protected route implementation                     │
-│                                                       │
-│ Technical Components:                                 │
-│ • JWT token generation and validation                 │
-│ • Password hashing (bcrypt/argon2)                   │
-│ • Token storage strategy                              │
-│ • Middleware for route protection                     │
-│ • Refresh token rotation                              │
-└───────────────────────────────────────────────────────┘
++- Task Understanding ---------------------------------+
+| Request: Implement JWT-based authentication system   |
+|                                                       |
+| Requirements Breakdown:                               |
+| 1. User registration endpoint                         |
+| 2. Login endpoint with JWT token generation          |
+| 3. Token validation middleware                        |
+| 4. Token refresh mechanism                            |
+| 5. Logout functionality (token invalidation)         |
+| 6. Protected route implementation                     |
+|                                                       |
+| Technical Components:                                 |
+| * JWT token generation and validation                 |
+| * Password hashing (bcrypt/argon2)                   |
+| * Token storage strategy                              |
+| * Middleware for route protection                     |
+| * Refresh token rotation                              |
++-------------------------------------------------------+
 
-┌─ Current State Analysis ─────────────────────────────┐
-│ Project Type: FastAPI/Flask application              │
-│ Current Auth: None detected                           │
-│                                                       │
-│ Affected Files (would be modified):                   │
-│ • main.py - Add auth middleware                       │
-│ • models.py - Add User model                         │
-│ • routes/auth.py - New file for auth endpoints       │
-│ • utils/security.py - New file for JWT/hashing       │
-│ • requirements.txt - Add dependencies                 │
-│                                                       │
-│ Protected Endpoints (would need auth):                │
-│ • POST /api/users/profile                            │
-│ • GET /api/users/me                                   │
-│ • PUT /api/users/update                              │
-│ • DELETE /api/users/delete                           │
-│ • GET /api/admin/*                                    │
-│ • [3 more endpoints]                                  │
-└───────────────────────────────────────────────────────┘
++- Current State Analysis -----------------------------+
+| Project Type: FastAPI/Flask application              |
+| Current Auth: None detected                           |
+|                                                       |
+| Affected Files (would be modified):                   |
+| * main.py - Add auth middleware                       |
+| * models.py - Add User model                         |
+| * routes/auth.py - New file for auth endpoints       |
+| * utils/security.py - New file for JWT/hashing       |
+| * requirements.txt - Add dependencies                 |
+|                                                       |
+| Protected Endpoints (would need auth):                |
+| * POST /api/users/profile                            |
+| * GET /api/users/me                                   |
+| * PUT /api/users/update                              |
+| * DELETE /api/users/delete                           |
+| * GET /api/admin/*                                    |
+| * [3 more endpoints]                                  |
++-------------------------------------------------------+
 
-┌─ Implementation Impact ──────────────────────────────┐
-│ Estimated Changes:                                    │
-│ • Files Created: 4 new files                         │
-│ • Files Modified: 6 existing files                    │
-│ • Lines Added: ~450-600 lines                        │
-│ • Dependencies: 3 new packages                        │
-│                                                       │
-│ Breaking Changes:                                     │
-│ • All protected endpoints require auth header         │
-│ • Clients must implement token storage               │
-│ • Login flow changes for existing users              │
-│                                                       │
-│ Database Changes:                                     │
-│ • New 'users' table required                         │
-│ • New 'refresh_tokens' table required                │
-│ • Migration scripts needed                            │
-└───────────────────────────────────────────────────────┘
++- Implementation Impact ------------------------------+
+| Estimated Changes:                                    |
+| * Files Created: 4 new files                         |
+| * Files Modified: 6 existing files                    |
+| * Lines Added: ~450-600 lines                        |
+| * Dependencies: 3 new packages                        |
+|                                                       |
+| Breaking Changes:                                     |
+| * All protected endpoints require auth header         |
+| * Clients must implement token storage               |
+| * Login flow changes for existing users              |
+|                                                       |
+| Database Changes:                                     |
+| * New 'users' table required                         |
+| * New 'refresh_tokens' table required                |
+| * Migration scripts needed                            |
++-------------------------------------------------------+
 
-┌─ Risk Assessment ────────────────────────────────────┐
-│ Security Risks:                                       │
-│ • [HIGH] Token storage vulnerabilities               │
-│ • [HIGH] Password hashing strength                    │
-│ • [MED]  Token expiration strategy                   │
-│ • [MED]  Refresh token rotation                      │
-│ • [LOW]  CORS configuration for auth                 │
-│                                                       │
-│ Technical Risks:                                      │
-│ • [MED]  Breaking existing API clients               │
-│ • [MED]  Token validation performance impact         │
-│ • [LOW]  Database migration complexity               │
-│                                                       │
-│ Operational Risks:                                    │
-│ • [MED]  User migration to new auth system           │
-│ • [LOW]  Monitoring and logging requirements         │
-└───────────────────────────────────────────────────────┘
++- Risk Assessment ------------------------------------+
+| Security Risks:                                       |
+| * [HIGH] Token storage vulnerabilities               |
+| * [HIGH] Password hashing strength                    |
+| * [MED]  Token expiration strategy                   |
+| * [MED]  Refresh token rotation                      |
+| * [LOW]  CORS configuration for auth                 |
+|                                                       |
+| Technical Risks:                                      |
+| * [MED]  Breaking existing API clients               |
+| * [MED]  Token validation performance impact         |
+| * [LOW]  Database migration complexity               |
+|                                                       |
+| Operational Risks:                                    |
+| * [MED]  User migration to new auth system           |
+| * [LOW]  Monitoring and logging requirements         |
++-------------------------------------------------------+
 
-┌─ Recommended Approaches ─────────────────────────────┐
-│ Approach 1: Standard JWT (Recommended)               │
-│ ├─ Pros:                                             │
-│ │  • Industry standard                               │
-│ │  • Well-tested libraries available                 │
-│ │  • Good documentation                              │
-│ │  • Stateless authentication                        │
-│ ├─ Cons:                                             │
-│ │  • Token revocation complexity                     │
-│ │  • Larger token size                               │
-│ ├─ Libraries:                                        │
-│ │  • python-jose[cryptography]                       │
-│ │  • passlib[bcrypt]                                 │
-│ │  • python-multipart                                │
-│ ├─ Estimated Time: 3-4 hours                         │
-│ └─ Complexity: Medium                                │
-│                                                       │
-│ Approach 2: JWT + Redis for Token Blacklist          │
-│ ├─ Pros:                                             │
-│ │  • Token revocation support                        │
-│ │  • Better security                                 │
-│ │  • Session management                              │
-│ ├─ Cons:                                             │
-│ │  • Additional infrastructure (Redis)               │
-│ │  • More complex setup                              │
-│ │  • Stateful authentication                         │
-│ ├─ Estimated Time: 5-6 hours                         │
-│ └─ Complexity: Medium-High                           │
-│                                                       │
-│ Approach 3: OAuth2 with JWT                          │
-│ ├─ Pros:                                             │
-│ │  • OAuth2 standard compliance                      │
-│ │  • Third-party provider support                    │
-│ │  • Flexible scope management                       │
-│ ├─ Cons:                                             │
-│ │  • More complex implementation                     │
-│ │  • Requires additional setup                       │
-│ ├─ Estimated Time: 6-8 hours                         │
-│ └─ Complexity: High                                  │
-└───────────────────────────────────────────────────────┘
++- Recommended Approaches -----------------------------+
+| Approach 1: Standard JWT (Recommended)               |
+| +- Pros:                                             |
+| |  * Industry standard                               |
+| |  * Well-tested libraries available                 |
+| |  * Good documentation                              |
+| |  * Stateless authentication                        |
+| +- Cons:                                             |
+| |  * Token revocation complexity                     |
+| |  * Larger token size                               |
+| +- Libraries:                                        |
+| |  * python-jose[cryptography]                       |
+| |  * passlib[bcrypt]                                 |
+| |  * python-multipart                                |
+| +- Estimated Time: 3-4 hours                         |
+| +- Complexity: Medium                                |
+|                                                       |
+| Approach 2: JWT + Redis for Token Blacklist          |
+| +- Pros:                                             |
+| |  * Token revocation support                        |
+| |  * Better security                                 |
+| |  * Session management                              |
+| +- Cons:                                             |
+| |  * Additional infrastructure (Redis)               |
+| |  * More complex setup                              |
+| |  * Stateful authentication                         |
+| +- Estimated Time: 5-6 hours                         |
+| +- Complexity: Medium-High                           |
+|                                                       |
+| Approach 3: OAuth2 with JWT                          |
+| +- Pros:                                             |
+| |  * OAuth2 standard compliance                      |
+| |  * Third-party provider support                    |
+| |  * Flexible scope management                       |
+| +- Cons:                                             |
+| |  * More complex implementation                     |
+| |  * Requires additional setup                       |
+| +- Estimated Time: 6-8 hours                         |
+| +- Complexity: High                                  |
++-------------------------------------------------------+
 
-┌─ Implementation Steps (if you proceed) ──────────────┐
-│ Phase 1: Setup & Dependencies (30 min)               │
-│ 1. Install required packages                         │
-│ 2. Configure environment variables                    │
-│ 3. Set up database models                            │
-│                                                       │
-│ Phase 2: Core Auth Logic (90 min)                    │
-│ 4. Implement password hashing utilities              │
-│ 5. Create JWT token generation                       │
-│ 6. Implement token validation                        │
-│ 7. Add refresh token mechanism                       │
-│                                                       │
-│ Phase 3: Endpoints (60 min)                          │
-│ 8. Create registration endpoint                      │
-│ 9. Create login endpoint                             │
-│ 10. Create token refresh endpoint                    │
-│ 11. Create logout endpoint                           │
-│                                                       │
-│ Phase 4: Middleware & Protection (45 min)            │
-│ 12. Implement authentication middleware              │
-│ 13. Protect existing endpoints                       │
-│ 14. Add role-based access control (optional)         │
-│                                                       │
-│ Phase 5: Testing & Documentation (45 min)            │
-│ 15. Write unit tests                                 │
-│ 16. Write integration tests                          │
-│ 17. Update API documentation                         │
-│ 18. Add usage examples                               │
-└───────────────────────────────────────────────────────┘
++- Implementation Steps (if you proceed) --------------+
+| Phase 1: Setup & Dependencies (30 min)               |
+| 1. Install required packages                         |
+| 2. Configure environment variables                    |
+| 3. Set up database models                            |
+|                                                       |
+| Phase 2: Core Auth Logic (90 min)                    |
+| 4. Implement password hashing utilities              |
+| 5. Create JWT token generation                       |
+| 6. Implement token validation                        |
+| 7. Add refresh token mechanism                       |
+|                                                       |
+| Phase 3: Endpoints (60 min)                          |
+| 8. Create registration endpoint                      |
+| 9. Create login endpoint                             |
+| 10. Create token refresh endpoint                    |
+| 11. Create logout endpoint                           |
+|                                                       |
+| Phase 4: Middleware & Protection (45 min)            |
+| 12. Implement authentication middleware              |
+| 13. Protect existing endpoints                       |
+| 14. Add role-based access control (optional)         |
+|                                                       |
+| Phase 5: Testing & Documentation (45 min)            |
+| 15. Write unit tests                                 |
+| 16. Write integration tests                          |
+| 17. Update API documentation                         |
+| 18. Add usage examples                               |
++-------------------------------------------------------+
 
-┌─ Code Examples (Reference Only) ─────────────────────┐
-│ Token Generation Example:                            │
-│                                                       │
-│ ```python                                            │
-│ from jose import jwt                                  │
-│ from datetime import datetime, timedelta             │
-│                                                       │
-│ def create_access_token(data: dict):                 │
-│     to_encode = data.copy()                          │
-│     expire = datetime.utcnow() + timedelta(minutes=15)│
-│     to_encode.update({"exp": expire})                │
-│     return jwt.encode(to_encode, SECRET_KEY, ALGO)   │
-│ ```                                                  │
-│                                                       │
-│ Middleware Example:                                   │
-│                                                       │
-│ ```python                                            │
-│ from fastapi import Depends, HTTPException           │
-│                                                       │
-│ async def get_current_user(token: str = Depends(...)):│
-│     try:                                             │
-│         payload = jwt.decode(token, SECRET_KEY, ALGO)│
-│         return payload.get("sub")                    │
-│     except JWTError:                                 │
-│         raise HTTPException(401, "Invalid token")    │
-│ ```                                                  │
-└───────────────────────────────────────────────────────┘
++- Code Examples (Reference Only) ---------------------+
+| Token Generation Example:                            |
+|                                                       |
+| ```python                                            |
+| from jose import jwt                                  |
+| from datetime import datetime, timedelta             |
+|                                                       |
+| def create_access_token(data: dict):                 |
+|     to_encode = data.copy()                          |
+|     expire = datetime.utcnow() + timedelta(minutes=15)|
+|     to_encode.update({"exp": expire})                |
+|     return jwt.encode(to_encode, SECRET_KEY, ALGO)   |
+| ```                                                  |
+|                                                       |
+| Middleware Example:                                   |
+|                                                       |
+| ```python                                            |
+| from fastapi import Depends, HTTPException           |
+|                                                       |
+| async def get_current_user(token: str = Depends(...)):|
+|     try:                                             |
+|         payload = jwt.decode(token, SECRET_KEY, ALGO)|
+|         return payload.get("sub")                    |
+|     except JWTError:                                 |
+|         raise HTTPException(401, "Invalid token")    |
+| ```                                                  |
++-------------------------------------------------------+
 
-┌─ Configuration Requirements ─────────────────────────┐
-│ Environment Variables Needed:                         │
-│ • SECRET_KEY - JWT signing key (strong random)       │
-│ • ALGORITHM - "HS256" (default) or "RS256"           │
-│ • ACCESS_TOKEN_EXPIRE_MINUTES - 15-30 recommended    │
-│ • REFRESH_TOKEN_EXPIRE_DAYS - 7-30 recommended       │
-│                                                       │
-│ Database Schema:                                      │
-│ • users table: id, username, email, password_hash    │
-│ • refresh_tokens table: token, user_id, expires_at   │
-└───────────────────────────────────────────────────────┘
++- Configuration Requirements -------------------------+
+| Environment Variables Needed:                         |
+| * SECRET_KEY - JWT signing key (strong random)       |
+| * ALGORITHM - "HS256" (default) or "RS256"           |
+| * ACCESS_TOKEN_EXPIRE_MINUTES - 15-30 recommended    |
+| * REFRESH_TOKEN_EXPIRE_DAYS - 7-30 recommended       |
+|                                                       |
+| Database Schema:                                      |
+| * users table: id, username, email, password_hash    |
+| * refresh_tokens table: token, user_id, expires_at   |
++-------------------------------------------------------+
 
-┌─ Testing Strategy ───────────────────────────────────┐
-│ Unit Tests Required:                                  │
-│ • Token generation with valid data                    │
-│ • Token validation with valid/invalid tokens         │
-│ • Password hashing and verification                   │
-│ • Token expiration handling                          │
-│                                                       │
-│ Integration Tests Required:                           │
-│ • User registration flow                             │
-│ • Login and token retrieval                          │
-│ • Protected endpoint access with valid token         │
-│ • Protected endpoint rejection without token         │
-│ • Token refresh flow                                 │
-│ • Logout and token invalidation                      │
-└───────────────────────────────────────────────────────┘
++- Testing Strategy -----------------------------------+
+| Unit Tests Required:                                  |
+| * Token generation with valid data                    |
+| * Token validation with valid/invalid tokens         |
+| * Password hashing and verification                   |
+| * Token expiration handling                          |
+|                                                       |
+| Integration Tests Required:                           |
+| * User registration flow                             |
+| * Login and token retrieval                          |
+| * Protected endpoint access with valid token         |
+| * Protected endpoint rejection without token         |
+| * Token refresh flow                                 |
+| * Logout and token invalidation                      |
++-------------------------------------------------------+
 
-┌─ Pattern Learning Insights ──────────────────────────┐
-│ Similar Tasks Found: 3 previous auth implementations │
-│                                                       │
-│ Common Success Patterns:                              │
-│ • Using python-jose over PyJWT (92% success rate)    │
-│ • Implementing refresh tokens from start (87%)       │
-│ • Using httpOnly cookies for tokens (84%)            │
-│                                                       │
-│ Common Pitfalls to Avoid:                            │
-│ • Weak SECRET_KEY generation (found in 23% of cases) │
-│ • Missing token expiration (found in 18% of cases)   │
-│ • No refresh token rotation (found in 31% of cases)  │
-│                                                       │
-│ Learned Optimizations:                                │
-│ • Cache token validation results (15% faster)        │
-│ • Use background tasks for token cleanup             │
-│ • Implement rate limiting on auth endpoints          │
-└───────────────────────────────────────────────────────┘
++- Pattern Learning Insights --------------------------+
+| Similar Tasks Found: 3 previous auth implementations |
+|                                                       |
+| Common Success Patterns:                              |
+| * Using python-jose over PyJWT (92% success rate)    |
+| * Implementing refresh tokens from start (87%)       |
+| * Using httpOnly cookies for tokens (84%)            |
+|                                                       |
+| Common Pitfalls to Avoid:                            |
+| * Weak SECRET_KEY generation (found in 23% of cases) |
+| * Missing token expiration (found in 18% of cases)   |
+| * No refresh token rotation (found in 31% of cases)  |
+|                                                       |
+| Learned Optimizations:                                |
+| * Cache token validation results (15% faster)        |
+| * Use background tasks for token cleanup             |
+| * Implement rate limiting on auth endpoints          |
++-------------------------------------------------------+
 
-┌─ Recommendations Summary ────────────────────────────┐
-│ 1. [RECOMMENDED] Use Approach 1 (Standard JWT)       │
-│    - Best balance of simplicity and security         │
-│    - Well-documented and tested                      │
-│    - 3-4 hour implementation time                    │
-│                                                       │
-│ 2. Add refresh token mechanism from start            │
-│    - Prevents need for later refactoring             │
-│    - Better user experience                          │
-│                                                       │
-│ 3. Use httpOnly cookies instead of localStorage      │
-│    - More secure against XSS attacks                 │
-│    - Industry best practice                          │
-│                                                       │
-│ 4. Implement rate limiting on auth endpoints         │
-│    - Prevents brute force attacks                    │
-│    - Add from the start                              │
-│                                                       │
-│ 5. Write comprehensive tests                         │
-│    - Auth is security-critical                       │
-│    - 90%+ coverage recommended                       │
-└───────────────────────────────────────────────────────┘
++- Recommendations Summary ----------------------------+
+| 1. [RECOMMENDED] Use Approach 1 (Standard JWT)       |
+|    - Best balance of simplicity and security         |
+|    - Well-documented and tested                      |
+|    - 3-4 hour implementation time                    |
+|                                                       |
+| 2. Add refresh token mechanism from start            |
+|    - Prevents need for later refactoring             |
+|    - Better user experience                          |
+|                                                       |
+| 3. Use httpOnly cookies instead of localStorage      |
+|    - More secure against XSS attacks                 |
+|    - Industry best practice                          |
+|                                                       |
+| 4. Implement rate limiting on auth endpoints         |
+|    - Prevents brute force attacks                    |
+|    - Add from the start                              |
+|                                                       |
+| 5. Write comprehensive tests                         |
+|    - Auth is security-critical                       |
+|    - 90%+ coverage recommended                       |
++-------------------------------------------------------+
 
-═══════════════════════════════════════════════════════
+=======================================================
   NEXT STEPS
-═══════════════════════════════════════════════════════
+=======================================================
 
 Ready to Implement?
-• Use: /dev:auto "add JWT authentication with refresh tokens"
-• Review: Read this report carefully first
-• Prepare: Backup database before migration
+* Use: /dev:auto "add JWT authentication with refresh tokens"
+* Review: Read this report carefully first
+* Prepare: Backup database before migration
 
 Need More Analysis?
-• Security review: /validate:security
-• Architecture review: /analyze:project
-• Compare with existing repos: /analyze:repository <url>
+* Security review: /validate:security
+* Architecture review: /analyze:project
+* Compare with existing repos: /analyze:repository <url>
 
 Questions or Concerns?
-• Review pattern learning insights above
-• Check similar implementations in patterns database
-• Consult team for security-critical decisions
+* Review pattern learning insights above
+* Check similar implementations in patterns database
+* Consult team for security-critical decisions
 
-═══════════════════════════════════════════════════════
+=======================================================
 
 Analysis Time: 45 seconds
 Pattern Matches: 3 similar tasks

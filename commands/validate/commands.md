@@ -74,7 +74,7 @@ Output:
 📋 Commands: 23/23 present
 🎯 Discoverable: 22/23 commands
 📝 Valid Syntax: 23/23 commands
-⚠️  Issues: 1 discoverability issue
+[WARN]️  Issues: 1 discoverability issue
 ```
 
 ### Category-Specific Validation
@@ -98,12 +98,12 @@ Output:
 Output:
 ```
 ❌ Missing Commands Detected:
-  • /monitor:dashboard (CRITICAL)
+  * /monitor:dashboard (CRITICAL)
     Reason: File not found
     Impact: Dashboard functionality unavailable
     Recovery: Auto-recover available
 
-  • /workspace:archive (WARNING)
+  * /workspace:archive (WARNING)
     Reason: File not found
     Impact: Workspace archive functionality missing
     Recovery: Template creation available
@@ -123,8 +123,8 @@ Output:
   ❌ /workspace:archive recovery failed (no template available)
 
 📊 Final Validation:
-  • Commands Present: 24/25
-  • Overall Score: 98/100 (+2 points)
+  * Commands Present: 24/25
+  * Overall Score: 98/100 (+2 points)
 ```
 
 ### Discoverability Check
@@ -136,15 +136,15 @@ Output:
 🔎 Command Discoverability Analysis
 ✅ Overall Discoverability: 87%
 📊 Categories Analysis:
-  • dev: 100% discoverable
-  • analyze: 100% discoverable
-  • validate: 75% discoverable (2 issues)
-  • monitor: 50% discoverable (1 issue)
+  * dev: 100% discoverable
+  * analyze: 100% discoverable
+  * validate: 75% discoverable (2 issues)
+  * monitor: 50% discoverable (1 issue)
 
 🎯 Common Issues:
-  • Missing usage examples: 3 commands
-  • Unclear descriptions: 2 commands
-  • No parameter docs: 5 commands
+  * Missing usage examples: 3 commands
+  * Unclear descriptions: 2 commands
+  * No parameter docs: 5 commands
 ```
 
 ## Command Categories

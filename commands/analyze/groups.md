@@ -84,9 +84,9 @@ def analyze_collaboration_patterns(collab_stats):
 
     # Pattern 3: Bottleneck Detection
     communication_times = {
-        "G1→G2": collab_stats['group_1_to_2'].get('avg_time_seconds', 0),
-        "G2→G3": collab_stats['group_2_to_3'].get('avg_time_seconds', 0),
-        "G3→G4": collab_stats['group_3_to_4'].get('avg_time_seconds', 0)
+        "G1->G2": collab_stats['group_1_to_2'].get('avg_time_seconds', 0),
+        "G2->G3": collab_stats['group_2_to_3'].get('avg_time_seconds', 0),
+        "G3->G4": collab_stats['group_3_to_4'].get('avg_time_seconds', 0)
     }
 
     max_time = max(communication_times.values())
@@ -97,7 +97,7 @@ def analyze_collaboration_patterns(collab_stats):
                 "severity": "high",
                 "location": flow,
                 "description": f"Communication delay in {flow}: {time}s",
-                "recommendation": f"Optimize {flow.split('→')[0]} output preparation"
+                "recommendation": f"Optimize {flow.split('->')[0]} output preparation"
             })
 
     return patterns_found, issues_found
@@ -633,25 +633,25 @@ Report Path: .claude/reports/group-analysis-{date}.md
 
 **Terminal Output (15-20 lines max)**:
 ```
-╔══════════════════════════════════════════════════════════════╗
-║      FOUR-TIER GROUP ANALYSIS REPORT                         ║
-╚══════════════════════════════════════════════════════════════╝
++==============================================================+
+|      FOUR-TIER GROUP ANALYSIS REPORT                         |
++==============================================================+
 
 Overall Health: {score}/100 ({status})
 Analysis Period: Last {n} tasks
 
 KEY FINDINGS:
-  ✓ {finding_1}
-  ⚠️  {finding_2}
-  ✗ {finding_3}
+  [PASS] {finding_1}
+  [WARN]️  {finding_2}
+  [FAIL] {finding_3}
 
 CRITICAL ISSUES: {count}
-  • {issue_1}
-  • {issue_2}
+  * {issue_1}
+  * {issue_2}
 
 OPTIMIZATION OPPORTUNITIES: {count}
-  • {opportunity_1}
-  • {opportunity_2}
+  * {opportunity_1}
+  * {opportunity_2}
 
 TOP RECOMMENDATIONS:
   1. [{priority}] {recommendation_1}

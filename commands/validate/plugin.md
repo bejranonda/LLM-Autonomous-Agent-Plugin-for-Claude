@@ -96,11 +96,11 @@ VALIDATE CLAUDE PLUGIN RESULTS
 [+] Plugin Validation PASSED - Ready for Release!
 
 Validation Summary:
-├─ Plugin Manifest: [OK] Valid JSON schema
-├─ Directory Structure: [OK] Compliant layout
-├─ File Formats: [OK] Valid Markdown/YAML
-├─ Installation Readiness: [OK] No blockers
-└─ Cross-Platform Compatibility: [OK] Ready for all platforms
++- Plugin Manifest: [OK] Valid JSON schema
++- Directory Structure: [OK] Compliant layout
++- File Formats: [OK] Valid Markdown/YAML
++- Installation Readiness: [OK] No blockers
++- Cross-Platform Compatibility: [OK] Ready for all platforms
 
 Quality Score: 100/100 (Perfect)
 Detailed report: .claude/reports/validate-claude-plugin-2025-10-23.md
@@ -117,40 +117,40 @@ Completed in 1.2 minutes
 VALIDATE CLAUDE PLUGIN RESULTS
 ============================================================
 
-⚠️  Plugin Validation Issues Found
+[WARN]️  Plugin Validation Issues Found
 
 📊 Validation Summary:
-├─ Plugin Manifest: ❌ 2 critical issues
-├─ Directory Structure: ✅ Compliant layout
-├─ File Formats: ⚠️ 3 warnings
-├─ Installation Readiness: ❌ 2 blockers
-└─ Cross-Platform Compatibility: ✅ Ready for all platforms
++- Plugin Manifest: ❌ 2 critical issues
++- Directory Structure: ✅ Compliant layout
++- File Formats: [WARN]️ 3 warnings
++- Installation Readiness: ❌ 2 blockers
++- Cross-Platform Compatibility: ✅ Ready for all platforms
 
 🚨 Critical Issues (Installation Blockers):
-• Missing required field: version
-• Invalid JSON syntax: trailing comma in plugin.json
-• File encoding error: agents/orchestrator.md (not UTF-8)
+* Missing required field: version
+* Invalid JSON syntax: trailing comma in plugin.json
+* File encoding error: agents/orchestrator.md (not UTF-8)
 
-⚠️ Command Execution Issues (Runtime Failures):
-• Invalid agent delegation: commands/quality-check.md references 'orchestrator' (should be 'autonomous-agent:orchestrator')
-• Missing delegates-to field: commands/auto-analyze.md lacks agent delegation specification
-• Non-existent agent: commands/example.md references 'missing-agent' (file not found)
+[WARN]️ Command Execution Issues (Runtime Failures):
+* Invalid agent delegation: commands/quality-check.md references 'orchestrator' (should be 'autonomous-agent:orchestrator')
+* Missing delegates-to field: commands/auto-analyze.md lacks agent delegation specification
+* Non-existent agent: commands/example.md references 'missing-agent' (file not found)
 
-⚠️  Warnings:
-• YAML frontmatter missing in 2 agent files
-• Long file paths (Windows limit): 3 files
-• Description too short (< 10 chars)
+[WARN]️  Warnings:
+* YAML frontmatter missing in 2 agent files
+* Long file paths (Windows limit): 3 files
+* Description too short (< 10 chars)
 
 🔧 Auto-Fix Available:
-• JSON syntax errors: Can be automatically corrected
-• Missing required fields: Can be added with defaults
-• File encoding: Can be converted to UTF-8
-• Agent delegation errors: Can auto-correct prefixes and add missing fields
+* JSON syntax errors: Can be automatically corrected
+* Missing required fields: Can be added with defaults
+* File encoding: Can be converted to UTF-8
+* Agent delegation errors: Can auto-correct prefixes and add missing fields
 
 🛠️ Command Execution Fixes Applied:
-• Fixed commands/quality-check.md: Added `delegates-to: autonomous-agent:orchestrator`
-• Auto-corrected agent identifier: `orchestrator` → `autonomous-agent:orchestrator`
-• Updated command documentation: Explicit agent references with proper prefixes
+* Fixed commands/quality-check.md: Added `delegates-to: autonomous-agent:orchestrator`
+* Auto-corrected agent identifier: `orchestrator` -> `autonomous-agent:orchestrator`
+* Updated command documentation: Explicit agent references with proper prefixes
 
 🎯 Quality Score: 65/100 (Needs Fixes)
 
@@ -262,12 +262,12 @@ iconv -f ISO-8859-1 -t UTF-8 input.txt > output.txt
 ### 4. Directory Structure
 ```
 my-plugin/
-├── .claude-plugin/
-│   └── plugin.json        # REQUIRED
-├── agents/               # OPTIONAL
-├── skills/               # OPTIONAL
-├── commands/             # OPTIONAL
-└── lib/                  # OPTIONAL
++-- .claude-plugin/
+|   +-- plugin.json        # REQUIRED
++-- agents/               # OPTIONAL
++-- skills/               # OPTIONAL
++-- commands/             # OPTIONAL
++-- lib/                  # OPTIONAL
 ```
 
 ## Marketplace Compatibility
@@ -298,7 +298,7 @@ The validator can automatically correct many common issues:
 2. **Missing Fields**: Add defaults (version: "1.0.0", author: "Unknown")
 3. **File Encoding**: Convert to UTF-8 automatically
 4. **Line Endings**: Normalize line endings for platform
-5. **Agent Delegation**: Auto-correct agent identifier prefixes (`orchestrator` → `autonomous-agent:orchestrator`)
+5. **Agent Delegation**: Auto-correct agent identifier prefixes (`orchestrator` -> `autonomous-agent:orchestrator`)
 6. **Command Frontmatter**: Add missing `delegates-to` fields based on command content analysis
 7. **Agent Mapping**: Verify and fix command-to-agent mappings by cross-referencing agents directory
 

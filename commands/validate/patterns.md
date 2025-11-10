@@ -76,11 +76,11 @@ Validates the pattern learning system across all commands and agents. Ensures pa
 ### Terminal Summary (concise)
 ```
 Pattern Learning Validation Complete ✅
-├─ Commands Validated: 18/18 (100%)
-├─ Pattern Storage: Healthy ✅
-├─ Learning Effectiveness: 94% ✅
-├─ Issues Found: 0 critical, 2 minor
-└─ Duration: 1m 45s
++- Commands Validated: 18/18 (100%)
++- Pattern Storage: Healthy ✅
++- Learning Effectiveness: 94% ✅
++- Issues Found: 0 critical, 2 minor
++- Duration: 1m 45s
 
 📊 Full analytics: .claude/reports/validate-patterns-2025-01-15.md
 ```

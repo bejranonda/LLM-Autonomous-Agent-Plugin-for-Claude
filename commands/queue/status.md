@@ -63,29 +63,29 @@ Display comprehensive status of the autonomous task queue including current exec
 Output:
 ```
 📊 Queue Status Overview
-├─ Total Tasks: 15
-├─ Queued: 8
-├─ Running: 1
-├─ Completed: 5
-├─ Failed: 1
-├─ Cancelled: 0
++- Total Tasks: 15
++- Queued: 8
++- Running: 1
++- Completed: 5
++- Failed: 1
++- Cancelled: 0
 
 🎯 Priority Breakdown
-├─ Critical: 2
-├─ High: 5
-├─ Medium: 6
-├─ Low: 2
++- Critical: 2
++- High: 5
++- Medium: 6
++- Low: 2
 
 📋 Type Breakdown
-├─ Slash Commands: 8
-├─ Autonomous: 4
-├─ Background: 2
-├─ Manual: 1
++- Slash Commands: 8
++- Autonomous: 4
++- Background: 2
++- Manual: 1
 
 ⚡ Execution State
-├─ Current Task: task_20241228_143022_123 (Quality Analysis)
-├─ Execution Active: Yes
-├─ Queue Health: Good (87/100)
++- Current Task: task_20241228_143022_123 (Quality Analysis)
++- Execution Active: Yes
++- Queue Health: Good (87/100)
 ```
 
 ### Verbose Status
@@ -99,27 +99,27 @@ Includes detailed task information:
 [... overview metrics ...]
 
 📝 Queued Tasks (8)
-├─ [1] task_20241228_143030_456 | Security Scan | High | slash_command
-├─ [2] task_20241228_143032_789 | Documentation Update | Medium | manual
-├─ [3] task_20241228_143034_012 | Performance Test | Low | background
-└─ [5 more tasks...]
++- [1] task_20241228_143030_456 | Security Scan | High | slash_command
++- [2] task_20241228_143032_789 | Documentation Update | Medium | manual
++- [3] task_20241228_143034_012 | Performance Test | Low | background
++- [5 more tasks...]
 
 ⚡ Currently Running
-├─ Task: task_20241228_143022_123
-├─ Name: Quality Analysis
-├─ Command: /analyze:quality
-├─ Started: 2024-12-28 14:30:25
-├─ Duration: 2m 15s
-└─ Progress: Analyzing code structure...
++- Task: task_20241228_143022_123
++- Name: Quality Analysis
++- Command: /analyze:quality
++- Started: 2024-12-28 14:30:25
++- Duration: 2m 15s
++- Progress: Analyzing code structure...
 
 ✅ Recently Completed (5)
-├─ task_20241228_143020_999 | Environment Setup | 45s
-├─ task_20241228_143018_777 | Dependency Check | 2m 10s
-└─ [3 more tasks...]
++- task_20241228_143020_999 | Environment Setup | 45s
++- task_20241228_143018_777 | Dependency Check | 2m 10s
++- [3 more tasks...]
 
 ❌ Failed Tasks (1)
-├─ task_20241228_143015_333 | Test Execution | Timeout after 300s
-└─ Retry attempts: 2/3
++- task_20241228_143015_333 | Test Execution | Timeout after 300s
++- Retry attempts: 2/3
 ```
 
 ## Health Score Calculation
@@ -145,24 +145,24 @@ The queue health score (0-100) is calculated based on:
 When tasks are running, status includes:
 ```
 ⚡ Live Execution Monitor
-├─ Current Task: Quality Analysis
-├─ Progress: 65% complete
-├─ Elapsed Time: 2m 15s
-├─ Estimated Remaining: 1m 10s
-├─ CPU Usage: 15%
-├─ Memory Usage: 250MB
-└─ Log Output: Analyzing src/main.py...
++- Current Task: Quality Analysis
++- Progress: 65% complete
++- Elapsed Time: 2m 15s
++- Estimated Remaining: 1m 10s
++- CPU Usage: 15%
++- Memory Usage: 250MB
++- Log Output: Analyzing src/main.py...
 ```
 
 ### Background Execution
 For background processes:
 ```
 🔄 Background Execution Active
-├─ Process ID: 12345
-├─ Started: 2024-12-28 14:30:00
-├─ Tasks Completed: 3/8
-├─ Current Phase: Security scanning
-└─ Estimated Completion: 14:45:00
++- Process ID: 12345
++- Started: 2024-12-28 14:30:00
++- Tasks Completed: 3/8
++- Current Phase: Security scanning
++- Estimated Completion: 14:45:00
 ```
 
 ## Performance Metrics
@@ -207,11 +207,11 @@ Displays performance insights:
 ### Compact Mode (Default)
 ```
 📊 Queue Status
-├─ 15 total | 8 queued | 1 running | 5 completed | 1 failed
-├─ Priority: 2 critical | 5 high | 6 medium | 2 low
-├─ Types: 8 slash | 4 auto | 2 bg | 1 manual
-├─ Health: Good (87/100)
-└─ Current: Quality Analysis (65% complete)
++- 15 total | 8 queued | 1 running | 5 completed | 1 failed
++- Priority: 2 critical | 5 high | 6 medium | 2 low
++- Types: 8 slash | 4 auto | 2 bg | 1 manual
++- Health: Good (87/100)
++- Current: Quality Analysis (65% complete)
 ```
 
 ### Verbose Mode

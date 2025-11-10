@@ -126,9 +126,9 @@ Execute commits? [Y/n]: Y
 ✅ COMMITS CREATED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✓ Commit 1: feat: Add 6 new analysis commands (abc1234)
-✓ Commit 2: fix: Fix dashboard browser opening issues (def5678)
-✓ Commit 3: docs: Update plugin documentation (ghi9012)
+[PASS] Commit 1: feat: Add 6 new analysis commands (abc1234)
+[PASS] Commit 2: fix: Fix dashboard browser opening issues (def5678)
+[PASS] Commit 3: docs: Update plugin documentation (ghi9012)
 
 Total: 3 commits created
 Pushed: No (use --push to push to remote)
@@ -191,50 +191,50 @@ The command intelligently groups files for commits:
 ### Group by Type (Default)
 ```
 Commit 1: feat: Add new commands
-├─ commands/analyze/explain.md
-├─ commands/analyze/repository.md
-├─ commands/learn/history.md
-└─ commands/learn/clone.md
++- commands/analyze/explain.md
++- commands/analyze/repository.md
++- commands/learn/history.md
++- commands/learn/clone.md
 
 Commit 2: fix: Fix dashboard issues
-├─ lib/dashboard.py
-└─ lib/dashboard_launcher.py
++- lib/dashboard.py
++- lib/dashboard_launcher.py
 
 Commit 3: docs: Update documentation
-├─ README.md
-├─ CLAUDE.md
-└─ CHANGELOG.md
++- README.md
++- CLAUDE.md
++- CHANGELOG.md
 ```
 
 ### Group by Directory
 ```
 Commit 1: feat: Update analyze commands
-└─ commands/analyze/
-    ├─ explain.md
-    └─ repository.md
++- commands/analyze/
+    +- explain.md
+    +- repository.md
 
 Commit 2: feat: Update learn commands
-└─ commands/learn/
-    ├─ history.md
-    └─ clone.md
++- commands/learn/
+    +- history.md
+    +- clone.md
 
 Commit 3: fix: Update library
-└─ lib/
-    ├─ dashboard.py
-    └─ dashboard_launcher.py
++- lib/
+    +- dashboard.py
+    +- dashboard_launcher.py
 ```
 
 ### Single Commit
 ```
 Commit 1: chore: Update plugin with multiple improvements
-├─ commands/analyze/explain.md
-├─ commands/analyze/repository.md
-├─ commands/learn/history.md
-├─ commands/learn/clone.md
-├─ lib/dashboard.py
-├─ lib/dashboard_launcher.py
-├─ README.md
-└─ CLAUDE.md
++- commands/analyze/explain.md
++- commands/analyze/repository.md
++- commands/learn/history.md
++- commands/learn/clone.md
++- lib/dashboard.py
++- lib/dashboard_launcher.py
++- README.md
++- CLAUDE.md
 ```
 
 ## Change Detection
@@ -329,12 +329,12 @@ Description:
   updates. Enhances learning capabilities significantly.
 
 Files to be committed:
-├─ commands/analyze/explain.md (new, 26 KB)
-├─ commands/analyze/repository.md (new, 35 KB)
-├─ commands/learn/history.md (new, 24 KB)
-├─ commands/learn/clone.md (new, 21 KB)
-├─ commands/workspace/update-readme.md (new, 3.7 KB)
-└─ commands/workspace/update-about.md (new, 3.9 KB)
++- commands/analyze/explain.md (new, 26 KB)
++- commands/analyze/repository.md (new, 35 KB)
++- commands/learn/history.md (new, 24 KB)
++- commands/learn/clone.md (new, 21 KB)
++- commands/workspace/update-readme.md (new, 3.7 KB)
++- commands/workspace/update-about.md (new, 3.9 KB)
 
 Total: 6 files, 113.6 KB
 
@@ -521,7 +521,7 @@ Proposed commits:
 3. docs: Update README and CHANGELOG (4 files)
 
 Creating commits...
-✓ 3 commits created successfully
+[PASS] 3 commits created successfully
 
 Total changes committed: 12 files
 ```
@@ -531,11 +531,11 @@ Total changes committed: 12 files
 $ /dev:commit "feat: implement JWT token validation" --files "src/auth/jwt.py,tests/test_jwt.py"
 
 Staging files...
-├─ src/auth/jwt.py
-└─ tests/test_jwt.py
++- src/auth/jwt.py
++- tests/test_jwt.py
 
 Creating commit...
-✓ Commit created: feat: implement JWT token validation (abc1234)
+[PASS] Commit created: feat: implement JWT token validation (abc1234)
 ```
 
 ### Example 3: Interactive review mode
@@ -549,7 +549,7 @@ Commit 2: Edit message (e)
 Commit 3: Skip (s)
 
 Result:
-✓ 2 commits created
+[PASS] 2 commits created
 ⊘ 1 commit skipped
 ```
 
@@ -558,10 +558,10 @@ Result:
 $ /dev:commit --auto --push
 
 Creating commits...
-✓ 3 commits created
+[PASS] 3 commits created
 
 Pushing to origin/main...
-✓ Pushed successfully
+[PASS] Pushed successfully
 
 Branch: main
 Remote: origin

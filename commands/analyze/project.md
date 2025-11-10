@@ -44,15 +44,15 @@ The orchestrator MUST use two-tier presentation:
 ### Terminal Output (Concise)
 
 ```
-✓ Auto-Analyze Complete - Quality: 88/100
+[PASS] Auto-Analyze Complete - Quality: 88/100
 
 Key Findings:
-• Python/FastAPI project, 127 files analyzed
-• 4 failing tests in auth module
-• 12 functions missing docstrings
+* Python/FastAPI project, 127 files analyzed
+* 4 failing tests in auth module
+* 12 functions missing docstrings
 
 Top Recommendations:
-1. [HIGH] Fix failing auth tests → +4 quality points
+1. [HIGH] Fix failing auth tests -> +4 quality points
 2. [MED]  Add docstrings to public APIs
 3. [MED]  Refactor high-complexity functions
 
@@ -65,77 +65,77 @@ Top Recommendations:
 Saved to `.claude/reports/analyze-project-2025-10-21.md`:
 
 ```
-═══════════════════════════════════════════════════════
+=======================================================
   AUTO-ANALYZE DETAILED REPORT
-═══════════════════════════════════════════════════════
+=======================================================
 Generated: 2025-10-21 14:30:00
 
-┌─ Project Context ────────────────────────────────────┐
-│ Type: Python project with FastAPI framework          │
-│ Languages: Python 3.9+                                │
-│ Frameworks: FastAPI, SQLAlchemy, Pydantic            │
-│ Total Files: 127                                      │
-│ Lines of Code: 12,450                                 │
-└───────────────────────────────────────────────────────┘
++- Project Context ------------------------------------+
+| Type: Python project with FastAPI framework          |
+| Languages: Python 3.9+                                |
+| Frameworks: FastAPI, SQLAlchemy, Pydantic            |
+| Total Files: 127                                      |
+| Lines of Code: 12,450                                 |
++-------------------------------------------------------+
 
-┌─ Quality Assessment ─────────────────────────────────┐
-│ Overall Score: 88/100 ✓                              │
-│ Tests: 45 tests, 92% passing (41/45)                 │
-│ Coverage: 82%                                         │
-│ Standards: 89% compliant                              │
-│ Documentation: 85% complete                           │
-│ Pattern Adherence: 95%                                │
-└───────────────────────────────────────────────────────┘
++- Quality Assessment ---------------------------------+
+| Overall Score: 88/100 [PASS]                              |
+| Tests: 45 tests, 92% passing (41/45)                 |
+| Coverage: 82%                                         |
+| Standards: 89% compliant                              |
+| Documentation: 85% complete                           |
+| Pattern Adherence: 95%                                |
++-------------------------------------------------------+
 
-┌─ Strengths ──────────────────────────────────────────┐
-│ • Well-structured API endpoints                       │
-│ • Good test coverage on core modules                  │
-│ • Consistent coding style                             │
-│ • Clear separation of concerns                        │
-│ • Effective use of Pydantic for validation           │
-└───────────────────────────────────────────────────────┘
++- Strengths ------------------------------------------+
+| * Well-structured API endpoints                       |
+| * Good test coverage on core modules                  |
+| * Consistent coding style                             |
+| * Clear separation of concerns                        |
+| * Effective use of Pydantic for validation           |
++-------------------------------------------------------+
 
-┌─ Issues Found ───────────────────────────────────────┐
-│ Tests:                                                │
-│ • test_user_login() - AssertionError (auth.py:45)   │
-│ • test_token_refresh() - Timeout (auth.py:89)       │
-│ • test_logout() - Connection error (auth.py:112)    │
-│ • test_password_reset() - Invalid state (auth.py:145)│
-│                                                       │
-│ Documentation:                                        │
-│ • 12 functions missing docstrings                     │
-│ • API endpoint documentation incomplete              │
-│                                                       │
-│ Complexity:                                           │
-│ • get_user_permissions() - Cyclomatic: 18 (auth.py) │
-│ • validate_token() - Cyclomatic: 16 (auth.py)       │
-│ • process_payment() - Cyclomatic: 15 (payment.py)   │
-└───────────────────────────────────────────────────────┘
++- Issues Found ---------------------------------------+
+| Tests:                                                |
+| * test_user_login() - AssertionError (auth.py:45)   |
+| * test_token_refresh() - Timeout (auth.py:89)       |
+| * test_logout() - Connection error (auth.py:112)    |
+| * test_password_reset() - Invalid state (auth.py:145)|
+|                                                       |
+| Documentation:                                        |
+| * 12 functions missing docstrings                     |
+| * API endpoint documentation incomplete              |
+|                                                       |
+| Complexity:                                           |
+| * get_user_permissions() - Cyclomatic: 18 (auth.py) |
+| * validate_token() - Cyclomatic: 16 (auth.py)       |
+| * process_payment() - Cyclomatic: 15 (payment.py)   |
++-------------------------------------------------------+
 
-┌─ All Recommendations ────────────────────────────────┐
-│ 1. [HIGH] Fix 4 failing tests in auth module         │
-│    → Expected quality impact: +4 points               │
-│    → Run /quality-check for auto-fix                  │
-│                                                       │
-│ 2. [MED] Add docstrings to 12 public functions       │
-│    → Improves maintainability and API documentation  │
-│    → Expected quality impact: +2 points               │
-│                                                       │
-│ 3. [MED] Refactor 3 high-complexity functions        │
-│    → Target: get_user_permissions(), validate_token()│
-│    → Expected quality impact: +2 points               │
-│                                                       │
-│ 4. [LOW] Complete API endpoint documentation         │
-│    → Add OpenAPI descriptions                         │
-│    → Expected quality impact: +1 point                │
-└───────────────────────────────────────────────────────┘
++- All Recommendations --------------------------------+
+| 1. [HIGH] Fix 4 failing tests in auth module         |
+|    -> Expected quality impact: +4 points               |
+|    -> Run /quality-check for auto-fix                  |
+|                                                       |
+| 2. [MED] Add docstrings to 12 public functions       |
+|    -> Improves maintainability and API documentation  |
+|    -> Expected quality impact: +2 points               |
+|                                                       |
+| 3. [MED] Refactor 3 high-complexity functions        |
+|    -> Target: get_user_permissions(), validate_token()|
+|    -> Expected quality impact: +2 points               |
+|                                                       |
+| 4. [LOW] Complete API endpoint documentation         |
+|    -> Add OpenAPI descriptions                         |
+|    -> Expected quality impact: +1 point                |
++-------------------------------------------------------+
 
 Skills Loaded: code-analysis, quality-standards, pattern-learning
 Agents Used: code-analyzer, background-task-manager
 Patterns Stored: 1 new pattern in .claude-patterns/
 Analysis Time: 2.3 minutes
 
-═══════════════════════════════════════════════════════
+=======================================================
 ```
 
 ## See Also

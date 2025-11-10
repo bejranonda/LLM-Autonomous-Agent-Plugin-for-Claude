@@ -113,17 +113,17 @@ Evolution Type: [type] | Intensity: [level]
 Progress: [percentage]% | Phase: [current_phase]
 
 Key Achievements:
-✓ [Achievement 1]: [Brief description]
-✓ [Achievement 2]: [Brief description]
-✓ [Achievement 3]: [Brief description]
+[PASS] [Achievement 1]: [Brief description]
+[PASS] [Achievement 2]: [Brief description]
+[PASS] [Achievement 3]: [Brief description]
 
 Current Capabilities:
-• AGI Readiness: [score]%
-• Quantum Advantage: [speedup_factor]x
-• Consciousness Level: [level]
-• Dimensional Processing: [dimensions]D
-• Global Intelligence: [nodes] nodes
-• Problem Solving: [breakthrough_rate] breakthroughs/day
+* AGI Readiness: [score]%
+* Quantum Advantage: [speedup_factor]x
+* Consciousness Level: [level]
+* Dimensional Processing: [dimensions]D
+* Global Intelligence: [nodes] nodes
+* Problem Solving: [breakthrough_rate] breakthroughs/day
 
 Next Evolution: [next_evolution_step]
 Report: .claude-patterns/reports/transcendent-evolution-YYYY-MM-DD.md

@@ -83,9 +83,9 @@ Source: fastapi/fastapi (MIT License)
 Complexity: Medium | Adaptation Required: Yes
 
 Key Components Identified:
-• Token generation with configurable expiry
-• Dependency injection for auth validation
-• Refresh token mechanism
+* Token generation with configurable expiry
+* Dependency injection for auth validation
+* Refresh token mechanism
 
 Implementation Strategy:
 1. Add python-jose dependency
@@ -103,232 +103,232 @@ Next: Review analysis, then use /dev:auto to implement
 ### Detailed Report
 
 ```markdown
-═══════════════════════════════════════════════════════
+=======================================================
   FEATURE LEARNING REPORT
-═══════════════════════════════════════════════════════
+=======================================================
 Feature: JWT Authentication
 Source: https://github.com/fastapi/fastapi
 License: MIT (attribution required)
 Analysis Date: 2025-10-29
 
-┌─ Feature Overview ───────────────────────────────────┐
-│ Feature Name: JWT Authentication System              │
-│ Location: fastapi/security/oauth2.py                 │
-│ Complexity: Medium                                    │
-│ Dependencies: python-jose, passlib                   │
-│                                                       │
-│ Core Capabilities:                                    │
-│ • Access token generation with expiry                │
-│ • Refresh token support                              │
-│ • Dependency injection for validation                │
-│ • Multiple authentication schemes                     │
-│ • Token revocation support                           │
-└───────────────────────────────────────────────────────┘
++- Feature Overview -----------------------------------+
+| Feature Name: JWT Authentication System              |
+| Location: fastapi/security/oauth2.py                 |
+| Complexity: Medium                                    |
+| Dependencies: python-jose, passlib                   |
+|                                                       |
+| Core Capabilities:                                    |
+| * Access token generation with expiry                |
+| * Refresh token support                              |
+| * Dependency injection for validation                |
+| * Multiple authentication schemes                     |
+| * Token revocation support                           |
++-------------------------------------------------------+
 
-┌─ Implementation Analysis ────────────────────────────┐
-│ Key Files Analyzed:                                   │
-│ • fastapi/security/oauth2.py (core logic)            │
-│ • fastapi/security/utils.py (helpers)                │
-│ • tests/test_security_oauth2.py (tests)              │
-│                                                       │
-│ Architecture:                                         │
-│ ├─ Token Generation Layer                           │
-│ │  • Uses python-jose for JWT encoding              │
-│ │  • Configurable algorithms (HS256, RS256)         │
-│ │  • Expiry and claims management                   │
-│ │                                                     │
-│ ├─ Validation Layer                                  │
-│ │  • Dependency injection pattern                    │
-│ │  • Automatic token extraction from headers        │
-│ │  • Validation with error handling                 │
-│ │                                                     │
-│ └─ Integration Layer                                 │
-│    • Middleware for route protection                 │
-│    • Flexible authentication schemes                 │
-│    • OAuth2 PasswordBearer support                   │
-└───────────────────────────────────────────────────────┘
++- Implementation Analysis ----------------------------+
+| Key Files Analyzed:                                   |
+| * fastapi/security/oauth2.py (core logic)            |
+| * fastapi/security/utils.py (helpers)                |
+| * tests/test_security_oauth2.py (tests)              |
+|                                                       |
+| Architecture:                                         |
+| +- Token Generation Layer                           |
+| |  * Uses python-jose for JWT encoding              |
+| |  * Configurable algorithms (HS256, RS256)         |
+| |  * Expiry and claims management                   |
+| |                                                     |
+| +- Validation Layer                                  |
+| |  * Dependency injection pattern                    |
+| |  * Automatic token extraction from headers        |
+| |  * Validation with error handling                 |
+| |                                                     |
+| +- Integration Layer                                 |
+|    * Middleware for route protection                 |
+|    * Flexible authentication schemes                 |
+|    * OAuth2 PasswordBearer support                   |
++-------------------------------------------------------+
 
-┌─ Code Patterns Extracted ────────────────────────────┐
-│ Pattern 1: Token Generation                          │
-│ ```python                                            │
-│ from jose import jwt                                  │
-│ from datetime import datetime, timedelta             │
-│                                                       │
-│ def create_token(data: dict, expires_delta: timedelta):│
-│     to_encode = data.copy()                          │
-│     expire = datetime.utcnow() + expires_delta       │
-│     to_encode.update({"exp": expire})                │
-│     return jwt.encode(to_encode, SECRET_KEY, ALGO)   │
-│ ```                                                  │
-│                                                       │
-│ Pattern 2: Dependency Injection for Auth             │
-│ ```python                                            │
-│ from fastapi import Depends, HTTPException           │
-│ from fastapi.security import OAuth2PasswordBearer    │
-│                                                       │
-│ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")│
-│                                                       │
-│ async def get_current_user(token: str = Depends(oauth2_scheme)):│
-│     credentials_exception = HTTPException(...)        │
-│     try:                                             │
-│         payload = jwt.decode(token, SECRET, ALGO)    │
-│         username = payload.get("sub")                │
-│         if username is None:                         │
-│             raise credentials_exception              │
-│         return username                              │
-│     except JWTError:                                 │
-│         raise credentials_exception                  │
-│ ```                                                  │
-│                                                       │
-│ Pattern 3: Route Protection                           │
-│ ```python                                            │
-│ @app.get("/users/me")                                │
-│ async def read_users_me(current_user: User = Depends(get_current_user)):│
-│     return current_user                              │
-│ ```                                                  │
-└───────────────────────────────────────────────────────┘
++- Code Patterns Extracted ----------------------------+
+| Pattern 1: Token Generation                          |
+| ```python                                            |
+| from jose import jwt                                  |
+| from datetime import datetime, timedelta             |
+|                                                       |
+| def create_token(data: dict, expires_delta: timedelta):|
+|     to_encode = data.copy()                          |
+|     expire = datetime.utcnow() + expires_delta       |
+|     to_encode.update({"exp": expire})                |
+|     return jwt.encode(to_encode, SECRET_KEY, ALGO)   |
+| ```                                                  |
+|                                                       |
+| Pattern 2: Dependency Injection for Auth             |
+| ```python                                            |
+| from fastapi import Depends, HTTPException           |
+| from fastapi.security import OAuth2PasswordBearer    |
+|                                                       |
+| oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")|
+|                                                       |
+| async def get_current_user(token: str = Depends(oauth2_scheme)):|
+|     credentials_exception = HTTPException(...)        |
+|     try:                                             |
+|         payload = jwt.decode(token, SECRET, ALGO)    |
+|         username = payload.get("sub")                |
+|         if username is None:                         |
+|             raise credentials_exception              |
+|         return username                              |
+|     except JWTError:                                 |
+|         raise credentials_exception                  |
+| ```                                                  |
+|                                                       |
+| Pattern 3: Route Protection                           |
+| ```python                                            |
+| @app.get("/users/me")                                |
+| async def read_users_me(current_user: User = Depends(get_current_user)):|
+|     return current_user                              |
+| ```                                                  |
++-------------------------------------------------------+
 
-┌─ Adaptation Strategy for Current Project ────────────┐
-│ Current Project Context:                              │
-│ • Type: Claude Code Plugin                           │
-│ • Language: Python + Markdown config                 │
-│ • Architecture: Agent-based with skills              │
-│                                                       │
-│ Adaptation Required:                                  │
-│ 1. Simplify for plugin context                       │
-│    • May not need OAuth2PasswordBearer               │
-│    • Focus on token generation/validation            │
-│    • Adapt for agent communication                    │
-│                                                       │
-│ 2. Integration points                                 │
-│    • Add to orchestrator for secure agent calls      │
-│    • Protect sensitive agent operations              │
-│    • Add authentication skill                         │
-│                                                       │
-│ 3. Dependencies                                       │
-│    • Add: python-jose[cryptography]                  │
-│    • Add: passlib[bcrypt]                            │
-│    • Keep: Lightweight, minimal deps                 │
-└───────────────────────────────────────────────────────┘
++- Adaptation Strategy for Current Project ------------+
+| Current Project Context:                              |
+| * Type: Claude Code Plugin                           |
+| * Language: Python + Markdown config                 |
+| * Architecture: Agent-based with skills              |
+|                                                       |
+| Adaptation Required:                                  |
+| 1. Simplify for plugin context                       |
+|    * May not need OAuth2PasswordBearer               |
+|    * Focus on token generation/validation            |
+|    * Adapt for agent communication                    |
+|                                                       |
+| 2. Integration points                                 |
+|    * Add to orchestrator for secure agent calls      |
+|    * Protect sensitive agent operations              |
+|    * Add authentication skill                         |
+|                                                       |
+| 3. Dependencies                                       |
+|    * Add: python-jose[cryptography]                  |
+|    * Add: passlib[bcrypt]                            |
+|    * Keep: Lightweight, minimal deps                 |
++-------------------------------------------------------+
 
-┌─ Implementation Roadmap ──────────────────────────────┐
-│ Phase 1: Core Implementation (2-3 hours)             │
-│ Step 1: Add Dependencies                             │
-│ ├─ Add python-jose to requirements                   │
-│ ├─ Add passlib for password hashing                  │
-│ └─ Update lock file                                  │
-│                                                       │
-│ Step 2: Create Auth Skill                            │
-│ ├─ Create skills/authentication/SKILL.md             │
-│ ├─ Add JWT token generation patterns                 │
-│ ├─ Add validation best practices                     │
-│ └─ Add security considerations                       │
-│                                                       │
-│ Step 3: Implement Token Utilities                    │
-│ ├─ Create lib/auth_utils.py                         │
-│ ├─ Implement create_token()                         │
-│ ├─ Implement validate_token()                       │
-│ └─ Add error handling                                │
-│                                                       │
-│ Phase 2: Integration (1-2 hours)                     │
-│ Step 4: Agent Authentication                         │
-│ ├─ Add auth to sensitive agent operations            │
-│ ├─ Implement token validation middleware             │
-│ └─ Add authentication examples                       │
-│                                                       │
-│ Step 3: Testing (1 hour)                            │
-│ ├─ Write unit tests for token utils                 │
-│ ├─ Write integration tests                          │
-│ └─ Add security tests                                │
-│                                                       │
-│ Phase 3: Documentation (30 min)                      │
-│ ├─ Document auth skill usage                        │
-│ ├─ Add examples to README                           │
-│ ├─ Add security best practices                      │
-│ └─ Include attribution to FastAPI                   │
-└───────────────────────────────────────────────────────┘
++- Implementation Roadmap ------------------------------+
+| Phase 1: Core Implementation (2-3 hours)             |
+| Step 1: Add Dependencies                             |
+| +- Add python-jose to requirements                   |
+| +- Add passlib for password hashing                  |
+| +- Update lock file                                  |
+|                                                       |
+| Step 2: Create Auth Skill                            |
+| +- Create skills/authentication/SKILL.md             |
+| +- Add JWT token generation patterns                 |
+| +- Add validation best practices                     |
+| +- Add security considerations                       |
+|                                                       |
+| Step 3: Implement Token Utilities                    |
+| +- Create lib/auth_utils.py                         |
+| +- Implement create_token()                         |
+| +- Implement validate_token()                       |
+| +- Add error handling                                |
+|                                                       |
+| Phase 2: Integration (1-2 hours)                     |
+| Step 4: Agent Authentication                         |
+| +- Add auth to sensitive agent operations            |
+| +- Implement token validation middleware             |
+| +- Add authentication examples                       |
+|                                                       |
+| Step 3: Testing (1 hour)                            |
+| +- Write unit tests for token utils                 |
+| +- Write integration tests                          |
+| +- Add security tests                                |
+|                                                       |
+| Phase 3: Documentation (30 min)                      |
+| +- Document auth skill usage                        |
+| +- Add examples to README                           |
+| +- Add security best practices                      |
+| +- Include attribution to FastAPI                   |
++-------------------------------------------------------+
 
-┌─ Testing Strategy Learned ───────────────────────────┐
-│ From Source Repository Tests:                        │
-│                                                       │
-│ Test Categories:                                      │
-│ 1. Token Generation Tests                            │
-│    • Valid token creation                            │
-│    • Token expiry handling                           │
-│    • Custom claims inclusion                         │
-│                                                       │
-│ 2. Token Validation Tests                            │
-│    • Valid token validation                          │
-│    • Expired token rejection                         │
-│    • Invalid signature detection                     │
-│    • Malformed token handling                        │
-│                                                       │
-│ 3. Integration Tests                                  │
-│    • Protected route access with valid token         │
-│    • Protected route rejection without token         │
-│    • Token refresh flow                              │
-│                                                       │
-│ Test Implementation Example:                          │
-│ ```python                                            │
-│ def test_create_access_token():                      │
-│     data = {"sub": "user@example.com"}               │
-│     token = create_access_token(data)                │
-│     assert token is not None                         │
-│     payload = jwt.decode(token, SECRET, ALGO)        │
-│     assert payload["sub"] == "user@example.com"      │
-│     assert "exp" in payload                          │
-│ ```                                                  │
-└───────────────────────────────────────────────────────┘
++- Testing Strategy Learned ---------------------------+
+| From Source Repository Tests:                        |
+|                                                       |
+| Test Categories:                                      |
+| 1. Token Generation Tests                            |
+|    * Valid token creation                            |
+|    * Token expiry handling                           |
+|    * Custom claims inclusion                         |
+|                                                       |
+| 2. Token Validation Tests                            |
+|    * Valid token validation                          |
+|    * Expired token rejection                         |
+|    * Invalid signature detection                     |
+|    * Malformed token handling                        |
+|                                                       |
+| 3. Integration Tests                                  |
+|    * Protected route access with valid token         |
+|    * Protected route rejection without token         |
+|    * Token refresh flow                              |
+|                                                       |
+| Test Implementation Example:                          |
+| ```python                                            |
+| def test_create_access_token():                      |
+|     data = {"sub": "user@example.com"}               |
+|     token = create_access_token(data)                |
+|     assert token is not None                         |
+|     payload = jwt.decode(token, SECRET, ALGO)        |
+|     assert payload["sub"] == "user@example.com"      |
+|     assert "exp" in payload                          |
+| ```                                                  |
++-------------------------------------------------------+
 
-┌─ License Compliance ──────────────────────────────────┐
-│ Source License: MIT License                           │
-│                                                       │
-│ Requirements:                                         │
-│ ✅ Include original license notice                   │
-│ ✅ Include attribution in documentation              │
-│ ✅ Do not claim original authorship                  │
-│                                                       │
-│ Attribution Text (add to README and code files):     │
-│                                                       │
-│ """                                                  │
-│ JWT Authentication implementation learned from:       │
-│ FastAPI (https://github.com/tiangolo/fastapi)        │
-│ Copyright (c) 2018 Sebastián Ramírez                 │
-│ MIT License                                          │
-│                                                       │
-│ Adapted for Claude Code Plugin with modifications.   │
-│ """                                                  │
-└───────────────────────────────────────────────────────┘
++- License Compliance ----------------------------------+
+| Source License: MIT License                           |
+|                                                       |
+| Requirements:                                         |
+| ✅ Include original license notice                   |
+| ✅ Include attribution in documentation              |
+| ✅ Do not claim original authorship                  |
+|                                                       |
+| Attribution Text (add to README and code files):     |
+|                                                       |
+| """                                                  |
+| JWT Authentication implementation learned from:       |
+| FastAPI (https://github.com/tiangolo/fastapi)        |
+| Copyright (c) 2018 Sebastián Ramírez                 |
+| MIT License                                          |
+|                                                       |
+| Adapted for Claude Code Plugin with modifications.   |
+| """                                                  |
++-------------------------------------------------------+
 
-┌─ Learned Patterns to Store ──────────────────────────┐
-│ Pattern: Dependency Injection for Security           │
-│ • Effectiveness: 95/100                              │
-│ • Reusability: High                                  │
-│ • Complexity: Medium                                 │
-│ • Store in: .claude-patterns/security-patterns.json │
-│                                                       │
-│ Pattern: Token-Based Authentication                   │
-│ • Effectiveness: 92/100                              │
-│ • Reusability: High                                  │
-│ • Complexity: Medium                                 │
-│ • Store in: .claude-patterns/auth-patterns.json     │
-└───────────────────────────────────────────────────────┘
++- Learned Patterns to Store --------------------------+
+| Pattern: Dependency Injection for Security           |
+| * Effectiveness: 95/100                              |
+| * Reusability: High                                  |
+| * Complexity: Medium                                 |
+| * Store in: .claude-patterns/security-patterns.json |
+|                                                       |
+| Pattern: Token-Based Authentication                   |
+| * Effectiveness: 92/100                              |
+| * Reusability: High                                  |
+| * Complexity: Medium                                 |
+| * Store in: .claude-patterns/auth-patterns.json     |
++-------------------------------------------------------+
 
-═══════════════════════════════════════════════════════
+=======================================================
   NEXT STEPS
-═══════════════════════════════════════════════════════
+=======================================================
 
 Ready to Implement?
-• Review implementation roadmap above
-• Check license compliance requirements
-• Use: /dev:auto "implement JWT authentication based on learned patterns"
+* Review implementation roadmap above
+* Check license compliance requirements
+* Use: /dev:auto "implement JWT authentication based on learned patterns"
 
 Need More Analysis?
-• Analyze alternative implementations
-• Compare with other auth approaches
-• Deep-dive into security considerations
+* Analyze alternative implementations
+* Compare with other auth approaches
+* Deep-dive into security considerations
 
-═══════════════════════════════════════════════════════
+=======================================================
 
 Analysis Time: 2.8 minutes
 Feature Complexity: Medium

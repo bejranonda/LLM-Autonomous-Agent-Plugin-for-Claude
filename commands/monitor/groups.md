@@ -97,12 +97,12 @@ group4_spec = get_specialization_profile(4)
 ```python
 # Communication flow analysis
 comm_flows = {
-    "Group 1 → Group 2": collab_stats.get("group_1_to_2", {}),
-    "Group 2 → Group 3": collab_stats.get("group_2_to_3", {}),
-    "Group 3 → Group 4": collab_stats.get("group_3_to_4", {}),
-    "Group 4 → Group 1": collab_stats.get("group_4_to_1", {}),
-    "Group 4 → Group 2": collab_stats.get("group_4_to_2", {}),
-    "Group 4 → Group 3": collab_stats.get("group_4_to_3", {})
+    "Group 1 -> Group 2": collab_stats.get("group_1_to_2", {}),
+    "Group 2 -> Group 3": collab_stats.get("group_2_to_3", {}),
+    "Group 3 -> Group 4": collab_stats.get("group_3_to_4", {}),
+    "Group 4 -> Group 1": collab_stats.get("group_4_to_1", {}),
+    "Group 4 -> Group 2": collab_stats.get("group_4_to_2", {}),
+    "Group 4 -> Group 3": collab_stats.get("group_4_to_3", {})
 }
 
 # Calculate:
@@ -247,25 +247,25 @@ Generated: {timestamp}
 
 ### Communication Flow Analysis
 
-**Group 1 → Group 2 (Analysis → Decision)**:
+**Group 1 -> Group 2 (Analysis -> Decision)**:
 - Messages Sent: {count}
 - Success Rate: {success}%
 - Average Response Time: {time}s
 - Recommendation Acceptance: {acceptance}%
 
-**Group 2 → Group 3 (Decision → Execution)**:
+**Group 2 -> Group 3 (Decision -> Execution)**:
 - Plans Sent: {count}
 - Execution Success: {success}%
 - Plan Completeness: {completeness}%
 - Average Execution Time: {time}s
 
-**Group 3 → Group 4 (Execution → Validation)**:
+**Group 3 -> Group 4 (Execution -> Validation)**:
 - Results Sent: {count}
 - Validation Pass Rate: {pass_rate}%
 - Average Quality Improvement: +{improvement} pts
 - Iterations Needed: {iterations} avg
 
-**Group 4 → All Groups (Feedback Loops)**:
+**Group 4 -> All Groups (Feedback Loops)**:
 - Feedback Messages: {count}
 - Feedback Effectiveness: {effectiveness}%
 - Average Cycle Time: {time}s
@@ -273,7 +273,7 @@ Generated: {timestamp}
 
 ### Communication Health
 - ✅ Excellent (>95%): {excellent_flows}
-- ⚠️  Needs Attention (70-95%): {warning_flows}
+- [WARN]️  Needs Attention (70-95%): {warning_flows}
 - ❌ Critical (<70%): {critical_flows}
 
 ---
@@ -398,27 +398,27 @@ Report Path: .claude/reports/group-monitoring-{date}.md
 
 **Terminal Output (15-20 lines max)**:
 ```
-╔══════════════════════════════════════════════════════════════╗
-║     FOUR-TIER GROUP MONITORING REPORT                        ║
-╚══════════════════════════════════════════════════════════════╝
++==============================================================+
+|     FOUR-TIER GROUP MONITORING REPORT                        |
++==============================================================+
 
 System Health: {score}/100 ({status})
 Total Tasks: {count} | Avg Quality: {quality}/100 | Success Rate: {success}%
 
 GROUP PERFORMANCE:
-  Group 1 (Brain):     {rating} │ {tasks} tasks │ {success}% success
-  Group 2 (Council):   {rating} │ {decisions} decisions │ {accuracy}% accurate
-  Group 3 (Hand):      {rating} │ {executions} executions │ {success}% success
-  Group 4 (Guardian):  {rating} │ {validations} validations │ {pass}% pass rate
+  Group 1 (Brain):     {rating} | {tasks} tasks | {success}% success
+  Group 2 (Council):   {rating} | {decisions} decisions | {accuracy}% accurate
+  Group 3 (Hand):      {rating} | {executions} executions | {success}% success
+  Group 4 (Guardian):  {rating} | {validations} validations | {pass}% pass rate
 
-COMMUNICATION: {comm_success}% success rate │ {feedback_count} feedback loops
+COMMUNICATION: {comm_success}% success rate | {feedback_count} feedback loops
 
 TOP PERFORMERS:
   1. {agent_name} ({group}): {performance}
   2. {agent_name} ({group}): {performance}
   3. {agent_name} ({group}): {performance}
 
-TRENDS: Quality {trend_icon} {direction} │ Iterations {trend_icon} {direction}
+TRENDS: Quality {trend_icon} {direction} | Iterations {trend_icon} {direction}
 
 📄 Detailed Report: .claude/reports/group-monitoring-{date}.md
 ⏱️  Execution Time: {time}s

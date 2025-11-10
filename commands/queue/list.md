@@ -101,15 +101,15 @@ Display detailed list of tasks in the autonomous task queue with filtering, sort
 ```
 📋 Task Queue List (showing 15 of 23 tasks)
 
-┌─────┬─────────────────────────────┬──────────────────┬──────────┬─────────┬──────────────┐
-│ #   │ Task ID                    │ Name             │ Priority │ Status  │ Type         │
-├─────┼─────────────────────────────┼──────────────────┼──────────┼─────────┼──────────────┤
-│ 1   │ task_20241228_143022_123   │ Quality Analysis │ High     │ Running │ slash_command│
-│ 2   │ task_20241228_143025_456   │ Security Scan    │ High     │ Queued  │ slash_command│
-│ 3   │ task_20241228_143028_789   │ Documentation    │ Medium   │ Queued  │ manual       │
-│ 4   │ task_20241228_143030_012   │ Performance Test │ Low      │ Queued  │ background   │
-│ 5   │ task_20241228_143018_333   │ Test Execution   │ High     │ Failed  │ slash_command│
-└─────┴─────────────────────────────┴──────────────────┴──────────┴─────────┴──────────────┘
++-----+-----------------------------+------------------+----------+---------+--------------+
+| #   | Task ID                    | Name             | Priority | Status  | Type         |
++-----+-----------------------------+------------------+----------+---------+--------------+
+| 1   | task_20241228_143022_123   | Quality Analysis | High     | Running | slash_command|
+| 2   | task_20241228_143025_456   | Security Scan    | High     | Queued  | slash_command|
+| 3   | task_20241228_143028_789   | Documentation    | Medium   | Queued  | manual       |
+| 4   | task_20241228_143030_012   | Performance Test | Low      | Queued  | background   |
+| 5   | task_20241228_143018_333   | Test Execution   | High     | Failed  | slash_command|
++-----+-----------------------------+------------------+----------+---------+--------------+
 
 📊 Summary: 15 tasks shown | 8 queued | 1 running | 5 completed | 1 failed
 ```
@@ -158,29 +158,29 @@ Display detailed list of tasks in the autonomous task queue with filtering, sort
 📋 Detailed Task Information (Page 1 of 2)
 
 [1] task_20241228_143022_123 | Quality Analysis
-├─ Status: Running (65% complete)
-├─ Priority: High (Level 3)
-├─ Type: Slash Command
-├─ Command: /analyze:quality
-├─ Created: 2024-12-28 14:30:22
-├─ Started: 2024-12-28 14:30:25
-├─ Duration: 2m 5s
-├─ Timeout: 300s
-├─ Retries: 0/3
-├─ Dependencies: None
-└─ Description: Run comprehensive quality analysis
++- Status: Running (65% complete)
++- Priority: High (Level 3)
++- Type: Slash Command
++- Command: /analyze:quality
++- Created: 2024-12-28 14:30:22
++- Started: 2024-12-28 14:30:25
++- Duration: 2m 5s
++- Timeout: 300s
++- Retries: 0/3
++- Dependencies: None
++- Description: Run comprehensive quality analysis
 
 [2] task_20241228_143025_456 | Security Scan
-├─ Status: Queued
-├─ Priority: High (Level 3)
-├─ Type: Slash Command
-├─ Command: /analyze:dependencies
-├─ Created: 2024-12-28 14:30:25
-├─ Queued: 2024-12-28 14:30:25
-├─ Timeout: 300s
-├─ Retries: 3/3
-├─ Dependencies: task_20241228_143022_123
-└─ Description: Check for security vulnerabilities
++- Status: Queued
++- Priority: High (Level 3)
++- Type: Slash Command
++- Command: /analyze:dependencies
++- Created: 2024-12-28 14:30:25
++- Queued: 2024-12-28 14:30:25
++- Timeout: 300s
++- Retries: 3/3
++- Dependencies: task_20241228_143022_123
++- Description: Check for security vulnerabilities
 ```
 
 ## Task Information
@@ -214,8 +214,8 @@ Display detailed list of tasks in the autonomous task queue with filtering, sort
 
 ### Default Sort Order
 Tasks are sorted by:
-1. **Priority** (critical → high → medium → low)
-2. **Status** (running → queued → retrying → completed → failed → cancelled)
+1. **Priority** (critical -> high -> medium -> low)
+2. **Status** (running -> queued -> retrying -> completed -> failed -> cancelled)
 3. **Creation Time** (oldest first)
 
 ### Custom Sorting

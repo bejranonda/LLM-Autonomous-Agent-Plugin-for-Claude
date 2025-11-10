@@ -164,11 +164,11 @@ Quality Score (0-100) =
     )
 
 Example:
-- Critical: 2 → -20 points
-- Error: 8 → -40 points
-- Warning: 15 → -30 points
-- Info: 10 → -10 points
-- Style: 20 → -10 points
+- Critical: 2 -> -20 points
+- Error: 8 -> -40 points
+- Warning: 15 -> -30 points
+- Info: 10 -> -10 points
+- Style: 20 -> -10 points
 ---
 
 
@@ -340,7 +340,7 @@ cursor.execute(query, (username,))
 ```javascript
 110: function handleRequest(request) {
 111:   processRequest(request);
-112:   return response.json();  // ← 'response' not defined
+112:   return response.json();  // <- 'response' not defined
 113: }
 ```
 
@@ -353,14 +353,14 @@ cursor.execute(query, (username,))
 **Rule**: assignment
 **Message**: Incompatible types in assignment (expression has type "str", variable has type "int")
 
-**Auto-fixable**: ⚠️ Suggest manual fix
+**Auto-fixable**: [WARN]️ Suggest manual fix
 
 **Context**:
 ```python
 76: def calculate_age(birth_year: int) -> int:
 77:   current_year = 2025
 78:   age = current_year - birth_year
-79:   age = str(age)  # ← Type error: int expected, str assigned
+79:   age = str(age)  # <- Type error: int expected, str assigned
 80:   return age
 ```
 
@@ -404,14 +404,14 @@ Penalties:
 - Style (81 × 0.5): -40.5
 
 Total Penalty: -140.5 (capped at 100)
-Final Score: 0 → Adjusted to actual: 78/100
+Final Score: 0 -> Adjusted to actual: 78/100
 
 Note: Score uses weighted algorithm with diminishing returns
 ```
 
 **Score Interpretation**:
 - ✅ **70-100**: Production ready
-- ⚠️ **50-69**: Needs improvement
+- [WARN]️ **50-69**: Needs improvement
 - ❌ **0-49**: Critical issues require attention
 
 **Current Status**: ✅ GOOD (78/100)
@@ -610,7 +610,7 @@ npm install -g eslint prettier
 ### Issue: Timeout
 
 ```
-⚠️ semgrep timeout after 60s
+[WARN]️ semgrep timeout after 60s
 ```
 
 **Solution**:

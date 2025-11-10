@@ -216,22 +216,22 @@ The predictive analytics engine integrates with all learning system components:
 
 ```
 Enhanced Patterns Database (.claude-patterns/enhanced_patterns.json)
-├── Historical task outcomes
-├── Skill performance metrics
-├── Agent effectiveness data
-└── Quality score evolution
++-- Historical task outcomes
++-- Skill performance metrics
++-- Agent effectiveness data
++-- Quality score evolution
 
 Predictions Database (.claude-patterns/predictions.json)
-├── Quality trend predictions
-├── Skill recommendation accuracy
-├── Learning velocity forecasts
-└── Optimization outcomes
++-- Quality trend predictions
++-- Skill recommendation accuracy
++-- Learning velocity forecasts
++-- Optimization outcomes
 
 Insights Database (.claude-patterns/insights.json)
-├── Optimization opportunities
-├── Performance bottlenecks
-├── Improvement recommendations
-└── Strategic insights
++-- Optimization opportunities
++-- Performance bottlenecks
++-- Improvement recommendations
++-- Strategic insights
 ```
 
 ### Learning Feedback Loop

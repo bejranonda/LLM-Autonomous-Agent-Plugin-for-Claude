@@ -11,7 +11,7 @@ delegates-to: autonomous-agent:orchestrator
 **SYSTEM-WIDE FAILURE PREVENTION**: When generating ANY response content for this command, you MUST ensure:
 
 1. **NEVER generate empty text blocks** - All content blocks must have non-empty text
-2. **NEVER use Unicode box characters** (═, ║, ╔, ╗, etc.) - Use safe ASCII alternatives
+2. **NEVER use Unicode box characters** (=, |, +, +, etc.) - Use safe ASCII alternatives
 3. **ALWAYS provide fallback content** for any section that might be empty
 4. **VALIDATE all content blocks** before finalizing response
 
@@ -57,10 +57,10 @@ The command creates the `.claude-patterns/` directory with:
 
 ```
 .claude-patterns/
-├── patterns.json              # Learned patterns database
-├── task_queue.json           # Task queue for background work
-├── quality_history.json      # Quality metrics history
-└── config.json              # Configuration and settings
+|-- patterns.json              # Learned patterns database
+|-- task_queue.json           # Task queue for background work
+|-- quality_history.json      # Quality metrics history
++-- config.json              # Configuration and settings
 ```
 
 ## Example Output
@@ -115,10 +115,10 @@ Agents Used: code-analyzer, learning-engine
 Pattern Database: .claude-patterns/ (initialized)
 Initialization Time: 0.8 minutes
 
-═══════════════════════════════════════════════════════
+============================================================
   Pattern learning is ready. The system will learn
   and improve automatically with every task you perform.
-═══════════════════════════════════════════════════════
+============================================================
 ```
 
 ## Pattern Database Structure

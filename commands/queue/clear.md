@@ -70,13 +70,13 @@ Clean up the autonomous task queue by removing completed, failed, and cancelled 
 Output:
 ```
 🧹 Queue Cleanup Summary
-├─ Scanning: 45 tasks total
-├─ Completed tasks to remove: 23
-├─ Failed tasks to remove: 8
-├─ Cancelled tasks to remove: 4
-├─ Recent tasks preserved: 10
-├─ Total tasks removed: 35
-└─ Remaining tasks: 10
++- Scanning: 45 tasks total
++- Completed tasks to remove: 23
++- Failed tasks to remove: 8
++- Cancelled tasks to remove: 4
++- Recent tasks preserved: 10
++- Total tasks removed: 35
++- Remaining tasks: 10
 
 ✅ Queue cleanup completed successfully
 ```
@@ -89,12 +89,12 @@ Output:
 Output:
 ```
 🧹 Extended Queue Cleanup
-├─ Age threshold: 72 hours (3 days)
-├─ Scanning: 127 tasks total
-├─ Tasks older than 72h: 98
-├─ Recent tasks preserved: 15
-├─ Total tasks removed: 98
-└─ Remaining tasks: 29
++- Age threshold: 72 hours (3 days)
++- Scanning: 127 tasks total
++- Tasks older than 72h: 98
++- Recent tasks preserved: 15
++- Total tasks removed: 98
++- Remaining tasks: 29
 
 ✅ Extended cleanup completed
 ```
@@ -107,13 +107,13 @@ Output:
 Output:
 ```
 🧹 Failed Tasks Cleanup
-├─ Status: failed only
-├─ Age threshold: 12 hours
-├─ Failed tasks found: 18
-├─ Tasks old enough to remove: 12
-├─ Recent failed tasks preserved: 6
-├─ Total tasks removed: 12
-└─ Remaining failed tasks: 6
++- Status: failed only
++- Age threshold: 12 hours
++- Failed tasks found: 18
++- Tasks old enough to remove: 12
++- Recent failed tasks preserved: 6
++- Total tasks removed: 12
++- Remaining failed tasks: 6
 
 ✅ Failed tasks cleanup completed
 ```
@@ -126,26 +126,26 @@ Output:
 Output:
 ```
 🔍 Queue Cleanup Preview (Dry Run)
-├─ Mode: Preview only (no changes will be made)
-├─ Age threshold: 48 hours
-├─ Tasks that would be removed:
++- Mode: Preview only (no changes will be made)
++- Age threshold: 48 hours
++- Tasks that would be removed:
 
 Completed Tasks (15):
-├─ task_20241226_143022_123 | Quality Analysis | 45h ago
-├─ task_20241226_143025_456 | Security Scan | 44h ago
-├─ [13 more tasks...]
++- task_20241226_143022_123 | Quality Analysis | 45h ago
++- task_20241226_143025_456 | Security Scan | 44h ago
++- [13 more tasks...]
 
 Failed Tasks (5):
-├─ task_20241226_143018_789 | Test Execution | 46h ago
-├─ [4 more tasks...]
++- task_20241226_143018_789 | Test Execution | 46h ago
++- [4 more tasks...]
 
 Cancelled Tasks (2):
-├─ task_20241226_143030_012 | Documentation | 43h ago
-├─ [1 more task...]
++- task_20241226_143030_012 | Documentation | 43h ago
++- [1 more task...]
 
-├─ Total tasks that would be removed: 22
-├─ Tasks that would be preserved: 18
-└─ Recent threshold: keep 10 most recent of each status
++- Total tasks that would be removed: 22
++- Tasks that would be preserved: 18
++- Recent threshold: keep 10 most recent of each status
 
 💡 Run without --dry-run to perform actual cleanup
 ```
@@ -259,11 +259,11 @@ Maintains performance data:
 Track cleanup effectiveness:
 ```
 📊 Cleanup Analytics (Last 30 Days)
-├─ Total cleanups: 12
-├─ Average tasks removed: 45
-├─ Storage saved: 2.3 MB
-├─ Performance improvement: 15%
-└─ Last cleanup: 2024-12-28 10:30:00
++- Total cleanups: 12
++- Average tasks removed: 45
++- Storage saved: 2.3 MB
++- Performance improvement: 15%
++- Last cleanup: 2024-12-28 10:30:00
 ```
 
 ### Impact Assessment

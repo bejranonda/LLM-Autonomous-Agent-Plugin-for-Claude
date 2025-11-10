@@ -247,61 +247,61 @@ Shows detailed agent selection and delegation process:
 
 ### **✅ Successful GUI Validation**
 ```
-═══════════════════════════════════════════════════════
+=======================================================
   COMPREHENSIVE GUI VALIDATION COMPLETE
-═══════════════════════════════════════════════════════
+=======================================================
 
-┌─ Overall GUI Health Score ────────────────────────────┐
-│ Score: 91/100 ✅ EXCELLENT                           │
-│ Status: Production Ready                            │
-│ Validation Time: 2m 15s                             │
-└───────────────────────────────────────────────────────┘
++- Overall GUI Health Score ----------------------------+
+| Score: 91/100 ✅ EXCELLENT                           |
+| Status: Production Ready                            |
+| Validation Time: 2m 15s                             |
++-------------------------------------------------------+
 
-┌─ Interface Summary ─────────────────────────────────┐
-│ Web Dashboard:    94/100 ✅ (Fully functional)        │
-│ CLI Interface:    89/100 ✅ (All commands working)    │
-│ Visual Components: 92/100 ✅ (Charts rendering correctly)│
-│ Data Presentation: 88/100 ✅ (Real-time sync working)  │
-└───────────────────────────────────────────────────────┘
++- Interface Summary ---------------------------------+
+| Web Dashboard:    94/100 ✅ (Fully functional)        |
+| CLI Interface:    89/100 ✅ (All commands working)    |
+| Visual Components: 92/100 ✅ (Charts rendering correctly)|
+| Data Presentation: 88/100 ✅ (Real-time sync working)  |
++-------------------------------------------------------+
 
-┌─ Performance Metrics ───────────────────────────────┐
-│ Web Dashboard Load: 1.8s ✅ (target: <2s)            │
-│ CLI Command Response: 0.4s ✅ (target: <1s)         │
-│ Chart Render Time: 0.8s ✅ (target: <1s)            │
-│ Real-time Update: 0.3s ✅ (target: <1s)             │
-│ Memory Usage: 124MB ✅ (stable)                     │
-│ API Response Time: 142ms ✅ (target: <200ms)        │
-└───────────────────────────────────────────────────────┘
++- Performance Metrics -------------------------------+
+| Web Dashboard Load: 1.8s ✅ (target: <2s)            |
+| CLI Command Response: 0.4s ✅ (target: <1s)         |
+| Chart Render Time: 0.8s ✅ (target: <1s)            |
+| Real-time Update: 0.3s ✅ (target: <1s)             |
+| Memory Usage: 124MB ✅ (stable)                     |
+| API Response Time: 142ms ✅ (target: <200ms)        |
++-------------------------------------------------------+
 
-┌─ Cross-Platform Compatibility ───────────────────────┐
-│ Windows:           ✅ Fully compatible               │
-│ macOS:             ✅ Fully compatible               │
-│ Linux:             ✅ Fully compatible               │
-│ Mobile Responsive: ✅ Responsive design working      │
-└───────────────────────────────────────────────────────┘
++- Cross-Platform Compatibility -----------------------+
+| Windows:           ✅ Fully compatible               |
+| macOS:             ✅ Fully compatible               |
+| Linux:             ✅ Fully compatible               |
+| Mobile Responsive: ✅ Responsive design working      |
++-------------------------------------------------------+
 
-┌─ Browser Compatibility ──────────────────────────────┐
-│ Chrome:  ✅ Full functionality                      │
-│ Firefox: ✅ Full functionality                      │
-│ Safari:  ✅ Full functionality                      │
-│ Edge:    ✅ Full functionality                      │
-└───────────────────────────────────────────────────────┘
++- Browser Compatibility ------------------------------+
+| Chrome:  ✅ Full functionality                      |
+| Firefox: ✅ Full functionality                      |
+| Safari:  ✅ Full functionality                      |
+| Edge:    ✅ Full functionality                      |
++-------------------------------------------------------+
 
-┌─ Issues Resolved ───────────────────────────────────┐
-│ • Fixed 2 web dashboard layout issues                │
-│ • Optimized 3 CLI command output formats            │
-│ • Improved 1 chart rendering performance             │
-│ • Enhanced 1 mobile responsiveness issue             │
-│ • Resolved 1 color contrast accessibility problem     │
-└───────────────────────────────────────────────────────┘
++- Issues Resolved -----------------------------------+
+| * Fixed 2 web dashboard layout issues                |
+| * Optimized 3 CLI command output formats            |
+| * Improved 1 chart rendering performance             |
+| * Enhanced 1 mobile responsiveness issue             |
+| * Resolved 1 color contrast accessibility problem     |
++-------------------------------------------------------+
 
-┌─ Accessibility Score ───────────────────────────────┐
-│ WCAG 2.1 AA Compliance: 92/100 ✅                   │
-│ Color Contrast: ✅ Pass                             │
-│ Keyboard Navigation: ✅ Pass                         │
-│ Screen Reader Support: ✅ Pass                       │
-│ Focus Management: ✅ Pass                           │
-└───────────────────────────────────────────────────────┘
++- Accessibility Score -------------------------------+
+| WCAG 2.1 AA Compliance: 92/100 ✅                   |
+| Color Contrast: ✅ Pass                             |
+| Keyboard Navigation: ✅ Pass                         |
+| Screen Reader Support: ✅ Pass                       |
+| Focus Management: ✅ Pass                           |
++-------------------------------------------------------+
 
 🌐 Web Dashboard URL: http://127.0.0.1:5000
 💻 CLI Commands: 16/16 working ✅
@@ -312,78 +312,78 @@ Shows detailed agent selection and delegation process:
 **GUI System Status: Production Ready** ✅
 ```
 
-### **⚠️ GUI Issues Found**
+### **[WARN]️ GUI Issues Found**
 ```
-═══════════════════════════════════════════════════════
+=======================================================
   GUI VALIDATION - ACTION REQUIRED
-═══════════════════════════════════════════════════════
+=======================================================
 
-┌─ Overall GUI Health Score ────────────────────────────┐
-│ Score: 76/100 ⚠️ NEEDS IMPROVEMENT                   │
-│ Status: Functional with Issues                      │
-│ Validation Time: 2m 45s                             │
-└───────────────────────────────────────────────────────┘
++- Overall GUI Health Score ----------------------------+
+| Score: 76/100 [WARN]️ NEEDS IMPROVEMENT                   |
+| Status: Functional with Issues                      |
+| Validation Time: 2m 45s                             |
++-------------------------------------------------------+
 
-┌─ Critical Issues ───────────────────────────────────┐
-│ 🔴 [HIGH] Web dashboard charts not rendering on Safari │
-│   Impact: 15% of users cannot view data visualizations │
-│   Auto-fix attempted: Failed - Safari-specific JS issue │
-│   Required action: Test and implement Safari polyfills  │
-│                                                       │
-│ 🔴 [HIGH] CLI commands failing on Windows PowerShell  │
-│   Impact: Windows users cannot execute plugin commands │
-│   Auto-fix attempted: Partial - Fixed argument parsing  │
-│   Required action: Complete PowerShell compatibility     │
-└───────────────────────────────────────────────────────┘
++- Critical Issues -----------------------------------+
+| 🔴 [HIGH] Web dashboard charts not rendering on Safari |
+|   Impact: 15% of users cannot view data visualizations |
+|   Auto-fix attempted: Failed - Safari-specific JS issue |
+|   Required action: Test and implement Safari polyfills  |
+|                                                       |
+| 🔴 [HIGH] CLI commands failing on Windows PowerShell  |
+|   Impact: Windows users cannot execute plugin commands |
+|   Auto-fix attempted: Partial - Fixed argument parsing  |
+|   Required action: Complete PowerShell compatibility     |
++-------------------------------------------------------+
 
-┌─ Performance Issues ───────────────────────────────┐
-│ 🟡 [MED] Slow chart rendering with large datasets      │
-│   Impact: Poor user experience with >1000 data points   │
-│   Current: 3.2s (target: <1s)                        │
-│   Fix needed: Implement data sampling and lazy loading  │
-│                                                       │
-│ 🟡 [MED] Mobile menu not fully responsive             │
-│   Impact: Poor mobile navigation experience             │
-│   Fix needed: CSS media query adjustments               │
-│                                                       │
-│ 🟡 [MED] CLI output formatting inconsistent            │
-│   Impact: Reduced readability across terminals         │
-│   Fix needed: Standardize output formatting            │
-└───────────────────────────────────────────────────────┘
++- Performance Issues -------------------------------+
+| 🟡 [MED] Slow chart rendering with large datasets      |
+|   Impact: Poor user experience with >1000 data points   |
+|   Current: 3.2s (target: <1s)                        |
+|   Fix needed: Implement data sampling and lazy loading  |
+|                                                       |
+| 🟡 [MED] Mobile menu not fully responsive             |
+|   Impact: Poor mobile navigation experience             |
+|   Fix needed: CSS media query adjustments               |
+|                                                       |
+| 🟡 [MED] CLI output formatting inconsistent            |
+|   Impact: Reduced readability across terminals         |
+|   Fix needed: Standardize output formatting            |
++-------------------------------------------------------+
 
-┌─ Usability Issues ──────────────────────────────────┐
-│ 🟢 [LOW] Color contrast insufficient for colorblind   │
-│   Impact: Reduced accessibility for 8% of users       │
-│   Fix needed: Adjust color contrast ratios              │
-│                                                       │
-│ 🟢 [LOW] Help text missing for advanced options       │
-│   Impact: Reduced discoverability of features         │
-│   Fix needed: Generate comprehensive help documentation │
-└───────────────────────────────────────────────────────┘
++- Usability Issues ----------------------------------+
+| 🟢 [LOW] Color contrast insufficient for colorblind   |
+|   Impact: Reduced accessibility for 8% of users       |
+|   Fix needed: Adjust color contrast ratios              |
+|                                                       |
+| 🟢 [LOW] Help text missing for advanced options       |
+|   Impact: Reduced discoverability of features         |
+|   Fix needed: Generate comprehensive help documentation |
++-------------------------------------------------------+
 
-┌─ Interface Status ──────────────────────────────────┐
-│ Web Dashboard:    ⚠️ Functional with issues          │
-│ CLI Interface:    ⚠️ Partial functionality           │
-│ Visual Components: ⚠️ Performance issues              │
-│ Data Presentation: ✅ Working correctly              │
-└───────────────────────────────────────────────────────┘
++- Interface Status ----------------------------------+
+| Web Dashboard:    [WARN]️ Functional with issues          |
+| CLI Interface:    [WARN]️ Partial functionality           |
+| Visual Components: [WARN]️ Performance issues              |
+| Data Presentation: ✅ Working correctly              |
++-------------------------------------------------------+
 
-┌─ Immediate Actions Required ────────────────────────┐
-│ 1. [HIGH] Fix Safari chart rendering compatibility   │
-│ 2. [HIGH] Complete Windows PowerShell support        │
-│ 3. [MED] Optimize chart performance for large data   │
-│ 4. [MED] Improve mobile responsiveness               │
-│ 5. [MED] Standardize CLI output formatting          │
-│ 6. [LOW] Enhance color accessibility                │
-│ 7. [LOW] Complete help documentation                │
-└───────────────────────────────────────────────────────┘
++- Immediate Actions Required ------------------------+
+| 1. [HIGH] Fix Safari chart rendering compatibility   |
+| 2. [HIGH] Complete Windows PowerShell support        |
+| 3. [MED] Optimize chart performance for large data   |
+| 4. [MED] Improve mobile responsiveness               |
+| 5. [MED] Standardize CLI output formatting          |
+| 6. [LOW] Enhance color accessibility                |
+| 7. [LOW] Complete help documentation                |
++-------------------------------------------------------+
 
-┌─ Auto-Fix Applied ───────────────────────────────────┐
-│ ✅ Fixed web dashboard layout issues                  │
-│ ✅ Restored missing JavaScript assets                 │
-│ ✅ Improved CLI error message formatting              │
-│ ✅ Updated color contrast for better accessibility    │
-└───────────────────────────────────────────────────────┘
++- Auto-Fix Applied -----------------------------------+
+| ✅ Fixed web dashboard layout issues                  |
+| ✅ Restored missing JavaScript assets                 |
+| ✅ Improved CLI error message formatting              |
+| ✅ Updated color contrast for better accessibility    |
++-------------------------------------------------------+
 
 📊 Pattern learning: 5 new GUI debugging patterns stored
 🔧 Tools used: code-analysis, quality-standards, pattern-learning

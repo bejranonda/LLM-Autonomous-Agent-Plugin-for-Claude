@@ -43,16 +43,16 @@ This command delegates to the **validation-controller** agent which:
 ### Terminal Output (Concise)
 
 ```
-✓ Validation Complete - Score: 85/100
+[PASS] Validation Complete - Score: 85/100
 
 Key Findings:
-• [ERROR] Documentation path inconsistency: 6 occurrences in CLAUDE.md
-• [WARN] Write operation without prior Read: plugin.json
-• [INFO] All cross-references valid
+* [ERROR] Documentation path inconsistency: 6 occurrences in CLAUDE.md
+* [WARN] Write operation without prior Read: plugin.json
+* [INFO] All cross-references valid
 
 Top Recommendations:
-1. [HIGH] Standardize path references in CLAUDE.md → Prevent user confusion
-2. [MED]  Add Read before Write to plugin.json → Follow tool requirements
+1. [HIGH] Standardize path references in CLAUDE.md -> Prevent user confusion
+2. [MED]  Add Read before Write to plugin.json -> Follow tool requirements
 3. [LOW]  Consider adding path validation utility
 
 📄 Full report: .claude/reports/validation-2025-10-21.md
@@ -69,11 +69,11 @@ Generated: 2025-10-21 12:30:45
 
 ## Executive Summary
 Validation Score: 85/100 (Good)
-- Tool Usage: 27/30 ✓
-- Documentation Consistency: 18/25 ✗
-- Best Practices: 20/20 ✓
-- Error-Free Execution: 12/15 ✓
-- Pattern Compliance: 8/10 ✓
+- Tool Usage: 27/30 [PASS]
+- Documentation Consistency: 18/25 [FAIL]
+- Best Practices: 20/20 [PASS]
+- Error-Free Execution: 12/15 [PASS]
+- Pattern Compliance: 8/10 [PASS]
 
 ## Detailed Findings
 
@@ -129,54 +129,54 @@ Edit(".claude-plugin/plugin.json", old_string, new_string)
 
 ### ✅ Passed Validations (12)
 
-- ✓ Version consistency across all files (v1.6.1)
-- ✓ Component counts accurate (10 agents, 6 skills, 6 commands)
-- ✓ All cross-references valid
-- ✓ Tool selection follows best practices
-- ✓ Bash usage avoids anti-patterns
-- ✓ No broken links in documentation
-- ✓ All referenced files exist
-- ✓ Agent YAML frontmatter valid
-- ✓ Skill metadata complete
-- ✓ Command descriptions accurate
-- ✓ Pattern database schema valid
-- ✓ No duplicate component names
+- [PASS] Version consistency across all files (v1.6.1)
+- [PASS] Component counts accurate (10 agents, 6 skills, 6 commands)
+- [PASS] All cross-references valid
+- [PASS] Tool selection follows best practices
+- [PASS] Bash usage avoids anti-patterns
+- [PASS] No broken links in documentation
+- [PASS] All referenced files exist
+- [PASS] Agent YAML frontmatter valid
+- [PASS] Skill metadata complete
+- [PASS] Command descriptions accurate
+- [PASS] Pattern database schema valid
+- [PASS] No duplicate component names
 
 ### 📊 Validation Breakdown
 
 **Tool Usage Compliance**: 27/30 points
-- ✓ 15/16 Edit operations had prerequisite Read
-- ✗ 1/16 Edit failed due to missing Read
-- ✓ 8/8 Write operations on new files proper
-- ✗ 1/2 Write on existing file without Read
-- ✓ All Bash commands properly chained
-- ✓ Specialized tools preferred over Bash
+- [PASS] 15/16 Edit operations had prerequisite Read
+- [FAIL] 1/16 Edit failed due to missing Read
+- [PASS] 8/8 Write operations on new files proper
+- [FAIL] 1/2 Write on existing file without Read
+- [PASS] All Bash commands properly chained
+- [PASS] Specialized tools preferred over Bash
 
 **Documentation Consistency**: 18/25 points
-- ✗ Path references inconsistent (6 violations)
-- ✓ Version numbers synchronized
-- ✓ Component counts accurate
-- ✓ No orphaned references
-- ✓ Examples match implementation
+- [FAIL] Path references inconsistent (6 violations)
+- [PASS] Version numbers synchronized
+- [PASS] Component counts accurate
+- [PASS] No orphaned references
+- [PASS] Examples match implementation
 
 **Best Practices Adherence**: 20/20 points
-- ✓ Tool selection optimal
-- ✓ Error handling comprehensive
-- ✓ File operations use correct tools
-- ✓ Documentation complete
-- ✓ Code structure clean
+- [PASS] Tool selection optimal
+- [PASS] Error handling comprehensive
+- [PASS] File operations use correct tools
+- [PASS] Documentation complete
+- [PASS] Code structure clean
 
 **Error-Free Execution**: 12/15 points
-- ✓ 95% of operations successful
-- ✗ 1 tool prerequisite violation
-- ✓ Quick error recovery
-- ✓ No critical failures
+- [PASS] 95% of operations successful
+- [FAIL] 1 tool prerequisite violation
+- [PASS] Quick error recovery
+- [PASS] No critical failures
 
 **Pattern Compliance**: 8/10 points
-- ✓ Follows successful patterns
-- ✗ Minor deviation in tool sequence
-- ✓ Quality scores consistent
-- ✓ Learning patterns applied
+- [PASS] Follows successful patterns
+- [FAIL] Minor deviation in tool sequence
+- [PASS] Quality scores consistent
+- [PASS] Learning patterns applied
 
 ## Recommendations (Prioritized)
 

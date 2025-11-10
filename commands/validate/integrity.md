@@ -72,7 +72,7 @@ Output:
 🔍 Plugin Integrity Validation
 ✅ Overall Integrity: 92/100
 📊 Components: 56/58 present
-⚠️  Issues: 2 non-critical
+[WARN]️  Issues: 2 non-critical
 📦 Backups: 3 recent backups available
 💡 Recommendations: 2 improvement suggestions
 ```
@@ -85,8 +85,8 @@ Output:
 ```
 🔄 Automatic Recovery Mode
 📋 Missing Components Found:
-  • /monitor:dashboard (CRITICAL)
-  • /commands/workspace/archive (WARNING)
+  * /monitor:dashboard (CRITICAL)
+  * /commands/workspace/archive (WARNING)
 
 🔧 Recovery Attempting:
   ✅ /monitor:dashboard restored from backup (backup_20250127_143022)
@@ -104,10 +104,10 @@ Output:
 🔍 Critical Components Validation
 ✅ All critical components present
 📋 Critical Inventory:
-  • Commands: 22/22 present
-  • Agents: 7/7 present
-  • Core Skills: 6/6 present
-  • Plugin Config: 1/1 present
+  * Commands: 22/22 present
+  * Agents: 7/7 present
+  * Core Skills: 6/6 present
+  * Plugin Config: 1/1 present
 ```
 
 ## Output Format

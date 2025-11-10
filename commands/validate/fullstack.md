@@ -63,35 +63,35 @@ This command orchestrates a complete validation workflow for multi-component app
 ```
 User runs: /validate:fullstack
 
-↓
+v
 
 Orchestrator Agent:
   1. Load skills: fullstack-validation, code-analysis, quality-standards
   2. Detect project structure
   3. Create validation plan
 
-↓
+v
 
 Parallel Execution (background-task-manager):
-  ├─ [Frontend-Analyzer] TypeScript + Build validation
-  ├─ [Test-Engineer] Backend tests + coverage
-  ├─ [Quality-Controller] Code quality checks
-  └─ [Build-Validator] Build config validation
+  +- [Frontend-Analyzer] TypeScript + Build validation
+  +- [Test-Engineer] Backend tests + coverage
+  +- [Quality-Controller] Code quality checks
+  +- [Build-Validator] Build config validation
 
-↓
+v
 
 Sequential Execution:
   1. [API-Contract-Validator] Frontend ↔ Backend synchronization
   2. [Quality-Controller] Cross-component quality assessment
 
-↓
+v
 
 Auto-Fix Loop (if quality score < 70):
   1. Apply automatic fixes
   2. Re-run validation
   3. Repeat until quality ≥ 70 or max 3 attempts
 
-↓
+v
 
 Results:
   - Terminal: Concise summary (15-20 lines)
@@ -107,17 +107,17 @@ Results:
 ✅ Full-Stack Validation Complete (2m 34s)
 
 📊 Component Status:
-├─ Backend (FastAPI): ✅ 96/100 (42% coverage → target 70%)
-├─ Frontend (React): ✅ 87/100 (0 errors, 882KB bundle)
-└─ API Contract: ✅ 23/23 endpoints matched
++- Backend (FastAPI): ✅ 96/100 (42% coverage -> target 70%)
++- Frontend (React): ✅ 87/100 (0 errors, 882KB bundle)
++- API Contract: ✅ 23/23 endpoints matched
 
 🔧 Auto-Fixed (11 issues):
-✓ Removed 5 unused TypeScript imports
-✓ Added text() wrapper to 3 SQL queries
-✓ Fixed 2 React Query v5 syntax
-✓ Generated vite-env.d.ts
+[PASS] Removed 5 unused TypeScript imports
+[PASS] Added text() wrapper to 3 SQL queries
+[PASS] Fixed 2 React Query v5 syntax
+[PASS] Generated vite-env.d.ts
 
-⚠️  Recommended (2 actions):
+[WARN]️  Recommended (2 actions):
 1. Increase test coverage to 70% (currently 42%)
 2. Add indexes to users.email, projects.created_at
 
@@ -165,20 +165,20 @@ Saved to `.claude/reports/validate-fullstack-YYYY-MM-DD.md`:
 
 ```
 Total Score (0-100):
-├─ Component Scores (60 points):
-│  ├─ Backend: 20 points max
-│  ├─ Frontend: 20 points max
-│  └─ Integration: 20 points max
-├─ Test Coverage (15 points):
-│  └─ 70%+ = 15, 50-69% = 10, <50% = 5
-├─ Auto-Fix Success (15 points):
-│  └─ All fixed = 15, Some fixed = 10, None = 0
-└─ Best Practices (10 points):
-   └─ Documentation, types, standards
++- Component Scores (60 points):
+|  +- Backend: 20 points max
+|  +- Frontend: 20 points max
+|  +- Integration: 20 points max
++- Test Coverage (15 points):
+|  +- 70%+ = 15, 50-69% = 10, <50% = 5
++- Auto-Fix Success (15 points):
+|  +- All fixed = 15, Some fixed = 10, None = 0
++- Best Practices (10 points):
+   +- Documentation, types, standards
 
 Threshold:
 ✅ 70-100: Production Ready
-⚠️  50-69: Needs Improvement
+[WARN]️  50-69: Needs Improvement
 ❌ 0-49: Critical Issues
 ```
 

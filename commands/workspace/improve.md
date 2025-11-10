@@ -251,10 +251,10 @@ Timeframe: Last 30 days
 Data Analyzed: 47 patterns, 89 command usages, 12 performance records
 
 📊 KEY INSIGHTS:
-• Average Quality Score: 88.7/100 (+3.2 vs previous period)
-• Task Success Rate: 91% (+4% improvement)
-• Average Resolution Time: 6.8 minutes (-18% improvement)
-• Learning Velocity: Accelerating 🚀
+* Average Quality Score: 88.7/100 (+3.2 vs previous period)
+* Task Success Rate: 91% (+4% improvement)
+* Average Resolution Time: 6.8 minutes (-18% improvement)
+* Learning Velocity: Accelerating 🚀
 
 🎯 TOP IMPROVEMENT OPPORTUNITIES:
 1. Debugging Performance Optimization (High Priority)
@@ -297,12 +297,12 @@ Pattern Utilization: +5%/week
 
 ### Continuous Improvement Loop
 
-1. **User Interaction** → Plugin executes tasks
-2. **Pattern Storage** → Learning patterns captured
-3. **Experience Analysis** → `/improve-plugin` generates insights
-4. **Improvement Implementation** → Developers apply suggested improvements
-5. **Performance Monitoring** → Dashboard tracks impact
-6. **Repeat** → Continuous cycle of improvement
+1. **User Interaction** -> Plugin executes tasks
+2. **Pattern Storage** -> Learning patterns captured
+3. **Experience Analysis** -> `/improve-plugin` generates insights
+4. **Improvement Implementation** -> Developers apply suggested improvements
+5. **Performance Monitoring** -> Dashboard tracks impact
+6. **Repeat** -> Continuous cycle of improvement
 
 ### Claude Code Integration
 

@@ -78,14 +78,14 @@ Retry failed tasks in the autonomous task queue, either individually or in batch
 ### Single Task Retry
 ```
 🔄 Task Retry
-├─ Task ID: task_20241228_143022_123
-├─ Name: Quality Analysis
-├─ Previous Status: failed
-├─ New Status: retrying
-├─ Retry Attempt: 2/3
-├─ Original Error: Timeout after 300 seconds
-├─ Queue Position: 1 (front of queue)
-└─ Estimated Retry Time: Immediately
++- Task ID: task_20241228_143022_123
++- Name: Quality Analysis
++- Previous Status: failed
++- New Status: retrying
++- Retry Attempt: 2/3
++- Original Error: Timeout after 300 seconds
++- Queue Position: 1 (front of queue)
++- Estimated Retry Time: Immediately
 
 ✅ Task queued for retry
 ```
@@ -93,21 +93,21 @@ Retry failed tasks in the autonomous task queue, either individually or in batch
 ### Batch Retry
 ```
 🔄 Batch Retry Operation
-├─ Criteria: status=failed, priority=high
-├─ Tasks Found: 8
-├─ Tasks Eligible: 6
-├─ Tasks Retried: 6
-├─ Tasks Ineligible: 2
++- Criteria: status=failed, priority=high
++- Tasks Found: 8
++- Tasks Eligible: 6
++- Tasks Retried: 6
++- Tasks Ineligible: 2
 
 Retried Tasks:
-├─ ✅ task_20241228_143022_123 | Quality Analysis | Retry 2/3
-├─ ✅ task_20241228_143025_456 | Security Scan | Retry 1/3
-├─ ✅ task_20241228_143028_789 | Documentation | Retry 1/3
-└─ [3 more tasks...]
++- ✅ task_20241228_143022_123 | Quality Analysis | Retry 2/3
++- ✅ task_20241228_143025_456 | Security Scan | Retry 1/3
++- ✅ task_20241228_143028_789 | Documentation | Retry 1/3
++- [3 more tasks...]
 
 Ineligible Tasks:
-├─ ❌ task_20241228_143018_333 | Test Execution | Max retries exceeded
-└─ ❌ task_20241228_143015_777 | Performance Test | Cancelled by user
++- ❌ task_20241228_143018_333 | Test Execution | Max retries exceeded
++- ❌ task_20241228_143015_777 | Performance Test | Cancelled by user
 
 📊 Summary: 6 tasks retried | 2 tasks ineligible
 ```
@@ -115,17 +115,17 @@ Ineligible Tasks:
 ### All Failed Tasks Retry
 ```
 🔄 Retry All Failed Tasks
-├─ Total Failed Tasks: 15
-├─ Tasks With Retries Remaining: 12
-├─ Tasks Retried: 12
-├─ Tasks At Max Retries: 3
++- Total Failed Tasks: 15
++- Tasks With Retries Remaining: 12
++- Tasks Retried: 12
++- Tasks At Max Retries: 3
 
 Retry Results:
-├─ High Priority: 5 retried
-├─ Medium Priority: 6 retried
-├─ Low Priority: 1 retried
++- High Priority: 5 retried
++- Medium Priority: 6 retried
++- Low Priority: 1 retried
 
-⚠️ 3 tasks have exceeded maximum retry limit
+[WARN]️ 3 tasks have exceeded maximum retry limit
 💡 Consider reviewing these tasks manually or increasing retry limits
 ```
 
@@ -185,17 +185,17 @@ Future enhancement: Smart retry conditions:
 Track retry effectiveness:
 ```
 📊 Retry Analytics (Last 7 Days)
-├─ Total Retries: 45
-├─ Successful Retries: 32 (71%)
-├─ Failed Retries: 13 (29%)
-├─ Average Retry Time: 2.3 minutes
-└─ Most Retried Task: Security Scan (4 times)
++- Total Retries: 45
++- Successful Retries: 32 (71%)
++- Failed Retries: 13 (29%)
++- Average Retry Time: 2.3 minutes
++- Most Retried Task: Security Scan (4 times)
 
 Retry Success by Category:
-├─ Timeout Errors: 85% success rate
-├─ Network Errors: 67% success rate
-├─ Resource Errors: 50% success rate
-└─ Service Errors: 75% success rate
++- Timeout Errors: 85% success rate
++- Network Errors: 67% success rate
++- Resource Errors: 50% success rate
++- Service Errors: 75% success rate
 ```
 
 ### Pattern Learning

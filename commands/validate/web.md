@@ -274,7 +274,7 @@ def display_crawling_results(results):
                                len(r.javascript_errors) > 0)]
 
     if successful_with_warnings:
-        print("⚠️  SUCCESSFUL PAGES WITH ISSUES:")
+        print("[WARN]️  SUCCESSFUL PAGES WITH ISSUES:")
         for i, result in enumerate(successful_with_warnings[:10], 1):  # Limit to first 10
             errors = len(result.console_errors) + len(result.javascript_errors)
             warnings = len(result.console_warnings)
@@ -311,7 +311,7 @@ def display_crawling_results(results):
     elif successful_pages > total_pages * 0.8:
         print("✅ OVERALL STATUS: MOSTLY HEALTHY ({successful_pages}/{total_pages} pages passed)")
     else:
-        print("⚠️  OVERALL STATUS: NEEDS ATTENTION ({successful_pages}/{total_pages} pages passed)")
+        print("[WARN]️  OVERALL STATUS: NEEDS ATTENTION ({successful_pages}/{total_pages} pages passed)")
 
     print("=" * 80)
 
@@ -434,7 +434,7 @@ WEB CRAWLING VALIDATION REPORT
 """
 
     if total_warnings > 0:
-        content += f"""### ⚠️ Code Quality ({total_warnings} warnings)
+        content += f"""### [WARN]️ Code Quality ({total_warnings} warnings)
 1. **Deprecation Warnings**: Update deprecated API usage
 2. **Performance Optimization**: Address performance warnings
 3. **Best Practices**: Follow modern web development standards

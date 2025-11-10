@@ -12,7 +12,7 @@ delegates-to: autonomous-agent:orchestrator
 **SYSTEM-WIDE FAILURE PREVENTION**: When generating ANY response content for this command, you MUST ensure:
 
 1. **NEVER generate empty text blocks** - All content blocks must have non-empty text
-2. **NEVER use Unicode box characters** (═, ║, ╔, ╗, etc.) - Use safe ASCII alternatives
+2. **NEVER use Unicode box characters** (=, |, +, +, etc.) - Use safe ASCII alternatives
 3. **ALWAYS provide fallback content** for any section that might be empty
 4. **VALIDATE all content blocks** before finalizing response
 5. **NEVER leave sections empty** - Provide default values for missing data
@@ -70,59 +70,69 @@ If score < 70, auto-fix loop is triggered automatically.
 The orchestrator MUST present results in this format:
 
 ```
-═══════════════════════════════════════════════════════
+============================================================
   QUALITY CHECK COMPLETED
-═══════════════════════════════════════════════════════
+============================================================
 
-┌─ Overall Quality Score ──────────────────────────────┐
-│ Current Score: 88/100 ✓ PASS                         │
-│ Previous Score: 83/100                                │
-│ Trend: ↑ +5 points (improving)                       │
-│ Status: Above threshold (70+)                         │
-└───────────────────────────────────────────────────────┘
++-------------------------------------------------------+
+| OVERALL QUALITY SCORE
++-------------------------------------------------------+
+| Current Score: 88/100 [PASS]                         |
+| Previous Score: 83/100                                |
+| Trend: +5 points (improving)                          |
+| Status: Above threshold (70+)                         |
++-------------------------------------------------------+
 
-┌─ Quality Breakdown ──────────────────────────────────┐
-│ Tests (30 pts):         26/30 ✓                      │
-│   45 passed, 2 failed | 88% coverage                 │
-│                                                       │
-│ Standards (25 pts):     18/25 ⚠                      │
-│   18 style violations found                           │
-│                                                       │
-│ Documentation (20 pts): 19/20 ✓                      │
-│   97% of public APIs documented                       │
-│                                                       │
-│ Patterns (15 pts):      15/15 ✓                      │
-│   Adheres to 8/8 learned patterns                     │
-│                                                       │
-│ Metrics (10 pts):       10/10 ✓                      │
-│   Acceptable complexity levels                        │
-└───────────────────────────────────────────────────────┘
++-------------------------------------------------------+
+| QUALITY BREAKDOWN
++-------------------------------------------------------+
+| Tests (30 pts):         26/30 [PASS]                  |
+|   45 passed, 2 failed | 88% coverage                 |
+|                                                       |
+| Standards (25 pts):     18/25 [WARN]                  |
+|   18 style violations found                           |
+|                                                       |
+| Documentation (20 pts): 19/20 [PASS]                  |
+|   97% of public APIs documented                       |
+|                                                       |
+| Patterns (15 pts):      15/15 [PASS]                  |
+|   Adheres to 8/8 learned patterns                     |
+|                                                       |
+| Metrics (10 pts):       10/10 [PASS]                  |
+|   Acceptable complexity levels                        |
++-------------------------------------------------------+
 
-┌─ Auto-Fix Actions Taken ─────────────────────────────┐
-│ • Fixed 12 style violations (auto-formatted)         │
-│ • Added 3 missing docstrings                          │
-│ • Updated 1 outdated dependency                       │
-│ • Quality improved from 83 → 88 (+5 points)          │
-└───────────────────────────────────────────────────────┘
++-------------------------------------------------------+
+| AUTO-FIX ACTIONS TAKEN
++-------------------------------------------------------+
+| * Fixed 12 style violations (auto-formatted)         |
+| * Added 3 missing docstrings                          |
+| * Updated 1 outdated dependency                       |
+| * Quality improved from 83 -> 88 (+5 points)          |
++-------------------------------------------------------+
 
-┌─ Remaining Issues ───────────────────────────────────┐
-│ Tests:                                                │
-│ • test_user_login() - AssertionError (auth.py:45)   │
-│ • test_token_refresh() - Timeout (auth.py:89)       │
-│                                                       │
-│ Standards:                                            │
-│ • 6 violations require manual review                  │
-│   (complex refactoring needed)                        │
-└───────────────────────────────────────────────────────┘
++-------------------------------------------------------+
+| REMAINING ISSUES
++-------------------------------------------------------+
+| Tests:                                                |
+| * test_user_login() - AssertionError (auth.py:45)     |
+| * test_token_refresh() - Timeout (auth.py:89)         |
+|                                                       |
+| Standards:                                            |
+| * 6 violations require manual review                  |
+|   (complex refactoring needed)                        |
++-------------------------------------------------------+
 
-┌─ Recommendations ────────────────────────────────────┐
-│ 1. [HIGH] Fix 2 failing tests in auth module         │
-│    → Expected +4 quality points                       │
-│ 2. [MED] Refactor complex functions flagged          │
-│    → Expected +2 quality points                       │
-│ 3. [LOW] Review 6 manual style violations            │
-│    → Expected +1 quality point                        │
-└───────────────────────────────────────────────────────┘
++-------------------------------------------------------+
+| RECOMMENDATIONS
++-------------------------------------------------------+
+| 1. [HIGH] Fix 2 failing tests in auth module          |
+|    -> Expected +4 quality points                      |
+| 2. [MED] Refactor complex functions flagged           |
+|    -> Expected +2 quality points                      |
+| 3. [LOW] Review 6 manual style violations             |
+|    -> Expected +1 quality point                       |
++-------------------------------------------------------+
 
 Skills Loaded: quality-standards, testing-strategies
 Agents Used: quality-controller, test-engineer
@@ -130,7 +140,7 @@ Auto-Fix Iterations: 2 (converged)
 Patterns Stored: Quality pattern updated in .claude-patterns/
 Check Time: 1.8 minutes
 
-═══════════════════════════════════════════════════════
+============================================================
 ```
 
 ## Auto-Fix Details

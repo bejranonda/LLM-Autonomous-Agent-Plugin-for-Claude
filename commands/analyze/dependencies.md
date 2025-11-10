@@ -107,10 +107,10 @@ Risk Score (0-100) =
     Info × 1
 
 Example:
-- Critical: 2 → 50 points
-- High: 3 → 45 points
-- Medium: 7 → 56 points
-- Low: 3 → 9 points
+- Critical: 2 -> 50 points
+- High: 3 -> 45 points
+- Medium: 7 -> 56 points
+- Low: 3 -> 9 points
 ---
 
 
@@ -152,7 +152,7 @@ Risk Score: 100/100 (EXTREME)
    npm: 10 vulnerabilities
    Go: 0 vulnerabilities
 
-⚠️  Top 3 Vulnerable Packages
+[WARN]️  Top 3 Vulnerable Packages
    1. requests (Python) - 2 vulnerabilities
    2. axios (npm) - 3 vulnerabilities
    3. lodash (npm) - 2 vulnerabilities
@@ -441,11 +441,11 @@ npm audit fix
 ### Manual Review Required
 These upgrades may have breaking changes (semver major):
 
-- **axios**: 0.21.1 → 1.6.0 (major version bump)
+- **axios**: 0.21.1 -> 1.6.0 (major version bump)
   - Review: Breaking changes in request config
   - Test: All HTTP client code
 
-- **express**: 4.17.1 → 4.19.2 (minor bump, but middleware changes)
+- **express**: 4.17.1 -> 4.19.2 (minor bump, but middleware changes)
   - Review: Middleware compatibility
   - Test: All routes and error handlers
 
@@ -462,7 +462,7 @@ These upgrades may have breaking changes (semver major):
 
 **Security Status**:
 - ✅ Secure: 175 packages (93.6%)
-- ⚠️  Vulnerable: 12 packages (6.4%)
+- [WARN]️  Vulnerable: 12 packages (6.4%)
 
 **Freshness**:
 - Up-to-date: 120 packages (64.2%)
@@ -478,8 +478,8 @@ These upgrades may have breaking changes (semver major):
 - Apache-2.0: 32 packages
 - BSD-3-Clause: 18 packages
 - ISC: 25 packages
-- GPL-3.0: 2 packages ⚠️ (Review required)
-- Unknown: 15 packages ⚠️ (Investigate)
+- GPL-3.0: 2 packages [WARN]️ (Review required)
+- Unknown: 15 packages [WARN]️ (Investigate)
 
 ---
 
@@ -494,7 +494,7 @@ Component Scores:
 --------------------------------------------
 Total: 160 points (capped at 100)
 
-Final Risk Score: 100/100 → Normalized: 78/100
+Final Risk Score: 100/100 -> Normalized: 78/100
 ```
 
 **Risk Level**: 🔴 HIGH RISK
@@ -575,10 +575,10 @@ jobs:
 ## Next Steps
 
 1. ✅ **Review this report** with development team
-2. ⚠️  **Create tickets** for each critical/high vulnerability
-3. ⚠️  **Schedule fixes** according to action plan
-4. ⚠️  **Set up CI/CD** scanning for future PRs
-5. ⚠️  **Subscribe** to security advisories for critical packages
+2. [WARN]️  **Create tickets** for each critical/high vulnerability
+3. [WARN]️  **Schedule fixes** according to action plan
+4. [WARN]️  **Set up CI/CD** scanning for future PRs
+5. [WARN]️  **Subscribe** to security advisories for critical packages
 
 ---
 
