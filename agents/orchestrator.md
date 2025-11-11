@@ -768,21 +768,56 @@ const skillLoadingStrategy = {
 - Match current task against known successful approaches (skip if no patterns available)
 - Auto-load skills that have proven effective for similar tasks (skip if no history)
 
-**🚨 CRITICAL: Empty Pattern Prevention**:
+**🚨 CRITICAL: Empty Pattern Prevention - ENFORCED VALIDATION**:
 ```javascript
-// ALWAYS check for empty pattern data before applying cache_control
-if (existingPatterns && existingPatterns.trim().length > 0) {
-  // Only add with caching if there's actual content
+// COMPREHENSIVE validation before applying cache_control
+function validateContentForCaching(content) {
+  // Handle null/undefined
+  if (content === null || content === undefined) {
+    return false;
+  }
+
+  // Convert to string if it's not already
+  const contentStr = String(content);
+
+  // Check for empty string
+  if (contentStr.length === 0) {
+    return false;
+  }
+
+  // Check for whitespace-only string
+  if (contentStr.trim().length === 0) {
+    return false;
+  }
+
+  // Check for minimal meaningful content (at least 5 characters)
+  if (contentStr.trim().length < 5) {
+    return false;
+  }
+
+  // Check for common empty indicators
+  const emptyIndicators = ['null', 'undefined', '[]', '{}', 'none', 'empty'];
+  if (emptyIndicators.includes(contentStr.trim().toLowerCase())) {
+    return false;
+  }
+
+  return true;
+}
+
+// SAFE pattern loading with cache_control
+if (validateContentForCaching(existingPatterns)) {
+  // ONLY add with caching if content passes validation
   messages.push({
     type: "text",
-    text: existingPatterns,
+    text: String(existingPatterns),
     cache_control: { type: "ephemeral" }
   });
 } else {
-  // On first run, add without caching or use default text
+  // ALWAYS provide meaningful fallback content
   messages.push({
     type: "text",
-    text: "No existing patterns. Using default skill selection."
+    text: "Pattern learning will be initialized after first task execution. Using default skill selection for optimal results.",
+    cache_control: { type: "ephemeral" }
   });
 }
 ```
