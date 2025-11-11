@@ -78,77 +78,154 @@ Example: security-patterns if auth-related
 
 ## Implementation Algorithm
 
-### Step 1: Generate Fingerprint
+### Step 1: Generate Fingerprint - WITH SAFETY VALIDATION
 ```javascript
+// 🚨 CRITICAL: Safe fingerprint generation with validation
 function generateFingerprint(task_info) {
-  return {
-    type: task_info.type,
-    keywords: extractKeywords(task_info.description),
-    language: detectLanguage(task_info),
-    framework: detectFramework(task_info),
-    complexity: estimateComplexity(task_info)
+  // Validate input
+  if (!task_info || typeof task_info !== 'object') {
+    return {
+      type: 'unknown',
+      keywords: ['general'],
+      language: 'unknown',
+      framework: 'unknown',
+      complexity: 'medium'
+    };
+  }
+
+  try {
+    return {
+      type: task_info.type || 'unknown',
+      keywords: extractKeywords(task_info.description || '') || ['general'],
+      language: detectLanguage(task_info) || 'unknown',
+      framework: detectFramework(task_info) || 'unknown',
+      complexity: estimateComplexity(task_info) || 'medium'
+    };
+  } catch (error) {
+    return {
+      type: 'unknown',
+      keywords: ['general'],
+      language: 'unknown',
+      framework: 'unknown',
+      complexity: 'medium'
+    };
   }
 }
 ```
 
-### Step 2: Query Pattern Database
+### Step 2: Query Pattern Database - WITH SAFETY VALIDATION
 ```javascript
 function findSimilarPatterns(fingerprint) {
-  const patterns = loadPatterns('.claude-patterns/patterns.json')
-
-  const similar = patterns
-    .map(pattern => ({
-      pattern,
-      similarity: calculateSimilarity(fingerprint, pattern)
-    }))
-    .filter(p => p.similarity >= 0.70)
-    .sort((a, b) => b.similarity - a.similarity)
-
-  return similar.slice(0, 10)  // Top 10 matches
-}
-```
-
-### Step 3: Aggregate Skill Scores
-```javascript
-function aggregateSkillScores(similar_patterns) {
-  const skill_scores = {}
-
-  for (const {pattern, similarity} of similar_patterns) {
-    const quality_weight = pattern.quality_score / 100
-    const success_weight = pattern.success_rate
-    const reuse_weight = Math.min(pattern.usage_count / 10, 1.0)
-
-    const weight = (
-      similarity * 0.50 +
-      quality_weight * 0.25 +
-      success_weight * 0.15 +
-      reuse_weight * 0.10
-    )
-
-    for (const skill of pattern.skills_used) {
-      skill_scores[skill] = (skill_scores[skill] || 0) + weight
-    }
+  // Validate input
+  if (!fingerprint || typeof fingerprint !== 'object') {
+    return [];
   }
 
-  // Normalize to 0-1 range
-  const max_score = Math.max(...Object.values(skill_scores))
-  return Object.entries(skill_scores)
-    .map(([skill, score]) => [skill, score / max_score])
-    .sort((a, b) => b[1] - a[1])
+  try {
+    const patterns = safeLoadPatterns('.claude-patterns/patterns.json');
+    if (!patterns || !Array.isArray(patterns)) {
+      return [];
+    }
+
+    const similar = patterns
+      .map(pattern => ({
+        pattern: pattern || {},
+        similarity: calculateSimilarity(fingerprint, pattern || {}) || 0
+      }))
+      .filter(p => p.similarity >= 0.70)
+      .sort((a, b) => b.similarity - a.similarity);
+
+    return similar.slice(0, 10);  // Top 10 matches
+  } catch (error) {
+    console.log("Pattern similarity search failed, returning empty results");
+    return [];
+  }
+}
+
+// Safe pattern loading utility
+function safeLoadPatterns(filePath) {
+  try {
+    if (!exists(filePath)) {
+      return [];
+    }
+    const content = load(filePath);
+    return content && content.patterns && Array.isArray(content.patterns) ? content.patterns : [];
+  } catch (error) {
+    return [];
+  }
 }
 ```
 
-### Step 4: Pre-load in Background
+### Step 3: Aggregate Skill Scores - WITH SAFETY VALIDATION
+```javascript
+function aggregateSkillScores(similar_patterns) {
+  // Validate input
+  if (!similar_patterns || !Array.isArray(similar_patterns)) {
+    return [];  // Return empty if no patterns
+  }
+
+  try {
+    const skill_scores = {};
+
+    for (const item of similar_patterns) {
+      // Validate pattern structure
+      if (!item || !item.pattern || typeof item.similarity !== 'number') {
+        continue;
+      }
+
+      const {pattern, similarity} = item;
+      const quality_weight = (pattern.quality_score || 0) / 100;
+      const success_weight = pattern.success_rate || 0;
+      const reuse_weight = Math.min((pattern.usage_count || 0) / 10, 1.0);
+
+      const weight = (
+        similarity * 0.50 +
+        quality_weight * 0.25 +
+        success_weight * 0.15 +
+        reuse_weight * 0.10
+      );
+
+      // Validate skills_used array
+      const skills_used = pattern.skills_used || [];
+      for (const skill of skills_used) {
+        if (skill && typeof skill === 'string') {
+          skill_scores[skill] = (skill_scores[skill] || 0) + weight;
+        }
+      }
+    }
+
+    // Normalize to 0-1 range
+    const scores = Object.values(skill_scores);
+    const max_score = scores.length > 0 ? Math.max(...scores) : 1;
+
+    return Object.entries(skill_scores)
+      .map(([skill, score]) => [skill, score / max_score])
+      .sort((a, b) => b[1] - a[1]);
+  } catch (error) {
+    console.log("Skill aggregation failed, returning empty results");
+    return [];
+  }
+}
+```
+
+### Step 4: Pre-load in Background - WITH SAFETY VALIDATION
 ```javascript
 async function preloadSkills(predicted_skills, skill_loader) {
-  // Start background loading
-  const promises = predicted_skills
-    .filter(([skill, confidence]) => confidence > 0.7)
-    .map(([skill, confidence]) =>
-      skill_loader(skill).then(content => ({
-        skill,
-        content,
-        confidence,
+  // Validate inputs
+  if (!predicted_skills || !Array.isArray(predicted_skills) || !skill_loader) {
+    return [];  // Return empty if invalid
+  }
+
+  try {
+    // Start background loading
+    const promises = predicted_skills
+      .filter(([skill, confidence]) => skill && typeof confidence === 'number' && confidence > 0.7)
+      .map(([skill, confidence]) =>
+        skill_loader(skill)
+          .then(content => ({
+            skill,
+            content: content || `Content loaded for ${skill}`,
+            confidence,
         loaded_at: Date.now()
       }))
     )
