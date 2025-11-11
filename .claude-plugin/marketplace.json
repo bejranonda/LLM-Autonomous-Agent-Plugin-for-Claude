@@ -9,8 +9,8 @@
     {
       "name": "autonomous-agent",
       "source": "./",
-      "description": "Autonomous Claude agent with automatic continuous learning, adaptive skill selection, pattern recognition, background tasks, quality control, advanced Git automation, release management, and report organization. Features 17 specialized agents, 11 knowledge skills, and 10 slash commands for true autonomous AI development assistance.",
-      "version": "2.2.0",
+      "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 19 skills, and 39 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Runtime cache_control error resolved - production ready with 60-70% cost reduction.",
+      "version": "7.6.4",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
