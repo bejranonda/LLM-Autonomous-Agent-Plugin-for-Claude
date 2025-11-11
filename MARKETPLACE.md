@@ -11,7 +11,7 @@ This repository now supports installation via Claude Code's marketplace system.
 
 2. **Install Plugin**:
    ```bash
-   /plugin install autonomous-agent@gitlab-autonomous-agent-marketplace
+   /plugin install autonomous-agent
    ```
 
 ## Alternative Installation Methods
