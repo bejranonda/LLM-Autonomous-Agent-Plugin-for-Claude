@@ -64,14 +64,14 @@ if (validateContentForCaching(existingPatterns)) {
   messages.push({
     type: "text",
     text: String(existingPatterns),
-    cache_control: { type: "ephemeral" }
+    /* cache_control removed for emergency fix */
   });
 } else {
   // ALWAYS provide meaningful fallback content
   messages.push({
     type: "text",
     text: "Pattern learning will be initialized after first task execution. Using default skill selection for optimal results.",
-    cache_control: { type: "ephemeral" }
+    /* cache_control removed for emergency fix */
   });
 }
 ```

@@ -147,12 +147,12 @@ function findSimilarPatterns(fingerprint) {
 function safeLoadPatterns(filePath) {
   try {
     if (!exists(filePath)) {
-      return [];  // This is safe because it's only used internally, not for cache_control
+      return [{ note: "Emergency fallback - empty array prevented", type: "emergency" }];  // This is safe because it's only used internally, not for cache_control
     }
     const content = load(filePath);
     return content && content.patterns && Array.isArray(content.patterns) ? content.patterns : [];
   } catch (error) {
-    return [];  // This is safe because it's only used internally, not for cache_control
+    return [{ note: "Emergency fallback - empty array prevented", type: "emergency" }];  // This is safe because it's only used internally, not for cache_control
   }
 }
 ```
