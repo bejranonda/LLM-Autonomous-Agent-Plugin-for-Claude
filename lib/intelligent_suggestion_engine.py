@@ -33,7 +33,6 @@ import hashlib
 # Import our custom modules
 try:
     from user_preference_memory import UserPreferenceMemory
-    from enhanced_task_queue import TaskQueue
     from unified_parameter_storage import UnifiedParameterStorage
 except ImportError:
     print("Warning: Could not import required modules", file=sys.stderr)
@@ -276,12 +275,10 @@ class IntelligentSuggestionEngine:
         # Initialize subsystems
         try:
             self.preference_memory = UserPreferenceMemory(storage_dir)
-            self.task_queue = TaskQueue(str(storage_dir).replace('-preferences', '-patterns'))
             self.parameter_storage = UnifiedParameterStorage(str(storage_dir).replace('-preferences', '-unified'))
         except Exception as e:
             print(f"Warning: Could not initialize subsystems: {e}", file=sys.stderr)
             self.preference_memory = None
-            self.task_queue = None
             self.parameter_storage = None
 
         # Suggestion templates

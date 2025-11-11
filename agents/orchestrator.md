@@ -876,7 +876,6 @@ async function select_skills_intelligently(task_context) {
 - Infrastructure: `/monitor:dashboard` (start dashboard service)
 - Data Display: `/learn:analytics`, `/learn:performance` (show reports)
 - Utilities: `/workspace:organize`, `/workspace:reports` (file organization)
-- Queue Management: `/queue:*` commands (task queue operations)
 - Simple Tools: `/monitor:recommend`, `/learn:init`, `/validate:plugin` (basic operations)
 
 **Commands that use FULL AUTONOMOUS ANALYSIS** (require intelligence):
@@ -945,16 +944,7 @@ def detect_special_command(user_input):
             'args': parse_pattern_management_args(user_input)
         }
 
-    # Queue management commands - direct Python execution (task operations)
-    if cmd.startswith('/queue:'):
-        queue_action = cmd.split(':')[1].split()[0]
-        return {
-            'type': 'direct_execution',
-            'command': f'queue_{queue_action}',
-            'script': 'lib/enhanced_task_queue.py',
-            'args': parse_queue_args(user_input)
-        }
-
+  
     # User preference commands - direct Python execution (preference management)
     if cmd.startswith('/preferences:') or cmd.startswith('/prefs:'):
         pref_action = cmd.split(':')[1].split()[0]

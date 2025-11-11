@@ -42,14 +42,6 @@
 - ❌ monitor:groups (missing)
 - ✅ monitor:recommend (covered - direct execution)
 
-### queue: commands (6)
-- ✅ queue:add (covered - direct execution via /queue:*)
-- ✅ queue:clear (covered - direct execution via /queue:*)
-- ✅ queue:execute (covered - direct execution via /queue:*)
-- ✅ queue:list (covered - direct execution via /queue:*)
-- ✅ queue:retry (covered - direct execution via /queue:*)
-- ✅ queue:status (covered - direct execution via /queue:*)
-
 ### validate: commands (8)
 - ✅ validate:all (covered - goes to autonomous analysis)
 - ❌ validate:commands (missing)
@@ -69,8 +61,8 @@
 
 ## Coverage Summary
 
-### ✅ Now Covered (42 commands)
-- **Direct execution (14 commands)**: learn:analytics, learn:init, learn:patterns, learn:performance, monitor:dashboard, monitor:recommend, queue:*, validate:plugin, validate:web, workspace:organize, workspace:reports, workspace:distribution-ready, workspace:update-about, workspace:update-readme
+### ✅ Now Covered (36 commands)
+- **Direct execution (8 commands)**: learn:analytics, learn:init, learn:patterns, learn:performance, monitor:dashboard, monitor:recommend, validate:plugin, workspace:organize, workspace:reports
 - **Autonomous analysis (28 commands)**: analyze:*, dev:*, learn:clone, learn:history, learn:predict, validate:all, validate:fullstack, validate:integrity, validate:patterns, debug:eval, debug:gui, validate:commands, workspace:improve
 
 ### ✅ Fixed Commands (5 commands - properly categorized)

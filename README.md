@@ -1,18 +1,21 @@
 # 🚀 Autonomous Agent for Claude Code v7.6.5
 
+<div align="center">
+
+> *What if your AI agent got smarter and faster with every task?*
+
+**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-33-commands-across-7-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
+
+
 [![Version](https://img.shields.io/badge/version-7.6.5-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.6.5)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
-[![Validation](https://img.shields.io/badge/validation-100%2F100-brightgreen.svg)](docs/reports/VALIDATION_COMPLETE.md)
 [![Production Ready](https://img.shields.io/badge/production%20ready-ff69b4.svg)]()
 [![Architecture](https://img.shields.io/badge/architecture-four%20tier-brightgreen.svg)](docs/FOUR_TIER_ARCHITECTURE.md)
-[![KPI Tracking](https://img.shields.io/badge/KPI%20Tracking-11%20metrics-orange.svg)]()
-[![Cost Reduction](https://img.shields.io/badge/cost%20reduction-60%25%2B-green.svg)]()
 
-**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-39-commands-across-8-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-> *What if your AI agent got smarter and faster with every task?*
+</div>
 
 🧠 **Automatic Learning System** • 🔒 **Privacy-First** • 🚀 **Production-Ready Analysis** • 📊 **Real-Time Monitoring** • 📈 **KPI Intelligence** • 🛡️ **OWASP Security** • 🔧 **Auto Fixes**
 
@@ -582,7 +585,7 @@ Assessments are **automatically created** when you use plugin commands:
 
 ---
 
-## 📚 Complete Command Reference (39 Commands Across 8 Categories)
+## 📚 Complete Command Reference (33 Commands Across 7 Categories)
 
 ### 🚀 **Development Commands (5)**
 - `/dev:auto "requirement"` - Fully autonomous development from requirements to release-ready code
@@ -676,14 +679,6 @@ Assessments are **automatically created** when you use plugin commands:
 - **Interactive HTML Dashboards** - Beautiful visualizations with Chart.js and auto-refresh 🆕
 - **Business Intelligence Reports** - Executive summaries with ROI and cost analysis 🆕
 - **Real-Time System Monitoring** - SQLite-based metrics aggregation and persistence 🆕
-
-### 📋 **Task Queue Commands (7)**
-- `/queue:add "task"` - Add tasks to autonomous task queue
-- `/queue:list` - List all tasks in queue with status
-- `/queue:status` - Show comprehensive queue status
-- `/queue:execute` - Execute queued tasks sequentially
-- `/queue:retry` - Retry failed tasks
-- `/queue:clear` - Clean up completed/failed tasks
 
 ---
 
