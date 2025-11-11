@@ -1,0 +1,3887 @@
+Analyzing 368 markdown files for cache_control issues...
+============================================================
+
+============================================================
+
+[HIGH] RISK FILES (4):
+
+  .\final_validation_report.md:
+    Line 61: 2 issues, 10 risky scenarios
+      - Uses cache_control directive
+      - Potentially dangerous pattern: cache_control without content
+
+  .\agents\orchestrator.md:
+    Line 128: 2 issues, 10 risky scenarios
+      - Uses cache_control directive
+      - Uses cache_control without proper validation
+    Line 772: 2 issues, 10 risky scenarios
+      - Uses cache_control directive
+      - Potentially dangerous pattern: cache_control without content
+
+  .\docs\reports\generated\plugin-cache-control-error-analysis-2025-11-10.md:
+    Line 216: 4 issues, 10 risky scenarios
+      - Uses cache_control directive
+      - Uses cache_control without proper validation
+      - Potentially dangerous pattern: Empty text property
+      - Potentially dangerous pattern: Empty text property
+
+  .\skills\pattern-learning\SKILL.md:
+    Line 221: 1 issues, 10 risky scenarios
+      - Uses cache_control directive
+
+[SUMMARY]:
+  Total files analyzed: 368
+  Total JavaScript blocks: 194
+  Files using cache_control: 4
+  High risk files: 4
+  Medium risk files: 0
+{
+  "summary": {
+    "total_files": 368,
+    "total_js_blocks": 194,
+    "files_with_cache_control": 4,
+    "high_risk_files": 4,
+    "medium_risk_files": 0
+  },
+  "files": [
+    {
+      "file": ".\\AGENT_USAGE_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\CHANGELOG.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\CLAUDE.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 333,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Orchestrator automatically does this after every task:\nawait complete_task(task_data)\nawait assess_quality(result)\nawait delegate_to_learning_engine(task_data)  // SILENT\nreturn result_to_user"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\final_validation_report.md",
+      "js_blocks_count": 2,
+      "blocks": [
+        {
+          "line": 25,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 0,
+          "code_preview": "function validateContentForCaching(content) {\n  // Handle null/undefined\n  if (content === null || content === undefined) {\n    return false;\n  }\n\n  // Convert to string if it's not already\n  const co..."
+        },
+        {
+          "line": 61,
+          "has_cache_control": true,
+          "issues": [
+            "Uses cache_control directive",
+            "Potentially dangerous pattern: cache_control without content"
+          ],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 10,
+          "code_preview": "if (validateContentForCaching(existingPatterns)) {\n  // ONLY add with caching if content passes validation\n  messages.push({\n    type: \"text\",\n    text: String(existingPatterns),\n    cache_control: { ..."
+        }
+      ],
+      "overall_risk": "high"
+    },
+    {
+      "file": ".\\README.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\RELEASE_NOTES_v7.6.4.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\RELEASE_NOTES_v7.6.5.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\STRUCTURE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\UPGRADE_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\USAGE_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\agi-architect.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\api-contract-validator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\autonomous-creativity-engine.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\background-task-manager.md",
+      "js_blocks_count": 3,
+      "blocks": [
+        {
+          "line": 198,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Orchestrator delegates to background-task-manager\nconst tasks = [\n  { type: 'code-analysis', priority: 'medium' },\n  { type: 'security-scan', priority: 'high' },\n  { type: 'doc-generation', priorit..."
+        },
+        {
+          "line": 352,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function select_background_tasks() {\n  const tasks = []\n\n  // Check for code changes\n  if (git_changes_detected()) {\n    tasks.push('code-analysis')\n  }\n\n  // Check dependency files\n  if (dependency_f..."
+        },
+        {
+          "line": 510,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// File change triggers\non_file_change('**/*.py', () => {\n  schedule_task('code-analysis', { priority: 'medium' })\n})\n\n// Dependency change triggers\non_file_change(['package.json', 'requirements.txt']..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\build-validator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\claude-plugin-validator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\code-analyzer.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\continuous-improvement.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\dev-orchestrator.md",
+      "js_blocks_count": 21,
+      "blocks": [
+        {
+          "line": 75,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function analyzeRequirements(userRequest) {\n  // Parse user requirement\n  const requirement = parseRequirement(userRequest);\n\n  // Detect project context\n  const projectContext = await detectPro..."
+        },
+        {
+          "line": 105,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function executeDevelopmentLoop(plan) {\n  const results = [];\n\n  for (const milestone of plan.milestones) {\n    console.log(`Starting Milestone ${milestone.id}: ${milestone.name}`);\n\n    // Impl..."
+        },
+        {
+          "line": 151,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function testWithAutoDebug(implementation, options) {\n  const { maxIterations, autoFix } = options;\n  let iteration = 0;\n\n  while (iteration < maxIterations) {\n    // Run tests\n    const testRes..."
+        },
+        {
+          "line": 197,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function validateImplementation(implementation) {\n  const issues = [];\n\n  // 1. Parameter Consistency Check\n  const functionCalls = extractFunctionCalls(implementation);\n  const functionDefiniti..."
+        },
+        {
+          "line": 286,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function checkQuality(implementation) {\n  // Delegate to quality-controller agent\n  const qualityResult = await delegateToAgent('quality-controller', {\n    task: 'assess_quality',\n    code: impl..."
+        },
+        {
+          "line": 319,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Delegate to code-analyzer for structure analysis\nawait delegateToAgent('code-analyzer', {\n  task: 'analyze_structure',\n  files: modifiedFiles\n});"
+        },
+        {
+          "line": 328,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Delegate to test-engineer for comprehensive testing\nawait delegateToAgent('test-engineer', {\n  task: 'generate_tests',\n  coverage_target: 90,\n  test_types: ['unit', 'integration']\n});\n\n// Delegate ..."
+        },
+        {
+          "line": 345,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Delegate to quality-controller for validation\nawait delegateToAgent('quality-controller', {\n  task: 'validate_quality',\n  threshold: 85,\n  auto_fix: true\n});"
+        },
+        {
+          "line": 355,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Delegate to documentation-generator\nawait delegateToAgent('documentation-generator', {\n  task: 'update_documentation',\n  changes: implementationChanges\n});"
+        },
+        {
+          "line": 364,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Delegate to security-auditor\nawait delegateToAgent('security-auditor', {\n  task: 'security_scan',\n  scope: 'new_code_only'\n});"
+        },
+        {
+          "line": 373,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Delegate to frontend-analyzer for UI/frontend tasks\nif (isFrontendTask(milestone)) {\n  await delegateToAgent('frontend-analyzer', {\n    task: 'validate_frontend',\n    components: modifiedComponents..."
+        },
+        {
+          "line": 384,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Delegate to api-contract-validator for API changes\nif (isApiChange(milestone)) {\n  await delegateToAgent('api-contract-validator', {\n    task: 'validate_api_contract',\n    endpoints: modifiedEndpoi..."
+        },
+        {
+          "line": 396,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function analyzeTestFailures(failures) {\n  const analyses = [];\n\n  for (const failure of failures) {\n    // Categorize error\n    const category = categorizeError(failure.error);\n\n    // Extract ..."
+        },
+        {
+          "line": 453,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const commonFixes = {\n  // Integration issues\n  'connection_refused': async (context) => {\n    return {\n      fix: 'add_retry_logic',\n      code: generateRetryLogic(context),\n      success_rate: 0.95\n..."
+        },
+        {
+          "line": 504,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function commitMilestone(milestone, implementation) {\n  // Generate conventional commit message\n  const commitMessage = generateCommitMessage(milestone, implementation);\n\n  // Stage files\n  cons..."
+        },
+        {
+          "line": 553,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function verifyRequirements(originalRequest, implementation) {\n  // Parse original request into checkpoints\n  const checkpoints = parseRequirementCheckpoints(originalRequest);\n\n  // Verify each ..."
+        },
+        {
+          "line": 614,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function storeDevPattern(plan, results, duration) {\n  const pattern = {\n    pattern_id: generatePatternId(),\n    task_type: plan.requirement.type,\n    complexity: plan.complexity,\n    milestones..."
+        },
+        {
+          "line": 646,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function triggerAutoRelease(implementation, options) {\n  if (options.autoRelease) {\n    console.log('Triggering auto-release...');\n\n    // Delegate to version-release-manager\n    await delegateT..."
+        },
+        {
+          "line": 664,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function handleDevelopmentFailure(milestone, error) {\n  // Log detailed error\n  await logError({\n    milestone: milestone.name,\n    error: error,\n    stackTrace: error.stackTrace,\n    context: e..."
+        },
+        {
+          "line": 703,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Parallel task execution where possible\nasync function optimizeExecution(milestones) {\n  // Identify independent milestones\n  const dependencies = analyzeDependencies(milestones);\n  const groups = g..."
+        },
+        {
+          "line": 725,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function generateSuggestions(implementation) {\n  const suggestions = [];\n\n  // High priority: Integration testing\n  if (!hasIntegrationTests(implementation)) {\n    suggestions.push({\n      prior..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\dimensional-computing-framework.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\documentation-generator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\frontend-analyzer.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\git-repository-manager.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\global-intelligence-network.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\gui-validator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\learning-engine.md",
+      "js_blocks_count": 24,
+      "blocks": [
+        {
+          "line": 39,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Auto-detect model for model-specific learning\nconst modelConfig = detectModelForLearning();\nloadLearningStrategy(modelConfig);"
+        },
+        {
+          "line": 62,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const universalPattern = {\n  // Model Context\n  model_used: detectedModel,\n  model_capabilities: modelConfig.capabilities,\n  model_performance_profile: modelConfig.performance,\n\n  // Universal Task Co..."
+        },
+        {
+          "line": 102,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Runs automatically with model-specific adaptation\nasync function auto_capture_pattern(task_data, model_context) {\n  const pattern = {\n    // Model Context (NEW)\n    model_used: model_context.curren..."
+        },
+        {
+          "line": 178,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function update_skill_effectiveness(skill_name, task_outcome) {\n  const metrics = load_metrics(skill_name)\n\n  metrics.total_uses++\n  if (task_outcome.success) {\n    metrics.successful_uses++\n  }..."
+        },
+        {
+          "line": 224,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function track_agent_performance(agent_name, task_data) {\n  const perf = load_agent_performance(agent_name)\n\n  perf.total_delegations++\n  if (task_data.success) {\n    perf.successful_completions..."
+        },
+        {
+          "line": 260,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function recommend_skills_adaptive(task_description, task_context) {\n  // Step 1: Classify current task\n  const task_type = classify_task(task_description)\n  const task_complexity = estimate_com..."
+        },
+        {
+          "line": 332,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function analyze_trends(time_window_days = 30) {\n  const cutoff = new Date()\n  cutoff.setDate(cutoff.getDate() - time_window_days)\n\n  const recent_tasks = await query_patterns({\n    timestamp_af..."
+        },
+        {
+          "line": 392,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Store patterns in both project-local and global locations\nasync function store_pattern_cross_project(pattern) {\n  // Project-local storage\n  const local_path = '.claude-patterns/patterns.json'\n  aw..."
+        },
+        {
+          "line": 431,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function process_task_feedback(task_id, feedback) {\n  const pattern = await load_pattern(task_id)\n\n  // Update pattern with feedback\n  pattern.outcome.user_satisfaction = feedback.rating  // 1-5..."
+        },
+        {
+          "line": 470,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function optimize_configurations() {\n  const all_patterns = await load_all_patterns()\n\n  // Find optimal skill combinations\n  const skill_combinations = analyze_skill_combinations(all_patterns)\n..."
+        },
+        {
+          "line": 676,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Orchestrator automatically triggers after task completion\nasync function on_task_complete(task_data) {\n  // ALWAYS capture pattern\n  await learning_engine.capture_pattern(task_data)\n\n  // Every 10 ..."
+        },
+        {
+          "line": 740,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function analyzeModelLearningEffectiveness() {\n  const modelMetrics = {\n    'claude-sonnet-4.5': {\n      pattern_recognition_rate: 0.92,\n      adaptation_speed: 'fast',\n      contextual_learning: 'exc..."
+        },
+        {
+          "line": 776,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function sharePatternsAcrossModels(patterns, sourceModel, targetModel) {\n  // Adapt patterns from source model to target model\n  const adaptedPatterns = patterns.map(pattern => ({\n    ...pattern,\n    ..."
+        },
+        {
+          "line": 797,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function trackModelLearningProgress(model, historicalData) {\n  const trends = {\n    quality_improvement: calculateQualityTrend(historicalData),\n    efficiency_gains: calculateEfficiencyTrend(historica..."
+        },
+        {
+          "line": 818,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function selectOptimalModelForTask(taskCharacteristics, modelCapabilities) {\n  const scores = {};\n\n  for (const [model, capabilities] of Object.entries(modelCapabilities)) {\n    scores[model] = calcul..."
+        },
+        {
+          "line": 843,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function extractUniversalBestPatterns(allModelPatterns) {\n  // Find patterns that work well across all models\n  const universalPatterns = allModelPatterns.filter(pattern => {\n    return pattern.models..."
+        },
+        {
+          "line": 922,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function learn_from_git_operation(operation, outcome, context) {\n  const git_pattern = {\n    timestamp: new Date().toISOString(),\n    operation_type: operation.type,\n    repository_context: {\n  ..."
+        },
+        {
+          "line": 1116,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function capture_pattern_with_performance(task_data, performance_data) {\n  const enhanced_pattern = {\n    // Existing pattern structure\n    task_id: generate_uuid(),\n    timestamp: new Date().to..."
+        },
+        {
+          "line": 1217,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function update_skill_effectiveness_with_performance(skill_name, task_outcome, performance_data) {\n  const metrics = load_metrics(skill_name)\n\n  // Existing metrics\n  metrics.total_uses++\n  if (..."
+        },
+        {
+          "line": 1273,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function track_agent_performance_with_performance(agent_name, task_data, performance_data) {\n  const perf = load_agent_performance(agent_name)\n\n  // Existing metrics\n  perf.total_delegations++\n ..."
+        },
+        {
+          "line": 1332,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function analyze_performance_trends(current_pattern) {\n  // Get recent patterns with performance data\n  const recent_patterns = await query_patterns({\n    timestamp_after: new Date(Date.now() - ..."
+        },
+        {
+          "line": 1379,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function synchronize_with_dashboard_performance_system(pattern_data) {\n  // Ensure performance data is available for dashboard\n  const performance_record = {\n    assessment_id: pattern_data.outc..."
+        },
+        {
+          "line": 1419,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Enhanced automatic learning trigger (now includes performance)\nasync function on_task_complete_with_performance(task_data, performance_data) {\n  // 1. ALWAYS capture pattern with performance data\n ..."
+        },
+        {
+          "line": 1477,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function capture_pattern_with_unified_storage(task_data, performance_data) {\n  // 1. Create enhanced pattern with all data\n  const enhanced_pattern = await create_enhanced_pattern_with_performan..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\neural-evolution-engine.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\orchestrator.md",
+      "js_blocks_count": 34,
+      "blocks": [
+        {
+          "line": 128,
+          "has_cache_control": true,
+          "issues": [
+            "Uses cache_control directive",
+            "Uses cache_control without proper validation"
+          ],
+          "safety_measures": [],
+          "risky_scenarios": 10,
+          "code_preview": "// ENFORCED: This logic must be executed via the Python code above\n// NEVER apply cache_control without first running enforce_pattern_loading_safety()\n\nif (SKIP_PATTERN_LEARNING === true) {\n  // DO NO..."
+        },
+        {
+          "line": 223,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Auto-detect model capabilities and adapt accordingly\nconst modelConfig = detectModelCapabilities();\nloadModelConfiguration(modelConfig);"
+        },
+        {
+          "line": 504,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function strategic_analysis(task) {\n  // 1. Analyze task complexity and select strategic agents\n  const complexity = analyzeTaskComplexity(task)\n  const strategicAgents = selectStrategicAgents(t..."
+        },
+        {
+          "line": 527,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function decision_making_planning(strategicResults, userPrefs) {\n  // 1. Select decision-making agents based on strategic insights\n  const decisionAgents = selectDecisionAgents(strategicResults)..."
+        },
+        {
+          "line": 549,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function execution_implementation(decisions, executionPlan) {\n  // 1. Select execution agents based on plan complexity\n  const executionAgents = selectExecutionAgents(executionPlan)\n\n  // 2. Del..."
+        },
+        {
+          "line": 574,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function validation_optimization(implementations) {\n  // 1. Select validation and optimization agents\n  const validationAgents = selectValidationAgents(implementations)\n\n  // 2. Delegate to Tier..."
+        },
+        {
+          "line": 595,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function cross_tier_learning_feedback(tier1Results, tier2Results, tier3Results, tier4Results) {\n  // 1. Tier 4 provides comprehensive feedback to all previous tiers\n  await provideFeedbackToTier..."
+        },
+        {
+          "line": 738,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Load skill metadata first, then full content based on context\nconst skillLoadingStrategy = {\n  claude: {\n    approach: \"progressive_disclosure\",\n    context_aware: true,\n    weight_based: true,\n   ..."
+        },
+        {
+          "line": 751,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Load complete skill content upfront with clear structure\nconst skillLoadingStrategy = {\n  glm: {\n    approach: \"complete_loading\",\n    explicit_criteria: true,\n    priority_sequenced: true,\n    str..."
+        },
+        {
+          "line": 772,
+          "has_cache_control": true,
+          "issues": [
+            "Uses cache_control directive",
+            "Potentially dangerous pattern: cache_control without content"
+          ],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 10,
+          "code_preview": "// COMPREHENSIVE validation before applying cache_control\nfunction validateContentForCaching(content) {\n  // Handle null/undefined\n  if (content === null || content === undefined) {\n    return false;\n..."
+        },
+        {
+          "line": 1021,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function select_skills_intelligently(task_context) {\n  // 1. Generate project fingerprint\n  const fingerprint = generate_project_fingerprint({\n    languages: detect_languages(),\n    frameworks: ..."
+        },
+        {
+          "line": 2667,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Always load model-detection first for cross-model compatibility\nconst baseSkills = [\"model-detection\", \"pattern-learning\"];\n\n// Add task-specific skills based on context\nif (taskInvolvesCode) baseS..."
+        },
+        {
+          "line": 2753,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Auto-execute pattern storage\n{\n  \"action\": \"store_pattern\",\n  \"pattern\": {\n    \"task_description\": \"<original_task>\",\n    \"task_type\": \"<detected_type>\",\n    \"context\": \"<project_context>\",\n    \"sk..."
+        },
+        {
+          "line": 2924,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// This happens AUTOMATICALLY after every task - no user confirmation needed\nasync function complete_task(task_data) {\n  const start_time = Date.now()\n\n  // 1. Execute main task\n  const result = await..."
+        },
+        {
+          "line": 3012,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const performance_metrics = {\n  // Task Classification\n  task_type: classify_task(task_data.description),  // refactoring, coding, documentation, etc.\n  task_complexity: assess_complexity(task_data), ..."
+        },
+        {
+          "line": 3048,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function execute_with_performance_recording(task) {\n  const start_time = Date.now()\n\n  try {\n    // Execute task\n    const result = await execute_task(task)\n\n    // Assess quality\n    const qual..."
+        },
+        {
+          "line": 3083,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function detect_current_model() {\n  // Real-time model detection with multiple strategies\n\n  // Strategy 1: Environment variables\n  const modelFromEnv = process.env.ANTHROPIC_MODEL ||\n                ..."
+        },
+        {
+          "line": 3142,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function classify_task(description) {\n  const patterns = {\n    \"refactoring\": [\"refactor\", \"restructure\", \"reorganize\", \"cleanup\"],\n    \"coding\": [\"implement\", \"create\", \"add\", \"build\", \"develop\"],\n  ..."
+        },
+        {
+          "line": 3225,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function execute_edit(file_path, old_string, new_string) {\n  // 1. PRE-FLIGHT VALIDATION\n  const validation = await validate_edit_prerequisites(file_path)\n\n  if (!validation.passed) {\n    // Aut..."
+        },
+        {
+          "line": 3243,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function execute_write(file_path, content) {\n  // 1. Check if file exists\n  const exists = await check_file_exists(file_path)\n\n  if (exists && !was_file_read(file_path)) {\n    // Warning: Overwr..."
+        },
+        {
+          "line": 3262,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function handle_tool_error(tool, error_message, params) {\n  // 1. Delegate to validation-controller\n  const analysis = await delegate_validation_analysis({\n    tool: tool,\n    error: error_message,\n  ..."
+        },
+        {
+          "line": 3287,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function after_documentation_update(files_modified) {\n  // Detect if documentation files were changed\n  const doc_files = [\n    \"README.md\", \"CHANGELOG.md\", \"CLAUDE.md\",\n    \".claude-plugin/plug..."
+        },
+        {
+          "line": 3326,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "session_state = {\n  files_read: new Set(),\n  files_written: new Set(),\n  tools_used: [],\n  errors_encountered: [],\n  validations_performed: []\n}\n\n// Update on each operation\nfunction track_tool_usage(..."
+        },
+        {
+          "line": 3363,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function generate_contextual_suggestions(task_result) {\n  const suggestions = []\n  const context = analyze_task_context(task_result)\n\n  // 1. High Priority Suggestions (based on task outcome)\n  ..."
+        },
+        {
+          "line": 3487,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function track_suggestion_response(suggestion, user_choice) {\n  await store_pattern({\n    pattern_type: 'suggestion_response',\n    context: suggestion.context,\n    suggestion: suggestion.command..."
+        },
+        {
+          "line": 3510,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function filter_suggestions(all_suggestions) {\n  // Maximum 4 suggestions at a time\n  const filtered = []\n\n  // Always include high priority (max 2)\n  filtered.push(...all_suggestions\n    .filter(s =>..."
+        },
+        {
+          "line": 3536,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function detect_claude_folders(files_modified) {\n  const claude_folders = [\n    '.claude/',\n    '.claude-patterns/',\n    '.claude-plugin/',\n    '.reports/'\n  ]\n\n  const newly_created = []\n\n  for..."
+        },
+        {
+          "line": 3598,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function prompt_gitignore_management(folders) {\n  const response = await ask_user({\n    question: 'Would you like to add Claude folders to .gitignore?',\n    header: 'Folder Privacy',\n    options..."
+        },
+        {
+          "line": 3640,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function add_all_to_gitignore(folders) {\n  const gitignore_path = '.gitignore'\n  let content = ''\n\n  // Read existing .gitignore or create new\n  if (await file_exists(gitignore_path)) {\n    cont..."
+        },
+        {
+          "line": 3680,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function custom_gitignore_selection(folders) {\n  for (const folder of folders) {\n    const response = await ask_user({\n      question: `Add ${folder} to .gitignore?`,\n      header: folder,\n     ..."
+        },
+        {
+          "line": 3708,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function store_gitignore_preference(preference) {\n  const config_path = '.claude/config.json'\n  let config = {}\n\n  if (await file_exists(config_path)) {\n    config = JSON.parse(await Read(config..."
+        },
+        {
+          "line": 3791,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function calculate_workspace_health() {\n  let score = 0\n\n  // Root Directory Cleanliness (30 points)\n  const root_files = await scan_directory('./', {exclude: ['.*', 'node_modules']})\n  const re..."
+        },
+        {
+          "line": 3832,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function generate_health_suggestions(health_score) {\n  const suggestions = []\n\n  if (health_score < 70) {\n    suggestions.push({\n      priority: 'high',\n      label: 'Organize Workspace',\n      ..."
+        },
+        {
+          "line": 3876,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Store health history\n{\n  \"timestamp\": \"2025-01-15T10:30:00Z\",\n  \"health_score\": 92,\n  \"issues\": {\n    \"root_reports\": 2,\n    \"broken_links\": 0,\n    \"missing_directories\": 0\n  },\n  \"last_cleanup\": \"..."
+        }
+      ],
+      "overall_risk": "high"
+    },
+    {
+      "file": ".\\agents\\performance-analytics.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 45,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function analyze_learning_effectiveness() {\n  const patterns = read_pattern_database()\n  const quality_history = read_quality_history()\n\n  return {\n    // Growth Metrics\n    total_patterns: patt..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\performance-optimizer.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\post-execution-validator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\pr-reviewer.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\preference-coordinator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\quality-controller.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 387,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const patterns = load('.claude-patterns/patterns.json')\nconst successful_patterns = patterns.patterns\n  .filter(p => p.outcome.success && p.outcome.quality_score >= 80)"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\quantum-computing-integrator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\report-management-organizer.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\security-auditor.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\smart-recommender.md",
+      "js_blocks_count": 6,
+      "blocks": [
+        {
+          "line": 40,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function recommend_workflow(task_description) {\n  // Step 1: Classify the task\n  const task_type = classify_task(task_description)\n  const complexity = estimate_complexity(task_description)\n\n  /..."
+        },
+        {
+          "line": 100,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function recommend_skill_combinations(task_type) {\n  const patterns = get_patterns_by_type(task_type)\n\n  // Group by skill combinations\n  const combos = group_by_skill_combination(patterns)\n\n  /..."
+        },
+        {
+          "line": 150,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function recommend_agent_delegation(task_type, complexity) {\n  const patterns = get_patterns_by({\n    task_type: task_type,\n    complexity: complexity\n  })\n\n  // Analyze agent effectiveness\n  co..."
+        },
+        {
+          "line": 202,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function predict_quality_score(task, proposed_approach) {\n  const similar_patterns = find_similar({\n    task_type: task.type,\n    skills: proposed_approach.skills,\n    agents: proposed_approach...."
+        },
+        {
+          "line": 258,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function estimate_duration(task, approach) {\n  const base_time = estimate_base_complexity(task)\n  const similar_patterns = find_similar_tasks(task)\n\n  // Adjust based on historical data\n  const ..."
+        },
+        {
+          "line": 311,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function assess_risks(task, proposed_approach) {\n  const patterns = get_related_patterns(task)\n\n  const risks = {\n    quality_risks: identify_quality_risks(patterns),\n    time_risks: identify_ti..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\strategic-planner.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\test-engineer.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\transcendent-capabilities-architect.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\validation-controller.md",
+      "js_blocks_count": 4,
+      "blocks": [
+        {
+          "line": 31,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Detect model and load appropriate validation configuration\nconst modelConfig = detectModelForValidation();\nloadValidationStrategy(modelConfig);"
+        },
+        {
+          "line": 87,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const ErrorCategories = {\n  PREREQUISITE: {\n    severity: \"high\",\n    auto_fixable: true,\n    recovery_strategy: \"auto_correct\"\n  },\n  PERMISSION: {\n    severity: \"medium\",\n    auto_fixable: false,\n  ..."
+        },
+        {
+          "line": 154,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function claudeErrorRecovery(error, context) {\n  // Analyze error pattern from historical data\n  const similarErrors = findSimilarPatterns(error.type, context);\n  const successfulRecoveries = similarE..."
+        },
+        {
+          "line": 181,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function glmErrorRecovery(error, context) {\n  // Categorize error type\n  const errorCategory = categorizeError(error);\n\n  // Apply structured recovery procedure\n  const recoveryProcedure = RECOVERY_PR..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\version-release-manager.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\agents\\workspace-organizer.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\assets\\README.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\git-release-workflow.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\analyze\\dependencies.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\analyze\\explain.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\analyze\\groups.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\analyze\\project.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\analyze\\quality.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\analyze\\repository.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\analyze\\static.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 339,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "110: function handleRequest(request) {\n111:   processRequest(request);\n112:   return response.json();  // <- 'response' not defined\n113: }"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\debug\\eval.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\debug\\gui.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\dev\\auto.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\dev\\commit.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\dev\\model-switch.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\dev\\pr-review.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 35,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const review_result = await delegate_to_pr_reviewer({\n    pr_number: pr_number,\n    pr_data: {\n        title: pr_title,\n        author: pr_author,\n        description: pr_description,\n        files: c..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\dev\\release.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\evolve\\transcendent.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\learn\\analytics.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\learn\\clone.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\learn\\history.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\learn\\init.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\learn\\performance.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\learn\\predict.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 360,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Get optimization opportunities\nfetch('/predictive-analytics', {\n  method: 'POST',\n  body: JSON.stringify({ action: 'opportunities' })\n})\n.then(response => response.json())\n.then(data => {\n  console..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\monitor\\dashboard.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\monitor\\groups.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\monitor\\recommend.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\validate\\all.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\validate\\commands.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\validate\\fullstack.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\validate\\integrity.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\validate\\patterns.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\validate\\plugin.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\validate\\web.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\workspace\\distribution-ready.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\workspace\\improve.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 316,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Claude Code could read improvements.json and suggest:\n// \"Based on user experience analysis, implement debugging pattern database\n// to reduce resolution time from 8.2 to <5 minutes\""
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\workspace\\organize.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\workspace\\reports.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\workspace\\update-about.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\commands\\workspace\\update-readme.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\CHANGELOG.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\COMMAND_UPDATE_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\CROSS_MODEL_IMPROVEMENTS.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 112,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "{\n  \"claude-sonnet\": { \"learning_effectiveness\": 0.92, \"adaptation_speed\": \"fast\" },\n  \"claude-4.5\": { \"learning_effectiveness\": 0.95, \"adaptation_speed\": \"very_fast\" },\n  \"glm-4.6\": { \"learning_effec..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\DEVELOPMENT_DISTRIBUTION_ARCHITECTURE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\DEVELOPMENT_ROADMAP.md",
+      "js_blocks_count": 2,
+      "blocks": [
+        {
+          "line": 168,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Progressive content loading\nconst contentLoader = {\n  // Load essential content first\n  loadEssential: () => loadTOC() + loadQuickReference(),\n\n  // Predict and preload likely next content\n  predic..."
+        },
+        {
+          "line": 316,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// D3.js-based visualizations\nconst visualizations = {\n  performanceChart: new PerformanceChart(),\n  agentNetwork: new AgentNetworkGraph(),\n  learningProgress: new LearningProgressTracker(),\n  systemH..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\DISTRIBUTION_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\ENHANCED_LEARNING_SYSTEM.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\EVOLUTION_ROADMAP.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\FOUR_TIER_ARCHITECTURE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\FOUR_TIER_ENHANCEMENTS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\FULL_STACK_VALIDATION.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 431,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Before: postcss.config.js with ESM syntax\nexport default { plugins: [...] }  // Fails\n\n// After: Renamed to postcss.config.mjs\nexport default { plugins: [...] }  // Works"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\GUI_DEVELOPMENT_BEST_PRACTICES.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\index.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\INSTALLATION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\LEARNING_IMPROVEMENTS_V3.0_SUMMARY.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 226,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Every task now follows this enhanced flow\nasync function execute_task(task) {\n  // 1. Generate project fingerprint\n  const fingerprint = generate_project_fingerprint()\n\n  // 2. Predict optimal skil..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\LEARNING_SYSTEMS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\MARKETPLACE_SUBMISSION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\MIGRATION_GUIDE.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 56,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Replace legacy API calls\n// OLD:\nfetch('/api/quality-trends')\n\n// NEW:\nfetch('/api/unified/quality')"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\MODEL_PERFORMANCE_DASHBOARD.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\NAMING_CONVENTIONS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\NAMING_CONVENTION_FIX_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\PROGRESSIVE_LOADING_INTEGRATION_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\PR_REVIEW_SYSTEM.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\README.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\TOKEN_OPTIMIZATION_FRAMEWORK_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\TOKEN_OPTIMIZATION_INTEGRATION_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\TOKEN_OPTIMIZATION_STATUS_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\UNIFIED_DASHBOARD_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\UNIFIED_PARAMETER_STORAGE.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 394,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Fetch quality data\nasync function getQualityData() {\n    const response = await fetch('/api/unified/quality');\n    return await response.json();\n}\n\n// Update quality score\nasync function updateQual..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\USER_PREFERENCE_MEMORY_SYSTEM.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\WEB_VALIDATION_SYSTEM.md",
+      "js_blocks_count": 2,
+      "blocks": [
+        {
+          "line": 238,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// dashboard.py line 1827\ncsvContent = 'Header\n';  // Missing \\n escape sequence"
+        },
+        {
+          "line": 412,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "{\n  \"loadTime\": 1234,        // Total page load time (ms)\n  \"domReady\": 456,         // DOM content loaded (ms)\n  \"responseTime\": 123,     // Server response time (ms)\n  \"resourceCount\": 15,     // Nu..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\analysis\\ARGUMENT_PARSER_IMPROVEMENTS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\analysis\\COMMAND_COVERAGE_ANALYSIS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\ARCHITECTURAL_FIX_LEARNING_SYSTEM.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\CROSS_PLATFORM_DASHBOARD_SOLUTION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\CROSS_PLATFORM_SOLUTION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\DASHBOARD_PATH_RESOLUTION_FIX.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\FOUR_TIER_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\IMPLEMENTATION_ROADMAP.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\MARKETPLACE_EXECUTION_SOLUTION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\QUALITY_ANALYSIS_POST_FIX_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\SIMPLE_PLUGIN_DISCOVERY_SOLUTION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\STRATEGIC_OPTIMIZATION_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\SYNTAX_FIX_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\TOKEN_EFFICIENT_ARCHITECTURE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\UNIFIED_DASHBOARD_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\V6_2_FOUR_TIER_ARCHITECTURE.md",
+      "js_blocks_count": 11,
+      "blocks": [
+        {
+          "line": 208,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function makeStrategicDecisions(strategicRecommendations, userPreferences) {\n  // 1. Evaluate all strategic recommendations\n  const evaluatedRecommendations = await evaluateRecommendations(\n    ..."
+        },
+        {
+          "line": 328,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function executeWithPrecision(decisions, executionPlan) {\n  // 1. Coordinate execution across multiple agents\n  const coordinationPlan = await createCoordinationPlan(executionPlan)\n\n  // 2. Impl..."
+        },
+        {
+          "line": 447,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function validateAndOptimize(implementations) {\n  // 1. Comprehensive validation\n  const validationResults = await comprehensiveValidation(implementations)\n\n  // 2. Performance optimization\n  co..."
+        },
+        {
+          "line": 556,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Cross-tier feedback system\nasync function crossTierFeedbackSystem(tierResults) {\n  const feedbackLoops = []\n\n  // Tier 4 \u2192 Tier 1: Strategic learning feedback\n  const strategicFeedback = await gene..."
+        },
+        {
+          "line": 629,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Adaptive learning system\nclass FourTierAdaptiveLearning {\n  constructor() {\n    this.learningMatrix = new Map()\n    this.performanceHistory = []\n    this.adaptationStrategies = new Map()\n  }\n\n  asy..."
+        },
+        {
+          "line": 704,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function calculateFourTierQualityScore(tierResults) {\n  const weights = {\n    strategic_analysis: 0.20,    // 20% - Strategic insight quality\n    decision_making: 0.25,       // 25% - Decision quality..."
+        },
+        {
+          "line": 767,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Comprehensive quality assurance pipeline\nasync function qualityAssurancePipeline(executionResults) {\n  const qaResults = {\n    tier_assessments: {},\n    cross_tier_validation: {},\n    production_re..."
+        },
+        {
+          "line": 803,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function selectAgentsForTier(tier, taskComplexity, taskType) {\n  const availableAgents = getTierAgents(tier)\n  const selectionCriteria = getSelectionCriteria(taskComplexity)\n\n  const selectedAgents = ..."
+        },
+        {
+          "line": 841,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "class FourTierWorkflowEngine {\n  constructor() {\n    this.tierAgents = new Map()\n    this.learningSystem = new FourTierAdaptiveLearning()\n    this.performanceTracker = new PerformanceTracker()\n  }\n\n  ..."
+        },
+        {
+          "line": 1050,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Enhanced feedback system for four-tier architecture\nclass FourTierFeedbackSystem extends AgentFeedbackSystem {\n  async addCrossTierFeedback(fromTier, toTier, feedbackData) {\n    const feedback = {\n..."
+        },
+        {
+          "line": 1088,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Enhanced performance tracking for four-tier architecture\nclass FourTierPerformanceTracker extends AgentPerformanceTracker {\n  async recordFourTierExecution(workflowResults) {\n    const performanceD..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\architecture\\V6_TWO_TIER_ARCHITECTURE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\emergency-fixes\\CRITICAL_BUG_REPORT_System_Wide_Failure.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 57,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Problematic message structure being sent:\n{\n  \"role\": \"assistant\",\n  \"content\": [\n    {\"type\": \"text\", \"text\": \"\"},           // \u274c Empty text block\n    {\"type\": \"text\", \"text\": \"   \"},        // \u274c ..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\emergency-fixes\\CRITICAL_PLUGIN_FAILURE_RESOLVED.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\emergency-fixes\\EMERGENCY_COMMAND_RESPONSE_TEMPLATE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\emergency-fixes\\EMERGENCY_FIXES_DEPLOYMENT_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\emergency-fixes\\EMERGENCY_FIX_PLUGIN_FAILURE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\emergency-fixes\\PLUGIN_DEPLOYMENT_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\emergency-fixes\\PLUGIN_FIX_INTEGRATION_GUIDE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\guidelines\\MODEL_COMMUNICATION_GUIDELINES.md",
+      "js_blocks_count": 2,
+      "blocks": [
+        {
+          "line": 193,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 0,
+          "code_preview": "function selectCommunicationStyle(detectedModel) {\n  const styles = {\n    'claude-sonnet': 'natural_insightful',\n    'claude-4.5': 'concise_predictive',\n    'glm-4.6': 'structured_explicit',\n    'fall..."
+        },
+        {
+          "line": 206,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function generateOutput(results, model, targetAudience) {\n  const style = selectCommunicationStyle(model);\n  const template = loadOutputTemplate(style);\n\n  return template.render({\n    ...results,\n   ..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\guidelines\\prompt-agent-creating.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\command-mapping.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\COMMAND_MIGRATION_GUIDE_v4.0.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\COMMAND_REFACTORING_PLAN.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\COMPLETE_IMPLEMENTATION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\ENHANCEMENT_PHASES_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\IMPLEMENTATION_SUMMARY.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 17,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Automatically stores patterns like:\n{\n  \"task_type\": \"refactoring\",\n  \"context\": {\"language\": \"python\", \"module\": \"auth\"},\n  \"skills_used\": [\"code-analysis\", \"quality-standards\"],\n  \"quality_score\"..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\IMPROVEMENTS_SUMMARY.md",
+      "js_blocks_count": 3,
+      "blocks": [
+        {
+          "line": 45,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Orchestrator automatically does this:\ncomplete_task() \u2192 assess_quality() \u2192 learning_engine.capture_pattern() \u2192 return_to_user"
+        },
+        {
+          "line": 92,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Finds similar successful patterns\nquery_patterns({\n  task_type: current_task_type,\n  context_similarity: 0.7,  // 70% similar\n  min_quality_score: 75,\n  success: true\n})\n\n// Extracts and ranks skil..."
+        },
+        {
+          "line": 337,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// User requests task\nuser_input: \"Refactor authentication\"\n\n// Orchestrator analyzes\norchestrator.analyze_task()\n  \u2192 task_type: \"refactoring\"\n  \u2192 context: \"authentication\"\n\n// NEW: Query learning dat..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\IMPROVEMENT_PLAN.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\PHASE1_IMPLEMENTATION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\PHASE1_OPTIMIZATION_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\PREVENTION_SYSTEM_IMPLEMENTATION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\SLASH_COMMAND_CATEGORIES.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\implementation\\UNIFIED_PARAMETER_STORAGE_IMPLEMENTATION.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 141,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Fetch unified data\nfetch('/api/unified/quality')\n  .then(response => response.json())\n  .then(data => console.log(data.current_score));"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v6.0.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v6.1.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.1.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.2.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.3.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.4.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.4.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.5.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.6.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.6.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.6.2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\release-notes\\RELEASE_NOTES_v7.6.3.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v2.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v2.1.2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_V3.0.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_V3.1.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_V3.2.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v4.11.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v4.4.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v4.4.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v5.3.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v5.3.2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v5.3.3.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v5.5.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v5.8.3.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v6.0.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v6.1.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_NOTES_v6.2.0.md",
+      "js_blocks_count": 6,
+      "blocks": [
+        {
+          "line": 101,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Revolutionary cross-tier learning system\nTier 4 \u2192 Tier 1: Strategic learning feedback (95% effectiveness)\nTier 4 \u2192 Tier 2: Decision quality feedback (94% effectiveness)\nTier 4 \u2192 Tier 3: Execution q..."
+        },
+        {
+          "line": 159,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Comprehensive four-tier quality assessment\nOverall Quality Score Calculation:\n\u251c\u2500 Strategic Analysis (20%): Pattern recognition quality\n\u251c\u2500 Decision Making (25%): Decision quality and planning\n\u251c\u2500 Exe..."
+        },
+        {
+          "line": 180,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "Feedback Effectiveness by Tier Combination:\n\u251c\u2500 Validation \u2192 Strategic: 95% strategic learning effectiveness\n\u251c\u2500 Validation \u2192 Decision: 94% decision quality improvement\n\u251c\u2500 Validation \u2192 Execution: 93% ex..."
+        },
+        {
+          "line": 224,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function executeFourTierWorkflow(task, userPreferences) {\n  // Step 1: Strategic Analysis (Tier 1)\n  const strategicResults = await executeTier1(task)\n\n  // Step 2: Decision Making & Planning (T..."
+        },
+        {
+          "line": 258,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "Task Complexity Analysis:\n\u251c\u2500 Scope Impact: single_module \u2192 multiple_modules \u2192 entire_project\n\u251c\u2500 Risk Level: low \u2192 medium \u2192 high \u2192 critical\n\u251c\u2500 Dependencies: few \u2192 moderate \u2192 many \u2192 complex\n\u251c\u2500 Integrati..."
+        },
+        {
+          "line": 284,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "Cross-Tier Knowledge Synthesis:\n\u251c\u2500 Strategic Insights: What strategies work best\n\u251c\u2500 Decision Effectiveness: Which decisions lead to success\n\u251c\u2500 Execution Quality: What implementation approaches work\n\u251c\u2500..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_SUMMARY_v4.4.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_V5.0.0_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\RELEASE_V5.1.3_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.3.6.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.3.7.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.4.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.4.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.5.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.5.2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.5.3.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.6.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.7.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.7.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.7.2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.7.3.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.7.4.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.8.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.8.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\releases\\old\\RELEASE_NOTES_v5.8.2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\archive\\FINAL_QUALITY_ASSESSMENT_2025-10-30.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\auto-analyze\\auto-analyze-2025-01-23.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\auto-analyze\\auto-analyze-2025-10-22.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\auto-analyze\\auto-analyze-2025-10-23.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_152524.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_152605.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_152655.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_152753.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_152826.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_152938.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_153539.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_153935.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_154034.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_161937.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_162448.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_162546.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_162636.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_162657.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_202519.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_202531.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_202603.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_202714.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_203714.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_211844.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_213541.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_215542.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_215615.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_215646.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_221423.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_221545.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_221627.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_221637.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_221709.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\dashboard-debug\\dashboard-debug-2025-11-06_221722.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-automatic-recording-2025-10-27.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-claude-md-performance-2025-11-05.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-dashboard-2025-10-24.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-dashboard-connectivity-2025-10-24.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-dashboard-connectivity-issue-2025-10-24-v2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-dashboard-connectivity-issue-2025-10-24.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-dashboard-data-loading-2025-10-24.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\debug-eval\\debug-eval-performance-index-2025-10-24.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\about_optimization_report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\ADVANCED_OPTIMIZATION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\ADVANCED_TECHNICAL_OPTIMIZATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\agent_communication_test_report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\AGENT_ERROR_SOLUTION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\ASSESSMENT_INTEGRATION_FIX_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\AUTOMATIC_PERFORMANCE_RECORDING.md",
+      "js_blocks_count": 2,
+      "blocks": [
+        {
+          "line": 59,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Automatic trigger after task completion\nasync function complete_task(task_data) {\n  const result = await execute_task(task_data)\n  const quality = await assess_quality(result)\n\n  // Automatic perfo..."
+        },
+        {
+          "line": 87,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Performance-enriched pattern structure\nconst enhanced_pattern = {\n  // Existing pattern data\n  task_type: classify_task(description),\n  execution: { skills_loaded, agents_delegated, approach_taken ..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\AUTO_FIX_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\BUG_FIX_REPORT_Cache_Control_Empty_Blocks.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\BUG_FIX_REPORT_Emoji_Characters_Orchestrator.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\BUG_FIX_REPORT_Empty_Text_Blocks.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\BUG_FIX_REPORT_Unicode_Characters_Fixed.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\CACHE_CONTROL_FIX_VALIDATION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\CHANGELOG.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\CLAUDE_PLUGIN_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\CLAUDE_PLUGIN_VALIDATION_REPORT_FINAL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\CLAUDE_PLUGIN_VALIDATION_REPORT_NEW.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\command_delegation_report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\COMMAND_RESTRUCTURING_RELEASE_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\COMPLETE_IMPLEMENTATION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\comprehensive-project-analysis-2025-10-27.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\COMPREHENSIVE_DEBUGGING_EVALUATION_REPORT.md",
+      "js_blocks_count": 3,
+      "blocks": [
+        {
+          "line": 21,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Problematic (original)\n   /\\b\\w/g\n\n   // Fixed (properly escaped)\n   /\\\\b\\\\w/g\n   ```\n\n2. **Data Structure Mismatch**:\n   - Skills API returns: `{\"top_skills\": [...], \"total_skills\": 6}`\n   - Front..."
+        },
+        {
+          "line": 60,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Original\nif (skills && Array.isArray(skills)) {\n    updateSkillsTable(skills);\n}\n\n// Fixed\nif (skills && skills.top_skills && Array.isArray(skills.top_skills)) {\n    updateSkillsTable(skills);\n}"
+        },
+        {
+          "line": 73,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Original\nif (agents && Array.isArray(agents)) {\n    updateAgentsTable(agents);\n}\n\n// Fixed\nif (agents && agents.top_agents && Array.isArray(agents.top_agents)) {\n    updateAgentsTable(agents);\n}"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\COMPREHENSIVE_OPTIMIZATION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\COMPREHENSIVE_PLUGIN_TEST_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\COMPREHENSIVE_PROJECT_ANALYSIS_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\COMPREHENSIVE_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\CONTINUOUS_AUTONOMOUS_IMPROVEMENT_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\CONTINUOUS_IMPROVEMENT_SUMMARY_2025-11-04.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_BROWSER_FIX_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_DATA_CONSISTENCY_DEBUGGING_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_DEBUGGING_EVALUATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_ENHANCEMENT_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_FIX_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_IMPROVEMENTS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_LOADING_FIX_REPORT.md",
+      "js_blocks_count": 2,
+      "blocks": [
+        {
+          "line": 18,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 0,
+          "code_preview": "const safeFetch = async (url, fallbackData = null) => {\n    try {\n        const response = await fetch(url);\n        if (!response.ok) {\n            console.warn('API ' + url + ' returned status: ' + ..."
+        },
+        {
+          "line": 53,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Only update sections if we have valid data\nif (overview) {\n    updateOverviewMetrics(overview);\n}\nif (quality && quality.scores) {\n    updateQualityChart(quality);\n}\n// ... similar checks for all s..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DASHBOARD_UNIFIED_STORAGE_AND_LEARNING_IMPLEMENTATION_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DATA_INTEGRITY_PREVENTION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DEBUGGING_EVALUATION_REPORT.md",
+      "js_blocks_count": 12,
+      "blocks": [
+        {
+          "line": 33,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Added data aggregation logic in updateTimelineChart function\nconst aggregatedData = {};\nconst models = new Set();\n\ntimelineData.timeline_data.forEach(assessment => {\n    const date = assessment.dat..."
+        },
+        {
+          "line": 54,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// INCORRECT: Checking if performanceRecords itself is an array\nif (performanceRecords && Array.isArray(performanceRecords))\n\n// CORRECT: Checking for nested records array\nif (performanceRecords && pe..."
+        },
+        {
+          "line": 74,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "try {\n    if (performanceRecords && performanceRecords.records && Array.isArray(performanceRecords.records)) {\n        updatePerformanceRecordsTable(performanceRecords);\n    }\n} catch (e) {\n    consol..."
+        },
+        {
+          "line": 136,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Poor error message\nthrow new Error(`Agent type '${agentType}' not found. Available agents: ${availableAgents.join(', ')}`);"
+        },
+        {
+          "line": 142,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Enhanced error message with guidance\nthrow new Error(`Agent type '${agentType}' not found.\n\nAvailable agents:\n\u2022 orchestrator - Main autonomous decision maker\n\u2022 code-analyzer - Code structure and pa..."
+        },
+        {
+          "line": 161,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// agents/orchestrator.md\n---\nname: orchestrator\ndescription: Main autonomous decision maker that delegates to specialized agents\ncategory: core\nusage_frequency: high\ncommon_for: [general-tasks, proje..."
+        },
+        {
+          "line": 177,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// When agent not found, suggest closest match\nfunction suggestAgent(userInput) {\n    const suggestions = {\n        'autonomous-agent': 'orchestrator',\n        'debug-evaluator': 'validation-controlle..."
+        },
+        {
+          "line": 283,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Implement in Task tool error handling\nfunction createAgentError(userInput, availableAgents) {\n    const suggestion = suggestAgent(userInput);\n    const topAgents = availableAgents.slice(0, 5);\n\n   ..."
+        },
+        {
+          "line": 311,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Analyze task description and suggest best agent\nfunction suggestOptimalAgent(taskDescription) {\n    const patterns = {\n        'debug.*error': 'validation-controller',\n        'code.*quality': 'qua..."
+        },
+        {
+          "line": 417,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "/\\b\\w/g"
+        },
+        {
+          "line": 439,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const statusText = data.status.replace('_', ' ').replace(/\\b\\w/g, l => l.toUpperCase());"
+        },
+        {
+          "line": 444,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const statusText = data.status.replace('_', ' ').replace(/\\\\b\\\\w/g, l => l.toUpperCase());"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\DEBUGGING_PERFORMANCE_EVALUATION_2025-10-29.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 125,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Added to validation-controller.md\n   const ErrorCategories = {\n     PREREQUISITE: {\n       severity: \"high\",\n       auto_fixable: true,\n       recovery_strategy: \"auto_correct\"\n     },\n     PERMISS..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\FINAL_OPTIMIZATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\FINAL_SYSTEM_STATUS_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\GITHUB_ABOUT_OPTIMIZATION_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\IMPLEMENTATION_TEST_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\IMPROVEMENT_IMPLEMENTATION_PLAN.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 195,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Add to suggestion generation\nasync function check_workspace_health() {\n  const health = {\n    root_files: count_misplaced_files(),\n    report_dirs: count_report_directories(),\n    pattern_locations..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\LEARNINGS_AND_IMPROVEMENTS.md",
+      "js_blocks_count": 3,
+      "blocks": [
+        {
+          "line": 120,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "for each command in [all 18 commands]:\n     - Verify pattern storage code exists\n     - Check storage location (.claude-patterns/)\n     - Validate pattern format consistency\n     - Ensure learning-eng..."
+        },
+        {
+          "line": 226,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Add to suggestion generation\nif (workspace_health_score < 70) {\n  suggestions.push({\n    priority: 'recommended',\n    label: 'Clean Up Workspace',\n    description: `${cluttered_files} files need or..."
+        },
+        {
+          "line": 330,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// After every 25 commands\nif (commands_since_cleanup >= 25) {\n  suggest_workspace_cleanup()\n}"
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\LEARNING_SYSTEM_ISSUE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\METRICS_KPI_COMPLETION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\metrics_kpi_test_report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\NAMING_CONSISTENCY_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\PERFORMANCE_ANALYSIS_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\performance_report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\PERFORMANCE_TESTING_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\PERMANENT_SOLUTION_IMPLEMENTED.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\plugin-cache-control-error-analysis-2025-11-10.md",
+      "js_blocks_count": 2,
+      "blocks": [
+        {
+          "line": 205,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "[\n  \"---\\nname: example\\n---\",  // Block 0: Frontmatter\n  \"\",                          // Block 1: Empty (consecutive \\n)\n  \"# Section 1\",               // Block 2: Header\n  \"\",                       ..."
+        },
+        {
+          "line": 216,
+          "has_cache_control": true,
+          "issues": [
+            "Uses cache_control directive",
+            "Uses cache_control without proper validation",
+            "Potentially dangerous pattern: Empty text property",
+            "Potentially dangerous pattern: Empty text property"
+          ],
+          "safety_measures": [],
+          "risky_scenarios": 10,
+          "code_preview": "{\n  role: \"user\",\n  content: [\n    { type: \"text\", text: \"---\\nname: example\\n---\", cache_control: {...} },\n    { type: \"text\", text: \"\", cache_control: {...} },  // \u274c FAILS HERE\n    { type: \"text\", t..."
+        }
+      ],
+      "overall_risk": "high"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\PLUGIN_VALIDATION_FINAL_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\plugin_validation_report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\QUALITY_CONTROL_EXECUTION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\QUALITY_CONTROL_REPORT_2025-10-23.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\QUALITY_IMPROVEMENT_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\README_FOR_USERS_Fixing_Cache_Control_Error.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_V3.4.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.4.3.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.4.4.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.5.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.5.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.5.2.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.5.3.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.7.0.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_NOTES_v3.7.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_SUMMARY_v3.5.1.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_v5.3.1_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RELEASE_v5.3.1_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\RESULT_PRESENTATION_GUIDELINES.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\test-workspace-organization-report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\TRANSCENDENT_EVOLUTION_ACHIEVEMENTS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\UNIFIED_STORAGE_IMPLEMENTATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\V2_SUMMARY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\V3_RELEASE_MATRIX.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\V3_RELEASE_READY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\V5.0.0_RELEASE_EXECUTION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\V5.1.3_RELEASE_READY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\v5.3.1_FINAL_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\VALIDATION_AUDIT_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\VALIDATION_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\VALIDATION_REPORT_DISTRIBUTION_READY.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\WORKSPACE_ORGANIZATION_REPORT_2025-10-28.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\generated\\WORKSPACE_UPDATE_ABOUT_EXECUTION_COMPLETE.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\validation\\.claudereportsVALIDATION_REPORT_2025-10-29.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\validation\\COMMAND_REFACTORING_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\validation\\comprehensive-validation-2025-10-26.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\validation\\comprehensive-validation-2025-10-28.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\docs\\reports\\validation\\validation_report.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\improvements\\README.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\lib\\DASHBOARD_DEVELOPMENT_README.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\lib\\README.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\lib\\VALIDATION_README.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\reports\\COMPREHENSIVE_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\reports\\DASHBOARD_COPY_MECHANISM_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\reports\\DASHBOARD_UNIFIED_DATA_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\reports\\DASHBOARD_UNIFIED_STORAGE_FIX_DOCUMENTATION.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\reports\\DISTRIBUTION_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\reports\\FINAL_VALIDATION_REPORT.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\ast-analyzer\\SKILL.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 59,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Using babel or acorn parser\nconst parser = require('@babel/parser');\nconst traverse = require('@babel/traverse').default;\n\nfunction parseJavaScriptCode(sourceCode) {\n    const ast = parser.parse(so..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\autonomous-development\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\claude-plugin-validation\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\code-analysis\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\contextual-pattern-learning\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\decision-frameworks\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\documentation-best-practices\\SKILL.md",
+      "js_blocks_count": 1,
+      "blocks": [
+        {
+          "line": 40,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "/**\n * Brief one-line description.\n *\n * @param {string} param1 - Description of param1\n * @param {number} param2 - Description of param2\n * @returns {boolean} Description of return value\n * @throws {..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\fullstack-validation\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\git-automation\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\group-collaboration\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\gui-design-principles\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\integrity-validation\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\model-detection\\SKILL.md",
+      "js_blocks_count": 7,
+      "blocks": [
+        {
+          "line": 16,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Check for model indicators in system context\n   const modelIndicators = {\n     'claude-sonnet-4.5': { pattern: /sonnet.*4\\.5|4\\.5.*sonnet/i, confidence: 0.9 },\n     'claude-haiku-4.5': { pattern: /..."
+        },
+        {
+          "line": 160,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function loadSkillsForClaude(skills) {\n  // Progressive disclosure with context merging\n  return skills.map(skill => ({\n    ...skill,\n    loading_strategy: 'progressive',\n    context_aware: true,\n    ..."
+        },
+        {
+          "line": 173,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function loadSkillsForGLM(skills) {\n  // Complete upfront loading with clear structure\n  return skills.map(skill => ({\n    ...skill,\n    loading_strategy: 'complete',\n    explicit_criteria: true,\n    ..."
+        },
+        {
+          "line": 203,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function testNuancedReasoning() {\n  // Present ambiguous scenario requiring subtle judgment\n  // Evaluate response quality and contextual awareness\n  return score >= 0.8; // True for Claude models\n}"
+        },
+        {
+          "line": 212,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function testStructuredExecution() {\n  // Present clear, sequential task\n  // Evaluate adherence to structured approach\n  return score >= 0.8; // True for GLM models\n}"
+        },
+        {
+          "line": 223,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function detectModel() {\n  // Step 1: Check system context indicators\n  const contextResult = analyzeSystemContext();\n\n  // Step 2: Test capability patterns\n  const capabilityResult = testCapabilities..."
+        },
+        {
+          "line": 240,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function loadModelConfiguration(detectedModel) {\n  const baseConfig = getBaseModelConfig(detectedModel);\n  const adaptiveConfig = generateAdaptiveConfig(detectedModel);\n  return mergeConfigurations(ba..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\pattern-learning\\SKILL.md",
+      "js_blocks_count": 4,
+      "blocks": [
+        {
+          "line": 221,
+          "has_cache_control": true,
+          "issues": [
+            "Uses cache_control directive"
+          ],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 10,
+          "code_preview": "// \ud83d\udea8 CRITICAL: Always validate content before applying cache_control\nfunction safeExecuteOperation(operation, fallbackContent) {\n  try {\n    const result = operation();\n    // Validate result before u..."
+        },
+        {
+          "line": 248,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 0,
+          "code_preview": "// \ud83d\udea8 CRITICAL: Safe pattern storage with full validation\nfunction store_pattern(task_data, execution_data, outcome_data) {\n  // Validate inputs first\n  if (!task_data || !execution_data || !outcome_da..."
+        },
+        {
+          "line": 397,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function find_similar_tasks(current_task) {\n  // Validate input\n  if (!current_task || !current_task.type) {\n    return [];\n  }\n\n  try {\n    const db = safeLoadPatterns('.claude-patterns/patterns.json..."
+        },
+        {
+          "line": 423,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function recommend_skills(task_type, context) {\n  // Validate input\n  if (!task_type) {\n    return ['code-analysis', 'quality-standards']; // Safe default\n  }\n\n  try {\n    const db = safeLoadPatterns(..."
+        }
+      ],
+      "overall_risk": "high"
+    },
+    {
+      "file": ".\\skills\\performance-scaling\\SKILL.md",
+      "js_blocks_count": 11,
+      "blocks": [
+        {
+          "line": 118,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 0,
+          "code_preview": "function scaleExecutionTime(baseTime, model, complexity) {\n  const profiles = {\n    'claude-sonnet': { multiplier: 1.0, complexity_factor: 0.9 },\n    'claude-4.5': { multiplier: 0.9, complexity_factor..."
+        },
+        {
+          "line": 141,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 0,
+          "code_preview": "function getQualityTarget(model, taskType) {\n  const baseTargets = {\n    'claude-sonnet': { simple: 85, complex: 90, critical: 95 },\n    'claude-4.5': { simple: 88, complex: 92, critical: 96 },\n    'g..."
+        },
+        {
+          "line": 161,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [
+            "Has fallback content mechanisms"
+          ],
+          "risky_scenarios": 0,
+          "code_preview": "function scaleMemoryUsage(model, taskSize) {\n  const profiles = {\n    'claude-sonnet': { base_memory: 'medium', scaling_factor: 1.1 },\n    'claude-4.5': { base_memory: 'medium', scaling_factor: 1.0 },..."
+        },
+        {
+          "line": 186,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function monitorPerformance(model, currentMetrics) {\n  const baseline = getPerformanceBaseline(model);\n  const variance = calculateVariance(currentMetrics, baseline);\n\n  if (variance > 0.2) {\n    // P..."
+        },
+        {
+          "line": 201,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function tuneParameters(model, taskHistory) {\n  const performance = analyzeTaskPerformance(taskHistory);\n  const adjustments = calculateOptimalAdjustments(model, performance);\n\n  return {\n    timeout_..."
+        },
+        {
+          "line": 218,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function learnPerformancePatterns(executionHistory) {\n  const patterns = {\n    successful_executions: extractSuccessPatterns(executionHistory),\n    failed_executions: extractFailurePatterns(executionH..."
+        },
+        {
+          "line": 245,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "const modelKPIs = {\n  'claude-sonnet': {\n    'context_switching_efficiency': '>= 90%',\n    'pattern_recognition_accuracy': '>= 85%',\n    'adaptive_decision_quality': '>= 88%'\n  },\n  'claude-4.5': {\n  ..."
+        },
+        {
+          "line": 268,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function benchmarkPerformance(model, testSuite) {\n  const results = runPerformanceTests(model, testSuite);\n  const baseline = getIndustryBaseline(model);\n\n  return {\n    relative_performance: results...."
+        },
+        {
+          "line": 316,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function loadPerformanceConfiguration(model) {\n  const baseConfig = getBasePerformanceProfile(model);\n  const historicalData = getHistoricalPerformanceData(model);\n  const currentContext = assessCurre..."
+        },
+        {
+          "line": 328,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function adjustRuntimePerformance(currentMetrics, targetProfile) {\n  const adjustments = calculateNeededAdjustments(currentMetrics, targetProfile);\n\n  return {\n    timeout_adjustments: adjustments.tim..."
+        },
+        {
+          "line": 343,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function monitorPerformanceHealth(model, metrics) {\n  const healthScore = calculatePerformanceHealth(model, metrics);\n\n  if (healthScore < 0.8) {\n    return {\n      status: 'degraded',\n      recommend..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\predictive-skill-loading\\SKILL.md",
+      "js_blocks_count": 6,
+      "blocks": [
+        {
+          "line": 82,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// \ud83d\udea8 CRITICAL: Safe fingerprint generation with validation\nfunction generateFingerprint(task_info) {\n  // Validate input\n  if (!task_info || typeof task_info !== 'object') {\n    return {\n      type: '..."
+        },
+        {
+          "line": 117,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function findSimilarPatterns(fingerprint) {\n  // Validate input\n  if (!fingerprint || typeof fingerprint !== 'object') {\n    return [];\n  }\n\n  try {\n    const patterns = safeLoadPatterns('.claude-patt..."
+        },
+        {
+          "line": 160,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "function aggregateSkillScores(similar_patterns) {\n  // Validate input\n  if (!similar_patterns || !Array.isArray(similar_patterns)) {\n    return [];  // Return empty if no patterns\n  }\n\n  try {\n    con..."
+        },
+        {
+          "line": 212,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "async function preloadSkills(predicted_skills, skill_loader) {\n  // Validate inputs\n  if (!predicted_skills || !Array.isArray(predicted_skills) || !skill_loader) {\n    return [];  // Return empty if i..."
+        },
+        {
+          "line": 346,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// At task start (before analysis)\nconst predicted = predictiveLoader.predict_skills(task_info)\npredictiveLoader.preload_skills(task_info, skill_loader_func)\n\n// Continue with task analysis in paralle..."
+        },
+        {
+          "line": 359,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// After task completion\nlearning_engine.record_pattern({\n  task_info,\n  skills_used,\n  outcome: {\n    quality_score: 94,\n    success: true\n  }\n})\n\n// Predictive loader automatically benefits from new..."
+        }
+      ],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\quality-standards\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\security-patterns\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\testing-strategies\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\transcendent-ai-systems\\TRANSCENDENT_AI_SYSTEMS.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\validation-standards\\SKILL.md",
+      "js_blocks_count": 0,
+      "blocks": [],
+      "overall_risk": "low"
+    },
+    {
+      "file": ".\\skills\\web-validation\\SKILL.md",
+      "js_blocks_count": 3,
+      "blocks": [
+        {
+          "line": 67,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Enable console capture in browser\nchrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})\n\n// Retrieve logs after page load\nlogs = driver.get_log('browser')\nfor log in logs:\n    if l..."
+        },
+        {
+          "line": 113,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Collect Resource Timing data\nconst resources = performance.getEntriesByType('resource');\nresources.forEach(r => {\n    if (r.transferSize === 0 && r.duration > 0) {\n        // Resource failed to loa..."
+        },
+        {
+          "line": 198,
+          "has_cache_control": false,
+          "issues": [],
+          "safety_measures": [],
+          "risky_scenarios": 0,
+          "code_preview": "// Problem: `Value: $0`  # Tries to interpolate $0\n// Fix: `Value: \\$0`     # Escape the dollar sign"
+        }
+      ],
+      "overall_risk": "low"
+    }
+  ]
+}

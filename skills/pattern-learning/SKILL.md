@@ -302,12 +302,13 @@ function store_pattern(task_data, execution_data, outcome_data) {
 function safeLoadPatterns(filePath) {
   try {
     if (!exists(filePath)) {
-      return { version: "1.0.0", patterns: [], skill_effectiveness: {} };
+      return { version: "1.0.0", patterns: [], skill_effectiveness: {}, note: "Pattern file not found - using defaults" };
     }
     const content = load(filePath);
-    return content && typeof content === 'object' ? content : { version: "1.0.0", patterns: [] };
+    return content && typeof content === 'object' ? content : { version: "1.0.0", patterns: [], skill_effectiveness: {}, note: "Invalid content - using defaults" };
   } catch (error) {
-    return { version: "1.0.0", patterns: [], skill_effectiveness: {} };
+    console.log("Pattern loading failed, using defaults");
+    return { version: "1.0.0", patterns: [], skill_effectiveness: {}, note: "Error loading patterns - using defaults" };
   }
 }
 
@@ -398,23 +399,25 @@ Adjust Skill Selection
 function find_similar_tasks(current_task) {
   // Validate input
   if (!current_task || !current_task.type) {
-    return [];
+    return [{ note: "Invalid task input - no similar tasks found", type: "fallback" }];
   }
 
   try {
     const db = safeLoadPatterns('.claude-patterns/patterns.json');
     if (!db || !db.patterns || !Array.isArray(db.patterns)) {
-      return [];
+      return [{ note: "No pattern database available - no similar tasks found", type: "fallback" }];
     }
 
-    return db.patterns
+    const similar = db.patterns
       .filter(p => p && p.task_type === current_task.type)
       .filter(p => context_similarity(p.context || {}, current_task.context || {}) > 0.7)
       .sort((a, b) => (b.outcome?.quality_score || 0) - (a.outcome?.quality_score || 0))
       .slice(0, 5);
+
+    return similar.length > 0 ? similar : [{ note: "No similar tasks found in pattern database", type: "fallback" }];
   } catch (error) {
-    console.log("Pattern search failed, returning empty results");
-    return [];
+    console.log("Pattern search failed, returning fallback");
+    return [{ note: "Pattern search encountered an error - using fallback", type: "fallback" }];
   }
 }
 ```

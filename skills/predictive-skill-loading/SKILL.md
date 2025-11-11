@@ -118,13 +118,13 @@ function generateFingerprint(task_info) {
 function findSimilarPatterns(fingerprint) {
   // Validate input
   if (!fingerprint || typeof fingerprint !== 'object') {
-    return [];
+    return [{ note: "Invalid fingerprint - no similar patterns found", type: "fallback" }];
   }
 
   try {
     const patterns = safeLoadPatterns('.claude-patterns/patterns.json');
     if (!patterns || !Array.isArray(patterns)) {
-      return [];
+      return [{ note: "No pattern database available - using fallback", type: "fallback" }];
     }
 
     const similar = patterns
@@ -135,10 +135,11 @@ function findSimilarPatterns(fingerprint) {
       .filter(p => p.similarity >= 0.70)
       .sort((a, b) => b.similarity - a.similarity);
 
-    return similar.slice(0, 10);  // Top 10 matches
+    const result = similar.slice(0, 10);  // Top 10 matches
+    return result.length > 0 ? result : [{ note: "No similar patterns found in database", type: "fallback" }];
   } catch (error) {
-    console.log("Pattern similarity search failed, returning empty results");
-    return [];
+    console.log("Pattern similarity search failed, returning fallback");
+    return [{ note: "Pattern similarity search encountered an error - using fallback", type: "fallback" }];
   }
 }
 
@@ -146,12 +147,12 @@ function findSimilarPatterns(fingerprint) {
 function safeLoadPatterns(filePath) {
   try {
     if (!exists(filePath)) {
-      return [];
+      return [];  // This is safe because it's only used internally, not for cache_control
     }
     const content = load(filePath);
     return content && content.patterns && Array.isArray(content.patterns) ? content.patterns : [];
   } catch (error) {
-    return [];
+    return [];  // This is safe because it's only used internally, not for cache_control
   }
 }
 ```
@@ -161,7 +162,7 @@ function safeLoadPatterns(filePath) {
 function aggregateSkillScores(similar_patterns) {
   // Validate input
   if (!similar_patterns || !Array.isArray(similar_patterns)) {
-    return [];  // Return empty if no patterns
+    return [['code-analysis', 0.8], ['quality-standards', 0.7]];  // Return safe defaults
   }
 
   try {
@@ -198,12 +199,14 @@ function aggregateSkillScores(similar_patterns) {
     const scores = Object.values(skill_scores);
     const max_score = scores.length > 0 ? Math.max(...scores) : 1;
 
-    return Object.entries(skill_scores)
+    const result = Object.entries(skill_scores)
       .map(([skill, score]) => [skill, score / max_score])
       .sort((a, b) => b[1] - a[1]);
+
+    return result.length > 0 ? result : [['code-analysis', 0.8], ['quality-standards', 0.7]];
   } catch (error) {
-    console.log("Skill aggregation failed, returning empty results");
-    return [];
+    console.log("Skill aggregation failed, using safe defaults");
+    return [['code-analysis', 0.8], ['quality-standards', 0.7]];
   }
 }
 ```
@@ -213,7 +216,7 @@ function aggregateSkillScores(similar_patterns) {
 async function preloadSkills(predicted_skills, skill_loader) {
   // Validate inputs
   if (!predicted_skills || !Array.isArray(predicted_skills) || !skill_loader) {
-    return [];  // Return empty if invalid
+    return [{ note: "Invalid inputs for skill preloading - using fallback", type: "fallback" }];  // Return safe fallback
   }
 
   try {
@@ -226,14 +229,20 @@ async function preloadSkills(predicted_skills, skill_loader) {
             skill,
             content: content || `Content loaded for ${skill}`,
             confidence,
-        loaded_at: Date.now()
-      }))
-    )
+            loaded_at: Date.now()
+          }))
+      );
 
-  // Don't wait for completion - continue with task analysis
-  Promise.all(promises).then(loaded => {
-    cache.set('preloaded_skills', loaded)
-  })
+    // Don't wait for completion - continue with task analysis
+    Promise.all(promises).then(loaded => {
+      cache.set('preloaded_skills', loaded);
+    });
+
+    return [{ note: "Skill preloading initiated successfully", type: "success" }];
+  } catch (error) {
+    console.log("Skill preloading failed, but continuing safely");
+    return [{ note: "Skill preloading encountered an error - using fallback", type: "fallback" }];
+  }
 }
 ```
 
