@@ -1,5 +1,9 @@
 {
   "name": "LLM-Autonomous-Agent-Plugin-for-Claude",
+  "metadata": {
+    "description": "Claude Code marketplace for the LLM Autonomous Agent Plugin - a revolutionary four-tier agent architecture with 27 specialized agents, pattern learning, and 60-70% cost reduction. Features comprehensive code analysis, quality control, full-stack validation, and intelligent automation for development workflows.",
+    "version": "1.0.0"
+  },
   "owner": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
