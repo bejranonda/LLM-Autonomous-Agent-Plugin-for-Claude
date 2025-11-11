@@ -1,9 +1,5 @@
 {
   "name": "LLM-Autonomous-Agent-Plugin-for-Claude",
-  "metadata": {
-    "description": "Claude Code marketplace for the LLM Autonomous Agent Plugin - a revolutionary four-tier agent architecture with 27 specialized agents, pattern learning, and 60-70% cost reduction. Features comprehensive code analysis, quality control, full-stack validation, and intelligent automation for development workflows.",
-    "version": "1.0.0"
-  },
   "owner": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
@@ -35,9 +31,7 @@
         "refactoring",
         "ai-assistant",
         "validation",
-        "error-prevention",
-        "gitlab",
-        "claude-code"
+        "error-prevention"
       ],
       "category": "development",
       "tags": [
@@ -45,50 +39,9 @@
         "pattern-learning",
         "quality-assurance",
         "code-optimization",
-        "adaptive-ai",
-        "gitlab-hosted",
-        "marketplace-ready"
+        "adaptive-ai"
       ],
-      "strict": true,
-      "commands": [
-        "./commands/learn/init.md",
-        "./commands/learn/analytics.md",
-        "./commands/learn/history.md",
-        "./commands/learn/clone.md",
-        "./commands/learn/performance.md",
-        "./commands/learn/predict.md",
-        "./commands/analyze/project.md",
-        "./commands/analyze/quality.md",
-        "./commands/analyze/dependencies.md",
-        "./commands/analyze/explain.md",
-        "./commands/analyze/groups.md",
-        "./commands/analyze/repository.md",
-        "./commands/analyze/static.md",
-        "./commands/validate/all.md",
-        "./commands/validate/fullstack.md",
-        "./commands/validate/plugin.md",
-        "./commands/validate/web.md",
-        "./commands/validate/commands.md",
-        "./commands/validate/integrity.md",
-        "./commands/validate/patterns.md",
-        "./commands/monitor/recommend.md",
-        "./commands/monitor/dashboard.md",
-        "./commands/monitor/groups.md",
-        "./commands/debug/gui.md",
-        "./commands/debug/eval.md",
-        "./commands/workspace/organize.md",
-        "./commands/workspace/distribution-ready.md",
-        "./commands/workspace/update-readme.md",
-        "./commands/workspace/update-about.md",
-        "./commands/workspace/reports.md",
-        "./commands/workspace/improve.md",
-        "./commands/dev/commit.md",
-        "./commands/dev/release.md",
-        "./commands/dev/auto.md",
-        "./commands/dev/model-switch.md",
-        "./commands/dev/pr-review.md",
-        "./commands/evolve/transcendent.md"
-      ]
+      "strict": true
     }
   ]
 }
