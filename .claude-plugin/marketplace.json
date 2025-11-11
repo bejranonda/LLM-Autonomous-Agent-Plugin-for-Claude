@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "autonomous-agent",
-      "source": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin.git",
+      "source": "./",
       "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 19 skills, and 39 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Critical cache_control error completely resolved in v7.6.7 - production ready with 60-70% cost reduction and full emergency fix deployment.",
       "version": "7.6.7",
       "author": {
@@ -47,23 +47,23 @@
       ],
       "strict": true,
       "commands": [
-        "learn:init",
-        "learn:show",
-        "learn:clear",
-        "analyze:project",
-        "analyze:quality",
-        "analyze:dependencies",
-        "validate:project",
-        "validate:fix",
-        "validate:fullstack",
-        "optimize:tokens",
-        "optimize:performance",
-        "monitor:recommend",
-        "dashboard:launch",
-        "dashboard:debug",
-        "report:generate",
-        "refactor:safe",
-        "security:scan"
+        "./commands/learn/init.md",
+        "./commands/learn/show.md",
+        "./commands/learn/clear.md",
+        "./commands/analyze/project.md",
+        "./commands/analyze/quality.md",
+        "./commands/analyze/dependencies.md",
+        "./commands/validate/project.md",
+        "./commands/validate/fix.md",
+        "./commands/validate/fullstack.md",
+        "./commands/optimize/tokens.md",
+        "./commands/optimize/performance.md",
+        "./commands/monitor/recommend.md",
+        "./commands/dashboard/launch.md",
+        "./commands/dashboard/debug.md",
+        "./commands/report/generate.md",
+        "./commands/refactor/safe.md",
+        "./commands/security/scan.md"
       ]
     }
   ]
