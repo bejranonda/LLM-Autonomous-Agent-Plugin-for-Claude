@@ -45,7 +45,26 @@
         "gitlab-hosted",
         "marketplace-ready"
       ],
-      "strict": true
+      "strict": true,
+      "commands": [
+        "learn:init",
+        "learn:show",
+        "learn:clear",
+        "analyze:project",
+        "analyze:quality",
+        "analyze:dependencies",
+        "validate:project",
+        "validate:fix",
+        "validate:fullstack",
+        "optimize:tokens",
+        "optimize:performance",
+        "monitor:recommend",
+        "dashboard:launch",
+        "dashboard:debug",
+        "report:generate",
+        "refactor:safe",
+        "security:scan"
+      ]
     }
   ]
 }
