@@ -10,6 +10,8 @@
 [![KPI Tracking](https://img.shields.io/badge/KPI%20Tracking-11%20metrics-orange.svg)]()
 [![Cost Reduction](https://img.shields.io/badge/cost%20reduction-60%25%2B-green.svg)]()
 
+**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-39-commands-across-8-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
+
 > *What if your AI agent got smarter and faster with every task?*
 
 🧠 **Automatic Learning System** • 🔒 **Privacy-First** • 🚀 **Production-Ready Analysis** • 📊 **Real-Time Monitoring** • 📈 **KPI Intelligence** • 🛡️ **OWASP Security** • 🔧 **Auto Fixes**
@@ -29,13 +31,11 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 **Complete Workflow Example:**
 ```bash
 # What do you need
-/dev:auto "add user authentication"    # Implement 
+/dev:auto "add user authentication"    # Implement
 # Prove and Release the project
 /dev:release --minor                   # Release (2-3 min)
 # Done! From requirement to released
 ```
-
----
 
 ## 🌟 What Makes Revolutionary?
 
