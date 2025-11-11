@@ -1,0 +1,88 @@
+{
+  "version": "1.0.0",
+  "name": "Autonomous Agent Marketplace",
+  "description": "Marketplace for the LLM Autonomous Agent Plugin for Claude Code",
+  "plugins": [
+    {
+      "name": "autonomous-agent",
+      "displayName": "Autonomous Agent Plugin",
+      "description": "Revolutionary four-tier agent architecture with comprehensive token optimization framework achieving 60-70% cost reduction. Features 27 specialized agents across 4 collaborative groups, pattern learning, quality control, and full-stack validation.",
+      "version": "7.6.7",
+      "author": "Werapol Bejranonda",
+      "license": "MIT",
+      "homepage": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin",
+      "repository": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin.git",
+      "source": {
+        "type": "git",
+        "url": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin.git",
+        "ref": "main"
+      },
+      "files": [
+        ".claude-plugin/plugin.json",
+        "agents/",
+        "skills/",
+        "commands/",
+        "patterns/",
+        "lib/",
+        "docs/"
+      ],
+      "keywords": [
+        "autonomous",
+        "agent",
+        "learning",
+        "patterns",
+        "quality-control",
+        "code-analysis",
+        "testing",
+        "documentation",
+        "refactoring",
+        "ai-assistant",
+        "four-tier-architecture",
+        "token-optimization",
+        "cost-reduction",
+        "pattern-learning",
+        "full-stack-validation",
+        "auto-fix",
+        "performance-monitoring"
+      ],
+      "category": "Productivity",
+      "icon": "🤖",
+      "screenshots": [],
+      "readme": "README.md",
+      "claudeCode": {
+        "minVersion": "1.0.0",
+        "commands": [
+          "learn:init",
+          "learn:show",
+          "analyze:project",
+          "analyze:quality",
+          "validate:project",
+          "validate:fix",
+          "optimize:tokens",
+          "dashboard:launch"
+        ]
+      },
+      "installation": {
+        "type": "git-clone",
+        "targetDirectory": "autonomous-agent"
+      },
+      "compatibility": {
+        "platforms": ["windows", "linux", "macos"],
+        "claudeVersions": ["*"]
+      },
+      "metadata": {
+        "lastUpdated": "2025-11-11",
+        "downloadCount": 0,
+        "rating": 0,
+        "verified": false
+      }
+    }
+  ],
+  "categories": [
+    {
+      "id": "Productivity",
+      "name": "Productivity",
+      "description": "Tools and utilities to enhance development productivity"
+    }
+  ]
+}
