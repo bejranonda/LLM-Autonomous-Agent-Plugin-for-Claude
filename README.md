@@ -1,6 +1,6 @@
-# 🚀 Autonomous Agent for Claude Code v7.6.4
+# 🚀 Autonomous Agent for Claude Code v7.6.5
 
-[![Version](https://img.shields.io/badge/version-7.6.4-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.6.4)
+[![Version](https://img.shields.io/badge/version-7.6.5-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.6.5)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()

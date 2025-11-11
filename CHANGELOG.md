@@ -5,7 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6.4] - 2025-11-10
+## [7.6.5] - 2025-01-11
+
+### Fixed
+- **Runtime cache_control error**: Resolved error that occurred on first run with empty text blocks when processing cache_control headers
+- Improved first-run stability and reliability
+
+### Technical Details
+- Fixed edge case in cache control handling when no valid text content is present
+- Enhanced error handling for malformed or empty text block scenarios
+- Maintained backward compatibility with existing cache control functionality
+
+## [7.6.4] - 2025-01-11
 
 ### 🚨 CRITICAL BUG FIXES
 - **Runtime cache_control Error** - Fixed critical `cache_control cannot be set for empty text blocks` error affecting all plugin commands
