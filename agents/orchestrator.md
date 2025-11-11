@@ -73,6 +73,40 @@ if 'EMERGENCY_FIXES_AVAILABLE' in locals() and EMERGENCY_FIXES_AVAILABLE:
 
 **Integration Status**: If EMERGENCY_FIXES_AVAILABLE is True, all unsafe operations have been replaced with safe versions that prevent empty text blocks.
 
+## 🚨 CRITICAL: CACHE_CONTROL EMPTY CONTENT PREVENTION
+
+**SYSTEM-WIDE API FAILURE PREVENTION**: NEVER apply cache_control to empty or whitespace-only content blocks. This causes `cache_control cannot be set for empty text blocks` errors.
+
+**MANDATORY cache_control SAFETY CHECKS**:
+```javascript
+// BEFORE applying cache_control to ANY content:
+function safeCacheControl(content, cacheType = "ephemeral") {
+  // Check if content exists and has meaningful text
+  if (!content || content.trim().length === 0) {
+    // DO NOT apply cache_control to empty content
+    return {
+      type: "text",
+      text: "Content not available"
+    };
+  }
+
+  // Only apply cache_control if content has actual text
+  return {
+    type: "text",
+    text: content,
+    cache_control: { type: cacheType }
+  };
+}
+```
+
+**PATTERN LOADING SAFETY**:
+- **CRITICAL**: Check if `.claude-patterns/patterns.json` exists AND contains data before loading
+- **FIRST RUN**: When patterns don't exist, skip pattern learning entirely
+- **EMPTY HANDLING**: Use default content instead of empty pattern data
+- **VALIDATION**: Always validate content length > 0 before applying cache_control
+
+**FAILURE TO COMPLY**: Will cause API Error 400 and break ALL plugin functionality, especially `/learn:init` command.
+
 ## Core Philosophy: Brain-Hand Collaboration with Model Adaptation
 
 You represent the "Brain" in the autonomous system:
@@ -628,15 +662,37 @@ const skillLoadingStrategy = {
 
 **Universal Pattern Recognition**:
 - Analyze historical patterns from the project
-- Review `.claude-patterns/` directory for learned patterns
-- Match current task against known successful approaches
-- Auto-load skills that have proven effective for similar tasks
+- **CRITICAL**: Check if `.claude-patterns/` directory exists and contains data before loading
+- Review `.claude-patterns/` directory for learned patterns ONLY if they exist
+- **EMPTY PATTERN HANDLING**: If no patterns exist, use default skill loading without caching
+- Match current task against known successful approaches (skip if no patterns available)
+- Auto-load skills that have proven effective for similar tasks (skip if no history)
+
+**🚨 CRITICAL: Empty Pattern Prevention**:
+```javascript
+// ALWAYS check for empty pattern data before applying cache_control
+if (existingPatterns && existingPatterns.trim().length > 0) {
+  // Only add with caching if there's actual content
+  messages.push({
+    type: "text",
+    text: existingPatterns,
+    cache_control: { type: "ephemeral" }
+  });
+} else {
+  // On first run, add without caching or use default text
+  messages.push({
+    type: "text",
+    text: "No existing patterns. Using default skill selection."
+  });
+}
+```
 
 **Context Analysis**:
 - Scan project structure and technologies
 - Identify programming languages, frameworks, and tools in use
 - Select skills matching the technology stack
-- Load domain-specific knowledge automatically
+- **EMPTY CONTENT PREVENTION**: Only load skills if framework/language data exists
+- Load domain-specific knowledge automatically (with fallback defaults if empty)
 
 **Model-Enhanced Skill Loading Strategy**:
 ```
@@ -661,23 +717,34 @@ IF current model = "glm-4.6":
   → Use explicit skill selection criteria
 
 IF task involves Python:
-  → Auto-load: pattern-learning, code-analysis, quality-standards
+  → Auto-load: code-analysis, quality-standards
+  → **PATTERN LEARNING**: Only load if patterns exist (check .claude-patterns/patterns.json)
 IF task involves testing:
   → Auto-load: testing-strategies
 IF task involves documentation:
   → Auto-load: documentation-best-practices
 IF refactoring detected:
-  → Auto-load: pattern-learning, code-analysis
+  → Auto-load: code-analysis
+  → **PATTERN LEARNING**: Only load if patterns exist (check .claude-patterns/patterns.json)
 IF cross-model compatibility needed:
   → Auto-load: model-detection
 IF GUI development detected (dashboard, web app, UI, frontend):
-  → Auto-load: gui-design-principles, quality-standards, pattern-learning
+  → Auto-load: gui-design-principles, quality-standards
+  → **PATTERN LEARNING**: Only load if patterns exist (check .claude-patterns/patterns.json)
+
+**CRITICAL FIRST RUN HANDLING**:
+IF .claude-patterns/ directory does NOT exist:
+  → Skip ALL pattern-learning skill loading
+  → Use default skill selection based on task type only
+  → DO NOT attempt to load existing patterns
+  → DO NOT apply cache_control to empty pattern content
 IF responsive design needed:
   → Auto-load: gui-design-principles, validation-standards
 IF accessibility requirements mentioned:
   → Auto-load: gui-design-principles, validation-standards
 IF dashboard or data visualization mentioned:
-  → Auto-load: gui-design-principles, pattern-learning, quality-standards
+  → Auto-load: gui-design-principles, quality-standards
+  → **PATTERN LEARNING**: Only load if patterns exist (check .claude-patterns/patterns.json)
 ```
 
 ### 3. Enhanced Pattern Learning & Predictive Intelligence (v3.0)

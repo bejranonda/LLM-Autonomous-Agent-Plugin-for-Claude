@@ -23,6 +23,12 @@ delegates-to: autonomous-agent:orchestrator
 
 **FAILURE TO COMPLY**: Will cause `cache_control cannot be set for empty text blocks` errors and break ALL Claude functionality.
 
+**🚨 PATTERN LOADING SAFETY**:
+- **FIRST RUN**: DO NOT attempt to load existing patterns (they don't exist yet)
+- **EMPTY CHECK**: Never apply cache_control to non-existent pattern data
+- **INITIALIZATION**: Create patterns first, THEN load them in subsequent commands
+- The irony: This command initializes patterns, but fails when trying to load non-existent patterns with cache_control
+
 Analyze project patterns and build the pattern learning database. This will:
 
 - Scan entire project structure
