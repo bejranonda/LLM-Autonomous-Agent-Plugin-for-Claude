@@ -4,6 +4,21 @@ description: Initialize pattern learning database and analyze project patterns
 
 delegates-to: autonomous-agent:orchestrator
 
+# CRITICAL FIRST RUN INSTRUCTIONS - READ BEFORE EXECUTING
+# THIS COMMAND INITIALIZES PATTERNS - DO NOT LOAD EXISTING PATTERNS
+#
+# ORCHESTRATOR AGENT: You MUST follow these instructions EXACTLY:
+# 1. DO NOT attempt to load existing patterns from .claude-patterns/patterns.json
+# 2. DO NOT load the pattern-learning skill
+# 3. DO NOT apply cache_control to any pattern-related content
+# 4. ONLY use default skills: code-analysis, documentation-best-practices
+# 5. The purpose is to CREATE patterns, not LOAD them
+#
+# VIOLATION OF THESE INSTRUCTIONS WILL CAUSE:
+# "cache_control cannot be set for empty text blocks" ERROR
+#
+# FIRST RUN MODE: Skip ALL pattern-related operations
+
 # Learn Patterns Command
 
 ## 🚨 CRITICAL: RESPONSE SAFETY REQUIREMENTS

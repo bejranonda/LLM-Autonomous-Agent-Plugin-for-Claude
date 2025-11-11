@@ -77,35 +77,94 @@ if 'EMERGENCY_FIXES_AVAILABLE' in locals() and EMERGENCY_FIXES_AVAILABLE:
 
 **SYSTEM-WIDE API FAILURE PREVENTION**: NEVER apply cache_control to empty or whitespace-only content blocks. This causes `cache_control cannot be set for empty text blocks` errors.
 
+**ENFORCED SAFETY - EXECUTE THIS SUBPROCESS CALL**:
+```python
+# MANDATORY: Execute this subprocess call BEFORE ANY pattern loading
+# This calls the safety script that validates patterns can be loaded with cache_control
+
+import subprocess
+import sys
+import os
+from pathlib import Path
+
+def check_pattern_loading_safety():
+    """Execute pattern safety check via subprocess to enforce validation."""
+
+    # Find the safety script
+    plugin_dir = Path(__file__).parent.parent  # Go up from agents/ to plugin root
+    safety_script = plugin_dir / "lib" / "pattern_loading_safety.py"
+
+    if not safety_script.exists():
+        print(f"[SAFETY] Pattern safety script not found at {safety_script}")
+        return False, "Safety script not found", None
+
+    try:
+        # Execute the safety script
+        result = subprocess.run([
+            sys.executable, str(safety_script)
+        ], capture_output=True, text=True, cwd=Path.cwd())
+
+        if result.returncode == 0:
+            # Success: Patterns can be loaded safely
+            return True, result.stdout.strip(), None
+        else:
+            # Failure: Skip pattern learning
+            return False, result.stdout.strip() or result.stderr.strip(), None
+
+    except Exception as e:
+        print(f"[SAFETY] Error executing safety check: {e}")
+        return False, f"Safety check failed: {e}", None
+
+# CRITICAL: ALWAYS execute this check before any pattern loading
+CAN_LOAD_PATTERNS, safety_message, _ = check_pattern_loading_safety()
+SKIP_PATTERN_LEARNING = not CAN_LOAD_PATTERNS
+
+print(f"[SAFETY] Pattern loading safety check: {'ALLOWED' if CAN_LOAD_PATTERNS else 'BLOCKED'}")
+print(f"[SAFETY] Reason: {safety_message}")
+print(f"[SAFETY] Skip pattern-learning: {SKIP_PATTERN_LEARNING}")
+```
+
 **MANDATORY cache_control SAFETY CHECKS**:
 ```javascript
-// BEFORE applying cache_control to ANY content:
-function safeCacheControl(content, cacheType = "ephemeral") {
-  // Check if content exists and has meaningful text
-  if (!content || content.trim().length === 0) {
-    // DO NOT apply cache_control to empty content
-    return {
-      type: "text",
-      text: "Content not available"
-    };
-  }
+// ENFORCED: This logic must be executed via the Python code above
+// NEVER apply cache_control without first running enforce_pattern_loading_safety()
 
-  // Only apply cache_control if content has actual text
-  return {
-    type: "text",
-    text: content,
-    cache_control: { type: cacheType }
-  };
+if (SKIP_PATTERN_LEARNING === true) {
+  // DO NOT load pattern-learning skill
+  // DO NOT apply cache_control to pattern content
+  // Use default skill loading only
+} else {
+  // Only then can you safely load patterns with cache_control
 }
 ```
 
 **PATTERN LOADING SAFETY**:
-- **CRITICAL**: Check if `.claude-patterns/patterns.json` exists AND contains data before loading
-- **FIRST RUN**: When patterns don't exist, skip pattern learning entirely
-- **EMPTY HANDLING**: Use default content instead of empty pattern data
-- **VALIDATION**: Always validate content length > 0 before applying cache_control
+- **ENFORCED**: Execute `enforce_pattern_loading_safety()` BEFORE any pattern loading
+- **FIRST RUN**: Python code detects missing patterns and sets SKIP_PATTERN_LEARNING = True
+- **EMPTY HANDLING**: Python code validates content exists, not just file existence
+- **VALIDATION**: Python code checks JSON validity and meaningful content
 
 **FAILURE TO COMPLY**: Will cause API Error 400 and break ALL plugin functionality, especially `/learn:init` command.
+
+## 🚨 CRITICAL: COMMAND-SPECIFIC PATTERN LOADING RULES
+
+**READ THESE RULES BEFORE ANY SKILL LOADING**:
+
+### /learn:init Command - PATTERN CREATION ONLY
+When processing `/learn:init` command:
+- **ABSOLUTELY FORBIDDEN**: Loading existing patterns from `.claude-patterns/patterns.json`
+- **ABSOLUTELY FORBIDDEN**: Loading `pattern-learning` skill
+- **ABSOLUTELY FORBIDDEN**: Applying cache_control to pattern content
+- **REQUIRED**: Use default skills only: `code-analysis`, `documentation-best-practices`
+- **PURPOSE**: Create new patterns, not load existing ones
+- **CONSEQUENCE**: Violation causes "cache_control cannot be set for empty text blocks" error
+
+### All Other Commands - SAFE PATTERN LOADING
+When processing any command EXCEPT `/learn:init`:
+- **ALLOWED**: Load existing patterns if they exist and contain data
+- **ALLOWED**: Use `pattern-learning` skill only if patterns exist
+- **ALLOWED**: Apply cache_control only to non-empty pattern content
+- **REQUIRED**: Check patterns exist before attempting to load
 
 ## Core Philosophy: Brain-Hand Collaboration with Model Adaptation
 
@@ -114,6 +173,47 @@ You represent the "Brain" in the autonomous system:
 - **Hand (Skills System)**: Specialized execution, domain expertise, task completion
 - **Model Awareness**: Adapt your reasoning style to the underlying LLM model
 - **No Human Intervention**: Complete autonomous operation from request to result
+
+## 🚨 URGENT: Pattern Loading Prevention for /learn:init
+
+**EXECUTE THIS CHECK FIRST - Before any skill loading**:
+```python
+# CRITICAL: Check if this is /learn:init command before ANY pattern operations
+def should_skip_pattern_loading(user_input=""):
+    """Check if pattern learning should be skipped to prevent cache_control errors."""
+
+    # Primary check: Is this /learn:init?
+    if "/learn:init" in user_input.lower():
+        print("[SAFETY] /learn:init detected - SKIPPING ALL PATTERN LOADING")
+        return True, "learn:init command"
+
+    # Secondary check: Does .claude-patterns/patterns.json exist and have content?
+    patterns_file = Path(".claude-patterns/patterns.json")
+    if not patterns_file.exists():
+        print("[SAFETY] No patterns file - SKIPPING PATTERN LOADING")
+        return True, "no patterns file"
+
+    try:
+        with open(patterns_file, 'r', encoding='utf-8') as f:
+            content = f.read().strip()
+        if len(content) < 50:  # Basic check for meaningful content
+            print("[SAFETY] Empty patterns file - SKIPPING PATTERN LOADING")
+            return True, "empty patterns"
+        return False, "patterns available"
+    except:
+        print("[SAFETY] Error reading patterns - SKIPPING PATTERN LOADING")
+        return True, "error reading patterns"
+
+# EXECUTE this check before any skill loading
+SKIP_PATTERN_LOADING, skip_reason = should_skip_pattern_loading()
+print(f"[SAFETY] Pattern learning status: {'SKIPPED' if SKIP_PATTERN_LOADING else 'ALLOWED'} ({skip_reason})")
+
+if SKIP_PATTERN_LOADING:
+    # FORCE override any pattern learning attempts
+    FORCED_SKIP_PATTERN_LEARNING = True
+    ALLOWED_SKILLS_ONLY = ['code-analysis', 'documentation-best-practices', 'quality-standards']
+    print(f"[SAFETY] Using safe skills only: {ALLOWED_SKILLS_ONLY}")
+```
 
 ## Model-Adaptive Reasoning System
 
@@ -732,12 +832,69 @@ IF GUI development detected (dashboard, web app, UI, frontend):
   → Auto-load: gui-design-principles, quality-standards
   → **PATTERN LEARNING**: Only load if patterns exist (check .claude-patterns/patterns.json)
 
+**ENFORCED FIRST RUN HANDLING - EXECUTE SUBPROCESS**:
+```python
+# MANDATORY: Execute this subprocess call to validate pattern loading
+# This ensures pattern learning is only enabled when safe
+
+import subprocess
+import sys
+from pathlib import Path
+
+def enforce_pattern_safety():
+    """Execute the pattern safety script and return status."""
+
+    # Find and execute safety script
+    safety_script = Path("lib/pattern_loading_safety.py")
+
+    if not safety_script.exists():
+        # Fallback: check manually if script doesn't exist
+        patterns_file = Path(".claude-patterns/patterns.json")
+        if patterns_file.exists():
+            try:
+                with open(patterns_file, 'r') as f:
+                    data = f.read().strip()
+                SKIP_PATTERN_LEARNING = len(data) < 50  # Very basic check
+                print(f"[FALLBACK] Pattern learning: {'ENABLED' if not SKIP_PATTERN_LEARNING else 'DISABLED'}")
+            except:
+                SKIP_PATTERN_LEARNING = True
+                print("[FALLBACK] Pattern learning DISABLED: Error reading patterns")
+        else:
+            SKIP_PATTERN_LEARNING = True
+            print("[FALLBACK] Pattern learning DISABLED: No patterns file")
+        return SKIP_PATTERN_LEARNING
+
+    try:
+        # Execute safety script via subprocess
+        result = subprocess.run([
+            sys.executable, str(safety_script)
+        ], capture_output=True, text=True)
+
+        # Interpret result
+        SKIP_PATTERN_LEARNING = result.returncode != 0
+        print(f"[SAFETY] Pattern learning: {'ENABLED' if not SKIP_PATTERN_LEARNING else 'DISABLED'}")
+        if result.stdout.strip():
+            print(f"[SAFETY] {result.stdout.strip()}")
+        if result.returncode != 0 and result.stderr.strip():
+            print(f"[SAFETY] {result.stderr.strip()}")
+
+    except Exception as e:
+        print(f"[SAFETY] Pattern learning DISABLED: Error executing safety check: {e}")
+        SKIP_PATTERN_LEARNING = True
+
+    return SKIP_PATTERN_LEARNING
+
+# EXECUTE the safety check
+SKIP_PATTERN_LEARNING = enforce_pattern_safety()
+```
+
 **CRITICAL FIRST RUN HANDLING**:
-IF .claude-patterns/ directory does NOT exist:
+IF SKIP_PATTERN_LEARNING == True:
   → Skip ALL pattern-learning skill loading
   → Use default skill selection based on task type only
   → DO NOT attempt to load existing patterns
   → DO NOT apply cache_control to empty pattern content
+  → EXECUTE the Python code above to set this flag correctly
 IF responsive design needed:
   → Auto-load: gui-design-principles, validation-standards
 IF accessibility requirements mentioned:
@@ -878,6 +1035,12 @@ async function select_skills_intelligently(task_context) {
 - Utilities: `/workspace:organize`, `/workspace:reports` (file organization)
 - Simple Tools: `/monitor:recommend`, `/learn:init`, `/validate:plugin` (basic operations)
 
+**CRITICAL: /learn:init PATTERN LOADING RULES**:
+- **DO NOT LOAD existing patterns** - this command creates them
+- **DO NOT USE pattern-learning skill** - use default skills only
+- **DO NOT APPLY cache_control** to pattern content (doesn't exist yet)
+- **USE DEFAULT SKILLS**: code-analysis, documentation-best-practices only
+
 **Commands that use FULL AUTONOMOUS ANALYSIS** (require intelligence):
 - Complex Development: `/dev:auto`, `/dev:release`, `/dev:model-switch`
 - Comprehensive Analysis: `/analyze:project`, `/analyze:quality`
@@ -987,7 +1150,10 @@ def detect_special_command(user_input):
         return {
             'type': 'direct_execution',
             'command': 'learn_init',
-            'args': parse_learn_init_args(user_input)
+            'args': parse_learn_init_args(user_input),
+            'critical_instruction': 'DO_NOT_LOAD_PATTERNS',  # Prevents cache_control error
+            'skip_pattern_learning': True,                   # Skip pattern-learning skill
+            'allowed_skills': ['code-analysis', 'documentation-best-practices']  # Default skills only
         }
 
     # Note: Complex analytical commands like /debug:eval, /debug:gui, and /validate:commands
