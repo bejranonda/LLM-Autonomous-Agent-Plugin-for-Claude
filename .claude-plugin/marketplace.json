@@ -3,21 +3,21 @@
   "owner": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
-    "url": "https://github.com/bejranonda"
+    "url": "https://gitlab.com/bwerapol"
   },
   "plugins": [
     {
       "name": "autonomous-agent",
-      "source": "./",
+      "source": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin.git",
       "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 19 skills, and 39 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Critical cache_control error completely resolved in v7.6.7 - production ready with 60-70% cost reduction and full emergency fix deployment.",
       "version": "7.6.7",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
-        "url": "https://github.com/bejranonda"
+        "url": "https://gitlab.com/bwerapol"
       },
-      "homepage": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
-      "repository": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
+      "homepage": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin",
+      "repository": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin",
       "license": "MIT",
       "keywords": [
         "autonomous",
@@ -31,7 +31,9 @@
         "refactoring",
         "ai-assistant",
         "validation",
-        "error-prevention"
+        "error-prevention",
+        "gitlab",
+        "claude-code"
       ],
       "category": "development",
       "tags": [
@@ -39,7 +41,9 @@
         "pattern-learning",
         "quality-assurance",
         "code-optimization",
-        "adaptive-ai"
+        "adaptive-ai",
+        "gitlab-hosted",
+        "marketplace-ready"
       ],
       "strict": true
     }
