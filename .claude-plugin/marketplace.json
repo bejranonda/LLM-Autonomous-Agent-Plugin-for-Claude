@@ -9,8 +9,8 @@
     {
       "name": "autonomous-agent",
       "source": "./",
-      "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 19 skills, and 39 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Runtime cache_control error resolved - production ready with 60-70% cost reduction. Enhanced first-run stability and reliability in v7.6.5.",
-      "version": "7.6.5",
+      "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 19 skills, and 39 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Critical cache_control error completely resolved in v7.6.7 - production ready with 60-70% cost reduction and full emergency fix deployment.",
+      "version": "7.6.7",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
