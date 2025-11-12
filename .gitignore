@@ -1,6 +1,5 @@
 # Claude AI local directories (computer-specific)
 .claude/
-.claude-patterns/
 .claude-unified/
 .claude-preferences/
 .claude-quality/
@@ -25,6 +24,9 @@ debugging_performance*.json
 dashboard_*.json
 *_backup*
 
+# Project-specific patterns directory (USER DATA - should be excluded)
+.claude-patterns/
+
 # Temporary and backup files
 *.tmp
 *.log
@@ -32,31 +34,180 @@ dashboard_*.json
 *~
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
 
 # OS generated files
-lib/__pycache__/
+# Python cache directories
 __pycache__/
+*.py[cod]
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/python*/build/
+lib/python*/dist/
+lib/python*/lib/python*/build/
+lib/python*/lib/python*/dist/
+
+# Virtual environments
+.env
+.venv
+venv/
+env/
+ENV/
+virtualenv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Test files and coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+nosetests.xml
+coverage.db
+*.coverage
+*.egg-info/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.atom/
+.brackets.json
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build artifacts
+*.egg
+*.so
+*.pyd
 *.pyc
 *.pyo
+*.pya
+*.pyl
 
-# Test files (local only)
-dashboard_test.html
-*.test.*
-test_.*
+# Python compiled modules
+*.py[co]
+*.so
+*.dll
+*.dylib
 
-# Local development files
+# Distribution / packaging
+MANIFEST
+*.egg
+*.egg-info
+dist/
+build/
+eggs/
+.eggs/
+sdist/
+wheels/
+
+# pytest
+.pytest_cache/
+.cache
+.tox/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Local environment files
 .env.local
 .env.local.*
 local_settings.json
 settings.local.json
 
+# Logs and runtime files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Diagnostic results
+diagnostic_results.json
+validation_results.json
+
+# Performance and monitoring data
+performance_monitor.json
+performance_*.json
+metrics_*.json
+tracking_*.json
+monitoring_*.json
+
+# Temporary test files
+test_*.html
+test_*.json
+test_output/
+temp_*.json
+temp_*.html
+
+# Cache and temporary directories
+cache/
+tmp/
+temp/
+
+# Build tools and utilities
+node_modules/
+.npm/
+.yarn/
+.yarn-integrity
+.eslintcache
+
+# Claude's own directories and data
+.claude/logs/
+.claude/settings/
+.claude/cache/
+.claude/temp/
+.claude/debug/
+
 # Ignore generated reports (keep structure, clean content)
 docs/reports/generated/*
 !docs/reports/generated/.gitkeep
-
-# Python cache and environment
-*.egg-info/
-.venv/
-venv/
-env/
-ENV/
