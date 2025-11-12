@@ -1,5 +1,8 @@
 {
   "name": "LLM-Autonomous-Agent-Plugin-for-Claude",
+  "metadata": {
+    "description": "Premium marketplace for revolutionary autonomous AI agents featuring four-tier architecture, intelligent pattern learning, comprehensive quality control, and full-stack validation with 80-90% auto-fix success rates."
+  },
   "owner": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",

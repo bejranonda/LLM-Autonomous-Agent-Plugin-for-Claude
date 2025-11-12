@@ -711,6 +711,16 @@ def main():
     # Statistics action
     subparsers.add_parser('stats', help='Show pattern statistics')
 
+    # Check action - for /learn:init smart detection
+    subparsers.add_parser('check', help='Check if pattern database exists and is valid')
+
+    # Init action - for /learn:init initialization
+    init_parser = subparsers.add_parser('init', help='Initialize or update pattern database')
+    init_parser.add_argument('--version', default='7.6.7', help='Plugin version')
+
+    # Validate action - for /learn:init validation
+    subparsers.add_parser('validate', help='Validate pattern database integrity')
+
     # Unified data actions
     # Consolidate action
     subparsers.add_parser('consolidate', help='Consolidate all data into unified_data.json')
@@ -768,6 +778,151 @@ def main():
                 print(json.dumps({'success': True, 'message': f'Data stored to unified structure'}, indent=2))
             else:
                 print(json.dumps({'success': False, 'error': 'Failed to store data'}, indent=2))
+
+        elif args.action == 'check':
+            # Check if pattern database exists and is valid
+            patterns_dir = Path(args.dir)
+            patterns_file = patterns_dir / 'patterns.json'
+            config_file = patterns_dir / 'config.json'
+
+            result = {
+                'exists': patterns_dir.exists(),
+                'patterns_file_exists': patterns_file.exists() if patterns_dir.exists() else False,
+                'config_file_exists': config_file.exists() if patterns_dir.exists() else False,
+                'complete': False,
+                'version': None,
+                'pattern_count': 0,
+                'status': 'not_initialized'
+            }
+
+            if patterns_file.exists():
+                try:
+                    with open(patterns_file, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        if isinstance(data, dict):
+                            patterns = data.get('patterns', [])
+                        else:
+                            patterns = data
+                        result['pattern_count'] = len(patterns)
+                except:
+                    result['status'] = 'corrupt'
+                    print(json.dumps(result, indent=2))
+                    sys.exit(0)
+
+            if config_file.exists():
+                try:
+                    with open(config_file, 'r', encoding='utf-8') as f:
+                        config = json.load(f)
+                        result['version'] = config.get('version', 'unknown')
+                except:
+                    pass
+
+            # Determine status
+            required_files = ['patterns.json', 'task_queue.json', 'quality_history.json', 'config.json']
+            all_exist = all((patterns_dir / f).exists() for f in required_files)
+
+            if all_exist and patterns_file.exists():
+                result['complete'] = True
+                result['status'] = 'initialized'
+            elif patterns_dir.exists() and patterns_file.exists():
+                result['status'] = 'partial'
+                result['complete'] = False
+            else:
+                result['status'] = 'not_initialized'
+
+            print(json.dumps(result, indent=2))
+
+        elif args.action == 'init':
+            # Initialize or update pattern database
+            patterns_dir = Path(args.dir)
+            patterns_dir.mkdir(parents=True, exist_ok=True)
+
+            # Initialize all required files
+            patterns_file = patterns_dir / 'patterns.json'
+            if not patterns_file.exists():
+                with open(patterns_file, 'w', encoding='utf-8') as f:
+                    json.dump({'version': '1.0', 'patterns': [], 'skill_effectiveness': {}}, f, indent=2)
+
+            task_queue_file = patterns_dir / 'task_queue.json'
+            if not task_queue_file.exists():
+                with open(task_queue_file, 'w', encoding='utf-8') as f:
+                    json.dump({'queue': []}, f, indent=2)
+
+            quality_history_file = patterns_dir / 'quality_history.json'
+            if not quality_history_file.exists():
+                with open(quality_history_file, 'w', encoding='utf-8') as f:
+                    json.dump({'history': []}, f, indent=2)
+
+            config_file = patterns_dir / 'config.json'
+            config = {
+                'version': args.version,
+                'initialized_at': datetime.now().isoformat(),
+                'last_updated': datetime.now().isoformat()
+            }
+            with open(config_file, 'w', encoding='utf-8') as f:
+                json.dump(config, f, indent=2)
+
+            result = {
+                'success': True,
+                'message': 'Pattern database initialized successfully',
+                'version': args.version,
+                'files_created': [
+                    'patterns.json',
+                    'task_queue.json',
+                    'quality_history.json',
+                    'config.json'
+                ]
+            }
+            print(json.dumps(result, indent=2))
+
+        elif args.action == 'validate':
+            # Validate pattern database integrity
+            patterns_dir = Path(args.dir)
+
+            result = {
+                'valid': True,
+                'errors': [],
+                'warnings': [],
+                'files_checked': []
+            }
+
+            # Check each required file
+            required_files = {
+                'patterns.json': {'patterns': list, 'skill_effectiveness': dict},
+                'task_queue.json': {'queue': list},
+                'quality_history.json': {'history': list},
+                'config.json': {'version': str}
+            }
+
+            for filename, required_structure in required_files.items():
+                filepath = patterns_dir / filename
+                result['files_checked'].append(filename)
+
+                if not filepath.exists():
+                    result['errors'].append(f'{filename} does not exist')
+                    result['valid'] = False
+                    continue
+
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+
+                    # Check required keys and types
+                    for key, expected_type in required_structure.items():
+                        if key not in data:
+                            result['warnings'].append(f'{filename}: missing key "{key}"')
+                        elif not isinstance(data[key], expected_type):
+                            result['errors'].append(f'{filename}: "{key}" should be {expected_type.__name__}')
+                            result['valid'] = False
+
+                except json.JSONDecodeError as e:
+                    result['errors'].append(f'{filename}: invalid JSON - {str(e)}')
+                    result['valid'] = False
+                except Exception as e:
+                    result['errors'].append(f'{filename}: error reading file - {str(e)}')
+                    result['valid'] = False
+
+            print(json.dumps(result, indent=2))
 
     except Exception as e:
         print(
