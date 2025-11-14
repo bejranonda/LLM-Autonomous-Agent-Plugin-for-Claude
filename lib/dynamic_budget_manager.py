@@ -100,7 +100,7 @@ class BudgetMetrics:
 class DynamicBudgetManager:
     """Intelligent budget management system."""
 
-    def __init__(self, total_budget: int = 100000, db_path: str = "budget_metrics.db"):
+    def __init__(self, total_budget: int = 100000, db_path: str = "data/databases/budget_metrics.db"):
         """  Init  ."""
         self.total_budget = total_budget
         self.db_path = db_path

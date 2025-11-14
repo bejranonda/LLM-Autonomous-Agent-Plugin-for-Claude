@@ -258,7 +258,7 @@ class SimpleMLModel:
 class MLOptimizationEngine:
     """Main ML optimization engine."""
 
-    def __init__(self, db_path: str = "ml_optimization.db"):
+    def __init__(self, db_path: str = "data/databases/ml_optimization.db"):
         """  Init  ."""
         self.db_path = db_path
         self.models: Dict[str, SimpleMLModel] = {}

@@ -185,7 +185,7 @@ class QualityImprovementExecutor:
             # Parse coverage if available
             coverage_data = {}
             try:
-                with open(self.project_root / "coverage.json", 'r') as f:
+                with open(self.project_root / "data" / "reports" / "coverage.json", 'r') as f:
                     coverage_json = json.load(f)
                     coverage_data = {
                         "total_coverage": coverage_json.get("totals", {}).get("percent_covered", 0),

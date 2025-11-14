@@ -130,48 +130,48 @@ tests/
 
 Install test dependencies:
 ```bash
-pip install -r requirements-test.txt
+pip install -r config/requirements-test.txt
 ```
 
 ### Basic Usage
 
 ```bash
 # Run all tests with coverage
-python run_tests.py
+python lib/analysis/run_tests.py
 
 # Run only unit tests
-python run_tests.py --unit
+python lib/analysis/run_tests.py --unit
 
 # Run only integration tests
-python run_tests.py --integration
+python lib/analysis/run_tests.py --integration
 
 # Run tests without coverage (faster)
-python run_tests.py --fast
+python lib/analysis/run_tests.py --fast
 
 # Run cross-platform tests
-python run_tests.py --platform
+python lib/analysis/run_tests.py --platform
 
 # Run performance benchmarks
-python run_tests.py --performance
+python lib/analysis/run_tests.py --performance
 
 # Generate HTML coverage report
-python run_tests.py --report
+python lib/analysis/run_tests.py --report
 ```
 
 ### Advanced Usage
 
 ```bash
 # Run with specific markers
-python run_tests.py --markers "not slow"
+python lib/analysis/run_tests.py --markers "not slow"
 
 # Run code quality checks
-python run_tests.py --quality
+python lib/analysis/run_tests.py --quality
 
 # Verbose output
-python run_tests.py --verbose
+python lib/analysis/run_tests.py --verbose
 
 # Skip dependency checking
-python run_tests.py --no-deps-check
+python lib/analysis/run_tests.py --no-deps-check
 ```
 
 ### Direct pytest Usage

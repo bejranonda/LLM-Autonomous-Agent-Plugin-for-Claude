@@ -779,7 +779,7 @@ your-project/                          # YOUR PROJECT DIRECTORY
 │   ├── skill_effectiveness.json      # 🛠️ Legacy skill stats (migrated to unified storage)
 │   ├── task_queue.json              # 📋 Legacy task management (migrated to unified storage)
 │   ├── recent_patterns.json         # 🔄 Legacy recent patterns (migrated to unified storage)
-│   └── reports/                      # 📄 Auto-generated analysis reports (legacy)
+│   └── reports/                      # 📄 Auto-generated analysis reports (archived to data/reports/archive/)
 │       ├── quality-check-2025-10-23.md
 │       ├── auto-analyze-2025-10-23.md
 │       ├── validation-2025-10-23.md
@@ -802,6 +802,15 @@ your-project/                          # YOUR PROJECT DIRECTORY
 │   └── utils/
 ├── tests/                            # 🧪 Your test files
 ├── docs/                             # 📖 Your project documentation
+├── data/                             # 📊 Plugin-generated data and reports
+│   ├── databases/                    # 🗄️ Runtime database files
+│   │   ├── unified_parameters.json   # 📋 Unified parameter storage
+│   │   └── *.json                    # 📄 Other database files
+│   └── reports/                      # 📄 Generated reports and dashboards
+│       ├── coverage.json              # 📈 Test coverage data
+│       ├── *.html                    # 📊 HTML dashboards
+│       └── archive/                   # 📦 Archived old reports
+│           └── old-validation/       # 📋 Historic validation reports
 ├── node_modules/                     # 📦 Dependencies (if Node.js project)
 ├── .git/                            # 📂 Git version control
 ├── .gitignore                        # 🚫 Git ignore rules
@@ -830,7 +839,7 @@ your-project/                          # YOUR PROJECT DIRECTORY
 | **`skill_effectiveness.json`** | 🛠️ **Legacy Skill Analytics** | First skill use (v4.x) | **MIGRATED** to unified storage in v5.0.0 |
 | **`task_queue.json`** | 📋 **Legacy Background Tasks** | First background task (v4.x) | **MIGRATED** to unified storage in v5.0.0 |
 | **`recent_patterns.json`** | 🔄 **Legacy Quick Access** | Ongoing (v4.x) | **MIGRATED** to unified storage in v5.0.0 |
-| **`reports/`** | 📄 **Legacy Analysis Reports** | First command execution | Detailed markdown reports (preserved for reference) |
+| **`reports/`** | 📄 **Legacy Analysis Reports** | First command execution | **MOVED** to `data/reports/archive/old-validation/` |
 
 #### 📄 **`reports/` Subdirectory Details**
 
@@ -939,7 +948,7 @@ cp other-project/.claude-patterns/patterns.json .claude-patterns/
 |-----------|--------------|-------------|---------------|
 | `patterns.json` | 5-50 KB | Slow (1KB/month) | Rarely needed |
 | `quality_history.json` | 10-100 KB | Medium (5KB/month) | After 100+ assessments |
-| `reports/` | 1-5 MB total | Fast (500KB/month) | Delete old reports |
+| `data/reports/` | 1-10 MB total | Fast (1MB/month) | Archive old reports to `data/reports/archive/` |
 | **Total** | **~5-10 MB** | **~1 MB/month** | **Review yearly** |
 
 ### 🚀 **Advanced Usage**
@@ -962,7 +971,7 @@ grep "overall_score" .claude-patterns/quality_history.json
 jq '.patterns[-5:]' .claude-patterns/patterns.json
 
 # Count total reports generated
-ls .claude-patterns/reports/ | wc -l
+ls data/reports/ | wc -l
 ```
 
 ---
@@ -1118,9 +1127,9 @@ v3.3.0 includes **40+ organized documentation files** across multiple directorie
 
 ### 📖 **Key Documentation Files**
 
-- **[RELEASE_NOTES_V3.1.0.md](docs/reports/generated/RELEASE_NOTES_V3.1.0.md)** - Comprehensive release notes (Enhanced Learning & Modern Stack Support)
+- **[RELEASE_NOTES_v7.11.0.md](RELEASE_NOTES_v7.11.0.md)** - Quality Transformation Release (latest)
 - **[V3_RELEASE_MATRIX.md](V3_RELEASE_MATRIX.md)** - Feature matrix and achievements
-- **[VALIDATION_COMPLETE.md](docs/reports/VALIDATION_COMPLETE.md)** - Production certification report
+- **[Historic Validation Reports](data/reports/archive/old-validation/)** - Archived validation reports
 - **[ENHANCED_LEARNING_SYSTEM.md](ENHANCED_LEARNING_SYSTEM.md)** - Learning system technical docs
 - **[PR_REVIEW_SYSTEM.md](PR_REVIEW_SYSTEM.md)** - PR review capabilities guide
 - **[COMPLETE_IMPLEMENTATION_SUMMARY.md](docs/implementation/IMPLEMENTATION_SUMMARY.md)** - Full implementation guide
