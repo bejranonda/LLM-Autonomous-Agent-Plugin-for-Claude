@@ -18,20 +18,16 @@ class QualityController:
     """Comprehensive quality assessment tool"""
 
     def __init__(self, project_root: str):
+        """  Init  ."""
         self.project_root = Path(project_root)
         self.results = {
             "overall_score": 0,
             "component_scores": {},
-            "issues": {
-                "critical": [],
-                "high": [],
-                "medium": [],
-                "low": []
-            },
+            "issues": {"critical": [], "high": [], "medium": [], "low": []},
             "metrics": {},
             "recommendations": [],
             "execution_time": 0,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
     def analyze_python_syntax(self) -> Dict[str, Any]:
@@ -46,20 +42,20 @@ class QualityController:
         for py_file in python_files:
             try:
                 # Parse AST to check syntax
-                with open(py_file, 'r', encoding='utf-8') as f:
+                with open(py_file, "r", encoding="utf-8") as f:
                     content = f.read()
                 ast.parse(content)
 
                 # Try to import (skip if it looks like a main script)
-                if not py_file.name.startswith('fix_') and not py_file.name.startswith('auto_'):
+                if not py_file.name.startswith("fix_") and not py_file.name.startswith("auto_"):
                     try:
                         # Remove .py extension for import
-                        module_name = str(py_file.relative_to(self.project_root).with_suffix(''))
+                        module_name = str(py_file.relative_to(self.project_root).with_suffix(""))
                         # Convert path separators to dots
-                        module_name = module_name.replace(os.sep, '.')
+                        module_name = module_name.replace(os.sep, ".")
 
                         # Skip problematic modules
-                        if any(x in module_name for x in ['__pycache__', 'site-packages']):
+                        if any(x in module_name for x in ["__pycache__", "site-packages"]):
                             continue
 
                         exec(f"import importlib; importlib.import_module('{module_name}')")
@@ -78,24 +74,14 @@ class QualityController:
             "syntax_errors": syntax_errors,
             "import_errors": import_errors,
             "successful_imports": successful_imports,
-            "syntax_success_rate": (total_files - len(syntax_errors)) / total_files * 100 if total_files > 0 else 100
+            "syntax_success_rate": (total_files - len(syntax_errors)) / total_files * 100 if total_files > 0 else 100,
         }
 
     def analyze_project_structure(self) -> Dict[str, Any]:
         """Analyze project structure and organization"""
-        required_dirs = [
-            "agents",
-            "skills",
-            "commands",
-            "lib",
-            ".claude-plugin"
-        ]
+        required_dirs = ["agents", "skills", "commands", "lib", ".claude-plugin"]
 
-        required_files = [
-            ".claude-plugin/plugin.json",
-            "README.md",
-            "CLAUDE.md"
-        ]
+        required_files = [".claude-plugin/plugin.json", "README.md", "CLAUDE.md"]
 
         # Check directories
         existing_dirs = []
@@ -119,26 +105,30 @@ class QualityController:
 
         # Count components
         agent_count = len(list((self.project_root / "agents").glob("*.md"))) if (self.project_root / "agents").exists() else 0
-        skill_count = len(list((self.project_root / "skills").glob("*/SKILL.md"))) if (self.project_root / "skills").exists() else 0
-        command_count = len(list((self.project_root / "commands").glob("*.md"))) if (self.project_root / "commands").exists() else 0
+        skill_count = (
+            len(list((self.project_root / "skills").glob("*/SKILL.md"))) if (self.project_root / "skills").exists() else 0
+        )
+        command_count = (
+            len(list((self.project_root / "commands").glob("*.md"))) if (self.project_root / "commands").exists() else 0
+        )
 
         return {
             "required_directories": {
                 "existing": existing_dirs,
                 "missing": missing_dirs,
-                "coverage": len(existing_dirs) / len(required_dirs) * 100
+                "coverage": len(existing_dirs) / len(required_dirs) * 100,
             },
             "required_files": {
                 "existing": existing_files,
                 "missing": missing_files,
-                "coverage": len(existing_files) / len(required_files) * 100
+                "coverage": len(existing_files) / len(required_files) * 100,
             },
             "component_counts": {
                 "agents": agent_count,
                 "skills": skill_count,
                 "commands": command_count,
-                "total": agent_count + skill_count + command_count
-            }
+                "total": agent_count + skill_count + command_count,
+            },
         }
 
     def analyze_documentation(self) -> Dict[str, Any]:
@@ -149,7 +139,7 @@ class QualityController:
         readme_path = self.project_root / "README.md"
         readme_score = 0
         if readme_path.exists():
-            with open(readme_path, 'r', encoding='utf-8') as f:
+            with open(readme_path, "r", encoding="utf-8") as f:
                 readme_content = f.read()
                 readme_score = 0
                 if len(readme_content) > 500:
@@ -165,7 +155,7 @@ class QualityController:
         agent_docs = 0
         if (self.project_root / "agents").exists():
             for agent_file in (self.project_root / "agents").glob("*.md"):
-                with open(agent_file, 'r', encoding='utf-8') as f:
+                with open(agent_file, "r", encoding="utf-8") as f:
                     content = f.read()
                     if "---" in content and "name:" in content and "description:" in content:
                         agent_docs += 1
@@ -177,7 +167,7 @@ class QualityController:
                 if skill_dir.is_dir():
                     skill_file = skill_dir / "SKILL.md"
                     if skill_file.exists():
-                        with open(skill_file, 'r', encoding='utf-8') as f:
+                        with open(skill_file, "r", encoding="utf-8") as f:
                             content = f.read()
                             if "---" in content and "name:" in content and "description:" in content:
                                 skill_docs += 1
@@ -189,7 +179,7 @@ class QualityController:
             "readme_score": readme_score,
             "documented_agents": agent_docs,
             "documented_skills": skill_docs,
-            "documentation_coverage": (readme_score + (agent_docs * 10) + (skill_docs * 10)) / max(1, total_markdown)
+            "documentation_coverage": (readme_score + (agent_docs * 10) + (skill_docs * 10)) / max(1, total_markdown),
         }
 
     def analyze_patterns(self) -> Dict[str, Any]:
@@ -202,7 +192,7 @@ class QualityController:
                 "patterns_directory_exists": False,
                 "patterns_file_exists": False,
                 "pattern_count": 0,
-                "learning_system_active": False
+                "learning_system_active": False,
             }
 
         pattern_count = 0
@@ -210,7 +200,7 @@ class QualityController:
 
         if patterns_file.exists():
             try:
-                with open(patterns_file, 'r', encoding='utf-8') as f:
+                with open(patterns_file, "r", encoding="utf-8") as f:
                     patterns_data = json.load(f)
                     pattern_count = len(patterns_data.get("patterns", []))
                     learning_active = patterns_data.get("project_context", {}).get("global_learning_enabled", False)
@@ -221,7 +211,7 @@ class QualityController:
             "patterns_directory_exists": True,
             "patterns_file_exists": patterns_file.exists(),
             "pattern_count": pattern_count,
-            "learning_system_active": learning_active
+            "learning_system_active": learning_active,
         }
 
     def test_functionity(self) -> Dict[str, Any]:
@@ -231,29 +221,18 @@ class QualityController:
         # Test core lib components
         lib_dir = self.project_root / "lib"
         if lib_dir.exists():
-            test_modules = [
-                "unified_parameter_storage",
-                "assessment_storage",
-                "auto_learning_trigger",
-                "dashboard"
-            ]
+            test_modules = ["unified_parameter_storage", "assessment_storage", "auto_learning_trigger", "dashboard"]
 
             for module in test_modules:
                 module_file = lib_dir / f"{module}.py"
                 if module_file.exists():
                     try:
                         exec(f"import sys; sys.path.append('{lib_dir}'); import {module}")
-                        functional_tests.append({
-                            "component": module,
-                            "status": "PASS",
-                            "message": "Module imports successfully"
-                        })
+                        functional_tests.append(
+                            {"component": module, "status": "PASS", "message": "Module imports successfully"}
+                        )
                     except Exception as e:
-                        functional_tests.append({
-                            "component": module,
-                            "status": "FAIL",
-                            "message": str(e)[:100]
-                        })
+                        functional_tests.append({"component": module, "status": "FAIL", "message": str(e)[:100]})
 
         passed_tests = sum(1 for test in functional_tests if test["status"] == "PASS")
         total_tests = len(functional_tests)
@@ -263,25 +242,25 @@ class QualityController:
             "passed_tests": passed_tests,
             "failed_tests": total_tests - passed_tests,
             "functionality_score": (passed_tests / total_tests * 100) if total_tests > 0 else 0,
-            "test_details": functional_tests
+            "test_details": functional_tests,
         }
 
     def calculate_overall_score(self) -> int:
         """Calculate overall quality score (0-100)"""
         scores = {
             "syntax": self.results["component_scores"].get("syntax", {}).get("syntax_success_rate", 0),
-            "structure": self.results["component_scores"].get("structure", {}).get("required_directories", {}).get("coverage", 0),
-            "documentation": min(100, self.results["component_scores"].get("documentation", {}).get("documentation_coverage", 0) * 10),
-            "functionality": self.results["component_scores"].get("functionality", {}).get("functionality_score", 0)
+            "structure": self.results["component_scores"]
+            .get("structure", {})
+            .get("required_directories", {})
+            .get("coverage", 0),
+            "documentation": min(
+                100, self.results["component_scores"].get("documentation", {}).get("documentation_coverage", 0) * 10
+            ),
+            "functionality": self.results["component_scores"].get("functionality", {}).get("functionality_score", 0),
         }
 
         # Weighted average
-        weights = {
-            "syntax": 0.35,
-            "structure": 0.25,
-            "documentation": 0.20,
-            "functionality": 0.20
-        }
+        weights = {"syntax": 0.35, "structure": 0.25, "documentation": 0.20, "functionality": 0.20}
 
         overall_score = sum(scores[component] * weights[component] for component in scores)
         return round(overall_score)
@@ -293,11 +272,13 @@ class QualityController:
         # Syntax recommendations
         syntax_results = self.results["component_scores"].get("syntax", {})
         if syntax_results.get("syntax_errors"):
-            recommendations.append({
-                "priority": "CRITICAL",
-                "category": "Syntax",
-                "message": f"Fix {len(syntax_results['syntax_errors'])} syntax errors in Python files"
-            })
+            recommendations.append(
+                {
+                    "priority": "CRITICAL",
+                    "category": "Syntax",
+                    "message": f"Fix {len(syntax_results['syntax_errors'])} syntax errors in Python files",
+                }
+            )
 
         # Structure recommendations
         structure_results = self.results["component_scores"].get("structure", {})
@@ -305,36 +286,40 @@ class QualityController:
         missing_files = structure_results.get("required_files", {}).get("missing", [])
 
         if missing_dirs:
-            recommendations.append({
-                "priority": "HIGH",
-                "category": "Structure",
-                "message": f"Create missing directories: {', '.join(missing_dirs)}"
-            })
+            recommendations.append(
+                {
+                    "priority": "HIGH",
+                    "category": "Structure",
+                    "message": f"Create missing directories: {', '.join(missing_dirs)}",
+                }
+            )
 
         if missing_files:
-            recommendations.append({
-                "priority": "HIGH",
-                "category": "Structure",
-                "message": f"Create missing files: {', '.join(missing_files)}"
-            })
+            recommendations.append(
+                {"priority": "HIGH", "category": "Structure", "message": f"Create missing files: {', '.join(missing_files)}"}
+            )
 
         # Documentation recommendations
         doc_results = self.results["component_scores"].get("documentation", {})
         if doc_results.get("readme_score", 0) < 100:
-            recommendations.append({
-                "priority": "MEDIUM",
-                "category": "Documentation",
-                "message": "Improve README.md with installation and usage instructions"
-            })
+            recommendations.append(
+                {
+                    "priority": "MEDIUM",
+                    "category": "Documentation",
+                    "message": "Improve README.md with installation and usage instructions",
+                }
+            )
 
         # Functionality recommendations
         func_results = self.results["component_scores"].get("functionality", {})
         if func_results.get("failed_tests", 0) > 0:
-            recommendations.append({
-                "priority": "CRITICAL",
-                "category": "Functionality",
-                "message": f"Fix {func_results['failed_tests']} failing functional tests"
-            })
+            recommendations.append(
+                {
+                    "priority": "CRITICAL",
+                    "category": "Functionality",
+                    "message": f"Fix {func_results['failed_tests']} failing functional tests",
+                }
+            )
 
         self.results["recommendations"] = recommendations
 
@@ -375,14 +360,14 @@ class QualityController:
 
     def print_report(self):
         """Print quality report to console"""
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("QUALITY CONTROL REPORT")
-        print("="*60)
+        print("=" * 60)
         print(f"Timestamp: {self.results['timestamp']}")
         print(f"Overall Score: {self.results['overall_score']}/100")
 
         # Status
-        if self.results['overall_score'] >= 70:
+        if self.results["overall_score"] >= 70:
             print("Status: PASSED")
         else:
             print("Status: FAILED")
@@ -393,7 +378,9 @@ class QualityController:
         # Component Scores
         print("Component Scores:")
         syntax_score = self.results["component_scores"].get("syntax", {}).get("syntax_success_rate", 0)
-        structure_score = self.results["component_scores"].get("structure", {}).get("required_directories", {}).get("coverage", 0)
+        structure_score = (
+            self.results["component_scores"].get("structure", {}).get("required_directories", {}).get("coverage", 0)
+        )
         doc_score = min(100, self.results["component_scores"].get("documentation", {}).get("documentation_coverage", 0) * 10)
         func_score = self.results["component_scores"].get("functionality", {}).get("functionality_score", 0)
 
@@ -412,16 +399,18 @@ class QualityController:
 
         structure_results = self.results["component_scores"].get("structure", {})
         component_counts = structure_results.get("component_counts", {})
-        print(f"  - Components: {component_counts.get('agents', 0)} agents, {component_counts.get('skills', 0)} skills, {component_counts.get('commands', 0)} commands")
+        print(
+            f"  - Components: {component_counts.get('agents', 0)} agents, {component_counts.get('skills', 0)} skills, {component_counts.get('commands', 0)} commands"
+        )
 
         func_results = self.results["component_scores"].get("functionality", {})
-        print(f"  - Functional Tests: {func_results.get('passed_tests', 0)}/{func_results.get('total_functional_tests', 0)} passing")
+        print(
+            f"  - Functional Tests: {func_results.get('passed_tests', 0)}/{func_results.get('total_functional_tests', 0)} passing"
+        )
         print()
 
         # Issues
-        all_issues = (self.results["issues"]["critical"] +
-                     self.results["issues"]["high"] +
-                     self.results["issues"]["medium"])
+        all_issues = self.results["issues"]["critical"] + self.results["issues"]["high"] + self.results["issues"]["medium"]
 
         if all_issues:
             print("Issues Found:")
@@ -435,7 +424,9 @@ class QualityController:
         if self.results["recommendations"]:
             print("Recommendations:")
             for rec in self.results["recommendations"][:5]:  # Show top 5
-                priority_marker = {"CRITICAL": "[CRITICAL]", "HIGH": "[HIGH]", "MEDIUM": "[MEDIUM]"}.get(rec["priority"], "[LOW]")
+                priority_marker = {"CRITICAL": "[CRITICAL]", "HIGH": "[HIGH]", "MEDIUM": "[MEDIUM]"}.get(
+                    rec["priority"], "[LOW]"
+                )
                 print(f"  {priority_marker} {rec['message']}")
             if len(self.results["recommendations"]) > 5:
                 print(f"  ... and {len(self.results['recommendations']) - 5} more recommendations")
@@ -445,7 +436,7 @@ class QualityController:
         print("Improvement Analysis:")
         print(f"  - Previous Score: 58/100")
         print(f"  - Current Score: {self.results['overall_score']}/100")
-        improvement = self.results['overall_score'] - 58
+        improvement = self.results["overall_score"] - 58
         print(f"  - Improvement: +{improvement} points ({improvement/58*100:.1f}%)")
 
         if improvement > 0:
@@ -453,7 +444,7 @@ class QualityController:
         else:
             print("  - Status: QUALITY DEGRADED")
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
 
     def save_detailed_report(self, output_file: str = None):
         """Save detailed report to file"""
@@ -464,7 +455,7 @@ class QualityController:
         # Ensure directory exists
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write("# Quality Control Report\n\n")
             f.write(f"**Generated:** {self.results['timestamp']}\n")
             f.write(f"**Overall Score:** {self.results['overall_score']}/100\n")
@@ -481,14 +472,14 @@ class QualityController:
             f.write(f"- **Syntax Success Rate:** {syntax_results.get('syntax_success_rate', 0):.1f}%\n")
             f.write(f"- **Successful Imports:** {syntax_results.get('successful_imports', 0)}\n")
 
-            if syntax_results.get('syntax_errors'):
+            if syntax_results.get("syntax_errors"):
                 f.write("\n**Syntax Errors:**\n")
-                for error in syntax_results['syntax_errors']:
+                for error in syntax_results["syntax_errors"]:
                     f.write(f"- {error}\n")
 
-            if syntax_results.get('import_errors'):
+            if syntax_results.get("import_errors"):
                 f.write("\n**Import Errors:**\n")
-                for error in syntax_results['import_errors']:
+                for error in syntax_results["import_errors"]:
                     f.write(f"- {error}\n")
 
             # Structure Details
@@ -519,9 +510,9 @@ class QualityController:
             f.write(f"- **Failed:** {func_results.get('failed_tests', 0)}\n")
             f.write(f"- **Functionality Score:** {func_results.get('functionality_score', 0):.1f}%\n")
 
-            if func_results.get('test_details'):
+            if func_results.get("test_details"):
                 f.write("\n**Test Results:**\n")
-                for test in func_results['test_details']:
+                for test in func_results["test_details"]:
                     status_icon = "[OK]" if test["status"] == "PASS" else "[ERROR]"
                     f.write(f"- {status_icon} {test['component']}: {test['message']}\n")
 
@@ -536,7 +527,7 @@ class QualityController:
             f.write("\n## Improvement Analysis\n\n")
             f.write(f"- **Previous Score:** 58/100\n")
             f.write(f"- **Current Score:** {self.results['overall_score']}/100\n")
-            improvement = self.results['overall_score'] - 58
+            improvement = self.results["overall_score"] - 58
             f.write(f"- **Improvement:** +{improvement} points ({improvement/58*100:.1f}%)\n")
 
             if improvement > 0:
@@ -573,7 +564,7 @@ def main():
     qc.save_detailed_report()
 
     # Exit with appropriate code
-    sys.exit(0 if results['overall_score'] >= 70 else 1)
+    sys.exit(0 if results["overall_score"] >= 70 else 1)
 
 
 if __name__ == "__main__":

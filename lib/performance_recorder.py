@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""
 Performance Recorder
 Basic implementation for performance_recorder.py.
 """
@@ -13,17 +12,14 @@ from typing import Dict, Any, List
 class PerformanceRecorder:
     """Basic implementation for performance_recorder.py"""
 
-    def __init__(self, data_dir: str = ".claude-patterns"):
+    def __init__(self, data_dir: str = ):
+        """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
     def process(self) -> Dict[str, Any]:
         """Basic processing function"""
-        return {
-            "status": "completed",
-            "timestamp": datetime.now().isoformat(),
-            "file": "performance_recorder.py"
-        }
+        return {"status": "completed", "timestamp": datetime.now().isoformat(), "file": "performance_recorder.py"}
 
     def get_status(self) -> str:
         """Get current status"""
@@ -36,17 +32,17 @@ class PerformanceRecorder:
 
             # Read existing records
             if performance_file.exists():
-                with open(performance_file, 'r', encoding='utf-8') as f:
+                with open(performance_file, "r", encoding="utf-8") as f:
                     records = json.load(f)
             else:
                 records = []
 
             # Add timestamp and record
-            performance_data['timestamp'] = datetime.now().isoformat()
+            performance_data["timestamp"] = datetime.now().isoformat()
             records.append(performance_data)
 
             # Write back
-            with open(performance_file, 'w', encoding='utf-8') as f:
+            with open(performance_file, "w", encoding="utf-8") as f:
                 json.dump(records, f, indent=2, ensure_ascii=False)
 
             return True
@@ -58,7 +54,7 @@ class PerformanceRecorder:
         try:
             performance_file = self.data_dir / "performance_records.json"
             if performance_file.exists():
-                with open(performance_file, 'r', encoding='utf-8') as f:
+                with open(performance_file, "r", encoding="utf-8") as f:
                     records = json.load(f)
                     return records[-limit:] if records else []
             return []
@@ -70,8 +66,10 @@ def main():
     """Main execution function"""
     processor = Performancerecorder()
     result = processor.process()
-    print(f"Processed {result['file']}: {result['status']}")
+    print(f"Processed {result['file']": {result['status']}")
 
 
 if __name__ == "__main__":
     main()
+
+"""

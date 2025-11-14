@@ -26,23 +26,26 @@ from token_optimization_engine import get_token_optimizer
 
 class MessagePriority(Enum):
     """Message priority levels for communication optimization."""
-    CRITICAL = "critical"      # Always deliver, no optimization
-    HIGH = "high"              # Important, minimal optimization
-    NORMAL = "normal"          # Standard optimization applied
-    LOW = "low"                # Aggressive optimization
+
+    CRITICAL = "critical"  # Always deliver, no optimization
+    HIGH = "high"  # Important, minimal optimization
+    NORMAL = "normal"  # Standard optimization applied
+    LOW = "low"  # Aggressive optimization
 
 
 class CompressionType(Enum):
     """Compression types for message optimization."""
-    NONE = "none"              # No compression
-    BASIC = "basic"            # Remove redundancy
-    STRUCTURAL = "structural"    # Structure-based compression
-    SEMANTIC = "semantic"        # Semantic compression
+
+    NONE = "none"  # No compression
+    BASIC = "basic"  # Remove redundancy
+    STRUCTURAL = "structural"  # Structure-based compression
+    SEMANTIC = "semantic"  # Semantic compression
 
 
 @dataclass
 class OptimizedMessage:
     """Optimized message with metadata."""
+
     original_id: str
     compressed_content: str
     tokens_original: int
@@ -70,6 +73,7 @@ class OptimizedMessage:
 @dataclass
 class CommunicationProtocol:
     """Communication protocol definition for agent interactions."""
+
     protocol_id: str
     agent_group: str
     message_format: str
@@ -86,6 +90,7 @@ class AgentCommunicationOptimizer:
     """
 
     def __init__(self, cache_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.cache_dir = pathlib.Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
 
@@ -102,17 +107,17 @@ class AgentCommunicationOptimizer:
             CompressionType.NONE: self._no_compression,
             CompressionType.BASIC: self._basic_compression,
             CompressionType.STRUCTURAL: self._structural_compression,
-            CompressionType.SEMANTIC: self._semantic_compression
+            CompressionType.SEMANTIC: self._semantic_compression,
         }
 
         # Statistics
         self.stats = {
-            'messages_optimized': 0,
-            'tokens_saved': 0,
-            'compression_ratio_avg': 0.0,
-            'protocols_used': {},
-            'agent_efficiency': {},
-            'communication_patterns': {}
+            "messages_optimized": 0,
+            "tokens_saved": 0,
+            "compression_ratio_avg": 0.0,
+            "protocols_used": {},
+            "agent_efficiency": {},
+            "communication_patterns": {},
         }
 
         # Cache files
@@ -128,8 +133,10 @@ class AgentCommunicationOptimizer:
         # Initialize default protocols
         self._initialize_default_protocols()
 
-    def optimize_message(self, sender: str, receiver: str, message: Dict[str, Any],
-                         protocol_id: str = None) -> OptimizedMessage:
+    def optimize_message(
+        self, sender: str, receiver: str, message: Dict[str, Any], protocol_id: str = None
+    )-> OptimizedMessage:
+        """Optimize Message."""
         """
         Optimize a single message for token efficiency.
 
@@ -168,9 +175,7 @@ class AgentCommunicationOptimizer:
         compressed_content = self.compression_strategies[compression_type](message)
 
         # Create optimized message
-        optimized = self._create_optimized_message(
-            message, compression_type, priority, protocol, compressed_content
-        )
+        optimized = self._create_optimized_message(message, compression_type, priority, protocol, compressed_content)
 
         # Update statistics
         self._update_stats(optimized)
@@ -203,8 +208,7 @@ class AgentCommunicationOptimizer:
         # Fallback
         return json.loads(optimized_message.compressed_content)
 
-    def optimize_conversation(self, conversation: List[Dict[str, Any]],
-                             participants: List[str]) -> Dict[str, Any]:
+    def optimize_conversation(self, conversation: List[Dict[str, Any]], participants: List[str]) -> Dict[str, Any]:
         """
         Optimize an entire conversation for token efficiency.
 
@@ -226,16 +230,14 @@ class AgentCommunicationOptimizer:
             for i, message in enumerate(messages):
                 # Consider context in conversation
                 context = {
-                    'conversation_index': i,
-                    'total_messages': len(messages),
-                    'participants': participants,
-                    'previous_messages': optimized_messages[-3:] if optimized_messages else []
+                    "conversation_index": i,
+                    "total_messages": len(messages),
+                    "participants": participants,
+                    "previous_messages": optimized_messages[-3:] if optimized_messages else [],
                 }
 
                 # Optimize message with context
-                optimized = self.optimize_message(
-                    sender, receiver, message, context=context
-                )
+                optimized = self.optimize_message(sender, receiver, message, context=context)
 
                 optimized_messages.append(optimized)
                 total_original_tokens += optimized.tokens_original
@@ -244,17 +246,19 @@ class AgentCommunicationOptimizer:
         tokens_saved = total_original_tokens - total_optimized_tokens
 
         return {
-            'optimized_messages': optimized_messages,
-            'original_tokens': total_original_tokens,
-            'optimized_tokens': total_optimized_tokens,
-            'tokens_saved': tokens_saved,
-            'efficiency_score': tokens_saved / total_original_tokens if total_original_tokens > 0 else 0,
-            'compression_ratio': total_optimized_tokens / total_original_tokens if total_original_tokens > 0 else 1,
-            'message_count': len(conversation)
+            "optimized_messages": optimized_messages,
+            "original_tokens": total_original_tokens,
+            "optimized_tokens": total_optimized_tokens,
+            "tokens_saved": tokens_saved,
+            "efficiency_score": tokens_saved / total_original_tokens if total_original_tokens > 0 else 0,
+            "compression_ratio": total_optimized_tokens / total_original_tokens if total_original_tokens > 0 else 1,
+            "message_count": len(conversation),
         }
 
-    def create_communication_protocol(self, protocol_id: str, agent_group: str,
-                                     message_format: str, optimization_rules: Dict[str, Any]) -> bool:
+    def create_communication_protocol(
+        self, protocol_id: str, agent_group: str, message_format: str, optimization_rules: Dict[str, Any]
+    )-> bool:
+        """Create Communication Protocol."""
         """
         Create a new communication protocol for agent interactions.
 
@@ -274,22 +278,22 @@ class AgentCommunicationOptimizer:
             optimization_rules=optimization_rules,
             compression_type=CompressionType.BASIC,
             priority_mapping={},
-            token_limits={}
+            token_limits={},
         )
 
         # Set default priority mapping
         protocol.priority_mapping = {
-            'error': MessagePriority.HIGH,
-            'warning': MessagePriority.NORMAL,
-            'info': MessagePriority.NORMAL,
-            'debug': MessagePriority.LOW
+            "error": MessagePriority.HIGH,
+            "warning": MessagePriority.NORMAL,
+            "info": MessagePriority.NORMAL,
+            "debug": MessagePriority.LOW,
         }
 
         # Set default token limits
         protocol.token_limits = {
-            'max_tokens_per_message': 5000,
-            'max_tokens_per_conversation': 50000,
-            'critical_message_limit': 10000
+            "max_tokens_per_message": 5000,
+            "max_tokens_per_conversation": 50000,
+            "critical_message_limit": 10000,
         }
 
         self.protocols[protocol_id] = protocol
@@ -309,23 +313,23 @@ class AgentCommunicationOptimizer:
         """
         if agent_id:
             # Single agent report
-            agent_stats = self.stats['agent_efficiency'].get(agent_id, {})
+            agent_stats = self.stats["agent_efficiency"].get(agent_id, {})
             return {
-                'agent_id': agent_id,
-                'messages_sent': agent_stats.get('messages_sent', 0),
-                'tokens_saved': agent_stats.get('tokens_saved', 0),
-                'average_efficiency': agent_stats.get('average_efficiency', 0),
-                'preferred_protocols': agent_stats.get('protocols_used', {}),
-                'communication_patterns': agent_stats.get('patterns', {})
+                "agent_id": agent_id,
+                "messages_sent": agent_stats.get("messages_sent", 0),
+                "tokens_saved": agent_stats.get("tokens_saved", 0),
+                "average_efficiency": agent_stats.get("average_efficiency", 0),
+                "preferred_protocols": agent_stats.get("protocols_used", {}),
+                "communication_patterns": agent_stats.get("patterns", {}),
             }
         else:
             # All agents report
             return {
-                'total_agents': len(self.stats['agent_efficiency']),
-                'agent_stats': self.stats['agent_efficiency'],
-                'overall_efficiency': self._calculate_overall_efficiency(),
-                'protocol_usage': self.stats['protocols_used'],
-                'top_performers': self._get_top_performers()
+                "total_agents": len(self.stats["agent_efficiency"]),
+                "agent_stats": self.stats["agent_efficiency"],
+                "overall_efficiency": self._calculate_overall_efficiency(),
+                "protocol_usage": self.stats["protocols_used"],
+                "top_performers": self._get_top_performers(),
             }
 
     def _determine_protocol(self, sender: str, receiver: str) -> str:
@@ -336,7 +340,8 @@ class AgentCommunicationOptimizer:
 
         # Use group-specific protocol if available
         group_protocols = [
-            pid for pid, protocol in self.protocols.items()
+            pid
+            for pid, protocol in self.protocols.items()
             if protocol.agent_group == sender_group and protocol.agent_group == receiver_group
         ]
 
@@ -349,22 +354,22 @@ class AgentCommunicationOptimizer:
     def _get_agent_group(self, agent_id: str) -> str:
         """Get the group an agent belongs to."""
         # Extract group from agent ID
-        if '-' in agent_id:
-            parts = agent_id.split('-')
+        if "-" in agent_id:
+            parts = agent_id.split("-")
             if len(parts) > 1:
                 return parts[0]
 
         # Default group based on agent type
-        if 'analyzer' in agent_id:
-            return 'analysis'
-        elif 'controller' in agent_id:
-            return 'execution'
-        elif 'validator' in agent_id:
-            return 'validation'
-        elif 'optimizer' in agent_id:
-            return 'optimization'
+        if "analyzer" in agent_id:
+            return "analysis"
+        elif "controller" in agent_id:
+            return "execution"
+        elif "validator" in agent_id:
+            return "validation"
+        elif "optimizer" in agent_id:
+            return "optimization"
         else:
-            return 'general'
+            return "general"
 
     def _get_default_protocol(self) -> CommunicationProtocol:
         """Get default communication protocol."""
@@ -372,52 +377,47 @@ class AgentCommunicationOptimizer:
             protocol_id="default",
             agent_group="general",
             message_format="json",
-            optimization_rules={
-                'compress_content': True,
-                'remove_metadata': True,
-                'optimize_structure': True
-            },
+            optimization_rules={"compress_content": True, "remove_metadata": True, "optimize_structure": True},
             compression_type=CompressionType.BASIC,
             priority_mapping={
-                'error': MessagePriority.HIGH,
-                'warning': MessagePriority.NORMAL,
-                'info': MessagePriority.NORMAL,
-                'debug': MessagePriority.LOW
+                "error": MessagePriority.HIGH,
+                "warning": MessagePriority.NORMAL,
+                "info": MessagePriority.NORMAL,
+                "debug": MessagePriority.LOW,
             },
             token_limits={
-                'max_tokens_per_message': 5000,
-                'max_tokens_per_conversation': 50000,
-                'critical_message_limit': 10000
-            }
+                "max_tokens_per_message": 5000,
+                "max_tokens_per_conversation": 50000,
+                "critical_message_limit": 10000,
+            },
         )
 
     def _determine_priority(self, message: Dict[str, Any], protocol: CommunicationProtocol) -> MessagePriority:
         """Determine message priority based on content and protocol."""
         # Check for explicit priority in message
-        if 'priority' in message:
-            priority_str = message['priority'].lower()
-            if priority_str == 'critical':
+        if "priority" in message:
+            priority_str = message["priority"].lower()
+            if priority_str == "critical":
                 return MessagePriority.CRITICAL
-            elif priority_str == 'high':
+            elif priority_str == "high":
                 return MessagePriority.HIGH
-            elif priority_str == 'low':
+            elif priority_str == "low":
                 return MessagePriority.LOW
 
         # Check message type
-        message_type = message.get('type', '').lower()
-        if message_type in ['error', 'critical', 'urgent']:
+        message_type = message.get("type", "").lower()
+        if message_type in ["error", "critical", "urgent"]:
             return MessagePriority.CRITICAL
-        elif message_type in ['warning', 'alert']:
+        elif message_type in ["warning", "alert"]:
             return MessagePriority.HIGH
-        elif message_type in ['debug', 'trace']:
+        elif message_type in ["debug", "trace"]:
             return MessagePriority.LOW
 
         # Use protocol priority mapping
-        content_key = message.get('content_key', '')
+        content_key = message.get("content_key", "")
         return protocol.priority_mapping.get(content_key, MessagePriority.NORMAL)
 
-    def _choose_compression_strategy(self, message: Dict[str, Any],
-                                    priority: MessagePriority) -> CompressionType:
+    def _choose_compression_strategy(self, message: Dict[str, Any], priority: MessagePriority) -> CompressionType:
         """Choose optimal compression strategy based on message and priority."""
         message_size = len(json.dumps(message))
 
@@ -446,20 +446,20 @@ class AgentCommunicationOptimizer:
         optimized = {}
 
         # Keep essential fields only
-        essential_fields = ['type', 'content', 'data', 'timestamp', 'sender', 'receiver']
+        essential_fields = ["type", "content", "data", "timestamp", "sender", "receiver"]
         for field in essential_fields:
             if field in message:
                 optimized[field] = message[field]
 
         # Optimize content
-        if 'content' in optimized:
-            content = optimized['content']
+        if "content" in optimized:
+            content = optimized["content"]
             if isinstance(content, str):
                 # Remove extra whitespace
-                optimized['content'] = ' '.join(content.split())
+                optimized["content"] = " ".join(content.split())
             elif isinstance(content, dict):
                 # Remove None values
-                optimized['content'] = {k: v for k, v in content.items() if v is not None}
+                optimized["content"] = {k: v for k, v in content.items() if v is not None}
 
         return json.dumps(optimized)
 
@@ -483,44 +483,50 @@ class AgentCommunicationOptimizer:
         """Semantic compression - compress based on meaning."""
         # Create semantic representation
         semantic_data = {
-            'type': message.get('type'),
-            'intent': self._extract_intent(message),
-            'key_data': self._extract_key_data(message),
-            'timestamp': message.get('timestamp', time.time())
+            "type": message.get("type"),
+            "intent": self._extract_intent(message),
+            "key_data": self._extract_key_data(message),
+            "timestamp": message.get("timestamp", time.time()),
         }
 
         return json.dumps(semantic_data)
 
     def _extract_intent(self, message: Dict[str, Any]) -> str:
         """Extract intent from message."""
-        content = message.get('content', '')
+        content = message.get("content", "")
         if isinstance(content, str):
             content = content.lower()
-            if 'error' in content or 'fail' in content:
-                return 'error'
-            elif 'success' in content or 'complete' in content:
-                return 'success'
-            elif 'analyze' in content:
-                return 'analysis'
-            elif 'validate' in content:
-                return 'validation'
-            elif 'optimize' in content:
-                return 'optimization'
+            if "error" in content or "fail" in content:
+                return "error"
+            elif "success" in content or "complete" in content:
+                return "success"
+            elif "analyze" in content:
+                return "analysis"
+            elif "validate" in content:
+                return "validation"
+            elif "optimize" in content:
+                return "optimization"
 
-        return 'general'
+        return "general"
 
     def _extract_key_data(self, message: Dict[str, Any]) -> Any:
         """Extract key data from message."""
-        if 'data' in message:
-            return message['data']
-        elif 'content' in message:
-            return message['content']
+        if "data" in message:
+            return message["data"]
+        elif "content" in message:
+            return message["content"]
         else:
-            return message.get('message', '')
+            return message.get("message", "")
 
-    def _create_optimized_message(self, message: Dict[str, Any], compression_type: CompressionType,
-                               priority: MessagePriority, protocol: CommunicationProtocol,
-                               compressed_content: str = None) -> OptimizedMessage:
+    def _create_optimized_message(
+        self,
+        message: Dict[str, Any],
+        compression_type: CompressionType,
+        priority: MessagePriority,
+        protocol: CommunicationProtocol,
+        compressed_content: str = None,
+    )-> OptimizedMessage:
+        """ Create Optimized Message."""
         """Create optimized message with metadata."""
         original_tokens = self._estimate_tokens(message)
 
@@ -538,13 +544,13 @@ class AgentCommunicationOptimizer:
             compression_type=compression_type,
             compression_ratio=compressed_tokens / original_tokens if original_tokens > 0 else 1.0,
             metadata={
-                'original_size': original_tokens,
-                'compressed_size': compressed_tokens,
-                'protocol_id': protocol.protocol_id,
-                'agent_group': protocol.agent_group
+                "original_size": original_tokens,
+                "compressed_size": compressed_tokens,
+                "protocol_id": protocol.protocol_id,
+                "agent_group": protocol.agent_group,
             },
             dependencies=[],
-            created_at=time.time()
+            created_at=time.time(),
         )
 
     def _generate_message_id(self, message: Dict[str, Any]) -> str:
@@ -563,14 +569,16 @@ class AgentCommunicationOptimizer:
         else:
             return len(str(content)) // 3
 
-    def _group_messages_by_participants(self, conversation: List[Dict[str, Any]],
-                                       participants: List[str]) -> Dict[Tuple[str, str], List[Dict[str, Any]]]:
+    def _group_messages_by_participants(
+        self, conversation: List[Dict[str, Any]], participants: List[str]
+    )-> Dict[Tuple[str, str], List[Dict[str, Any]]]:
+        """ Group Messages By Participants."""
         """Group messages by sender-receiver pairs."""
         groups = {}
 
         for message in conversation:
-            sender = message.get('sender', 'unknown')
-            receiver = message.get('receiver', 'unknown')
+            sender = message.get("sender", "unknown")
+            receiver = message.get("receiver", "unknown")
 
             # Filter for participants
             if sender in participants and receiver in participants:
@@ -584,60 +592,58 @@ class AgentCommunicationOptimizer:
     def _track_communication_pattern(self, sender: str, receiver: str, protocol_id: str) -> None:
         """Track communication patterns for optimization."""
         pattern_key = f"{sender}->{receiver}"
-        if pattern_key not in self.stats['communication_patterns']:
-            self.stats['communication_patterns'][pattern_key] = {
-                'count': 0,
-                'protocols_used': {},
-                'average_efficiency': 0.0
-            }
+        if pattern_key not in self.stats["communication_patterns"]:
+            self.stats["communication_patterns"][pattern_key] = {"count": 0, "protocols_used": {}, "average_efficiency": 0.0}
 
-        pattern = self.stats['communication_patterns'][pattern_key]
-        pattern['count'] += 1
-        pattern['protocols_used'][protocol_id] = pattern['protocols_used'].get(protocol_id, 0) + 1
+        pattern = self.stats["communication_patterns"][pattern_key]
+        pattern["count"] += 1
+        pattern["protocols_used"][protocol_id] = pattern["protocols_used"].get(protocol_id, 0) + 1
 
     def _update_stats(self, optimized_message: OptimizedMessage) -> None:
         """Update optimization statistics."""
-        self.stats['messages_optimized'] += 1
-        self.stats['tokens_saved'] += optimized_message.token_savings
+        self.stats["messages_optimized"] += 1
+        self.stats["tokens_saved"] += optimized_message.token_savings
 
         # Update compression ratio average
-        total_messages = self.stats['messages_optimized']
+        total_messages = self.stats["messages_optimized"]
         if total_messages > 0:
-            current_avg = self.stats['compression_ratio_avg']
-            self.stats['compression_ratio_avg'] = (
-                (current_avg * (total_messages - 1) + optimized_message.compression_ratio) / total_messages
-            )
+            current_avg = self.stats["compression_ratio_avg"]
+            self.stats["compression_ratio_avg"] = (
+                current_avg * (total_messages - 1) + optimized_message.compression_ratio
+            ) / total_messages
 
         # Update protocol usage
-        protocol_id = optimized_message.metadata['protocol_id']
-        self.stats['protocols_used'][protocol_id] = self.stats['protocols_used'].get(protocol_id, 0) + 1
+        protocol_id = optimized_message.metadata["protocol_id"]
+        self.stats["protocols_used"][protocol_id] = self.stats["protocols_used"].get(protocol_id, 0) + 1
 
         self._save_stats()
 
     def _calculate_overall_efficiency(self) -> float:
         """Calculate overall communication efficiency."""
-        if self.stats['messages_optimized'] == 0:
+        if self.stats["messages_optimized"] == 0:
             return 0.0
 
-        total_saved = self.stats['tokens_saved']
-        total_messages = self.stats['messages_optimized']
+        total_saved = self.stats["tokens_saved"]
+        total_messages = self.stats["messages_optimized"]
 
         return total_saved / total_messages
 
     def _get_top_performers(self) -> List[Dict[str, Any]]:
         """Get top performing agents."""
-        agent_stats = self.stats['agent_efficiency']
+        agent_stats = self.stats["agent_efficiency"]
         performers = []
 
         for agent_id, stats in agent_stats.items():
-            performers.append({
-                'agent_id': agent_id,
-                'efficiency': stats.get('average_efficiency', 0),
-                'tokens_saved': stats.get('tokens_saved', 0),
-                'messages_sent': stats.get('messages_sent', 0)
-            })
+            performers.append(
+                {
+                    "agent_id": agent_id,
+                    "efficiency": stats.get("average_efficiency", 0),
+                    "tokens_saved": stats.get("tokens_saved", 0),
+                    "messages_sent": stats.get("messages_sent", 0),
+                }
+            )
 
-        return sorted(performers, key=lambda x: x['efficiency'], reverse=True)[:10]
+        return sorted(performers, key=lambda x: x["efficiency"], reverse=True)[:10]
 
     def _initialize_default_protocols(self) -> None:
         """Initialize default communication protocols."""
@@ -646,11 +652,7 @@ class AgentCommunicationOptimizer:
             "group_1_communication",
             "analysis",
             "structured_json",
-            {
-                'compress_content': True,
-                'optimize_structure': True,
-                'semantic_compression': False
-            }
+            {"compress_content": True, "optimize_structure": True, "semantic_compression": False},
         )
 
         # Group 2 (Decision) protocol
@@ -658,11 +660,7 @@ class AgentCommunicationOptimizer:
             "group_2_communication",
             "decision",
             "structured_json",
-            {
-                'compress_content': True,
-                'optimize_structure': True,
-                'semantic_compression': True
-            }
+            {"compress_content": True, "optimize_structure": True, "semantic_compression": True},
         )
 
         # Group 3 (Execution) protocol
@@ -670,11 +668,7 @@ class AgentCommunicationOptimizer:
             "group_3_communication",
             "execution",
             "structured_json",
-            {
-                'compress_content': True,
-                'optimize_structure': True,
-                'semantic_compression': False
-            }
+            {"compress_content": True, "optimize_structure": True, "semantic_compression": False},
         )
 
         # Group 4 (Validation) protocol
@@ -682,18 +676,14 @@ class AgentCommunicationOptimizer:
             "group_4_communication",
             "validation",
             "structured_json",
-            {
-                'compress_content': True,
-                'optimize_structure': True,
-                'semantic_compression': True
-            }
+            {"compress_content": True, "optimize_structure": True, "semantic_compression": True},
         )
 
     def _load_protocols(self) -> None:
         """Load communication protocols from cache."""
         if self.protocols_file.exists():
             try:
-                with open(self.protocols_file, 'r') as f:
+                with open(self.protocols_file, "r") as f:
                     data = json.load(f)
                     for protocol_id, protocol_data in data.items():
                         self.protocols[protocol_id] = CommunicationProtocol(**protocol_data)
@@ -703,7 +693,7 @@ class AgentCommunicationOptimizer:
     def _save_protocols(self) -> None:
         """Save communication protocols to cache."""
         try:
-            with open(self.protocols_file, 'w') as f:
+            with open(self.protocols_file, "w") as f:
                 data = {}
                 for protocol_id, protocol in self.protocols.items():
                     data[protocol_id] = asdict(protocol)
@@ -715,7 +705,7 @@ class AgentCommunicationOptimizer:
         """Load statistics from cache."""
         if self.stats_file.exists():
             try:
-                with open(self.stats_file, 'r') as f:
+                with open(self.stats_file, "r") as f:
                     self.stats = json.load(f)
             except Exception as e:
                 print(f"Error loading stats: {e}")
@@ -723,7 +713,7 @@ class AgentCommunicationOptimizer:
     def _save_stats(self) -> None:
         """Save statistics to cache."""
         try:
-            with open(self.stats_file, 'w') as f:
+            with open(self.stats_file, "w") as f:
                 json.dump(self.stats, f, indent=2)
         except Exception as e:
             print(f"Error saving stats: {e}")
@@ -732,59 +722,62 @@ class AgentCommunicationOptimizer:
         """Load communication patterns from cache."""
         if self.patterns_file.exists():
             try:
-                with open(self.patterns_file, 'r') as f:
-                    self.stats['communication_patterns'] = json.load(f)
+                with open(self.patterns_file, "r") as f:
+                    self.stats["communication_patterns"] = json.load(f)
             except Exception as e:
                 print(f"Error loading patterns: {e}")
 
     def _save_patterns(self) -> None:
         """Save communication patterns to cache."""
         try:
-            with open(self.patterns_file, 'w') as f:
-                json.dump(self.stats['communication_patterns'], f, indent=2)
+            with open(self.patterns_file, "w") as f:
+                json.dump(self.stats["communication_patterns"], f, indent=2)
         except Exception as e:
             print(f"Error saving patterns: {e}")
 
     def get_optimization_report(self) -> Dict[str, Any]:
         """Get comprehensive optimization report."""
         return {
-            'total_messages_optimized': self.stats['messages_optimized'],
-            'total_tokens_saved': self.stats['tokens_saved'],
-            'average_compression_ratio': self.stats['compression_ratio_avg'],
-            'protocols_count': len(self.protocols),
-            'protocol_usage': self.stats['protocols_used'],
-            'agent_count': len(self.stats['agent_efficiency']),
-            'communication_patterns': len(self.stats['communication_patterns']),
-            'top_protocols': self._get_top_protocols(),
-            'top_performers': self._get_top_performers(),
-            'efficiency_trends': self._analyze_efficiency_trends()
+            "total_messages_optimized": self.stats["messages_optimized"],
+            "total_tokens_saved": self.stats["tokens_saved"],
+            "average_compression_ratio": self.stats["compression_ratio_avg"],
+            "protocols_count": len(self.protocols),
+            "protocol_usage": self.stats["protocols_used"],
+            "agent_count": len(self.stats["agent_efficiency"]),
+            "communication_patterns": len(self.stats["communication_patterns"]),
+            "top_protocols": self._get_top_protocols(),
+            "top_performers": self._get_top_performers(),
+            "efficiency_trends": self._analyze_efficiency_trends(),
         }
 
     def _get_top_protocols(self) -> List[Dict[str, Any]]:
         """Get most used protocols."""
         protocols = []
-        for protocol_id, usage_count in self.stats['protocols_used'].items():
-            protocols.append({
-                'protocol_id': protocol_id,
-                'usage_count': usage_count,
-                'agent_group': self.protocols.get(protocol_id, {}).agent_group
-            })
+        for protocol_id, usage_count in self.stats["protocols_used"].items():
+            protocols.append(
+                {
+                    "protocol_id": protocol_id,
+                    "usage_count": usage_count,
+                    "agent_group": self.protocols.get(protocol_id, {}).agent_group,
+                }
+            )
 
-        return sorted(protocols, key=lambda x: x['usage_count'], reverse=True)
+        return sorted(protocols, key=lambda x: x["usage_count"], reverse=True)
 
     def _analyze_efficiency_trends(self) -> Dict[str, Any]:
         """Analyze efficiency trends over time."""
         # Simplified trend analysis
         return {
-            'trend': 'improving',
-            'recent_efficiency': self.stats['compression_ratio_avg'],
-            'target_efficiency': 0.4,  # 40% compression ratio target
-            'status': 'on_track' if self.stats['compression_ratio_avg'] >= 0.4 else 'needs_improvement'
+            "trend": "improving",
+            "recent_efficiency": self.stats["compression_ratio_avg"],
+            "target_efficiency": 0.4,  # 40% compression ratio target
+            "status": "on_track" if self.stats["compression_ratio_avg"] >= 0.4 else "needs_improvement",
         }
 
 
 # Global optimizer instance
 _communication_optimizer = None
+
 
 def get_communication_optimizer() -> AgentCommunicationOptimizer:
     """Get or create global communication optimizer instance."""

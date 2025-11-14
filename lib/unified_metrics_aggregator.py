@@ -14,24 +14,30 @@ from enum import Enum
 import threading
 from pathlib import Path
 
+
 class MetricPeriod(Enum):
     """Period types for aggregation"""
+
     HOURLY = "hourly"
     DAILY = "daily"
     WEEKLY = "weekly"
     MONTHLY = "monthly"
 
+
 class KpiCategory(Enum):
     """KPI categories for tracking"""
+
     PERFORMANCE = "performance"
     COST = "cost"
     QUALITY = "quality"
     USER_EXPERIENCE = "user_experience"
     SYSTEM_HEALTH = "system_health"
 
+
 @dataclass
 class AggregatedMetric:
     """Aggregated metric with multiple dimensions"""
+
     timestamp: datetime
     metric_name: str
     category: KpiCategory
@@ -41,9 +47,11 @@ class AggregatedMetric:
     source_system: str
     metadata: Dict[str, Any]
 
+
 @dataclass
 class KpiDefinition:
     """KPI definition with targets and thresholds"""
+
     name: str
     category: KpiCategory
     description: str
@@ -52,6 +60,7 @@ class KpiDefinition:
     minimum_acceptable: float
     optimal_value: float
     weight: float = 1.0
+
 
 class UnifiedMetricsAggregator:
     """Centralizes metrics aggregation from all optimization systems"""
@@ -86,7 +95,8 @@ class UnifiedMetricsAggregator:
             cursor = conn.cursor()
 
             # Aggregated metrics table
-            cursor.execute("""
+            cursor.execute(
+                """
                 CREATE TABLE IF NOT EXISTS aggregated_metrics (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -99,10 +109,12 @@ class UnifiedMetricsAggregator:
                     metadata TEXT,
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP
                 )
-            """)
+            """
+            )
 
             # KPI results table
-            cursor.execute("""
+            cursor.execute(
+                """
                 CREATE TABLE IF NOT EXISTS kpi_results (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -115,10 +127,12 @@ class UnifiedMetricsAggregator:
                     period TEXT NOT NULL,
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP
                 )
-            """)
+            """
+            )
 
             # System snapshots table
-            cursor.execute("""
+            cursor.execute(
+                """
                 CREATE TABLE IF NOT EXISTS system_snapshots (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -132,7 +146,8 @@ class UnifiedMetricsAggregator:
                     metadata TEXT,
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP
                 )
-            """)
+            """
+            )
 
             # Create indexes
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_metrics_timestamp ON aggregated_metrics(timestamp)")
@@ -154,7 +169,7 @@ class UnifiedMetricsAggregator:
                 target_value=60.0,
                 minimum_acceptable=40.0,
                 optimal_value=75.0,
-                weight=2.0
+                weight=2.0,
             ),
             "cache_hit_rate": KpiDefinition(
                 name="Cache Hit Rate",
@@ -164,7 +179,7 @@ class UnifiedMetricsAggregator:
                 target_value=80.0,
                 minimum_acceptable=60.0,
                 optimal_value=90.0,
-                weight=1.5
+                weight=1.5,
             ),
             "response_time_improvement": KpiDefinition(
                 name="Response Time Improvement",
@@ -174,9 +189,8 @@ class UnifiedMetricsAggregator:
                 target_value=30.0,
                 minimum_acceptable=15.0,
                 optimal_value=50.0,
-                weight=1.0
+                weight=1.0,
             ),
-
             # Cost KPIs
             "daily_cost_savings": KpiDefinition(
                 name="Daily Cost Savings",
@@ -186,7 +200,7 @@ class UnifiedMetricsAggregator:
                 target_value=50.0,
                 minimum_acceptable=25.0,
                 optimal_value=100.0,
-                weight=2.0
+                weight=2.0,
             ),
             "roi_percentage": KpiDefinition(
                 name="ROI Percentage",
@@ -196,9 +210,8 @@ class UnifiedMetricsAggregator:
                 target_value=300.0,
                 minimum_acceptable=150.0,
                 optimal_value=500.0,
-                weight=1.5
+                weight=1.5,
             ),
-
             # Quality KPIs
             "compression_quality_score": KpiDefinition(
                 name="Compression Quality Score",
@@ -208,7 +221,7 @@ class UnifiedMetricsAggregator:
                 target_value=85.0,
                 minimum_acceptable=70.0,
                 optimal_value=95.0,
-                weight=1.5
+                weight=1.5,
             ),
             "content_integrity_rate": KpiDefinition(
                 name="Content Integrity Rate",
@@ -218,9 +231,8 @@ class UnifiedMetricsAggregator:
                 target_value=95.0,
                 minimum_acceptable=85.0,
                 optimal_value=99.0,
-                weight=2.0
+                weight=2.0,
             ),
-
             # User Experience KPIs
             "user_satisfaction_score": KpiDefinition(
                 name="User Satisfaction Score",
@@ -230,7 +242,7 @@ class UnifiedMetricsAggregator:
                 target_value=4.0,
                 minimum_acceptable=3.0,
                 optimal_value=4.5,
-                weight=2.0
+                weight=2.0,
             ),
             "task_completion_rate": KpiDefinition(
                 name="Task Completion Rate",
@@ -240,9 +252,8 @@ class UnifiedMetricsAggregator:
                 target_value=95.0,
                 minimum_acceptable=85.0,
                 optimal_value=99.0,
-                weight=1.5
+                weight=1.5,
             ),
-
             # System Health KPIs
             "system_availability": KpiDefinition(
                 name="System Availability",
@@ -252,7 +263,7 @@ class UnifiedMetricsAggregator:
                 target_value=99.5,
                 minimum_acceptable=98.0,
                 optimal_value=99.9,
-                weight=2.0
+                weight=2.0,
             ),
             "error_rate": KpiDefinition(
                 name="Error Rate",
@@ -262,7 +273,7 @@ class UnifiedMetricsAggregator:
                 target_value=1.0,
                 minimum_acceptable=3.0,
                 optimal_value=0.1,
-                weight=1.5
+                weight=1.5,
             ),
             "resource_utilization": KpiDefinition(
                 name="Resource Utilization",
@@ -272,8 +283,8 @@ class UnifiedMetricsAggregator:
                 target_value=70.0,
                 minimum_acceptable=90.0,
                 optimal_value=60.0,
-                weight=1.0
-            )
+                weight=1.0,
+            ),
         }
 
     def collect_metrics_from_all_systems(self) -> Dict[str, Any]:
@@ -284,7 +295,7 @@ class UnifiedMetricsAggregator:
                 "smart_cache": self._collect_smart_cache_metrics(),
                 "token_monitoring": self._collect_token_monitoring_metrics(),
                 "budget_manager": self._collect_budget_manager_metrics(),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
 
             # Calculate aggregated metrics
@@ -308,7 +319,7 @@ class UnifiedMetricsAggregator:
                 "avg_optimization_time": summary.get("avg_optimization_time", 0.0),
                 "user_patterns": len(loader.user_patterns),
                 "cached_items": len(loader.content_cache),
-                "performance_improvement": summary.get("avg_compression_ratio", 0.0) * 100  # Convert to percentage
+                "performance_improvement": summary.get("avg_compression_ratio", 0.0) * 100,  # Convert to percentage
             }
         except ImportError:
             return {"error": "Progressive loader not available"}
@@ -333,7 +344,7 @@ class UnifiedMetricsAggregator:
                 "memory_usage": stats.get("memory_usage", 0),
                 "prediction_accuracy": stats.get("prediction_accuracy", 0.0),
                 "policy_performance": stats.get("policy_performance", {}),
-                "evictions": stats.get("evictions", 0)
+                "evictions": stats.get("evictions", 0),
             }
         except ImportError:
             return {"error": "Smart cache not available"}
@@ -363,7 +374,7 @@ class UnifiedMetricsAggregator:
                 "avg_compression_ratio": effectiveness.get("avg_compression_ratio", stats.average_compression_ratio),
                 "avg_cache_hit_rate": effectiveness.get("avg_cache_hit_rate", stats.cache_hit_rate),
                 "active_alerts": stats.alerts_count,
-                "system_health": stats.system_health_score
+                "system_health": stats.system_health_score,
             }
         except ImportError:
             return {"error": "Token monitoring not available"}
@@ -387,7 +398,7 @@ class UnifiedMetricsAggregator:
                 "budget_overruns": report.get("overrun_count", 0),
                 "cost_avoidance": report.get("total_cost_avoidance", 0.0),
                 "total_allocated": report.get("total_allocated", 0),
-                "total_used": report.get("total_used", 0)
+                "total_used": report.get("total_used", 0),
             }
         except ImportError:
             return {"error": "Budget manager not available"}
@@ -469,20 +480,23 @@ class UnifiedMetricsAggregator:
                         # Determine category
                         category = self._categorize_metric(metric_name)
 
-                        cursor.execute("""
+                        cursor.execute(
+                            """
                             INSERT INTO aggregated_metrics
                             (timestamp, metric_name, category, period, value, unit, source_system, metadata)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                        """, (
-                            timestamp,
-                            metric_name,
-                            category.value,
-                            period.value,
-                            float(value),
-                            self._get_metric_unit(metric_name),
-                            "unified_aggregator",
-                            json.dumps({"source": "aggregation"})
-                        ))
+                        """,
+                            (
+                                timestamp,
+                                metric_name,
+                                category.value,
+                                period.value,
+                                float(value),
+                                self._get_metric_unit(metric_name),
+                                "unified_aggregator",
+                                json.dumps({"source": "aggregation"}),
+                            ),
+                        )
 
                 conn.commit()
 
@@ -555,12 +569,13 @@ class UnifiedMetricsAggregator:
                         "category": kpi_def.category.value,
                         "weight": kpi_def.weight,
                         "unit": kpi_def.unit,
-                        "status": self._get_kpi_status(achievement_rate)
+                        "status": self._get_kpi_status(achievement_rate),
                     }
 
                     # Store in database
-                    self._store_kpi_result(kpi_name, kpi_def.category, current_value,
-                                         kpi_def.target_value, achievement_rate, trend, period)
+                    self._store_kpi_result(
+                        kpi_name, kpi_def.category, current_value, kpi_def.target_value, achievement_rate, trend, period
+                    )
 
                     # Add to overall score
                     overall_score += achievement_rate * kpi_def.weight
@@ -575,7 +590,7 @@ class UnifiedMetricsAggregator:
                 "overall_achievement_rate": overall_achievement,
                 "total_kpis_tracked": len(kpi_results),
                 "period": period.value,
-                "calculated_at": datetime.now().isoformat()
+                "calculated_at": datetime.now().isoformat(),
             }
 
     def _get_recent_metrics(self, period: MetricPeriod, limit: int = 100) -> List[AggregatedMetric]:
@@ -594,27 +609,32 @@ class UnifiedMetricsAggregator:
             elif period == MetricPeriod.MONTHLY:
                 time_threshold -= timedelta(days=365)
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT * FROM aggregated_metrics
                 WHERE timestamp >= ?
                 ORDER BY timestamp DESC
                 LIMIT ?
-            """, (time_threshold.isoformat(), limit))
+            """,
+                (time_threshold.isoformat(), limit),
+            )
 
             rows = cursor.fetchall()
             metrics = []
 
             for row in rows:
-                metrics.append(AggregatedMetric(
-                    timestamp=datetime.fromisoformat(row[1]),
-                    metric_name=row[2],
-                    category=KpiCategory(row[3]),
-                    period=MetricPeriod(row[4]),
-                    value=row[5],
-                    unit=row[6],
-                    source_system=row[7],
-                    metadata=json.loads(row[8]) if row[8] else {}
-                ))
+                metrics.append(
+                    AggregatedMetric(
+                        timestamp=datetime.fromisoformat(row[1]),
+                        metric_name=row[2],
+                        category=KpiCategory(row[3]),
+                        period=MetricPeriod(row[4]),
+                        value=row[5],
+                        unit=row[6],
+                        source_system=row[7],
+                        metadata=json.loads(row[8]) if row[8] else {},
+                    )
+                )
 
             return metrics
 
@@ -643,15 +663,12 @@ class UnifiedMetricsAggregator:
             "overall_cache_hit_rate": "cache_hit_rate",
             "total_cost_savings": "daily_cost_savings",
             "system_health_score": "system_availability",
-            "error_rate": "error_rate"
+            "error_rate": "error_rate",
         }
 
-        return metric_mappings.get(metric_name) == kpi_lower or \
-               kpi_lower in metric_lower or \
-               metric_lower in kpi_lower
+        return metric_mappings.get(metric_name) == kpi_lower or kpi_lower in metric_lower or metric_lower in kpi_lower
 
-    def _calculate_achievement_rate(self, current_value: float, target_value: float,
-                                  minimum_acceptable: float) -> float:
+    def _calculate_achievement_rate(self, current_value: float, target_value: float, minimum_acceptable: float) -> float:
         """Calculate achievement rate for a KPI"""
         if current_value >= target_value:
             # Exceeded target - bonus points up to 150%
@@ -689,11 +706,14 @@ class UnifiedMetricsAggregator:
             elif period == MetricPeriod.MONTHLY:
                 time_threshold -= timedelta(days=90)  # Last 3 months
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT value FROM kpi_results
                 WHERE kpi_name = ? AND timestamp >= ?
                 ORDER BY timestamp ASC
-            """, (kpi_name, time_threshold.isoformat()))
+            """,
+                (kpi_name, time_threshold.isoformat()),
+            )
 
             rows = cursor.fetchall()
 
@@ -726,26 +746,37 @@ class UnifiedMetricsAggregator:
         else:
             return "critical"
 
-    def _store_kpi_result(self, kpi_name: str, category: KpiCategory, current_value: float,
-                         target_value: float, achievement_rate: float, trend: str, period: MetricPeriod):
+    def _store_kpi_result(
+        self,
+        kpi_name: str,
+        category: KpiCategory,
+        current_value: float,
+        target_value: float,
+        achievement_rate: float,
+        trend: str,
+        period: MetricPeriod,
+    ):
         """Store KPI result in database"""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO kpi_results
                 (timestamp, kpi_name, category, value, target_value, achievement_rate, trend, period)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                datetime.now().isoformat(),
-                kpi_name,
-                category.value,
-                current_value,
-                target_value,
-                achievement_rate,
-                trend,
-                period.value
-            ))
+            """,
+                (
+                    datetime.now().isoformat(),
+                    kpi_name,
+                    category.value,
+                    current_value,
+                    target_value,
+                    achievement_rate,
+                    trend,
+                    period.value,
+                ),
+            )
 
             conn.commit()
 
@@ -764,15 +795,18 @@ class UnifiedMetricsAggregator:
             "kpi_scores": kpi_scores,
             "system_health": {
                 "overall_score": kpi_scores.get("overall_score", 0.0),
-                "critical_issues": len([k for k, v in kpi_scores.get("individual_kpis", {}).items()
-                                      if v.get("status") == "critical"]),
-                "improving_trends": len([k for k, v in kpi_scores.get("individual_kpis", {}).items()
-                                        if v.get("trend") == "improving"]),
-                "declining_trends": len([k for k, v in kpi_scores.get("individual_kpis", {}).items()
-                                        if v.get("trend") == "declining"])
+                "critical_issues": len(
+                    [k for k, v in kpi_scores.get("individual_kpis", {}).items() if v.get("status") == "critical"]
+                ),
+                "improving_trends": len(
+                    [k for k, v in kpi_scores.get("individual_kpis", {}).items() if v.get("trend") == "improving"]
+                ),
+                "declining_trends": len(
+                    [k for k, v in kpi_scores.get("individual_kpis", {}).items() if v.get("trend") == "declining"]
+                ),
             },
             "recommendations": self._generate_recommendations(kpi_scores),
-            "next_actions": self._generate_next_actions(kpi_scores)
+            "next_actions": self._generate_next_actions(kpi_scores),
         }
 
         # Store snapshot
@@ -788,22 +822,25 @@ class UnifiedMetricsAggregator:
             aggregated = snapshot.get("metrics", {}).get("aggregated", {})
             kpi_scores = snapshot.get("kpi_scores", {})
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO system_snapshots
                 (timestamp, total_tokens_saved, total_cost_savings, overall_effectiveness,
                  cache_hit_rate, compression_ratio, user_satisfaction, system_health_score, metadata)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                snapshot["timestamp"],
-                aggregated.get("total_tokens_saved", 0),
-                aggregated.get("total_cost_savings", 0.0),
-                kpi_scores.get("overall_achievement_rate", 0.0),
-                aggregated.get("overall_cache_hit_rate", 0.0),
-                aggregated.get("overall_compression_ratio", 0.0),
-                0.0,  # User satisfaction - would need integration
-                kpi_scores.get("overall_score", 0.0),
-                json.dumps(snapshot)
-            ))
+            """,
+                (
+                    snapshot["timestamp"],
+                    aggregated.get("total_tokens_saved", 0),
+                    aggregated.get("total_cost_savings", 0.0),
+                    kpi_scores.get("overall_achievement_rate", 0.0),
+                    aggregated.get("overall_cache_hit_rate", 0.0),
+                    aggregated.get("overall_compression_ratio", 0.0),
+                    0.0,  # User satisfaction - would need integration
+                    kpi_scores.get("overall_score", 0.0),
+                    json.dumps(snapshot),
+                ),
+            )
 
             conn.commit()
 
@@ -847,36 +884,42 @@ class UnifiedMetricsAggregator:
         # Token reduction actions
         token_kpi = individual_kpis.get("token_reduction_rate", {})
         if token_kpi.get("achievement_rate", 0) < 80:
-            actions.append({
-                "action": "Optimize progressive loading tiers",
-                "priority": "high",
-                "expected_impact": "15-25% token reduction",
-                "effort": "medium",
-                "timeline": "1-2 days"
-            })
+            actions.append(
+                {
+                    "action": "Optimize progressive loading tiers",
+                    "priority": "high",
+                    "expected_impact": "15-25% token reduction",
+                    "effort": "medium",
+                    "timeline": "1-2 days",
+                }
+            )
 
         # Cache optimization actions
         cache_kpi = individual_kpis.get("cache_hit_rate", {})
         if cache_kpi.get("achievement_rate", 0) < 80:
-            actions.append({
-                "action": "Increase cache size and tune policies",
-                "priority": "high",
-                "expected_impact": "10-20% performance improvement",
-                "effort": "low",
-                "timeline": "2-4 hours"
-            })
+            actions.append(
+                {
+                    "action": "Increase cache size and tune policies",
+                    "priority": "high",
+                    "expected_impact": "10-20% performance improvement",
+                    "effort": "low",
+                    "timeline": "2-4 hours",
+                }
+            )
 
         # Budget management actions
         if "budget_utilization" in individual_kpis:
             budget_kpi = individual_kpis["budget_utilization"]
             if budget_kpi.get("achievement_rate", 0) < 70:
-                actions.append({
-                    "action": "Review and adjust budget constraints",
-                    "priority": "medium",
-                    "expected_impact": "5-15% cost optimization",
-                    "effort": "medium",
-                    "timeline": "1 day"
-                })
+                actions.append(
+                    {
+                        "action": "Review and adjust budget constraints",
+                        "priority": "medium",
+                        "expected_impact": "5-15% cost optimization",
+                        "effort": "medium",
+                        "timeline": "1 day",
+                    }
+                )
 
         return actions
 
@@ -899,13 +942,15 @@ class UnifiedMetricsAggregator:
             "generated_at": datetime.now().isoformat(),
             "summary": {
                 "overall_score": kpi_scores.get("overall_score", 0),
-                "critical_issues": len([k for k, v in kpi_scores.get("individual_kpis", {}).items()
-                                      if v.get("status") == "critical"]),
-                "improving_trends": len([k for k, v in kpi_scores.get("individual_kpis", {}).items()
-                                        if v.get("trend") == "improving"]),
+                "critical_issues": len(
+                    [k for k, v in kpi_scores.get("individual_kpis", {}).items() if v.get("status") == "critical"]
+                ),
+                "improving_trends": len(
+                    [k for k, v in kpi_scores.get("individual_kpis", {}).items() if v.get("trend") == "improving"]
+                ),
                 "total_recommendations": len(snapshot.get("recommendations", [])),
-                "total_actions": len(snapshot.get("next_actions", []))
-            }
+                "total_actions": len(snapshot.get("next_actions", [])),
+            },
         }
 
     def _get_historical_kpi_data(self, period: MetricPeriod, days: int = 30) -> Dict[str, List[Dict[str, Any]]]:
@@ -916,12 +961,15 @@ class UnifiedMetricsAggregator:
             # Calculate time threshold
             time_threshold = datetime.now() - timedelta(days=days)
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT kpi_name, timestamp, value, achievement_rate, trend
                 FROM kpi_results
                 WHERE timestamp >= ? AND period = ?
                 ORDER BY timestamp ASC
-            """, (time_threshold.isoformat(), period.value))
+            """,
+                (time_threshold.isoformat(), period.value),
+            )
 
             rows = cursor.fetchall()
 
@@ -934,12 +982,9 @@ class UnifiedMetricsAggregator:
                 if kpi_name not in historical_data:
                     historical_data[kpi_name] = []
 
-                historical_data[kpi_name].append({
-                    "timestamp": timestamp,
-                    "value": value,
-                    "achievement_rate": achievement_rate,
-                    "trend": trend
-                })
+                historical_data[kpi_name].append(
+                    {"timestamp": timestamp, "value": value, "achievement_rate": achievement_rate, "trend": trend}
+                )
 
             return historical_data
 
@@ -965,22 +1010,14 @@ class UnifiedMetricsAggregator:
 
 """
 
-        individual_kpis = dashboard_data['current_scores']['individual_kpis']
+        individual_kpis = dashboard_data["current_scores"]["individual_kpis"]
 
         for kpi_name, kpi_data in individual_kpis.items():
-            status_emoji = {
-                "excellent": "🟢",
-                "good": "🟡",
-                "fair": "🟠",
-                "poor": "🔴",
-                "critical": "🚨"
-            }.get(kpi_data.get("status"), "⚪")
+            status_emoji = {"excellent": "🟢", "good": "🟡", "fair": "🟠", "poor": "🔴", "critical": "🚨"}.get(
+                kpi_data.get("status"), "⚪"
+            )
 
-            trend_emoji = {
-                "improving": "[TREND]",
-                "declining": "📉",
-                "stable": "[RIGHT]"
-            }.get(kpi_data.get("trend"), "❓")
+            trend_emoji = {"improving": "[TREND]", "declining": "📉", "stable": "[RIGHT]"}.get(kpi_data.get("trend"), "❓")
 
             report += f"""
 ### {kpi_name.replace('_', ' ').title()} {status_emoji} {trend_emoji}
@@ -993,14 +1030,14 @@ class UnifiedMetricsAggregator:
 """
 
         # Add recommendations
-        recommendations = dashboard_data['system_snapshot']['recommendations']
+        recommendations = dashboard_data["system_snapshot"]["recommendations"]
         if recommendations:
             report += "## Recommendations\n\n"
             for i, rec in enumerate(recommendations, 1):
                 report += f"{i}. {rec}\n"
 
         # Add next actions
-        actions = dashboard_data['system_snapshot']['next_actions']
+        actions = dashboard_data["system_snapshot"]["next_actions"]
         if actions:
             report += "\n## Next Actions\n\n"
             for i, action in enumerate(actions, 1):

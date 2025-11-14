@@ -15,6 +15,7 @@ Version: 1.0.0
 # Import emergency sanitizer - will be available once plugin is properly installed
 # from lib.emergency_message_sanitize import emergency_sanitize_messages
 
+
 # Fallback implementation if main sanitizer not available
 def emergency_sanitize_messages(messages):
     """Fallback message sanitizer if main module not available."""
@@ -26,31 +27,28 @@ def emergency_sanitize_messages(messages):
         if not isinstance(message, dict):
             continue
 
-        if 'content' not in message:
+        if "content" not in message:
             continue
 
-        if not isinstance(message['content'], list):
+        if not isinstance(message["content"], list):
             continue
 
         # Filter content blocks
         clean_content = []
-        for block in message['content']:
-            if isinstance(block, dict) and block.get('type') == 'text':
-                text = str(block.get('text', '')).strip()
+        for block in message["content"]:
+            if isinstance(block, dict) and block.get("type") == "text":
+                text = str(block.get("text", "")).strip()
                 if text:  # Only keep non-empty
-                    clean_content.append({
-                        'type': 'text',
-                        'text': text
-                    })
+                    clean_content.append({"type": "text", "text": text})
             else:
                 # Keep non-text blocks
                 clean_content.append(block)
 
         # Never return empty content
         if not clean_content:
-            clean_content = [{'type': 'text', 'text': 'Processing...'}]
+            clean_content = [{"type": "text", "text": "Processing..."}]
 
-        message['content'] = clean_content
+        message["content"] = clean_content
         sanitized_messages.append(message)
 
     return sanitized_messages
@@ -81,33 +79,24 @@ def safe_orchestrator_response(content_blocks):
         if not isinstance(block, dict):
             continue
 
-        block_type = block.get('type', 'text')
-        text = block.get('text', '')
+        block_type = block.get("type", "text")
+        text = block.get("text", "")
 
-        if block_type == 'text':
+        if block_type == "text":
             # Sanitize text content
             text = str(text).strip()
             if text:  # Only keep non-empty text
-                clean_blocks.append({
-                    'type': 'text',
-                    'text': text
-                })
+                clean_blocks.append({"type": "text", "text": text})
         else:
             # Keep non-text blocks (tool results, etc.)
             clean_blocks.append(block)
 
     # CRITICAL: Never return empty content
     if not clean_blocks:
-        clean_blocks = [{
-            'type': 'text',
-            'text': 'Processing request...'
-        }]
+        clean_blocks = [{"type": "text", "text": "Processing request..."}]
 
     # Create message structure
-    message = {
-        'role': 'assistant',
-        'content': clean_blocks
-    }
+    message = {"role": "assistant", "content": clean_blocks}
 
     # Emergency sanitize before returning
     try:
@@ -116,13 +105,10 @@ def safe_orchestrator_response(content_blocks):
     except Exception as e:
         print(f"[EMERGENCY] Message sanitization failed: {e}")
         # Return safest possible message
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': 'System processing...'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": "System processing..."}]}
 
 
-def safe_string_operation(text, default='Unknown'):
+def safe_string_operation(text, default="Unknown"):
     """
     Safe string operation with automatic fallback for empty content.
 
@@ -183,7 +169,7 @@ def safe_split_operation(text, delimiter, maxsplit=-1):
         return []
 
 
-def safe_get_operation(text, delimiter, index, default=''):
+def safe_get_operation(text, delimiter, index, default=""):
     """
     Safe extraction of split operation parts with automatic fallback.
 
@@ -232,21 +218,21 @@ def validate_response_structure(response):
         issues.append("Response is not a dictionary")
         return issues
 
-    if 'content' not in response:
+    if "content" not in response:
         issues.append("Missing content field in response")
         return issues
 
-    if not isinstance(response['content'], list):
+    if not isinstance(response["content"], list):
         issues.append("Content is not a list")
         return issues
 
-    for i, block in enumerate(response['content']):
+    for i, block in enumerate(response["content"]):
         if not isinstance(block, dict):
             issues.append(f"Content block {i} is not a dictionary")
             continue
 
-        if block.get('type') == 'text':
-            text = block.get('text', '')
+        if block.get("type") == "text":
+            text = block.get("text", "")
             if not text or not str(text).strip():
                 issues.append(f"Content block {i} has empty or whitespace-only text")
 
@@ -255,11 +241,11 @@ def validate_response_structure(response):
 
 # Export functions for immediate integration
 __all__ = [
-    'safe_orchestrator_response',
-    'safe_string_operation',
-    'safe_split_operation',
-    'safe_get_operation',
-    'validate_response_structure'
+    "safe_orchestrator_response",
+    "safe_string_operation",
+    "safe_split_operation",
+    "safe_get_operation",
+    "validate_response_structure",
 ]
 
 # Test the emergency fix
@@ -271,7 +257,7 @@ if __name__ == "__main__":
         {"type": "text", "text": ""},  # Empty - should be removed
         {"type": "text", "text": "   "},  # Whitespace only - should be removed
         {"type": "text", "text": "Valid content"},  # Should be kept
-        {"type": "tool_result", "result": "data"}  # Should be kept
+        {"type": "tool_result", "result": "data"},  # Should be kept
     ]
 
     print("Testing safe_orchestrator_response:")
@@ -289,7 +275,7 @@ if __name__ == "__main__":
     else:
         print("✅ Response structure is valid!")
 
-    for i, block in enumerate(result['content']):
+    for i, block in enumerate(result["content"]):
         print(f"  Block {i}: {block.get('type', 'unknown')} - {str(block.get('text', 'N/A'))[:30]}...")
 
     print("\n=== EMERGENCY FIX IS READY ===")

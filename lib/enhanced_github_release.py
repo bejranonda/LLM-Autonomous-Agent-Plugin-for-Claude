@@ -30,18 +30,13 @@ class EnhancedGitHubReleaseManager:
         """Get GitHub repository URL from git remote."""
         try:
             result = subprocess.run(
-                ["git", "remote", "get-url", "origin"],
-                cwd=self.repo_path,
-                capture_output=True,
-                text=True,
-                check=True
+                ["git", "remote", "get-url", "origin"], cwd=self.repo_path, capture_output=True, text=True, check=True
             )
             url = result.stdout.strip()
 
             # Convert SSH to HTTPS URL for API
             if url.startswith("git@"):
-                url = url.replace("git@github.com:",
-                                  "https://github.com/").replace(".git", "")
+                url = url.replace("git@github.com:", "https://github.com/").replace(".git", "")
             elif url.startswith("https://github.com"):
                 url = url.replace(".git", "")
 
@@ -55,31 +50,18 @@ class EnhancedGitHubReleaseManager:
     def _check_github_cli_auth(self) -> bool:
         """Check if GitHub CLI is authenticated."""
         try:
-            result = subprocess.run(
-                ["gh", "auth", "status"],
-                capture_output=True,
-                text=True,
-                check=True
-            )
+            result = subprocess.run(["gh", "auth", "status"], capture_output=True, text=True, check=True)
             return "Logged in to github.com" in result.stdout
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
     def _create_release_with_gh_cli(
-            self,
-            tag: str,
-            title: str,
-            notes: str,
-            prerelease: bool = False,
-            draft: bool = False) -> bool:
+        self, tag: str, title: str, notes: str, prerelease: bool = False, draft: bool = False
+    )-> bool:
+        """ Create Release With Gh Cli."""
         """Create release using GitHub CLI (most reliable method)."""
         try:
-            cmd = [
-                "gh", "release", "create", tag,
-                "--title", title,
-                "--notes", notes,
-                "--repo", self.repo_url
-            ]
+            cmd = ["gh", "release", "create", tag, "--title", title, "--notes", notes, "--repo", self.repo_url]
 
             if prerelease:
                 cmd.append("--prerelease")
@@ -95,12 +77,9 @@ class EnhancedGitHubReleaseManager:
             return False
 
     def _create_release_with_curl(
-            self,
-            tag: str,
-            title: str,
-            notes: str,
-            prerelease: bool = False,
-            draft: bool = False) -> bool:
+        self, tag: str, title: str, notes: str, prerelease: bool = False, draft: bool = False
+    )-> bool:
+        """ Create Release With Curl."""
         """Create release using curl and GitHub API (fallback method)."""
         if not self.token:
             print("[ERROR] GITHUB_TOKEN environment variable required for API method")
@@ -122,16 +101,10 @@ class EnhancedGitHubReleaseManager:
         headers = {
             "Authorization": f"token {self.token}",
             "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
-        data = {
-            "tag_name": tag,
-            "name": title,
-            "body": notes,
-            "draft": draft,
-            "prerelease": prerelease
-        }
+        data = {"tag_name": tag, "name": title, "body": notes, "draft": draft, "prerelease": prerelease}
 
         try:
             response = requests.post(api_url, headers=headers, json=data, timeout=30)
@@ -152,18 +125,16 @@ class EnhancedGitHubReleaseManager:
         """Verify that the release exists on GitHub."""
         try:
             result = subprocess.run(
-                ["gh", "release", "view", tag, "--repo", self.repo_url],
-                capture_output=True,
-                text=True,
-                check=True
+                ["gh", "release", "view", tag, "--repo", self.repo_url], capture_output=True, text=True, check=True
             )
             return True
         except subprocess.CalledProcessError:
             return False
 
-    def create_release(self, tag: str, title: str, notes: str,
-                       prerelease: bool = False, draft: bool = False,
-                       verify: bool = True) -> bool:
+    def create_release(
+        self, tag: str, title: str, notes: str, prerelease: bool = False, draft: bool = False, verify: bool = True
+    )-> bool:
+        """Create Release."""
         """
         Create a GitHub release with multiple fallback methods.
 
@@ -221,31 +192,24 @@ class EnhancedGitHubReleaseManager:
         try:
             # Get current version from git tags
             result = subprocess.run(
-                ["git", "describe", "--tags", "--abbrev=0"],
-                cwd=self.repo_path,
-                capture_output=True,
-                text=True
+                ["git", "describe", "--tags", "--abbrev=0"], cwd=self.repo_path, capture_output=True, text=True
             )
             last_tag = result.stdout.strip() if result.returncode == 0 else "v0.0.0"
 
             # Get commits since last tag
             result = subprocess.run(
-                ["git", "log", f"{last_tag}..HEAD", "--oneline"],
-                cwd=self.repo_path,
-                capture_output=True,
-                text=True
+                ["git", "log", f"{last_tag}..HEAD", "--oneline"], cwd=self.repo_path, capture_output=True, text=True
             )
-            commits = result.stdout.strip().split('\n') if result.stdout.strip() else []
+            commits = result.stdout.strip().split("\n") if result.stdout.strip() else []
 
             # Simple version bump logic
-            version = last_tag.replace('v', '')
-            major, minor, patch = map(int, version.split('.'))
+            version = last_tag.replace("v", "")
+            major, minor, patch = map(int, version.split("."))
 
             # Analyze commits for version bump
-            has_features = any('feat' in commit for commit in commits)
-            has_breaking = any('break' in commit.lower() or
-                               '!' in commit for commit in commits)
-            has_fixes = any('fix' in commit for commit in commits)
+            has_features = any("feat" in commit for commit in commits)
+            has_breaking = any("break" in commit.lower() or "!" in commit for commit in commits)
+            has_fixes = any("fix" in commit for commit in commits)
 
             if has_breaking:
                 major += 1
@@ -269,21 +233,11 @@ class EnhancedGitHubReleaseManager:
             else:
                 release_notes += "No changes detected.\n"
 
-            return {
-                "version": new_version,
-                "title": f"Release {new_version}",
-                "notes": release_notes,
-                "last_tag": last_tag
-            }
+            return {"version": new_version, "title": f"Release {new_version}", "notes": release_notes, "last_tag": last_tag}
 
         except Exception as e:
             print(f"[ERROR] Auto-detection failed: {e}")
-            return {
-                "version": "v1.0.0",
-                "title": "Release v1.0.0",
-                "notes": "Initial release.",
-                "last_tag": "v0.0.0"
-            }
+            return {"version": "v1.0.0", "title": "Release v1.0.0", "notes": "Initial release.", "last_tag": "v0.0.0"}
 
 
 def main():
@@ -332,7 +286,7 @@ def main():
 
         if args.notes_file:
             try:
-                with open(args.notes_file, 'r') as f:
+                with open(args.notes_file, "r") as f:
                     notes = f.read()
             except FileNotFoundError:
                 print(f"[ERROR] Notes file not found: {args.notes_file}")
@@ -348,12 +302,7 @@ def main():
 
     # Create the release
     success = release_manager.create_release(
-        tag=tag,
-        title=title,
-        notes=notes,
-        prerelease=args.prerelease,
-        draft=args.draft,
-        verify=not args.no_verify
+        tag=tag, title=title, notes=notes, prerelease=args.prerelease, draft=args.draft, verify=not args.no_verify
     )
 
     if success:

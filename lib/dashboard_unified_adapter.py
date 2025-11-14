@@ -18,6 +18,7 @@ except ImportError:
     print("Error: unified_parameter_storage.py not found", file=sys.stderr)
     sys.exit(1)
 
+
 class DashboardUnifiedAdapter:
     """
     Adapter layer that provides dashboard-specific data access
@@ -39,8 +40,7 @@ class DashboardUnifiedAdapter:
     def _get_cached_data(self, key: str) -> Any:
         """Get cached data if available and fresh."""
         current_time = datetime.now().timestamp()
-        if (key in self.cache and
-            current_time - self.cache_timestamp < self.cache_ttl):
+        if key in self.cache and current_time - self.cache_timestamp < self.cache_ttl:
             return self.cache[key]
         return None
 
@@ -81,7 +81,7 @@ class DashboardUnifiedAdapter:
                         "score": assessment.get("overall_score", 0),
                         "model_used": assessment.get("details", {}).get("model_used", "Unknown"),
                         "task_type": assessment.get("task_type", "unknown"),
-                        "assessment_id": assessment.get("assessment_id")
+                        "assessment_id": assessment.get("assessment_id"),
                     }
                     timeline.append(timeline_entry)
 
@@ -96,8 +96,8 @@ class DashboardUnifiedAdapter:
                         continue
 
                     # Handle different timestamp formats
-                    if timestamp_str.endswith('Z'):
-                        timestamp_str = timestamp_str[:-1] + '+00:00'
+                    if timestamp_str.endswith("Z"):
+                        timestamp_str = timestamp_str[:-1] + "+00:00"
 
                     entry_date = datetime.fromisoformat(timestamp_str)
                     # Make both dates comparable (remove timezone info if needed)
@@ -143,7 +143,7 @@ class DashboardUnifiedAdapter:
                     "success_rate": model_stats.get("success_rate", 0.0),
                     "total_tasks": model_stats.get("total_tasks", 0),
                     "last_updated": model_stats.get("last_updated"),
-                    "contribution": model_stats.get("contribution", 0.0)
+                    "contribution": model_stats.get("contribution", 0.0),
                 }
 
             # Calculate additional metrics
@@ -164,7 +164,7 @@ class DashboardUnifiedAdapter:
                 "active_model": model_data.get("active_model", "Unknown"),
                 "models": performance,
                 "usage_stats": model_data.get("usage_stats", {}),
-                "total_models": len(performance)
+                "total_models": len(performance),
             }
 
             self._set_cached_data(cache_key, result)
@@ -210,7 +210,7 @@ class DashboardUnifiedAdapter:
                 "latest_timestamp": current_assessment.get("timestamp"),
                 "trend_direction": self._calculate_trend(scores),
                 "score_distribution": self._calculate_score_distribution(scores),
-                "recent_performance": self._calculate_recent_performance(scores)
+                "recent_performance": self._calculate_recent_performance(scores),
             }
 
             self._set_cached_data(cache_key, metrics)
@@ -256,7 +256,7 @@ class DashboardUnifiedAdapter:
                 "recent_patterns": pattern_list[-10:],  # Last 10 patterns
                 "pattern_success_rate": self._calculate_pattern_success_rate(pattern_list),
                 "top_skills": self._get_top_skills(skill_effectiveness),
-                "learning_trend": self._calculate_trend(pattern_success_values)
+                "learning_trend": self._calculate_trend(pattern_success_values),
             }
 
             self._set_cached_data(cache_key, analytics)
@@ -291,8 +291,7 @@ class DashboardUnifiedAdapter:
             latest_plugin_validation = plugin_validations[-1] if plugin_validations else {}
 
             # Calculate validation trend from historical scores
-            validation_scores = [v.get("overall_score", 0) for v in recent_validations
-                               if v.get("overall_score", 0) > 0]
+            validation_scores = [v.get("overall_score", 0) for v in recent_validations if v.get("overall_score", 0) > 0]
 
             status = {
                 "latest_validation": latest_validation,
@@ -303,7 +302,7 @@ class DashboardUnifiedAdapter:
                 "validation_score": latest_validation.get("overall_score", 0),
                 "plugin_ready": latest_plugin_validation.get("overall_score", 0) >= 70,
                 "last_validation_time": latest_validation.get("timestamp"),
-                "validation_trend": self._calculate_trend(validation_scores)
+                "validation_trend": self._calculate_trend(validation_scores),
             }
 
             self._set_cached_data(cache_key, status)
@@ -334,7 +333,7 @@ class DashboardUnifiedAdapter:
                 "collaboration_matrix": feedback_data.get("collaboration_matrix", {}),
                 "learning_insights": feedback_data.get("learning_insights", {}),
                 "effectiveness_metrics": feedback_data.get("effectiveness_metrics", {}),
-                "recent_feedbacks": feedback_data.get("exchanges", [])[-10:] if feedback_data.get("exchanges") else []
+                "recent_feedbacks": feedback_data.get("exchanges", [])[-10:] if feedback_data.get("exchanges") else [],
             }
 
             self._set_cached_data(cache_key, metrics)
@@ -366,7 +365,7 @@ class DashboardUnifiedAdapter:
                 "weak_performers": performance_data.get("weak_performers", []),
                 "specializations": performance_data.get("specializations", {}),
                 "performance_trends": performance_data.get("performance_trends", {}),
-                "recent_tasks": performance_data.get("task_history", [])[-20:] if performance_data.get("task_history") else []
+                "recent_tasks": performance_data.get("task_history", [])[-20:] if performance_data.get("task_history") else [],
             }
 
             self._set_cached_data(cache_key, metrics)
@@ -399,7 +398,7 @@ class DashboardUnifiedAdapter:
                 "quality_weights": pref_data.get("quality_weights", {}),
                 "communication_style": pref_data.get("communication_style", {}),
                 "task_preferences": pref_data.get("task_preferences", {}),
-                "total_interactions": len(pref_data.get("interaction_history", []))
+                "total_interactions": len(pref_data.get("interaction_history", [])),
             }
 
             self._set_cached_data(cache_key, summary)
@@ -434,7 +433,7 @@ class DashboardUnifiedAdapter:
                 # NEW: Two-tier agent architecture metrics
                 "agent_feedback": self.get_agent_feedback_metrics(),
                 "agent_performance": self.get_agent_performance_metrics(),
-                "user_preferences": self.get_user_preference_summary()
+                "user_preferences": self.get_user_preference_summary(),
             }
 
             self._set_cached_data(cache_key, summary)
@@ -484,19 +483,14 @@ class DashboardUnifiedAdapter:
             avg_previous = sum(previous_7) / len(previous_7) if previous_7 else 0
             improvement = avg_7 - avg_previous
 
-        return {
-            "last_7": avg_7,
-            "last_30": avg_30,
-            "improvement": improvement
-        }
+        return {"last_7": avg_7, "last_30": avg_30, "improvement": improvement}
 
     def _calculate_pattern_success_rate(self, patterns: List[Dict[str, Any]]) -> float:
         """Calculate overall pattern success rate."""
         if not patterns:
             return 0.0
 
-        successful_patterns = sum(1 for p in patterns
-                                 if p.get("outcome", {}).get("success", False))
+        successful_patterns = sum(1 for p in patterns if p.get("outcome", {}).get("success", False))
         return successful_patterns / len(patterns)
 
     def _get_top_skills(self, skill_effectiveness: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -569,7 +563,7 @@ class DashboardUnifiedAdapter:
                 "last_updated": unified_data.get("metadata", {}).get("last_updated"),
                 "version": unified_data.get("version", "unknown"),
                 "migration_status": unified_data.get("metadata", {}).get("migration_status", "unknown"),
-                "total_records": unified_data.get("metadata", {}).get("total_records_migrated", 0)
+                "total_records": unified_data.get("metadata", {}).get("total_records_migrated", 0),
             }
 
             # Calculate data completeness
@@ -583,62 +577,61 @@ class DashboardUnifiedAdapter:
             return health
 
         except Exception as e:
-            return {
-                "storage_accessible": False,
-                "data_integrity": 0,
-                "overall_score": 0,
-                "error": str(e)
-            }
+            return {"storage_accessible": False, "data_integrity": 0, "overall_score": 0, "error": str(e)}
 
     def invalidate_cache(self):
         """Invalidate all cached data."""
         self.cache.clear()
         self.cache_timestamp = 0
 
+
 def main():
     """Command-line interface for testing the adapter."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Dashboard Unified Adapter Test')
-    parser.add_argument('--storage-dir', default='.claude-unified', help='Storage directory')
-    parser.add_argument('--test', choices=['timeline', 'models', 'quality', 'learning', 'validation', 'summary'],
-                       help='Test specific data retrieval')
+    parser = argparse.ArgumentParser(description="Dashboard Unified Adapter Test")
+    parser.add_argument("--storage-dir", default=".claude-unified", help="Storage directory")
+    parser.add_argument(
+        "--test",
+        choices=["timeline", "models", "quality", "learning", "validation", "summary"],
+        help="Test specific data retrieval",
+    )
 
     args = parser.parse_args()
 
     adapter = DashboardUnifiedAdapter(args.storage_dir)
 
-    if args.test == 'timeline':
+    if args.test == "timeline":
         data = adapter.get_quality_timeline_data()
         print(f"Quality Timeline Entries: {len(data)}")
         for entry in data[-3:]:  # Show last 3
             print(f"  {entry['timestamp']}: {entry['score']} ({entry['model_used']})")
 
-    elif args.test == 'models':
+    elif args.test == "models":
         data = adapter.get_model_performance_data()
         print(f"Active Model: {data['active_model']}")
         print(f"Total Models: {data['total_models']}")
-        for model, stats in data['models'].items():
+        for model, stats in data["models"].items():
             print(f"  {model}: {stats['success_rate']:.1%} success rate")
 
-    elif args.test == 'quality':
+    elif args.test == "quality":
         data = adapter.get_quality_metrics()
         print(f"Current Score: {data['current_score']}")
         print(f"Total Assessments: {data['total_assessments']}")
         print(f"Average Score: {data['average_score']:.1f}")
 
-    elif args.test == 'learning':
+    elif args.test == "learning":
         data = adapter.get_learning_analytics()
         print(f"Total Patterns: {data['total_patterns']}")
         print(f"Top Skills: {len(data['top_skills'])}")
 
-    elif args.test == 'validation':
+    elif args.test == "validation":
         data = adapter.get_validation_status()
         print(f"Latest Validation Score: {data['validation_score']}")
         print(f"Plugin Ready: {data['plugin_ready']}")
         print(f"Total Validations: {data['total_validations']}")
 
-    elif args.test == 'summary':
+    elif args.test == "summary":
         data = adapter.get_dashboard_summary()
         print(f"Dashboard Summary Generated at: {data['timestamp']}")
         print(f"System Health: {data['system_health']['overall_score']:.1f}%")
@@ -654,5 +647,6 @@ def main():
         print(f"   Active Model: {summary['model_performance']['active_model']}")
         print(f"   Timeline Entries: {len(summary['quality_timeline'])}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -14,6 +14,7 @@ STATUS: EMERGENCY FIX REQUIRED
 import re
 from typing import List, Dict, Any, Optional
 
+
 class EmergencyMessageSanitizer:
     """Emergency message sanitizer to prevent Claude system failure."""
 
@@ -39,7 +40,7 @@ class EmergencyMessageSanitizer:
             return None
 
         # Reject whitespace-only characters
-        if re.match(r'^[\s\-\_\|\.\,\:\;\(\)\[\]\{\}]*$', text):
+        if re.match(r"^[\s\-\_\|\.\,\:\;\(\)\[\]\{\}]*$", text):
             return None
 
         # Reject very short content (likely empty)
@@ -62,20 +63,17 @@ class EmergencyMessageSanitizer:
         if not isinstance(block, dict):
             return None
 
-        block_type = block.get('type')
+        block_type = block.get("type")
 
         # Handle text blocks with strict filtering
-        if block_type == 'text':
-            text = EmergencyMessageSanitizer.sanitize_message_text(block.get('text', ''))
+        if block_type == "text":
+            text = EmergencyMessageSanitizer.sanitize_message_text(block.get("text", ""))
             if text:
-                return {
-                    'type': 'text',
-                    'text': text
-                }
+                return {"type": "text", "text": text}
             return None
 
         # Keep non-text blocks (tool results, etc.) but validate structure
-        if block_type in ['tool_result', 'tool_use', 'function_call', 'function_result']:
+        if block_type in ["tool_result", "tool_use", "function_call", "function_result"]:
             return block
 
         # Unknown block type - keep if it has content
@@ -96,24 +94,21 @@ class EmergencyMessageSanitizer:
             return message
 
         # Handle content array
-        if 'content' in message and isinstance(message['content'], list):
-            original_count = len(message['content'])
+        if "content" in message and isinstance(message["content"], list):
+            original_count = len(message["content"])
 
             # Filter content blocks aggressively
             sanitized_content = []
-            for block in message['content']:
+            for block in message["content"]:
                 sanitized_block = EmergencyMessageSanitizer.sanitize_content_block(block)
                 if sanitized_block:
                     sanitized_content.append(sanitized_block)
 
             # NEVER return empty content - this breaks Claude entirely
             if not sanitized_content:
-                sanitized_content = [{
-                    'type': 'text',
-                    'text': 'Processing request...'
-                }]
+                sanitized_content = [{"type": "text", "text": "Processing request..."}]
 
-            message['content'] = sanitized_content
+            message["content"] = sanitized_content
 
             # Log if we removed empty blocks (for debugging)
             if len(sanitized_content) != original_count:
@@ -143,36 +138,40 @@ class EmergencyMessageSanitizer:
 
         return sanitized_messages
 
+
 # Emergency global functions for immediate integration
 def emergency_sanitize_messages(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Emergency sanitization function - call this before ANY Claude API call."""
     return EmergencyMessageSanitizer.sanitize_messages(messages)
 
+
 def validate_no_empty_blocks(messages: List[Dict[str, Any]]) -> List[str]:
     """Validate messages have no empty text blocks."""
     issues = []
     for i, message in enumerate(messages):
-        if isinstance(message, dict) and 'content' in message:
-            if isinstance(message['content'], list):
-                for j, block in enumerate(message['content']):
-                    if isinstance(block, dict) and block.get('type') == 'text':
-                        text = str(block.get('text', ''))
+        if isinstance(message, dict) and "content" in message:
+            if isinstance(message["content"], list):
+                for j, block in enumerate(message["content"]):
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        text = str(block.get("text", ""))
                         if not text.strip():
                             issues.append(f"Message {i}, Block {j}: Empty text detected")
     return issues
+
 
 # Emergency wrapper for Claude API calls
 class EmergencyAPICallWrapper:
     """Emergency wrapper to sanitize all Claude API calls."""
 
     def __init__(self, original_api_function):
+        """  Init  ."""
         self.original_function = original_api_function
 
     def __call__(self, *args, **kwargs):
         """Wrap API call with emergency sanitization."""
         # Sanitize messages in common API call patterns
-        if 'messages' in kwargs:
-            kwargs['messages'] = emergency_sanitize_messages(kwargs['messages'])
+        if "messages" in kwargs:
+            kwargs["messages"] = emergency_sanitize_messages(kwargs["messages"])
 
         elif args and isinstance(args[0], list):
             # First argument might be messages
@@ -181,6 +180,7 @@ class EmergencyAPICallWrapper:
 
         # Call original function
         return self.original_function(*args, **kwargs)
+
 
 # Emergency installation
 def install_emergency_wrapper():
@@ -198,6 +198,7 @@ def install_emergency_wrapper():
     print("[EMERGENCY] Message sanitizer installed")
     print("[EMERGENCY] Use emergency_sanitize_messages() before API calls")
 
+
 # Test the emergency fix
 if __name__ == "__main__":
     print("=== EMERGENCY MESSAGE SANITIZER TEST ===")
@@ -211,12 +212,9 @@ if __name__ == "__main__":
                 {"type": "text", "text": "   "},  # Whitespace only - should be removed
                 {"type": "text", "text": "Valid content"},  # Should be kept
                 {"type": "tool_result", "result": "data"},  # Should be kept
-            ]
+            ],
         },
-        {
-            "role": "assistant",
-            "content": []  # Empty array - should get default content
-        }
+        {"role": "assistant", "content": []},  # Empty array - should get default content
     ]
 
     print("Before sanitization:")
@@ -233,7 +231,7 @@ if __name__ == "__main__":
     print(f"\nSanitized messages: {len(sanitized)}")
     for i, msg in enumerate(sanitized):
         print(f"  Message {i}: {len(msg.get('content', []))} content blocks")
-        for j, block in enumerate(msg.get('content', [])):
+        for j, block in enumerate(msg.get("content", [])):
             print(f"    Block {j}: {block.get('type', 'unknown')} - {block.get('text', str(block))[:30]}...")
 
     print("\n[EMERGENCY] Sanitizer is ready for deployment!")

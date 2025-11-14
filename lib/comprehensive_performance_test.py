@@ -19,10 +19,12 @@ from concurrent.futures import ThreadPoolExecutor, TimeoutError
 import subprocess
 import statistics
 
+
 class PerformanceTestSuite:
     """Comprehensive performance testing suite"""
 
     def __init__(self, test_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.test_dir = Path(test_dir)
         self.test_dir.mkdir(parents=True, exist_ok=True)
 
@@ -32,7 +34,7 @@ class PerformanceTestSuite:
                 "start_time": datetime.now().isoformat(),
                 "platform": sys.platform,
                 "python_version": sys.version,
-                "plugin_version": self._get_plugin_version()
+                "plugin_version": self._get_plugin_version(),
             },
             "command_performance": {},
             "resource_utilization": {},
@@ -40,7 +42,7 @@ class PerformanceTestSuite:
             "scalability_tests": {},
             "stress_tests": {},
             "memory_leak_tests": {},
-            "summary": {}
+            "summary": {},
         }
 
         # Performance baselines
@@ -50,7 +52,7 @@ class PerformanceTestSuite:
             "slow_command": 5.0,
             "max_memory_growth": 50 * 1024 * 1024,  # 50MB
             "max_cpu_usage": 80,  # percentage
-            "acceptable_error_rate": 5  # percentage
+            "acceptable_error_rate": 5,  # percentage
         }
 
         # Test commands to benchmark
@@ -58,13 +60,15 @@ class PerformanceTestSuite:
             # Fast commands
             {"category": "fast", "command": "python lib/validate_plugin.py", "expected_time": 0.5},
             {"category": "fast", "command": "python lib/simple_test_script.py", "expected_time": 0.5},
-
             # Medium commands
             {"category": "medium", "command": "python lib/comprehensive_quality_analysis.py --dir .", "expected_time": 2.0},
             {"category": "medium", "command": "python lib/plugin_validator.py", "expected_time": 2.0},
-
             # Slow commands
-            {"category": "slow", "command": "python lib/dashboard_launcher.py --no-browser --validate-only", "expected_time": 5.0},
+            {
+                "category": "slow",
+                "command": "python lib/dashboard_launcher.py --no-browser --validate-only",
+                "expected_time": 5.0,
+            },
         ]
 
     def _get_plugin_version(self) -> str:
@@ -72,7 +76,7 @@ class PerformanceTestSuite:
         try:
             plugin_file = Path(".claude-plugin/plugin.json")
             if plugin_file.exists():
-                with open(plugin_file, 'r') as f:
+                with open(plugin_file, "r") as f:
                     data = json.load(f)
                     return data.get("version", "unknown")
         except:
@@ -88,7 +92,7 @@ class PerformanceTestSuite:
             "cpu_percent": process.cpu_percent(),
             "num_threads": process.num_threads(),
             "open_files": len(process.open_files()),
-            "memory_percent": process.memory_percent()
+            "memory_percent": process.memory_percent(),
         }
 
     def _execute_command(self, command: str, timeout: int = 30) -> Dict[str, Any]:
@@ -101,14 +105,7 @@ class PerformanceTestSuite:
             gc.collect()
 
             # Execute command with timeout
-            result = subprocess.run(
-                command,
-                shell=True,
-                capture_output=True,
-                text=True,
-                timeout=timeout,
-                cwd=os.getcwd()
-            )
+            result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=timeout, cwd=os.getcwd())
 
             end_time = time.time()
             end_metrics = self._get_process_metrics()
@@ -128,7 +125,7 @@ class PerformanceTestSuite:
                 "stderr_length": len(result.stderr) if result.stderr else 0,
                 "error": None,
                 "start_memory": start_metrics["memory_rss"],
-                "end_memory": end_metrics["memory_rss"]
+                "end_memory": end_metrics["memory_rss"],
             }
 
         except subprocess.TimeoutExpired:
@@ -143,7 +140,7 @@ class PerformanceTestSuite:
                 "stderr_length": 0,
                 "error": f"Command timed out after {timeout} seconds",
                 "start_memory": start_metrics["memory_rss"],
-                "end_memory": start_metrics["memory_rss"]
+                "end_memory": start_metrics["memory_rss"],
             }
         except Exception as e:
             end_time = time.time()
@@ -158,7 +155,7 @@ class PerformanceTestSuite:
                 "stderr_length": 0,
                 "error": str(e),
                 "start_memory": start_metrics["memory_rss"],
-                "end_memory": start_metrics["memory_rss"]
+                "end_memory": start_metrics["memory_rss"],
             }
 
     def test_command_performance(self) -> Dict[str, Any]:
@@ -168,7 +165,7 @@ class PerformanceTestSuite:
         category_results = {
             "fast": {"times": [], "memory_usage": [], "success_rate": 0},
             "medium": {"times": [], "memory_usage": [], "success_rate": 0},
-            "slow": {"times": [], "memory_usage": [], "success_rate": 0}
+            "slow": {"times": [], "memory_usage": [], "success_rate": 0},
         }
 
         detailed_results = []
@@ -209,19 +206,21 @@ class PerformanceTestSuite:
             category_results[category]["memory_usage"].extend(memory_deltas)
             category_results[category]["success_rate"] = success_rate
 
-            detailed_results.append({
-                "command": command,
-                "category": category,
-                "expected_time": expected_time,
-                "avg_time": avg_time,
-                "min_time": min_time,
-                "max_time": max_time,
-                "std_dev": std_dev,
-                "avg_memory_delta": avg_memory,
-                "success_rate": success_rate,
-                "performance_vs_expected": (expected_time / avg_time * 100) if avg_time > 0 else 0,
-                "runs": runs
-            })
+            detailed_results.append(
+                {
+                    "command": command,
+                    "category": category,
+                    "expected_time": expected_time,
+                    "avg_time": avg_time,
+                    "min_time": min_time,
+                    "max_time": max_time,
+                    "std_dev": std_dev,
+                    "avg_memory_delta": avg_memory,
+                    "success_rate": success_rate,
+                    "performance_vs_expected": (expected_time / avg_time * 100) if avg_time > 0 else 0,
+                    "runs": runs,
+                }
+            )
 
             print(f"    Avg time: {avg_time:.3f}s, Success rate: {success_rate:.1f}%")
 
@@ -236,7 +235,7 @@ class PerformanceTestSuite:
                     "std_deviation": statistics.stdev(data["times"]) if len(data["times"]) > 1 else 0,
                     "avg_memory_delta": statistics.mean(data["memory_usage"]) if data["memory_usage"] else 0,
                     "success_rate": data["success_rate"],
-                    "total_runs": len(data["times"]) + (3 - len(data["times"]))  # Include failed runs
+                    "total_runs": len(data["times"]) + (3 - len(data["times"])),  # Include failed runs
                 }
             else:
                 category_summaries[category] = {
@@ -246,13 +245,15 @@ class PerformanceTestSuite:
                     "std_deviation": 0,
                     "avg_memory_delta": 0,
                     "success_rate": 0,
-                    "total_runs": 0
+                    "total_runs": 0,
                 }
 
         return {
             "category_summaries": category_summaries,
             "detailed_results": detailed_results,
-            "overall_success_rate": sum(len(data["times"]) for data in category_results.values()) / sum(data["total_runs"] for data in category_summaries.values()) * 100
+            "overall_success_rate": sum(len(data["times"]) for data in category_results.values())
+            / sum(data["total_runs"] for data in category_summaries.values())
+            * 100,
         }
 
     def test_resource_utilization(self) -> Dict[str, Any]:
@@ -269,16 +270,19 @@ class PerformanceTestSuite:
         resource_data = []
 
         def monitor_resources():
+            """Monitor Resources."""
             while monitoring_active:
                 try:
                     metrics = self._get_process_metrics()
-                    resource_data.append({
-                        "timestamp": time.time(),
-                        "memory_rss": metrics["memory_rss"],
-                        "memory_percent": metrics["memory_percent"],
-                        "cpu_percent": metrics["cpu_percent"],
-                        "num_threads": metrics["num_threads"]
-                    })
+                    resource_data.append(
+                        {
+                            "timestamp": time.time(),
+                            "memory_rss": metrics["memory_rss"],
+                            "memory_percent": metrics["memory_percent"],
+                            "cpu_percent": metrics["cpu_percent"],
+                            "num_threads": metrics["num_threads"],
+                        }
+                    )
                     time.sleep(0.1)  # Sample every 100ms
                 except:
                     break
@@ -309,21 +313,21 @@ class PerformanceTestSuite:
                     "peak": max(memory_usage) if memory_usage else 0,
                     "final": memory_usage[-1] if memory_usage else 0,
                     "avg": statistics.mean(memory_usage) if memory_usage else 0,
-                    "growth": (memory_usage[-1] - memory_usage[0]) if len(memory_usage) > 1 else 0
+                    "growth": (memory_usage[-1] - memory_usage[0]) if len(memory_usage) > 1 else 0,
                 },
                 "cpu_stats": {
                     "peak": max(cpu_usage) if cpu_usage else 0,
                     "avg": statistics.mean(cpu_usage) if cpu_usage else 0,
                     "samples_above_50": sum(1 for c in cpu_usage if c > 50),
-                    "samples_above_80": sum(1 for c in cpu_usage if c > 80)
+                    "samples_above_80": sum(1 for c in cpu_usage if c > 80),
                 },
                 "thread_stats": {
                     "initial": thread_count[0] if thread_count else 0,
                     "peak": max(thread_count) if thread_count else 0,
-                    "final": thread_count[-1] if thread_count else 0
+                    "final": thread_count[-1] if thread_count else 0,
                 },
                 "sample_count": len(resource_data),
-                "command_result": result
+                "command_result": result,
             }
         else:
             resource_analysis = {
@@ -333,7 +337,7 @@ class PerformanceTestSuite:
                 "thread_stats": {},
                 "sample_count": 0,
                 "command_result": result,
-                "error": "No resource data collected"
+                "error": "No resource data collected",
             }
 
         return resource_analysis
@@ -347,7 +351,7 @@ class PerformanceTestSuite:
             commands = [
                 "python lib/validate_plugin.py",
                 "python lib/simple_test_script.py",
-                "python lib/command_validator.py --help"
+                "python lib/command_validator.py --help",
             ]
 
             start_time = time.time()
@@ -369,17 +373,9 @@ class PerformanceTestSuite:
                         result = future.result(timeout=30)
                         results.append(result)
                     except TimeoutError:
-                        results.append({
-                            "success": False,
-                            "execution_time": 30,
-                            "error": "Future timeout"
-                        })
+                        results.append({"success": False, "execution_time": 30, "error": "Future timeout"})
                     except Exception as e:
-                        results.append({
-                            "success": False,
-                            "execution_time": 0,
-                            "error": str(e)
-                        })
+                        results.append({"success": False, "execution_time": 0, "error": str(e)})
 
             end_time = time.time()
             end_metrics = self._get_process_metrics()
@@ -394,11 +390,13 @@ class PerformanceTestSuite:
                 "successful_commands": len(successful_results),
                 "success_rate": (len(successful_results) / len(results)) * 100,
                 "total_time": total_time,
-                "avg_command_time": statistics.mean([r["execution_time"] for r in successful_results]) if successful_results else 0,
+                "avg_command_time": (
+                    statistics.mean([r["execution_time"] for r in successful_results]) if successful_results else 0
+                ),
                 "commands_per_second": len(results) / total_time,
                 "memory_growth": end_metrics["memory_rss"] - start_metrics["memory_rss"],
                 "peak_memory": max(r["memory_peak"] for r in results if r.get("memory_peak")) if results else 0,
-                "results": results
+                "results": results,
             }
 
         # Test with different numbers of workers
@@ -482,7 +480,7 @@ class PerformanceTestSuite:
             "avg_execution_time": statistics.mean(execution_times) if execution_times else 0,
             "execution_time_std": statistics.stdev(execution_times) if len(execution_times) > 1 else 0,
             "memory_samples_mb": [m / 1024 / 1024 for m in memory_samples],
-            "leak_detected": memory_trend == "leaking" or memory_growth > self.baselines["max_memory_growth"]
+            "leak_detected": memory_trend == "leaking" or memory_growth > self.baselines["max_memory_growth"],
         }
 
     def test_context_management(self) -> Dict[str, Any]:
@@ -495,7 +493,7 @@ class PerformanceTestSuite:
             "python lib/simple_test_script.py",
             "python lib/command_validator.py --help",
             "python lib/plugin_validator.py",
-            "python lib/validate_yaml_frontmatter.py --help"
+            "python lib/validate_yaml_frontmatter.py --help",
         ]
 
         context_samples = []
@@ -516,15 +514,17 @@ class PerformanceTestSuite:
                 # Measure context after command
                 after_metrics = self._get_process_metrics()
 
-                context_samples.append({
-                    "cycle": cycle,
-                    "command": cmd,
-                    "before_memory": before_metrics["memory_rss"],
-                    "after_memory": after_metrics["memory_rss"],
-                    "memory_delta": after_metrics["memory_rss"] - before_metrics["memory_rss"],
-                    "execution_time": result["execution_time"],
-                    "success": result["success"]
-                })
+                context_samples.append(
+                    {
+                        "cycle": cycle,
+                        "command": cmd,
+                        "before_memory": before_metrics["memory_rss"],
+                        "after_memory": after_metrics["memory_rss"],
+                        "memory_delta": after_metrics["memory_rss"] - before_metrics["memory_rss"],
+                        "execution_time": result["execution_time"],
+                        "success": result["success"],
+                    }
+                )
 
         # Analyze context behavior
         memory_deltas = [s["memory_delta"] for s in context_samples]
@@ -537,8 +537,10 @@ class PerformanceTestSuite:
             "avg_memory_delta": statistics.mean(memory_deltas) if memory_deltas else 0,
             "max_memory_delta": max(memory_deltas) if memory_deltas else 0,
             "min_memory_delta": min(memory_deltas) if memory_deltas else 0,
-            "context_stability": len([d for d in memory_deltas if abs(d) < 10 * 1024 * 1024]) / len(memory_deltas) * 100,  # Within 10MB
-            "samples": context_samples
+            "context_stability": len([d for d in memory_deltas if abs(d) < 10 * 1024 * 1024])
+            / len(memory_deltas)
+            * 100,  # Within 10MB
+            "samples": context_samples,
         }
 
     def generate_performance_report(self) -> Dict[str, Any]:
@@ -652,7 +654,7 @@ class PerformanceTestSuite:
             "score_factors": score_factors,
             "recommendations": recommendations,
             "test_duration": time.time() - datetime.fromisoformat(self.results["test_session"]["start_time"]).timestamp(),
-            "tests_completed": len([k for k, v in self.results.items() if k != "test_session" and v])
+            "tests_completed": len([k for k, v in self.results.items() if k != "test_session" and v]),
         }
 
         return self.results
@@ -665,7 +667,7 @@ class PerformanceTestSuite:
         # Update end time
         self.results["test_session"]["end_time"] = datetime.now().isoformat()
 
-        with open(results_file, 'w') as f:
+        with open(results_file, "w") as f:
             json.dump(self.results, f, indent=2, default=str)
 
         return str(results_file)
@@ -719,6 +721,7 @@ class PerformanceTestSuite:
             self.results["error"] = str(e)
             return self.results
 
+
 def main():
     """Main execution function"""
     test_suite = PerformanceTestSuite()
@@ -744,6 +747,7 @@ def main():
                 print(f"  • {rec}")
 
     return results
+
 
 if __name__ == "__main__":
     main()

@@ -35,6 +35,7 @@ try:
     from sklearn.model_selection import cross_val_score
     from sklearn.preprocessing import StandardScaler
     from sklearn.metrics import mean_squared_error
+
     SKLEARN_AVAILABLE = True
 except ImportError:
     SKLEARN_AVAILABLE = False
@@ -43,21 +44,26 @@ except ImportError:
 try:
     from scipy.optimize import minimize, differential_evolution
     from scipy.stats import norm
+
     SCIPY_AVAILABLE = True
 except ImportError:
     SCIPY_AVAILABLE = False
     logging.warning("scipy not available. Some optimization algorithms will be limited.")
 
+
 class OptimizationObjective(Enum):
     """Optimization objectives."""
+
     MINIMIZE_TOKENS = "minimize_tokens"
     MAXIMIZE_EFFICIENCY = "maximize_efficiency"
     BALANCE_COST_QUALITY = "balance_cost_quality"
     MAXIMIZE_THROUGHPUT = "maximize_throughput"
     MINIMIZE_LATENCY = "minimize_latency"
 
+
 class AlgorithmType(Enum):
     """Optimization algorithm types."""
+
     GENETIC = "genetic"
     REINFORCEMENT_LEARNING = "reinforcement_learning"
     BAYESIAN = "bayesian"
@@ -66,9 +72,11 @@ class AlgorithmType(Enum):
     PARTICLE_SWARM = "particle_swarm"
     SIMULATED_ANNEALING = "simulated_annealing"
 
+
 @dataclass
 class OptimizationParameters:
     """Parameters for optimization algorithms."""
+
     objective: OptimizationObjective
     constraints: Dict[str, Tuple[float, float]]  # parameter bounds
     weights: Dict[str, float]  # objective weights
@@ -80,9 +88,11 @@ class OptimizationParameters:
     learning_rate: float = 0.01
     exploration_rate: float = 0.1
 
+
 @dataclass
 class OptimizationResult:
     """Result of optimization algorithm."""
+
     algorithm: AlgorithmType
     parameters: Dict[str, float]
     objective_value: float
@@ -94,9 +104,11 @@ class OptimizationResult:
     confidence: float
     metadata: Dict[str, Any] = None
 
+
 @dataclass
 class TokenEfficiencyModel:
     """Model for token efficiency prediction."""
+
     model_type: str
     parameters: Dict[str, Any]
     performance_metrics: Dict[str, float]
@@ -104,16 +116,18 @@ class TokenEfficiencyModel:
     last_updated: datetime
     accuracy: float = 0.0
 
+
 class GeneticOptimizer:
     """Genetic algorithm for token optimization."""
 
     def __init__(self, parameters: OptimizationParameters):
+        """  Init  ."""
         self.params = parameters
         self.population = []
         self.fitness_scores = []
         self.generation = 0
         self.best_solution = None
-        self.best_fitness = float('-inf')
+        self.best_fitness = float("-inf")
         self.history = deque(maxlen=1000)
 
     def initialize_population(self) -> None:
@@ -125,15 +139,14 @@ class GeneticOptimizer:
                 individual[param] = random.uniform(min_val, max_val)
             self.population.append(individual)
 
-    def evaluate_fitness(self, individual: Dict[str, float],
-                        objective_function: Callable) -> float:
+    def evaluate_fitness(self, individual: Dict[str, float], objective_function: Callable) -> float:
         """Evaluate fitness of an individual."""
         try:
             result = objective_function(individual)
             return result
         except Exception as e:
             logging.warning(f"Fitness evaluation failed: {e}")
-            return float('-inf')
+            return float("-inf")
 
     def selection(self) -> List[Dict[str, float]]:
         """Tournament selection."""
@@ -142,10 +155,7 @@ class GeneticOptimizer:
 
         for _ in range(self.params.population_size):
             tournament = random.sample(self.population, tournament_size)
-            tournament_fitness = [
-                self.fitness_scores[self.population.index(ind)]
-                for ind in tournament
-            ]
+            tournament_fitness = [self.fitness_scores[self.population.index(ind)] for ind in tournament]
             winner = tournament[np.argmax(tournament_fitness)]
             selected.append(winner.copy())
 
@@ -185,10 +195,7 @@ class GeneticOptimizer:
 
         for generation in range(self.params.max_iterations):
             # Evaluate fitness
-            self.fitness_scores = [
-                self.evaluate_fitness(ind, objective_function)
-                for ind in self.population
-            ]
+            self.fitness_scores = [self.evaluate_fitness(ind, objective_function) for ind in self.population]
 
             # Track best solution
             max_fitness = max(self.fitness_scores)
@@ -213,16 +220,18 @@ class GeneticOptimizer:
                 else:
                     new_population.append(self.mutate(selected[i]))
 
-            self.population = new_population[:self.params.population_size]
+            self.population = new_population[: self.params.population_size]
             self.generation = generation
 
             # Store history
-            self.history.append({
-                'generation': generation,
-                'best_fitness': self.best_fitness,
-                'avg_fitness': avg_fitness,
-                'diversity': np.std(self.fitness_scores)
-            })
+            self.history.append(
+                {
+                    "generation": generation,
+                    "best_fitness": self.best_fitness,
+                    "avg_fitness": avg_fitness,
+                    "diversity": np.std(self.fitness_scores),
+                }
+            )
 
         execution_time = (datetime.now() - start_time).total_seconds()
 
@@ -230,19 +239,21 @@ class GeneticOptimizer:
             algorithm=AlgorithmType.GENETIC,
             parameters=self.best_solution or {},
             objective_value=self.best_fitness,
-            tokens_saved=int(self.best_fitness * 1000) if self.best_fitness != float('-inf') else 0,
-            efficiency_improvement=min(1.0, self.best_fitness) if self.best_fitness != float('-inf') else 0,
+            tokens_saved=int(self.best_fitness * 1000) if self.best_fitness != float("-inf") else 0,
+            efficiency_improvement=min(1.0, self.best_fitness) if self.best_fitness != float("-inf") else 0,
             convergence_iterations=self.generation,
             execution_time=execution_time,
-            success=self.best_fitness != float('-inf'),
+            success=self.best_fitness != float("-inf"),
             confidence=min(1.0, self.generation / self.params.max_iterations),
-            metadata={'final_generation': self.generation, 'population_size': len(self.population)}
+            metadata={"final_generation": self.generation, "population_size": len(self.population)},
         )
+
 
 class ReinforcementLearningOptimizer:
     """Q-learning based optimization."""
 
     def __init__(self, parameters: OptimizationParameters):
+        """  Init  ."""
         self.params = parameters
         self.q_table = defaultdict(lambda: defaultdict(float))
         self.learning_rate = parameters.learning_rate
@@ -329,7 +340,7 @@ class ReinforcementLearningOptimizer:
             current_params[param] = random.uniform(min_val, max_val)
 
         best_params = current_params.copy()
-        best_reward = float('-inf')
+        best_reward = float("-inf")
 
         for episode in range(max_episodes):
             state = self.get_state(current_params)
@@ -370,19 +381,21 @@ class ReinforcementLearningOptimizer:
             algorithm=AlgorithmType.REINFORCEMENT_LEARNING,
             parameters=best_params,
             objective_value=best_reward,
-            tokens_saved=int(best_reward * 1000) if best_reward != float('-inf') else 0,
-            efficiency_improvement=min(1.0, best_reward) if best_reward != float('-inf') else 0,
+            tokens_saved=int(best_reward * 1000) if best_reward != float("-inf") else 0,
+            efficiency_improvement=min(1.0, best_reward) if best_reward != float("-inf") else 0,
             convergence_iterations=episode,
             execution_time=execution_time,
-            success=best_reward != float('-inf'),
+            success=best_reward != float("-inf"),
             confidence=min(1.0, episode / max_episodes),
-            metadata={'episodes': episode, 'final_exploration_rate': self.exploration_rate}
+            metadata={"episodes": episode, "final_exploration_rate": self.exploration_rate},
         )
+
 
 class BayesianOptimizer:
     """Bayesian optimization for token parameters."""
 
     def __init__(self, parameters: OptimizationParameters):
+        """  Init  ."""
         self.params = parameters
         self.X_history = []
         self.y_history = []
@@ -405,9 +418,9 @@ class BayesianOptimizer:
 
     def expected_improvement(self, X: np.ndarray, model: Any, y_best: float) -> np.ndarray:
         """Expected improvement acquisition function."""
-        if SKLEARN_AVAILABLE and hasattr(model, 'predict'):
+        if SKLEARN_AVAILABLE and hasattr(model, "predict"):
             mean, std = model.predict(X, return_std=True)
-            with np.errstate(divide='warn'):
+            with np.errstate(divide="warn"):
                 imp = mean - y_best
                 Z = imp / std
                 ei = imp * norm.cdf(Z) + std * norm.pdf(Z)
@@ -425,7 +438,7 @@ class BayesianOptimizer:
         # Initial random sampling
         n_initial = min(10, self.params.max_iterations // 4)
         best_params = None
-        best_value = float('-inf')
+        best_value = float("-inf")
 
         for _ in range(n_initial):
             params = {}
@@ -455,6 +468,7 @@ class BayesianOptimizer:
 
             # Find next point to evaluate
             def acquisition_function(x):
+                """Acquisition Function."""
                 return -self.expected_improvement(x.reshape(1, -1), model, best_value)[0]
 
             # Optimize acquisition function
@@ -492,19 +506,21 @@ class BayesianOptimizer:
             algorithm=AlgorithmType.BAYESIAN,
             parameters=best_params or {},
             objective_value=best_value,
-            tokens_saved=int(best_value * 1000) if best_value != float('-inf') else 0,
-            efficiency_improvement=min(1.0, best_value) if best_value != float('-inf') else 0,
+            tokens_saved=int(best_value * 1000) if best_value != float("-inf") else 0,
+            efficiency_improvement=min(1.0, best_value) if best_value != float("-inf") else 0,
             convergence_iterations=len(self.X_history),
             execution_time=execution_time,
-            success=best_value != float('-inf'),
+            success=best_value != float("-inf"),
             confidence=min(1.0, len(self.X_history) / self.params.max_iterations),
-            metadata={'samples_evaluated': len(self.X_history)}
+            metadata={"samples_evaluated": len(self.X_history)},
         )
+
 
 class SimpleSurrogateModel:
     """Simple surrogate model for fallback when scikit-learn not available."""
 
     def __init__(self, X: np.ndarray, y: np.ndarray):
+        """  Init  ."""
         self.X = X
         self.y = y
         self.coefficients = None
@@ -527,15 +543,17 @@ class SimpleSurrogateModel:
         X_with_bias = np.column_stack([X, np.ones(len(X))])
         return X_with_bias @ self.coefficients
 
+
 class EnsembleOptimizer:
     """Ensemble of multiple optimization algorithms."""
 
     def __init__(self, parameters: OptimizationParameters):
+        """  Init  ."""
         self.params = parameters
         self.algorithms = [
             GeneticOptimizer(parameters),
             BayesianOptimizer(parameters),
-            ReinforcementLearningOptimizer(parameters)
+            ReinforcementLearningOptimizer(parameters),
         ]
         self.weights = [0.4, 0.35, 0.25]  # Algorithm weights
 
@@ -556,14 +574,14 @@ class EnsembleOptimizer:
             return OptimizationResult(
                 algorithm=AlgorithmType.ENSEMBLE,
                 parameters={},
-                objective_value=float('-inf'),
+                objective_value=float("-inf"),
                 tokens_saved=0,
                 efficiency_improvement=0,
                 convergence_iterations=0,
                 execution_time=0,
                 success=False,
                 confidence=0.0,
-                metadata={'error': 'All algorithms failed'}
+                metadata={"error": "All algorithms failed"},
             )
 
         # Combine results using weighted average
@@ -597,10 +615,11 @@ class EnsembleOptimizer:
             success=any(r.success for r in results),
             confidence=min(1.0, total_confidence),
             metadata={
-                'individual_results': [asdict(r) for r in results],
-                'algorithms_used': [type(alg).__name__ for alg in self.algorithms]
-            }
+                "individual_results": [asdict(r) for r in results],
+                "algorithms_used": [type(alg).__name__ for alg in self.algorithms],
+            },
         )
+
 
 class AdvancedTokenOptimizer:
     """Main advanced token optimization system."""
@@ -622,35 +641,36 @@ class AdvancedTokenOptimizer:
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
 
-    def optimize_task_parameters(self,
-                                task_type: str,
-                                current_performance: Dict[str, float],
-                                constraints: Dict[str, Tuple[float, float]],
-                                objective: OptimizationObjective = OptimizationObjective.BALANCE_COST_QUALITY) -> OptimizationResult:
+    def optimize_task_parameters(
+        self,
+        task_type: str,
+        current_performance: Dict[str, float],
+        constraints: Dict[str, Tuple[float, float]],
+        objective: OptimizationObjective = OptimizationObjective.BALANCE_COST_QUALITY,
+    )-> OptimizationResult:
+        """Optimize Task Parameters."""
         """Optimize parameters for a specific task type."""
 
         # Define optimization parameters
         opt_params = OptimizationParameters(
-            objective=objective,
-            constraints=constraints,
-            weights=current_performance,
-            max_iterations=500
+            objective=objective, constraints=constraints, weights=current_performance, max_iterations=500
         )
 
         # Define objective function
         def objective_function(params: Dict[str, float]) -> float:
+            """Objective Function."""
             # Simulate task performance with given parameters
-            base_efficiency = current_performance.get('efficiency', 0.5)
+            base_efficiency = current_performance.get("efficiency", 0.5)
             token_cost = sum(params.values())  # Simplified token cost
 
             # Calculate efficiency based on parameters
             efficiency_score = base_efficiency
             for param, value in params.items():
-                if 'compression' in param:
+                if "compression" in param:
                     efficiency_score += value * 0.1
-                elif 'cache' in param:
+                elif "cache" in param:
                     efficiency_score += value * 0.15
-                elif 'progressive' in param:
+                elif "progressive" in param:
                     efficiency_score += value * 0.12
 
             # Balance efficiency and token cost
@@ -672,7 +692,7 @@ class AdvancedTokenOptimizer:
             optimizer = EnsembleOptimizer(opt_params)
 
         # Run optimization
-        if hasattr(optimizer, 'optimize'):
+        if hasattr(optimizer, "optimize"):
             result = optimizer.optimize(objective_function)
         else:
             result = optimizer.learn(objective_function)
@@ -692,7 +712,7 @@ class AdvancedTokenOptimizer:
             return
 
         # Get historical data for this task type
-        task_results = [r for r in self.optimization_history if r.metadata and r.metadata.get('task_type') == task_type]
+        task_results = [r for r in self.optimization_history if r.metadata and r.metadata.get("task_type") == task_type]
 
         if len(task_results) < 5:
             return  # Need more data
@@ -716,17 +736,17 @@ class AdvancedTokenOptimizer:
             model.fit(X, y)
 
             # Evaluate model
-            scores = cross_val_score(model, X, y, cv=3, scoring='neg_mean_squared_error')
+            scores = cross_val_score(model, X, y, cv=3, scoring="neg_mean_squared_error")
             accuracy = -scores.mean()
 
             # Store model
             efficiency_model = TokenEfficiencyModel(
                 model_type="GradientBoosting",
-                parameters={'feature_names': list(result.parameters.keys())},
-                performance_metrics={'mse': accuracy, 'cv_scores': scores.tolist()},
+                parameters={"feature_names": list(result.parameters.keys())},
+                performance_metrics={"mse": accuracy, "cv_scores": scores.tolist()},
                 training_data_size=len(X),
                 last_updated=datetime.now(),
-                accuracy=1.0 / (1.0 + accuracy)  # Convert to accuracy score
+                accuracy=1.0 / (1.0 + accuracy),  # Convert to accuracy score
             )
 
             self.models[task_type] = efficiency_model
@@ -743,7 +763,7 @@ class AdvancedTokenOptimizer:
         model = self.models[task_type]
 
         # Extract features from context
-        feature_names = model.parameters['feature_names']
+        feature_names = model.parameters["feature_names"]
         features = [context.get(name, 0.5) for name in feature_names]
 
         try:
@@ -758,11 +778,11 @@ class AdvancedTokenOptimizer:
             recommendations = {}
             for i, name in enumerate(feature_names):
                 # Simple heuristic-based recommendations
-                if 'compression' in name:
+                if "compression" in name:
                     recommendations[name] = min(1.0, features[i] + 0.1)
-                elif 'cache' in name:
+                elif "cache" in name:
                     recommendations[name] = min(1.0, features[i] + 0.15)
-                elif 'progressive' in name:
+                elif "progressive" in name:
                     recommendations[name] = min(1.0, features[i] + 0.12)
                 else:
                     recommendations[name] = features[i]
@@ -773,7 +793,7 @@ class AdvancedTokenOptimizer:
                 "model_accuracy": model.accuracy,
                 "recommended_parameters": recommendations,
                 "confidence": min(1.0, model.accuracy * 0.9),
-                "last_trained": model.last_updated.isoformat()
+                "last_trained": model.last_updated.isoformat(),
             }
 
         except Exception as e:
@@ -795,7 +815,7 @@ class AdvancedTokenOptimizer:
             "generated_at": datetime.now().isoformat(),
             "total_optimizations": len(self.optimization_history),
             "algorithm_performance": {},
-            "task_performance": {}
+            "task_performance": {},
         }
 
         # Algorithm performance
@@ -806,7 +826,7 @@ class AdvancedTokenOptimizer:
                     "count": len(algorithm_results),
                     "avg_efficiency": statistics.mean([r.efficiency_improvement for r in algorithm_results]),
                     "avg_tokens_saved": statistics.mean([r.tokens_saved for r in algorithm_results]),
-                    "success_rate": sum(1 for r in algorithm_results if r.success) / len(algorithm_results)
+                    "success_rate": sum(1 for r in algorithm_results if r.success) / len(algorithm_results),
                 }
 
         # Task performance
@@ -818,9 +838,13 @@ class AdvancedTokenOptimizer:
             if efficiency_key in self.performance_metrics:
                 summary["task_performance"][task_type] = {
                     "avg_efficiency": statistics.mean(self.performance_metrics[efficiency_key]),
-                    "avg_tokens_saved": statistics.mean(self.performance_metrics[tokens_key]) if tokens_key in self.performance_metrics else 0,
-                    "avg_execution_time": statistics.mean(self.performance_metrics[time_key]) if time_key in self.performance_metrics else 0,
-                    "optimization_count": len(self.performance_metrics[efficiency_key])
+                    "avg_tokens_saved": (
+                        statistics.mean(self.performance_metrics[tokens_key]) if tokens_key in self.performance_metrics else 0
+                    ),
+                    "avg_execution_time": (
+                        statistics.mean(self.performance_metrics[time_key]) if time_key in self.performance_metrics else 0
+                    ),
+                    "optimization_count": len(self.performance_metrics[efficiency_key]),
                 }
 
         return summary
@@ -828,7 +852,7 @@ class AdvancedTokenOptimizer:
     def save_models(self) -> None:
         """Save trained models to disk."""
         try:
-            with open(self.models_file, 'wb') as f:
+            with open(self.models_file, "wb") as f:
                 pickle.dump(self.models, f)
         except Exception as e:
             self.logger.warning(f"Failed to save models: {e}")
@@ -837,16 +861,13 @@ class AdvancedTokenOptimizer:
         """Load trained models from disk."""
         if self.models_file.exists():
             try:
-                with open(self.models_file, 'rb') as f:
+                with open(self.models_file, "rb") as f:
                     self.models = pickle.load(f)
             except Exception as e:
                 self.logger.warning(f"Failed to load models: {e}")
                 self.models = {}
 
-    def auto_optimize(self,
-                     task_type: str,
-                     context: Dict[str, Any],
-                     max_duration_seconds: int = 300) -> OptimizationResult:
+    def auto_optimize(self, task_type: str, context: Dict[str, Any], max_duration_seconds: int = 300) -> OptimizationResult:
         """Automatic optimization with time constraints."""
         start_time = datetime.now()
 
@@ -865,29 +886,22 @@ class AdvancedTokenOptimizer:
                 execution_time=0.1,
                 success=True,
                 confidence=prediction["confidence"],
-                metadata={"method": "prediction", "model_accuracy": prediction["model_accuracy"]}
+                metadata={"method": "prediction", "model_accuracy": prediction["model_accuracy"]},
             )
 
         # Fall back to optimization if time permits
         remaining_time = max_duration_seconds - (datetime.now() - start_time).total_seconds()
 
         if remaining_time > 30:  # Need at least 30 seconds for optimization
-            constraints = {
-                "compression_ratio": (0.1, 0.9),
-                "cache_size": (0.1, 1.0),
-                "progressive_loading": (0.0, 1.0)
-            }
+            constraints = {"compression_ratio": (0.1, 0.9), "cache_size": (0.1, 1.0), "progressive_loading": (0.0, 1.0)}
 
             current_performance = {
                 "efficiency": context.get("current_efficiency", 0.5),
-                "cost": context.get("current_cost", 1.0)
+                "cost": context.get("current_cost", 1.0),
             }
 
             return self.optimize_task_parameters(
-                task_type,
-                current_performance,
-                constraints,
-                OptimizationObjective.BALANCE_COST_QUALITY
+                task_type, current_performance, constraints, OptimizationObjective.BALANCE_COST_QUALITY
             )
         else:
             # Return best historical result
@@ -908,8 +922,9 @@ class AdvancedTokenOptimizer:
                 execution_time=(datetime.now() - start_time).total_seconds(),
                 success=True,
                 confidence=0.5,
-                metadata={"method": "fallback"}
+                metadata={"method": "fallback"},
             )
+
 
 def main():
     """CLI interface for advanced token optimizer."""
@@ -940,22 +955,12 @@ def main():
             print("Error: Invalid JSON in context")
             return
 
-        constraints = {
-            "compression_ratio": (0.1, 0.9),
-            "cache_size": (0.1, 1.0),
-            "progressive_loading": (0.0, 1.0)
-        }
+        constraints = {"compression_ratio": (0.1, 0.9), "cache_size": (0.1, 1.0), "progressive_loading": (0.0, 1.0)}
 
-        current_performance = {
-            "efficiency": context.get("current_efficiency", 0.5),
-            "cost": context.get("current_cost", 1.0)
-        }
+        current_performance = {"efficiency": context.get("current_efficiency", 0.5), "cost": context.get("current_cost", 1.0)}
 
         result = optimizer.optimize_task_parameters(
-            args.optimize_task,
-            current_performance,
-            constraints,
-            OptimizationObjective.BALANCE_COST_QUALITY
+            args.optimize_task, current_performance, constraints, OptimizationObjective.BALANCE_COST_QUALITY
         )
 
         print(json.dumps(asdict(result), indent=2, default=str))
@@ -985,11 +990,7 @@ def main():
             print("Error: Invalid JSON in context")
             return
 
-        result = optimizer.auto_optimize(
-            args.auto_optimize,
-            context,
-            args.max_duration
-        )
+        result = optimizer.auto_optimize(args.auto_optimize, context, args.max_duration)
 
         print(json.dumps(asdict(result), indent=2, default=str))
 
@@ -999,6 +1000,7 @@ def main():
 
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()

@@ -26,41 +26,51 @@ import statistics
 import math
 from collections import defaultdict, deque
 
+
 class BudgetLevel(Enum):
     """Budget hierarchy levels."""
+
     GLOBAL = "global"
     PROJECT = "project"
     TASK = "task"
     AGENT = "agent"
     SESSION = "session"
 
+
 class BudgetScope(Enum):
     """Budget scope types."""
+
     DAILY = "daily"
     WEEKLY = "weekly"
     MONTHLY = "monthly"
     TASK_BASED = "task_based"
     PROJECT_BASED = "project_based"
 
+
 class BudgetStatus(Enum):
     """Budget status indicators."""
+
     HEALTHY = "healthy"  # < 60% used
     WARNING = "warning"  # 60-80% used
     CRITICAL = "critical"  # 80-95% used
     EXCEEDED = "exceeded"  # > 95% used
     DEPLETED = "depleted"  # 100% used
 
+
 class OptimizationStrategy(Enum):
     """Token optimization strategies."""
+
     CONSERVATIVE = "conservative"  # Minimize usage at all costs
     BALANCED = "balanced"  # Balance efficiency and functionality
     PERFORMANCE = "performance"  # Optimize for task performance
     ADAPTIVE = "adaptive"  # Dynamically adjust based on context
     PREDICTIVE = "predictive"  # Use ML predictions for optimization
 
+
 @dataclass
 class BudgetConstraint:
     """Individual budget constraint."""
+
     id: str
     level: BudgetLevel
     scope: BudgetScope
@@ -89,9 +99,11 @@ class BudgetConstraint:
         else:
             return self.period_start + timedelta(days=1)
 
+
 @dataclass
 class BudgetAllocation:
     """Budget allocation details."""
+
     constraint_id: str
     allocated: int
     used: int
@@ -124,9 +136,11 @@ class BudgetAllocation:
         else:
             return BudgetStatus.HEALTHY
 
+
 @dataclass
 class OptimizationRecommendation:
     """Token optimization recommendation."""
+
     strategy: OptimizationStrategy
     description: str
     potential_savings: int  # Estimated tokens saved
@@ -135,15 +149,18 @@ class OptimizationRecommendation:
     priority: int  # 1-10, higher is more urgent
     impact_areas: List[str]  # Areas this optimization affects
 
+
 @dataclass
 class BudgetAlert:
     """Budget alert configuration."""
+
     level: BudgetLevel
     threshold: float  # Percentage threshold (0-1)
     message: str
     enabled: bool = True
     cooldown_minutes: int = 60  # Minimum time between alerts
     last_triggered: Optional[datetime] = None
+
 
 class TokenBudgetManager:
     """Comprehensive token budget management system."""
@@ -182,8 +199,8 @@ class TokenBudgetManager:
 
         # Configuration
         self.default_daily_budget = 100000  # 100K tokens per day
-        self.default_task_budget = 10000    # 10K tokens per task
-        self.optimization_threshold = 0.8   # Trigger optimization at 80% usage
+        self.default_task_budget = 10000  # 10K tokens per task
+        self.optimization_threshold = 0.8  # Trigger optimization at 80% usage
 
         # Load existing constraints
         self._load_constraints()
@@ -196,7 +213,8 @@ class TokenBudgetManager:
         cursor = self.conn.cursor()
 
         # Budget constraints table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS budget_constraints (
                 id TEXT PRIMARY KEY,
                 level TEXT NOT NULL,
@@ -209,10 +227,12 @@ class TokenBudgetManager:
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 updated_at TEXT DEFAULT CURRENT_TIMESTAMP
             )
-        """)
+        """
+        )
 
         # Budget allocations table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS budget_allocations (
                 constraint_id TEXT,
                 allocated INTEGER NOT NULL,
@@ -223,10 +243,12 @@ class TokenBudgetManager:
                 last_updated TEXT,
                 PRIMARY KEY (constraint_id)
             )
-        """)
+        """
+        )
 
         # Usage history table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS usage_history (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 constraint_id TEXT,
@@ -237,10 +259,12 @@ class TokenBudgetManager:
                 efficiency_score REAL,
                 context TEXT
             )
-        """)
+        """
+        )
 
         # Optimization recommendations table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS optimization_recommendations (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 constraint_id TEXT,
@@ -254,10 +278,12 @@ class TokenBudgetManager:
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 applied BOOLEAN DEFAULT FALSE
             )
-        """)
+        """
+        )
 
         # Budget alerts table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS budget_alerts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 level TEXT NOT NULL,
@@ -267,43 +293,30 @@ class TokenBudgetManager:
                 cooldown_minutes INTEGER DEFAULT 60,
                 last_triggered TEXT
             )
-        """)
+        """
+        )
 
         self.conn.commit()
 
     def _setup_default_alerts(self) -> None:
         """Setup default budget alerts."""
         default_alerts = [
-            BudgetAlert(
-                level=BudgetLevel.GLOBAL,
-                threshold=0.8,
-                message="Global budget usage exceeded 80%"
-            ),
-            BudgetAlert(
-                level=BudgetLevel.PROJECT,
-                threshold=0.9,
-                message="Project budget usage exceeded 90%"
-            ),
-            BudgetAlert(
-                level=BudgetLevel.TASK,
-                threshold=0.95,
-                message="Task budget nearly depleted"
-            ),
-            BudgetAlert(
-                level=BudgetLevel.AGENT,
-                threshold=0.85,
-                message="Agent budget usage high"
-            )
+            BudgetAlert(level=BudgetLevel.GLOBAL, threshold=0.8, message="Global budget usage exceeded 80%"),
+            BudgetAlert(level=BudgetLevel.PROJECT, threshold=0.9, message="Project budget usage exceeded 90%"),
+            BudgetAlert(level=BudgetLevel.TASK, threshold=0.95, message="Task budget nearly depleted"),
+            BudgetAlert(level=BudgetLevel.AGENT, threshold=0.85, message="Agent budget usage high"),
         ]
 
         self.alerts.extend(default_alerts)
 
-    def create_budget_constraint(self,
-                                level: BudgetLevel,
-                                scope: BudgetScope,
-                                limit: int,
-                                period_start: Optional[datetime] = None,
-                                tags: Dict[str, str] = None) -> str:
+    def create_budget_constraint(
+        self,
+        level: BudgetLevel,
+        scope: BudgetScope,
+        limit: int,
+        period_start: Optional[datetime] = None,
+        tags: Dict[str, str] = None,
+    ) -> str:
         """Create a new budget constraint."""
         constraint_id = f"{level.value}_{scope.value}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
@@ -313,26 +326,29 @@ class TokenBudgetManager:
             scope=scope,
             limit=limit,
             period_start=period_start or datetime.now(),
-            tags=tags or {}
+            tags=tags or {},
         )
 
         self.constraints[constraint_id] = constraint
 
         # Save to database
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT OR REPLACE INTO budget_constraints
             (id, level, scope, token_limit, period_start, period_end, tags)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            constraint_id,
-            level.value,
-            scope.value,
-            limit,
-            constraint.period_start.isoformat(),
-            constraint.period_end.isoformat(),
-            json.dumps(tags or {})
-        ))
+        """,
+            (
+                constraint_id,
+                level.value,
+                scope.value,
+                limit,
+                constraint.period_start.isoformat(),
+                constraint.period_end.isoformat(),
+                json.dumps(tags or {}),
+            ),
+        )
 
         self.conn.commit()
 
@@ -351,34 +367,39 @@ class TokenBudgetManager:
             allocated=constraint.limit,
             used=0,
             available=constraint.limit,
-            status=BudgetStatus.HEALTHY
+            status=BudgetStatus.HEALTHY,
         )
 
         self.allocations[constraint_id] = allocation
 
         # Save to database
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT OR REPLACE INTO budget_allocations
             (constraint_id, allocated, used, available, status, last_updated)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            constraint_id,
-            allocation.allocated,
-            allocation.used,
-            allocation.available,
-            allocation.status.value,
-            allocation.last_updated.isoformat()
-        ))
+        """,
+            (
+                constraint_id,
+                allocation.allocated,
+                allocation.used,
+                allocation.available,
+                allocation.status.value,
+                allocation.last_updated.isoformat(),
+            ),
+        )
 
         self.conn.commit()
 
-    def allocate_tokens(self,
-                       constraint_id: str,
-                       requested: int,
-                       task_type: str = "unknown",
-                       agent_name: str = "unknown",
-                       context: Dict[str, Any] = None) -> Tuple[bool, int]:
+    def allocate_tokens(
+        self,
+        constraint_id: str,
+        requested: int,
+        task_type: str = "unknown",
+        agent_name: str = "unknown",
+        context: Dict[str, Any] = None,
+    ) -> Tuple[bool, int]:
         """Allocate tokens for a task."""
         if constraint_id not in self.allocations:
             return False, 0
@@ -435,52 +456,50 @@ class TokenBudgetManager:
 
         return requested
 
-    def _record_usage(self,
-                     constraint_id: str,
-                     tokens_used: int,
-                     task_type: str,
-                     agent_name: str,
-                     context: Dict[str, Any] = None) -> None:
+    def _record_usage(
+        self, constraint_id: str, tokens_used: int, task_type: str, agent_name: str, context: Dict[str, Any] = None
+    ) -> None:
         """Record token usage in history."""
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO usage_history
             (constraint_id, timestamp, tokens_used, task_type, agent_name, context)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            constraint_id,
-            datetime.now().isoformat(),
-            tokens_used,
-            task_type,
-            agent_name,
-            json.dumps(context or {})
-        ))
+        """,
+            (constraint_id, datetime.now().isoformat(), tokens_used, task_type, agent_name, json.dumps(context or {})),
+        )
 
         self.conn.commit()
 
         # Add to in-memory history
-        self.usage_history.append({
-            'constraint_id': constraint_id,
-            'tokens_used': tokens_used,
-            'timestamp': datetime.now(),
-            'task_type': task_type,
-            'agent_name': agent_name
-        })
+        self.usage_history.append(
+            {
+                "constraint_id": constraint_id,
+                "tokens_used": tokens_used,
+                "timestamp": datetime.now(),
+                "task_type": task_type,
+                "agent_name": agent_name,
+            }
+        )
 
     def _update_allocation_in_db(self, allocation: BudgetAllocation) -> None:
         """Update allocation in database."""
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             UPDATE budget_allocations
             SET used = ?, available = ?, status = ?, last_updated = ?
             WHERE constraint_id = ?
-        """, (
-            allocation.used,
-            allocation.available,
-            allocation.status.value,
-            allocation.last_updated.isoformat(),
-            allocation.constraint_id
-        ))
+        """,
+            (
+                allocation.used,
+                allocation.available,
+                allocation.status.value,
+                allocation.last_updated.isoformat(),
+                allocation.constraint_id,
+            ),
+        )
 
         self.conn.commit()
 
@@ -498,8 +517,7 @@ class TokenBudgetManager:
 
             if usage_ratio >= alert.threshold:
                 # Check cooldown
-                if (alert.last_triggered and
-                    datetime.now() - alert.last_triggered < timedelta(minutes=alert.cooldown_minutes)):
+                if alert.last_triggered and datetime.now() - alert.last_triggered < timedelta(minutes=alert.cooldown_minutes):
                     continue
 
                 # Trigger alert
@@ -528,42 +546,48 @@ class TokenBudgetManager:
         recent_usage = self._get_recent_usage(constraint_id, limit=50)
 
         if recent_usage:
-            avg_task_usage = statistics.mean([u['tokens_used'] for u in recent_usage])
+            avg_task_usage = statistics.mean([u["tokens_used"] for u in recent_usage])
 
             # Recommendation 1: Progressive loading
             if avg_task_usage > 5000:  # Large tasks
-                recommendations.append(OptimizationRecommendation(
-                    strategy=OptimizationStrategy.ADAPTIVE,
-                    description="Enable progressive content loading for large tasks",
-                    potential_savings=int(avg_task_usage * 0.3),  # 30% savings
-                    confidence=0.85,
-                    implementation_cost="low",
-                    priority=8,
-                    impact_areas=["task_execution", "content_loading"]
-                ))
+                recommendations.append(
+                    OptimizationRecommendation(
+                        strategy=OptimizationStrategy.ADAPTIVE,
+                        description="Enable progressive content loading for large tasks",
+                        potential_savings=int(avg_task_usage * 0.3),  # 30% savings
+                        confidence=0.85,
+                        implementation_cost="low",
+                        priority=8,
+                        impact_areas=["task_execution", "content_loading"],
+                    )
+                )
 
             # Recommendation 2: Agent communication optimization
             if len(recent_usage) > 10:
-                recommendations.append(OptimizationRecommendation(
-                    strategy=OptimizationStrategy.BALANCED,
-                    description="Optimize agent-to-agent communication protocols",
-                    potential_savings=int(avg_task_usage * 0.15),  # 15% savings
-                    confidence=0.75,
-                    implementation_cost="medium",
-                    priority=6,
-                    impact_areas=["agent_communication", "inter_agent_coordination"]
-                ))
+                recommendations.append(
+                    OptimizationRecommendation(
+                        strategy=OptimizationStrategy.BALANCED,
+                        description="Optimize agent-to-agent communication protocols",
+                        potential_savings=int(avg_task_usage * 0.15),  # 15% savings
+                        confidence=0.75,
+                        implementation_cost="medium",
+                        priority=6,
+                        impact_areas=["agent_communication", "inter_agent_coordination"],
+                    )
+                )
 
             # Recommendation 3: Smart caching
-            recommendations.append(OptimizationRecommendation(
-                strategy=OptimizationStrategy.PREDICTIVE,
-                description="Implement smart caching with predictive loading",
-                potential_savings=int(avg_task_usage * 0.25),  # 25% savings
-                confidence=0.80,
-                implementation_cost="medium",
-                priority=7,
-                impact_areas=["caching", "content_delivery", "performance"]
-            ))
+            recommendations.append(
+                OptimizationRecommendation(
+                    strategy=OptimizationStrategy.PREDICTIVE,
+                    description="Implement smart caching with predictive loading",
+                    potential_savings=int(avg_task_usage * 0.25),  # 25% savings
+                    confidence=0.80,
+                    implementation_cost="medium",
+                    priority=7,
+                    impact_areas=["caching", "content_delivery", "performance"],
+                )
+            )
 
         # Cache recommendations
         self.optimization_cache[constraint_id] = recommendations
@@ -574,12 +598,15 @@ class TokenBudgetManager:
     def _get_recent_usage(self, constraint_id: str, limit: int = 50) -> List[Dict]:
         """Get recent usage history for constraint."""
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT * FROM usage_history
             WHERE constraint_id = ?
             ORDER BY timestamp DESC
             LIMIT ?
-        """, (constraint_id, limit))
+        """,
+            (constraint_id, limit),
+        )
 
         return [dict(row) for row in cursor.fetchall()]
 
@@ -588,21 +615,24 @@ class TokenBudgetManager:
         cursor = self.conn.cursor()
 
         for rec in recommendations:
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO optimization_recommendations
                 (constraint_id, strategy, description, potential_savings,
                  confidence, implementation_cost, priority, impact_areas)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                constraint_id,
-                rec.strategy.value,
-                rec.description,
-                rec.potential_savings,
-                rec.confidence,
-                rec.implementation_cost,
-                rec.priority,
-                json.dumps(rec.impact_areas)
-            ))
+            """,
+                (
+                    constraint_id,
+                    rec.strategy.value,
+                    rec.description,
+                    rec.potential_savings,
+                    rec.confidence,
+                    rec.implementation_cost,
+                    rec.priority,
+                    json.dumps(rec.impact_areas),
+                ),
+            )
 
         self.conn.commit()
 
@@ -629,14 +659,11 @@ class TokenBudgetManager:
                 "usage_percentage": (allocation.used / allocation.allocated) * 100,
                 "status": allocation.status.value,
                 "efficiency_score": allocation.efficiency_score,
-                "last_updated": allocation.last_updated.isoformat()
+                "last_updated": allocation.last_updated.isoformat(),
             }
         else:
             # Return all constraints
-            return {
-                constraint_id: self.get_budget_status(constraint_id)
-                for constraint_id in self.allocations.keys()
-            }
+            return {constraint_id: self.get_budget_status(constraint_id) for constraint_id in self.allocations.keys()}
 
     def get_optimization_recommendations(self, constraint_id: str = None) -> List[OptimizationRecommendation]:
         """Get optimization recommendations."""
@@ -662,8 +689,8 @@ class TokenBudgetManager:
         daily_usage = defaultdict(list)
 
         for usage in recent_usage:
-            date = datetime.fromisoformat(usage['timestamp']).date()
-            daily_usage[date].append(usage['tokens_used'])
+            date = datetime.fromisoformat(usage["timestamp"]).date()
+            daily_usage[date].append(usage["tokens_used"])
 
         # Calculate daily totals and trends
         daily_totals = {date: sum(tokens) for date, tokens in daily_usage.items()}
@@ -690,7 +717,7 @@ class TokenBudgetManager:
             "predicted_daily_average": predicted_daily,
             "predicted_total_usage": predicted_total,
             "trend": "increasing" if trend > 0 else "decreasing" if trend < 0 else "stable",
-            "confidence": min(0.9, len(recent_usage) / 100)  # Confidence based on data amount
+            "confidence": min(0.9, len(recent_usage) / 100),  # Confidence based on data amount
         }
 
     def reset_budget(self, constraint_id: str) -> bool:
@@ -719,16 +746,16 @@ class TokenBudgetManager:
         cursor.execute("SELECT * FROM budget_constraints")
 
         for row in cursor.fetchall():
-            constraint_id = row['id']
+            constraint_id = row["id"]
 
             constraint = BudgetConstraint(
-                level=BudgetLevel(row['level']),
-                scope=BudgetScope(row['scope']),
-                limit=row['limit'],
-                used=row['used'],
-                period_start=datetime.fromisoformat(row['period_start']) if row['period_start'] else None,
-                period_end=datetime.fromisoformat(row['period_end']) if row['period_end'] else None,
-                tags=json.loads(row['tags']) if row['tags'] else {}
+                level=BudgetLevel(row["level"]),
+                scope=BudgetScope(row["scope"]),
+                limit=row["limit"],
+                used=row["used"],
+                period_start=datetime.fromisoformat(row["period_start"]) if row["period_start"] else None,
+                period_end=datetime.fromisoformat(row["period_end"]) if row["period_end"] else None,
+                tags=json.loads(row["tags"]) if row["tags"] else {},
             )
 
             self.constraints[constraint_id] = constraint
@@ -740,12 +767,12 @@ class TokenBudgetManager:
             if alloc_row:
                 allocation = BudgetAllocation(
                     constraint_id=constraint_id,
-                    allocated=alloc_row['allocated'],
-                    used=alloc_row['used'],
-                    available=alloc_row['available'],
-                    status=BudgetStatus(alloc_row['status']),
-                    efficiency_score=alloc_row['efficiency_score'],
-                    last_updated=datetime.fromisoformat(alloc_row['last_updated']) if alloc_row['last_updated'] else None
+                    allocated=alloc_row["allocated"],
+                    used=alloc_row["used"],
+                    available=alloc_row["available"],
+                    status=BudgetStatus(alloc_row["status"]),
+                    efficiency_score=alloc_row["efficiency_score"],
+                    last_updated=datetime.fromisoformat(alloc_row["last_updated"]) if alloc_row["last_updated"] else None,
                 )
 
                 self.allocations[constraint_id] = allocation
@@ -767,7 +794,7 @@ class TokenBudgetManager:
             "total_allocated": sum(alloc.allocated for alloc in allocations.values() if alloc),
             "total_used": sum(alloc.used for alloc in allocations.values() if alloc),
             "overall_usage_percentage": 0,
-            "constraints": {}
+            "constraints": {},
         }
 
         if report["total_allocated"] > 0:
@@ -790,15 +817,15 @@ class TokenBudgetManager:
                 "efficiency_score": allocation.efficiency_score,
                 "period_start": constraint.period_start.isoformat(),
                 "period_end": constraint.period_end.isoformat(),
-                "recommendations": len(self._get_cached_recommendations(cid))
+                "recommendations": len(self._get_cached_recommendations(cid)),
             }
 
             if format == "detailed":
                 # Add usage trends
                 recent_usage = self._get_recent_usage(cid, limit=30)
                 if recent_usage:
-                    constraint_report["recent_daily_average"] = statistics.mean([u['tokens_used'] for u in recent_usage])
-                    constraint_report["peak_usage"] = max(u['tokens_used'] for u in recent_usage)
+                    constraint_report["recent_daily_average"] = statistics.mean([u["tokens_used"] for u in recent_usage])
+                    constraint_report["peak_usage"] = max(u["tokens_used"] for u in recent_usage)
 
                 # Add predictions
                 prediction = self.predict_usage(cid)
@@ -821,7 +848,7 @@ class TokenBudgetManager:
             "constraint_id": constraint_id,
             "tokens_saved": 0,
             "efficiency_improvement": 0,
-            "changes_made": []
+            "changes_made": [],
         }
 
         if strategy == OptimizationStrategy.CONSERVATIVE:
@@ -848,7 +875,7 @@ class TokenBudgetManager:
             # Implement adaptive optimization
             recent_usage = self._get_recent_usage(constraint_id, limit=20)
             if recent_usage:
-                avg_usage = statistics.mean([u['tokens_used'] for u in recent_usage])
+                avg_usage = statistics.mean([u["tokens_used"] for u in recent_usage])
                 if avg_usage > allocation.allocated * 0.8:
                     target_reduction = int(allocation.allocated * 0.15)
                     results["tokens_saved"] = target_reduction
@@ -898,8 +925,9 @@ class TokenBudgetManager:
 
     def __del__(self):
         """Cleanup database connection."""
-        if hasattr(self, 'conn'):
+        if hasattr(self, "conn"):
             self.conn.close()
+
 
 def main():
     """CLI interface for token budget manager."""
@@ -916,7 +944,11 @@ def main():
     parser.add_argument("--constraint-id", help="Specific constraint ID")
     parser.add_argument("--recommendations", action="store_true", help="Show optimization recommendations")
     parser.add_argument("--predict", type=int, metavar="DAYS", help="Predict usage for N days ahead")
-    parser.add_argument("--optimize", choices=["conservative", "balanced", "performance", "adaptive", "predictive"], help="Apply optimization strategy")
+    parser.add_argument(
+        "--optimize",
+        choices=["conservative", "balanced", "performance", "adaptive", "predictive"],
+        help="Apply optimization strategy",
+    )
     parser.add_argument("--reset", action="store_true", help="Reset budget allocation")
     parser.add_argument("--cleanup", action="store_true", help="Cleanup expired constraints")
 
@@ -931,9 +963,7 @@ def main():
             return
 
         constraint_id = manager.create_budget_constraint(
-            level=BudgetLevel(args.level),
-            scope=BudgetScope(args.scope),
-            limit=args.limit
+            level=BudgetLevel(args.level), scope=BudgetScope(args.scope), limit=args.limit
         )
         print(f"Created budget constraint: {constraint_id}")
 
@@ -950,14 +980,16 @@ def main():
         recommendations = manager.get_optimization_recommendations(args.constraint_id)
         output = []
         for rec in recommendations:
-            output.append({
-                "strategy": rec.strategy.value,
-                "description": rec.description,
-                "potential_savings": rec.potential_savings,
-                "confidence": rec.confidence,
-                "priority": rec.priority,
-                "implementation_cost": rec.implementation_cost
-            })
+            output.append(
+                {
+                    "strategy": rec.strategy.value,
+                    "description": rec.description,
+                    "potential_savings": rec.potential_savings,
+                    "confidence": rec.confidence,
+                    "priority": rec.priority,
+                    "implementation_cost": rec.implementation_cost,
+                }
+            )
         print(json.dumps(output, indent=2))
 
     elif args.predict:
@@ -973,10 +1005,7 @@ def main():
             print("Error: --constraint-id required for optimization")
             return
 
-        results = manager.apply_optimization_strategy(
-            args.constraint_id,
-            OptimizationStrategy(args.optimize)
-        )
+        results = manager.apply_optimization_strategy(args.constraint_id, OptimizationStrategy(args.optimize))
         print(json.dumps(results, indent=2))
 
     elif args.reset:
@@ -993,6 +1022,7 @@ def main():
 
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()

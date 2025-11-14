@@ -15,10 +15,12 @@ from collections import defaultdict
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class AgentFeedbackSystem:
@@ -33,17 +35,30 @@ class AgentFeedbackSystem:
 
     # Agent group classifications
     ANALYSIS_AGENTS = {
-        'code-analyzer', 'smart-recommender', 'security-auditor',
-        'performance-analytics', 'pr-reviewer', 'learning-engine',
-        'validation-controller'
+        "code-analyzer",
+        "smart-recommender",
+        "security-auditor",
+        "performance-analytics",
+        "pr-reviewer",
+        "learning-engine",
+        "validation-controller",
     }
 
     EXECUTION_AGENTS = {
-        'quality-controller', 'test-engineer', 'frontend-analyzer',
-        'documentation-generator', 'build-validator', 'git-repository-manager',
-        'api-contract-validator', 'gui-validator', 'dev-orchestrator',
-        'version-release-manager', 'workspace-organizer', 'report-management-organizer',
-        'background-task-manager', 'claude-plugin-validator'
+        "quality-controller",
+        "test-engineer",
+        "frontend-analyzer",
+        "documentation-generator",
+        "build-validator",
+        "git-repository-manager",
+        "api-contract-validator",
+        "gui-validator",
+        "dev-orchestrator",
+        "version-release-manager",
+        "workspace-organizer",
+        "report-management-organizer",
+        "background-task-manager",
+        "claude-plugin-validator",
     }
 
     def __init__(self, storage_dir: str = ".claude-patterns"):
@@ -70,29 +85,25 @@ class AgentFeedbackSystem:
                 "total_feedbacks": 0,
                 "analysis_to_execution": 0,
                 "execution_to_analysis": 0,
-                "cross_agent_learnings": 0
+                "cross_agent_learnings": 0,
             },
             "feedback_exchanges": [],
-            "learning_insights": {
-                "common_patterns": [],
-                "successful_collaborations": [],
-                "improvement_areas": []
-            },
-            "agent_collaboration_matrix": {}
+            "learning_insights": {"common_patterns": [], "successful_collaborations": [], "improvement_areas": []},
+            "agent_collaboration_matrix": {},
         }
 
         self._write_data(initial_data)
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -104,7 +115,7 @@ class AgentFeedbackSystem:
     def _read_data(self) -> Dict[str, Any]:
         """Read feedback data with file locking."""
         try:
-            with open(self.feedback_file, 'r', encoding='utf-8') as f:
+            with open(self.feedback_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     data = json.load(f)
@@ -117,7 +128,7 @@ class AgentFeedbackSystem:
 
     def _write_data(self, data: Dict[str, Any]):
         """Write feedback data with file locking."""
-        with open(self.feedback_file, 'w', encoding='utf-8') as f:
+        with open(self.feedback_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -132,8 +143,9 @@ class AgentFeedbackSystem:
         feedback_type: str,
         message: str,
         impact: Optional[str] = None,
-        data: Optional[Dict[str, Any]] = None
-    ) -> str:
+        data: Optional[Dict[str, Any]] = None,
+    )-> str:
+        """Add Feedback."""
         """
         Add feedback from one agent to another.
 
@@ -164,7 +176,7 @@ class AgentFeedbackSystem:
             "data": data or {},
             "timestamp": datetime.now().isoformat(),
             "read": False,
-            "applied": False
+            "applied": False,
         }
 
         feedback_data["feedback_exchanges"].append(feedback_entry)
@@ -187,7 +199,7 @@ class AgentFeedbackSystem:
             feedback_data["agent_collaboration_matrix"][collab_key] = {
                 "total_feedbacks": 0,
                 "feedback_types": defaultdict(int),
-                "avg_impact_score": 0
+                "avg_impact_score": 0,
             }
 
         feedback_data["agent_collaboration_matrix"][collab_key]["total_feedbacks"] += 1
@@ -196,12 +208,7 @@ class AgentFeedbackSystem:
 
         return feedback_id
 
-    def get_feedback_for_agent(
-        self,
-        agent_name: str,
-        unread_only: bool = True,
-        limit: int = 10
-    ) -> List[Dict[str, Any]]:
+    def get_feedback_for_agent(self, agent_name: str, unread_only: bool = True, limit: int = 10) -> List[Dict[str, Any]]:
         """
         Get feedback addressed to a specific agent.
 
@@ -216,7 +223,8 @@ class AgentFeedbackSystem:
         feedback_data = self._read_data()
 
         feedbacks = [
-            fb for fb in feedback_data["feedback_exchanges"]
+            fb
+            for fb in feedback_data["feedback_exchanges"]
             if fb["to_agent"] == agent_name and (not unread_only or not fb["read"])
         ]
 
@@ -259,7 +267,7 @@ class AgentFeedbackSystem:
             "cross_agent_learnings": feedback_data["metadata"]["cross_agent_learnings"],
             "collaboration_matrix": feedback_data["agent_collaboration_matrix"],
             "most_active_pairs": self._get_most_active_pairs(feedback_data),
-            "feedback_effectiveness": self._calculate_feedback_effectiveness(feedback_data)
+            "feedback_effectiveness": self._calculate_feedback_effectiveness(feedback_data),
         }
 
         return stats
@@ -269,10 +277,7 @@ class AgentFeedbackSystem:
         pairs = []
 
         for pair, data in feedback_data["agent_collaboration_matrix"].items():
-            pairs.append({
-                "pair": pair,
-                "total_feedbacks": data["total_feedbacks"]
-            })
+            pairs.append({"pair": pair, "total_feedbacks": data["total_feedbacks"]})
 
         return sorted(pairs, key=lambda x: x["total_feedbacks"], reverse=True)[:5]
 
@@ -286,12 +291,9 @@ class AgentFeedbackSystem:
         return (applied / total) * 100
 
     def add_learning_insight(
-        self,
-        insight_type: str,
-        description: str,
-        agents_involved: List[str],
-        impact: Optional[str] = None
+        self, insight_type: str, description: str, agents_involved: List[str], impact: Optional[str] = None
     ):
+        """Add Learning Insight."""
         """
         Add a learning insight from agent collaboration.
 
@@ -309,7 +311,7 @@ class AgentFeedbackSystem:
             "description": description,
             "agents_involved": agents_involved,
             "impact": impact,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         if insight_type not in feedback_data["learning_insights"]:
@@ -338,35 +340,28 @@ def main():
     """Command-line interface for testing the feedback system."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Agent Feedback System')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['add', 'get', 'stats', 'insights'],
-                       help='Action to perform')
-    parser.add_argument('--from-agent', help='Source agent')
-    parser.add_argument('--to-agent', help='Target agent')
-    parser.add_argument('--message', help='Feedback message')
-    parser.add_argument('--task-id', help='Task ID')
-    parser.add_argument('--type', default='improvement', help='Feedback type')
+    parser = argparse.ArgumentParser(description="Agent Feedback System")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["add", "get", "stats", "insights"], help="Action to perform")
+    parser.add_argument("--from-agent", help="Source agent")
+    parser.add_argument("--to-agent", help="Target agent")
+    parser.add_argument("--message", help="Feedback message")
+    parser.add_argument("--task-id", help="Task ID")
+    parser.add_argument("--type", default="improvement", help="Feedback type")
 
     args = parser.parse_args()
 
     system = AgentFeedbackSystem(args.storage_dir)
 
-    if args.action == 'add':
+    if args.action == "add":
         if not all([args.from_agent, args.to_agent, args.message, args.task_id]):
             print("Error: --from-agent, --to-agent, --message, and --task-id required for add")
             sys.exit(1)
 
-        feedback_id = system.add_feedback(
-            args.from_agent,
-            args.to_agent,
-            args.task_id,
-            args.type,
-            args.message
-        )
+        feedback_id = system.add_feedback(args.from_agent, args.to_agent, args.task_id, args.type, args.message)
         print(f"Feedback added: {feedback_id}")
 
-    elif args.action == 'get':
+    elif args.action == "get":
         if not args.to_agent:
             print("Error: --to-agent required for get")
             sys.exit(1)
@@ -376,7 +371,7 @@ def main():
         for fb in feedbacks:
             print(f"  [{fb['feedback_type']}] From {fb['from_agent']}: {fb['message']}")
 
-    elif args.action == 'stats':
+    elif args.action == "stats":
         stats = system.get_collaboration_stats()
         print(f"Collaboration Statistics:")
         print(f"  Total Feedbacks: {stats['total_feedbacks']}")
@@ -384,7 +379,7 @@ def main():
         print(f"  Execution → Analysis: {stats['execution_to_analysis']}")
         print(f"  Feedback Effectiveness: {stats['feedback_effectiveness']:.1f}%")
 
-    elif args.action == 'insights':
+    elif args.action == "insights":
         insights = system.get_insights()
         print(f"Learning Insights ({len(insights)} total):")
         for insight in insights[:5]:
@@ -398,5 +393,5 @@ def main():
         print(f"Total Feedbacks: {stats['total_feedbacks']}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

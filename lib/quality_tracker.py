@@ -16,7 +16,7 @@ import platform
 from collections import defaultdict
 
 # Handle Windows compatibility for file locking
-if platform.system() == 'Windows':
+if platform.system() == "Windows":
     import msvcrt
 
     def lock_file(f, exclusive=False):
@@ -29,6 +29,7 @@ if platform.system() == 'Windows':
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
         except:
             pass
+
 else:
     import fcntl
 
@@ -69,7 +70,7 @@ class QualityTracker:
             List of quality record dictionaries
         """
         try:
-            with open(self.quality_file, 'r', encoding='utf-8') as f:
+            with open(self.quality_file, "r", encoding="utf-8") as f:
                 # Acquire shared lock for reading
                 lock_file(f, exclusive=False)
                 try:
@@ -96,7 +97,7 @@ class QualityTracker:
             records: List of quality record dictionaries to write
         """
         try:
-            with open(self.quality_file, 'w', encoding='utf-8') as f:
+            with open(self.quality_file, "w", encoding="utf-8") as f:
                 # Acquire exclusive lock for writing
                 lock_file(f, exclusive=True)
                 try:
@@ -107,12 +108,7 @@ class QualityTracker:
             print(f"Error writing quality records: {e}", file=sys.stderr)
             raise
 
-    def record_quality(
-        self,
-        task_id: str,
-        quality_score: float,
-        metrics: Dict[str, float]
-    ) -> bool:
+    def record_quality(self, task_id: str, quality_score: float, metrics: Dict[str, float]) -> bool:
         """
         Record quality assessment for a task.
 
@@ -135,10 +131,10 @@ class QualityTracker:
 
         # Create quality record
         record = {
-            'task_id': task_id,
-            'quality_score': quality_score,
-            'timestamp': datetime.now().isoformat(),
-            'metrics': metrics
+            "task_id": task_id,
+            "quality_score": quality_score,
+            "timestamp": datetime.now().isoformat(),
+            "metrics": metrics,
         }
 
         # Add to records
@@ -146,15 +142,22 @@ class QualityTracker:
         records.append(record)
 
         # Sort by timestamp
-        records.sort(key=lambda x: x['timestamp'])
+        records.sort(key=lambda x: x["timestamp"])
 
         self._write_quality_records(records)
         return True
 
     # Alias for backward compatibility with tests
-    def record_quality_score(self, task_id: str = None, quality_score: float = None,
-                           score: float = None, task_type: str = None,
-                           components: Dict[str, float] = None, metrics: Dict[str, float] = None) -> bool:
+    def record_quality_score(
+        self,
+        task_id: str = None,
+        quality_score: float = None,
+        score: float = None,
+        task_type: str = None,
+        components: Dict[str, float] = None,
+        metrics: Dict[str, float] = None,
+    )-> bool:
+        """Record Quality Score."""
         """Flexible method for recording quality scores for backward compatibility."""
         # Handle different parameter names
         final_task_id = task_id or task_type or "unknown"
@@ -166,17 +169,18 @@ class QualityTracker:
             final_score = final_score / 100.0
 
         # Convert metric values from 0-100 scale to 0-1 scale if needed
-        final_metrics = {k: (v/100.0 if v > 1.0 else v) for k, v in final_metrics.items()}
+        final_metrics = {k: (v / 100.0 if v > 1.0 else v) for k, v in final_metrics.items()}
 
         return self.record_quality(final_task_id, final_score, final_metrics)
 
     def get_quality_history(self, limit: int = 10) -> List[Dict[str, Any]]:
-        """Get recent quality history."""
+        """Get recent quality history (most recent first)."""
         records = self._read_quality_records()
         # Convert back to 0-100 scale for tests
         for record in records:
-            record['score'] = record['quality_score'] * 100
-        return records[-limit:]
+            record["score"] = record["quality_score"] * 100
+        # Return most recent first
+        return list(reversed(records[-limit:]))
 
     def get_quality_trend(self) -> Dict[str, Any]:
         """Calculate quality trend."""
@@ -184,8 +188,8 @@ class QualityTracker:
         if len(records) < 2:
             return {"direction": "stable", "average": 0.0, "improvement": 0.0}
 
-        recent_scores = [r['quality_score'] for r in records[-5:]]
-        older_scores = [r['quality_score'] for r in records[-10:-5]] if len(records) >= 10 else recent_scores
+        recent_scores = [r["quality_score"] for r in records[-5:]]
+        older_scores = [r["quality_score"] for r in records[-10:-5]] if len(records) >= 10 else recent_scores
 
         recent_avg = sum(recent_scores) / len(recent_scores)
         older_avg = sum(older_scores) / len(older_scores)
@@ -196,7 +200,7 @@ class QualityTracker:
         return {
             "direction": direction,
             "average": recent_avg * 100,  # Convert to 0-100 scale
-            "improvement": improvement * 100  # Convert to 0-100 scale
+            "improvement": improvement * 100,  # Convert to 0-100 scale
         }
 
     def get_task_type_performance(self) -> Dict[str, Any]:
@@ -205,31 +209,36 @@ class QualityTracker:
         performance = {}
 
         for record in records:
-            task_type = record.get('task_id', 'unknown')
-            if task_type not in performance:
-                performance[task_type] = {
-                    'count': 0,
-                    'total_score': 0.0,
-                    'avg_score': 0.0
-                }
+            task_id = record.get("task_id", "unknown")
+            # Extract task type by removing numeric suffix (e.g., "feature_implementation_0.85" -> "feature_implementation")
+            task_type = task_id
+            # Try to extract task type by removing score-like suffix
+            parts = task_id.rsplit("_", 1)
+            if len(parts) == 2:
+                try:
+                    # If last part is a float, it's likely a score suffix
+                    float(parts[1])
+                    task_type = parts[0]
+                except ValueError:
+                    # Not a score suffix, use full task_id
+                    task_type = task_id
 
-            performance[task_type]['count'] += 1
-            performance[task_type]['total_score'] += record['quality_score']
+            if task_type not in performance:
+                performance[task_type] = {"count": 0, "total_score": 0.0, "avg_score": 0.0}
+
+            performance[task_type]["count"] += 1
+            performance[task_type]["total_score"] += record["quality_score"]
 
         for task_type in performance:
-            if performance[task_type]['count'] > 0:
-                performance[task_type]['avg_score'] = (
-                    performance[task_type]['total_score'] / performance[task_type]['count']
+            if performance[task_type]["count"] > 0:
+                performance[task_type]["avg_score"] = (
+                    performance[task_type]["total_score"] / performance[task_type]["count"]
                 ) * 100  # Convert to 0-100 scale
-                performance[task_type]['average_score'] = performance[task_type]['avg_score']
+                performance[task_type]["average_score"] = performance[task_type]["avg_score"]
 
         return performance
 
-    def get_quality_trends(
-        self,
-        days: int = 30,
-        metric: Optional[str] = None
-    ) -> Dict[str, Any]:
+    def get_quality_trends(self, days: int = 30, metric: Optional[str] = None) -> Dict[str, Any]:
         """
         Get quality trends over time.
 
@@ -244,40 +253,37 @@ class QualityTracker:
 
         if not records:
             return {
-                'period_days': days,
-                'metric': metric or 'quality_score',
-                'data_points': 0,
-                'trend': 'no_data',
-                'current_average': 0.0,
-                'previous_average': 0.0,
-                'change_percentage': 0.0,
-                'timeline': []
+                "period_days": days,
+                "metric": metric or "quality_score",
+                "data_points": 0,
+                "trend": "no_data",
+                "current_average": 0.0,
+                "previous_average": 0.0,
+                "change_percentage": 0.0,
+                "timeline": [],
             }
 
         # Filter records within time period
         cutoff_date = datetime.now() - timedelta(days=days)
-        recent_records = [
-            r for r in records
-            if datetime.fromisoformat(r['timestamp']) >= cutoff_date
-        ]
+        recent_records = [r for r in records if datetime.fromisoformat(r["timestamp"]) >= cutoff_date]
 
         if not recent_records:
             return {
-                'period_days': days,
-                'metric': metric or 'quality_score',
-                'data_points': 0,
-                'trend': 'no_data',
-                'current_average': 0.0,
-                'previous_average': 0.0,
-                'change_percentage': 0.0,
-                'timeline': []
+                "period_days": days,
+                "metric": metric or "quality_score",
+                "data_points": 0,
+                "trend": "no_data",
+                "current_average": 0.0,
+                "previous_average": 0.0,
+                "change_percentage": 0.0,
+                "timeline": [],
             }
 
         # Extract values
         if metric:
-            values = [r['metrics'].get(metric, 0) for r in recent_records]
+            values = [r["metrics"].get(metric, 0) for r in recent_records]
         else:
-            values = [r['quality_score'] for r in recent_records]
+            values = [r["quality_score"] for r in recent_records]
 
         # Calculate trend (compare first half vs second half)
         mid_point = len(values) // 2
@@ -298,31 +304,27 @@ class QualityTracker:
 
         # Determine trend direction
         if change_pct > 5:
-            trend = 'improving'
+            trend = "improving"
         elif change_pct < -5:
-            trend = 'declining'
+            trend = "declining"
         else:
-            trend = 'stable'
+            trend = "stable"
 
         # Create timeline data
         timeline = []
         for record in recent_records:
-            value = record['metrics'].get(metric, 0) if metric else record['quality_score']
-            timeline.append({
-                'timestamp': record['timestamp'],
-                'task_id': record['task_id'],
-                'value': value
-            })
+            value = record["metrics"].get(metric, 0) if metric else record["quality_score"]
+            timeline.append({"timestamp": record["timestamp"], "task_id": record["task_id"], "value": value})
 
         return {
-            'period_days': days,
-            'metric': metric or 'quality_score',
-            'data_points': len(values),
-            'trend': trend,
-            'current_average': second_avg,
-            'previous_average': first_avg,
-            'change_percentage': change_pct,
-            'timeline': timeline
+            "period_days": days,
+            "metric": metric or "quality_score",
+            "data_points": len(values),
+            "trend": trend,
+            "current_average": second_avg,
+            "previous_average": first_avg,
+            "change_percentage": change_pct,
+            "timeline": timeline,
         }
 
     def get_average_quality(self, days: Optional[int] = None) -> float:
@@ -343,15 +345,12 @@ class QualityTracker:
         # Filter by days if specified
         if days:
             cutoff_date = datetime.now() - timedelta(days=days)
-            records = [
-                r for r in records
-                if datetime.fromisoformat(r['timestamp']) >= cutoff_date
-            ]
+            records = [r for r in records if datetime.fromisoformat(r["timestamp"]) >= cutoff_date]
 
         if not records:
             return 0.0
 
-        total = sum(r['quality_score'] for r in records)
+        total = sum(r["quality_score"] for r in records)
         return total / len(records)
 
     def get_metric_statistics(self, days: Optional[int] = None) -> Dict[str, Dict[str, float]]:
@@ -372,10 +371,7 @@ class QualityTracker:
         # Filter by days if specified
         if days:
             cutoff_date = datetime.now() - timedelta(days=days)
-            records = [
-                r for r in records
-                if datetime.fromisoformat(r['timestamp']) >= cutoff_date
-            ]
+            records = [r for r in records if datetime.fromisoformat(r["timestamp"]) >= cutoff_date]
 
         if not records:
             return {}
@@ -384,39 +380,35 @@ class QualityTracker:
         metric_values = defaultdict(list)
 
         for record in records:
-            for metric_name, metric_value in record.get('metrics', {}).items():
+            for metric_name, metric_value in record.get("metrics", {}).items():
                 metric_values[metric_name].append(metric_value)
 
         # Calculate statistics
         statistics = {}
         for metric_name, values in metric_values.items():
             statistics[metric_name] = {
-                'average': sum(values) / len(values),
-                'minimum': min(values),
-                'maximum': max(values),
-                'count': len(values)
+                "average": sum(values) / len(values),
+                "minimum": min(values),
+                "maximum": max(values),
+                "count": len(values),
             }
 
         return statistics
 
     def get_recent_records(self, limit: int = 10) -> List[Dict[str, Any]]:
         """
-        Get most recent quality records.
+        Get most recent quality records (most recent first).
 
         Args:
             limit: Maximum number of records to return
 
         Returns:
-            List of recent quality records
+            List of recent quality records (most recent first)
         """
         records = self._read_quality_records()
-        return records[-limit:] if records else []
+        return list(reversed(records[-limit:])) if records else []
 
-    def get_low_quality_tasks(
-        self,
-        threshold: float = 0.7,
-        days: Optional[int] = None
-    ) -> List[Dict[str, Any]]:
+    def get_low_quality_tasks(self, threshold: float = 0.7, days: Optional[int] = None) -> List[Dict[str, Any]]:
         """
         Get tasks with quality below threshold.
 
@@ -435,55 +427,52 @@ class QualityTracker:
         # Filter by days if specified
         if days:
             cutoff_date = datetime.now() - timedelta(days=days)
-            records = [
-                r for r in records
-                if datetime.fromisoformat(r['timestamp']) >= cutoff_date
-            ]
+            records = [r for r in records if datetime.fromisoformat(r["timestamp"]) >= cutoff_date]
 
         # Filter by quality threshold
-        low_quality = [r for r in records if r['quality_score'] < threshold]
+        low_quality = [r for r in records if r["quality_score"] < threshold]
 
         # Sort by quality score (lowest first)
-        low_quality.sort(key=lambda x: x['quality_score'])
+        low_quality.sort(key=lambda x: x["quality_score"])
 
         return low_quality
 
 
 def main():
     """Command-line interface for quality tracker."""
-    parser = argparse.ArgumentParser(description='Quality Tracker System')
-    parser.add_argument('--dir', default='.claude-patterns', help='Tracker directory path')
-    parser.add_argument('--score', action='store_true', help='Show current quality score')
+    parser = argparse.ArgumentParser(description="Quality Tracker System")
+    parser.add_argument("--dir", default=".claude-patterns", help="Tracker directory path")
+    parser.add_argument("--score", action="store_true", help="Show current quality score")
 
-    subparsers = parser.add_subparsers(dest='action', help='Action to perform')
+    subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
     # Record action
-    record_parser = subparsers.add_parser('record', help='Record quality assessment')
-    record_parser.add_argument('--task-id', required=True, help='Task ID')
-    record_parser.add_argument('--score', type=float, required=True, help='Quality score (0-1)')
-    record_parser.add_argument('--metrics', required=True, help='Metrics JSON string')
+    record_parser = subparsers.add_parser("record", help="Record quality assessment")
+    record_parser.add_argument("--task-id", required=True, help="Task ID")
+    record_parser.add_argument("--score", type=float, required=True, help="Quality score (0-1)")
+    record_parser.add_argument("--metrics", required=True, help="Metrics JSON string")
 
     # Trends action
-    trends_parser = subparsers.add_parser('trends', help='Show quality trends')
-    trends_parser.add_argument('--days', type=int, default=30, help='Days to analyze')
-    trends_parser.add_argument('--metric', help='Specific metric to analyze')
+    trends_parser = subparsers.add_parser("trends", help="Show quality trends")
+    trends_parser.add_argument("--days", type=int, default=30, help="Days to analyze")
+    trends_parser.add_argument("--metric", help="Specific metric to analyze")
 
     # Average action
-    average_parser = subparsers.add_parser('average', help='Show average quality')
-    average_parser.add_argument('--days', type=int, help='Days to analyze')
+    average_parser = subparsers.add_parser("average", help="Show average quality")
+    average_parser.add_argument("--days", type=int, help="Days to analyze")
 
     # Statistics action
-    stats_parser = subparsers.add_parser('stats', help='Show metric statistics')
-    stats_parser.add_argument('--days', type=int, help='Days to analyze')
+    stats_parser = subparsers.add_parser("stats", help="Show metric statistics")
+    stats_parser.add_argument("--days", type=int, help="Days to analyze")
 
     # Recent action
-    recent_parser = subparsers.add_parser('recent', help='Show recent records')
-    recent_parser.add_argument('--limit', type=int, default=10, help='Number of records')
+    recent_parser = subparsers.add_parser("recent", help="Show recent records")
+    recent_parser.add_argument("--limit", type=int, default=10, help="Number of records")
 
     # Low quality action
-    low_parser = subparsers.add_parser('low-quality', help='Show low quality tasks')
-    low_parser.add_argument('--threshold', type=float, default=0.7, help='Quality threshold')
-    low_parser.add_argument('--days', type=int, help='Days to analyze')
+    low_parser = subparsers.add_parser("low-quality", help="Show low quality tasks")
+    low_parser.add_argument("--threshold", type=float, default=0.7, help="Quality threshold")
+    low_parser.add_argument("--days", type=int, help="Days to analyze")
 
     args = parser.parse_args()
 
@@ -500,38 +489,35 @@ def main():
     tracker = QualityTracker(args.dir)
 
     try:
-        if args.action == 'record':
+        if args.action == "record":
             metrics = json.loads(args.metrics)
             success = tracker.record_quality(args.task_id, args.score, metrics)
-            print(json.dumps({'success': success}, indent=2))
+            print(json.dumps({"success": success}, indent=2))
 
-        elif args.action == 'trends':
+        elif args.action == "trends":
             trends = tracker.get_quality_trends(days=args.days, metric=args.metric)
             print(json.dumps(trends, indent=2))
 
-        elif args.action == 'average':
+        elif args.action == "average":
             average = tracker.get_average_quality(days=args.days)
-            print(json.dumps({'average_quality': average}, indent=2))
+            print(json.dumps({"average_quality": average}, indent=2))
 
-        elif args.action == 'stats':
+        elif args.action == "stats":
             stats = tracker.get_metric_statistics(days=args.days)
             print(json.dumps(stats, indent=2))
 
-        elif args.action == 'recent':
+        elif args.action == "recent":
             records = tracker.get_recent_records(limit=args.limit)
             print(json.dumps(records, indent=2))
 
-        elif args.action == 'low-quality':
-            low_quality = tracker.get_low_quality_tasks(
-                threshold=args.threshold,
-                days=args.days
-            )
+        elif args.action == "low-quality":
+            low_quality = tracker.get_low_quality_tasks(threshold=args.threshold, days=args.days)
             print(json.dumps(low_quality, indent=2))
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(json.dumps({"success": False, "error": str(e)}, indent=2), file=sys.stderr)
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

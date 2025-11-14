@@ -34,8 +34,10 @@ from pathlib import Path
 import statistics
 import hashlib
 
+
 class MetricType(Enum):
     """Types of metrics tracked."""
+
     TOKEN_USAGE = "token_usage"
     TOKEN_SAVED = "token_saved"
     CACHE_HIT_RATE = "cache_hit_rate"
@@ -45,16 +47,20 @@ class MetricType(Enum):
     USER_SATISFACTION = "user_satisfaction"
     SYSTEM_HEALTH = "system_health"
 
+
 class AlertLevel(Enum):
     """Alert severity levels."""
+
     INFO = "info"
     WARNING = "warning"
     CRITICAL = "critical"
     EMERGENCY = "emergency"
 
+
 @dataclass
 class MetricData:
     """Individual metric data point."""
+
     timestamp: datetime
     value: float
     metric_type: MetricType
@@ -68,9 +74,11 @@ class MetricData:
         if self.metadata is None:
             self.metadata = {}
 
+
 @dataclass
 class Alert:
     """System alert."""
+
     id: str
     level: AlertLevel
     message: str
@@ -82,9 +90,11 @@ class Alert:
     resolved: bool = False
     resolution_time: Optional[datetime] = None
 
+
 @dataclass
 class DashboardStats:
     """Dashboard statistics snapshot."""
+
     timestamp: datetime
     total_tokens_used: int
     total_tokens_saved: int
@@ -96,6 +106,7 @@ class DashboardStats:
     system_health_score: float
     alerts_count: int
     uptime_percentage: float
+
 
 class TokenMonitoringDashboard:
     """Comprehensive token monitoring and analytics dashboard."""
@@ -149,7 +160,8 @@ class TokenMonitoringDashboard:
         cursor = self.conn.cursor()
 
         # Metrics table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS metrics (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 timestamp TEXT NOT NULL,
@@ -159,10 +171,12 @@ class TokenMonitoringDashboard:
                 tags TEXT,
                 metadata TEXT
             )
-        """)
+        """
+        )
 
         # Alerts table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS alerts (
                 id TEXT PRIMARY KEY,
                 level TEXT NOT NULL,
@@ -175,10 +189,12 @@ class TokenMonitoringDashboard:
                 resolved BOOLEAN DEFAULT FALSE,
                 resolution_time TEXT
             )
-        """)
+        """
+        )
 
         # Daily summaries table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS daily_summaries (
                 date TEXT PRIMARY KEY,
                 total_tokens_used INTEGER DEFAULT 0,
@@ -191,7 +207,8 @@ class TokenMonitoringDashboard:
                 system_health_score REAL DEFAULT 0.0,
                 alerts_count INTEGER DEFAULT 0
             )
-        """)
+        """
+        )
 
         # Indexes for performance
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_metrics_timestamp ON metrics(timestamp)")
@@ -200,12 +217,14 @@ class TokenMonitoringDashboard:
 
         self.conn.commit()
 
-    def record_metric(self,
-                     metric_type: MetricType,
-                     value: float,
-                     source: str = "unknown",
-                     tags: Dict[str, str] = None,
-                     metadata: Dict[str, Any] = None) -> None:
+    def record_metric(
+        self,
+        metric_type: MetricType,
+        value: float,
+        source: str = "unknown",
+        tags: Dict[str, str] = None,
+        metadata: Dict[str, Any] = None,
+    ) -> None:
         """Record a metric data point."""
         cursor = self.conn.cursor()
 
@@ -215,21 +234,24 @@ class TokenMonitoringDashboard:
             metric_type=metric_type,
             source=source,
             tags=tags or {},
-            metadata=metadata or {}
+            metadata=metadata or {},
         )
 
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO metrics
             (timestamp, metric_type, value, source, tags, metadata)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            metric_data.timestamp.isoformat(),
-            metric_data.metric_type.value,
-            metric_data.value,
-            metric_data.source,
-            json.dumps(metric_data.tags),
-            json.dumps(metric_data.metadata)
-        ))
+        """,
+            (
+                metric_data.timestamp.isoformat(),
+                metric_data.metric_type.value,
+                metric_data.value,
+                metric_data.source,
+                json.dumps(metric_data.tags),
+                json.dumps(metric_data.metadata),
+            ),
+        )
 
         self.conn.commit()
 
@@ -256,7 +278,7 @@ class TokenMonitoringDashboard:
                     alert_level = AlertLevel.WARNING
 
             # Create alert if threshold breached
-            if 'alert_level' in locals():
+            if "alert_level" in locals():
                 alert_id = hashlib.md5(
                     f"{metric_data.metric_type.value}_{metric_data.timestamp.isoformat()}".encode()
                 ).hexdigest()[:12]
@@ -269,7 +291,7 @@ class TokenMonitoringDashboard:
                     source=metric_data.source,
                     metric_type=metric_data.metric_type,
                     threshold=threshold,
-                    current_value=metric_data.value
+                    current_value=metric_data.value,
                 )
 
                 self.add_alert(alert)
@@ -278,21 +300,24 @@ class TokenMonitoringDashboard:
         """Add an alert to the system."""
         cursor = self.conn.cursor()
 
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT OR REPLACE INTO alerts
             (id, level, message, timestamp, source, metric_type, threshold, current_value, resolved)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            alert.id,
-            alert.level.value,
-            alert.message,
-            alert.timestamp.isoformat(),
-            alert.source,
-            alert.metric_type.value if alert.metric_type else None,
-            alert.threshold,
-            alert.current_value,
-            alert.resolved
-        ))
+        """,
+            (
+                alert.id,
+                alert.level.value,
+                alert.message,
+                alert.timestamp.isoformat(),
+                alert.source,
+                alert.metric_type.value if alert.metric_type else None,
+                alert.threshold,
+                alert.current_value,
+                alert.resolved,
+            ),
+        )
 
         self.conn.commit()
 
@@ -302,36 +327,40 @@ class TokenMonitoringDashboard:
         if alert.level in [AlertLevel.CRITICAL, AlertLevel.EMERGENCY]:
             self.logger.error(f"ALERT: {alert.message}")
 
-    def get_recent_metrics(self,
-                          hours: int = 24,
-                          metric_type: MetricType = None) -> List[MetricData]:
+    def get_recent_metrics(self, hours: int = 24, metric_type: MetricType = None) -> List[MetricData]:
         """Get recent metrics for analysis."""
         cursor = self.conn.cursor()
 
         cutoff_time = datetime.now() - timedelta(hours=hours)
 
         if metric_type:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT * FROM metrics
                 WHERE timestamp > ? AND metric_type = ?
                 ORDER BY timestamp DESC
-            """, (cutoff_time.isoformat(), metric_type.value))
+            """,
+                (cutoff_time.isoformat(), metric_type.value),
+            )
         else:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT * FROM metrics
                 WHERE timestamp > ?
                 ORDER BY timestamp DESC
-            """, (cutoff_time.isoformat(),))
+            """,
+                (cutoff_time.isoformat(),),
+            )
 
         metrics = []
         for row in cursor.fetchall():
             metric_data = MetricData(
-                timestamp=datetime.fromisoformat(row['timestamp']),
-                value=row['value'],
-                metric_type=MetricType(row['metric_type']),
-                source=row['source'],
-                tags=json.loads(row['tags']) if row['tags'] else {},
-                metadata=json.loads(row['metadata']) if row['metadata'] else {}
+                timestamp=datetime.fromisoformat(row["timestamp"]),
+                value=row["value"],
+                metric_type=MetricType(row["metric_type"]),
+                source=row["source"],
+                tags=json.loads(row["tags"]) if row["tags"] else {},
+                metadata=json.loads(row["metadata"]) if row["metadata"] else {},
             )
             metrics.append(metric_data)
 
@@ -354,22 +383,21 @@ class TokenMonitoringDashboard:
         total_tokens_saved = sum(m.value for m in token_saved_metrics)
         total_cost_savings = (total_tokens_saved / 1000) * self.token_cost_per_1k
 
-        avg_compression = (statistics.mean([m.value for m in compression_metrics])
-                         if compression_metrics else 0.0)
-        avg_response_time = (statistics.mean([m.value for m in response_time_metrics])
-                           if response_time_metrics else 0.0)
-        cache_hit_rate = (statistics.mean([m.value for m in cache_hit_metrics])
-                        if cache_hit_metrics else 0.0)
-        system_health = (statistics.mean([m.value for m in health_metrics])
-                       if health_metrics else 1.0)
+        avg_compression = statistics.mean([m.value for m in compression_metrics]) if compression_metrics else 0.0
+        avg_response_time = statistics.mean([m.value for m in response_time_metrics]) if response_time_metrics else 0.0
+        cache_hit_rate = statistics.mean([m.value for m in cache_hit_metrics]) if cache_hit_metrics else 0.0
+        system_health = statistics.mean([m.value for m in health_metrics]) if health_metrics else 1.0
 
         # Get recent alerts
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT COUNT(*) as count FROM alerts
             WHERE timestamp > ? AND resolved = FALSE
-        """, ((datetime.now() - timedelta(hours=1)).isoformat(),))
-        alerts_count = cursor.fetchone()['count']
+        """,
+            ((datetime.now() - timedelta(hours=1)).isoformat(),),
+        )
+        alerts_count = cursor.fetchone()["count"]
 
         # Calculate uptime (simplified)
         uptime_percentage = min(100.0, system_health * 100)
@@ -382,10 +410,10 @@ class TokenMonitoringDashboard:
             average_compression_ratio=avg_compression,
             average_response_time=avg_response_time,
             cache_hit_rate=cache_hit_rate,
-            active_users=len(set(m.metadata.get('user_id', 'default') for m in recent_metrics)),
+            active_users=len(set(m.metadata.get("user_id", "default") for m in recent_metrics)),
             system_health_score=system_health,
             alerts_count=alerts_count,
-            uptime_percentage=uptime_percentage
+            uptime_percentage=uptime_percentage,
         )
 
     def get_hourly_stats(self, hours: int = 24) -> List[Dict[str, Any]]:
@@ -394,7 +422,8 @@ class TokenMonitoringDashboard:
 
         cutoff_time = datetime.now() - timedelta(hours=hours)
 
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT
                 strftime('%Y-%m-%d %H:00:00', timestamp) as hour,
                 metric_type,
@@ -404,19 +433,18 @@ class TokenMonitoringDashboard:
             WHERE timestamp > ?
             GROUP BY hour, metric_type
             ORDER BY hour DESC
-        """, (cutoff_time.isoformat(),))
+        """,
+            (cutoff_time.isoformat(),),
+        )
 
         hourly_data = {}
         for row in cursor.fetchall():
-            hour = row['hour']
+            hour = row["hour"]
             if hour not in hourly_data:
                 hourly_data[hour] = {}
-            hourly_data[hour][row['metric_type']] = {
-                'avg_value': row['avg_value'],
-                'count': row['count']
-            }
+            hourly_data[hour][row["metric_type"]] = {"avg_value": row["avg_value"], "count": row["count"]}
 
-        return [{'hour': hour, 'metrics': metrics} for hour, metrics in hourly_data.items()]
+        return [{"hour": hour, "metrics": metrics} for hour, metrics in hourly_data.items()]
 
     def get_top_consumers(self, hours: int = 24, limit: int = 10) -> List[Dict[str, Any]]:
         """Get top token consumers."""
@@ -424,7 +452,8 @@ class TokenMonitoringDashboard:
 
         cutoff_time = datetime.now() - timedelta(hours=hours)
 
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT
                 source,
                 SUM(value) as total_tokens,
@@ -435,14 +464,16 @@ class TokenMonitoringDashboard:
             GROUP BY source
             ORDER BY total_tokens DESC
             LIMIT ?
-        """, (cutoff_time.isoformat(), limit))
+        """,
+            (cutoff_time.isoformat(), limit),
+        )
 
         return [
             {
-                'source': row['source'],
-                'total_tokens': int(row['total_tokens']),
-                'requests': row['requests'],
-                'avg_tokens': row['avg_tokens']
+                "source": row["source"],
+                "total_tokens": int(row["total_tokens"]),
+                "requests": row["requests"],
+                "avg_tokens": row["avg_tokens"],
             }
             for row in cursor.fetchall()
         ]
@@ -456,23 +487,25 @@ class TokenMonitoringDashboard:
         saved_metrics = [m for m in recent_metrics if m.metric_type == MetricType.TOKEN_SAVED]
 
         return {
-            'compression_effectiveness': {
-                'average_ratio': statistics.mean([m.value for m in compression_metrics]) if compression_metrics else 0,
-                'best_ratio': max([m.value for m in compression_metrics]) if compression_metrics else 0,
-                'worst_ratio': min([m.value for m in compression_metrics]) if compression_metrics else 0,
-                'total_optimizations': len(compression_metrics)
+            "compression_effectiveness": {
+                "average_ratio": statistics.mean([m.value for m in compression_metrics]) if compression_metrics else 0,
+                "best_ratio": max([m.value for m in compression_metrics]) if compression_metrics else 0,
+                "worst_ratio": min([m.value for m in compression_metrics]) if compression_metrics else 0,
+                "total_optimizations": len(compression_metrics),
             },
-            'cache_effectiveness': {
-                'average_hit_rate': statistics.mean([m.value for m in cache_metrics]) if cache_metrics else 0,
-                'best_hit_rate': max([m.value for m in cache_metrics]) if cache_metrics else 0,
-                'total_cache_hits': len(cache_metrics)
+            "cache_effectiveness": {
+                "average_hit_rate": statistics.mean([m.value for m in cache_metrics]) if cache_metrics else 0,
+                "best_hit_rate": max([m.value for m in cache_metrics]) if cache_metrics else 0,
+                "total_cache_hits": len(cache_metrics),
             },
-            'token_savings': {
-                'total_saved': sum([m.value for m in saved_metrics]),
-                'cost_savings': (sum([m.value for m in saved_metrics]) / 1000) * self.token_cost_per_1k,
-                'savings_rate': (sum([m.value for m in saved_metrics]) /
-                               max(1, sum([m.value for m in recent_metrics if m.metric_type == MetricType.TOKEN_USAGE])))
-            }
+            "token_savings": {
+                "total_saved": sum([m.value for m in saved_metrics]),
+                "cost_savings": (sum([m.value for m in saved_metrics]) / 1000) * self.token_cost_per_1k,
+                "savings_rate": (
+                    sum([m.value for m in saved_metrics])
+                    / max(1, sum([m.value for m in recent_metrics if m.metric_type == MetricType.TOKEN_USAGE]))
+                ),
+            },
         }
 
     def start_monitoring(self) -> None:
@@ -528,10 +561,7 @@ class TokenMonitoringDashboard:
         # Record system health
         health_score = 1.0  # Would calculate based on system status
         self.record_metric(
-            MetricType.SYSTEM_HEALTH,
-            health_score,
-            "monitoring_system",
-            {"component": "dashboard", "status": "active"}
+            MetricType.SYSTEM_HEALTH, health_score, "monitoring_system", {"component": "dashboard", "status": "active"}
         )
 
     def _cleanup_old_data(self) -> None:
@@ -585,27 +615,40 @@ class TokenMonitoringDashboard:
         system_health = statistics.mean([m.value for m in health_metrics]) if health_metrics else 1.0
 
         # Count active users
-        active_users = len(set(m.metadata.get('user_id', 'default') for m in yesterday_metrics))
+        active_users = len(set(m.metadata.get("user_id", "default") for m in yesterday_metrics))
 
         # Count alerts
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT COUNT(*) as count FROM alerts
             WHERE timestamp >= ? AND timestamp <= ?
-        """, (start_time.isoformat(), end_time.isoformat()))
-        alerts_count = cursor.fetchone()['count']
+        """,
+            (start_time.isoformat(), end_time.isoformat()),
+        )
+        alerts_count = cursor.fetchone()["count"]
 
         # Store daily summary
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO daily_summaries
             (date, total_tokens_used, total_tokens_saved, total_cost_savings,
              average_compression_ratio, average_response_time, cache_hit_rate,
              active_users, system_health_score, alerts_count)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            yesterday_str, int(token_usage), int(token_saved), cost_savings,
-            avg_compression, avg_response_time, cache_hit_rate,
-            active_users, system_health, alerts_count
-        ))
+        """,
+            (
+                yesterday_str,
+                int(token_usage),
+                int(token_saved),
+                cost_savings,
+                avg_compression,
+                avg_response_time,
+                cache_hit_rate,
+                active_users,
+                system_health,
+                alerts_count,
+            ),
+        )
 
         self.conn.commit()
 
@@ -613,21 +656,24 @@ class TokenMonitoringDashboard:
         """Get metrics within a time range."""
         cursor = self.conn.cursor()
 
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT * FROM metrics
             WHERE timestamp >= ? AND timestamp <= ?
             ORDER BY timestamp
-        """, (start_time.isoformat(), end_time.isoformat()))
+        """,
+            (start_time.isoformat(), end_time.isoformat()),
+        )
 
         metrics = []
         for row in cursor.fetchall():
             metric_data = MetricData(
-                timestamp=datetime.fromisoformat(row['timestamp']),
-                value=row['value'],
-                metric_type=MetricType(row['metric_type']),
-                source=row['source'],
-                tags=json.loads(row['tags']) if row['tags'] else {},
-                metadata=json.loads(row['metadata']) if row['metadata'] else {}
+                timestamp=datetime.fromisoformat(row["timestamp"]),
+                value=row["value"],
+                metric_type=MetricType(row["metric_type"]),
+                source=row["source"],
+                tags=json.loads(row["tags"]) if row["tags"] else {},
+                metadata=json.loads(row["metadata"]) if row["metadata"] else {},
             )
             metrics.append(metric_data)
 
@@ -649,7 +695,7 @@ class TokenMonitoringDashboard:
             "top_consumers": top_consumers,
             "optimization_effectiveness": effectiveness,
             "recent_alerts": [asdict(alert) for alert in recent_alerts],
-            "recommendations": self._generate_recommendations(current_stats, effectiveness)
+            "recommendations": self._generate_recommendations(current_stats, effectiveness),
         }
 
     def _generate_recommendations(self, stats: DashboardStats, effectiveness: Dict[str, Any]) -> List[str]:
@@ -664,13 +710,17 @@ class TokenMonitoringDashboard:
 
         # Cache recommendations
         if stats.cache_hit_rate < 0.7:
-            recommendations.append("Cache hit rate is below optimal - consider increasing cache size or improving prediction algorithms")
+            recommendations.append(
+                "Cache hit rate is below optimal - consider increasing cache size or improving prediction algorithms"
+            )
         elif stats.cache_hit_rate > 0.9:
             recommendations.append("Excellent cache performance - consider caching more content types")
 
         # Response time recommendations
         if stats.average_response_time > 500:  # ms
-            recommendations.append("Response times are high - consider optimizing processing algorithms or increasing resources")
+            recommendations.append(
+                "Response times are high - consider optimizing processing algorithms or increasing resources"
+            )
 
         # Cost savings recommendations
         if stats.total_cost_savings > 10:  # $10 per hour
@@ -688,8 +738,9 @@ class TokenMonitoringDashboard:
 
     def __del__(self):
         """Cleanup database connection."""
-        if hasattr(self, 'conn'):
+        if hasattr(self, "conn"):
             self.conn.close()
+
 
 # CLI interface
 def main():
@@ -729,16 +780,16 @@ def main():
         print(f"Monitoring Report (Last {args.report} hours):")
         print(f"Generated: {report['report_generated_at']}")
         print(f"\nCurrent Statistics:")
-        stats = report['current_stats']
+        stats = report["current_stats"]
         print(f"  Tokens used: {stats['total_tokens_used']:,}")
         print(f"  Tokens saved: {stats['total_tokens_saved']:,}")
         print(f"  Cost savings: ${stats['total_cost_savings']:.2f}")
         print(f"  Compression: {stats['average_compression_ratio']:.1%}")
         print(f"  Cache hit rate: {stats['cache_hit_rate']:.1%}")
 
-        if report['recommendations']:
+        if report["recommendations"]:
             print(f"\nRecommendations:")
-            for i, rec in enumerate(report['recommendations'], 1):
+            for i, rec in enumerate(report["recommendations"], 1):
                 print(f"  {i}. {rec}")
 
     elif args.top_consumers:
@@ -751,19 +802,19 @@ def main():
         effectiveness = dashboard.get_optimization_effectiveness(args.effectiveness)
         print(f"Optimization Effectiveness (Last {args.effectiveness} hours):")
         print(f"\nCompression Effectiveness:")
-        comp = effectiveness['compression_effectiveness']
+        comp = effectiveness["compression_effectiveness"]
         print(f"  Average ratio: {comp['average_ratio']:.1%}")
         print(f"  Best ratio: {comp['best_ratio']:.1%}")
         print(f"  Optimizations: {comp['total_optimizations']}")
 
         print(f"\nCache Effectiveness:")
-        cache = effectiveness['cache_effectiveness']
+        cache = effectiveness["cache_effectiveness"]
         print(f"  Hit rate: {cache['average_hit_rate']:.1%}")
         print(f"  Best hit rate: {cache['best_hit_rate']:.1%}")
         print(f"  Cache hits: {cache['total_cache_hits']}")
 
         print(f"\nToken Savings:")
-        savings = effectiveness['token_savings']
+        savings = effectiveness["token_savings"]
         print(f"  Total saved: {savings['total_saved']:,}")
         print(f"  Cost savings: ${savings['cost_savings']:.2f}")
         print(f"  Savings rate: {savings['savings_rate']:.1%}")
@@ -794,6 +845,7 @@ def main():
 
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()

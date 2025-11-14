@@ -22,15 +22,18 @@ import hashlib
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 @dataclass
 class MonitoringMetric:
     """Individual monitoring metric data structure."""
+
     timestamp: float
     metric_name: str
     value: float
@@ -45,6 +48,7 @@ class MonitoringMetric:
 @dataclass
 class AnomalyDetection:
     """Anomaly detection result."""
+
     detection_id: str
     timestamp: datetime
     metric_name: str
@@ -60,6 +64,7 @@ class AnomalyDetection:
 @dataclass
 class PredictiveInsight:
     """Predictive analytics insight."""
+
     insight_id: str
     timestamp: datetime
     prediction_type: str
@@ -136,7 +141,7 @@ class NeuralMonitoringSystem:
                 "system_health": 1.0,
                 "monitoring_agents": [],
                 "active_alerts": [],
-                "performance_summary": {}
+                "performance_summary": {},
             }
             self._write_monitoring_data(initial_data)
 
@@ -146,12 +151,7 @@ class NeuralMonitoringSystem:
                 "last_updated": datetime.now().isoformat(),
                 "anomaly_history": [],
                 "active_anomalies": [],
-                "detection_statistics": {
-                    "total_detections": 0,
-                    "true_positives": 0,
-                    "false_positives": 0,
-                    "accuracy": 0.0
-                }
+                "detection_statistics": {"total_detections": 0, "true_positives": 0, "false_positives": 0, "accuracy": 0.0},
             }
             self._write_anomalies_data(anomalies_data)
 
@@ -161,11 +161,7 @@ class NeuralMonitoringSystem:
                 "last_updated": datetime.now().isoformat(),
                 "prediction_history": [],
                 "active_predictions": [],
-                "prediction_statistics": {
-                    "total_predictions": 0,
-                    "accurate_predictions": 0,
-                    "accuracy": 0.0
-                }
+                "prediction_statistics": {"total_predictions": 0, "accurate_predictions": 0, "accuracy": 0.0},
             }
             self._write_predictions_data(predictions_data)
 
@@ -176,7 +172,7 @@ class NeuralMonitoringSystem:
                 "anomaly_models": {},
                 "predictive_models": {},
                 "model_performance": {},
-                "training_history": []
+                "training_history": [],
             }
             self._write_models_data(models_data)
 
@@ -201,26 +197,26 @@ class NeuralMonitoringSystem:
         self.anomaly_detector = {
             "weights": {
                 "input_hidden": [[np.random.randn() for _ in range(self.hidden_dims[0])] for _ in range(self.input_dim)],
-                "hidden_output": [[np.random.randn() for _ in range(self.output_dim)] for _ in range(self.hidden_dims[-1])]
+                "hidden_output": [[np.random.randn() for _ in range(self.output_dim)] for _ in range(self.hidden_dims[-1])],
             },
             "biases": {
                 "hidden": [np.random.randn() for _ in range(self.hidden_dims)],
-                "output": [np.random.randn() for _ in range(self.output_dim)]
+                "output": [np.random.randn() for _ in range(self.output_dim)],
             },
             "training_data": deque(maxlen=1000),
-            "performance": {"accuracy": 0.0, "loss": 1.0}
+            "performance": {"accuracy": 0.0, "loss": 1.0},
         }
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -231,7 +227,7 @@ class NeuralMonitoringSystem:
     def _read_monitoring_data(self) -> Dict[str, Any]:
         """Read monitoring data with file locking."""
         try:
-            with open(self.monitoring_file, 'r', encoding='utf-8') as f:
+            with open(self.monitoring_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -243,7 +239,7 @@ class NeuralMonitoringSystem:
 
     def _write_monitoring_data(self, data: Dict[str, Any]):
         """Write monitoring data with file locking."""
-        with open(self.monitoring_file, 'w', encoding='utf-8') as f:
+        with open(self.monitoring_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -253,7 +249,7 @@ class NeuralMonitoringSystem:
     def _read_anomalies_data(self) -> Dict[str, Any]:
         """Read anomaly data with file locking."""
         try:
-            with open(self.anomalies_file, 'r', encoding='utf-8') as f:
+            with open(self.anomalies_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -264,7 +260,7 @@ class NeuralMonitoringSystem:
 
     def _write_anomalies_data(self, data: Dict[str, Any]):
         """Write anomaly data with file locking."""
-        with open(self.anomalies_file, 'w', encoding='utf-8') as f:
+        with open(self.anomalies_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -274,7 +270,7 @@ class NeuralMonitoringSystem:
     def _read_predictions_data(self) -> Dict[str, Any]:
         """Read prediction data with file locking."""
         try:
-            with open(self.predictions_file, 'r', encoding='utf-8') as f:
+            with open(self.predictions_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -285,7 +281,7 @@ class NeuralMonitoringSystem:
 
     def _write_predictions_data(self, data: Dict[str, Any]):
         """Write prediction data with file locking."""
-        with open(self.predictions_file, 'w', encoding='utf-8') as f:
+        with open(self.predictions_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -295,7 +291,7 @@ class NeuralMonitoringSystem:
     def _read_models_data(self) -> Dict[str, Any]:
         """Read models data with file locking."""
         try:
-            with open(self.models_file, 'r', encoding='utf-8') as f:
+            with open(self.models_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -306,7 +302,7 @@ class NeuralMonitoringSystem:
 
     def _write_models_data(self, data: Dict[str, Any]):
         """Write models data with file locking."""
-        with open(self.models_file, 'w', encoding='utf-8') as f:
+        with open(self.models_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -333,7 +329,7 @@ class NeuralMonitoringSystem:
             "tier": tier,
             "registered_at": datetime.now().isoformat(),
             "metrics_count": 0,
-            "last_metric": None
+            "last_metric": None,
         }
 
         # Check if agent already registered
@@ -349,13 +345,9 @@ class NeuralMonitoringSystem:
         print(f"Registered monitoring agent: {agent_id} ({tier})")
 
     def record_metric(
-        self,
-        metric_name: str,
-        value: float,
-        agent_id: str,
-        tier: str,
-        context: Optional[Dict[str, Any]] = None
+        self, metric_name: str, value: float, agent_id: str, tier: str, context: Optional[Dict[str, Any]] = None
     ):
+        """Record Metric."""
         """
         Record a monitoring metric.
 
@@ -371,12 +363,7 @@ class NeuralMonitoringSystem:
 
         # Create monitoring metric
         metric = MonitoringMetric(
-            timestamp=time.time(),
-            metric_name=metric_name,
-            value=value,
-            agent_id=agent_id,
-            tier=tier,
-            context=context
+            timestamp=time.time(), metric_name=metric_name, value=value, agent_id=agent_id, tier=tier, context=context
         )
 
         # Add to buffer
@@ -428,9 +415,11 @@ class NeuralMonitoringSystem:
         self.monitoring_active = False
 
         # Wait for threads to finish
-        for thread, name in [(self.monitoring_thread, "monitoring"),
-                            (self.analysis_thread, "analysis"),
-                            (self.prediction_thread, "prediction")]:
+        for thread, name in [
+            (self.monitoring_thread, "monitoring"),
+            (self.analysis_thread, "analysis"),
+            (self.prediction_thread, "prediction"),
+        ]:
             if thread and thread.is_alive():
                 thread.join(timeout=5)
                 print(f"  {name} thread stopped")
@@ -539,7 +528,7 @@ class NeuralMonitoringSystem:
             anomaly_score = self._neural_anomaly_detection(features)
 
             if anomaly_score > self.anomaly_threshold:
-                agent_id, metric_name = key.split('_', 1)
+                agent_id, metric_name = key.split("_", 1)
                 anomaly = AnomalyDetection(
                     detection_id=str(uuid.uuid4())[:8],
                     timestamp=datetime.now(),
@@ -550,7 +539,7 @@ class NeuralMonitoringSystem:
                     confidence=anomaly_score,
                     description=f"Anomaly detected in {metric_name} for {agent_id}",
                     suggested_actions=self._generate_suggested_actions(metric_name, anomaly_score),
-                    related_metrics=self._find_related_metrics(metric_name, group_metrics)
+                    related_metrics=self._find_related_metrics(metric_name, group_metrics),
                 )
                 anomalies.append(anomaly)
 
@@ -597,7 +586,7 @@ class NeuralMonitoringSystem:
         while len(features) < self.input_dim:
             features.append(0.0)
 
-        return features[:self.input_dim]
+        return features[: self.input_dim]
 
     def _neural_anomaly_detection(self, features: List[float]) -> float:
         """Use neural network for anomaly detection."""
@@ -610,8 +599,10 @@ class NeuralMonitoringSystem:
             hidden1 = []
             for i in range(self.hidden_dims[0]):
                 if i < len(features) and i < len(self.anomaly_detector["weights"]["input_hidden"]):
-                    weighted_sum = sum(features[j] * self.anomaly_detector["weights"]["input_hidden"][i][j]
-                                    for j in range(min(len(features), len(self.anomaly_detector["weights"]["input_hidden"][i]))))
+                    weighted_sum = sum(
+                        features[j] * self.anomaly_detector["weights"]["input_hidden"][i][j]
+                        for j in range(min(len(features), len(self.anomaly_detector["weights"]["input_hidden"][i])))
+                    )
                     hidden1.append(self._sigmoid(weighted_sum + self.anomaly_detector["biases"]["hidden"][0]))
 
             # Hidden layer 2 (simplified)
@@ -668,7 +659,7 @@ class NeuralMonitoringSystem:
         for other_metric in set(m.metric_name for m in metrics):
             if other_metric != metric_name:
                 # Add if related by naming convention
-                if any(word in other_metric.lower() for word in metric_name.lower().split('_')):
+                if any(word in other_metric.lower() for word in metric_name.lower().split("_")):
                     related.append(other_metric)
 
         return related[:3]  # Limit to 3 related metrics
@@ -741,7 +732,7 @@ class NeuralMonitoringSystem:
         # Calculate correlations between metric pairs
         metric_names = list(metric_series.keys())
         for i, name1 in enumerate(metric_names):
-            for name2 in metric_names[i+1:]:
+            for name2 in metric_names[i + 1 :]:
                 series1 = metric_series[name1]
                 series2 = metric_series[name2]
 
@@ -777,19 +768,19 @@ class NeuralMonitoringSystem:
             # Simple weight update (in practice, use proper backpropagation)
             if len(training_features) > 10:
                 # Update weights based on recent patterns
-                avg_features = [statistics.mean([f[i] for f in training_features])
-                               for i in range(self.input_dim)]
+                avg_features = [statistics.mean([f[i] for f in training_features]) for i in range(self.input_dim)]
 
                 # Adjust weights toward average (simplified training)
                 for i in range(min(len(avg_features), len(self.anomaly_detector["weights"]["input_hidden"]))):
                     for j in range(min(len(avg_features), len(self.anomaly_detector["weights"]["input_hidden"][i]))):
                         self.anomaly_detector["weights"]["input_hidden"][i][j] = (
-                            self.anomaly_detector["weights"]["input_hidden"][i][j] * 0.9 +
-                            avg_features[i] * 0.1
+                            self.anomaly_detector["weights"]["input_hidden"][i][j] * 0.9 + avg_features[i] * 0.1
                         )
 
             # Update performance metrics
-            self.anomaly_detector["performance"]["accuracy"] = min(1.0, self.anomaly_detector["performance"]["accuracy"] + 0.01)
+            self.anomaly_detector["performance"]["accuracy"] = min(
+                1.0, self.anomaly_detector["performance"]["accuracy"] + 0.01
+            )
             self.anomaly_detector["performance"]["loss"] = max(0.1, self.anomaly_detector["performance"]["loss"] - 0.01)
 
         except Exception as e:
@@ -909,7 +900,7 @@ class NeuralMonitoringSystem:
                             description=f"Predicted {prediction_type} for {metric_name}",
                             impact_assessment=f"{impact} impact expected",
                             recommendations=recommendations,
-                            related_agents=list(set(m.agent_id for m in series[-5:]))
+                            related_agents=list(set(m.agent_id for m in series[-5:])),
                         )
                         predictions.append(prediction)
 
@@ -921,12 +912,7 @@ class NeuralMonitoringSystem:
 
         return predictions
 
-    def _generate_prediction_recommendations(
-        self,
-        metric_name: str,
-        prediction_type: str,
-        impact: str
-    ) -> List[str]:
+    def _generate_prediction_recommendations(self, metric_name: str, prediction_type: str, impact: str) -> List[str]:
         """Generate recommendations based on prediction."""
         recommendations = []
 
@@ -992,19 +978,19 @@ class NeuralMonitoringSystem:
                 "system_health": monitoring_data.get("system_health", 1.0),
                 "monitored_agents": len(monitoring_data.get("monitoring_agents", [])),
                 "total_metrics": len(monitoring_data.get("metrics_history", [])),
-                "last_updated": monitoring_data.get("last_updated")
+                "last_updated": monitoring_data.get("last_updated"),
             },
             "performance_metrics": {
                 "active_anomalies": len(anomalies_data.get("active_anomalies", [])),
                 "active_predictions": len(predictions_data.get("active_predictions", [])),
                 "detection_accuracy": self._calculate_detection_accuracy(),
-                "prediction_accuracy": self._calculate_prediction_accuracy()
+                "prediction_accuracy": self._calculate_prediction_accuracy(),
             },
             "top_anomalies": self._get_top_anomalies(anomalies_data.get("active_anomalies", [])),
             "key_predictions": self._get_key_predictions(predictions_data.get("active_predictions", [])),
             "agent_status": self._get_agent_status(monitoring_data.get("monitoring_agents", [])),
             "metric_trends": self._get_metric_trends(),
-            "system_alerts": self._get_system_alerts()
+            "system_alerts": self._get_system_alerts(),
         }
 
         return dashboard
@@ -1030,11 +1016,7 @@ class NeuralMonitoringSystem:
             return []
 
         # Sort by confidence and severity
-        sorted_anomalies = sorted(
-            anomalies,
-            key=lambda a: (a.get("confidence", 0), a.get("severity") == "high"),
-            reverse=True
-        )
+        sorted_anomalies = sorted(anomalies, key=lambda a: (a.get("confidence", 0), a.get("severity") == "high"), reverse=True)
 
         return sorted_anomalies[:5]  # Top 5 anomalies
 
@@ -1044,11 +1026,7 @@ class NeuralMonitoringSystem:
             return []
 
         # Sort by confidence
-        sorted_predictions = sorted(
-            predictions,
-            key=lambda p: p.get("confidence", 0),
-            reverse=True
-        )
+        sorted_predictions = sorted(predictions, key=lambda p: p.get("confidence", 0), reverse=True)
 
         return sorted_predictions[:5]  # Top 5 predictions
 
@@ -1070,7 +1048,7 @@ class NeuralMonitoringSystem:
                 status = "active" if time_since_last < 300 else "inactive"  # 5 minutes threshold
 
                 # Calculate average anomaly score
-                anomaly_scores = [m.anomaly_score for m in agent_metrics if hasattr(m, 'anomaly_score')]
+                anomaly_scores = [m.anomaly_score for m in agent_metrics if hasattr(m, "anomaly_score")]
                 avg_anomaly = statistics.mean(anomaly_scores) if anomaly_scores else 0
 
                 health_score = max(0, 1.0 - avg_anomaly)
@@ -1078,14 +1056,16 @@ class NeuralMonitoringSystem:
                 status = "no_data"
                 health_score = 0.5
 
-            agent_status.append({
-                "agent_id": agent["agent_id"],
-                "tier": agent["tier"],
-                "status": status,
-                "health_score": health_score,
-                "metrics_count": agent["metrics_count"],
-                "last_metric": agent["last_metric"]
-            })
+            agent_status.append(
+                {
+                    "agent_id": agent["agent_id"],
+                    "tier": agent["tier"],
+                    "status": status,
+                    "health_score": health_score,
+                    "metrics_count": agent["metrics_count"],
+                    "last_metric": agent["last_metric"],
+                }
+            )
 
         return sorted(agent_status, key=lambda a: a["health_score"], reverse=True)
 
@@ -1125,22 +1105,28 @@ class NeuralMonitoringSystem:
 
         # System health alerts
         if self.system_health < 0.7:
-            alerts.append({
-                "type": "health",
-                "severity": "high" if self.system_health < 0.5 else "medium",
-                "message": f"System health degraded to {self.system_health:.1%}",
-                "timestamp": datetime.now().isoformat()
-            })
+            alerts.append(
+                {
+                    "type": "health",
+                    "severity": "high" if self.system_health < 0.5 else "medium",
+                    "message": f"System health degraded to {self.system_health:.1%}",
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
 
         # Anomaly alerts
-        recent_anomalies = [a for a in self.metrics_buffer if hasattr(a, 'anomaly_score') and a.anomaly_score > self.anomaly_threshold]
+        recent_anomalies = [
+            a for a in self.metrics_buffer if hasattr(a, "anomaly_score") and a.anomaly_score > self.anomaly_threshold
+        ]
         if len(recent_anomalies) > 5:
-            alerts.append({
-                "type": "anomaly",
-                "severity": "high",
-                "message": f"High anomaly activity detected: {len(recent_anomalies)} anomalies",
-                "timestamp": datetime.now().isoformat()
-            })
+            alerts.append(
+                {
+                    "type": "anomaly",
+                    "severity": "high",
+                    "message": f"High anomaly activity detected: {len(recent_anomalies)} anomalies",
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
 
         # Monitoring agent alerts
         inactive_agents = []
@@ -1152,12 +1138,14 @@ class NeuralMonitoringSystem:
                     inactive_agents.append(agent_id)
 
         if inactive_agents:
-            alerts.append({
-                "type": "agent",
-                "severity": "medium",
-                "message": f"Inactive monitoring agents: {', '.join(inactive_agents)}",
-                "timestamp": datetime.now().isoformat()
-            })
+            alerts.append(
+                {
+                    "type": "agent",
+                    "severity": "medium",
+                    "message": f"Inactive monitoring agents: {', '.join(inactive_agents)}",
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
 
         return alerts
 
@@ -1166,19 +1154,18 @@ def main():
     """Command-line interface for testing the neural monitoring system."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Neural Monitoring System')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['start', 'stop', 'status', 'register', 'test'],
-                       help='Action to perform')
-    parser.add_argument('--agent-id', help='Agent ID for registration')
-    parser.add_argument('--tier', choices=['analysis', 'execution'], help='Agent tier')
-    parser.add_argument('--duration', type=int, default=30, help='Test duration in seconds')
+    parser = argparse.ArgumentParser(description="Neural Monitoring System")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["start", "stop", "status", "register", "test"], help="Action to perform")
+    parser.add_argument("--agent-id", help="Agent ID for registration")
+    parser.add_argument("--tier", choices=["analysis", "execution"], help="Agent tier")
+    parser.add_argument("--duration", type=int, default=30, help="Test duration in seconds")
 
     args = parser.parse_args()
 
     system = NeuralMonitoringSystem(args.storage_dir)
 
-    if args.action == 'start':
+    if args.action == "start":
         system.start_monitoring()
         print("Monitoring started. Press Ctrl+C to stop.")
         try:
@@ -1187,10 +1174,10 @@ def main():
         except KeyboardInterrupt:
             system.stop_monitoring()
 
-    elif args.action == 'stop':
+    elif args.action == "stop":
         system.stop_monitoring()
 
-    elif args.action == 'status':
+    elif args.action == "status":
         dashboard = system.get_monitoring_dashboard()
         print("Neural Monitoring System Status:")
         print(f"  Active: {dashboard['system_overview']['monitoring_active']}")
@@ -1200,14 +1187,14 @@ def main():
         print(f"  Active Anomalies: {dashboard['performance_metrics']['active_anomalies']}")
         print(f"  Active Predictions: {dashboard['performance_metrics']['active_predictions']}")
 
-    elif args.action == 'register':
+    elif args.action == "register":
         if not all([args.agent_id, args.tier]):
             print("Error: --agent-id and --tier required for register")
             sys.exit(1)
 
         system.register_monitoring_agent(args.agent_id, args.tier)
 
-    elif args.action == 'test':
+    elif args.action == "test":
         print("Running neural monitoring system test...")
 
         # Register test agents
@@ -1219,6 +1206,7 @@ def main():
 
         # Generate test metrics
         import random
+
         for i in range(args.duration):
             # Generate random metrics
             system.record_metric("cpu_usage", random.uniform(20, 80), "test-agent-1", "analysis")
@@ -1252,7 +1240,7 @@ def main():
         print(f"  Active Anomalies: {dashboard['performance_metrics']['active_anomalies']}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import uuid
     import math
 

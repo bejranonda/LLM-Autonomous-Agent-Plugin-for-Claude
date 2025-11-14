@@ -7,6 +7,7 @@ import py_compile
 import sys
 from pathlib import Path
 
+
 def check_syntax(file_path):
     """Check if a Python file has syntax errors"""
     try:
@@ -16,6 +17,7 @@ def check_syntax(file_path):
         return str(e)
     except Exception as e:
         return f"Unexpected error: {e}"
+
 
 def main():
     """Check all Python files for syntax errors"""
@@ -41,7 +43,7 @@ def main():
         for filename, error in error_files:
             print(f"ERROR: {filename}")
             # Extract first line of error for summary
-            first_line = error.split('\n')[0] if '\n' in error else error
+            first_line = error.split("\n")[0] if "\n" in error else error
             print(f"   {first_line}")
         print()
 
@@ -51,6 +53,7 @@ def main():
             print(f"OK: {filename}")
 
     return error_files
+
 
 if __name__ == "__main__":
     error_files = main()

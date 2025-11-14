@@ -11,6 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from performance_monitor import PerformanceMonitor
 
+
 def test_monitoring_integration():
     """Test performance monitoring integration with plugin operations"""
     print("Performance Integration Test")
@@ -24,12 +25,7 @@ def test_monitoring_integration():
     monitor.start_monitoring(sample_interval=0.5)
 
     # Test various operations with monitoring
-    operations = [
-        ("validate_plugin", 3),
-        ("simple_test", 3),
-        ("plugin_validator", 2),
-        ("command_validator_help", 2)
-    ]
+    operations = [("validate_plugin", 3), ("simple_test", 3), ("plugin_validator", 2), ("command_validator_help", 2)]
 
     print("\nExecuting monitored operations...")
     for op_name, iterations in operations:
@@ -38,16 +34,16 @@ def test_monitoring_integration():
 
             try:
                 if op_name == "validate_plugin":
-                    result = __import__('validate_plugin').main()
+                    result = __import__("validate_plugin").main()
                     success = True
                 elif op_name == "simple_test":
-                    result = __import__('simple_test_script').main()
+                    result = __import__("simple_test_script").main()
                     success = True
                 elif op_name == "plugin_validator":
-                    result = __import__('plugin_validator').main()
+                    result = __import__("plugin_validator").main()
                     success = True
                 elif op_name == "command_validator_help":
-                    result = __import__('command_validator').main()
+                    result = __import__("command_validator").main()
                     success = True
                 else:
                     success = False
@@ -111,7 +107,7 @@ def test_monitoring_integration():
     report = monitor.generate_performance_report()
     report_file = data_dir / f"performance_integration_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
 
-    with open(report_file, 'w') as f:
+    with open(report_file, "w") as f:
         json.dump(report, f, indent=2, default=str)
 
     print(f"\nDetailed report saved to: {report_file}")
@@ -120,6 +116,7 @@ def test_monitoring_integration():
     print(f"Total metrics collected: {len(monitor.metrics_history)}")
 
     return report
+
 
 def test_performance_alerts():
     """Test performance alert system"""
@@ -131,6 +128,7 @@ def test_performance_alerts():
     alert_count = 0
 
     def test_alert_callback(alert_type, alert_data):
+        """Test Alert Callback."""
         nonlocal alert_count
         alert_count += 1
         print(f"ALERT #{alert_count}: {alert_type} - {alert_data['message']}")
@@ -161,6 +159,7 @@ def test_performance_alerts():
 
     print(f"Alert system test completed. {alert_count} alerts triggered.")
     return alert_count > 0
+
 
 def main():
     """Main execution function"""
@@ -204,8 +203,10 @@ def main():
     except Exception as e:
         print(f"Integration test failed: {e}")
         import traceback
+
         traceback.print_exc()
         return False
+
 
 if __name__ == "__main__":
     success = main()

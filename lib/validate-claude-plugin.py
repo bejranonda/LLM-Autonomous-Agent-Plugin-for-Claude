@@ -168,9 +168,7 @@ def main():
     all_warnings = []
 
     # Run validations
-    issues, warnings = validate_plugin_manifest(
-        plugin_dir / ".claude-plugin" / "plugin.json"
-    )
+    issues, warnings = validate_plugin_manifest(plugin_dir / ".claude-plugin" / "plugin.json")
     all_issues.extend(issues)
     all_warnings.extend(warnings)
 

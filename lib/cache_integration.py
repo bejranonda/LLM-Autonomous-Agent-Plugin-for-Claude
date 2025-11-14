@@ -22,6 +22,7 @@ except ImportError:
     print("Error: Smart cache system not found.")
     sys.exit(1)
 
+
 class TokenCache:
     """Simple interface for token optimization through caching."""
 
@@ -30,19 +31,18 @@ class TokenCache:
         self.cache = SimpleSmartCache(
             cache_dir=cache_dir,
             max_size_mb=max_size_mb,
-            default_policy=SimpleSmartCache.__init__.__annotations__['default_policy'].LRU if hasattr(SimpleSmartCache.__init__, '__annotations__') else 'lru'
+            default_policy=(
+                SimpleSmartCache.__init__.__annotations__["default_policy"].LRU
+                if hasattr(SimpleSmartCache.__init__, "__annotations__")
+                else "lru"
+            ),
         )
-        self.optimization_stats = {
-            'cache_hits': 0,
-            'cache_misses': 0,
-            'tokens_saved': 0
-        }
+        self.optimization_stats = {"cache_hits": 0, "cache_misses": 0, "tokens_saved": 0}
 
-    def cache_processed_content(self,
-                              original_content: str,
-                              processed_content: str,
-                              context: Dict[str, Any] = None,
-                              user_id: str = "default") -> str:
+    def cache_processed_content(
+        self, original_content: str, processed_content: str, context: Dict[str, Any] = None, user_id: str = "default"
+    )-> str:
+        """Cache Processed Content."""
         """
         Cache processed content to avoid reprocessing.
 
@@ -63,19 +63,16 @@ class TokenCache:
         # Try to get from cache
         cached_result = self.cache.get(cache_key, user_id)
         if cached_result is not None:
-            self.optimization_stats['cache_hits'] += 1
+            self.optimization_stats["cache_hits"] += 1
             return cached_result
 
         # Cache miss - store the processed content
         self.cache.set(cache_key, processed_content, user_id=user_id)
-        self.optimization_stats['cache_misses'] += 1
+        self.optimization_stats["cache_misses"] += 1
 
         return processed_content
 
-    def get_optimized_content(self,
-                             content: str,
-                             context: Dict[str, Any] = None,
-                             user_id: str = "default") -> Optional[str]:
+    def get_optimized_content(self, content: str, context: Dict[str, Any] = None, user_id: str = "default") -> Optional[str]:
         """
         Get optimized content from cache if available.
 
@@ -93,17 +90,16 @@ class TokenCache:
 
         result = self.cache.get(cache_key, user_id)
         if result is not None:
-            self.optimization_stats['cache_hits'] += 1
+            self.optimization_stats["cache_hits"] += 1
             return result
 
-        self.optimization_stats['cache_misses'] += 1
+        self.optimization_stats["cache_misses"] += 1
         return None
 
-    def store_optimized_content(self,
-                               original_content: str,
-                               optimized_content: str,
-                               context: Dict[str, Any] = None,
-                               user_id: str = "default") -> None:
+    def store_optimized_content(
+        self, original_content: str, optimized_content: str, context: Dict[str, Any] = None, user_id: str = "default"
+    )-> None:
+        """Store Optimized Content."""
         """Store optimized content in cache."""
         content_hash = hashlib.md5(original_content.encode()).hexdigest()
         context_hash = hashlib.md5(str(context or {}).encode()).hexdigest()[:8]
@@ -111,11 +107,7 @@ class TokenCache:
 
         self.cache.set(cache_key, optimized_content, user_id=user_id)
 
-    def cache_analysis_result(self,
-                             analysis_type: str,
-                             input_data: Any,
-                             result: Any,
-                             user_id: str = "default") -> Any:
+    def cache_analysis_result(self, analysis_type: str, input_data: Any, result: Any, user_id: str = "default") -> Any:
         """
         Cache analysis results to avoid reprocessing.
 
@@ -134,51 +126,48 @@ class TokenCache:
         # Try to get from cache
         cached_result = self.cache.get(cache_key, user_id)
         if cached_result is not None:
-            self.optimization_stats['cache_hits'] += 1
+            self.optimization_stats["cache_hits"] += 1
             return cached_result
 
         # Store new result
         self.cache.set(cache_key, result, user_id=user_id)
-        self.optimization_stats['cache_misses'] += 1
+        self.optimization_stats["cache_misses"] += 1
 
         return result
 
-    def get_analysis_result(self,
-                           analysis_type: str,
-                           input_data: Any,
-                           user_id: str = "default") -> Optional[Any]:
+    def get_analysis_result(self, analysis_type: str, input_data: Any, user_id: str = "default") -> Optional[Any]:
         """Get cached analysis result."""
         input_hash = hashlib.md5(str(input_data).encode()).hexdigest()
         cache_key = f"analysis_{analysis_type}_{user_id}_{input_hash}"
 
         result = self.cache.get(cache_key, user_id)
         if result is not None:
-            self.optimization_stats['cache_hits'] += 1
+            self.optimization_stats["cache_hits"] += 1
             return result
 
-        self.optimization_stats['cache_misses'] += 1
+        self.optimization_stats["cache_misses"] += 1
         return None
 
     def get_cache_efficiency(self) -> Dict[str, Any]:
         """Get cache efficiency statistics."""
         stats = self.cache.get_stats()
 
-        total_requests = self.optimization_stats['cache_hits'] + self.optimization_stats['cache_misses']
-        hit_rate = (self.optimization_stats['cache_hits'] / total_requests
-                    if total_requests > 0 else 0)
+        total_requests = self.optimization_stats["cache_hits"] + self.optimization_stats["cache_misses"]
+        hit_rate = self.optimization_stats["cache_hits"] / total_requests if total_requests > 0 else 0
 
         return {
-            'hit_rate': hit_rate,
-            'total_requests': total_requests,
-            'cache_hits': self.optimization_stats['cache_hits'],
-            'cache_misses': self.optimization_stats['cache_misses'],
-            'cache_stats': stats,
-            'tokens_saved': self.optimization_stats['tokens_saved']
+            "hit_rate": hit_rate,
+            "total_requests": total_requests,
+            "cache_hits": self.optimization_stats["cache_hits"],
+            "cache_misses": self.optimization_stats["cache_misses"],
+            "cache_stats": stats,
+            "tokens_saved": self.optimization_stats["tokens_saved"],
         }
 
     def cleanup_old_entries(self, hours: int = 24) -> int:
         """Clean up old cache entries."""
         return self.cache.cleanup(hours)
+
 
 # Easy-to-use functions for quick integration
 def cache_processed(original: str, processed: str, context: Dict[str, Any] = None, user_id: str = "default") -> str:
@@ -186,20 +175,24 @@ def cache_processed(original: str, processed: str, context: Dict[str, Any] = Non
     token_cache = TokenCache()
     return token_cache.cache_processed_content(original, processed, context, user_id)
 
+
 def get_cached(original: str, context: Dict[str, Any] = None, user_id: str = "default") -> Optional[str]:
     """Quick function to get cached content."""
     token_cache = TokenCache()
     return token_cache.get_optimized_content(original, context, user_id)
+
 
 def cache_analysis(analysis_type: str, input_data: Any, result: Any, user_id: str = "default") -> Any:
     """Quick function to cache analysis results."""
     token_cache = TokenCache()
     return token_cache.cache_analysis_result(analysis_type, input_data, result, user_id)
 
+
 def get_cached_analysis(analysis_type: str, input_data: Any, user_id: str = "default") -> Optional[Any]:
     """Quick function to get cached analysis result."""
     token_cache = TokenCache()
     return token_cache.get_analysis_result(analysis_type, input_data, user_id)
+
 
 # Demonstration function
 def demonstrate_caching():
@@ -276,13 +269,14 @@ def demonstrate_caching():
     print(f"   Cache hits: {efficiency['cache_hits']}")
     print(f"   Cache misses: {efficiency['cache_misses']}")
 
-    cache_stats = efficiency['cache_stats']
+    cache_stats = efficiency["cache_stats"]
     print(f"\n4. Cache System Statistics:")
     print(f"   Total entries: {cache_stats['cache_stats']['total_entries']}")
     print(f"   Cache size: {cache_stats['cache_stats']['total_size_bytes']:,} bytes")
     print(f"   Memory utilization: {cache_stats['performance_metrics']['memory_utilization']:.1%}")
 
     print("\nCache demonstration complete!")
+
 
 # CLI interface
 def main():
@@ -314,6 +308,7 @@ def main():
         print(f"Cleaned up {cleaned} cache entries older than {args.cleanup} hours")
     else:
         demonstrate_caching()
+
 
 if __name__ == "__main__":
     main()

@@ -11,37 +11,36 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any
 
+
 def load_json_file(file_path: Path) -> Dict[str, Any]:
     """Load JSON file with error handling."""
     try:
         if file_path.exists():
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 return json.load(f)
         return {}
     except Exception as e:
         print(f"Warning: Error loading {file_path}: {e}")
         return {}
 
+
 def save_json_file(data: Dict[str, Any], file_path: Path):
     """Save JSON file with proper formatting."""
     try:
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         return True
     except Exception as e:
         print(f"Error: Failed to save {file_path}: {e}")
         return False
 
+
 def migrate_quality_history() -> Dict[str, Any]:
     """Migrate quality history from .claude-patterns/quality_history.json"""
     quality_file = Path(".claude-patterns/quality_history.json")
     quality_data = load_json_file(quality_file)
 
-    migrated = {
-        "assessments": [],
-        "timeline": [],
-        "statistics": {}
-    }
+    migrated = {"assessments": [], "timeline": [], "statistics": {}}
 
     if "quality_assessments" in quality_data:
         for assessment in quality_data["quality_assessments"]:
@@ -57,7 +56,7 @@ def migrate_quality_history() -> Dict[str, Any]:
                 "issues_found": assessment.get("issues_found", []),
                 "recommendations": assessment.get("recommendations", []),
                 "skills_used": assessment.get("skills_used", []),
-                "migration_source": "quality_history.json"
+                "migration_source": "quality_history.json",
             }
             migrated["assessments"].append(unified_assessment)
 
@@ -66,7 +65,7 @@ def migrate_quality_history() -> Dict[str, Any]:
                 "timestamp": assessment.get("timestamp"),
                 "score": assessment.get("overall_score", 0),
                 "model_used": assessment.get("details", {}).get("model_used", "Unknown"),
-                "task_type": assessment.get("task_type", "unknown")
+                "task_type": assessment.get("task_type", "unknown"),
             }
             migrated["timeline"].append(timeline_entry)
 
@@ -77,11 +76,12 @@ def migrate_quality_history() -> Dict[str, Any]:
             "total_assessments": len(migrated["assessments"]),
             "average_score": sum(scores) / len(scores),
             "pass_rate": sum(1 for a in migrated["assessments"] if a["pass"]) / len(migrated["assessments"]),
-            "latest_score": scores[-1] if scores else 0
+            "latest_score": scores[-1] if scores else 0,
         }
 
     print(f"Migrated {len(migrated['assessments'])} quality assessments")
     return migrated
+
 
 def migrate_patterns() -> Dict[str, Any]:
     """Migrate patterns from .claude-patterns/patterns.json"""
@@ -92,7 +92,7 @@ def migrate_patterns() -> Dict[str, Any]:
         "project_context": patterns_data.get("project_context", {}),
         "patterns": [],
         "skill_effectiveness": {},
-        "agent_performance": {}
+        "agent_performance": {},
     }
 
     if "patterns" in patterns_data:
@@ -106,7 +106,7 @@ def migrate_patterns() -> Dict[str, Any]:
                 "execution": pattern.get("execution", {}),
                 "outcome": pattern.get("outcome", {}),
                 "reuse_count": pattern.get("reuse_count", 0),
-                "migration_source": "patterns.json"
+                "migration_source": "patterns.json",
             }
             migrated["patterns"].append(unified_pattern)
 
@@ -120,15 +120,13 @@ def migrate_patterns() -> Dict[str, Any]:
     print(f"Migrated {len(migrated['patterns'])} learning patterns")
     return migrated
 
+
 def migrate_assessments() -> Dict[str, Any]:
     """Migrate assessments from .claude-patterns/assessments.json"""
     assessments_file = Path(".claude-patterns/assessments.json")
     assessments_data = load_json_file(assessments_file)
 
-    migrated = {
-        "validations": [],
-        "plugin_validations": []
-    }
+    migrated = {"validations": [], "plugin_validations": []}
 
     if "assessments" in assessments_data:
         for assessment in assessments_data["assessments"]:
@@ -143,7 +141,7 @@ def migrate_assessments() -> Dict[str, Any]:
                 "issues_found": assessment.get("issues_found", []),
                 "recommendations": assessment.get("recommendations", []),
                 "agents_used": assessment.get("agents_used", []),
-                "migration_source": "assessments.json"
+                "migration_source": "assessments.json",
             }
 
             if assessment.get("assessment_type") == "plugin-validation":
@@ -154,19 +152,13 @@ def migrate_assessments() -> Dict[str, Any]:
     print(f"Migrated {len(migrated['validations']) + len(migrated['plugin_validations'])} assessments")
     return migrated
 
+
 def migrate_model_performance() -> Dict[str, Any]:
     """Migrate model performance from various sources"""
     model_perf_file = Path(".claude-patterns/model_performance.json")
     model_data = load_json_file(model_perf_file)
 
-    migrated = {
-        "models": {},
-        "usage_stats": {
-            "total_queries": 0,
-            "model_switches": 0,
-            "preferred_models": []
-        }
-    }
+    migrated = {"models": {}, "usage_stats": {"total_queries": 0, "model_switches": 0, "preferred_models": []}}
 
     # Handle different model performance data structures
     if "models" in model_data:
@@ -177,7 +169,7 @@ def migrate_model_performance() -> Dict[str, Any]:
                 "contribution": model_stats.get("contribution", 0.0),
                 "total_tasks": model_stats.get("total_tasks", 0),
                 "last_updated": model_stats.get("last_updated", datetime.now().isoformat()),
-                "migration_source": "model_performance.json"
+                "migration_source": "model_performance.json",
             }
     else:
         # Handle direct model data structure
@@ -189,25 +181,23 @@ def migrate_model_performance() -> Dict[str, Any]:
                     "contribution": model_stats.get("contribution_to_project", model_stats.get("contribution", 0.0)),
                     "total_tasks": model_stats.get("total_tasks", 0),
                     "last_updated": model_stats.get("last_updated", datetime.now().isoformat()),
-                    "migration_source": "model_performance.json"
+                    "migration_source": "model_performance.json",
                 }
 
     print(f"Migrated performance data for {len(migrated['models'])} models")
     return migrated
+
 
 def migrate_autofix_patterns() -> Dict[str, Any]:
     """Migrate auto-fix patterns from patterns/autofix-patterns.json"""
     autofix_file = Path("patterns/autofix-patterns.json")
     autofix_data = load_json_file(autofix_file)
 
-    migrated = {
-        "patterns": autofix_data,
-        "success_rates": {},
-        "usage_stats": {}
-    }
+    migrated = {"patterns": autofix_data, "success_rates": {}, "usage_stats": {}}
 
     print(f"Migrated {len(autofix_data)} auto-fix patterns")
     return migrated
+
 
 def create_unified_storage() -> Dict[str, Any]:
     """Create the comprehensive unified storage structure."""
@@ -218,47 +208,19 @@ def create_unified_storage() -> Dict[str, Any]:
             "last_updated": datetime.now().isoformat(),
             "migration_sources": [],
             "total_records_migrated": 0,
-            "migration_status": "in_progress"
+            "migration_status": "in_progress",
         },
-        "quality": {
-            "assessments": {
-                "current": {},
-                "history": [],
-                "statistics": {}
-            },
-            "timeline": [],
-            "metrics": {}
-        },
-        "models": {
-            "active_model": "GLM-4.6",  # Based on recent usage
-            "performance": {},
-            "usage_stats": {}
-        },
+        "quality": {"assessments": {"current": {}, "history": [], "statistics": {}}, "timeline": [], "metrics": {}},
+        "models": {"active_model": "GLM-4.6", "performance": {}, "usage_stats": {}},  # Based on recent usage
         "learning": {
-            "patterns": {
-                "project_context": {},
-                "patterns": [],
-                "skill_effectiveness": {},
-                "agent_performance": {}
-            },
-            "analytics": {}
+            "patterns": {"project_context": {}, "patterns": [], "skill_effectiveness": {}, "agent_performance": {}},
+            "analytics": {},
         },
-        "validation": {
-            "recent_validations": [],
-            "plugin_validations": [],
-            "compliance_status": {}
-        },
-        "autofix": {
-            "patterns": {},
-            "success_rates": {},
-            "usage_stats": {}
-        },
-        "dashboard": {
-            "metrics": {},
-            "real_time": {},
-            "charts": {}
-        }
+        "validation": {"recent_validations": [], "plugin_validations": [], "compliance_status": {}},
+        "autofix": {"patterns": {}, "success_rates": {}, "usage_stats": {}},
+        "dashboard": {"metrics": {}, "real_time": {}, "charts": {}},
     }
+
 
 def run_comprehensive_migration():
     """Run the comprehensive data migration."""
@@ -318,14 +280,12 @@ def run_comprehensive_migration():
 
     # Set current quality assessment if available
     if unified_data["quality"]["assessments"]["history"]:
-        latest = max(unified_data["quality"]["assessments"]["history"],
-                    key=lambda x: x.get("timestamp", ""))
+        latest = max(unified_data["quality"]["assessments"]["history"], key=lambda x: x.get("timestamp", ""))
         unified_data["quality"]["assessments"]["current"] = latest
 
     # Set active model based on most recent usage
     if unified_data["quality"]["timeline"]:
-        recent_entries = [e for e in unified_data["quality"]["timeline"]
-                         if e.get("timestamp")]
+        recent_entries = [e for e in unified_data["quality"]["timeline"] if e.get("timestamp")]
         if recent_entries:
             latest_entry = max(recent_entries, key=lambda x: x.get("timestamp", ""))
             unified_data["models"]["active_model"] = latest_entry.get("model_used", "GLM-4.6")
@@ -336,13 +296,13 @@ def run_comprehensive_migration():
         "current_quality_score": unified_data["quality"]["assessments"]["current"].get("overall_score", 0),
         "active_models": len(unified_data["models"]["performance"]),
         "total_patterns": len(unified_data["learning"]["patterns"]["patterns"]),
-        "system_health": 100.0
+        "system_health": 100.0,
     }
 
     unified_data["dashboard"]["real_time"] = {
         "current_model": unified_data["models"]["active_model"],
         "last_activity": datetime.now().isoformat(),
-        "last_migration": unified_data["metadata"]["last_updated"]
+        "last_migration": unified_data["metadata"]["last_updated"],
     }
 
     # Save unified data
@@ -386,13 +346,10 @@ def run_comprehensive_migration():
         print("Failed to save unified data")
         return False
 
+
 def validate_unified_data(data: Dict[str, Any]) -> Dict[str, Any]:
     """Validate the unified data structure."""
-    results = {
-        "valid": True,
-        "errors": [],
-        "warnings": []
-    }
+    results = {"valid": True, "errors": [], "warnings": []}
 
     # Check required sections
     required_sections = ["quality", "models", "learning", "validation", "autofix", "dashboard"]
@@ -426,6 +383,7 @@ def validate_unified_data(data: Dict[str, Any]) -> Dict[str, Any]:
                 results["errors"].append(f"Invalid success rate for model {model_name}")
 
     return results
+
 
 if __name__ == "__main__":
     success = run_comprehensive_migration()

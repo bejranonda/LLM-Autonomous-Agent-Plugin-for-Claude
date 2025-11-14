@@ -10,6 +10,7 @@ import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Any
 
+
 def load_existing_records():
     """Load existing performance records."""
     records = {"assessment_ids": set(), "timestamps": set()}
@@ -18,24 +19,25 @@ def load_existing_records():
     quality_history_file = ".claude-patterns/quality_history.json"
 
     if os.path.exists(performance_records_file):
-        with open(performance_records_file, 'r', encoding='utf-8') as f:
+        with open(performance_records_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-            for record in data.get('records', []):
-                if record.get('assessment_id'):
-                    records["assessment_ids"].add(record['assessment_id'])
-                if record.get('timestamp'):
-                    records["timestamps"].add(record['timestamp'])
+            for record in data.get("records", []):
+                if record.get("assessment_id"):
+                    records["assessment_ids"].add(record["assessment_id"])
+                if record.get("timestamp"):
+                    records["timestamps"].add(record["timestamp"])
 
     if os.path.exists(quality_history_file):
-        with open(quality_history_file, 'r', encoding='utf-8') as f:
+        with open(quality_history_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-            for assessment in data.get('quality_assessments', []):
-                if assessment.get('assessment_id'):
-                    records["assessment_ids"].add(assessment['assessment_id'])
-                if assessment.get('timestamp'):
-                    records["timestamps"].add(assessment['timestamp'])
+            for assessment in data.get("quality_assessments", []):
+                if assessment.get("assessment_id"):
+                    records["assessment_ids"].add(assessment["assessment_id"])
+                if assessment.get("timestamp"):
+                    records["timestamps"].add(assessment["timestamp"])
 
     return records
+
 
 def get_recent_commits(hours=6):
     """Get recent commits from git history."""
@@ -43,45 +45,45 @@ def get_recent_commits(hours=6):
     since_date_str = since_date.strftime("%Y-%m-%d %H:%M")
 
     try:
-        result = subprocess.run([
-            "git", "log", f"--since={since_date_str}",
-            "--pretty=format:%H|%ad|%s", "--date=iso", "--no-merges"
-        ], capture_output=True, text=True, check=True)
+        result = subprocess.run(
+            ["git", "log", f"--since={since_date_str}", "--pretty=format:%H|%ad|%s", "--date=iso", "--no-merges"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
 
         commits = []
-        for line in result.stdout.strip().split('\n'):
+        for line in result.stdout.strip().split("\n"):
             if line:
-                parts = line.split('|')
+                parts = line.split("|")
                 if len(parts) >= 3:
-                    commits.append({
-                        "hash": parts[0],
-                        "date": parts[1],
-                        "message": parts[2]
-                    })
+                    commits.append({"hash": parts[0], "date": parts[1], "message": parts[2]})
         return commits
     except subprocess.CalledProcessError:
         return []
+
 
 def classify_task_type(message, files_changed):
     """Classify task type based on commit message and files."""
     msg_lower = message.lower()
 
-    if msg_lower.startswith('feat:') or msg_lower.startswith('feature:'):
+    if msg_lower.startswith("feat:") or msg_lower.startswith("feature:"):
         return "feature-implementation"
-    elif msg_lower.startswith('fix:') or msg_lower.startswith('bugfix:'):
+    elif msg_lower.startswith("fix:") or msg_lower.startswith("bugfix:"):
         return "bug-fix"
-    elif msg_lower.startswith('refactor:'):
+    elif msg_lower.startswith("refactor:"):
         return "refactoring"
-    elif msg_lower.startswith('docs:'):
+    elif msg_lower.startswith("docs:"):
         return "documentation"
-    elif msg_lower.startswith('release:') or msg_lower.startswith('bump:'):
+    elif msg_lower.startswith("release:") or msg_lower.startswith("bump:"):
         return "release-management"
-    elif 'quality' in msg_lower or any('quality' in f for f in files_changed):
+    elif "quality" in msg_lower or any("quality" in f for f in files_changed):
         return "quality-improvement"
-    elif any('lib/' in f for f in files_changed):
+    elif any("lib/" in f for f in files_changed):
         return "code-improvement"
     else:
         return "general-maintenance"
+
 
 def estimate_score_and_duration(task_type, files_count):
     """Estimate quality score and duration based on task type and complexity."""
@@ -93,7 +95,7 @@ def estimate_score_and_duration(task_type, files_count):
         "quality-improvement": 93,
         "release-management": 89,
         "code-improvement": 90,
-        "general-maintenance": 87
+        "general-maintenance": 87,
     }
 
     base_score = base_scores.get(task_type, 88)
@@ -114,7 +116,9 @@ def estimate_score_and_duration(task_type, files_count):
 
     return final_score, estimated_duration
 
+
 def main():
+    """Main."""
     print("=" * 60)
     print("MISSING PERFORMANCE RECORDS DETECTOR")
     print("=" * 60)
@@ -132,31 +136,31 @@ def main():
     for commit in commits:
         # Skip if this commit hash is already recorded
         commit_id = f"commit-{commit['hash'][:8]}"
-        if commit_id in existing['assessment_ids']:
+        if commit_id in existing["assessment_ids"]:
             continue
 
         # Get files changed
         try:
-            result = subprocess.run([
-                "git", "show", "--name-only", "--pretty=format:", commit['hash']
-            ], capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                ["git", "show", "--name-only", "--pretty=format:", commit["hash"]], capture_output=True, text=True, check=True
+            )
 
-            files_changed = [f.strip() for f in result.stdout.strip().split('\n') if f.strip()]
+            files_changed = [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
         except subprocess.CalledProcessError:
             files_changed = []
 
         # Classify task type
-        task_type = classify_task_type(commit['message'], files_changed)
+        task_type = classify_task_type(commit["message"], files_changed)
 
         # Estimate score and duration
         score, duration = estimate_score_and_duration(task_type, len(files_changed))
 
         # Create assessment ID
-        timestamp = datetime.fromisoformat(commit['date'].replace(' ', 'T'))
+        timestamp = datetime.fromisoformat(commit["date"].replace(" ", "T"))
         assessment_id = f"{task_type.replace('-', '')}-{timestamp.strftime('%Y%m%d-%H%M%S')}-{commit['hash'][:8]}"
 
         # Skip if already exists
-        if assessment_id in existing['assessment_ids']:
+        if assessment_id in existing["assessment_ids"]:
             continue
 
         # Create missing activity record
@@ -168,16 +172,16 @@ def main():
             "pass": True,
             "auto_generated": False,
             "issues_found": 0,
-            "fixes_applied": 1 if 'fix' in task_type else 0,
-            "quality_improvement": 5 if 'quality' in task_type or 'refactor' in task_type else 0,
+            "fixes_applied": 1 if "fix" in task_type else 0,
+            "quality_improvement": 5 if "quality" in task_type or "refactor" in task_type else 0,
             "performance_index": score * 0.9,
             "success_rate": 100,
             "time_elapsed_minutes": duration,
             "model": "GLM-4.6",
-            "description": commit['message'][:100],
+            "description": commit["message"][:100],
             "files_modified": len(files_changed),
             "source": "git-commit-analysis",
-            "commit_hash": commit['hash']
+            "commit_hash": commit["hash"],
         }
 
         missing_activities.append(missing_activity)
@@ -188,7 +192,7 @@ def main():
         print(f"\nMissing activities by type:")
         by_type = {}
         for activity in missing_activities:
-            task_type = activity['task_type']
+            task_type = activity["task_type"]
             if task_type not in by_type:
                 by_type[task_type] = []
             by_type[task_type].append(activity)
@@ -202,43 +206,43 @@ def main():
         # Load existing data
         performance_data = {"records": [], "version": "2.0.0"}
         if os.path.exists(performance_records_file):
-            with open(performance_records_file, 'r', encoding='utf-8') as f:
+            with open(performance_records_file, "r", encoding="utf-8") as f:
                 performance_data = json.load(f)
 
         # Add missing records
         for activity in missing_activities:
             record = {
-                "assessment_id": activity['assessment_id'],
-                "timestamp": activity['timestamp'],
-                "task_type": activity['task_type'],
-                "overall_score": activity['overall_score'],
-                "pass": activity['pass'],
-                "auto_generated": activity['auto_generated'],
-                "evaluation_target": activity['task_type'],
-                "issues_found": activity['issues_found'],
-                "fixes_applied": activity['fixes_applied'],
-                "quality_improvement": activity['quality_improvement'],
-                "performance_index": activity['performance_index'],
-                "success_rate": activity['success_rate'],
-                "time_elapsed_minutes": activity['time_elapsed_minutes'],
-                "model": activity['model'],
-                "description": activity['description'],
+                "assessment_id": activity["assessment_id"],
+                "timestamp": activity["timestamp"],
+                "task_type": activity["task_type"],
+                "overall_score": activity["overall_score"],
+                "pass": activity["pass"],
+                "auto_generated": activity["auto_generated"],
+                "evaluation_target": activity["task_type"],
+                "issues_found": activity["issues_found"],
+                "fixes_applied": activity["fixes_applied"],
+                "quality_improvement": activity["quality_improvement"],
+                "performance_index": activity["performance_index"],
+                "success_rate": activity["success_rate"],
+                "time_elapsed_minutes": activity["time_elapsed_minutes"],
+                "model": activity["model"],
+                "description": activity["description"],
                 "details": {
-                    "source": activity['source'],
-                    "commit_hash": activity['commit_hash'],
-                    "files_modified": activity['files_modified']
-                }
+                    "source": activity["source"],
+                    "commit_hash": activity["commit_hash"],
+                    "files_modified": activity["files_modified"],
+                },
             }
-            performance_data['records'].insert(0, record)
+            performance_data["records"].insert(0, record)
 
         # Update metadata
-        if 'metadata' not in performance_data:
-            performance_data['metadata'] = {}
-        performance_data['metadata']['total_records'] = len(performance_data['records'])
-        performance_data['metadata']['last_updated'] = datetime.now().isoformat()
+        if "metadata" not in performance_data:
+            performance_data["metadata"] = {}
+        performance_data["metadata"]["total_records"] = len(performance_data["records"])
+        performance_data["metadata"]["last_updated"] = datetime.now().isoformat()
 
         # Save updated records
-        with open(performance_records_file, 'w', encoding='utf-8') as f:
+        with open(performance_records_file, "w", encoding="utf-8") as f:
             json.dump(performance_data, f, indent=2, ensure_ascii=False)
 
         print(f"\nAdded {len(missing_activities)} missing records to performance_records.json")
@@ -256,6 +260,7 @@ def main():
         print("No missing activities found.")
 
     print("=" * 60)
+
 
 if __name__ == "__main__":
     main()

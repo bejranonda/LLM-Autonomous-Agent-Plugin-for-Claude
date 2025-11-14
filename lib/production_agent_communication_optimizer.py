@@ -24,23 +24,26 @@ import re
 
 class MessagePriority(Enum):
     """Message priority levels for communication optimization."""
-    CRITICAL = "critical"      # Always deliver, no optimization
-    HIGH = "high"              # Important, minimal optimization
-    NORMAL = "normal"          # Standard optimization applied
-    LOW = "low"                # Aggressive optimization
+
+    CRITICAL = "critical"  # Always deliver, no optimization
+    HIGH = "high"  # Important, minimal optimization
+    NORMAL = "normal"  # Standard optimization applied
+    LOW = "low"  # Aggressive optimization
 
 
 class CompressionLevel(Enum):
     """Compression levels for message optimization."""
-    NONE = "none"              # No compression
-    LIGHT = "light"            # Basic optimization, high integrity
-    MEDIUM = "medium"          # Standard optimization
+
+    NONE = "none"  # No compression
+    LIGHT = "light"  # Basic optimization, high integrity
+    MEDIUM = "medium"  # Standard optimization
     AGGRESSIVE = "aggressive"  # Maximum optimization
 
 
 @dataclass
 class CommunicationMetrics:
     """Metrics for communication optimization."""
+
     original_tokens: int
     optimized_tokens: int
     compression_ratio: float
@@ -65,6 +68,7 @@ class CommunicationMetrics:
 @dataclass
 class OptimizedMessage:
     """Optimized message with metadata."""
+
     message_id: str
     sender: str
     receiver: str
@@ -92,7 +96,7 @@ class ProductionAgentCommunicationOptimizer:
         self.compression_strategies = {
             CompressionLevel.LIGHT: self._light_compression,
             CompressionLevel.MEDIUM: self._medium_compression,
-            CompressionLevel.AGGRESSIVE: self._aggressive_compression
+            CompressionLevel.AGGRESSIVE: self._aggressive_compression,
         }
 
         # Message templates for common patterns
@@ -109,12 +113,18 @@ class ProductionAgentCommunicationOptimizer:
             "total_tokens_saved": 0,
             "average_compression_ratio": 0.0,
             "cache_hits": 0,
-            "processing_time_total": 0.0
+            "processing_time_total": 0.0,
         }
 
-    def optimize_message(self, sender: str, receiver: str, message: Dict[str, Any],
-                         compression_level: CompressionLevel = CompressionLevel.MEDIUM,
-                         priority: MessagePriority = MessagePriority.NORMAL) -> OptimizedMessage:
+    def optimize_message(
+        self,
+        sender: str,
+        receiver: str,
+        message: Dict[str, Any],
+        compression_level: CompressionLevel = CompressionLevel.MEDIUM,
+        priority: MessagePriority = MessagePriority.NORMAL,
+    )-> OptimizedMessage:
+        """Optimize Message."""
         """
         Optimize a message for token efficiency.
 
@@ -138,11 +148,11 @@ class ProductionAgentCommunicationOptimizer:
             compression_level = CompressionLevel.NONE
 
         # Calculate original token count
-        original_tokens = self._estimate_tokens(json.dumps(message, separators=(',', ':')))
+        original_tokens = self._estimate_tokens(json.dumps(message, separators=(",", ":")))
 
         # Apply compression based on level
         if compression_level == CompressionLevel.NONE:
-            compressed_content = json.dumps(message, separators=(',', ':'))
+            compressed_content = json.dumps(message, separators=(",", ":"))
         else:
             compressed_content = self._apply_compression(message, compression_level, sender, receiver)
 
@@ -161,7 +171,7 @@ class ProductionAgentCommunicationOptimizer:
             processing_time_ms=processing_time,
             compression_method=compression_level.value,
             integrity_maintained=True,  # Will be verified
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
 
         # Create optimized message
@@ -175,7 +185,7 @@ class ProductionAgentCommunicationOptimizer:
             compression_level=compression_level,
             priority=priority,
             metrics=metrics,
-            checksum=self._calculate_checksum(compressed_content)
+            checksum=self._calculate_checksum(compressed_content),
         )
 
         # Update statistics
@@ -202,11 +212,9 @@ class ProductionAgentCommunicationOptimizer:
         if optimized_message.compression_level == CompressionLevel.NONE:
             return json.loads(optimized_message.compressed_content)
 
-        return self._apply_decompression(optimized_message.compressed_content,
-                                       optimized_message.compression_level)
+        return self._apply_decompression(optimized_message.compressed_content, optimized_message.compression_level)
 
-    def optimize_conversation(self, conversation: List[Dict[str, Any]],
-                             participants: List[str]) -> Dict[str, Any]:
+    def optimize_conversation(self, conversation: List[Dict[str, Any]], participants: List[str]) -> Dict[str, Any]:
         """
         Optimize an entire conversation between agents.
 
@@ -245,17 +253,14 @@ class ProductionAgentCommunicationOptimizer:
                 "total_messages": len(conversation),
                 "participants": participants,
                 "previous_messages": optimized_messages[-3:] if optimized_messages else [],
-                "conversation_patterns": conversation_patterns
+                "conversation_patterns": conversation_patterns,
             }
 
             # Optimize message with context
-            optimized = self.optimize_message(sender, receiver, content,
-                                           compression_level, priority)
+            optimized = self.optimize_message(sender, receiver, content, compression_level, priority)
 
             # Add context to metadata
-            optimized.compressed_content = self._add_context_to_compressed(
-                optimized.compressed_content, context
-            )
+            optimized.compressed_content = self._add_context_to_compressed(optimized.compressed_content, context)
 
             optimized_messages.append(optimized)
             total_original_tokens += optimized.metrics.original_tokens
@@ -263,7 +268,9 @@ class ProductionAgentCommunicationOptimizer:
 
         # Calculate conversation metrics
         total_tokens_saved = total_original_tokens - total_optimized_tokens
-        conversation_savings_percentage = (total_tokens_saved / total_original_tokens * 100) if total_original_tokens > 0 else 0
+        conversation_savings_percentage = (
+            (total_tokens_saved / total_original_tokens * 100) if total_original_tokens > 0 else 0
+        )
         total_processing_time = (time.time() - conversation_start_time) * 1000
 
         return {
@@ -275,7 +282,7 @@ class ProductionAgentCommunicationOptimizer:
             "processing_time_ms": total_processing_time,
             "messages_processed": len(optimized_messages),
             "participants": participants,
-            "conversation_patterns": conversation_patterns
+            "conversation_patterns": conversation_patterns,
         }
 
     def get_optimization_statistics(self) -> Dict[str, Any]:
@@ -290,7 +297,7 @@ class ProductionAgentCommunicationOptimizer:
             **self.stats,
             "cache_hit_rate": self.stats["cache_hits"] / max(1, self.stats["total_optimizations"]),
             "average_processing_time": self.stats["processing_time_total"] / max(1, self.stats["total_optimizations"]),
-            "total_effectiveness": self._calculate_overall_effectiveness()
+            "total_effectiveness": self._calculate_overall_effectiveness(),
         }
 
     def _load_communication_patterns(self) -> Dict[str, Any]:
@@ -307,40 +314,28 @@ class ProductionAgentCommunicationOptimizer:
                 "analysis": "anlys",
                 "recommendation": "rec",
                 "implementation": "impl",
-                "verification": "verify"
+                "verification": "verify",
             },
             "message_types": {
-                "task_assignment": {
-                    "priority": MessagePriority.HIGH,
-                    "compression_level": CompressionLevel.LIGHT
-                },
-                "status_update": {
-                    "priority": MessagePriority.NORMAL,
-                    "compression_level": CompressionLevel.MEDIUM
-                },
-                "data_transfer": {
-                    "priority": MessagePriority.LOW,
-                    "compression_level": CompressionLevel.AGGRESSIVE
-                },
-                "error_report": {
-                    "priority": MessagePriority.CRITICAL,
-                    "compression_level": CompressionLevel.NONE
-                }
+                "task_assignment": {"priority": MessagePriority.HIGH, "compression_level": CompressionLevel.LIGHT},
+                "status_update": {"priority": MessagePriority.NORMAL, "compression_level": CompressionLevel.MEDIUM},
+                "data_transfer": {"priority": MessagePriority.LOW, "compression_level": CompressionLevel.AGGRESSIVE},
+                "error_report": {"priority": MessagePriority.CRITICAL, "compression_level": CompressionLevel.NONE},
             },
             "agent_pairs": {
                 ("strategic-planner", "quality-controller"): {
                     "compression_level": CompressionLevel.MEDIUM,
-                    "common_patterns": ["analysis_request", "quality_check"]
+                    "common_patterns": ["analysis_request", "quality_check"],
                 },
                 ("quality-controller", "test-engineer"): {
                     "compression_level": CompressionLevel.LIGHT,
-                    "common_patterns": ["test_request", "quality_gate"]
+                    "common_patterns": ["test_request", "quality_gate"],
                 },
                 ("learning-engine", "preference-coordinator"): {
                     "compression_level": CompressionLevel.AGGRESSIVE,
-                    "common_patterns": ["pattern_update", "preference_change"]
-                }
-            }
+                    "common_patterns": ["pattern_update", "preference_change"],
+                },
+            },
         }
 
     def _load_message_templates(self) -> Dict[str, Any]:
@@ -348,20 +343,19 @@ class ProductionAgentCommunicationOptimizer:
         return {
             "task_assignment": {
                 "required_fields": ["task_id", "task_type", "priority"],
-                "optional_fields": ["deadline", "requirements", "context"]
+                "optional_fields": ["deadline", "requirements", "context"],
             },
             "status_update": {
                 "required_fields": ["status", "task_id"],
-                "optional_fields": ["progress", "issues", "next_steps"]
+                "optional_fields": ["progress", "issues", "next_steps"],
             },
             "data_transfer": {
                 "required_fields": ["data_type", "data"],
-                "optional_fields": ["format", "compression", "metadata"]
-            }
+                "optional_fields": ["format", "compression", "metadata"],
+            },
         }
 
-    def _apply_compression(self, message: Dict[str, Any], level: CompressionLevel,
-                          sender: str, receiver: str) -> str:
+    def _apply_compression(self, message: Dict[str, Any], level: CompressionLevel, sender: str, receiver: str) -> str:
         """Apply compression based on level."""
         strategy = self.compression_strategies.get(level, self._medium_compression)
 
@@ -382,7 +376,7 @@ class ProductionAgentCommunicationOptimizer:
                 compressed[key] = self._light_compression(value)
             elif isinstance(value, str):
                 # Remove redundant whitespace and compress common phrases
-                compressed_str = re.sub(r'\s+', ' ', value.strip())
+                compressed_str = re.sub(r"\s+", " ", value.strip())
                 compressed_str = self._replace_common_phrases(compressed_str)
                 compressed[key] = compressed_str
             elif isinstance(value, list):
@@ -390,7 +384,7 @@ class ProductionAgentCommunicationOptimizer:
             else:
                 compressed[key] = value
 
-        return json.dumps(compressed, separators=(',', ':'))
+        return json.dumps(compressed, separators=(",", ":"))
 
     def _medium_compression(self, message: Dict[str, Any]) -> str:
         """Medium compression - balanced optimization and integrity."""
@@ -407,7 +401,7 @@ class ProductionAgentCommunicationOptimizer:
             "recommendation": "rec",
             "implementation": "impl",
             "validation": "val",
-            "optimization": "opt"
+            "optimization": "opt",
         }
 
         for key, value in message.items():
@@ -427,7 +421,7 @@ class ProductionAgentCommunicationOptimizer:
             else:
                 compressed[new_key] = value
 
-        return json.dumps(compressed, separators=(',', ':'))
+        return json.dumps(compressed, separators=(",", ":"))
 
     def _aggressive_compression(self, message: Dict[str, Any]) -> str:
         """Aggressive compression - maximum optimization."""
@@ -435,18 +429,18 @@ class ProductionAgentCommunicationOptimizer:
         json_str = self._medium_compression(message)
 
         # Apply zlib compression
-        compressed_bytes = zlib.compress(json_str.encode('utf-8'))
+        compressed_bytes = zlib.compress(json_str.encode("utf-8"))
 
         # Base64 encode for safe transport
-        return base64.b64encode(compressed_bytes).decode('ascii')
+        return base64.b64encode(compressed_bytes).decode("ascii")
 
     def _apply_decompression(self, compressed_content: str, level: CompressionLevel) -> Dict[str, Any]:
         """Apply decompression based on level."""
         if level == CompressionLevel.AGGRESSIVE:
             # Decode base64 and decompress
-            compressed_bytes = base64.b64decode(compressed_content.encode('ascii'))
+            compressed_bytes = base64.b64decode(compressed_content.encode("ascii"))
             decompressed_bytes = zlib.decompress(compressed_bytes)
-            json_str = decompressed_bytes.decode('utf-8')
+            json_str = decompressed_bytes.decode("utf-8")
         else:
             json_str = compressed_content
 
@@ -461,8 +455,7 @@ class ProductionAgentCommunicationOptimizer:
 
         return text
 
-    def _apply_agent_pair_optimizations(self, message: Dict[str, Any],
-                                       pair_config: Dict[str, Any]) -> Dict[str, Any]:
+    def _apply_agent_pair_optimizations(self, message: Dict[str, Any], pair_config: Dict[str, Any]) -> Dict[str, Any]:
         """Apply agent-pair specific optimizations."""
         # Remove fields that are commonly known between these agents
         if "common_patterns" in pair_config:
@@ -472,9 +465,10 @@ class ProductionAgentCommunicationOptimizer:
 
         return message
 
-    def _determine_conversation_compression_level(self, index: int, total_messages: int,
-                                                patterns: Dict[str, Any], sender: str,
-                                                receiver: str) -> CompressionLevel:
+    def _determine_conversation_compression_level(
+        self, index: int, total_messages: int, patterns: Dict[str, Any], sender: str, receiver: str
+    )-> CompressionLevel:
+        """ Determine Conversation Compression Level."""
         """Determine optimal compression level based on conversation context."""
         # Early messages in conversation use lighter compression
         if index < 3:
@@ -493,8 +487,7 @@ class ProductionAgentCommunicationOptimizer:
 
         return CompressionLevel.MEDIUM
 
-    def _determine_message_priority(self, message: Dict[str, Any],
-                                   patterns: Dict[str, Any]) -> MessagePriority:
+    def _determine_message_priority(self, message: Dict[str, Any], patterns: Dict[str, Any]) -> MessagePriority:
         """Determine message priority based on content."""
         msg_type = message.get("type", "")
 
@@ -511,15 +504,9 @@ class ProductionAgentCommunicationOptimizer:
         else:
             return MessagePriority.LOW
 
-    def _analyze_conversation_patterns(self, conversation: List[Dict[str, Any]],
-                                      participants: List[str]) -> Dict[str, Any]:
+    def _analyze_conversation_patterns(self, conversation: List[Dict[str, Any]], participants: List[str]) -> Dict[str, Any]:
         """Analyze patterns in the conversation for optimization."""
-        patterns = {
-            "message_types": {},
-            "communication_frequency": {},
-            "common_topics": [],
-            "agent_interactions": {}
-        }
+        patterns = {"message_types": {}, "communication_frequency": {}, "common_topics": [], "agent_interactions": {}}
 
         for message in conversation:
             msg_type = message.get("message", {}).get("type", "unknown")
@@ -527,8 +514,7 @@ class ProductionAgentCommunicationOptimizer:
 
         return patterns
 
-    def _add_context_to_compressed(self, compressed_content: str,
-                                  context: Dict[str, Any]) -> str:
+    def _add_context_to_compressed(self, compressed_content: str, context: Dict[str, Any]) -> str:
         """Add context information to compressed content."""
         # For simplicity, we'll just add a small context prefix
         context_prefix = f"ctx:{context['conversation_index']}/{context['total_messages']}"
@@ -578,9 +564,15 @@ def get_communication_optimizer(cache_dir: str = ".claude-patterns") -> Producti
     return ProductionAgentCommunicationOptimizer(cache_dir)
 
 
-def optimize_agent_message(sender: str, receiver: str, message: Dict[str, Any],
-                          compression_level: str = "medium", priority: str = "normal",
-                          cache_dir: str = ".claude-patterns") -> Dict[str, Any]:
+def optimize_agent_message(
+    """Optimize Agent Message."""
+    sender: str,
+    receiver: str,
+    message: Dict[str, Any],
+    compression_level: str = "medium",
+    priority: str = "normal",
+    cache_dir: str = ".claude-patterns",
+) -> Dict[str, Any]:
     """
     Convenience function to optimize a single message.
 
@@ -611,7 +603,7 @@ def optimize_agent_message(sender: str, receiver: str, message: Dict[str, Any],
         "tokens_saved": optimized.metrics.tokens_saved,
         "savings_percentage": (1 - optimized.metrics.compression_ratio) * 100,
         "compression_method": optimized.compression_method,
-        "processing_time_ms": optimized.metrics.processing_time_ms
+        "processing_time_ms": optimized.metrics.processing_time_ms,
     }
 
 
@@ -633,19 +625,11 @@ def main():
                 "security_analysis": True,
                 "performance_analysis": True,
                 "quality_analysis": True,
-                "complexity_threshold": 8
+                "complexity_threshold": 8,
             },
-            "context": {
-                "project_type": "web_application",
-                "framework": "django",
-                "team_size": 12
-            }
+            "context": {"project_type": "web_application", "framework": "django", "team_size": 12},
         },
-        "metadata": {
-            "timestamp": datetime.now().isoformat(),
-            "request_id": "req_001",
-            "priority": "high"
-        }
+        "metadata": {"timestamp": datetime.now().isoformat(), "request_id": "req_001", "priority": "high"},
     }
 
     print("\nTesting message optimization:")
@@ -653,8 +637,7 @@ def main():
 
     # Test different compression levels
     for level in [CompressionLevel.LIGHT, CompressionLevel.MEDIUM, CompressionLevel.AGGRESSIVE]:
-        optimized = optimizer.optimize_message("code-analyzer", "quality-controller",
-                                             test_message, level)
+        optimized = optimizer.optimize_message("code-analyzer", "quality-controller", test_message, level)
 
         print(f"\n{level.value.title()} compression:")
         print(f"   Original tokens: {optimized.metrics.original_tokens}")
@@ -664,14 +647,10 @@ def main():
 
     # Test decompression
     print(f"\nTesting decompression:")
-    optimized = optimizer.optimize_message("code-analyzer", "quality-controller",
-                                         test_message, CompressionLevel.MEDIUM)
+    optimized = optimizer.optimize_message("code-analyzer", "quality-controller", test_message, CompressionLevel.MEDIUM)
     decompressed = optimizer.decompress_message(optimized)
 
-    integrity_check = (
-        test_message.get("content", {}).get("task") ==
-        decompressed.get("content", {}).get("task")
-    )
+    integrity_check = test_message.get("content", {}).get("task") == decompressed.get("content", {}).get("task")
     print(f"   Content integrity: {'OK' if integrity_check else 'FAILED'}")
 
     # Get statistics

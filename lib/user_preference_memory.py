@@ -32,7 +32,7 @@ import psutil
 import os
 
 # Handle Windows compatibility for file locking
-if platform.system() == 'Windows':
+if platform.system() == "Windows":
     import msvcrt
 
     def lock_file(f, exclusive=False):
@@ -45,6 +45,7 @@ if platform.system() == 'Windows':
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
         except:
             pass
+
 else:
     import fcntl
 
@@ -74,9 +75,8 @@ class SystemProfiler:
         current_time = time.time()
 
         # Check cache
-        if (self.profile_cache and
-            current_time - self.profile_cache.get('timestamp', 0) < self.cache_ttl):
-            return self.profile_cache.get('fingerprint', {})
+        if self.profile_cache and current_time - self.profile_cache.get("timestamp", 0) < self.cache_ttl:
+            return self.profile_cache.get("fingerprint", {})
 
         fingerprint = {
             "timestamp": current_time,
@@ -84,14 +84,11 @@ class SystemProfiler:
             "hardware": self._get_hardware_info(),
             "development": self._get_development_environment(),
             "preferences": self._detect_user_preferences(),
-            "capabilities": self._assess_system_capabilities()
+            "capabilities": self._assess_system_capabilities(),
         }
 
         # Cache result
-        self.profile_cache = {
-            'fingerprint': fingerprint,
-            'timestamp': current_time
-        }
+        self.profile_cache = {"fingerprint": fingerprint, "timestamp": current_time}
 
         return fingerprint
 
@@ -106,7 +103,7 @@ class SystemProfiler:
             "hostname": platform.node(),
             "python_version": platform.python_version(),
             "python_implementation": platform.python_implementation(),
-            "os_type": os.name
+            "os_type": os.name,
         }
 
     def _get_hardware_info(self) -> Dict[str, Any]:
@@ -117,7 +114,7 @@ class SystemProfiler:
                 "cores": psutil.cpu_count(logical=True),
                 "physical_cores": psutil.cpu_count(logical=False),
                 "frequency": psutil.cpu_freq()._asdict() if psutil.cpu_freq() else None,
-                "usage_percent": psutil.cpu_percent(interval=1)
+                "usage_percent": psutil.cpu_percent(interval=1),
             }
 
             # Memory information
@@ -126,23 +123,23 @@ class SystemProfiler:
                 "total_gb": round(memory.total / (1024**3), 2),
                 "available_gb": round(memory.available / (1024**3), 2),
                 "usage_percent": memory.percent,
-                "used_gb": round(memory.used / (1024**3), 2)
+                "used_gb": round(memory.used / (1024**3), 2),
             }
 
             # Disk information
-            disk = psutil.disk_usage('/')
+            disk = psutil.disk_usage("/")
             disk_info = {
                 "total_gb": round(disk.total / (1024**3), 2),
                 "used_gb": round(disk.used / (1024**3), 2),
                 "free_gb": round(disk.free / (1024**3), 2),
-                "usage_percent": round((disk.used / disk.total) * 100, 2)
+                "usage_percent": round((disk.used / disk.total) * 100, 2),
             }
 
             return {
                 "cpu": cpu_info,
                 "memory": memory_info,
                 "disk": disk_info,
-                "boot_time": datetime.fromtimestamp(psutil.boot_time()).isoformat()
+                "boot_time": datetime.fromtimestamp(psutil.boot_time()).isoformat(),
             }
 
         except Exception as e:
@@ -153,9 +150,9 @@ class SystemProfiler:
         dev_env = {
             "installed_tools": self._detect_installed_tools(),
             "preferred_editors": self._detect_editors(),
-            "shell": os.environ.get('SHELL', 'unknown'),
-            "path_directories": os.environ.get('PATH', '').split(os.pathsep)[:10],  # First 10
-            "env_variables": self._get_relevant_env_vars()
+            "shell": os.environ.get("SHELL", "unknown"),
+            "path_directories": os.environ.get("PATH", "").split(os.pathsep)[:10],  # First 10
+            "env_variables": self._get_relevant_env_vars(),
         }
 
         return dev_env
@@ -163,28 +160,23 @@ class SystemProfiler:
     def _detect_installed_tools(self) -> Dict[str, str]:
         """Detect common development tools and their versions."""
         tools = {
-            'git': self._get_tool_version('git --version'),
-            'node': self._get_tool_version('node --version'),
-            'npm': self._get_tool_version('npm --version'),
-            'python': self._get_tool_version('python --version'),
-            'pip': self._get_tool_version('pip --version'),
-            'docker': self._get_tool_version('docker --version'),
-            'vscode': self._detect_vscode(),
-            'git': self._get_tool_version('git --version')
+            "git": self._get_tool_version("git --version"),
+            "node": self._get_tool_version("node --version"),
+            "npm": self._get_tool_version("npm --version"),
+            "python": self._get_tool_version("python --version"),
+            "pip": self._get_tool_version("pip --version"),
+            "docker": self._get_tool_version("docker --version"),
+            "vscode": self._detect_vscode(),
+            "git": self._get_tool_version("git --version"),
         }
 
         # Filter out tools that aren't installed
-        return {k: v for k, v in tools.items() if v and 'not found' not in v.lower()}
+        return {k: v for k, v in tools.items() if v and "not found" not in v.lower()}
 
     def _get_tool_version(self, command: str) -> Optional[str]:
         """Get version of a command-line tool."""
         try:
-            result = subprocess.run(
-                command.split(),
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
+            result = subprocess.run(command.split(), capture_output=True, text=True, timeout=5)
             return result.stdout.strip() if result.returncode == 0 else None
         except (subprocess.TimeoutExpired, FileNotFoundError):
             return None
@@ -192,14 +184,13 @@ class SystemProfiler:
     def _detect_vscode(self) -> Optional[str]:
         """Detect Visual Studio Code installation."""
         try:
-            if platform.system() == 'Windows':
-                vscode_path = r'C:\Program Files\Microsoft VS Code\bin\code.cmd'
+            if platform.system() == "Windows":
+                vscode_path = r"C:\Program Files\Microsoft VS Code\bin\code.cmd"
                 if os.path.exists(vscode_path):
-                    result = subprocess.run([vscode_path, '--version'],
-                                          capture_output=True, text=True, timeout=5)
+                    result = subprocess.run([vscode_path, "--version"], capture_output=True, text=True, timeout=5)
                     return result.stdout.strip() if result.returncode == 0 else None
             else:
-                return self._get_tool_version('code --version')
+                return self._get_tool_version("code --version")
         except:
             return None
 
@@ -208,15 +199,15 @@ class SystemProfiler:
         editors = []
 
         # Check environment variables
-        editor_vars = ['EDITOR', 'VISUAL']
+        editor_vars = ["EDITOR", "VISUAL"]
         for var in editor_vars:
             if var in os.environ:
                 editors.append(os.environ[var])
 
         # Check for common editors
-        common_editors = ['code', 'vim', 'nano', 'emacs', 'subl', 'atom']
+        common_editors = ["code", "vim", "nano", "emacs", "subl", "atom"]
         for editor in common_editors:
-            if self._get_tool_version(f'{editor} --version') or shutil.which(editor):
+            if self._get_tool_version(f"{editor} --version") or shutil.which(editor):
                 editors.append(editor)
 
         return list(set(editors))  # Remove duplicates
@@ -224,13 +215,24 @@ class SystemProfiler:
     def _get_relevant_env_vars(self) -> Dict[str, str]:
         """Get development-relevant environment variables."""
         relevant_vars = [
-            'HOME', 'USER', 'USERNAME', 'USERPROFILE',
-            'PATH', 'SHELL', 'TERM', 'LANG', 'LC_ALL',
-            'PYTHONPATH', 'NODE_PATH', 'JAVA_HOME',
-            'DOCKER_HOST', 'GIT_SSH', 'SSH_AUTH_SOCK'
+            "HOME",
+            "USER",
+            "USERNAME",
+            "USERPROFILE",
+            "PATH",
+            "SHELL",
+            "TERM",
+            "LANG",
+            "LC_ALL",
+            "PYTHONPATH",
+            "NODE_PATH",
+            "JAVA_HOME",
+            "DOCKER_HOST",
+            "GIT_SSH",
+            "SSH_AUTH_SOCK",
         ]
 
-        return {var: os.environ.get(var, '') for var in relevant_vars if var in os.environ}
+        return {var: os.environ.get(var, "") for var in relevant_vars if var in os.environ}
 
     def _detect_user_preferences(self) -> Dict[str, Any]:
         """Detect user preferences from environment."""
@@ -238,44 +240,41 @@ class SystemProfiler:
             "timezone": self._detect_timezone(),
             "language": self._detect_language(),
             "git_config": self._get_git_config(),
-            "preferred_shell": os.environ.get('SHELL', os.environ.get('COMSPEC', 'unknown')),
-            "terminal_preference": self._detect_terminal_preference()
+            "preferred_shell": os.environ.get("SHELL", os.environ.get("COMSPEC", "unknown")),
+            "terminal_preference": self._detect_terminal_preference(),
         }
 
     def _detect_timezone(self) -> str:
         """Detect user's timezone."""
         try:
             import time
-            return time.tzname[0] if time.tzname else 'UTC'
+
+            return time.tzname[0] if time.tzname else "UTC"
         except:
-            return 'UTC'
+            return "UTC"
 
     def _detect_language(self) -> str:
         """Detect system language."""
         import locale
+
         try:
-            return locale.getdefaultlocale()[0] or 'en_US'
+            return locale.getdefaultlocale()[0] or "en_US"
         except:
-            return 'en_US'
+            return "en_US"
 
     def _get_git_config(self) -> Dict[str, str]:
         """Get Git configuration."""
         git_config = {}
         try:
             # Get global Git configuration
-            result = subprocess.run(
-                ['git', 'config', '--global', '--list'],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
+            result = subprocess.run(["git", "config", "--global", "--list"], capture_output=True, text=True, timeout=5)
 
             if result.returncode == 0:
-                for line in result.stdout.strip().split('\n'):
-                    if '=' in line:
-                        key, value = line.split('=', 1)
+                for line in result.stdout.strip().split("\n"):
+                    if "=" in line:
+                        key, value = line.split("=", 1)
                         # Only include non-sensitive config
-                        if not any(sensitive in key.lower() for sensitive in ['token', 'password', 'key']):
+                        if not any(sensitive in key.lower() for sensitive in ["token", "password", "key"]):
                             git_config[key] = value
         except:
             pass
@@ -284,37 +283,37 @@ class SystemProfiler:
 
     def _detect_terminal_preference(self) -> str:
         """Detect terminal preferences."""
-        term = os.environ.get('TERM', '')
-        if 'xterm' in term.lower():
-            return 'xterm'
-        elif 'screen' in term.lower():
-            return 'screen'
-        elif 'tmux' in term.lower():
-            return 'tmux'
+        term = os.environ.get("TERM", "")
+        if "xterm" in term.lower():
+            return "xterm"
+        elif "screen" in term.lower():
+            return "screen"
+        elif "tmux" in term.lower():
+            return "tmux"
         else:
-            return term or 'unknown'
+            return term or "unknown"
 
     def _assess_system_capabilities(self) -> Dict[str, Any]:
         """Assess system capabilities for development tasks."""
         return {
             "parallel_processing": psutil.cpu_count(logical=True) >= 4,
             "memory_adequate": psutil.virtual_memory().total >= 8 * (1024**3),  # 8GB
-            "disk_space_adequate": psutil.disk_usage('/').free >= 10 * (1024**3),  # 10GB
+            "disk_space_adequate": psutil.disk_usage("/").free >= 10 * (1024**3),  # 10GB
             "virtualization_available": self._check_virtualization(),
-            "docker_available": self._get_tool_version('docker --version') is not None,
-            "git_available": self._get_tool_version('git --version') is not None
+            "docker_available": self._get_tool_version("docker --version") is not None,
+            "git_available": self._get_tool_version("git --version") is not None,
         }
 
     def _check_virtualization(self) -> bool:
         """Check if virtualization is available."""
         try:
-            if platform.system() == 'Linux':
-                return os.path.exists('/proc/vz') or os.path.exists('/proc/xen')
-            elif platform.system() == 'Windows':
+            if platform.system() == "Linux":
+                return os.path.exists("/proc/vz") or os.path.exists("/proc/xen")
+            elif platform.system() == "Windows":
                 # Check for Hyper-V or WSL
                 try:
-                    result = subprocess.run(['systeminfo'], capture_output=True, text=True, timeout=10)
-                    return 'Hyper-V' in result.stdout or 'WSL' in result.stdout
+                    result = subprocess.run(["systeminfo"], capture_output=True, text=True, timeout=10)
+                    return "Hyper-V" in result.stdout or "WSL" in result.stdout
                 except:
                     return False
             else:
@@ -376,7 +375,7 @@ class UserPreferenceMemory:
                         "tools": [],
                         "code_style": {},
                         "testing_preference": "balanced",
-                        "documentation_style": "comprehensive"
+                        "documentation_style": "comprehensive",
                     },
                     "workflow": {
                         "auto_save": True,
@@ -384,34 +383,29 @@ class UserPreferenceMemory:
                         "parallel_execution": True,
                         "quality_threshold": 70,
                         "suggestion_level": "balanced",
-                        "notification_level": "important"
+                        "notification_level": "important",
                     },
-                    "ui": {
-                        "theme": "auto",
-                        "verbosity": "medium",
-                        "show_progress": True,
-                        "confirm_destructive": True
-                    },
+                    "ui": {"theme": "auto", "verbosity": "medium", "show_progress": True, "confirm_destructive": True},
                     "privacy": {
                         "share_patterns": False,
                         "share_analytics": False,
                         "local_storage_only": True,
-                        "data_retention_days": 90
-                    }
+                        "data_retention_days": 90,
+                    },
                 },
                 "learned_patterns": {
                     "command_preferences": {},
                     "agent_effectiveness": {},
                     "skill_success_rates": {},
                     "common_workflows": [],
-                    "error_patterns": {}
+                    "error_patterns": {},
                 },
                 "history": {
                     "commands_used": [],
                     "tasks_completed": [],
                     "suggestions_accepted": [],
-                    "suggestions_rejected": []
-                }
+                    "suggestions_rejected": [],
+                },
             }
             self._write_preferences(default_preferences)
 
@@ -424,7 +418,7 @@ class UserPreferenceMemory:
                 "profiles": [current_profile],
                 "baseline_profile": current_profile,
                 "last_profile": current_profile,
-                "profile_count": 1
+                "profile_count": 1,
             }
             self._write_environment(env_data)
 
@@ -434,13 +428,14 @@ class UserPreferenceMemory:
                 "created_at": datetime.now().isoformat(),
                 "suggestions": [],
                 "response_rates": {},
-                "effectiveness_scores": {}
+                "effectiveness_scores": {},
             }
             self._write_suggestions(suggestions_data)
 
     def _generate_user_id(self) -> str:
         """Generate a unique user ID based on system fingerprint."""
         import hashlib
+
         system_info = f"{platform.system()}-{platform.node()}-{platform.machine()}"
         return hashlib.md5(system_info.encode()).hexdigest()[:16]
 
@@ -449,18 +444,16 @@ class UserPreferenceMemory:
         current_time = time.time()
 
         # Check cache
-        if (use_cache and
-            'preferences' in self._cache and
-            current_time - self._cache_timestamp < self._cache_ttl):
-            return self._cache['preferences']
+        if use_cache and "preferences" in self._cache and current_time - self._cache_timestamp < self._cache_ttl:
+            return self._cache["preferences"]
 
         with self._lock:
             try:
-                with open(self.preferences_file, 'r', encoding='utf-8') as f:
+                with open(self.preferences_file, "r", encoding="utf-8") as f:
                     lock_file(f, exclusive=False)
                     try:
                         data = json.load(f)
-                        self._cache['preferences'] = data
+                        self._cache["preferences"] = data
                         self._cache_timestamp = current_time
                         return data
                     finally:
@@ -488,12 +481,12 @@ class UserPreferenceMemory:
                 # Update metadata
                 data["last_updated"] = datetime.now().isoformat()
 
-                with open(self.preferences_file, 'w', encoding='utf-8') as f:
+                with open(self.preferences_file, "w", encoding="utf-8") as f:
                     lock_file(f, exclusive=True)
                     try:
                         json.dump(data, f, indent=2, ensure_ascii=False)
                         # Update cache
-                        self._cache['preferences'] = data
+                        self._cache["preferences"] = data
                         self._cache_timestamp = time.time()
                     finally:
                         unlock_file(f)
@@ -506,7 +499,7 @@ class UserPreferenceMemory:
         """Read system environment data."""
         with self._lock:
             try:
-                with open(self.environment_file, 'r', encoding='utf-8') as f:
+                with open(self.environment_file, "r", encoding="utf-8") as f:
                     lock_file(f, exclusive=False)
                     try:
                         return json.load(f)
@@ -523,7 +516,7 @@ class UserPreferenceMemory:
         """Write system environment data."""
         with self._lock:
             try:
-                with open(self.environment_file, 'w', encoding='utf-8') as f:
+                with open(self.environment_file, "w", encoding="utf-8") as f:
                     lock_file(f, exclusive=True)
                     try:
                         json.dump(data, f, indent=2, ensure_ascii=False)
@@ -536,7 +529,7 @@ class UserPreferenceMemory:
         """Read suggestions history."""
         with self._lock:
             try:
-                with open(self.suggestions_file, 'r', encoding='utf-8') as f:
+                with open(self.suggestions_file, "r", encoding="utf-8") as f:
                     lock_file(f, exclusive=False)
                     try:
                         return json.load(f)
@@ -553,7 +546,7 @@ class UserPreferenceMemory:
         """Write suggestions history."""
         with self._lock:
             try:
-                with open(self.suggestions_file, 'w', encoding='utf-8') as f:
+                with open(self.suggestions_file, "w", encoding="utf-8") as f:
                     lock_file(f, exclusive=True)
                     try:
                         json.dump(data, f, indent=2, ensure_ascii=False)
@@ -613,10 +606,10 @@ class UserPreferenceMemory:
                 "development": {"preferred_languages": [], "frameworks": [], "tools": []},
                 "workflow": {"auto_save": True, "quality_threshold": 70},
                 "ui": {"theme": "auto", "verbosity": "medium"},
-                "privacy": {"local_storage_only": True}
+                "privacy": {"local_storage_only": True},
             },
             "learned_patterns": {},
-            "history": {"commands_used": [], "tasks_completed": []}
+            "history": {"commands_used": [], "tasks_completed": []},
         }
 
     # Public API methods
@@ -701,11 +694,7 @@ class UserPreferenceMemory:
         """
         preferences = self._read_preferences()
 
-        usage_record = {
-            "command": command,
-            "timestamp": datetime.now().isoformat(),
-            "context": context or {}
-        }
+        usage_record = {"command": command, "timestamp": datetime.now().isoformat(), "context": context or {}}
 
         preferences["history"]["commands_used"].append(usage_record)
 
@@ -719,7 +708,7 @@ class UserPreferenceMemory:
                 "usage_count": 0,
                 "last_used": None,
                 "success_rate": 0.0,
-                "contexts": []
+                "contexts": [],
             }
 
         cmd_pref = preferences["learned_patterns"]["command_preferences"][command]
@@ -733,8 +722,7 @@ class UserPreferenceMemory:
 
         self._write_preferences(preferences)
 
-    def record_task_completion(self, task_type: str, success: bool,
-                             quality_score: float, context: Dict[str, Any] = None):
+    def record_task_completion(self, task_type: str, success: bool, quality_score: float, context: Dict[str, Any] = None):
         """
         Record task completion for learning patterns.
 
@@ -751,7 +739,7 @@ class UserPreferenceMemory:
             "success": success,
             "quality_score": quality_score,
             "timestamp": datetime.now().isoformat(),
-            "context": context or {}
+            "context": context or {},
         }
 
         preferences["history"]["tasks_completed"].append(task_record)
@@ -762,8 +750,7 @@ class UserPreferenceMemory:
 
         self._write_preferences(preferences)
 
-    def record_suggestion_response(self, suggestion: str, accepted: bool,
-                                 context: Dict[str, Any] = None):
+    def record_suggestion_response(self, suggestion: str, accepted: bool, context: Dict[str, Any] = None):
         """
         Record user response to suggestions for learning.
 
@@ -779,7 +766,7 @@ class UserPreferenceMemory:
             "suggestion": suggestion,
             "accepted": accepted,
             "timestamp": datetime.now().isoformat(),
-            "context": context or {}
+            "context": context or {},
         }
 
         if accepted:
@@ -800,7 +787,7 @@ class UserPreferenceMemory:
                 "total_shown": 0,
                 "accepted": 0,
                 "rejected": 0,
-                "acceptance_rate": 0.0
+                "acceptance_rate": 0.0,
             }
 
         sugg_stats = suggestions_data["response_rates"][suggestion_key]
@@ -834,9 +821,9 @@ class UserPreferenceMemory:
             "usage_stats": {
                 "commands_used": len(preferences.get("history", {}).get("commands_used", [])),
                 "tasks_completed": len(preferences.get("history", {}).get("tasks_completed", [])),
-                "suggestions_responded": len(preferences.get("history", {}).get("suggestions_accepted", [])) +
-                                      len(preferences.get("history", {}).get("suggestions_rejected", []))
-            }
+                "suggestions_responded": len(preferences.get("history", {}).get("suggestions_accepted", []))
+                + len(preferences.get("history", {}).get("suggestions_rejected", [])),
+            },
         }
 
     def export_preferences(self, export_path: str, include_sensitive: bool = False) -> bool:
@@ -858,7 +845,7 @@ class UserPreferenceMemory:
                 profile = self._filter_sensitive_data(profile)
 
             export_file = Path(export_path)
-            with open(export_file, 'w', encoding='utf-8') as f:
+            with open(export_file, "w", encoding="utf-8") as f:
                 json.dump(profile, f, indent=2, ensure_ascii=False)
 
             return True
@@ -882,7 +869,7 @@ class UserPreferenceMemory:
             if not import_file.exists():
                 raise FileNotFoundError(f"Import file not found: {import_path}")
 
-            with open(import_file, 'r', encoding='utf-8') as f:
+            with open(import_file, "r", encoding="utf-8") as f:
                 imported_data = json.load(f)
 
             if merge_strategy == "overwrite":
@@ -920,7 +907,7 @@ class UserPreferenceMemory:
             filtered["system_environment"] = {
                 "platform": filtered["system_environment"].get("system", {}).get("platform"),
                 "architecture": filtered["system_environment"].get("system", {}).get("architecture"),
-                "capabilities": filtered["system_environment"].get("capabilities", {})
+                "capabilities": filtered["system_environment"].get("capabilities", {}),
             }
 
         # Remove specific sensitive keys
@@ -944,36 +931,35 @@ def main():
     """Command-line interface for user preference memory."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='User Preference Memory System')
-    parser.add_argument('--dir', default='.claude-preferences', help='Storage directory path')
+    parser = argparse.ArgumentParser(description="User Preference Memory System")
+    parser.add_argument("--dir", default=".claude-preferences", help="Storage directory path")
 
-    subparsers = parser.add_subparsers(dest='action', help='Action to perform')
+    subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
     # Profile commands
-    subparsers.add_parser('profile', help='Show system profile')
-    subparsers.add_parser('update-profile', help='Update system profile')
+    subparsers.add_parser("profile", help="Show system profile")
+    subparsers.add_parser("update-profile", help="Update system profile")
 
     # Preference commands
-    pref_parser = subparsers.add_parser('set', help='Set preference')
-    pref_parser.add_argument('--category', required=True, help='Preference category')
-    pref_parser.add_argument('--key', required=True, help='Preference key')
-    pref_parser.add_argument('--value', required=True, help='Preference value')
+    pref_parser = subparsers.add_parser("set", help="Set preference")
+    pref_parser.add_argument("--category", required=True, help="Preference category")
+    pref_parser.add_argument("--key", required=True, help="Preference key")
+    pref_parser.add_argument("--value", required=True, help="Preference value")
 
-    get_parser = subparsers.add_parser('get', help='Get preference')
-    get_parser.add_argument('--category', required=True, help='Preference category')
-    get_parser.add_argument('--key', required=True, help='Preference key')
+    get_parser = subparsers.add_parser("get", help="Get preference")
+    get_parser.add_argument("--category", required=True, help="Preference category")
+    get_parser.add_argument("--key", required=True, help="Preference key")
 
-    subparsers.add_parser('show', help='Show all preferences')
+    subparsers.add_parser("show", help="Show all preferences")
 
     # Export/Import commands
-    export_parser = subparsers.add_parser('export', help='Export preferences')
-    export_parser.add_argument('--path', required=True, help='Export file path')
-    export_parser.add_argument('--include-sensitive', action='store_true', help='Include sensitive data')
+    export_parser = subparsers.add_parser("export", help="Export preferences")
+    export_parser.add_argument("--path", required=True, help="Export file path")
+    export_parser.add_argument("--include-sensitive", action="store_true", help="Include sensitive data")
 
-    import_parser = subparsers.add_parser('import', help='Import preferences')
-    import_parser.add_argument('--path', required=True, help='Import file path')
-    import_parser.add_argument('--strategy', default='merge',
-                              choices=['overwrite', 'merge', 'skip'], help='Merge strategy')
+    import_parser = subparsers.add_parser("import", help="Import preferences")
+    import_parser.add_argument("--path", required=True, help="Import file path")
+    import_parser.add_argument("--strategy", default="merge", choices=["overwrite", "merge", "skip"], help="Merge strategy")
 
     args = parser.parse_args()
 
@@ -984,15 +970,15 @@ def main():
     memory = UserPreferenceMemory(args.dir)
 
     try:
-        if args.action == 'profile':
+        if args.action == "profile":
             profile = memory.profiler.get_system_fingerprint()
             print(json.dumps(profile, indent=2))
 
-        elif args.action == 'update-profile':
+        elif args.action == "update-profile":
             profile = memory.update_system_profile(force=True)
             print(f"[OK] Profile updated at {profile.get('timestamp')}")
 
-        elif args.action == 'set':
+        elif args.action == "set":
             # Try to parse as JSON, fallback to string
             try:
                 value = json.loads(args.value)
@@ -1001,19 +987,19 @@ def main():
             memory.set_preference(args.category, args.key, value)
             print(f"[OK] Set {args.category}.{args.key} = {value}")
 
-        elif args.action == 'get':
+        elif args.action == "get":
             value = memory.get_preference(args.category, args.key)
             print(json.dumps(value, indent=2))
 
-        elif args.action == 'show':
+        elif args.action == "show":
             profile = memory.get_user_profile()
             print(json.dumps(profile, indent=2))
 
-        elif args.action == 'export':
+        elif args.action == "export":
             success = memory.export_preferences(args.path, args.include_sensitive)
             print(f"[OK] Export {'successful' if success else 'failed'}")
 
-        elif args.action == 'import':
+        elif args.action == "import":
             success = memory.import_preferences(args.path, args.strategy)
             print(f"[OK] Import {'successful' if success else 'failed'}")
 
@@ -1022,5 +1008,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

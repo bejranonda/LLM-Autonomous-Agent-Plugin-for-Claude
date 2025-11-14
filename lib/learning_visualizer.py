@@ -25,6 +25,7 @@ import random
 
 class LearningEventType:
     """Learning event types."""
+
     PATTERN_ACQUIRED = "pattern_acquired"
     SKILL_EFFECTIVENESS_UPDATED = "skill_effectiveness_updated"
     AGENT_PERFORMANCE_IMPROVED = "agent_performance_improved"
@@ -55,13 +56,8 @@ class LearningEventRecorder:
     def _initialize_storage(self):
         """Initialize storage files."""
         if not self.events_file.exists():
-            initial_data = {
-                "version": "1.0.0",
-                "events": [],
-                "total_events": 0,
-                "last_updated": datetime.now().isoformat()
-            }
-            with open(self.events_file, 'w', encoding='utf-8') as f:
+            initial_data = {"version": "1.0.0", "events": [], "total_events": 0, "last_updated": datetime.now().isoformat()}
+            with open(self.events_file, "w", encoding="utf-8") as f:
                 json.dump(initial_data, f, indent=2)
 
         if not self.summary_file.exists():
@@ -74,9 +70,9 @@ class LearningEventRecorder:
                 "active_skills": 0,
                 "agent_improvements": 0,
                 "user_confidence": 0.0,
-                "last_updated": datetime.now().isoformat()
+                "last_updated": datetime.now().isoformat(),
             }
-            with open(self.summary_file, 'w', encoding='utf-8') as f:
+            with open(self.summary_file, "w", encoding="utf-8") as f:
                 json.dump(initial_summary, f, indent=2)
 
     def record_learning_event(
@@ -85,8 +81,9 @@ class LearningEventRecorder:
         description: str,
         impact: Optional[str] = None,
         data: Optional[Dict[str, Any]] = None,
-        confidence: Optional[float] = None
-    ) -> str:
+        confidence: Optional[float] = None,
+    )-> str:
+        """Record Learning Event."""
         """
         Record a learning event.
 
@@ -109,7 +106,7 @@ class LearningEventRecorder:
             "impact": impact,
             "data": data or {},
             "confidence": confidence,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         # Add to in-memory cache
@@ -126,7 +123,7 @@ class LearningEventRecorder:
     def _save_event(self, event: Dict[str, Any]):
         """Save event to persistent storage."""
         try:
-            with open(self.events_file, 'r', encoding='utf-8') as f:
+            with open(self.events_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             data["events"].append(event)
@@ -137,7 +134,7 @@ class LearningEventRecorder:
             if len(data["events"]) > 500:
                 data["events"] = data["events"][-500:]
 
-            with open(self.events_file, 'w', encoding='utf-8') as f:
+            with open(self.events_file, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
 
         except Exception as e:
@@ -152,7 +149,7 @@ class LearningEventRecorder:
             pattern_reuse_rate = 0.0
 
             if patterns_file.exists():
-                with open(patterns_file, 'r', encoding='utf-8') as f:
+                with open(patterns_file, "r", encoding="utf-8") as f:
                     patterns = json.load(f)
 
                 if isinstance(patterns, list):
@@ -169,26 +166,20 @@ class LearningEventRecorder:
             performance_file = self.storage_dir / "agent_performance.json"
             agent_improvements = 0
             if performance_file.exists():
-                with open(performance_file, 'r', encoding='utf-8') as f:
+                with open(performance_file, "r", encoding="utf-8") as f:
                     perf_data = json.load(f)
                     agent_improvements = len(perf_data.get("agent_metrics", {}))
 
             # Calculate learning velocity (events in last 24h)
-            with open(self.events_file, 'r', encoding='utf-8') as f:
+            with open(self.events_file, "r", encoding="utf-8") as f:
                 events_data = json.load(f)
 
             yesterday = datetime.now() - timedelta(days=1)
-            recent_events = [
-                e for e in events_data["events"]
-                if datetime.fromisoformat(e["timestamp"]) > yesterday
-            ]
+            recent_events = [e for e in events_data["events"] if datetime.fromisoformat(e["timestamp"]) > yesterday]
             learning_velocity = len(recent_events)
 
             # Determine quality trend
-            quality_events = [
-                e for e in recent_events
-                if e["event_type"] == LearningEventType.QUALITY_IMPROVEMENT_ACHIEVED
-            ]
+            quality_events = [e for e in recent_events if e["event_type"] == LearningEventType.QUALITY_IMPROVEMENT_ACHIEVED]
 
             if len(quality_events) >= 5:
                 # Check trend from quality improvements
@@ -220,10 +211,10 @@ class LearningEventRecorder:
                 "agent_improvements": agent_improvements,
                 "user_confidence": self._calculate_user_confidence(),
                 "total_events": self.learning_metrics["total_events"] if self.learning_metrics else 0,
-                "last_updated": datetime.now().isoformat()
+                "last_updated": datetime.now().isoformat(),
             }
 
-            with open(self.summary_file, 'w', encoding='utf-8') as f:
+            with open(self.summary_file, "w", encoding="utf-8") as f:
                 json.dump(summary, f, indent=2)
 
         except Exception as e:
@@ -232,10 +223,7 @@ class LearningEventRecorder:
     def _count_active_skills(self) -> int:
         """Count active skills from learning data."""
         try:
-            skill_events = [
-                e for e in self.recent_events
-                if e["event_type"] == LearningEventType.SKILL_EFFECTIVENESS_UPDATED
-            ]
+            skill_events = [e for e in self.recent_events if e["event_type"] == LearningEventType.SKILL_EFFECTIVENESS_UPDATED]
 
             # Count unique skills mentioned in events
             skills_mentioned = set()
@@ -259,12 +247,10 @@ class LearningEventRecorder:
                 LearningEventType.PATTERN_ACQUIRED,
                 LearningEventType.AGENT_PERFORMANCE_IMPROVED,
                 LearningEventType.QUALITY_IMPROVEMENT_ACHIEVED,
-                LearningEventType.SPECIALIZATION_IDENTIFIED
+                LearningEventType.SPECIALIZATION_IDENTIFIED,
             ]
 
-            negative_types = [
-                LearningEventType.FAILURE_PATTERN_DETECTED
-            ]
+            negative_types = [LearningEventType.FAILURE_PATTERN_DETECTED]
 
             positive_count = sum(1 for e in recent_events if e["event_type"] in positive_types)
             negative_count = sum(1 for e in recent_events if e["event_type"] in negative_types)
@@ -287,7 +273,7 @@ class LearningEventRecorder:
     def get_learning_summary(self) -> Dict[str, Any]:
         """Get comprehensive learning summary."""
         try:
-            with open(self.summary_file, 'r', encoding='utf-8') as f:
+            with open(self.summary_file, "r", encoding="utf-8") as f:
                 summary = json.load(f)
 
             # Add recent events for context
@@ -310,12 +296,7 @@ class DecisionExplainer:
         self.patterns_file = self.storage_dir / "patterns.json"
         self.preferences_file = self.storage_dir / "user_preferences.json"
 
-    def explain_decision(
-        self,
-        decision_type: str,
-        context: Dict[str, Any],
-        confidence: Optional[float] = None
-    ) -> str:
+    def explain_decision(self, decision_type: str, context: Dict[str, Any], confidence: Optional[float] = None) -> str:
         """
         Generate human-readable explanation of AI decision.
 
@@ -341,26 +322,21 @@ class DecisionExplainer:
         task_type = context.get("task_type", "unknown")
         selected_skills = context.get("selected_skills", [])
 
-        explanation_parts = [
-            f"Selected {len(selected_skills)} skills for {task_type} task"
-        ]
+        explanation_parts = [f"Selected {len(selected_skills)} skills for {task_type} task"]
 
         # Check for pattern-based selection
         if self.patterns_file.exists():
             try:
-                with open(self.patterns_file, 'r', encoding='utf-8') as f:
+                with open(self.patterns_file, "r", encoding="utf-8") as f:
                     patterns = json.load(f)
 
                 if isinstance(patterns, list):
                     similar_patterns = [
-                        p for p in patterns
-                        if p.get("task_type") == task_type and p.get("success_rate", 0) > 0.8
+                        p for p in patterns if p.get("task_type") == task_type and p.get("success_rate", 0) > 0.8
                     ]
 
                     if similar_patterns:
-                        explanation_parts.append(
-                            f"Based on {len(similar_patterns)} successful similar tasks"
-                        )
+                        explanation_parts.append(f"Based on {len(similar_patterns)} successful similar tasks")
 
                         # Add success rate
                         avg_success = sum(p.get("success_rate", 0) for p in similar_patterns) / len(similar_patterns)
@@ -375,7 +351,7 @@ class DecisionExplainer:
             "quality-standards": "ensures code meets quality benchmarks",
             "pattern-learning": "leverages learned patterns from similar tasks",
             "security-patterns": "identifies potential security issues",
-            "testing-strategies": "ensures comprehensive test coverage"
+            "testing-strategies": "ensures comprehensive test coverage",
         }
 
         for skill in selected_skills[:3]:  # Explain top 3 skills
@@ -393,9 +369,7 @@ class DecisionExplainer:
         task_type = context.get("task_type", "unknown")
         reasoning = context.get("reasoning", "")
 
-        explanation_parts = [
-            f"Selected {agent} for {task_type} task"
-        ]
+        explanation_parts = [f"Selected {agent} for {task_type} task"]
 
         if reasoning:
             explanation_parts.append(reasoning)
@@ -404,7 +378,7 @@ class DecisionExplainer:
         try:
             performance_file = self.storage_dir / "agent_performance.json"
             if performance_file.exists():
-                with open(performance_file, 'r', encoding='utf-8') as f:
+                with open(performance_file, "r", encoding="utf-8") as f:
                     perf_data = json.load(f)
 
                 if agent in perf_data.get("agent_metrics", {}):
@@ -431,9 +405,7 @@ class DecisionExplainer:
         task_type = context.get("task_type", "unknown")
         adjustments = context.get("adjustments", {})
 
-        explanation_parts = [
-            f"Quality threshold set to {threshold}/100 for {task_type} task"
-        ]
+        explanation_parts = [f"Quality threshold set to {threshold}/100 for {task_type} task"]
 
         # Explain adjustments
         if adjustments.get("phase_adjustment"):
@@ -477,19 +449,13 @@ class LearningVisualizer:
         description: str,
         impact: Optional[str] = None,
         data: Optional[Dict[str, Any]] = None,
-        confidence: Optional[float] = None
-    ) -> str:
+        confidence: Optional[float] = None,
+    )-> str:
+        """Record Learning Event."""
         """Record a learning event."""
-        return self.event_recorder.record_learning_event(
-            event_type, description, impact, data, confidence
-        )
+        return self.event_recorder.record_learning_event(event_type, description, impact, data, confidence)
 
-    def explain_decision(
-        self,
-        decision_type: str,
-        context: Dict[str, Any],
-        confidence: Optional[float] = None
-    ) -> str:
+    def explain_decision(self, decision_type: str, context: Dict[str, Any], confidence: Optional[float] = None) -> str:
         """Generate explanation for AI decision."""
         return self.decision_explainer.explain_decision(decision_type, context, confidence)
 
@@ -501,7 +467,7 @@ class LearningVisualizer:
             LearningEventType.AGENT_PERFORMANCE_IMPROVED: "[TREND]",
             LearningEventType.USER_PREFERENCE_LEARNED: "👤",
             LearningEventType.SPECIALIZATION_IDENTIFIED: "[TARGET]",
-            LearningEventType.COLLABORATION_INSIGHT: "🤝"
+            LearningEventType.COLLABORATION_INSIGHT: "🤝",
         }
 
         emoji = emoji_map.get(event["event_type"], "[DATA]")
@@ -522,31 +488,29 @@ class LearningVisualizer:
         formatted_events = []
         for event in recent_events:
             notification = self.generate_learning_notification(event)
-            formatted_events.append({
-                "id": event["event_id"],
-                "type": event["event_type"],
-                "notification": notification,
-                "timestamp": event["timestamp"],
-                "confidence": event.get("confidence")
-            })
+            formatted_events.append(
+                {
+                    "id": event["event_id"],
+                    "type": event["event_type"],
+                    "notification": notification,
+                    "timestamp": event["timestamp"],
+                    "confidence": event.get("confidence"),
+                }
+            )
 
-        return {
-            "summary": summary,
-            "recent_events": formatted_events,
-            "event_metrics": summary.get("event_metrics", {})
-        }
+        return {"summary": summary, "recent_events": formatted_events, "event_metrics": summary.get("event_metrics", {})}
 
 
 def main():
     """Command-line interface for testing learning visualizer."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Learning Visualizer')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--stats', action='store_true', help='Show learning statistics')
-    parser.add_argument('--record', help='Record a test event')
-    parser.add_argument('--explain', choices=['skill', 'agent', 'quality'], help='Test explanation')
-    parser.add_argument('--dashboard', action='store_true', help='Get dashboard data')
+    parser = argparse.ArgumentParser(description="Learning Visualizer")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--stats", action="store_true", help="Show learning statistics")
+    parser.add_argument("--record", help="Record a test event")
+    parser.add_argument("--explain", choices=["skill", "agent", "quality"], help="Test explanation")
+    parser.add_argument("--dashboard", action="store_true", help="Get dashboard data")
 
     args = parser.parse_args()
 
@@ -567,7 +531,7 @@ def main():
             args.record,
             "quality +5 points",
             {"pattern_id": "test_123", "confidence": 0.92},
-            0.92
+            0.92,
         )
         print(f"Recorded learning event: {event_id}")
 
@@ -575,13 +539,13 @@ def main():
         if args.explain == "skill":
             context = {
                 "task_type": "refactoring",
-                "selected_skills": ["code-analysis", "quality-standards", "pattern-learning"]
+                "selected_skills": ["code-analysis", "quality-standards", "pattern-learning"],
             }
         elif args.explain == "agent":
             context = {
                 "agent": "code-analyzer",
                 "task_type": "refactoring",
-                "reasoning": "Highly specialized for refactoring tasks"
+                "reasoning": "Highly specialized for refactoring tasks",
             }
         elif args.explain == "quality":
             context = {
@@ -590,8 +554,8 @@ def main():
                 "adjustments": {
                     "phase_adjustment": {"phase": "pre-release", "multiplier": 1.10},
                     "criticality_adjustment": {"criticality": "critical", "multiplier": 1.15},
-                    "user_facing": True
-                }
+                    "user_facing": True,
+                },
             }
 
         explanation = visualizer.explain_decision(f"{args.explain}_selection", context, 0.92)
@@ -608,5 +572,5 @@ def main():
         print("Use --stats, --record, --explain, or --dashboard to interact")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

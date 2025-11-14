@@ -13,10 +13,12 @@ from pathlib import Path
 from typing import Dict, Any, List
 import statistics
 
+
 class PerformanceDashboard:
     """Real-time performance dashboard"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -26,7 +28,7 @@ class PerformanceDashboard:
 
     def clear_screen(self):
         """Clear terminal screen"""
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system("cls" if os.name == "nt" else "clear")
 
     def create_progress_bar(self, value: float, max_value: float, width: int = 20) -> str:
         """Create ASCII progress bar"""
@@ -41,7 +43,7 @@ class PerformanceDashboard:
 
     def format_bytes(self, bytes_value: int) -> str:
         """Format bytes in human readable format"""
-        for unit in ['B', 'KB', 'MB', 'GB']:
+        for unit in ["B", "KB", "MB", "GB"]:
             if bytes_value < 1024:
                 return f"{bytes_value:.1f} {unit}"
             bytes_value /= 1024
@@ -49,19 +51,14 @@ class PerformanceDashboard:
 
     def get_latest_data(self) -> Dict[str, Any]:
         """Get latest performance data"""
-        data = {
-            "test_results": None,
-            "certification": None,
-            "monitoring_active": False,
-            "monitoring_data": None
-        }
+        data = {"test_results": None, "certification": None, "monitoring_active": False, "monitoring_data": None}
 
         # Load comprehensive test results
         test_files = list(self.data_dir.glob("performance_test_results_*.json"))
         if test_files:
             latest_file = max(test_files, key=lambda p: p.stat().st_mtime)
             try:
-                with open(latest_file, 'r') as f:
+                with open(latest_file, "r") as f:
                     data["test_results"] = json.load(f)
             except:
                 pass
@@ -70,7 +67,7 @@ class PerformanceDashboard:
         cert_file = self.data_dir / "performance_certification.json"
         if cert_file.exists():
             try:
-                with open(cert_file, 'r') as f:
+                with open(cert_file, "r") as f:
                     data["certification"] = json.load(f)
             except:
                 pass
@@ -79,7 +76,7 @@ class PerformanceDashboard:
         monitor_file = self.data_dir / "performance_history.json"
         if monitor_file.exists():
             try:
-                with open(monitor_file, 'r') as f:
+                with open(monitor_file, "r") as f:
                     monitor_data = json.load(f)
                     if monitor_data.get("metrics"):
                         data["monitoring_active"] = True
@@ -174,7 +171,7 @@ class PerformanceDashboard:
             print(f"  Growth: {self.format_bytes(memory_stats.get('growth', 0))}")
 
             # Memory growth bar
-            growth_mb = memory_stats.get('growth', 0) / 1024 / 1024
+            growth_mb = memory_stats.get("growth", 0) / 1024 / 1024
             growth_bar = self.create_progress_bar(min(growth_mb, 50), 50)
             print(f"  Growth: {growth_bar} {growth_mb:.1f}/50 MB")
 
@@ -186,7 +183,7 @@ class PerformanceDashboard:
             print(f"  Average: {cpu_stats.get('avg', 0):.1f}%")
 
             # CPU usage bar
-            avg_cpu = cpu_stats.get('avg', 0)
+            avg_cpu = cpu_stats.get("avg", 0)
             cpu_bar = self.create_progress_bar(avg_cpu, 100)
             print(f"  Usage: {cpu_bar} {avg_cpu:.1f}%")
 
@@ -253,7 +250,7 @@ class PerformanceDashboard:
         print(f"  Leak Detected: {'YES' if memory_tests.get('leak_detected', False) else 'NO'}")
 
         # Memory stability bar
-        growth = memory_tests.get('memory_growth_mb', 0)
+        growth = memory_tests.get("memory_growth_mb", 0)
         stability_bar = self.create_progress_bar(max(0, 50 - growth), 50)
         print(f"  Stability: {stability_bar} {max(0, 50 - growth):.1f}/50 MB stable")
 
@@ -348,20 +345,21 @@ class PerformanceDashboard:
                     try:
                         # Non-blocking check for input (simplified)
                         import msvcrt
+
                         if msvcrt.kbhit():
-                            char = msvcrt.getch().decode('utf-8').upper()
-                            if char == 'Q':
+                            char = msvcrt.getch().decode("utf-8").upper()
+                            if char == "Q":
                                 print("\nExiting dashboard...")
                                 return
-                            elif char == 'R':
-                                user_input = 'R'
+                            elif char == "R":
+                                user_input = "R"
                                 break
                     except:
                         pass
 
                     time.sleep(0.1)
 
-                if user_input == 'R':
+                if user_input == "R":
                     continue
                 else:
                     # Auto-refresh
@@ -402,7 +400,9 @@ class PerformanceDashboard:
                 report_lines.append("Command Execution:")
                 for category, stats in cmd_perf["category_summaries"].items():
                     if stats.get("total_runs", 0) > 0:
-                        report_lines.append(f"  {category}: {stats.get('avg_execution_time', 0):.3f}s avg, {stats.get('success_rate', 0):.1f}% success")
+                        report_lines.append(
+                            f"  {category}: {stats.get('avg_execution_time', 0):.3f}s avg, {stats.get('success_rate', 0):.1f}% success"
+                        )
 
             # Resource utilization
             resource_perf = test_results.get("resource_utilization", {})
@@ -439,6 +439,7 @@ class PerformanceDashboard:
 
         return "\n".join(report_lines)
 
+
 def main():
     """Main execution function"""
     import argparse
@@ -460,7 +461,7 @@ def main():
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         report_file = Path(args.data_dir) / f"performance_report_{timestamp}.txt"
 
-        with open(report_file, 'w') as f:
+        with open(report_file, "w") as f:
             f.write(report)
 
         print("PERFORMANCE REPORT GENERATED")
@@ -475,6 +476,7 @@ def main():
     else:
         # Single refresh and exit
         dashboard.refresh_dashboard()
+
 
 if __name__ == "__main__":
     main()

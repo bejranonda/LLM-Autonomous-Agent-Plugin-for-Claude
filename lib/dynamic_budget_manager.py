@@ -21,50 +21,60 @@ import statistics
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
 
 class BudgetStrategy(Enum):
     """Budget allocation strategies."""
-    EQUAL = "equal"                    # Equal distribution
+
+    EQUAL = "equal"  # Equal distribution
     PERFORMANCE_BASED = "performance"  # Based on performance metrics
-    NEEDS_BASED = "needs"             # Based on current needs
-    EFFICIENCY_BASED = "efficiency"    # Based on efficiency scores
-    PREDICTIVE = "predictive"         # ML-based prediction
+    NEEDS_BASED = "needs"  # Based on current needs
+    EFFICIENCY_BASED = "efficiency"  # Based on efficiency scores
+    PREDICTIVE = "predictive"  # ML-based prediction
+
 
 class PriorityLevel(Enum):
     """Component priority levels."""
-    CRITICAL = 1      # Essential components
-    HIGH = 2          # Important components
-    MEDIUM = 3        # Useful components
-    LOW = 4           # Optional components
+
+    CRITICAL = 1  # Essential components
+    HIGH = 2  # Important components
+    MEDIUM = 3  # Useful components
+    LOW = 4  # Optional components
+
 
 @dataclass
 class ComponentBudget:
     """Budget allocation for a component."""
+
     component_id: str
     name: str
     priority: PriorityLevel
     allocated_tokens: int
     used_tokens: int
     performance_score: float  # 0-100
-    efficiency_score: float   # 0-100
+    efficiency_score: float  # 0-100
     last_adjustment: datetime
     adjustment_history: List[Dict[str, Any]]
 
     @property
     def remaining_tokens(self) -> int:
+        """Remaining Tokens."""
         return max(0, self.allocated_tokens - self.used_tokens)
 
     @property
     def utilization_rate(self) -> float:
+        """Utilization Rate."""
         if self.allocated_tokens == 0:
             return 0.0
         return (self.used_tokens / self.allocated_tokens) * 100
 
+
 @dataclass
 class BudgetMetrics:
     """Overall budget management metrics."""
+
     total_budget: int
     allocated_tokens: int
     used_tokens: int
@@ -76,18 +86,22 @@ class BudgetMetrics:
 
     @property
     def remaining_tokens(self) -> int:
+        """Remaining Tokens."""
         return max(0, self.allocated_tokens - self.used_tokens)
 
     @property
     def utilization_rate(self) -> float:
+        """Utilization Rate."""
         if self.allocated_tokens == 0:
             return 0.0
         return (self.used_tokens / self.allocated_tokens) * 100
+
 
 class DynamicBudgetManager:
     """Intelligent budget management system."""
 
     def __init__(self, total_budget: int = 100000, db_path: str = "budget_metrics.db"):
+        """  Init  ."""
         self.total_budget = total_budget
         self.db_path = db_path
         self.components: Dict[str, ComponentBudget] = {}
@@ -117,7 +131,8 @@ class DynamicBudgetManager:
     def _init_database(self) -> None:
         """Initialize SQLite database for metrics storage."""
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS budget_allocations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -128,9 +143,11 @@ class DynamicBudgetManager:
                     efficiency_score REAL NOT NULL,
                     strategy TEXT NOT NULL
                 )
-            """)
+            """
+            )
 
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS rebalancing_events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -139,9 +156,11 @@ class DynamicBudgetManager:
                     tokens_reallocated INTEGER NOT NULL,
                     efficiency_gain REAL NOT NULL
                 )
-            """)
+            """
+            )
 
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS budget_metrics (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -152,7 +171,8 @@ class DynamicBudgetManager:
                     efficiency_score REAL NOT NULL,
                     savings_achieved INTEGER NOT NULL
                 )
-            """)
+            """
+            )
 
             conn.commit()
 
@@ -169,9 +189,14 @@ class DynamicBudgetManager:
         for component_id, name, priority in default_components:
             self.register_component(component_id, name, priority)
 
-    def register_component(self, component_id: str, name: str,
-                          priority: PriorityLevel = PriorityLevel.MEDIUM,
-                          initial_allocation: Optional[int] = None) -> None:
+    def register_component(
+        self,
+        component_id: str,
+        name: str,
+        priority: PriorityLevel = PriorityLevel.MEDIUM,
+        initial_allocation: Optional[int] = None,
+    )-> None:
+        """Register Component."""
         """Register a new component for budget management."""
         with self._lock:
             if component_id in self.components:
@@ -190,7 +215,7 @@ class DynamicBudgetManager:
                 performance_score=50.0,  # Start with neutral score
                 efficiency_score=50.0,
                 last_adjustment=datetime.now(),
-                adjustment_history=[]
+                adjustment_history=[],
             )
 
             logger.info(f"Registered component: {name} ({component_id}) with {initial_allocation} tokens")
@@ -199,12 +224,7 @@ class DynamicBudgetManager:
         """Calculate initial budget allocation based on priority."""
         base_allocation = self.total_budget * 0.2  # 20% base for medium priority
 
-        multipliers = {
-            PriorityLevel.CRITICAL: 1.5,
-            PriorityLevel.HIGH: 1.2,
-            PriorityLevel.MEDIUM: 1.0,
-            PriorityLevel.LOW: 0.6
-        }
+        multipliers = {PriorityLevel.CRITICAL: 1.5, PriorityLevel.HIGH: 1.2, PriorityLevel.MEDIUM: 1.0, PriorityLevel.LOW: 0.6}
 
         allocation = int(base_allocation * multipliers[priority])
         return max(allocation, self.min_budget_allocation)
@@ -259,9 +279,7 @@ class DynamicBudgetManager:
 
         return False
 
-    def update_performance_metrics(self, component_id: str,
-                                 performance_score: float,
-                                 efficiency_score: float) -> None:
+    def update_performance_metrics(self, component_id: str, performance_score: float, efficiency_score: float) -> None:
         """Update performance metrics for a component."""
         with self._lock:
             if component_id not in self.components:
@@ -303,8 +321,7 @@ class DynamicBudgetManager:
         """Rebalance budgets across components based on current strategy."""
         with self._lock:
             start_time = time.time()
-            old_allocations = {comp_id: comp.allocated_tokens
-                             for comp_id, comp in self.components.items()}
+            old_allocations = {comp_id: comp.allocated_tokens for comp_id, comp in self.components.items()}
 
             if self.strategy == BudgetStrategy.PERFORMANCE_BASED:
                 self._performance_based_rebalancing()
@@ -319,8 +336,7 @@ class DynamicBudgetManager:
 
             # Track changes
             tokens_reallocated = sum(
-                abs(self.components[comp_id].allocated_tokens - old_allocations[comp_id])
-                for comp_id in self.components
+                abs(self.components[comp_id].allocated_tokens - old_allocations[comp_id]) for comp_id in self.components
             )
 
             # Calculate efficiency gain
@@ -334,8 +350,9 @@ class DynamicBudgetManager:
             # Save to database
             self._save_rebalancing_event(trigger_reason, tokens_reallocated, efficiency_gain)
 
-            logger.info(f"Rebalancing completed: {tokens_reallocated} tokens reallocated, "
-                       f"efficiency gain: {efficiency_gain:.2f}")
+            logger.info(
+                f"Rebalancing completed: {tokens_reallocated} tokens reallocated, " f"efficiency gain: {efficiency_gain:.2f}"
+            )
 
     def _performance_based_rebalancing(self) -> None:
         """Rebalance budgets based on performance scores."""
@@ -344,8 +361,11 @@ class DynamicBudgetManager:
         if total_performance_score == 0:
             return
 
-        available_budget = sum(comp.allocated_tokens - comp.used_tokens
-                              for comp in self.components.values() if comp.priority != PriorityLevel.CRITICAL)
+        available_budget = sum(
+            comp.allocated_tokens - comp.used_tokens
+            for comp in self.components.values()
+            if comp.priority != PriorityLevel.CRITICAL
+        )
 
         for component in self.components.values():
             if component.priority == PriorityLevel.CRITICAL:
@@ -367,13 +387,15 @@ class DynamicBudgetManager:
             component.last_adjustment = datetime.now()
 
             # Track adjustment
-            component.adjustment_history.append({
-                'timestamp': datetime.now().isoformat(),
-                'old_allocation': component.allocated_tokens - actual_change,
-                'new_allocation': component.allocated_tokens,
-                'change': actual_change,
-                'reason': 'performance_based'
-            })
+            component.adjustment_history.append(
+                {
+                    "timestamp": datetime.now().isoformat(),
+                    "old_allocation": component.allocated_tokens - actual_change,
+                    "new_allocation": component.allocated_tokens,
+                    "change": actual_change,
+                    "reason": "performance_based",
+                }
+            )
 
     def _efficiency_based_rebalancing(self) -> None:
         """Rebalance budgets based on efficiency scores."""
@@ -394,10 +416,7 @@ class DynamicBudgetManager:
             elif component.efficiency_score < 40 and component.priority != PriorityLevel.CRITICAL:
                 # Reduce allocation for inefficient components
                 reduction = int(component.allocated_tokens * 0.1)
-                component.allocated_tokens = max(
-                    component.allocated_tokens - reduction,
-                    self.min_budget_allocation
-                )
+                component.allocated_tokens = max(component.allocated_tokens - reduction, self.min_budget_allocation)
 
             component.last_adjustment = datetime.now()
 
@@ -414,10 +433,7 @@ class DynamicBudgetManager:
             # Low utilization (under 30%) - consider reducing budget
             elif utilization_rate < 30 and component.priority != PriorityLevel.CRITICAL:
                 reduction = int(component.allocated_tokens * 0.15)
-                component.allocated_tokens = max(
-                    component.allocated_tokens - reduction,
-                    self.min_budget_allocation
-                )
+                component.allocated_tokens = max(component.allocated_tokens - reduction, self.min_budget_allocation)
 
             component.last_adjustment = datetime.now()
 
@@ -444,26 +460,19 @@ class DynamicBudgetManager:
                 component.allocated_tokens = int(component.allocated_tokens * 1.15)
             elif predicted_efficiency < 50:
                 # Reduce budget for declining components
-                component.allocated_tokens = max(
-                    int(component.allocated_tokens * 0.85),
-                    self.min_budget_allocation
-                )
+                component.allocated_tokens = max(int(component.allocated_tokens * 0.85), self.min_budget_allocation)
 
             component.last_adjustment = datetime.now()
 
     def _equal_rebalancing(self) -> None:
         """Equal budget distribution across non-critical components."""
-        non_critical_components = [
-            comp for comp in self.components.values()
-            if comp.priority != PriorityLevel.CRITICAL
-        ]
+        non_critical_components = [comp for comp in self.components.values() if comp.priority != PriorityLevel.CRITICAL]
 
         if not non_critical_components:
             return
 
         available_budget = self.total_budget - sum(
-            comp.allocated_tokens for comp in self.components.values()
-            if comp.priority == PriorityLevel.CRITICAL
+            comp.allocated_tokens for comp in self.components.values() if comp.priority == PriorityLevel.CRITICAL
         )
 
         equal_share = available_budget // len(non_critical_components)
@@ -489,36 +498,31 @@ class DynamicBudgetManager:
 
         return total_weighted_efficiency / total_budget if total_budget > 0 else 0
 
-    def _log_rebalancing_event(self, reason: str, tokens_reallocated: int,
-                              efficiency_gain: float) -> None:
+    def _log_rebalancing_event(self, reason: str, tokens_reallocated: int, efficiency_gain: float) -> None:
         """Log rebalancing event."""
         event = {
-            'timestamp': datetime.now().isoformat(),
-            'reason': reason,
-            'tokens_reallocated': tokens_reallocated,
-            'efficiency_gain': efficiency_gain,
-            'components_affected': len(self.components),
-            'strategy': self.strategy.value
+            "timestamp": datetime.now().isoformat(),
+            "reason": reason,
+            "tokens_reallocated": tokens_reallocated,
+            "efficiency_gain": efficiency_gain,
+            "components_affected": len(self.components),
+            "strategy": self.strategy.value,
         }
 
         self.reallocation_log.append(event)
         self.savings_tracker += int(tokens_reallocated * efficiency_gain / 100)
 
-    def _save_rebalancing_event(self, reason: str, tokens_reallocated: int,
-                               efficiency_gain: float) -> None:
+    def _save_rebalancing_event(self, reason: str, tokens_reallocated: int, efficiency_gain: float) -> None:
         """Save rebalancing event to database."""
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 INSERT INTO rebalancing_events
                 (timestamp, trigger_reason, components_affected, tokens_reallocated, efficiency_gain)
                 VALUES (?, ?, ?, ?, ?)
-            """, (
-                datetime.now().isoformat(),
-                reason,
-                len(self.components),
-                tokens_reallocated,
-                efficiency_gain
-            ))
+            """,
+                (datetime.now().isoformat(), reason, len(self.components), tokens_reallocated, efficiency_gain),
+            )
             conn.commit()
 
     def _record_usage(self, component_id: str, tokens_used: int) -> None:
@@ -526,19 +530,22 @@ class DynamicBudgetManager:
         component = self.components[component_id]
 
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 INSERT INTO budget_allocations
                 (timestamp, component_id, allocated_tokens, used_tokens, performance_score, efficiency_score, strategy)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (
-                datetime.now().isoformat(),
-                component_id,
-                component.allocated_tokens,
-                component.used_tokens,
-                component.performance_score,
-                component.efficiency_score,
-                self.strategy.value
-            ))
+            """,
+                (
+                    datetime.now().isoformat(),
+                    component_id,
+                    component.allocated_tokens,
+                    component.used_tokens,
+                    component.performance_score,
+                    component.efficiency_score,
+                    self.strategy.value,
+                ),
+            )
             conn.commit()
 
     def get_metrics(self) -> BudgetMetrics:
@@ -554,10 +561,7 @@ class DynamicBudgetManager:
             efficiency_scores = [comp.efficiency_score for comp in self.components.values()]
             avg_efficiency = statistics.mean(efficiency_scores) if efficiency_scores else 0
 
-            last_rebalancing = max(
-                (comp.last_adjustment for comp in self.components.values()),
-                default=datetime.now()
-            )
+            last_rebalancing = max((comp.last_adjustment for comp in self.components.values()), default=datetime.now())
 
             return BudgetMetrics(
                 total_budget=self.total_budget,
@@ -567,7 +571,7 @@ class DynamicBudgetManager:
                 efficiency_score=avg_efficiency,
                 reallocation_count=len(self.reallocation_log),
                 savings_achieved=self.savings_tracker,
-                last_rebalancing=last_rebalancing
+                last_rebalancing=last_rebalancing,
             )
 
     def get_component_status(self, component_id: str) -> Optional[ComponentBudget]:
@@ -625,7 +629,8 @@ class DynamicBudgetManager:
 
         with sqlite3.connect(self.db_path) as conn:
             # Get recent allocations
-            cursor = conn.execute("""
+            cursor = conn.execute(
+                """
                 SELECT component_id, COUNT(*) as allocations_count,
                        AVG(allocated_tokens) as avg_allocation,
                        AVG(used_tokens) as avg_usage,
@@ -634,34 +639,41 @@ class DynamicBudgetManager:
                 WHERE timestamp > ?
                 GROUP BY component_id
                 ORDER BY avg_efficiency DESC
-            """, (cutoff_time.isoformat(),))
+            """,
+                (cutoff_time.isoformat(),),
+            )
 
             component_stats = []
             for row in cursor.fetchall():
                 component_id, count, avg_alloc, avg_usage, avg_eff = row
                 component = self.components.get(component_id)
                 if component:
-                    component_stats.append({
-                        'component_id': component_id,
-                        'name': component.name,
-                        'priority': component.priority.name,
-                        'allocations_count': count,
-                        'avg_allocation': avg_alloc,
-                        'avg_usage': avg_usage,
-                        'avg_efficiency': avg_eff,
-                        'current_allocation': component.allocated_tokens,
-                        'current_usage': component.used_tokens,
-                        'utilization_rate': component.utilization_rate
-                    })
+                    component_stats.append(
+                        {
+                            "component_id": component_id,
+                            "name": component.name,
+                            "priority": component.priority.name,
+                            "allocations_count": count,
+                            "avg_allocation": avg_alloc,
+                            "avg_usage": avg_usage,
+                            "avg_efficiency": avg_eff,
+                            "current_allocation": component.allocated_tokens,
+                            "current_usage": component.used_tokens,
+                            "utilization_rate": component.utilization_rate,
+                        }
+                    )
 
             # Get recent rebalancing events
-            cursor = conn.execute("""
+            cursor = conn.execute(
+                """
                 SELECT COUNT(*) as events_count,
                        SUM(tokens_reallocated) as total_reallocated,
                        AVG(efficiency_gain) as avg_gain
                 FROM rebalancing_events
                 WHERE timestamp > ?
-            """, (cutoff_time.isoformat(),))
+            """,
+                (cutoff_time.isoformat(),),
+            )
 
             rebalancing_stats = cursor.fetchone()
             events_count, total_reallocated, avg_gain = rebalancing_stats or (0, 0, 0)
@@ -670,18 +682,18 @@ class DynamicBudgetManager:
             metrics = self.get_metrics()
 
             return {
-                'report_period_hours': hours,
-                'generated_at': datetime.now().isoformat(),
-                'strategy': self.strategy.value,
-                'overall_metrics': asdict(metrics),
-                'component_statistics': component_stats,
-                'rebalancing_summary': {
-                    'events_count': events_count,
-                    'total_tokens_reallocated': total_reallocated or 0,
-                    'average_efficiency_gain': avg_gain or 0.0
+                "report_period_hours": hours,
+                "generated_at": datetime.now().isoformat(),
+                "strategy": self.strategy.value,
+                "overall_metrics": asdict(metrics),
+                "component_statistics": component_stats,
+                "rebalancing_summary": {
+                    "events_count": events_count,
+                    "total_tokens_reallocated": total_reallocated or 0,
+                    "average_efficiency_gain": avg_gain or 0.0,
                 },
-                'savings_achieved': self.savings_tracker,
-                'recommendations': self._generate_recommendations(component_stats)
+                "savings_achieved": self.savings_tracker,
+                "recommendations": self._generate_recommendations(component_stats),
             }
 
     def _generate_recommendations(self, component_stats: List[Dict[str, Any]]) -> List[str]:
@@ -690,11 +702,11 @@ class DynamicBudgetManager:
 
         # Analyze component performance
         for stats in component_stats:
-            if stats['avg_efficiency'] < 40:
+            if stats["avg_efficiency"] < 40:
                 recommendations.append(
                     f"Consider reducing budget for {stats['name']} - low efficiency ({stats['avg_efficiency']:.1f}%)"
                 )
-            elif stats['utilization_rate'] > 90:
+            elif stats["utilization_rate"] > 90:
                 recommendations.append(
                     f"Consider increasing budget for {stats['name']} - high utilization ({stats['utilization_rate']:.1f}%)"
                 )
@@ -711,6 +723,7 @@ class DynamicBudgetManager:
             recommendations.append("Budget allocation is optimized - current strategy is effective")
 
         return recommendations
+
 
 def main():
     """Demo the dynamic budget management system."""
@@ -741,17 +754,12 @@ def main():
     for component_id, tokens, performance, efficiency in operations:
         budget_manager.use_tokens(component_id, tokens)
         budget_manager.update_performance_metrics(component_id, performance, efficiency)
-        print(f"   {component_id}: Used {tokens:,} tokens, "
-              f"Performance: {performance:.1f}%, Efficiency: {efficiency:.1f}%")
+        print(f"   {component_id}: Used {tokens:,} tokens, " f"Performance: {performance:.1f}%, Efficiency: {efficiency:.1f}%")
 
     print()
 
     # Test different strategies
-    strategies = [
-        BudgetStrategy.PERFORMANCE_BASED,
-        BudgetStrategy.EFFICIENCY_BASED,
-        BudgetStrategy.NEEDS_BASED
-    ]
+    strategies = [BudgetStrategy.PERFORMANCE_BASED, BudgetStrategy.EFFICIENCY_BASED, BudgetStrategy.NEEDS_BASED]
 
     print("=== Testing Different Allocation Strategies ===")
 
@@ -778,17 +786,18 @@ def main():
     print(f"Rebalancing events: {report['rebalancing_summary']['events_count']}")
 
     print(f"\nRecommendations:")
-    for i, rec in enumerate(report['recommendations'], 1):
+    for i, rec in enumerate(report["recommendations"], 1):
         print(f"   {i}. {rec}")
 
     # Calculate estimated cost reduction
-    total_tokens = report['overall_metrics']['used_tokens']
-    estimated_reduction = (report['savings_achieved'] / total_tokens * 100) if total_tokens > 0 else 0
+    total_tokens = report["overall_metrics"]["used_tokens"]
+    estimated_reduction = (report["savings_achieved"] / total_tokens * 100) if total_tokens > 0 else 0
 
     print(f"\nEstimated cost reduction: {estimated_reduction:.1f}%")
     print(f"Target achieved: {'YES' if estimated_reduction >= 15 else 'NO'}")
 
     return True
+
 
 if __name__ == "__main__":
     main()

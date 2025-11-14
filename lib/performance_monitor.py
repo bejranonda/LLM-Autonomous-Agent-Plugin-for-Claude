@@ -18,9 +18,11 @@ from dataclasses import dataclass, asdict
 from collections import deque
 import logging
 
+
 @dataclass
 class PerformanceMetrics:
     """Performance metrics data structure"""
+
     timestamp: float
     memory_rss: int
     memory_vms: int
@@ -33,10 +35,12 @@ class PerformanceMetrics:
     success: bool = True
     error_type: str = ""
 
+
 class PerformanceMonitor:
     """Real-time performance monitoring system"""
 
     def __init__(self, data_dir: str = ".claude-patterns", max_history: int = 1000):
+        """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -57,7 +61,7 @@ class PerformanceMonitor:
             "execution_time_slow": 5.0,  # seconds
             "error_rate_percent": 10,  # per minute
             "thread_count_high": 50,
-            "file_handle_count": 1000
+            "file_handle_count": 1000,
         }
 
         # Alert callbacks
@@ -73,13 +77,11 @@ class PerformanceMonitor:
 
         # Create file handler
         log_file = self.data_dir / "performance_monitor.log"
-        file_handler = logging.FileHandler(log_file, mode='a')
+        file_handler = logging.FileHandler(log_file, mode="a")
         file_handler.setLevel(logging.INFO)
 
         # Create formatter
-        formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        )
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
@@ -135,7 +137,7 @@ class PerformanceMonitor:
                     cpu_percent=process.cpu_percent(),
                     num_threads=process.num_threads(),
                     open_files=len(process.open_files()),
-                    command_name="system_monitor"
+                    command_name="system_monitor",
                 )
 
                 # Add to history
@@ -159,62 +161,71 @@ class PerformanceMonitor:
                 self.logger.error(f"Error in monitoring loop: {e}")
                 time.sleep(self.sample_interval)
 
-    def _check_alerts(self, current_metrics: PerformanceMetrics,
-                     last_memory: int, error_count: int, command_count: int):
+    def _check_alerts(self, current_metrics: PerformanceMetrics, last_memory: int, error_count: int, command_count: int):
         """Check for performance alerts"""
         alerts = []
 
         # Memory usage alert
         if current_metrics.memory_percent > self.thresholds["memory_usage_percent"]:
-            alerts.append({
-                "type": "high_memory_usage",
-                "severity": "warning",
-                "message": f"High memory usage: {current_metrics.memory_percent:.1f}%",
-                "value": current_metrics.memory_percent,
-                "threshold": self.thresholds["memory_usage_percent"]
-            })
+            alerts.append(
+                {
+                    "type": "high_memory_usage",
+                    "severity": "warning",
+                    "message": f"High memory usage: {current_metrics.memory_percent:.1f}%",
+                    "value": current_metrics.memory_percent,
+                    "threshold": self.thresholds["memory_usage_percent"],
+                }
+            )
 
         # CPU usage alert
         if current_metrics.cpu_percent > self.thresholds["cpu_usage_percent"]:
-            alerts.append({
-                "type": "high_cpu_usage",
-                "severity": "warning",
-                "message": f"High CPU usage: {current_metrics.cpu_percent:.1f}%",
-                "value": current_metrics.cpu_percent,
-                "threshold": self.thresholds["cpu_usage_percent"]
-            })
+            alerts.append(
+                {
+                    "type": "high_cpu_usage",
+                    "severity": "warning",
+                    "message": f"High CPU usage: {current_metrics.cpu_percent:.1f}%",
+                    "value": current_metrics.cpu_percent,
+                    "threshold": self.thresholds["cpu_usage_percent"],
+                }
+            )
 
         # Thread count alert
         if current_metrics.num_threads > self.thresholds["thread_count_high"]:
-            alerts.append({
-                "type": "high_thread_count",
-                "severity": "warning",
-                "message": f"High thread count: {current_metrics.num_threads}",
-                "value": current_metrics.num_threads,
-                "threshold": self.thresholds["thread_count_high"]
-            })
+            alerts.append(
+                {
+                    "type": "high_thread_count",
+                    "severity": "warning",
+                    "message": f"High thread count: {current_metrics.num_threads}",
+                    "value": current_metrics.num_threads,
+                    "threshold": self.thresholds["thread_count_high"],
+                }
+            )
 
         # File handle alert
         if current_metrics.open_files > self.thresholds["file_handle_count"]:
-            alerts.append({
-                "type": "high_file_handle_count",
-                "severity": "warning",
-                "message": f"High file handle count: {current_metrics.open_files}",
-                "value": current_metrics.open_files,
-                "threshold": self.thresholds["file_handle_count"]
-            })
+            alerts.append(
+                {
+                    "type": "high_file_handle_count",
+                    "severity": "warning",
+                    "message": f"High file handle count: {current_metrics.open_files}",
+                    "value": current_metrics.open_files,
+                    "threshold": self.thresholds["file_handle_count"],
+                }
+            )
 
         # Error rate alert
         if command_count > 0:
             error_rate = (error_count / command_count) * 100
             if error_rate > self.thresholds["error_rate_percent"]:
-                alerts.append({
-                    "type": "high_error_rate",
-                    "severity": "critical",
-                    "message": f"High error rate: {error_rate:.1f}%",
-                    "value": error_rate,
-                    "threshold": self.thresholds["error_rate_percent"]
-                })
+                alerts.append(
+                    {
+                        "type": "high_error_rate",
+                        "severity": "critical",
+                        "message": f"High error rate: {error_rate:.1f}%",
+                        "value": error_rate,
+                        "threshold": self.thresholds["error_rate_percent"],
+                    }
+                )
 
         # Trigger alert callbacks
         for alert in alerts:
@@ -231,8 +242,7 @@ class PerformanceMonitor:
             except Exception as e:
                 self.logger.error(f"Error in alert callback: {e}")
 
-    def record_command_execution(self, command_name: str, execution_time: float,
-                                success: bool = True, error_type: str = ""):
+    def record_command_execution(self, command_name: str, execution_time: float, success: bool = True, error_type: str = ""):
         """Record command execution metrics"""
         try:
             process = psutil.Process()
@@ -248,7 +258,7 @@ class PerformanceMonitor:
                 command_name=command_name,
                 execution_time=execution_time,
                 success=success,
-                error_type=error_type
+                error_type=error_type,
             )
 
             self.metrics_history.append(metrics)
@@ -285,14 +295,14 @@ class PerformanceMonitor:
             "average_mb": statistics.mean(memory_values) / 1024 / 1024 if memory_values else 0,
             "peak_mb": max(memory_values) / 1024 / 1024 if memory_values else 0,
             "min_mb": min(memory_values) / 1024 / 1024 if memory_values else 0,
-            "growth_mb": (memory_values[-1] - memory_values[0]) / 1024 / 1024 if len(memory_values) > 1 else 0
+            "growth_mb": (memory_values[-1] - memory_values[0]) / 1024 / 1024 if len(memory_values) > 1 else 0,
         }
 
         # CPU analysis
         cpu_stats = {
             "average_percent": statistics.mean(cpu_values) if cpu_values else 0,
             "peak_percent": max(cpu_values) if cpu_values else 0,
-            "current_percent": cpu_values[-1] if cpu_values else 0
+            "current_percent": cpu_values[-1] if cpu_values else 0,
         }
 
         # Command analysis
@@ -305,7 +315,7 @@ class PerformanceMonitor:
                 "successful_commands": len(successful_commands),
                 "success_rate": (len(successful_commands) / len(command_metrics)) * 100,
                 "avg_execution_time": statistics.mean(execution_times) if execution_times else 0,
-                "slow_commands": len([t for t in execution_times if t > self.thresholds["execution_time_slow"]])
+                "slow_commands": len([t for t in execution_times if t > self.thresholds["execution_time_slow"]]),
             }
         else:
             command_stats = {
@@ -313,7 +323,7 @@ class PerformanceMonitor:
                 "successful_commands": 0,
                 "success_rate": 0,
                 "avg_execution_time": 0,
-                "slow_commands": 0
+                "slow_commands": 0,
             }
 
         # System health score (0-100)
@@ -337,7 +347,7 @@ class PerformanceMonitor:
             "cpu_stats": cpu_stats,
             "command_stats": command_stats,
             "health_score": health_score,
-            "health_grade": self._get_health_grade(health_score)
+            "health_grade": self._get_health_grade(health_score),
         }
 
     def _get_health_grade(self, score: float) -> str:
@@ -365,12 +375,12 @@ class PerformanceMonitor:
             # Convert deque to list for JSON serialization
             history_data = [asdict(m) for m in self.metrics_history]
 
-            with open(history_file, 'w') as f:
-                json.dump({
-                    "timestamp": datetime.now().isoformat(),
-                    "total_samples": len(history_data),
-                    "metrics": history_data
-                }, f, indent=2)
+            with open(history_file, "w") as f:
+                json.dump(
+                    {"timestamp": datetime.now().isoformat(), "total_samples": len(history_data), "metrics": history_data},
+                    f,
+                    indent=2,
+                )
 
         except Exception as e:
             self.logger.error(f"Error saving history: {e}")
@@ -382,7 +392,7 @@ class PerformanceMonitor:
             if not history_file.exists():
                 return False
 
-            with open(history_file, 'r') as f:
+            with open(history_file, "r") as f:
                 data = json.load(f)
 
             # Convert back to PerformanceMetrics objects
@@ -415,14 +425,10 @@ class PerformanceMonitor:
             "timestamp": datetime.now().isoformat(),
             "monitoring_status": "active" if self.monitoring_active else "inactive",
             "total_samples": len(self.metrics_history),
-            "summaries": {
-                "5_minutes": summary_5min,
-                "30_minutes": summary_30min,
-                "1_hour": summary_1hr
-            },
+            "summaries": {"5_minutes": summary_5min, "30_minutes": summary_30min, "1_hour": summary_1hr},
             "trends": trends,
             "recommendations": recommendations,
-            "thresholds": self.thresholds
+            "thresholds": self.thresholds,
         }
 
     def _analyze_trends(self) -> Dict[str, str]:
@@ -481,12 +487,16 @@ class PerformanceMonitor:
             recommendations.append("Command success rate is below 95% - investigate failure causes")
 
         if command_stats.get("slow_commands", 0) > 0:
-            recommendations.append(f"{command_stats['slow_commands']} slow commands detected - optimize performance bottlenecks")
+            recommendations.append(
+                f"{command_stats['slow_commands']} slow commands detected - optimize performance bottlenecks"
+            )
 
         return recommendations
 
+
 # Global monitor instance
 _monitor_instance = None
+
 
 def get_performance_monitor(data_dir: str = ".claude-patterns") -> PerformanceMonitor:
     """Get global performance monitor instance"""
@@ -495,25 +505,30 @@ def get_performance_monitor(data_dir: str = ".claude-patterns") -> PerformanceMo
         _monitor_instance = PerformanceMonitor(data_dir)
     return _monitor_instance
 
+
 def start_monitoring(data_dir: str = ".claude-patterns", sample_interval: float = 1.0):
     """Start global performance monitoring"""
     monitor = get_performance_monitor(data_dir)
     monitor.start_monitoring(sample_interval)
+
 
 def stop_monitoring():
     """Stop global performance monitoring"""
     monitor = get_performance_monitor()
     monitor.stop_monitoring()
 
+
 def record_command(command_name: str, execution_time: float, success: bool = True, error_type: str = ""):
     """Record command execution in global monitor"""
     monitor = get_performance_monitor()
     monitor.record_command_execution(command_name, execution_time, success, error_type)
 
+
 def get_summary(minutes: int = 10) -> Dict[str, Any]:
     """Get performance summary from global monitor"""
     monitor = get_performance_monitor()
     return monitor.get_performance_summary(minutes)
+
 
 def main():
     """Main execution function"""
@@ -563,6 +578,7 @@ def main():
         print(json.dumps(summary, indent=2, default=str))
     else:
         print("Use --monitor to start monitoring, --summary for quick stats, or --report for detailed analysis")
+
 
 if __name__ == "__main__":
     main()

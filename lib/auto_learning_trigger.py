@@ -21,6 +21,7 @@ class AutomaticLearningTrigger:
     """Automatically triggers learning engine and performance recording after tasks."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(exist_ok=True)
 
@@ -61,8 +62,8 @@ class AutomaticLearningTrigger:
                 "auto_recording_enabled": True,
                 "created": datetime.now(timezone.utc).isoformat(),
                 "last_updated": datetime.now(timezone.utc).isoformat(),
-                "total_records": 0
-            }
+                "total_records": 0,
+            },
         }
         with open(self.performance_records_file, "w") as f:
             json.dump(initial_data, f, indent=2)
@@ -77,20 +78,20 @@ class AutomaticLearningTrigger:
                 "created": datetime.now(timezone.utc).isoformat(),
                 "last_updated": datetime.now(timezone.utc).isoformat(),
                 "total_tasks": 0,
-                "global_learning_enabled": True
+                "global_learning_enabled": True,
             },
             "project_context": {
                 "detected_languages": ["python", "markdown"],
                 "frameworks": ["claude-code"],
                 "project_type": "ai-plugin",
                 "team_size": "individual",
-                "development_stage": "active"
+                "development_stage": "active",
             },
             "patterns": [],
             "skill_effectiveness": {},
             "agent_performance": {},
             "trends": {},
-            "optimizations": {}
+            "optimizations": {},
         }
         with open(self.patterns_file, "w") as f:
             json.dump(initial_data, f, indent=2)
@@ -104,8 +105,8 @@ class AutomaticLearningTrigger:
                 "created": datetime.now(timezone.utc).isoformat(),
                 "last_trigger": None,
                 "total_triggers": 0,
-                "successful_triggers": 0
-            }
+                "successful_triggers": 0,
+            },
         }
         with open(self.trigger_log_file, "w") as f:
             json.dump(initial_data, f, indent=2)
@@ -135,25 +136,26 @@ class AutomaticLearningTrigger:
             "description": task_description,
             "type": task_type,
             "start_time": datetime.now(timezone.utc).isoformat(),
-            "start_timestamp": time.time()
+            "start_timestamp": time.time(),
         }
         self.task_start_time = time.time()
 
         # Log task start
-        self._log_trigger("task_started", {
-            "task_id": self.current_task["id"],
-            "description": task_description,
-            "type": task_type
-        })
+        self._log_trigger(
+            "task_started", {"task_id": self.current_task["id"], "description": task_description, "type": task_type}
+        )
 
-    def complete_task_with_recording(self,
-                                   success: bool = True,
-                                   quality_score: int = 85,
-                                   files_modified: int = 0,
-                                   lines_changed: int = 0,
-                                   skills_used: List[str] = None,
-                                   issues_found: List[str] = None,
-                                   recommendations: List[str] = None) -> Dict[str, Any]:
+    def complete_task_with_recording(
+        self,
+        success: bool = True,
+        quality_score: int = 85,
+        files_modified: int = 0,
+        lines_changed: int = 0,
+        skills_used: List[str] = None,
+        issues_found: List[str] = None,
+        recommendations: List[str] = None,
+    )-> Dict[str, Any]:
+        """Complete Task With Recording."""
         """
         Complete the current task and automatically trigger performance recording.
 
@@ -181,11 +183,11 @@ class AutomaticLearningTrigger:
                 "files_modified": files_modified,
                 "lines_changed": lines_changed,
                 "success": success,
-                "auto_generated": True
+                "auto_generated": True,
             },
             "issues_found": issues_found or [],
             "recommendations": recommendations or [],
-            "auto_generated": True
+            "auto_generated": True,
         }
 
         # Store performance record
@@ -206,7 +208,7 @@ class AutomaticLearningTrigger:
                 "lines_changed": lines_changed,
                 "duration_seconds": round(duration),
                 "success": success,
-                "quality_score": quality_score
+                "quality_score": quality_score,
             },
             "execution": {
                 "skills_loaded": skills_used or ["autonomous-development"],
@@ -217,8 +219,8 @@ class AutomaticLearningTrigger:
                 "performance_metrics": {
                     "overall_score": quality_score,
                     "success_rate": 1.0 if success else 0.0,
-                    "efficiency": min(100, 100 - (duration / 60))  # Simple efficiency calc
-                }
+                    "efficiency": min(100, 100 - (duration / 60)),  # Simple efficiency calc
+                },
             },
             "outcome": {
                 "success": success,
@@ -229,15 +231,14 @@ class AutomaticLearningTrigger:
                 "errors_encountered": issues_found or [],
                 "performance_recorded": True,
                 "model_used": self.detect_current_model(),
-                "task_completed_at": datetime.now(timezone.utc).isoformat()
+                "task_completed_at": datetime.now(timezone.utc).isoformat(),
             },
             "insights": {
                 "what_worked": ["Automatic performance recording enabled"],
                 "what_failed": [] if success else ["Task completion issues"],
-                "bottlenecks": [] if 
-                    duration < 300 else ["Task took longer than expected"],
+                "bottlenecks": [] if duration < 300 else ["Task took longer than expected"],
                 "optimization_opportunities": recommendations or [],
-                "lessons_learned": [f"Automatic recording successful for {self.current_task['type']} tasks"]
+                "lessons_learned": [f"Automatic recording successful for {self.current_task['type']} tasks"],
             },
             "reuse_count": 0,
             "last_reused": None,
@@ -246,22 +247,25 @@ class AutomaticLearningTrigger:
                 "recorded_by": "automatic_learning_trigger",
                 "integration_version": "1.0+",
                 "dashboard_compatible": True,
-                "auto_triggered": True
-            }
+                "auto_triggered": True,
+            },
         }
 
         # Store learning pattern
         self._store_learning_pattern(learning_pattern)
 
         # Log successful trigger
-        self._log_trigger("task_completed_with_recording", {
-            "task_id": self.current_task["id"],
-            "performance_record_id": performance_record["assessment_id"],
-            "pattern_id": learning_pattern["task_id"],
-            "duration_seconds": round(duration),
-            "quality_score": quality_score,
-            "success": success
-        })
+        self._log_trigger(
+            "task_completed_with_recording",
+            {
+                "task_id": self.current_task["id"],
+                "performance_record_id": performance_record["assessment_id"],
+                "pattern_id": learning_pattern["task_id"],
+                "duration_seconds": round(duration),
+                "quality_score": quality_score,
+                "success": success,
+            },
+        )
 
         # Clear current task
         completed_task = self.current_task.copy()
@@ -273,14 +277,14 @@ class AutomaticLearningTrigger:
             "task": completed_task,
             "performance_record": performance_record,
             "learning_pattern": learning_pattern,
-            "message": f"Task completed and performance recorded automatically"
+            "message": f"Task completed and performance recorded automatically",
         }
 
     def _store_performance_record(self, record: Dict[str, Any]):
         """Store performance record in performance_records.json."""
         try:
             # Load existing data
-            with open(self.performance_records_file, 'r') as f:
+            with open(self.performance_records_file, "r") as f:
                 data = json.load(f)
 
             # Add new record
@@ -290,7 +294,8 @@ class AutomaticLearningTrigger:
 
             # Update summary
             task_type = record["task_type"]
-            if "summary" not in data: data["summary"] = {}
+            if "summary" not in data:
+                data["summary"] = {}
             if task_type not in data["summary"]:
                 data["summary"][task_type] = {"count": 0, "avg_score": 0.0, "success_rate": 0.0}
 
@@ -316,7 +321,7 @@ class AutomaticLearningTrigger:
         """Store learning pattern in patterns.json."""
         try:
             # Load existing data
-            with open(self.patterns_file, 'r') as f:
+            with open(self.patterns_file, "r") as f:
                 data = json.load(f)
 
             # Add new pattern
@@ -335,15 +340,11 @@ class AutomaticLearningTrigger:
         """Log trigger events for debugging."""
         try:
             # Load existing log
-            with open(self.trigger_log_file, 'r') as f:
+            with open(self.trigger_log_file, "r") as f:
                 log_data = json.load(f)
 
             # Add trigger entry
-            trigger_entry = {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "type": trigger_type,
-                "details": details
-            }
+            trigger_entry = {"timestamp": datetime.now(timezone.utc).isoformat(), "type": trigger_type, "details": details}
 
             log_data["triggers"].append(trigger_entry)
             log_data["metadata"]["last_trigger"] = trigger_entry["timestamp"]
@@ -359,14 +360,17 @@ class AutomaticLearningTrigger:
         except Exception as e:
             print(f"ERROR logging trigger: {e}")
 
+
 # Global instance for automatic recording
 _auto_trigger = None
+
 
 def initialize_automatic_recording(patterns_dir: str = ".claude-patterns"):
     """Initialize automatic recording system."""
     global _auto_trigger
     _auto_trigger = AutomaticLearningTrigger(patterns_dir)
     return _auto_trigger
+
 
 def start_task(task_description: str, task_type: str = "unknown"):
     """Start tracking a task for automatic recording."""
@@ -375,6 +379,7 @@ def start_task(task_description: str, task_type: str = "unknown"):
         initialize_automatic_recording()
     _auto_trigger.start_task_tracking(task_description, task_type)
 
+
 def complete_task(**kwargs):
     """Complete current task with automatic performance recording."""
     global _auto_trigger
@@ -382,6 +387,7 @@ def complete_task(**kwargs):
         print("WARNING: No task started. Use start_task() first.")
         return {}
     return _auto_trigger.complete_task_with_recording(**kwargs)
+
 
 # Example usage for testing
 if __name__ == "__main__":
@@ -404,7 +410,7 @@ if __name__ == "__main__":
         lines_changed=50,
         skills_used=["automatic-learning", "performance-recording"],
         issues_found=[],
-        recommendations=["Continue using automatic recording"]
+        recommendations=["Continue using automatic recording"],
     )
 
     print(f"[OK] Automatic recording test completed: {result['message']}")

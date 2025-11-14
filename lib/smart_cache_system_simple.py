@@ -31,15 +31,19 @@ from pathlib import Path
 import threading
 from collections import defaultdict, OrderedDict
 
+
 class CachePolicy(Enum):
     """Cache eviction policies."""
-    LRU = "lru"           # Least Recently Used
-    LFU = "lfu"           # Least Frequently Used
-    TTL = "ttl"           # Time To Live
-    ADAPTIVE = "adaptive" # Adaptive based on usage patterns
+
+    LRU = "lru"  # Least Recently Used
+    LFU = "lfu"  # Least Frequently Used
+    TTL = "ttl"  # Time To Live
+    ADAPTIVE = "adaptive"  # Adaptive based on usage patterns
+
 
 class ContentType(Enum):
     """Content types for cache optimization."""
+
     TEXT = "text"
     CODE = "code"
     JSON = "json"
@@ -47,9 +51,11 @@ class ContentType(Enum):
     HTML = "html"
     BINARY = "binary"
 
+
 @dataclass
 class CacheEntry:
     """Individual cache entry."""
+
     key: str
     content: Any
     content_type: ContentType
@@ -62,6 +68,7 @@ class CacheEntry:
     metadata: Dict[str, Any] = None
 
     def __post_init__(self):
+        """  Post Init  ."""
         if self.metadata is None:
             self.metadata = {}
 
@@ -77,9 +84,11 @@ class CacheEntry:
         """Get age of entry in seconds."""
         return (datetime.now() - self.created_at).total_seconds()
 
+
 @dataclass
 class CacheStats:
     """Cache statistics."""
+
     total_entries: int = 0
     total_size_bytes: int = 0
     hit_count: int = 0
@@ -97,17 +106,20 @@ class CacheStats:
     @property
     def prediction_accuracy(self) -> float:
         """Calculate prediction accuracy."""
-        return (self.prediction_success_count / self.prediction_count
-                if self.prediction_count > 0 else 0.0)
+        return self.prediction_success_count / self.prediction_count if self.prediction_count > 0 else 0.0
+
 
 class SimpleSmartCache:
     """Simple but powerful smart caching system."""
 
-    def __init__(self,
-                 cache_dir: str = ".claude-patterns",
-                 max_size_mb: int = 100,
-                 default_policy: CachePolicy = CachePolicy.LRU,
-                 enable_predictions: bool = True):
+    def __init__(
+        self,
+        cache_dir: str = ".claude-patterns",
+        max_size_mb: int = 100,
+        default_policy: CachePolicy = CachePolicy.LRU,
+        enable_predictions: bool = True,
+    ):
+        """  Init  ."""
         """
         Initialize the smart cache system.
 
@@ -193,13 +205,16 @@ class SimpleSmartCache:
 
             return entry.content
 
-    def set(self,
-            key: str,
-            content: Any,
-            content_type: ContentType = ContentType.TEXT,
-            ttl_seconds: Optional[int] = None,
-            user_id: str = None,
-            metadata: Dict[str, Any] = None) -> bool:
+    def set(
+        self,
+        key: str,
+        content: Any,
+        content_type: ContentType = ContentType.TEXT,
+        ttl_seconds: Optional[int] = None,
+        user_id: str = None,
+        metadata: Dict[str, Any] = None,
+    )-> bool:
+        """Set."""
         """
         Store content in cache.
 
@@ -229,8 +244,7 @@ class SimpleSmartCache:
                     self._remove_entry(key)
 
                 # Ensure enough space
-                while (self._get_current_size() + content_size > self.max_size_bytes and
-                       self.cache):
+                while self._get_current_size() + content_size > self.max_size_bytes and self.cache:
                     self._evict_entry()
 
                 # Create cache entry
@@ -244,7 +258,7 @@ class SimpleSmartCache:
                     size_bytes=content_size,
                     ttl_seconds=ttl_seconds,
                     user_id=user_id,
-                    metadata=metadata or {}
+                    metadata=metadata or {},
                 )
 
                 # Store entry
@@ -343,16 +357,16 @@ class SimpleSmartCache:
 
     def _extract_content_type(self, key: str) -> str:
         """Extract content type from key for pattern grouping."""
-        if 'documentation' in key.lower():
-            return 'documentation'
-        elif 'code' in key.lower() or 'function' in key.lower():
-            return 'code'
-        elif 'analysis' in key.lower():
-            return 'analysis'
-        elif 'config' in key.lower():
-            return 'config'
+        if "documentation" in key.lower():
+            return "documentation"
+        elif "code" in key.lower() or "function" in key.lower():
+            return "code"
+        elif "analysis" in key.lower():
+            return "analysis"
+        elif "config" in key.lower():
+            return "config"
         else:
-            return 'general'
+            return "general"
 
     def _trigger_predictions(self, key: str, user_id: str = None) -> None:
         """Trigger predictive loading based on access patterns."""
@@ -374,8 +388,7 @@ class SimpleSmartCache:
         # Content-based predictions
         content_type = self._extract_content_type(key)
         if content_type in self.content_predictions:
-            similar_keys = [k for k in self.content_predictions[content_type][-50:]
-                          if k != key and k not in self.cache]
+            similar_keys = [k for k in self.content_predictions[content_type][-50:] if k != key and k not in self.cache]
             if similar_keys:
                 predicted_key = similar_keys[0]  # Most recent similar content
                 self.stats.prediction_count += 1
@@ -388,9 +401,9 @@ class SimpleSmartCache:
         # Simple pattern matching - look for sequences
         predictions = []
         for i in range(len(pattern) - 2):
-            sequence = pattern[i:i+2]
-            if pattern[i+2:i+3] and sequence[0] == pattern[-2] and sequence[1] == pattern[-1]:
-                predictions.append(pattern[i+2])
+            sequence = pattern[i : i + 2]
+            if pattern[i + 2 : i + 3] and sequence[0] == pattern[-2] and sequence[1] == pattern[-1]:
+                predictions.append(pattern[i + 2])
 
         # Return unique predictions, most recent first
         return list(dict.fromkeys(reversed(predictions)))
@@ -439,46 +452,46 @@ class SimpleSmartCache:
             # Age distribution
             ages = [entry.age_seconds for entry in self.cache.values()]
             age_stats = {
-                'average_age_seconds': sum(ages) / len(ages) if ages else 0,
-                'oldest_entry_seconds': max(ages) if ages else 0,
-                'newest_entry_seconds': min(ages) if ages else 0
+                "average_age_seconds": sum(ages) / len(ages) if ages else 0,
+                "oldest_entry_seconds": max(ages) if ages else 0,
+                "newest_entry_seconds": min(ages) if ages else 0,
             }
 
             # Size distribution
             sizes = [entry.size_bytes for entry in self.cache.values()]
             size_stats = {
-                'average_size_bytes': sum(sizes) / len(sizes) if sizes else 0,
-                'largest_entry_bytes': max(sizes) if sizes else 0,
-                'smallest_entry_bytes': min(sizes) if sizes else 0
+                "average_size_bytes": sum(sizes) / len(sizes) if sizes else 0,
+                "largest_entry_bytes": max(sizes) if sizes else 0,
+                "smallest_entry_bytes": min(sizes) if sizes else 0,
             }
 
             return {
-                'cache_stats': asdict(self.stats),
-                'content_type_distribution': dict(content_types),
-                'age_statistics': age_stats,
-                'size_statistics': size_stats,
-                'configuration': {
-                    'max_size_mb': self.max_size_bytes / (1024 * 1024),
-                    'policy': self.default_policy.value,
-                    'predictions_enabled': self.enable_predictions
+                "cache_stats": asdict(self.stats),
+                "content_type_distribution": dict(content_types),
+                "age_statistics": age_stats,
+                "size_statistics": size_stats,
+                "configuration": {
+                    "max_size_mb": self.max_size_bytes / (1024 * 1024),
+                    "policy": self.default_policy.value,
+                    "predictions_enabled": self.enable_predictions,
                 },
-                'performance_metrics': {
-                    'hit_rate': self.stats.hit_rate,
-                    'prediction_accuracy': self.stats.prediction_accuracy,
-                    'eviction_rate': self.stats.eviction_count / max(1, self.stats.total_entries),
-                    'memory_utilization': self.stats.total_size_bytes / self.max_size_bytes
-                }
+                "performance_metrics": {
+                    "hit_rate": self.stats.hit_rate,
+                    "prediction_accuracy": self.stats.prediction_accuracy,
+                    "eviction_rate": self.stats.eviction_count / max(1, self.stats.total_entries),
+                    "memory_utilization": self.stats.total_size_bytes / self.max_size_bytes,
+                },
             }
 
     def _save_cache(self) -> None:
         """Save cache to disk."""
         try:
             cache_file = self.cache_dir / "smart_cache.pkl"
-            with open(cache_file, 'wb') as f:
+            with open(cache_file, "wb") as f:
                 pickle.dump(self.cache, f)
 
             stats_file = self.cache_dir / "cache_stats.json"
-            with open(stats_file, 'w') as f:
+            with open(stats_file, "w") as f:
                 json.dump(asdict(self.stats), f, indent=2, default=str)
 
         except Exception as e:
@@ -489,7 +502,7 @@ class SimpleSmartCache:
         cache_file = self.cache_dir / "smart_cache.pkl"
         if cache_file.exists():
             try:
-                with open(cache_file, 'rb') as f:
+                with open(cache_file, "rb") as f:
                     loaded_cache = pickle.load(f)
 
                 # Validate and load entries
@@ -513,11 +526,11 @@ class SimpleSmartCache:
         """Save user patterns to disk."""
         try:
             patterns_file = self.cache_dir / "user_patterns.json"
-            with open(patterns_file, 'w') as f:
+            with open(patterns_file, "w") as f:
                 json.dump(dict(self.user_patterns), f, indent=2)
 
             predictions_file = self.cache_dir / "content_predictions.json"
-            with open(predictions_file, 'w') as f:
+            with open(predictions_file, "w") as f:
                 json.dump(dict(self.content_predictions), f, indent=2)
 
         except Exception as e:
@@ -529,7 +542,7 @@ class SimpleSmartCache:
         patterns_file = self.cache_dir / "user_patterns.json"
         if patterns_file.exists():
             try:
-                with open(patterns_file, 'r') as f:
+                with open(patterns_file, "r") as f:
                     patterns_data = json.load(f)
                     self.user_patterns = defaultdict(list, patterns_data)
             except Exception as e:
@@ -539,7 +552,7 @@ class SimpleSmartCache:
         predictions_file = self.cache_dir / "content_predictions.json"
         if predictions_file.exists():
             try:
-                with open(predictions_file, 'r') as f:
+                with open(predictions_file, "r") as f:
                     predictions_data = json.load(f)
                     self.content_predictions = defaultdict(list, predictions_data)
             except Exception as e:
@@ -567,26 +580,31 @@ class SimpleSmartCache:
 
             return len(old_keys)
 
+
 # Easy-to-use functions for quick integration
 def cache_content(key: str, content: Any, ttl_hours: int = 24) -> bool:
     """Quick cache function for content."""
     cache = SimpleSmartCache()
     return cache.set(key, content, ttl_seconds=ttl_hours * 3600)
 
+
 def get_cached_content(key: str) -> Optional[Any]:
     """Quick retrieve function for cached content."""
     cache = SimpleSmartCache()
     return cache.get(key)
+
 
 def cache_user_content(user_id: str, key: str, content: Any) -> bool:
     """Cache content with user personalization."""
     cache = SimpleSmartCache()
     return cache.set(f"user_{user_id}_{key}", content, user_id=user_id)
 
+
 def get_user_cached_content(user_id: str, key: str) -> Optional[Any]:
     """Get user-personalized cached content."""
     cache = SimpleSmartCache()
     return cache.get(f"user_{user_id}_{key}", user_id)
+
 
 # CLI interface
 def main():
@@ -651,6 +669,7 @@ def main():
 
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()

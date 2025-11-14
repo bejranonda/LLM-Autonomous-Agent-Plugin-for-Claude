@@ -12,15 +12,19 @@ from dataclasses import dataclass
 
 from unified_metrics_aggregator import UnifiedMetricsAggregator, MetricPeriod, KpiCategory
 
+
 class KPIDashboardGenerator:
     """Generates interactive HTML KPI dashboards"""
 
     def __init__(self, aggregator: UnifiedMetricsAggregator = None):
+        """  Init  ."""
         self.aggregator = aggregator or UnifiedMetricsAggregator()
         self.logger = logging.getLogger(__name__)
 
-    def generate_kpi_dashboard(self, output_file: str = "kpi_dashboard.html",
-                             period: MetricPeriod = MetricPeriod.DAILY) -> str:
+    def generate_kpi_dashboard(
+        self, output_file: str = "kpi_dashboard.html", period: MetricPeriod = MetricPeriod.DAILY
+    )-> str:
+        """Generate Kpi Dashboard."""
         """Generate comprehensive KPI dashboard"""
 
         # Get dashboard data
@@ -40,24 +44,24 @@ class KPIDashboardGenerator:
     def _create_html_template(self, data: Dict[str, Any], period: MetricPeriod) -> str:
         """Create the HTML template for the dashboard"""
 
-        current_scores = data['current_scores']
-        summary = data['summary']
-        snapshot = data['system_snapshot']
+        current_scores = data["current_scores"]
+        summary = data["summary"]
+        snapshot = data["system_snapshot"]
 
         # Generate KPI cards HTML
-        kpi_cards_html = self._generate_kpi_cards(current_scores['individual_kpis'])
+        kpi_cards_html = self._generate_kpi_cards(current_scores["individual_kpis"])
 
         # Generate trends HTML
-        trends_html = self._generate_trends_section(data['historical_trends'])
+        trends_html = self._generate_trends_section(data["historical_trends"])
 
         # Generate recommendations HTML
-        recommendations_html = self._generate_recommendations_section(snapshot['recommendations'])
+        recommendations_html = self._generate_recommendations_section(snapshot["recommendations"])
 
         # Generate actions HTML
-        actions_html = self._generate_actions_section(snapshot['next_actions'])
+        actions_html = self._generate_actions_section(snapshot["next_actions"])
 
         # Generate system health HTML
-        system_health_html = self._generate_system_health_section(snapshot['system_health'])
+        system_health_html = self._generate_system_health_section(snapshot["system_health"])
 
         # JavaScript data
         js_data = json.dumps(data, default=str)
@@ -677,9 +681,9 @@ class KPIDashboardGenerator:
         html = '<div class="kpi-grid">'
 
         for kpi_name, kpi_data in individual_kpis.items():
-            status = kpi_data.get('status', 'unknown')
-            achievement_rate = kpi_data.get('achievement_rate', 0)
-            trend = kpi_data.get('trend', 'unknown')
+            status = kpi_data.get("status", "unknown")
+            achievement_rate = kpi_data.get("achievement_rate", 0)
+            trend = kpi_data.get("trend", "unknown")
 
             html += f"""
             <div class="kpi-card {status}">
@@ -713,7 +717,7 @@ class KPIDashboardGenerator:
             </div>
             """
 
-        html += '</div>'
+        html += "</div>"
         return html
 
     def _generate_trends_section(self, historical_trends: Dict[str, List[Dict[str, Any]]]) -> str:
@@ -732,7 +736,7 @@ class KPIDashboardGenerator:
                 """
 
         if not html:
-            html = '<p>No historical data available for trend analysis.</p>'
+            html = "<p>No historical data available for trend analysis.</p>"
 
         return html
 
@@ -743,8 +747,8 @@ class KPIDashboardGenerator:
 
         html = '<ul class="recommendations-list">'
         for rec in recommendations:
-            html += f'<li>{rec}</li>'
-        html += '</ul>'
+            html += f"<li>{rec}</li>"
+        html += "</ul>"
 
         return html
 
@@ -771,7 +775,7 @@ class KPIDashboardGenerator:
                 </div>
             </li>
             """
-        html += '</ul>'
+        html += "</ul>"
 
         return html
 
@@ -784,10 +788,10 @@ class KPIDashboardGenerator:
         """
 
         health_metrics = [
-            ("Overall Score", system_health.get('overall_score', 0), "score"),
-            ("Critical Issues", system_health.get('critical_issues', 0), "issues"),
-            ("Improving Trends", system_health.get('improving_trends', 0), "trends"),
-            ("Declining Trends", system_health.get('declining_trends', 0), "trends")
+            ("Overall Score", system_health.get("overall_score", 0), "score"),
+            ("Critical Issues", system_health.get("critical_issues", 0), "issues"),
+            ("Improving Trends", system_health.get("improving_trends", 0), "trends"),
+            ("Declining Trends", system_health.get("declining_trends", 0), "trends"),
         ]
 
         for label, value, _type in health_metrics:
@@ -802,7 +806,7 @@ class KPIDashboardGenerator:
             </div>
             """
 
-        html += '</div></div>'
+        html += "</div></div>"
         return html
 
     def generate_executive_summary_report(self, output_file: str = "executive_summary.html") -> str:

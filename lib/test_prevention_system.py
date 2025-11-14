@@ -170,9 +170,7 @@ def test_missing_command_recovery():
         }
 
         # This should succeed since we just created the dashboard command
-        result = recovery_manager.recover_specific_component(
-            test_component["type"], test_component["path"]
-        )
+        result = recovery_manager.recover_specific_component(test_component["type"], test_component["path"])
 
         print(f"  Recovery Success: {result['success']}")
         if "strategy_used" in result:

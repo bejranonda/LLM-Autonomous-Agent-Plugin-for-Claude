@@ -24,9 +24,7 @@ def validate_dashboard_consistency():
         recent_activity_response = requests.get(f"{base_url}/api/recent-activity")
         recent_activity_data = recent_activity_response.json()
 
-        recent_performance_response = requests.get(
-            f"{base_url}/api/recent-performance-records"
-        )
+        recent_performance_response = requests.get(f"{base_url}/api/recent-performance-records")
         recent_performance_data = recent_performance_response.json()
 
     except Exception as e:

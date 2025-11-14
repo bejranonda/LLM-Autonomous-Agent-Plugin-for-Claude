@@ -42,12 +42,7 @@ class DistributionValidator:
     def log(self, message: str, level: str = "info"):
         """Log a message if verbose mode is enabled."""
         if self.verbose or level in ["error", "warning", "success"]:
-            prefix = {
-                "error": "[ERROR]",
-                "warning": "[WARN]",
-                "success": "[PASS]",
-                "info": "[INFO]"
-            }.get(level, "[INFO]")
+            prefix = {"error": "[ERROR]", "warning": "[WARN]", "success": "[PASS]", "info": "[INFO]"}.get(level, "[INFO]")
             print(f"{prefix} {message}")
 
     def validate_plugin_json(self) -> bool:
@@ -67,7 +62,7 @@ class DistributionValidator:
             return False
 
         try:
-            with open(plugin_json_path, 'r', encoding='utf-8') as f:
+            with open(plugin_json_path, "r", encoding="utf-8") as f:
                 plugin_data = json.load(f)
 
             required_fields = ["name", "version", "description", "author", "repository"]
@@ -95,12 +90,7 @@ class DistributionValidator:
         if not plugin_path:
             return False
 
-        required_dirs = [
-            "agents",
-            "commands",
-            "skills",
-            "lib"
-        ]
+        required_dirs = ["agents", "commands", "skills", "lib"]
 
         all_exist = True
         for dir_name in required_dirs:
@@ -126,7 +116,7 @@ class DistributionValidator:
             "plugin_path_resolver.py",
             "run_script.py",
             "pattern_storage.py",
-            "learning_analytics.py"
+            "learning_analytics.py",
         ]
 
         all_found = True
@@ -136,7 +126,7 @@ class DistributionValidator:
                 self.log(f"Script '{script}' found", "success")
                 # Check if it's readable
                 try:
-                    with open(script_path, 'r') as f:
+                    with open(script_path, "r") as f:
                         f.read(10)  # Try to read first 10 bytes
                 except Exception as e:
                     self.log(f"Script '{script}' is not readable: {e}", "error")
@@ -167,7 +157,7 @@ class DistributionValidator:
             return False
 
         try:
-            with open(gitignore_path, 'r', encoding='utf-8', errors='ignore') as f:
+            with open(gitignore_path, "r", encoding="utf-8", errors="ignore") as f:
                 gitignore_content = f.read()
 
             required_exclusions = [
@@ -176,7 +166,7 @@ class DistributionValidator:
                 ".claude-unified/",
                 "docs/reports/generated/",
                 "*.tmp",
-                "*.log"
+                "*.log",
             ]
 
             missing_exclusions = []
@@ -218,7 +208,7 @@ class DistributionValidator:
         hardcoded_count = 0
         for cmd_file in command_files:
             try:
-                with open(cmd_file, 'r', encoding='utf-8', errors='ignore') as f:
+                with open(cmd_file, "r", encoding="utf-8", errors="ignore") as f:
                     content = f.read()
 
                 # Check for hardcoded lib paths
@@ -264,7 +254,7 @@ class DistributionValidator:
         valid_agents = 0
         for agent_file in agent_files:
             try:
-                with open(agent_file, 'r', encoding='utf-8', errors='ignore') as f:
+                with open(agent_file, "r", encoding="utf-8", errors="ignore") as f:
                     content = f.read()
 
                 # Check for YAML frontmatter
@@ -298,7 +288,7 @@ class DistributionValidator:
             self.validate_python_scripts,
             self.validate_gitignore,
             self.validate_no_hardcoded_paths,
-            self.validate_agent_files
+            self.validate_agent_files,
         ]
 
         all_passed = True

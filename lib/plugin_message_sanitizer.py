@@ -21,7 +21,7 @@ import os
 from typing import Dict, Any, List, Optional
 
 # Add lib directory to path for imports
-lib_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+lib_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 if lib_dir not in sys.path:
     sys.path.insert(0, lib_dir)
 
@@ -29,10 +29,12 @@ try:
     from emergency_message_sanitize import emergency_sanitize_messages
     from orchestrator_agent_emergency_fix import sanitize_orchestrator_response
     from slash_commands_emergency_fix import safe_format_command_response
+
     EMERGENCY_FIXES_AVAILABLE = True
 except ImportError as e:
     print(f"[WARNING] Emergency fixes not available: {e}")
     EMERGENCY_FIXES_AVAILABLE = False
+
 
 def sanitize_plugin_message(message: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -71,6 +73,7 @@ def sanitize_plugin_message(message: Dict[str, Any]) -> Dict[str, Any]:
         # Return original message if sanitization fails
         return message
 
+
 def sanitize_plugin_messages(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Sanitize multiple plugin messages.
@@ -90,6 +93,7 @@ def sanitize_plugin_messages(messages: List[Dict[str, Any]]) -> List[Dict[str, A
         print(f"[WARNING] Message list sanitization failed: {e}")
         return messages
 
+
 def create_safe_command_response(command_name: str, results: Dict[str, Any]) -> Dict[str, Any]:
     """
     Create safe command response using emergency fixes.
@@ -103,19 +107,14 @@ def create_safe_command_response(command_name: str, results: Dict[str, Any]) -> 
     """
     if not EMERGENCY_FIXES_AVAILABLE:
         # Fallback response
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': f'{command_name} completed'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": f"{command_name} completed"}]}
 
     try:
         return safe_format_command_response(command_name, results)
     except Exception as e:
         print(f"[WARNING] Safe command response failed: {e}")
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': f'{command_name} completed with warnings'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": f"{command_name} completed with warnings"}]}
+
 
 def validate_message_safety(message: Dict[str, Any]) -> List[str]:
     """
@@ -133,37 +132,38 @@ def validate_message_safety(message: Dict[str, Any]) -> List[str]:
         issues.append("Message is not a dictionary")
         return issues
 
-    if 'content' not in message:
+    if "content" not in message:
         issues.append("Missing content field")
         return issues
 
-    if not isinstance(message['content'], list):
+    if not isinstance(message["content"], list):
         issues.append("Content is not a list")
         return issues
 
-    if not message['content']:
+    if not message["content"]:
         issues.append("Content array is empty")
         return issues
 
-    for i, block in enumerate(message['content']):
+    for i, block in enumerate(message["content"]):
         if not isinstance(block, dict):
             issues.append(f"Content block {i} is not a dictionary")
             continue
 
-        if block.get('type') == 'text':
-            text = block.get('text', '')
+        if block.get("type") == "text":
+            text = block.get("text", "")
             if not text or not str(text).strip():
                 issues.append(f"Content block {i} has empty or whitespace-only text")
 
     return issues
 
+
 # Export main functions
 __all__ = [
-    'sanitize_plugin_message',
-    'sanitize_plugin_messages',
-    'create_safe_command_response',
-    'validate_message_safety',
-    'EMERGENCY_FIXES_AVAILABLE'
+    "sanitize_plugin_message",
+    "sanitize_plugin_messages",
+    "create_safe_command_response",
+    "validate_message_safety",
+    "EMERGENCY_FIXES_AVAILABLE",
 ]
 
 # Self-test
@@ -172,11 +172,11 @@ if __name__ == "__main__":
 
     # Test 1: Basic message sanitization
     test_message = {
-        'role': 'assistant',
-        'content': [
-            {'type': 'text', 'text': ''},  # Empty block - should be fixed
-            {'type': 'text', 'text': 'Valid content'},  # Should be kept
-        ]
+        "role": "assistant",
+        "content": [
+            {"type": "text", "text": ""},  # Empty block - should be fixed
+            {"type": "text", "text": "Valid content"},  # Should be kept
+        ],
     }
 
     safe_message = sanitize_plugin_message(test_message)
@@ -194,13 +194,9 @@ if __name__ == "__main__":
             print(f"  - {issue}")
 
     # Test 2: Command response generation
-    test_results = {
-        'score': 100,
-        'issues': [],
-        'status': 'success'
-    }
+    test_results = {"score": 100, "issues": [], "status": "success"}
 
-    command_response = create_safe_command_response('/learn:init', test_results)
+    command_response = create_safe_command_response("/learn:init", test_results)
     cmd_issues = validate_message_safety(command_response)
 
     print(f"\nCommand response: {len(command_response['content'])} content blocks")

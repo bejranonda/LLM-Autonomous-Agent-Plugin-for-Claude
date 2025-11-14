@@ -19,9 +19,11 @@ from dataclasses import dataclass, asdict
 from collections import defaultdict, deque
 import queue
 
+
 @dataclass
 class Task:
     """Background task representation"""
+
     id: str
     name: str
     command: str
@@ -39,9 +41,11 @@ class Task:
     error: Optional[str] = None
     resource_usage: Optional[Dict] = None
 
+
 @dataclass
 class ResourceMetrics:
     """System resource metrics"""
+
     cpu_usage: float
     memory_usage: float
     active_tasks: int
@@ -49,10 +53,12 @@ class ResourceMetrics:
     system_load: float
     last_updated: datetime
 
+
 class BackgroundTaskOptimizer:
     """Advanced background task optimization system"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = patterns_dir
         self.config_file = os.path.join(patterns_dir, "task_optimizer_config.json")
         self.metrics_file = os.path.join(patterns_dir, "task_metrics.json")
@@ -84,6 +90,7 @@ class BackgroundTaskOptimizer:
         """Detect optimal number of workers based on system"""
         try:
             import psutil
+
             cpu_count = psutil.cpu_count(logical=False) or 4
             memory_gb = psutil.virtual_memory().total / (1024**3)
 
@@ -91,7 +98,7 @@ class BackgroundTaskOptimizer:
             optimal_workers = min(
                 max(cpu_count // 2, 2),
                 int(memory_gb // 2),  # 2GB per worker minimum
-                8  # Cap at 8 workers to avoid overwhelming system
+                8,  # Cap at 8 workers to avoid overwhelming system
             )
             return optimal_workers
         except ImportError:
@@ -102,42 +109,27 @@ class BackgroundTaskOptimizer:
         """Load or create default configuration"""
         default_config = {
             "max_concurrent_tasks": self.max_workers,
-            "priority_weights": {
-                "urgent": 10,
-                "high": 8,
-                "medium": 5,
-                "low": 2,
-                "background": 1
-            },
-            "complexity_multipliers": {
-                "simple": 1.0,
-                "medium": 1.5,
-                "complex": 2.0,
-                "expert": 3.0
-            },
-            "resource_thresholds": {
-                "max_cpu_usage": 80.0,
-                "max_memory_usage": 85.0,
-                "max_system_load": 2.0
-            },
+            "priority_weights": {"urgent": 10, "high": 8, "medium": 5, "low": 2, "background": 1},
+            "complexity_multipliers": {"simple": 1.0, "medium": 1.5, "complex": 2.0, "expert": 3.0},
+            "resource_thresholds": {"max_cpu_usage": 80.0, "max_memory_usage": 85.0, "max_system_load": 2.0},
             "auto_scaling": {
                 "enabled": True,
                 "scale_up_threshold": 90,
                 "scale_down_threshold": 30,
                 "min_workers": 2,
-                "max_workers": 16
+                "max_workers": 16,
             },
             "learning": {
                 "enabled": True,
                 "pattern_recognition": True,
                 "performance_tracking": True,
-                "adaptive_scheduling": True
-            }
+                "adaptive_scheduling": True,
+            },
         }
 
         try:
             if os.path.exists(self.config_file):
-                with open(self.config_file, 'r', encoding='utf-8') as f:
+                with open(self.config_file, "r", encoding="utf-8") as f:
                     loaded_config = json.load(f)
                 # Merge with defaults for any missing keys
                 for key, value in default_config.items():
@@ -152,13 +144,13 @@ class BackgroundTaskOptimizer:
     def _save_config(self):
         """Save current configuration"""
         os.makedirs(self.patterns_dir, exist_ok=True)
-        with open(self.config_file, 'w', encoding='utf-8') as f:
+        with open(self.config_file, "w", encoding="utf-8") as f:
             json.dump(self.config, f, indent=2, ensure_ascii=False)
 
     def _load_performance_history(self) -> Dict:
         """Load historical performance data"""
         try:
-            with open(self.performance_file, 'r', encoding='utf-8') as f:
+            with open(self.performance_file, "r", encoding="utf-8") as f:
                 return json.load(f)
         except FileNotFoundError:
             return {"task_history": [], "performance_patterns": {}, "optimization_results": []}
@@ -166,28 +158,22 @@ class BackgroundTaskOptimizer:
     def _save_performance_history(self):
         """Save performance history"""
         os.makedirs(self.patterns_dir, exist_ok=True)
-        with open(self.performance_file, 'w', encoding='utf-8') as f:
+        with open(self.performance_file, "w", encoding="utf-8") as f:
             json.dump(self.performance_history, f, indent=2, ensure_ascii=False)
 
-    def estimate_task_duration(self, task_name: str, complexity: str,
-                             command: str) -> int:
+    def estimate_task_duration(self, task_name: str, complexity: str, command: str) -> int:
         """Estimate task duration based on historical patterns"""
         # Base duration by complexity
-        base_durations = {
-            "simple": 30,
-            "medium": 120,
-            "complex": 300,
-            "expert": 600
-        }
+        base_durations = {"simple": 30, "medium": 120, "complex": 300, "expert": 600}
 
         base_duration = base_durations.get(complexity, 120)
 
         # Look for similar tasks in performance history
         similar_tasks = []
         for history_task in self.performance_history.get("task_history", []):
-            if (history_task.get("complexity") == complexity and
-                any(keyword in history_task.get("name", "").lower()
-                    for keyword in task_name.lower().split())):
+            if history_task.get("complexity") == complexity and any(
+                keyword in history_task.get("name", "").lower() for keyword in task_name.lower().split()
+            ):
                 similar_tasks.append(history_task.get("actual_duration", base_duration))
 
         if similar_tasks:
@@ -204,7 +190,7 @@ class BackgroundTaskOptimizer:
             "docker": 2.0,
             "make": 1.2,
             "pytest": 1.8,
-            "coverage": 2.5
+            "coverage": 2.5,
         }
 
         for tool, multiplier in command_indicators.items():
@@ -228,8 +214,7 @@ class BackgroundTaskOptimizer:
         # Dependency-based priority
         if task.dependencies:
             # Higher priority if other tasks depend on this one
-            dependent_count = len([t for t in self.task_queue.queue
-                                 if task.id in getattr(t[1], 'dependencies', [])])
+            dependent_count = len([t for t in self.task_queue.queue if task.id in getattr(t[1], "dependencies", [])])
             base_priority += min(dependent_count, 3)
 
         # Resource availability adjustment
@@ -243,15 +228,25 @@ class BackgroundTaskOptimizer:
         # Historical performance adjustment
         task_type = task.name.split()[0]  # Simple classification
         if task_type in self.task_patterns:
-            avg_success_rate = sum(1 for t in self.task_patterns[task_type] if t.get("success", False)) / len(self.task_patterns[task_type])
+            avg_success_rate = sum(1 for t in self.task_patterns[task_type] if t.get("success", False)) / len(
+                self.task_patterns[task_type]
+            )
             if avg_success_rate > 0.9:
                 base_priority += 1  # Boost historically successful tasks
 
         return max(1, min(10, base_priority))
 
-    def add_task(self, name: str, command: str, priority: int = 5,
-                complexity: str = "medium", dependencies: List[str] = None,
-                skills_required: List[str] = None, agents_involved: List[str] = None) -> str:
+    def add_task(
+        self,
+        name: str,
+        command: str,
+        priority: int = 5,
+        complexity: str = "medium",
+        dependencies: List[str] = None,
+        skills_required: List[str] = None,
+        agents_involved: List[str] = None,
+    )-> str:
+        """Add Task."""
         """Add a new background task"""
         task_id = f"task_{int(time.time())}_{len(self.task_queue.queue)}"
 
@@ -268,7 +263,7 @@ class BackgroundTaskOptimizer:
             dependencies=dependencies or [],
             skills_required=skills_required or [],
             agents_involved=agents_involved or [],
-            created_at=datetime.now()
+            created_at=datetime.now(),
         )
 
         # Add to queue with calculated priority
@@ -301,7 +296,7 @@ class BackgroundTaskOptimizer:
             "status": "started",
             "max_workers": self.max_workers,
             "auto_scaling_enabled": self.config["auto_scaling"]["enabled"],
-            "monitoring_active": self.monitoring_active
+            "monitoring_active": self.monitoring_active,
         }
 
     def _monitor_resources(self):
@@ -312,7 +307,7 @@ class BackgroundTaskOptimizer:
 
                 self.resource_metrics.cpu_usage = psutil.cpu_percent(interval=1)
                 self.resource_metrics.memory_usage = psutil.virtual_memory().percent
-                self.resource_metrics.system_load = os.getloadavg()[0] if hasattr(os, 'getloadavg') else 0
+                self.resource_metrics.system_load = os.getloadavg()[0] if hasattr(os, "getloadavg") else 0
                 self.resource_metrics.active_tasks = len(self.running_tasks)
                 self.resource_metrics.available_workers = self.max_workers - len(self.running_tasks)
                 self.resource_metrics.last_updated = datetime.now()
@@ -412,9 +407,9 @@ class BackgroundTaskOptimizer:
         thresholds = self.config["resource_thresholds"]
 
         return (
-            self.resource_metrics.cpu_usage < thresholds["max_cpu_usage"] and
-            self.resource_metrics.memory_usage < thresholds["max_memory_usage"] and
-            self.resource_metrics.system_load < thresholds["max_system_load"]
+            self.resource_metrics.cpu_usage < thresholds["max_cpu_usage"]
+            and self.resource_metrics.memory_usage < thresholds["max_memory_usage"]
+            and self.resource_metrics.system_load < thresholds["max_system_load"]
         )
 
     def _check_dependencies(self, task: Task) -> bool:
@@ -447,7 +442,7 @@ class BackgroundTaskOptimizer:
                 shell=True,
                 capture_output=True,
                 text=True,
-                timeout=task.estimated_duration * 2  # Double the estimate
+                timeout=task.estimated_duration * 2,  # Double the estimate
             )
 
             duration = time.time() - start_time
@@ -458,24 +453,13 @@ class BackgroundTaskOptimizer:
                 "stderr": result.stderr,
                 "returncode": result.returncode,
                 "duration": duration,
-                "resource_usage": {
-                    "peak_memory": 0,  # Would need psutil for accurate tracking
-                    "cpu_time": duration
-                }
+                "resource_usage": {"peak_memory": 0, "cpu_time": duration},  # Would need psutil for accurate tracking
             }
 
         except subprocess.TimeoutExpired:
-            return {
-                "success": False,
-                "error": "Task timed out",
-                "duration": time.time() - start_time
-            }
+            return {"success": False, "error": "Task timed out", "duration": time.time() - start_time}
         except Exception as e:
-            return {
-                "success": False,
-                "error": str(e),
-                "duration": time.time() - start_time
-            }
+            return {"success": False, "error": str(e), "duration": time.time() - start_time}
 
     def _task_completed(self, task: Task, future):
         """Handle task completion"""
@@ -493,12 +477,14 @@ class BackgroundTaskOptimizer:
 
             # Update patterns
             task_type = task.name.split()[0]
-            self.task_patterns[task_type].append({
-                "success": result["success"],
-                "duration": actual_duration,
-                "estimated_duration": task.estimated_duration,
-                "accuracy": abs(actual_duration - task.estimated_duration) / task.estimated_duration
-            })
+            self.task_patterns[task_type].append(
+                {
+                    "success": result["success"],
+                    "duration": actual_duration,
+                    "estimated_duration": task.estimated_duration,
+                    "accuracy": abs(actual_duration - task.estimated_duration) / task.estimated_duration,
+                }
+            )
 
             # Move to appropriate list
             if result["success"]:
@@ -532,7 +518,7 @@ class BackgroundTaskOptimizer:
             "success": result["success"],
             "timestamp": datetime.now().isoformat(),
             "accuracy": abs(actual_duration - task.estimated_duration) / task.estimated_duration,
-            "resource_efficiency": 1.0  # Placeholder
+            "resource_efficiency": 1.0,  # Placeholder
         }
 
         self.performance_history["task_history"].append(history_entry)
@@ -565,7 +551,7 @@ class BackgroundTaskOptimizer:
                     "avg_duration": sum(t["actual_duration"] for t in tasks) / len(tasks),
                     "success_rate": sum(1 for t in tasks if t["success"]) / len(tasks),
                     "avg_accuracy": sum(t["accuracy"] for t in tasks) / len(tasks),
-                    "sample_size": len(tasks)
+                    "sample_size": len(tasks),
                 }
 
         self.performance_history["performance_patterns"] = patterns
@@ -579,11 +565,11 @@ class BackgroundTaskOptimizer:
             "completed_tasks": len(self.completed_tasks),
             "failed_tasks": len(self.failed_tasks),
             "max_workers": self.max_workers,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         os.makedirs(self.patterns_dir, exist_ok=True)
-        with open(self.metrics_file, 'w', encoding='utf-8') as f:
+        with open(self.metrics_file, "w", encoding="utf-8") as f:
             json.dump(metrics_data, f, indent=2, ensure_ascii=False)
 
     def get_system_status(self) -> Dict:
@@ -594,21 +580,22 @@ class BackgroundTaskOptimizer:
                 "size": self.task_queue.qsize(),
                 "running": len(self.running_tasks),
                 "completed": len(self.completed_tasks),
-                "failed": len(self.failed_tasks)
+                "failed": len(self.failed_tasks),
             },
             "performance": {
                 "total_tasks_processed": len(self.completed_tasks) + len(self.failed_tasks),
                 "success_rate": len(self.completed_tasks) / max(len(self.completed_tasks) + len(self.failed_tasks), 1),
-                "avg_duration": sum(t.result.get("duration", 0) for t in self.completed_tasks) / max(len(self.completed_tasks), 1),
-                "patterns_analyzed": len(self.task_patterns)
+                "avg_duration": sum(t.result.get("duration", 0) for t in self.completed_tasks)
+                / max(len(self.completed_tasks), 1),
+                "patterns_analyzed": len(self.task_patterns),
             },
             "configuration": self.config,
             "auto_scaling": {
                 "enabled": self.config["auto_scaling"]["enabled"],
                 "current_workers": self.max_workers,
                 "min_workers": self.config["auto_scaling"]["min_workers"],
-                "max_workers": self.config["auto_scaling"]["max_workers"]
-            }
+                "max_workers": self.config["auto_scaling"]["max_workers"],
+            },
         }
 
     def optimize_workload_distribution(self) -> Dict:
@@ -629,20 +616,24 @@ class BackgroundTaskOptimizer:
         recommendations = []
 
         if cpu_utilization > 80:
-            recommendations.append({
-                "type": "resource",
-                "priority": "high",
-                "action": "Reduce concurrent tasks or scale up resources",
-                "impact": "Improve task completion time by 15-25%"
-            })
+            recommendations.append(
+                {
+                    "type": "resource",
+                    "priority": "high",
+                    "action": "Reduce concurrent tasks or scale up resources",
+                    "impact": "Improve task completion time by 15-25%",
+                }
+            )
 
         if len(self.task_queue.queue) > 50:
-            recommendations.append({
-                "type": "queue",
-                "priority": "medium",
-                "action": "Increase worker count or prioritize urgent tasks",
-                "impact": "Reduce wait times for high-priority tasks"
-            })
+            recommendations.append(
+                {
+                    "type": "queue",
+                    "priority": "medium",
+                    "action": "Increase worker count or prioritize urgent tasks",
+                    "impact": "Reduce wait times for high-priority tasks",
+                }
+            )
 
         # Analyze task duration accuracy
         if self.performance_history["task_history"]:
@@ -650,22 +641,21 @@ class BackgroundTaskOptimizer:
             avg_accuracy = sum(t["accuracy"] for t in recent_tasks) / len(recent_tasks)
 
             if avg_accuracy > 0.3:  # 30% inaccuracy threshold
-                recommendations.append({
-                    "type": "estimation",
-                    "priority": "medium",
-                    "action": "Improve duration estimation using recent patterns",
-                    "impact": "Better resource planning and scheduling"
-                })
+                recommendations.append(
+                    {
+                        "type": "estimation",
+                        "priority": "medium",
+                        "action": "Improve duration estimation using recent patterns",
+                        "impact": "Better resource planning and scheduling",
+                    }
+                )
 
         return {
             "status": "analyzed",
             "complexity_distribution": dict(complexity_distribution),
-            "resource_utilization": {
-                "cpu": cpu_utilization,
-                "memory": memory_utilization
-            },
+            "resource_utilization": {"cpu": cpu_utilization, "memory": memory_utilization},
             "recommendations": recommendations,
-            "optimization_potential": len(recommendations)
+            "optimization_potential": len(recommendations),
         }
 
     def stop_optimization(self):
@@ -695,8 +685,9 @@ def main():
     parser.add_argument("--start", action="store_true", help="Start optimization system")
     parser.add_argument("--stop", action="store_true", help="Stop optimization system")
     parser.add_argument("--status", action="store_true", help="Get system status")
-    parser.add_argument("--add-task", nargs=3, metavar=("NAME", "COMMAND", "PRIORITY"),
-                       help="Add a task (name command priority)")
+    parser.add_argument(
+        "--add-task", nargs=3, metavar=("NAME", "COMMAND", "PRIORITY"), help="Add a task (name command priority)"
+    )
     parser.add_argument("--optimize", action="store_true", help="Run workload optimization")
 
     args = parser.parse_args()
@@ -738,7 +729,7 @@ def main():
         result = optimizer.optimize_workload_distribution()
         print(f"\nOptimization Analysis:")
         print(f"  Recommendations: {len(result['recommendations'])}")
-        for rec in result['recommendations']:
+        for rec in result["recommendations"]:
             print(f"  - {rec['action']} ({rec['priority']} priority)")
 
     else:

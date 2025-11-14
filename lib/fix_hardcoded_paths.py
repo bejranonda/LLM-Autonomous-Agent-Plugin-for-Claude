@@ -11,12 +11,13 @@ import sys
 from pathlib import Path
 import re
 
+
 def fix_file(file_path: Path) -> int:
     """Fix hardcoded paths in a single file."""
     changes_made = 0
 
     try:
-        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
             content = f.read()
 
         # Pattern to match python lib/ (but not inside code blocks that explain it)
@@ -24,13 +25,13 @@ def fix_file(file_path: Path) -> int:
         original_content = content
 
         # Replace python lib/ with python <plugin_path>/lib/
-        content = re.sub(r'python lib/', 'python <plugin_path>/lib/', content)
+        content = re.sub(r"python lib/", "python <plugin_path>/lib/", content)
 
         # Count changes
         if content != original_content:
-            changes_made = len(re.findall(r'python <plugin_path>/lib/', content))
+            changes_made = len(re.findall(r"python <plugin_path>/lib/", content))
 
-            with open(file_path, 'w', encoding='utf-8') as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write(content)
 
             print(f"  [OK] Fixed {changes_made} reference(s) in {file_path.name}")
@@ -40,6 +41,7 @@ def fix_file(file_path: Path) -> int:
     except Exception as e:
         print(f"  [ERR] Error processing {file_path}: {e}")
         return 0
+
 
 def main():
     """Fix hardcoded paths in all markdown files."""
@@ -51,7 +53,7 @@ def main():
     md_files = list(current_dir.rglob("*.md"))
 
     # Skip certain directories
-    skip_dirs = {'.git', '__pycache__', 'node_modules', '.claude'}
+    skip_dirs = {".git", "__pycache__", "node_modules", ".claude"}
     md_files = [f for f in md_files if not any(skip_dir in f.parts for skip_dir in skip_dirs)]
 
     total_changes = 0
@@ -71,6 +73,7 @@ def main():
     if total_changes > 0:
         print("\nAll 'python lib/' references have been replaced with 'python <plugin_path>/lib/'")
         print("This ensures the plugin works correctly when installed from marketplace.")
+
 
 if __name__ == "__main__":
     main()

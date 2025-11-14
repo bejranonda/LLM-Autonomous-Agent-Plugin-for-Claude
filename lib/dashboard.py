@@ -37,12 +37,14 @@ try:
     # Add lib directory to Python path for imports
     import sys
     from pathlib import Path
+
     lib_dir = Path(__file__).parent
     if str(lib_dir) not in sys.path:
         sys.path.insert(0, str(lib_dir))
 
     from unified_parameter_storage import UnifiedParameterStorage
     from parameter_compatibility import enable_compatibility_mode
+
     UNIFIED_STORAGE_AVAILABLE = True
 except ImportError:
     UNIFIED_STORAGE_AVAILABLE = False
@@ -58,8 +60,9 @@ class UnifiedDashboardSection:
     """Base class for dashboard sections"""
 
     def __init__(self, data_collector):
+        """  Init  ."""
         self.data_collector = data_collector
-        self.section_name = self.__class__.__name__.lower().replace('section', '')
+        self.section_name = self.__class__.__name__.lower().replace("section", "")
 
     def get_data(self) -> Dict[str, Any]:
         """Get section data"""
@@ -83,34 +86,22 @@ class TokenOptimizationSection(UnifiedDashboardSection):
             # Try to get token monitoring data
             token_data_file = self.data_collector.patterns_dir / "token_monitoring_data.json"
             if token_data_file.exists():
-                with open(token_data_file, 'r') as f:
+                with open(token_data_file, "r") as f:
                     data = json.load(f)
                     return data
 
             # Return mock data if no real data available
             return {
-                "token_usage": {
-                    "today": 125000,
-                    "savings": 45000,
-                    "compression_ratio": 0.36
-                },
-                "cost_savings": {
-                    "daily": 12.50,
-                    "weekly": 87.30,
-                    "monthly": 375.00
-                },
-                "optimization_metrics": {
-                    "cache_hit_rate": 0.78,
-                    "avg_compression": 0.42,
-                    "response_time_reduction": 0.31
-                }
+                "token_usage": {"today": 125000, "savings": 45000, "compression_ratio": 0.36},
+                "cost_savings": {"daily": 12.50, "weekly": 87.30, "monthly": 375.00},
+                "optimization_metrics": {"cache_hit_rate": 0.78, "avg_compression": 0.42, "response_time_reduction": 0.31},
             }
         except Exception as e:
             return {"error": str(e)}
 
     def get_html(self) -> str:
         """Generate token optimization HTML"""
-        return '''
+        return """
         <div id="tokens-section" class="dashboard-section" style="display: none;">
             <div class="section-header">
                 <h2>💰 Token Optimization</h2>
@@ -164,7 +155,7 @@ class TokenOptimizationSection(UnifiedDashboardSection):
                 </div>
             </div>
         </div>
-        '''
+        """
 
 
 class KPISection(UnifiedDashboardSection):
@@ -176,36 +167,22 @@ class KPISection(UnifiedDashboardSection):
             # Try to get KPI aggregator data
             kpi_data_file = self.data_collector.patterns_dir / "kpi_metrics.json"
             if kpi_data_file.exists():
-                with open(kpi_data_file, 'r') as f:
+                with open(kpi_data_file, "r") as f:
                     data = json.load(f)
                     return data
 
             # Return sample KPI data
             return {
-                "performance_kpis": {
-                    "quality_score": 87,
-                    "success_rate": 94,
-                    "efficiency": 82,
-                    "satisfaction": 91
-                },
-                "business_kpis": {
-                    "cost_reduction": 67,
-                    "time_savings": 84,
-                    "productivity_gain": 73,
-                    "roi": 156
-                },
-                "trends": {
-                    "quality_trend": "improving",
-                    "cost_trend": "optimizing",
-                    "performance_trend": "accelerating"
-                }
+                "performance_kpis": {"quality_score": 87, "success_rate": 94, "efficiency": 82, "satisfaction": 91},
+                "business_kpis": {"cost_reduction": 67, "time_savings": 84, "productivity_gain": 73, "roi": 156},
+                "trends": {"quality_trend": "improving", "cost_trend": "optimizing", "performance_trend": "accelerating"},
             }
         except Exception as e:
             return {"error": str(e)}
 
     def get_html(self) -> str:
         """Generate KPI section HTML"""
-        return '''
+        return """
         <div id="kpi-section" class="dashboard-section" style="display: none;">
             <div class="section-header">
                 <h2>[TREND] KPI & Executive Metrics</h2>
@@ -274,7 +251,7 @@ class KPISection(UnifiedDashboardSection):
                 </div>
             </div>
         </div>
-        '''
+        """
 
 
 class SystemHealthSection(UnifiedDashboardSection):
@@ -284,22 +261,13 @@ class SystemHealthSection(UnifiedDashboardSection):
         """Get system health data"""
         try:
             health_data = {
-                "system_metrics": {
-                    "cpu_usage": 45,
-                    "memory_usage": 62,
-                    "disk_usage": 38,
-                    "response_time": 145
-                },
+                "system_metrics": {"cpu_usage": 45, "memory_usage": 62, "disk_usage": 38, "response_time": 145},
                 "consistency_score": 92,
-                "data_integrity": {
-                    "missing_records": 0,
-                    "inconsistent_data": 2,
-                    "validation_errors": 0
-                },
+                "data_integrity": {"missing_records": 0, "inconsistent_data": 2, "validation_errors": 0},
                 "alerts": [
                     {"level": "info", "message": "System operating normally"},
-                    {"level": "warning", "message": "High memory usage detected"}
-                ]
+                    {"level": "warning", "message": "High memory usage detected"},
+                ],
             }
             return health_data
         except Exception as e:
@@ -307,7 +275,7 @@ class SystemHealthSection(UnifiedDashboardSection):
 
     def get_html(self) -> str:
         """Generate system health section HTML"""
-        return '''
+        return """
         <div id="system-section" class="dashboard-section" style="display: none;">
             <div class="section-header">
                 <h2>[FIX] System Health & Validation</h2>
@@ -377,7 +345,7 @@ class SystemHealthSection(UnifiedDashboardSection):
                 </div>
             </div>
         </div>
-        '''
+        """
 
 
 class DashboardDataCollector:
@@ -396,13 +364,13 @@ class DashboardDataCollector:
         self.last_update = {}
 
         # Detect dashboard location and set up paths accordingly
-        if current_dir.name == '.claude-patterns':
+        if current_dir.name == ".claude-patterns":
             # Case 1: Running from .claude-patterns (local copy)
             print("Dashboard running from local .claude-patterns directory")
             self.patterns_dir = current_dir
             self.project_root = current_dir.parent
             self.is_local_copy = True
-        elif current_dir.name == 'lib':
+        elif current_dir.name == "lib":
             # Case 2: Running from plugin lib directory
             print("Dashboard running from plugin lib directory")
             self.patterns_dir = self._discover_patterns_dir()
@@ -429,20 +397,20 @@ class DashboardDataCollector:
             if self.is_local_copy:
                 # For local copy, check current and parent directories
                 storage_dirs = [
-                    self.patterns_dir / '.claude-unified',
-                    self.project_root / '.claude-unified',
+                    self.patterns_dir / ".claude-unified",
+                    self.project_root / ".claude-unified",
                     self.patterns_dir,
-                    self.project_root
+                    self.project_root,
                 ]
             else:
                 # For plugin, check multiple possible locations
                 # IMPORTANT: Prioritize .claude-patterns which has the actual data
                 storage_dirs = [
                     self.patterns_dir,  # First priority: .claude-patterns with unified_data.json
-                    self.project_root / '.claude-patterns',
-                    self.patterns_dir / '.claude-unified',
-                    self.project_root / '.claude-unified',
-                    current_dir / '.claude-unified'
+                    self.project_root / ".claude-patterns",
+                    self.patterns_dir / ".claude-unified",
+                    self.project_root / ".claude-unified",
+                    current_dir / ".claude-unified",
                 ]
 
             for storage_dir in storage_dirs:
@@ -473,9 +441,9 @@ class DashboardDataCollector:
 
         # Initialize unified dashboard sections
         self.dashboard_sections = {
-            'tokens': TokenOptimizationSection(self),
-            'kpi': KPISection(self),
-            'system': SystemHealthSection(self)
+            "tokens": TokenOptimizationSection(self),
+            "kpi": KPISection(self),
+            "system": SystemHealthSection(self),
         }
         print(f"  Initialized {len(self.dashboard_sections)} dashboard sections")
 
@@ -484,15 +452,7 @@ class DashboardDataCollector:
         current_dir = Path(__file__).parent
 
         # List of potential project root indicators
-        indicators = [
-            '.claude-plugin',
-            'README.md',
-            'CLAUDE.md',
-            '.git',
-            'requirements.txt',
-            'setup.py',
-            'package.json'
-        ]
+        indicators = [".claude-plugin", "README.md", "CLAUDE.md", ".git", "requirements.txt", "setup.py", "package.json"]
 
         # Search upward from current location
         search_dir = current_dir
@@ -521,25 +481,21 @@ class DashboardDataCollector:
         # Priority order for patterns directory when running from plugin
         potential_dirs = [
             # 1. Project root patterns (most likely)
-            current_dir.parent / '.claude-patterns',
-
+            current_dir.parent / ".claude-patterns",
             # 2. Current directory patterns
-            current_dir / '.claude-patterns',
-
+            current_dir / ".claude-patterns",
             # 3. Plugin lib patterns
-            current_dir / 'patterns',
-
+            current_dir / "patterns",
             # 4. Parent project patterns
-            current_dir.parent.parent / '.claude-patterns',
-
+            current_dir.parent.parent / ".claude-patterns",
             # 5. Create new patterns directory in project root
-            current_dir.parent / '.claude-patterns'
+            current_dir.parent / ".claude-patterns",
         ]
 
         for patterns_dir in potential_dirs:
             if patterns_dir.exists():
                 # Check if it has actual data files
-                data_files = ['patterns.json', 'quality_history.json', 'task_queue.json', 'config.json']
+                data_files = ["patterns.json", "quality_history.json", "task_queue.json", "config.json"]
                 if any((patterns_dir / file).exists() for file in data_files):
                     print(f"Found existing patterns directory with data: {patterns_dir}")
                     return patterns_dir
@@ -547,7 +503,7 @@ class DashboardDataCollector:
                     print(f"Found patterns directory but no data files: {patterns_dir}")
 
         # Create the best directory if none exist
-        best_dir = current_dir.parent / '.claude-patterns'
+        best_dir = current_dir.parent / ".claude-patterns"
         best_dir.mkdir(parents=True, exist_ok=True)
         print(f"Created new patterns directory: {best_dir}")
         return best_dir
@@ -567,7 +523,7 @@ class DashboardDataCollector:
         unified_file = storage_dir / "unified_data.json"
         if unified_file.exists():
             try:
-                with open(unified_file, 'r') as f:
+                with open(unified_file, "r") as f:
                     data = json.load(f)
                     # Check if quality_history has assessments
                     assessments = data.get("quality_history", {}).get("quality_assessments", [])
@@ -584,7 +540,7 @@ class DashboardDataCollector:
         quality_file = storage_dir / "quality_history.json"
         if quality_file.exists():
             try:
-                with open(quality_file, 'r') as f:
+                with open(quality_file, "r") as f:
                     data = json.load(f)
                     assessments = data.get("quality_assessments", [])
                     if assessments and len(assessments) > 0:
@@ -596,7 +552,7 @@ class DashboardDataCollector:
         patterns_file = storage_dir / "patterns.json"
         if patterns_file.exists():
             try:
-                with open(patterns_file, 'r') as f:
+                with open(patterns_file, "r") as f:
                     data = json.load(f)
                     # Handle both array and dict formats
                     patterns = data if isinstance(data, list) else data.get("patterns", [])
@@ -609,7 +565,7 @@ class DashboardDataCollector:
         unified_params = storage_dir / "unified_parameters.json"
         if unified_params.exists():
             try:
-                with open(unified_params, 'r') as f:
+                with open(unified_params, "r") as f:
                     data = json.load(f)
                     # Check if there's actual data (not just defaults)
                     quality_scores = data.get("parameters", {}).get("quality", {}).get("scores", {})
@@ -640,61 +596,57 @@ class DashboardDataCollector:
         """Normalize model name variations to standard names."""
         if not model_name or model_name == "Unknown":
             return "Claude Sonnet 4.5"  # Default fallback
-        
+
         # Filter out test models
         if "test" in model_name.lower() or "demo" in model_name.lower():
             return "Claude Sonnet 4.5"  # Default for test models
-        
+
         # Normalize GLM variations
         if "glm" in model_name.lower():
             return "GLM 4.6"
-        
+
         # Normalize Claude variations
         if "claude" in model_name.lower() and "sonnet" in model_name.lower():
             return "Claude Sonnet 4.5"
-        
+
         # Return original if no normalization needed
         return model_name
 
     def _load_historical_model_performance(self) -> dict:
         """Load actual historical model performance data from available sources."""
         model_data = {}
-        
+
         # Load from quality_history.json
         quality_history = self._load_json_file("quality_history.json", "quality")
         model_scores = {}
-        
+
         for assessment in quality_history.get("quality_assessments", []):
             timestamp = assessment.get("timestamp")
             model_used = assessment.get("details", {}).get("model_used", "Unknown")
             quality_score = assessment.get("overall_score")
-            
+
             # Normalize and filter model names
             normalized_model = self._normalize_model_name(model_used)
-            
+
             if timestamp and quality_score is not None and normalized_model:
                 if normalized_model not in model_scores:
                     model_scores[normalized_model] = []
-                model_scores[normalized_model].append({
-                    "timestamp": timestamp,
-                    "score": quality_score
-                })
-        
+                model_scores[normalized_model].append({"timestamp": timestamp, "score": quality_score})
+
         # Convert to dashboard format
         for model_name, scores in model_scores.items():
             if len(scores) > 0:
                 avg_score = sum(s["score"] for s in scores) / len(scores)
                 success_rate = len([s for s in scores if s["score"] >= 70]) / len(scores)
-                
+
                 model_data[model_name] = {
                     "recent_scores": scores,
                     "total_tasks": len(scores),
                     "success_rate": round(success_rate, 2),
-                    "contribution_to_project": round(avg_score * 0.25, 1)
+                    "contribution_to_project": round(avg_score * 0.25, 1),
                 }
-        
-        return model_data if model_data else None
 
+        return model_data if model_data else None
 
     def _normalize_timestamp(self, timestamp: str) -> str:
         """
@@ -763,7 +715,7 @@ class DashboardDataCollector:
                 print(f"Error: unified_data.json not found at {unified_file}", file=sys.stderr)
                 return {"quality": {"assessments": {"history": [], "current": {}}}, "patterns": {}}
 
-            with open(unified_file, 'r') as f:
+            with open(unified_file, "r") as f:
                 file_data = json.load(f)
 
             # Convert old unified format to new format expected by dashboard
@@ -772,7 +724,7 @@ class DashboardDataCollector:
                 "patterns": [],
                 "skills": {},
                 "agents": {},
-                "performance": {"records": []}
+                "performance": {"records": []},
             }
 
             # Map quality_history to new format
@@ -822,7 +774,7 @@ class DashboardDataCollector:
         # Add current assessment if it exists and meets criteria
         if current_assessment and current_assessment.get("overall_score", 0) > 0:
             assessments.append(current_assessment)
-        
+
         # Filter by date and quality
         cutoff_date = datetime.now() - timedelta(days=days)
         filtered_assessments = []
@@ -839,30 +791,27 @@ class DashboardDataCollector:
 
                 # Check date range and quality score
                 if assessment_date >= cutoff_date:
-                        # Filter out zero-quality assessments
-                        overall_score = assessment.get("overall_score", 0)
-                        if overall_score and overall_score > 0:
-                            assessment["timestamp"] = timestamp_str  # Store normalized timestamp
-                            filtered_assessments.append(assessment)
+                    # Filter out zero-quality assessments
+                    overall_score = assessment.get("overall_score", 0)
+                    if overall_score and overall_score > 0:
+                        assessment["timestamp"] = timestamp_str  # Store normalized timestamp
+                        filtered_assessments.append(assessment)
             except Exception as e:
                 print(f"Error filtering assessment: {e}", file=sys.stderr)
                 continue
-        
+
         # Filter by task types if specified
         if task_types:
             task_types_lower = [t.lower() for t in task_types]
-            filtered_assessments = [
-                a for a in filtered_assessments 
-                if a.get("task_type", "").lower() in task_types_lower
-            ]
-        
+            filtered_assessments = [a for a in filtered_assessments if a.get("task_type", "").lower() in task_types_lower]
+
         # Ensure all assessments have normalized model names
         for assessment in filtered_assessments:
             if "details" not in assessment:
                 assessment["details"] = {}
             model_used = assessment["details"].get("model_used", "Claude Sonnet 4.5")
             assessment["details"]["model_used"] = self._normalize_model_name(model_used)
-        
+
         return filtered_assessments
 
     def get_debugging_performance_data(self, days: int = 1) -> dict:
@@ -871,11 +820,11 @@ class DashboardDataCollector:
         Calculates actual performance metrics from real debugging tasks.
         """
         from collections import defaultdict
-        
+
         # Get debugging-related assessments from unified storage
         debugging_task_types = ["debugging", "debug-eval", "debugging-evaluation", "debug-evaluation", "debug"]
         debugging_assessments = self._get_unified_assessments(days=days, task_types=debugging_task_types)
-        
+
         if not debugging_assessments:
             return {
                 "analysis_timestamp": datetime.now().isoformat(),
@@ -884,51 +833,51 @@ class DashboardDataCollector:
                 "timeframe_label": f"Last {days} days" if days == 1 else f"Last {days} days",
                 "performance_rankings": [],
                 "detailed_metrics": {},
-                "data_source": "unified_storage"
+                "data_source": "unified_storage",
             }
-        
+
         # Group debugging assessments by model
         model_data = defaultdict(list)
         for assessment in debugging_assessments:
             model_used = assessment.get("details", {}).get("model_used", "Claude Sonnet 4.5")
             model_used = self._normalize_model_name(model_used)
             model_data[model_used].append(assessment)
-        
+
         # Calculate performance metrics for each model
         performance_rankings = []
         detailed_metrics = {}
-        
+
         for model, assessments in model_data.items():
             if not assessments:
                 continue
-            
+
             # Calculate metrics
             total_tasks = len(assessments)
             successful_tasks = sum(1 for a in assessments if a.get("pass", False))
             success_rate = successful_tasks / total_tasks if total_tasks > 0 else 0
-            
+
             # Quality scores
             quality_scores = [a.get("overall_score", 0) for a in assessments if a.get("overall_score", 0) > 0]
             avg_quality_score = sum(quality_scores) / len(quality_scores) if quality_scores else 0
-            
+
             # Time efficiency (tasks per hour average)
             durations = [a.get("details", {}).get("duration_seconds", 0) for a in assessments]
             avg_duration = sum(durations) / len(durations) if durations else 0
             time_efficiency_score = min(100, (3600 / avg_duration) * 10) if avg_duration > 0 else 0
-            
+
             # Quality improvement score
             quality_improvements = [a.get("details", {}).get("quality_improvement", 0) for a in assessments]
             avg_quality_improvement = sum(quality_improvements) / len(quality_improvements) if quality_improvements else 0
             qis_score = min(100, avg_quality_improvement * 20)  # Scale to 0-100
-            
+
             # Performance Index (comprehensive metric)
             performance_index = (
-                (avg_quality_score * 0.4) +           # 40% weight on quality
-                (time_efficiency_score * 0.3) +       # 30% weight on speed
-                (qis_score * 0.2) +                   # 20% weight on improvement
-                (success_rate * 100 * 0.1)            # 10% weight on success rate
+                (avg_quality_score * 0.4)  # 40% weight on quality
+                + (time_efficiency_score * 0.3)  # 30% weight on speed
+                + (qis_score * 0.2)  # 20% weight on improvement
+                + (success_rate * 100 * 0.1)  # 10% weight on success rate
             )
-            
+
             model_metrics = {
                 "model": model,
                 "total_debugging_tasks": total_tasks,
@@ -940,15 +889,15 @@ class DashboardDataCollector:
                 "time_efficiency_score": time_efficiency_score,
                 "regression_penalty": 0,
                 "efficiency_index": (time_efficiency_score + qis_score) / 2,
-                "assessments": assessments
+                "assessments": assessments,
             }
-            
+
             performance_rankings.append(model_metrics)
             detailed_metrics[model] = model_metrics
 
         # Sort by consistent model order (Claude, GLM, others) for legend consistency
         performance_rankings.sort(key=lambda x: self._get_model_sort_key(x["model"]))
-        
+
         return {
             "analysis_timestamp": datetime.now().isoformat(),
             "total_debugging_assessments": len(debugging_assessments),
@@ -956,7 +905,7 @@ class DashboardDataCollector:
             "timeframe_label": f"Last {days} days" if days == 1 else f"Last {days} days",
             "performance_rankings": performance_rankings,
             "detailed_metrics": detailed_metrics,
-            "data_source": "unified_storage"
+            "data_source": "unified_storage",
         }
 
     def get_recent_performance_records(self, limit: int = 50) -> dict:
@@ -966,7 +915,7 @@ class DashboardDataCollector:
         """
         # Get recent assessments from unified storage (last 30 days)
         assessments = self._get_unified_assessments(days=30)
-        
+
         if not assessments:
             return {
                 "records": [],
@@ -975,14 +924,14 @@ class DashboardDataCollector:
                     "date_range": "Last 30 days",
                     "unique_models": [],
                     "avg_quality_score": 0,
-                    "data_sources": ["unified_storage"]
-                }
+                    "data_sources": ["unified_storage"],
+                },
             }
-        
+
         # Convert to performance record format
         records = []
         quality_scores = []
-        
+
         for assessment in assessments[:limit]:  # Limit to requested number
             timestamp = assessment.get("timestamp", "")
             task_type = assessment.get("task_type", "unknown")
@@ -990,7 +939,7 @@ class DashboardDataCollector:
             model_used = assessment.get("details", {}).get("model_used", "Claude Sonnet 4.5")
             assessment_id = assessment.get("assessment_id", "")
             pass_status = assessment.get("pass", False)
-            
+
             # Extract performance details
             details = assessment.get("details", {})
             performance_index = details.get("performance_index", 0)
@@ -998,15 +947,15 @@ class DashboardDataCollector:
             issues_found = len(assessment.get("issues_found", []))
             fixes_applied = details.get("fixes_applied", 0)
             duration_seconds = details.get("duration_seconds", 0)
-            
+
             # Normalize
             model_used = self._normalize_model_name(model_used)
             timestamp = self._normalize_timestamp(timestamp)
-            
+
             # Calculate derived metrics
             success_rate = 100 if pass_status else 0
             time_elapsed_minutes = duration_seconds / 60 if duration_seconds > 0 else 0
-            
+
             record = {
                 "timestamp": timestamp,
                 "model": model_used,
@@ -1021,20 +970,20 @@ class DashboardDataCollector:
                 "time_elapsed_minutes": time_elapsed_minutes,
                 "success_rate": success_rate,
                 "pass": pass_status,
-                "auto_generated": assessment.get("auto_generated", False)
+                "auto_generated": assessment.get("auto_generated", False),
             }
-            
+
             records.append(record)
             if overall_score > 0:
                 quality_scores.append(overall_score)
-        
+
         # Sort by timestamp (newest first)
         records.sort(key=lambda x: x["timestamp"], reverse=True)
-        
+
         # Calculate summary
         unique_models = list(set(r["model"] for r in records))
         avg_quality_score = sum(quality_scores) / len(quality_scores) if quality_scores else 0
-        
+
         return {
             "records": records,
             "summary": {
@@ -1046,9 +995,9 @@ class DashboardDataCollector:
                 "quality_score_distribution": {
                     "excellent": len([s for s in quality_scores if s >= 90]),
                     "good": len([s for s in quality_scores if 70 <= s < 90]),
-                    "needs_improvement": len([s for s in quality_scores if s < 70])
-                }
-            }
+                    "needs_improvement": len([s for s in quality_scores if s < 70]),
+                },
+            },
         }
 
     def _get_git_activity_history(self, limit: int = 100) -> List[Dict[str, Any]]:
@@ -1057,17 +1006,25 @@ class DashboardDataCollector:
 
         try:
             # Get recent git commits from the last 7 days
-            result = subprocess.run([
-                "git", "log", f"--max-count={limit}",
-                "--since=7 days ago",
-                "--pretty=format:%H|%ad|%s",
-                "--date=iso",
-                "--no-merges"
-            ], capture_output=True, text=True, check=True, cwd=self.patterns_dir.parent)
+            result = subprocess.run(
+                [
+                    "git",
+                    "log",
+                    f"--max-count={limit}",
+                    "--since=7 days ago",
+                    "--pretty=format:%H|%ad|%s",
+                    "--date=iso",
+                    "--no-merges",
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+                cwd=self.patterns_dir.parent,
+            )
 
-            for line in result.stdout.strip().split('\n'):
+            for line in result.stdout.strip().split("\n"):
                 if line:
-                    parts = line.split('|')
+                    parts = line.split("|")
                     if len(parts) >= 3:
                         commit_hash = parts[0]
                         commit_date = parts[1]
@@ -1076,19 +1033,21 @@ class DashboardDataCollector:
                         # Classify task type from commit message
                         task_type = self._classify_commit_type(commit_message)
 
-                        git_activities.append({
-                            "timestamp": commit_date,
-                            "task_type": task_type,
-                            "description": commit_message,
-                            "quality_score": None,  # Git activities don't have scores initially
-                            "success": None,  # Success determined by status codes
-                            "skills_used": [],
-                            "duration": None,
-                            "auto_generated": False,
-                            "assessment_id": f"git-{commit_hash[:8]}",
-                            "source": "git_history",
-                            "commit_hash": commit_hash
-                        })
+                        git_activities.append(
+                            {
+                                "timestamp": commit_date,
+                                "task_type": task_type,
+                                "description": commit_message,
+                                "quality_score": None,  # Git activities don't have scores initially
+                                "success": None,  # Success determined by status codes
+                                "skills_used": [],
+                                "duration": None,
+                                "auto_generated": False,
+                                "assessment_id": f"git-{commit_hash[:8]}",
+                                "source": "git_history",
+                                "commit_hash": commit_hash,
+                            }
+                        )
 
         except subprocess.CalledProcessError:
             # Git not available or error, return empty list
@@ -1101,43 +1060,40 @@ class DashboardDataCollector:
         msg_lower = message.lower()
 
         # Check commit message prefixes
-        if msg_lower.startswith('feat:') or msg_lower.startswith('feature:'):
+        if msg_lower.startswith("feat:") or msg_lower.startswith("feature:"):
             return "feature-implementation"
-        elif msg_lower.startswith('fix:') or msg_lower.startswith('bugfix:'):
+        elif msg_lower.startswith("fix:") or msg_lower.startswith("bugfix:"):
             return "bug-fix"
-        elif msg_lower.startswith('refactor:') or msg_lower.startswith('refactoring:'):
+        elif msg_lower.startswith("refactor:") or msg_lower.startswith("refactoring:"):
             return "refactoring"
-        elif msg_lower.startswith('docs:') or msg_lower.startswith('documentation:'):
+        elif msg_lower.startswith("docs:") or msg_lower.startswith("documentation:"):
             return "documentation"
-        elif msg_lower.startswith('test:') or msg_lower.startswith('testing:'):
+        elif msg_lower.startswith("test:") or msg_lower.startswith("testing:"):
             return "testing"
-        elif msg_lower.startswith('perf:') or msg_lower.startswith('performance:'):
+        elif msg_lower.startswith("perf:") or msg_lower.startswith("performance:"):
             return "performance-optimization"
-        elif msg_lower.startswith('release:') or msg_lower.startswith('version:'):
+        elif msg_lower.startswith("release:") or msg_lower.startswith("version:"):
             return "release-management"
-        elif msg_lower.startswith('bump:'):
+        elif msg_lower.startswith("bump:"):
             return "version-bump"
-        elif 'dashboard' in msg_lower or 'monitoring' in msg_lower:
+        elif "dashboard" in msg_lower or "monitoring" in msg_lower:
             return "dashboard-improvement"
-        elif 'git' in msg_lower or 'merge' in msg_lower:
+        elif "git" in msg_lower or "merge" in msg_lower:
             return "git-operation"
-        elif 'quality' in msg_lower or 'validation' in msg_lower:
+        elif "quality" in msg_lower or "validation" in msg_lower:
             return "quality-improvement"
-        elif 'learning' in msg_lower or 'pattern' in msg_lower:
+        elif "learning" in msg_lower or "pattern" in msg_lower:
             return "learning-activity"
-        elif 'analysis' in msg_lower or 'analytics' in msg_lower:
+        elif "analysis" in msg_lower or "analytics" in msg_lower:
             return "project-analysis"
-        elif 'security' in msg_lower or 'audit' in msg_lower:
+        elif "security" in msg_lower or "audit" in msg_lower:
             return "security-audit"
-        elif 'performance' in msg_lower or 'optimization' in msg_lower:
+        elif "performance" in msg_lower or "optimization" in msg_lower:
             return "performance-optimization"
-        elif 'auto' in msg_lower or 'automatic' in msg_lower:
+        elif "auto" in msg_lower or "automatic" in msg_lower:
             return "automation"
         else:
             return "general-maintenance"
-
-
-
 
     def _load_json_file(self, filename: str, cache_key: str) -> Dict[str, Any]:
         """Load JSON file with unified data priority and caching."""
@@ -1153,11 +1109,11 @@ class DashboardDataCollector:
             try:
                 # Check if unified file was modified since last cache
                 unified_mtime = unified_file.stat().st_mtime
-                if hasattr(self, '_unified_mtime') and unified_mtime > self._unified_mtime:
+                if hasattr(self, "_unified_mtime") and unified_mtime > self._unified_mtime:
                     self._unified_data_updated()
                 self._unified_mtime = unified_mtime
 
-                with open(unified_file, 'r') as f:
+                with open(unified_file, "r") as f:
                     unified_data = json.load(f)
 
                     # Map filename to unified data structure
@@ -1192,7 +1148,7 @@ class DashboardDataCollector:
         filepath = self.patterns_dir / filename
         if filepath.exists():
             try:
-                with open(filepath, 'r') as f:
+                with open(filepath, "r") as f:
                     data = json.load(f)
                     self.cache[cache_key] = data
                     self.last_update[cache_key] = time.time()
@@ -1268,35 +1224,31 @@ class DashboardDataCollector:
 
         # From patterns data (handle both array and dict formats)
         if isinstance(patterns_data, list):
-            quality_scores.extend([
-                p.get("outcome", {}).get("quality_score", 0)
-                for p in patterns_data
-                if p.get("outcome", {}).get("quality_score") is not None
-            ])
+            quality_scores.extend(
+                [
+                    p.get("outcome", {}).get("quality_score", 0)
+                    for p in patterns_data
+                    if p.get("outcome", {}).get("quality_score") is not None
+                ]
+            )
         elif isinstance(patterns_data, dict):
-            quality_scores.extend([
-                p.get("outcome", {}).get("quality_score", 0)
-                for p in patterns_data.get("patterns", [])
-                if p.get("outcome", {}).get("quality_score") is not None
-            ])
+            quality_scores.extend(
+                [
+                    p.get("outcome", {}).get("quality_score", 0)
+                    for p in patterns_data.get("patterns", [])
+                    if p.get("outcome", {}).get("quality_score") is not None
+                ]
+            )
 
         # From assessment history in unified storage
-        quality_scores.extend([
-            a.get("overall_score", 0)
-            for a in assessment_history
-            if a.get("overall_score") is not None
-        ])
+        quality_scores.extend([a.get("overall_score", 0) for a in assessment_history if a.get("overall_score") is not None])
 
         # From current assessment if available
         if current_assessment and current_assessment.get("overall_score") is not None:
             quality_scores.append(current_assessment.get("overall_score", 0))
 
         # From performance records in unified storage
-        quality_scores.extend([
-            r.get("overall_score", 0)
-            for r in performance_records
-            if r.get("overall_score") is not None
-        ])
+        quality_scores.extend([r.get("overall_score", 0) for r in performance_records if r.get("overall_score") is not None])
 
         avg_quality = statistics.mean(quality_scores) if quality_scores else 0
 
@@ -1321,7 +1273,7 @@ class DashboardDataCollector:
             "average_quality_score": round(avg_quality, 1),
             "learning_velocity": learning_velocity,
             "model_performance": model_performance,
-            "last_updated": datetime.now().isoformat()
+            "last_updated": datetime.now().isoformat(),
         }
 
     def _calculate_learning_velocity(self, patterns: List[Dict]) -> str:
@@ -1335,17 +1287,29 @@ class DashboardDataCollector:
         second_half = patterns[mid:]
 
         # Calculate average quality scores
-        first_avg = statistics.mean([
-            p.get("outcome", {}).get("quality_score", 0)
-            for p in first_half
-            if p.get("outcome", {}).get("quality_score") is not None
-        ]) if first_half else 0
+        first_avg = (
+            statistics.mean(
+                [
+                    p.get("outcome", {}).get("quality_score", 0)
+                    for p in first_half
+                    if p.get("outcome", {}).get("quality_score") is not None
+                ]
+            )
+            if first_half
+            else 0
+        )
 
-        second_avg = statistics.mean([
-            p.get("outcome", {}).get("quality_score", 0)
-            for p in second_half
-            if p.get("outcome", {}).get("quality_score") is not None
-        ]) if second_half else 0
+        second_avg = (
+            statistics.mean(
+                [
+                    p.get("outcome", {}).get("quality_score", 0)
+                    for p in second_half
+                    if p.get("outcome", {}).get("quality_score") is not None
+                ]
+            )
+            if second_half
+            else 0
+        )
 
         improvement = second_avg - first_avg
 
@@ -1372,17 +1336,17 @@ class DashboardDataCollector:
         second_half = assessments[mid:]
 
         # Calculate average quality scores
-        first_avg = statistics.mean([
-            a.get("overall_score", 0)
-            for a in first_half
-            if a.get("overall_score") is not None
-        ]) if first_half else 0
+        first_avg = (
+            statistics.mean([a.get("overall_score", 0) for a in first_half if a.get("overall_score") is not None])
+            if first_half
+            else 0
+        )
 
-        second_avg = statistics.mean([
-            a.get("overall_score", 0)
-            for a in second_half
-            if a.get("overall_score") is not None
-        ]) if second_half else 0
+        second_avg = (
+            statistics.mean([a.get("overall_score", 0) for a in second_half if a.get("overall_score") is not None])
+            if second_half
+            else 0
+        )
 
         improvement = second_avg - first_avg
 
@@ -1410,17 +1374,17 @@ class DashboardDataCollector:
         second_half = assessment_history[mid:]
 
         # Calculate average quality scores
-        first_avg = statistics.mean([
-            a.get("overall_score", 0)
-            for a in first_half
-            if a.get("overall_score") is not None
-        ]) if first_half else 0
+        first_avg = (
+            statistics.mean([a.get("overall_score", 0) for a in first_half if a.get("overall_score") is not None])
+            if first_half
+            else 0
+        )
 
-        second_avg = statistics.mean([
-            a.get("overall_score", 0)
-            for a in second_half
-            if a.get("overall_score") is not None
-        ]) if second_half else 0
+        second_avg = (
+            statistics.mean([a.get("overall_score", 0) for a in second_half if a.get("overall_score") is not None])
+            if second_half
+            else 0
+        )
 
         improvement = second_avg - first_avg
 
@@ -1459,14 +1423,16 @@ class DashboardDataCollector:
                     assessment_date = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
                     if assessment_date >= cutoff_date:
                         display_time = assessment_date.strftime("%m/%d %H:%M")
-                        trend_data.append({
-                            "timestamp": timestamp,
-                            "display_time": display_time,
-                            "score": quality_score,
-                            "task_type": task_type,
-                            "model_used": model_used,
-                            "data_source": "quality_history"
-                        })
+                        trend_data.append(
+                            {
+                                "timestamp": timestamp,
+                                "display_time": display_time,
+                                "score": quality_score,
+                                "task_type": task_type,
+                                "model_used": model_used,
+                                "data_source": "quality_history",
+                            }
+                        )
                 except:
                     continue
 
@@ -1488,14 +1454,16 @@ class DashboardDataCollector:
                         inferred_model = self._infer_model_from_timestamp(timestamp)
                         model_used = inferred_model if inferred_model else "Unknown"
 
-                        trend_data.append({
-                            "timestamp": timestamp,
-                            "display_time": display_time,
-                            "score": quality_score,
-                            "task_type": f"{task_type} ({command_name})",
-                            "model_used": model_used,
-                            "data_source": "assessments"
-                        })
+                        trend_data.append(
+                            {
+                                "timestamp": timestamp,
+                                "display_time": display_time,
+                                "score": quality_score,
+                                "task_type": f"{task_type} ({command_name})",
+                                "model_used": model_used,
+                                "data_source": "assessments",
+                            }
+                        )
                 except:
                     continue
 
@@ -1516,14 +1484,16 @@ class DashboardDataCollector:
                         inferred_model = self._infer_model_from_timestamp(timestamp)
                         model_used = inferred_model if inferred_model else "Unknown"
 
-                        trend_data.append({
-                            "timestamp": timestamp,
-                            "display_time": display_time,
-                            "score": quality_score,
-                            "task_type": f"trend ({assessment_id[:8]}...)",
-                            "model_used": model_used,
-                            "data_source": "trends"
-                        })
+                        trend_data.append(
+                            {
+                                "timestamp": timestamp,
+                                "display_time": display_time,
+                                "score": quality_score,
+                                "task_type": f"trend ({assessment_id[:8]}...)",
+                                "model_used": model_used,
+                                "data_source": "trends",
+                            }
+                        )
                 except:
                     continue
 
@@ -1540,14 +1510,16 @@ class DashboardDataCollector:
                         assessment_date = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
                         if assessment_date >= cutoff_date:
                             display_time = assessment_date.strftime("%m/%d %H:%M")
-                            trend_data.append({
-                                "timestamp": timestamp,
-                                "display_time": display_time,
-                                "score": score,
-                                "task_type": "model_performance",
-                                "model_used": model_name,
-                                "data_source": "model_performance"
-                            })
+                            trend_data.append(
+                                {
+                                    "timestamp": timestamp,
+                                    "display_time": display_time,
+                                    "score": score,
+                                    "task_type": "model_performance",
+                                    "model_used": model_name,
+                                    "data_source": "model_performance",
+                                }
+                            )
                     except:
                         continue
 
@@ -1565,11 +1537,9 @@ class DashboardDataCollector:
 
         return {
             "trend_data": unique_trend_data,
-            "overall_average": round(statistics.mean([
-                d["score"] for d in unique_trend_data
-            ]), 1) if unique_trend_data else 0,
+            "overall_average": round(statistics.mean([d["score"] for d in unique_trend_data]), 1) if unique_trend_data else 0,
             "data_sources": list(set(d["data_source"] for d in unique_trend_data)),
-            "days": days
+            "days": days,
         }
 
     def get_skill_performance(self, top_k: int = 10) -> Dict[str, Any]:
@@ -1586,13 +1556,15 @@ class DashboardDataCollector:
             usage_count = metrics.get("total_uses", 0) or 0
             avg_quality = metrics.get("avg_contribution_score", 0)
 
-            skills_performance.append({
-                "name": skill_name,
-                "success_rate": round(success_rate * 100, 1),
-                "usage_count": usage_count,
-                "avg_quality_impact": round(avg_quality, 1),
-                "recommended_for": []  # Not available in current format
-            })
+            skills_performance.append(
+                {
+                    "name": skill_name,
+                    "success_rate": round(success_rate * 100, 1),
+                    "usage_count": usage_count,
+                    "avg_quality_impact": round(avg_quality, 1),
+                    "recommended_for": [],  # Not available in current format
+                }
+            )
 
         # Secondary source: Extract from skill_usage_history if needed
         if not skills_performance:
@@ -1611,21 +1583,20 @@ class DashboardDataCollector:
                 success_rate = success_count / count if count > 0 else 0
                 avg_quality = usage.get("quality_score", 0)
 
-                skills_performance.append({
-                    "name": skill_name,
-                    "success_rate": round(success_rate * 100, 1),
-                    "usage_count": count,
-                    "avg_quality_impact": round(avg_quality, 1),
-                    "recommended_for": []
-                })
+                skills_performance.append(
+                    {
+                        "name": skill_name,
+                        "success_rate": round(success_rate * 100, 1),
+                        "usage_count": count,
+                        "avg_quality_impact": round(avg_quality, 1),
+                        "recommended_for": [],
+                    }
+                )
 
         # Sort by success rate
         skills_performance.sort(key=lambda x: x["success_rate"], reverse=True)
 
-        return {
-            "top_skills": skills_performance[:top_k],
-            "total_skills": len(skills_performance)
-        }
+        return {"top_skills": skills_performance[:top_k], "total_skills": len(skills_performance)}
 
     def get_agent_performance(self, top_k: int = 10) -> Dict[str, Any]:
         """Get top performing agents from unified storage only."""
@@ -1641,12 +1612,7 @@ class DashboardDataCollector:
         for assessment in assessment_history:
             for agent_name, details in assessment.get("execution_details", {}).items():
                 if agent_name not in agent_stats:
-                    agent_stats[agent_name] = {
-                        "success_count": 0,
-                        "total_count": 0,
-                        "total_duration": 0,
-                        "total_quality": 0
-                    }
+                    agent_stats[agent_name] = {"success_count": 0, "total_count": 0, "total_duration": 0, "total_quality": 0}
 
                 agent_stats[agent_name]["total_count"] += 1
                 agent_stats[agent_name]["total_duration"] += details.get("duration_seconds", 0)
@@ -1663,21 +1629,20 @@ class DashboardDataCollector:
                 avg_quality = stats["total_quality"] / stats["total_count"]
                 reliability = success_rate * (avg_quality / 100)  # Combined reliability metric
 
-                agents_performance.append({
-                    "name": agent_name,
-                    "success_rate": round(success_rate * 100, 1),
-                    "usage_count": stats["total_count"],
-                    "avg_duration": round(avg_duration, 1),
-                    "reliability": round(reliability * 100, 1)
-                })
+                agents_performance.append(
+                    {
+                        "name": agent_name,
+                        "success_rate": round(success_rate * 100, 1),
+                        "usage_count": stats["total_count"],
+                        "avg_duration": round(avg_duration, 1),
+                        "reliability": round(reliability * 100, 1),
+                    }
+                )
 
         # Sort by reliability
         agents_performance.sort(key=lambda x: x["reliability"], reverse=True)
 
-        return {
-            "top_agents": agents_performance[:top_k],
-            "total_agents": len(agents_performance)
-        }
+        return {"top_agents": agents_performance[:top_k], "total_agents": len(agents_performance)}
 
     def get_task_distribution(self) -> Dict[str, Any]:
         """Get distribution of task types from unified storage only."""
@@ -1726,19 +1691,12 @@ class DashboardDataCollector:
         for task_type, count in task_counts.items():
             success_rate = statistics.mean(success_by_task[task_type]) if success_by_task[task_type] else 0
 
-            distribution.append({
-                "task_type": task_type,
-                "count": count,
-                "success_rate": round(success_rate * 100, 1)
-            })
+            distribution.append({"task_type": task_type, "count": count, "success_rate": round(success_rate * 100, 1)})
 
         # Sort by count
         distribution.sort(key=lambda x: x["count"], reverse=True)
 
-        return {
-            "distribution": distribution,
-            "total_tasks": sum(task_counts.values())
-        }
+        return {"distribution": distribution, "total_tasks": sum(task_counts.values())}
 
     def _determine_success_status(self, record: Dict[str, Any], source: str) -> bool:
         """Determine success status with enhanced logic for different data sources."""
@@ -1778,10 +1736,10 @@ class DashboardDataCollector:
         Shows all tasks regardless of score for complete history tracking.
         """
         from collections import defaultdict
-        
+
         # Get recent assessments from unified storage (last 30 days)
         assessments = self._get_unified_assessments(days=30)
-        
+
         if not assessments:
             return {
                 "activities": [],
@@ -1790,10 +1748,10 @@ class DashboardDataCollector:
                     "date_range": "Last 30 days",
                     "unique_models": [],
                     "task_types": [],
-                    "data_sources": ["unified_storage"]
-                }
+                    "data_sources": ["unified_storage"],
+                },
             }
-        
+
         # Sort assessments by timestamp (newest first) BEFORE limiting
         assessments.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
 
@@ -1811,19 +1769,19 @@ class DashboardDataCollector:
             duration = assessment.get("details", {}).get("duration_seconds", 0)
             auto_generated = assessment.get("auto_generated", False)
             assessment_id = assessment.get("assessment_id", "")
-            
+
             # Normalize
             model_used = self._normalize_model_name(model_used)
             timestamp = self._normalize_timestamp(timestamp)
-            
+
             # Determine success status
             success = assessment.get("pass", False) if overall_score > 0 else None
-            
+
             # Create description
             description = assessment.get("details", {}).get("task_description", task_type)
             if not description or description == task_type:
                 description = task_type.replace("-", " ").title()
-            
+
             activity = {
                 "timestamp": timestamp,
                 "task_type": task_type,
@@ -1835,9 +1793,9 @@ class DashboardDataCollector:
                 "auto_generated": auto_generated,
                 "assessment_id": assessment_id,
                 "source": "unified_storage",
-                "model": model_used
+                "model": model_used,
             }
-            
+
             activities.append(activity)
             model_counts[model_used] += 1
             task_type_counts[task_type] += 1
@@ -1853,9 +1811,10 @@ class DashboardDataCollector:
                 "task_types": list(task_type_counts.keys()),
                 "data_sources": ["unified_storage"],
                 "model_distribution": dict(model_counts),
-                "task_type_distribution": dict(task_type_counts)
-            }
+                "task_type_distribution": dict(task_type_counts),
+            },
         }
+
     def get_system_health(self) -> Dict[str, Any]:
         """Get system health metrics from all sources (quality_history, performance_records, patterns)."""
         all_records = []
@@ -1863,49 +1822,59 @@ class DashboardDataCollector:
         # 1. Load quality history
         quality_data = self._load_json_file("quality_history.json", "quality_history")
         for assessment in quality_data.get("quality_assessments", []):
-            all_records.append({
-                "timestamp": assessment.get("timestamp", ""),
-                "quality_score": assessment.get("overall_score", 0),
-                "success": assessment.get("pass", False)
-            })
+            all_records.append(
+                {
+                    "timestamp": assessment.get("timestamp", ""),
+                    "quality_score": assessment.get("overall_score", 0),
+                    "success": assessment.get("pass", False),
+                }
+            )
 
         # 2. Load performance records
         perf_data = self._load_json_file("performance_records.json", "performance_records")
         for record in perf_data.get("records", []):
-            all_records.append({
-                "timestamp": record.get("timestamp", ""),
-                "quality_score": record.get("overall_score", 0),
-                "success": record.get("pass", False)
-            })
+            all_records.append(
+                {
+                    "timestamp": record.get("timestamp", ""),
+                    "quality_score": record.get("overall_score", 0),
+                    "success": record.get("pass", False),
+                }
+            )
 
         # 3. Load unified patterns
         patterns = self._load_json_file("patterns.json", "patterns")
         if isinstance(patterns, list):
             for pattern in patterns:
-                all_records.append({
-                    "timestamp": pattern.get("timestamp", ""),
-                    "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
-                    "success": pattern.get("outcome", {}).get("success", False)
-                })
+                all_records.append(
+                    {
+                        "timestamp": pattern.get("timestamp", ""),
+                        "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
+                        "success": pattern.get("outcome", {}).get("success", False),
+                    }
+                )
         elif isinstance(patterns, dict):
             for pattern in patterns.get("patterns", []):
-                all_records.append({
-                    "timestamp": pattern.get("timestamp", ""),
-                    "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
-                    "success": pattern.get("outcome", {}).get("success", False)
-                })
+                all_records.append(
+                    {
+                        "timestamp": pattern.get("timestamp", ""),
+                        "quality_score": pattern.get("outcome", {}).get("quality_score", 0),
+                        "success": pattern.get("outcome", {}).get("success", False),
+                    }
+                )
 
         # 4. Load assessments
         assessments = self._load_json_file("assessments.json", "assessments")
         for assessment in assessments.get("assessments", []):
-            all_records.append({
-                "timestamp": assessment.get("timestamp", ""),
-                "quality_score": assessment.get("overall_score", 0),
-                "success": assessment.get("pass", False)
-            })
+            all_records.append(
+                {
+                    "timestamp": assessment.get("timestamp", ""),
+                    "quality_score": assessment.get("overall_score", 0),
+                    "success": assessment.get("pass", False),
+                }
+            )
 
         # Sort by timestamp and get last 50
-        all_records.sort(key=lambda x: x['timestamp'], reverse=True)
+        all_records.sort(key=lambda x: x["timestamp"], reverse=True)
         recent_tasks = all_records[:50]
 
         # Calculate error rate (last 50 tasks)
@@ -1919,9 +1888,14 @@ class DashboardDataCollector:
         # Storage size (all unified storage files)
         total_size = 0
         unified_files = [
-            "patterns.json", "quality_history.json", "performance_records.json",
-            "skill_metrics.json", "agent_metrics.json", "assessments.json",
-            "debugging_performance.json", "release_patterns.json"
+            "patterns.json",
+            "quality_history.json",
+            "performance_records.json",
+            "skill_metrics.json",
+            "agent_metrics.json",
+            "assessments.json",
+            "debugging_performance.json",
+            "release_patterns.json",
         ]
         for file in unified_files:
             filepath = self.patterns_dir / file
@@ -1939,7 +1913,7 @@ class DashboardDataCollector:
             "error_rate": round(error_rate, 1),
             "avg_quality": round(avg_quality, 1),
             "patterns_stored": len(all_records),
-            "storage_size_kb": round(total_size / 1024, 1)
+            "storage_size_kb": round(total_size / 1024, 1),
         }
 
     def get_model_performance_summary(self) -> Dict[str, Any]:
@@ -1951,9 +1925,11 @@ class DashboardDataCollector:
         if model_performance:
             for model_name, model_data in model_performance.items():
                 # Only include models with actual task data and realistic patterns
-                if (model_data.get("total_tasks", 0) > 0 and
-                    model_data.get("recent_scores") and
-                    self._is_real_model_data(model_data)):
+                if (
+                    model_data.get("total_tasks", 0) > 0
+                    and model_data.get("recent_scores")
+                    and self._is_real_model_data(model_data)
+                ):
                     implemented_models.append(model_name)
 
         # If no real data available, return empty summary (no fake data generation)
@@ -1962,7 +1938,7 @@ class DashboardDataCollector:
                 "models": [],
                 "summary": "No real performance data available",
                 "implemented_models": [],
-                "has_real_data": False
+                "has_real_data": False,
             }
 
         # Calculate recent performance for each implemented model
@@ -2002,7 +1978,7 @@ class DashboardDataCollector:
                 "trend": trend,
                 "contribution_to_project": contribution,
                 "total_tasks": model_data.get("total_tasks", 10),
-                "success_rate": model_data.get("success_rate", 0.9 if "GLM" in model else 0.94)
+                "success_rate": model_data.get("success_rate", 0.9 if "GLM" in model else 0.94),
             }
 
         return summary
@@ -2023,13 +1999,7 @@ class DashboardDataCollector:
             return session_model
 
         # Method 1: Check environment variables
-        model_env_vars = [
-            'ANTHROPIC_MODEL',
-            'CLAUDE_MODEL',
-            'OPENAI_MODEL',
-            'GLM_MODEL',
-            'AI_MODEL'
-        ]
+        model_env_vars = ["ANTHROPIC_MODEL", "CLAUDE_MODEL", "OPENAI_MODEL", "GLM_MODEL", "AI_MODEL"]
 
         for var in model_env_vars:
             model = os.getenv(var)
@@ -2039,12 +2009,12 @@ class DashboardDataCollector:
         # Method 2: Try to detect from system info
         try:
             # Check for GLM indicators (since user confirmed using GLM)
-            if any(indicator in platform.node().lower() for indicator in ['glm', 'zhipu']):
-                return 'GLM-4.6'
+            if any(indicator in platform.node().lower() for indicator in ["glm", "zhipu"]):
+                return "GLM-4.6"
 
             # Check for Claude indicators
-            if any(indicator in platform.node().lower() for indicator in ['claude', 'anthropic']):
-                return 'Claude-3.5-Sonnet'
+            if any(indicator in platform.node().lower() for indicator in ["claude", "anthropic"]):
+                return "Claude-3.5-Sonnet"
 
         except:
             pass
@@ -2056,9 +2026,9 @@ class DashboardDataCollector:
         if assessments:
             # Sort by timestamp and get the most recent
             try:
-                recent_assessments = sorted(assessments,
-                    key=lambda x: x.get("timestamp", ""),
-                    reverse=True)[:5]  # Get last 5 assessments
+                recent_assessments = sorted(assessments, key=lambda x: x.get("timestamp", ""), reverse=True)[
+                    :5
+                ]  # Get last 5 assessments
 
                 # Count model occurrences
                 model_counts = {}
@@ -2092,10 +2062,7 @@ class DashboardDataCollector:
             import platform
 
             # Environment variables
-            model_env_vars = [
-                'ANTHROPIC_MODEL', 'CLAUDE_MODEL', 'OPENAI_MODEL',
-                'GLM_MODEL', 'AI_MODEL', 'MODEL_NAME'
-            ]
+            model_env_vars = ["ANTHROPIC_MODEL", "CLAUDE_MODEL", "OPENAI_MODEL", "GLM_MODEL", "AI_MODEL", "MODEL_NAME"]
 
             for var in model_env_vars:
                 model = os.getenv(var)
@@ -2106,15 +2073,15 @@ class DashboardDataCollector:
             # System-based detection
             if not detected_model:
                 # Check for GLM indicators (since user confirmed using GLM)
-                if any(indicator in platform.node().lower() for indicator in ['glm', 'zhipu']):
-                    detected_model = 'GLM-4.6'
+                if any(indicator in platform.node().lower() for indicator in ["glm", "zhipu"]):
+                    detected_model = "GLM-4.6"
                 # Check for Claude indicators
-                elif any(indicator in platform.node().lower() for indicator in ['claude', 'anthropic']):
-                    detected_model = 'Claude-3.5-Sonnet'
+                elif any(indicator in platform.node().lower() for indicator in ["claude", "anthropic"]):
+                    detected_model = "Claude-3.5-Sonnet"
 
             # Default to GLM since user confirmed using it
             if not detected_model:
-                detected_model = 'GLM-4.6'
+                detected_model = "GLM-4.6"
 
             # Write session data
             session_data = {
@@ -2123,10 +2090,10 @@ class DashboardDataCollector:
                 "last_activity": datetime.now().isoformat(),
                 "detection_method": "real_time_detection",
                 "platform": platform.platform(),
-                "node": platform.node()
+                "node": platform.node(),
             }
 
-            with open(session_file, 'w', encoding='utf-8') as f:
+            with open(session_file, "w", encoding="utf-8") as f:
                 json.dump(session_data, f, indent=2, ensure_ascii=False)
 
         except Exception as e:
@@ -2138,7 +2105,7 @@ class DashboardDataCollector:
         try:
             session_file = self.patterns_dir / "current_session.json"
             if session_file.exists():
-                with open(session_file, 'r', encoding='utf-8') as f:
+                with open(session_file, "r", encoding="utf-8") as f:
                     session_data = json.load(f)
 
                     # Prefer model_id as it's more accurate
@@ -2161,16 +2128,17 @@ class DashboardDataCollector:
     def _generate_realistic_glm_data(self) -> Dict[str, Any]:
         """Generate realistic model performance data using actual historical data."""
         model_data = {}
-        
+
         # Load actual historical data first
         historical_data = self._load_historical_model_performance()
-        
+
         # If we have real historical data, use it
         if historical_data:
             return historical_data
-        
+
         # Fallback to deterministic synthetic data
         import random
+
         project_duration_days = 4  # Project started 4 days ago
 
         # GLM 4.6 - Primary model with usage since project start
@@ -2180,7 +2148,7 @@ class DashboardDataCollector:
 
         glm_recent_scores = []
         for i in range(project_duration_days):  # Only 4 days of data
-            timestamp = datetime.now() - timedelta(days=project_duration_days-i-1)
+            timestamp = datetime.now() - timedelta(days=project_duration_days - i - 1)
             # Realistic variation with improvement trend over 4 days
             trend_factor = 1 + (i * 0.01)  # Small learning improvement
             seed_data = f"GLM-4.6-{timestamp.strftime('%Y-%m-%d')}"
@@ -2188,17 +2156,15 @@ class DashboardDataCollector:
             score = max(75, min(95, score))
             contribution = self._deterministic_contribution(score, 25.3, seed_data)
 
-            glm_recent_scores.append({
-                "timestamp": timestamp.isoformat(),
-                "score": round(score, 1),
-                "contribution": round(contribution, 1)
-            })
+            glm_recent_scores.append(
+                {"timestamp": timestamp.isoformat(), "score": round(score, 1), "contribution": round(contribution, 1)}
+            )
 
         model_data["GLM 4.6"] = {
             "recent_scores": glm_recent_scores,
             "total_tasks": 47,  # Primary usage over 4 days
             "success_rate": glm_success_rate,
-            "contribution_to_project": 25.3
+            "contribution_to_project": 25.3,
         }
 
         # Claude Sonnet 4.5 - Used this morning and some past days
@@ -2210,44 +2176,40 @@ class DashboardDataCollector:
 
         # Recent activity from this morning (last few hours)
         for i in range(5):  # Last 5 hours
-            timestamp = datetime.now() - timedelta(hours=5-i)
+            timestamp = datetime.now() - timedelta(hours=5 - i)
             seed_data = f"Claude-4.5-{timestamp.strftime('%Y-%m-%d-%H')}"
             score = self._deterministic_score(claude_base_score, claude_variance, seed_data)
             score = max(82, min(96, score))
             contribution = self._deterministic_contribution(score, 18.7, seed_data)
 
-            claude_recent_scores.append({
-                "timestamp": timestamp.isoformat(),
-                "score": round(score, 1),
-                "contribution": round(contribution, 1)
-            })
+            claude_recent_scores.append(
+                {"timestamp": timestamp.isoformat(), "score": round(score, 1), "contribution": round(contribution, 1)}
+            )
 
         # Usage from the past 3 days (since project started)
         for i in range(3):  # Past 3 days
-            timestamp = datetime.now() - timedelta(days=3-i)
+            timestamp = datetime.now() - timedelta(days=3 - i)
             seed_data = f"Claude-4.5-{timestamp.strftime('%Y-%m-%d')}"
             score = self._deterministic_score(claude_base_score, claude_variance, seed_data)
             score = max(80, min(94, score))
             contribution = self._deterministic_contribution(score, 18.7, seed_data)
 
-            claude_recent_scores.append({
-                "timestamp": timestamp.isoformat(),
-                "score": round(score, 1),
-                "contribution": round(contribution, 1)
-            })
+            claude_recent_scores.append(
+                {"timestamp": timestamp.isoformat(), "score": round(score, 1), "contribution": round(contribution, 1)}
+            )
 
         model_data["Claude Sonnet 4.5"] = {
             "recent_scores": claude_recent_scores,
             "total_tasks": 12,  # Recent usage over the 4 days
             "success_rate": claude_success_rate,
-            "contribution_to_project": 18.7
+            "contribution_to_project": 18.7,
         }
 
         # Store the data for future use
         try:
             # Ensure patterns directory exists
             self.patterns_dir.mkdir(exist_ok=True)
-            with open(self.patterns_dir / "model_performance.json", 'w') as f:
+            with open(self.patterns_dir / "model_performance.json", "w") as f:
                 json.dump(model_data, f, indent=2)
         except Exception as e:
             print(f"Warning: Could not save model performance data: {e}")
@@ -2285,9 +2247,9 @@ class DashboardDataCollector:
         """Infer likely model used based on timestamp and usage patterns."""
         try:
             # Parse timestamp
-            if timestamp.endswith('Z'):
-                dt = datetime.fromisoformat(timestamp.rstrip('Z'))
-            elif '+00:00' in timestamp:
+            if timestamp.endswith("Z"):
+                dt = datetime.fromisoformat(timestamp.rstrip("Z"))
+            elif "+00:00" in timestamp:
                 dt = datetime.fromisoformat(timestamp)
             else:
                 dt = datetime.fromisoformat(timestamp)
@@ -2345,12 +2307,7 @@ class DashboardDataCollector:
         # Check if we have real data or just metadata dict
         if not model_summary or model_summary.get("has_real_data") == False:
             # Return empty data structure for frontend
-            return {
-                "models": [],
-                "quality_scores": [],
-                "success_rates": [],
-                "contributions": []
-            }
+            return {"models": [], "quality_scores": [], "success_rates": [], "contributions": []}
 
         # Prepare data for bar chart with consistent model ordering
         models = sorted(model_summary.keys(), key=lambda m: self._get_model_sort_key(m))
@@ -2361,7 +2318,7 @@ class DashboardDataCollector:
             "models": models,
             "quality_scores": scores,
             "success_rates": success_rates,
-            "contributions": [model_summary[model]["contribution_to_project"] for model in models]
+            "contributions": [model_summary[model]["contribution_to_project"] for model in models],
         }
 
     def get_temporal_performance(self, days: int = 30) -> Dict[str, Any]:
@@ -2391,25 +2348,29 @@ class DashboardDataCollector:
                         try:
                             timestamp = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00")).replace(tzinfo=None)
                             if timestamp >= cutoff_date:
-                                temporal_data.append({
-                                    "timestamp": timestamp.isoformat(),
-                                    "display_time": timestamp.strftime("%m/%d"),
-                                    "score": score,
-                                    "contribution": contribution,
-                                    "model": active_model
-                                })
+                                temporal_data.append(
+                                    {
+                                        "timestamp": timestamp.isoformat(),
+                                        "display_time": timestamp.strftime("%m/%d"),
+                                        "score": score,
+                                        "contribution": contribution,
+                                        "model": active_model,
+                                    }
+                                )
                         except:
                             continue
                 elif isinstance(score_data, (int, float)):
                     # Fallback for simple score values
                     timestamp = datetime.now() - timedelta(days=len(temporal_data))
-                    temporal_data.append({
-                        "timestamp": timestamp.isoformat(),
-                        "display_time": timestamp.strftime("%m/%d"),
-                        "score": score_data,
-                        "contribution": score_data * 0.3,
-                        "model": active_model
-                    })
+                    temporal_data.append(
+                        {
+                            "timestamp": timestamp.isoformat(),
+                            "display_time": timestamp.strftime("%m/%d"),
+                            "score": score_data,
+                            "contribution": score_data * 0.3,
+                            "model": active_model,
+                        }
+                    )
 
         # Calculate performance metrics
         if temporal_data:
@@ -2427,7 +2388,7 @@ class DashboardDataCollector:
             "total_contribution": round(total_contribution, 1),
             "trend": performance_trend,
             "active_model": active_model,
-            "days": days
+            "days": days,
         }
 
     def get_quality_timeline_with_model_events(self, days: int = 1) -> Dict[str, Any]:
@@ -2439,7 +2400,7 @@ class DashboardDataCollector:
 
         # Use unified storage as PRIMARY data source
         assessments = self._get_unified_assessments(days=days)
-        
+
         if not assessments:
             return {
                 "timeline_data": [],
@@ -2447,46 +2408,48 @@ class DashboardDataCollector:
                     "total_assessments": 0,
                     "date_range": f"Last {days} days",
                     "unique_models": [],
-                    "data_sources": ["unified_storage"]
-                }
+                    "data_sources": ["unified_storage"],
+                },
             }
-        
+
         # Process timeline data
         timeline_data = []
         model_scores = defaultdict(list)
-        
+
         for assessment in assessments:
             timestamp = assessment.get("timestamp", "")
             overall_score = assessment.get("overall_score", 0)
             task_type = assessment.get("task_type", "unknown")
             model_used = assessment.get("details", {}).get("model_used", "Claude Sonnet 4.5")
-            
+
             # Normalize model name and timestamp
             model_used = self._normalize_model_name(model_used)
             timestamp = self._normalize_timestamp(timestamp)
-            
+
             # Group by date
-            date_key = timestamp.split('T')[0] if 'T' in timestamp else timestamp.split(' ')[0]
-            
+            date_key = timestamp.split("T")[0] if "T" in timestamp else timestamp.split(" ")[0]
+
             # Store for timeline
-            timeline_data.append({
-                "timestamp": timestamp,
-                "date": date_key,
-                "overall_score": overall_score,
-                "task_type": task_type,
-                "model_used": model_used,
-                "data_source": "unified_storage"
-            })
-            
+            timeline_data.append(
+                {
+                    "timestamp": timestamp,
+                    "date": date_key,
+                    "overall_score": overall_score,
+                    "task_type": task_type,
+                    "model_used": model_used,
+                    "data_source": "unified_storage",
+                }
+            )
+
             # Track model scores
             model_scores[model_used].append(overall_score)
-        
+
         # Sort by timestamp
         timeline_data.sort(key=lambda x: x["timestamp"])
 
         # Calculate summary with consistent model ordering
         unique_models = sorted(model_scores.keys(), key=lambda m: self._get_model_sort_key(m))
-        
+
         return {
             "timeline_data": timeline_data,
             "summary": {
@@ -2499,12 +2462,14 @@ class DashboardDataCollector:
                         "count": len(scores),
                         "avg_score": sum(scores) / len(scores) if scores else 0,
                         "max_score": max(scores) if scores else 0,
-                        "min_score": min(scores) if scores else 0
+                        "min_score": min(scores) if scores else 0,
                     }
                     for model, scores in model_scores.items()
-                }
-            }
+                },
+            },
         }
+
+
 data_collector = DashboardDataCollector()
 
 
@@ -3367,7 +3332,7 @@ DASHBOARD_HTML = """
                 </div>
             </div>
 
-    
+
             <!-- AI Debugging Performance Index -->
             <div class="chart-container" style="margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -4898,7 +4863,7 @@ DASHBOARD_HTML = """
             } catch (error) {
                 console.error('Critical error in fetchDashboardData:', error);
                 document.getElementById('loading').textContent = 'Error loading dashboard data. Retrying...';
-                
+
                 // Retry after 5 seconds
                 setTimeout(function() {
                     document.getElementById('loading').textContent = 'Loading dashboard data...';
@@ -5451,7 +5416,7 @@ DASHBOARD_HTML = """
             });
         }
 
-        
+
         // AI Debugging Performance Index Chart
         function updateDebuggingPerformanceChart(debugData) {
             console.log('updateDebuggingPerformanceChart called with:', debugData);
@@ -5646,7 +5611,7 @@ DASHBOARD_HTML = """
                     }
                 }
             });
-            
+
             // Update calculation formulas table
             console.log("Updating calculation formulas with data:", debugData);
             updateCalculationFormulasTable(debugData);
@@ -6168,65 +6133,65 @@ DASHBOARD_HTML = """
 
 
 # API Routes
-@app.route('/')
+@app.route("/")
 def index():
     """Render dashboard homepage."""
     return render_template_string(DASHBOARD_HTML)
 
 
-@app.route('/api/overview')
+@app.route("/api/overview")
 def api_overview():
     """Get overview metrics."""
     return jsonify(data_collector.get_overview_metrics())
 
 
-@app.route('/api/quality-trends')
+@app.route("/api/quality-trends")
 def api_quality_trends():
     """Get quality trends."""
-    days = request.args.get('days', 30, type=int)
+    days = request.args.get("days", 30, type=int)
     return jsonify(data_collector.get_quality_trends(days))
 
 
-@app.route('/api/skills')
+@app.route("/api/skills")
 def api_skills():
     """Get skill performance."""
-    top_k = request.args.get('top_k', 10, type=int)
+    top_k = request.args.get("top_k", 10, type=int)
     return jsonify(data_collector.get_skill_performance(top_k))
 
 
-@app.route('/api/agents')
+@app.route("/api/agents")
 def api_agents():
     """Get agent performance."""
-    top_k = request.args.get('top_k', 10, type=int)
+    top_k = request.args.get("top_k", 10, type=int)
     return jsonify(data_collector.get_agent_performance(top_k))
 
 
-@app.route('/api/task-distribution')
+@app.route("/api/task-distribution")
 def api_task_distribution():
     """Get task distribution."""
     return jsonify(data_collector.get_task_distribution())
 
 
-@app.route('/api/recent-activity')
+@app.route("/api/recent-activity")
 def api_recent_activity():
     """Get recent activity."""
-    limit = request.args.get('limit', 20, type=int)
+    limit = request.args.get("limit", 20, type=int)
     return jsonify(data_collector.get_recent_activity(limit))
 
 
-@app.route('/api/system-health')
+@app.route("/api/system-health")
 def api_system_health():
     """Get system health."""
     return jsonify(data_collector.get_system_health())
 
 
-@app.route('/api/model-quality-scores')
+@app.route("/api/model-quality-scores")
 def api_model_quality_scores():
     """Get model quality scores for bar chart."""
     return jsonify(data_collector.get_model_quality_scores())
 
 
-@app.route('/api/current-model')
+@app.route("/api/current-model")
 def api_current_model():
     """Get the currently detected model."""
     current_model = data_collector.detect_current_model()
@@ -6235,7 +6200,7 @@ def api_current_model():
     session_file = data_collector.patterns_dir / "current_session.json"
     if session_file.exists():
         try:
-            with open(session_file, 'r', encoding='utf-8') as f:
+            with open(session_file, "r", encoding="utf-8") as f:
                 session_data = json.load(f)
                 stored_model = session_data.get("current_model", "")
                 # High confidence if we have a session file with non-default model
@@ -6248,15 +6213,17 @@ def api_current_model():
         confidence = "low"
         detection_method = "no_session_data"
 
-    return jsonify({
-        "current_model": current_model,
-        "detection_method": detection_method,
-        "timestamp": datetime.now().isoformat(),
-        "confidence": confidence
-    })
+    return jsonify(
+        {
+            "current_model": current_model,
+            "detection_method": detection_method,
+            "timestamp": datetime.now().isoformat(),
+            "confidence": confidence,
+        }
+    )
 
 
-@app.route('/api/validation-results')
+@app.route("/api/validation-results")
 def api_validation_results():
     """Get latest validation results."""
     import glob
@@ -6280,77 +6247,89 @@ def api_validation_results():
             validation_files.extend(list(patterns_reports.glob("comprehensive-validation-*.md")))
 
         if not validation_files:
-            return jsonify({
-                "status": "no_validation_files",
-                "message": "No validation files found",
-                "last_validation": None,
-                "validation_score": None,
-                "recommendations": []
-            })
+            return jsonify(
+                {
+                    "status": "no_validation_files",
+                    "message": "No validation files found",
+                    "last_validation": None,
+                    "validation_score": None,
+                    "recommendations": [],
+                }
+            )
 
         # Sort by modification time and get the latest
         latest_file = max(validation_files, key=lambda f: f.stat().st_mtime)
 
         # Read and parse the validation report
-        with open(latest_file, 'r', encoding='utf-8') as f:
+        with open(latest_file, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Extract validation score using regex
-        score_match = re.search(r'Overall Validation Score[:\s]*(\d+)/(\d+)', content, re.IGNORECASE)
+        score_match = re.search(r"Overall Validation Score[:\s]*(\d+)/(\d+)", content, re.IGNORECASE)
         validation_score = None
         if score_match:
             score = int(score_match.group(1))
             max_score = int(score_match.group(2))
-            validation_score = {
-                "score": score,
-                "max_score": max_score,
-                "percentage": round((score / max_score) * 100, 1)
-            }
+            validation_score = {"score": score, "max_score": max_score, "percentage": round((score / max_score) * 100, 1)}
 
         # Extract executive summary findings
         findings = []
-        critical_section_match = re.search(r'### Critical Findings\n(.*?)(?=\n###|\n---|\Z)', content, re.DOTALL | re.IGNORECASE)
+        critical_section_match = re.search(
+            r"### Critical Findings\n(.*?)(?=\n###|\n---|\Z)", content, re.DOTALL | re.IGNORECASE
+        )
         if critical_section_match:
             findings_text = critical_section_match.group(1).strip()
-            for line in findings_text.split('\n'):
-                if line.strip().startswith('-'):
+            for line in findings_text.split("\n"):
+                if line.strip().startswith("-"):
                     findings.append(line.strip()[2:])  # Remove "- " prefix
 
         # Extract recommendations
         recommendations = []
-        rec_section_match = re.search(r'###\s*(?:Priority Fixes|Recommendations)(.*?)(?=\n###|\n---|\Z)', content, re.DOTALL | re.IGNORECASE)
+        rec_section_match = re.search(
+            r"###\s*(?:Priority Fixes|Recommendations)(.*?)(?=\n###|\n---|\Z)", content, re.DOTALL | re.IGNORECASE
+        )
         if rec_section_match:
             rec_text = rec_section_match.group(1).strip()
-            for line in rec_text.split('\n'):
-                if line.strip() and not line.startswith('#'):
+            for line in rec_text.split("\n"):
+                if line.strip() and not line.startswith("#"):
                     recommendations.append(line.strip())
 
         # Determine status based on score
-        status = "excellent" if validation_score and validation_score["score"] >= 90 else \
-                "good" if validation_score and validation_score["score"] >= 70 else \
-                "needs_improvement" if validation_score and validation_score["score"] >= 50 else "critical"
+        status = (
+            "excellent"
+            if validation_score and validation_score["score"] >= 90
+            else (
+                "good"
+                if validation_score and validation_score["score"] >= 70
+                else "needs_improvement" if validation_score and validation_score["score"] >= 50 else "critical"
+            )
+        )
 
-        return jsonify({
-            "status": status,
-            "last_validation": latest_file.stat().st_mtime,
-            "validation_score": validation_score,
-            "findings": findings[:5],  # Top 5 findings
-            "recommendations": recommendations[:3],  # Top 3 recommendations
-            "report_file": str(latest_file.name),
-            "timestamp": datetime.fromtimestamp(latest_file.stat().st_mtime).isoformat()
-        })
+        return jsonify(
+            {
+                "status": status,
+                "last_validation": latest_file.stat().st_mtime,
+                "validation_score": validation_score,
+                "findings": findings[:5],  # Top 5 findings
+                "recommendations": recommendations[:3],  # Top 3 recommendations
+                "report_file": str(latest_file.name),
+                "timestamp": datetime.fromtimestamp(latest_file.stat().st_mtime).isoformat(),
+            }
+        )
 
     except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": f"Error reading validation results: {str(e)}",
-            "last_validation": None,
-            "validation_score": None,
-            "recommendations": []
-        })
+        return jsonify(
+            {
+                "status": "error",
+                "message": f"Error reading validation results: {str(e)}",
+                "last_validation": None,
+                "validation_score": None,
+                "recommendations": [],
+            }
+        )
 
 
-@app.route('/api/models')
+@app.route("/api/models")
 def api_models():
     """Get model performance data with current model detection."""
     # Get existing model performance summary
@@ -6359,52 +6338,50 @@ def api_models():
     # Add current model detection
     current_model = data_collector.detect_current_model()
 
-    return jsonify({
-        **model_summary,
-        "current_model": current_model,
-        "detection_timestamp": datetime.now().isoformat()
-    })
+    return jsonify({**model_summary, "current_model": current_model, "detection_timestamp": datetime.now().isoformat()})
 
 
-@app.route('/api/temporal-performance')
+@app.route("/api/temporal-performance")
 def api_temporal_performance():
     """Get temporal performance tracking."""
-    days = request.args.get('days', 30, type=int)
+    days = request.args.get("days", 30, type=int)
     return jsonify(data_collector.get_temporal_performance(days))
 
 
-@app.route('/api/quality-timeline')
+@app.route("/api/quality-timeline")
 def api_quality_timeline():
     """Get quality timeline with model performance events."""
-    days = request.args.get('days', 1, type=int)  # Default to 1 day (24 hours)
+    days = request.args.get("days", 1, type=int)  # Default to 1 day (24 hours)
     return jsonify(data_collector.get_quality_timeline_with_model_events(days))
 
-@app.route('/api/debugging-performance')
+
+@app.route("/api/debugging-performance")
 def api_debugging_performance():
     """Get AI Debugging Performance Index data from UNIFIED STORAGE for consistent data."""
-    days = request.args.get('days', 1, type=int)  # Default to 1 day (24 hours)
-    
+    days = request.args.get("days", 1, type=int)  # Default to 1 day (24 hours)
+
     try:
         # Use the unified debugging performance method
         debugging_data = data_collector.get_debugging_performance_data(days)
         return jsonify(debugging_data)
-        
+
     except Exception as e:
         print(f"Error getting debugging performance: {e}", file=sys.stderr)
         # Return empty structure on error
-        return jsonify({
-            'analysis_timestamp': datetime.now().isoformat(),
-            'total_debugging_assessments': 0,
-            'timeframe_days': days,
-            'timeframe_label': f"Last {days} days" if days == 1 else f"Last {days} days",
-            'performance_rankings': [],
-            'detailed_metrics': {},
-            'error': str(e)
-        })
+        return jsonify(
+            {
+                "analysis_timestamp": datetime.now().isoformat(),
+                "total_debugging_assessments": 0,
+                "timeframe_days": days,
+                "timeframe_label": f"Last {days} days" if days == 1 else f"Last {days} days",
+                "performance_rankings": [],
+                "detailed_metrics": {},
+                "error": str(e),
+            }
+        )
 
 
-
-@app.route('/api/consistency-dashboard')
+@app.route("/api/consistency-dashboard")
 def api_consistency_dashboard():
     """Get real-time consistency validation dashboard data."""
     try:
@@ -6418,38 +6395,42 @@ def api_consistency_dashboard():
 
     except Exception as e:
         print(f"Error running consistency check: {e}", file=sys.stderr)
-        return jsonify({
-            "check_timestamp": datetime.now().isoformat(),
-            "overall_status": "error",
-            "consistency_score": 0,
-            "error": str(e),
-            "checks_performed": [],
-            "issues_found": [{"type": "system_error", "description": str(e)}],
-            "recommendations": ["Fix system error and retry consistency check"]
-        })
+        return jsonify(
+            {
+                "check_timestamp": datetime.now().isoformat(),
+                "overall_status": "error",
+                "consistency_score": 0,
+                "error": str(e),
+                "checks_performed": [],
+                "issues_found": [{"type": "system_error", "description": str(e)}],
+                "recommendations": ["Fix system error and retry consistency check"],
+            }
+        )
 
-@app.route('/api/recent-performance-records')
+
+@app.route("/api/recent-performance-records")
 def api_recent_performance_records():
     """Get recent performance records from UNIFIED STORAGE for consistent data."""
     try:
         # Use the unified performance records method
         performance_data = data_collector.get_recent_performance_records()
         return jsonify(performance_data)
-        
+
     except Exception as e:
         print(f"Error getting performance records: {e}", file=sys.stderr)
-        return jsonify({
-            "records": [],
-            "summary": {
-                "total_records": 0,
-                "date_range": "Error",
-                "unique_models": [],
-                "avg_quality_score": 0,
-                "data_sources": ["error"],
-                "error": str(e)
+        return jsonify(
+            {
+                "records": [],
+                "summary": {
+                    "total_records": 0,
+                    "date_range": "Error",
+                    "unique_models": [],
+                    "avg_quality_score": 0,
+                    "data_sources": ["error"],
+                    "error": str(e),
+                },
             }
-        })
-
+        )
 
 
 def get_timeframe_label(days):
@@ -6464,8 +6445,6 @@ def get_timeframe_label(days):
         return "Last Month"
     else:
         return f"Last {days} Days"
-
-
 
 
 def find_available_port(start_port: int = 5000, max_attempts: int = 10) -> int:
@@ -6484,18 +6463,19 @@ def find_available_port(start_port: int = 5000, max_attempts: int = 10) -> int:
     for port in range(start_port, start_port + max_attempts):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.bind(('127.0.0.1', port))
+                s.bind(("127.0.0.1", port))
                 return port
         except OSError:
             continue
 
     # If no port found, try a random port in the 8000-9000 range
     import random
+
     for _ in range(5):
         port = random.randint(8000, 9000)
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.bind(('127.0.0.1', port))
+                s.bind(("127.0.0.1", port))
                 return port
         except OSError:
             continue
@@ -6530,7 +6510,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
     return False
 
     # Unified Storage API Routes
-    @app.route('/api/unified/quality')
+    @app.route("/api/unified/quality")
     def get_unified_quality_api():
         """API endpoint for unified quality data."""
         try:
@@ -6539,7 +6519,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
 
-    @app.route('/api/unified/models')
+    @app.route("/api/unified/models")
     def get_unified_models_api():
         """API endpoint for unified model performance data."""
         try:
@@ -6548,7 +6528,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
 
-    @app.route('/api/unified/dashboard')
+    @app.route("/api/unified/dashboard")
     def get_unified_dashboard_api():
         """API endpoint for complete unified dashboard data."""
         try:
@@ -6557,7 +6537,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
 
-    @app.route('/api/unified/stats')
+    @app.route("/api/unified/stats")
     def get_unified_stats_api():
         """API endpoint for unified storage statistics."""
         try:
@@ -6566,14 +6546,14 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e), "source": "unified_storage_error"}), 500
 
-    @app.route('/api/unified/quality', methods=['POST'])
+    @app.route("/api/unified/quality", methods=["POST"])
     def update_unified_quality_api():
         """API endpoint to update quality score in unified storage."""
         try:
             data = request.get_json()
-            score = data.get('score')
-            metrics = data.get('metrics', {})
-            task_id = data.get('task_id')
+            score = data.get("score")
+            metrics = data.get("metrics", {})
+            task_id = data.get("task_id")
 
             if score is None:
                 return jsonify({"error": "Score is required"}), 400
@@ -6587,14 +6567,14 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    @app.route('/api/unified/model-performance', methods=['POST'])
+    @app.route("/api/unified/model-performance", methods=["POST"])
     def update_unified_model_performance_api():
         """API endpoint to update model performance in unified storage."""
         try:
             data = request.get_json()
-            model = data.get('model')
-            score = data.get('score')
-            task_type = data.get('task_type', 'unknown')
+            model = data.get("model")
+            score = data.get("score")
+            task_type = data.get("task_type", "unknown")
 
             if model is None or score is None:
                 return jsonify({"error": "Model and score are required"}), 400
@@ -6608,12 +6588,12 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    @app.route('/api/unified/dashboard-metrics', methods=['POST'])
+    @app.route("/api/unified/dashboard-metrics", methods=["POST"])
     def update_unified_dashboard_metrics_api():
         """API endpoint to update dashboard metrics in unified storage."""
         try:
             data = request.get_json()
-            metrics = data.get('metrics', {})
+            metrics = data.get("metrics", {})
 
             if not metrics:
                 return jsonify({"error": "Metrics dictionary is required"}), 400
@@ -6624,7 +6604,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    @app.route('/api/unified/migrate', methods=['POST'])
+    @app.route("/api/unified/migrate", methods=["POST"])
     def trigger_migration_api():
         """API endpoint to trigger migration from legacy storage."""
         try:
@@ -6632,10 +6612,11 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
                 return jsonify({"error": "Unified storage not available"}), 503
 
             data = request.get_json()
-            force = data.get('force', False) if data else False
+            force = data.get("force", False) if data else False
 
             # Trigger migration
             from parameter_migration import MigrationManager
+
             migration_manager = MigrationManager(data_collector.unified_storage)
             result = migration_manager.execute_gradual_migration(force=force)
 
@@ -6644,7 +6625,7 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    @app.route('/api/unified/validate')
+    @app.route("/api/unified/validate")
     def validate_unified_storage_api():
         """API endpoint to validate unified storage data integrity."""
         try:
@@ -6659,11 +6640,11 @@ def validate_server_startup(url: str, timeout: int = 5) -> bool:
 
 
 # Unified Dashboard API Endpoints
-@app.route('/api/tokens/overview')
+@app.route("/api/tokens/overview")
 def api_tokens_overview():
     """Get token optimization overview data."""
     try:
-        tokens_section = data_collector.dashboard_sections.get('tokens')
+        tokens_section = data_collector.dashboard_sections.get("tokens")
         if tokens_section:
             data = tokens_section.get_data()
             return jsonify(data)
@@ -6672,11 +6653,11 @@ def api_tokens_overview():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/api/kpi/overview')
+@app.route("/api/kpi/overview")
 def api_kpi_overview():
     """Get KPI overview data."""
     try:
-        kpi_section = data_collector.dashboard_sections.get('kpi')
+        kpi_section = data_collector.dashboard_sections.get("kpi")
         if kpi_section:
             data = kpi_section.get_data()
             return jsonify(data)
@@ -6685,11 +6666,11 @@ def api_kpi_overview():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/api/unified/system/health')
+@app.route("/api/unified/system/health")
 def api_unified_system_health():
     """Get unified system health data."""
     try:
-        system_section = data_collector.dashboard_sections.get('system')
+        system_section = data_collector.dashboard_sections.get("system")
         if system_section:
             data = system_section.get_data()
             return jsonify(data)
@@ -6698,18 +6679,19 @@ def api_unified_system_health():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/favicon.ico')
+@app.route("/favicon.ico")
 def favicon():
     """Return favicon - simple SVG icon to avoid 404 errors."""
     from flask import Response
-    svg_favicon = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+
+    svg_favicon = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
         <circle cx="16" cy="16" r="14" fill="#667eea"/>
         <text x="16" y="20" text-anchor="middle" fill="white" font-family="Arial" font-size="14" font-weight="bold">AI</text>
-    </svg>'''
-    return Response(svg_favicon, mimetype='image/svg+xml')
+    </svg>"""
+    return Response(svg_favicon, mimetype="image/svg+xml")
 
 
-@app.route('/api/sections/<section_name>')
+@app.route("/api/sections/<section_name>")
 def api_section_data(section_name):
     """Get data for a specific dashboard section."""
     try:
@@ -6742,7 +6724,10 @@ def check_existing_dashboard(host: str, port_start: int = 5000, port_end: int = 
     return False, None, None
 
 
-def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True):
+def run_dashboard(
+    """Run Dashboard."""
+    host: str = "127.0.0.1", port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True
+):
     """
     Run the dashboard server with simple browser opening.
 
@@ -6763,6 +6748,7 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
     # Auto-detect current model and update session
     try:
         from detect_current_model import update_session_file
+
         model_info = update_session_file(patterns_dir)
         print(f"Model detection: {model_info['current_model']} ({model_info['confidence']} confidence)")
     except Exception as e:
@@ -6804,6 +6790,7 @@ def run_dashboard(host: str = '127.0.0.1', port: int = 5000, patterns_dir: str =
 
     # Function to open browser after server starts
     def open_browser_delayed():
+        """Open Browser Delayed."""
         time.sleep(2.0)  # Give server time to start
 
         if validate_server_startup(f"{server_url}/api/overview"):
@@ -6845,15 +6832,15 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Autonomous Agent Dashboard")
-    parser.add_argument('--host', default='127.0.0.1', help="Host to bind to")
-    parser.add_argument('--port', type=int, default=5000, help="Port to bind to")
-    parser.add_argument('--patterns-dir', default='.claude-patterns', help="Pattern directory")
-    parser.add_argument('--no-browser', action='store_true', help="Don't open browser automatically")
+    parser.add_argument("--host", default="127.0.0.1", help="Host to bind to")
+    parser.add_argument("--port", type=int, default=5000, help="Port to bind to")
+    parser.add_argument("--patterns-dir", default=".claude-patterns", help="Pattern directory")
+    parser.add_argument("--no-browser", action="store_true", help="Don't open browser automatically")
 
     args = parser.parse_args()
 
     run_dashboard(args.host, args.port, args.patterns_dir, auto_open_browser=not args.no_browser)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

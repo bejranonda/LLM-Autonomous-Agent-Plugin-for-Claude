@@ -23,20 +23,22 @@ from collections import defaultdict
 
 class TimeOfDay(Enum):
     """Time of day categories."""
-    MORNING = (6, 12)    # 6 AM - 12 PM: Focus on quality
-    AFTERNOON = (12, 18) # 12 PM - 6 PM: Balanced approach
-    EVENING = (18, 22)   # 6 PM - 10 PM: Focus on speed
-    NIGHT = (22, 6)      # 10 PM - 6 AM: Minimal cognitive load
+
+    MORNING = (6, 12)  # 6 AM - 12 PM: Focus on quality
+    AFTERNOON = (12, 18)  # 12 PM - 6 PM: Balanced approach
+    EVENING = (18, 22)  # 6 PM - 10 PM: Focus on speed
+    NIGHT = (22, 6)  # 10 PM - 6 AM: Minimal cognitive load
 
 
 class ProjectPhase(Enum):
     """Project phase categories."""
-    EXPLORATION = "exploration"      # Speed over perfection
-    DEVELOPMENT = "development"      # Balanced
-    TESTING = "testing"              # Quality focus
-    PRE_RELEASE = "pre_release"      # High quality standards
-    PRODUCTION = "production"        # Safety and reliability
-    MAINTENANCE = "maintenance"      # Efficiency and stability
+
+    EXPLORATION = "exploration"  # Speed over perfection
+    DEVELOPMENT = "development"  # Balanced
+    TESTING = "testing"  # Quality focus
+    PRE_RELEASE = "pre_release"  # High quality standards
+    PRODUCTION = "production"  # Safety and reliability
+    MAINTENANCE = "maintenance"  # Efficiency and stability
 
 
 class ContextAwareSkillRecommender:
@@ -59,6 +61,7 @@ class ContextAwareSkillRecommender:
         # Load user preference learner
         try:
             from user_preference_learner import UserPreferenceLearner
+
             self.preference_learner = UserPreferenceLearner(storage_dir)
         except ImportError:
             self.preference_learner = None
@@ -72,23 +75,19 @@ class ContextAwareSkillRecommender:
             initial_data = {
                 "version": "1.0.0",
                 "recommendation_history": [],
-                "context_adjustments": {
-                    "time_based": 0,
-                    "preference_based": 0,
-                    "outcome_based": 0,
-                    "phase_based": 0
-                },
-                "success_rate": 0.0
+                "context_adjustments": {"time_based": 0, "preference_based": 0, "outcome_based": 0, "phase_based": 0},
+                "success_rate": 0.0,
             }
-            with open(self.context_file, 'w', encoding='utf-8') as f:
+            with open(self.context_file, "w", encoding="utf-8") as f:
                 json.dump(initial_data, f, indent=2)
 
     def recommend_skills_with_context(
         self,
         base_recommendations: List[Tuple[str, float]],
         task_info: Dict[str, Any],
-        context: Optional[Dict[str, Any]] = None
-    ) -> List[Tuple[str, float]]:
+        context: Optional[Dict[str, Any]] = None,
+    )-> List[Tuple[str, float]]:
+        """Recommend Skills With Context."""
         """
         Adjust skill recommendations based on context.
 
@@ -107,44 +106,23 @@ class ContextAwareSkillRecommender:
         adjusted_recommendations = {skill: conf for skill, conf in base_recommendations}
 
         # Apply context adjustments
-        adjusted_recommendations = self._adjust_for_time_of_day(
-            adjusted_recommendations, context
-        )
+        adjusted_recommendations = self._adjust_for_time_of_day(adjusted_recommendations, context)
 
-        adjusted_recommendations = self._adjust_for_recent_outcomes(
-            adjusted_recommendations, context
-        )
+        adjusted_recommendations = self._adjust_for_recent_outcomes(adjusted_recommendations, context)
 
-        adjusted_recommendations = self._adjust_for_user_preferences(
-            adjusted_recommendations, task_info, context
-        )
+        adjusted_recommendations = self._adjust_for_user_preferences(adjusted_recommendations, task_info, context)
 
-        adjusted_recommendations = self._adjust_for_project_phase(
-            adjusted_recommendations, context
-        )
+        adjusted_recommendations = self._adjust_for_project_phase(adjusted_recommendations, context)
 
         # Sort by adjusted confidence
-        sorted_recommendations = sorted(
-            adjusted_recommendations.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )
+        sorted_recommendations = sorted(adjusted_recommendations.items(), key=lambda x: x[1], reverse=True)
 
         # Record this recommendation
-        self._record_recommendation(
-            base_recommendations,
-            sorted_recommendations,
-            task_info,
-            context
-        )
+        self._record_recommendation(base_recommendations, sorted_recommendations, task_info, context)
 
         return sorted_recommendations
 
-    def _adjust_for_time_of_day(
-        self,
-        recommendations: Dict[str, float],
-        context: Dict[str, Any]
-    ) -> Dict[str, float]:
+    def _adjust_for_time_of_day(self, recommendations: Dict[str, float], context: Dict[str, Any]) -> Dict[str, float]:
         """
         Adjust recommendations based on time of day.
 
@@ -170,14 +148,14 @@ class ContextAwareSkillRecommender:
                 "ast-analyzer": 1.05,
                 # Reduce speed-focused skills
                 "pattern-learning": 0.95,
-                "documentation-best-practices": 0.95
+                "documentation-best-practices": 0.95,
             },
             "afternoon": {
                 # Balanced approach - minimal adjustments
                 "quality-standards": 1.02,
                 "testing-strategies": 1.02,
                 "pattern-learning": 1.02,
-                "code-analysis": 1.02
+                "code-analysis": 1.02,
             },
             "evening": {
                 # Speed and efficiency skills
@@ -188,7 +166,7 @@ class ContextAwareSkillRecommender:
                 # Reduce heavy analysis skills
                 "security-patterns": 0.90,
                 "validation-standards": 0.95,
-                "ast-analyzer": 0.95
+                "ast-analyzer": 0.95,
             },
             "night": {
                 # Simplify and focus on core skills
@@ -198,8 +176,8 @@ class ContextAwareSkillRecommender:
                 # Reduce complex skills
                 "ast-analyzer": 0.85,
                 "security-patterns": 0.85,
-                "validation-standards": 0.85
-            }
+                "validation-standards": 0.85,
+            },
         }
 
         adjustments = time_adjustments.get(time_category, {})
@@ -213,11 +191,7 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
-    def _adjust_for_recent_outcomes(
-        self,
-        recommendations: Dict[str, float],
-        context: Dict[str, Any]
-    ) -> Dict[str, float]:
+    def _adjust_for_recent_outcomes(self, recommendations: Dict[str, float], context: Dict[str, Any]) -> Dict[str, float]:
         """
         Adjust recommendations based on recent task outcomes.
 
@@ -250,11 +224,9 @@ class ContextAwareSkillRecommender:
         return recommendations
 
     def _adjust_for_user_preferences(
-        self,
-        recommendations: Dict[str, float],
-        task_info: Dict[str, Any],
-        context: Dict[str, Any]
-    ) -> Dict[str, float]:
+        self, recommendations: Dict[str, float], task_info: Dict[str, Any], context: Dict[str, Any]
+    )-> Dict[str, float]:
+        """ Adjust For User Preferences."""
         """
         Adjust recommendations based on learned user preferences.
         """
@@ -311,11 +283,7 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
-    def _adjust_for_project_phase(
-        self,
-        recommendations: Dict[str, float],
-        context: Dict[str, Any]
-    ) -> Dict[str, float]:
+    def _adjust_for_project_phase(self, recommendations: Dict[str, float], context: Dict[str, Any]) -> Dict[str, float]:
         """
         Adjust recommendations based on project phase.
         """
@@ -328,20 +296,20 @@ class ContextAwareSkillRecommender:
                 "documentation-best-practices": 0.85,
                 "quality-standards": 0.90,
                 "testing-strategies": 0.85,
-                "validation-standards": 0.85
+                "validation-standards": 0.85,
             },
             "development": {
                 # Balanced approach
                 "code-analysis": 1.05,
                 "pattern-learning": 1.05,
-                "quality-standards": 1.02
+                "quality-standards": 1.02,
             },
             "testing": {
                 # Quality focus
                 "testing-strategies": 1.30,
                 "quality-standards": 1.20,
                 "validation-standards": 1.15,
-                "pattern-learning": 0.85
+                "pattern-learning": 0.85,
             },
             "pre_release": {
                 # High quality standards
@@ -349,22 +317,22 @@ class ContextAwareSkillRecommender:
                 "validation-standards": 1.20,
                 "testing-strategies": 1.15,
                 "security-patterns": 1.10,
-                "pattern-learning": 0.90
+                "pattern-learning": 0.90,
             },
             "production": {
                 # Safety and reliability
                 "quality-standards": 1.20,
                 "validation-standards": 1.15,
                 "security-patterns": 1.15,
-                "pattern-learning": 0.85
+                "pattern-learning": 0.85,
             },
             "maintenance": {
                 # Efficiency and stability
                 "code-analysis": 1.10,
                 "pattern-learning": 1.05,
                 "quality-standards": 1.00,
-                "testing-strategies": 1.00
-            }
+                "testing-strategies": 1.00,
+            },
         }
 
         adjustments = phase_adjustments.get(project_phase, {})
@@ -384,7 +352,7 @@ class ContextAwareSkillRecommender:
             "morning": TimeOfDay.MORNING.value,
             "afternoon": TimeOfDay.AFTERNOON.value,
             "evening": TimeOfDay.EVENING.value,
-            "night": TimeOfDay.NIGHT.value
+            "night": TimeOfDay.NIGHT.value,
         }.items():
             if start <= hour < end or (category == "night" and (hour >= start or hour < end)):
                 return category
@@ -395,11 +363,12 @@ class ContextAwareSkillRecommender:
         base_recommendations: List[Tuple[str, float]],
         adjusted_recommendations: List[Tuple[str, float]],
         task_info: Dict[str, Any],
-        context: Dict[str, Any]
+        context: Dict[str, Any],
     ):
+        """ Record Recommendation."""
         """Record recommendation for learning and analysis."""
         try:
-            with open(self.context_file, 'r', encoding='utf-8') as f:
+            with open(self.context_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             # Calculate adjustments made
@@ -419,8 +388,8 @@ class ContextAwareSkillRecommender:
                 "context_factors": {
                     "time_of_day": self._get_time_category(datetime.now().hour),
                     "recent_failures": len(context.get("recent_failures", [])),
-                    "project_phase": context.get("project_phase", "development")
-                }
+                    "project_phase": context.get("project_phase", "development"),
+                },
             }
 
             data["recommendation_history"].append(recommendation_entry)
@@ -429,7 +398,7 @@ class ContextAwareSkillRecommender:
             if len(data["recommendation_history"]) > 100:
                 data["recommendation_history"] = data["recommendation_history"][-100:]
 
-            with open(self.context_file, 'w', encoding='utf-8') as f:
+            with open(self.context_file, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
 
         except Exception as e:
@@ -438,16 +407,13 @@ class ContextAwareSkillRecommender:
     def get_context_statistics(self) -> Dict[str, Any]:
         """Get statistics about context adjustments."""
         try:
-            with open(self.context_file, 'r', encoding='utf-8') as f:
+            with open(self.context_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             history = data["recommendation_history"]
 
             if not history:
-                return {
-                    "total_recommendations": 0,
-                    "average_adjustments": 0.0
-                }
+                return {"total_recommendations": 0, "average_adjustments": 0.0}
 
             total_recommendations = len(history)
             total_adjustments = sum(rec["adjustments_made"] for rec in history)
@@ -466,7 +432,7 @@ class ContextAwareSkillRecommender:
                 "context_adjustment_rate": average_adjustments / len(history[0]["base_recommendations"]) if history else 0,
                 "time_of_day_stats": dict(time_stats),
                 "most_adjusted_phase": self._get_most_adjusted_phase(history),
-                "recent_trend": self._get_recent_trend(history)
+                "recent_trend": self._get_recent_trend(history),
             }
 
         except Exception as e:
@@ -484,10 +450,7 @@ class ContextAwareSkillRecommender:
             return "development"
 
         # Calculate average adjustments per phase
-        phase_avgs = {
-            phase: sum(adjustments) / len(adjustments)
-            for phase, adjustments in phase_adjustments.items()
-        }
+        phase_avgs = {phase: sum(adjustments) / len(adjustments) for phase, adjustments in phase_adjustments.items()}
 
         return max(phase_avgs, key=phase_avgs.get)
 
@@ -515,10 +478,10 @@ def main():
     """Command-line interface for testing context-aware recommendations."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Context-Aware Skill Recommendations')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--stats', action='store_true', help='Show statistics')
-    parser.add_argument('--test', action='store_true', help='Test with sample data')
+    parser = argparse.ArgumentParser(description="Context-Aware Skill Recommendations")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--stats", action="store_true", help="Show statistics")
+    parser.add_argument("--test", action="store_true", help="Test with sample data")
 
     args = parser.parse_args()
 
@@ -540,23 +503,18 @@ def main():
             ("quality-standards", 0.85),
             ("pattern-learning", 0.80),
             ("testing-strategies", 0.75),
-            ("documentation-best-practices", 0.70)
+            ("documentation-best-practices", 0.70),
         ]
 
-        task_info = {
-            "type": "refactoring",
-            "description": "Refactor authentication module"
-        }
+        task_info = {"type": "refactoring", "description": "Refactor authentication module"}
 
         context = {
             "project_phase": "testing",
             "recent_failures": ["test_failure_1", "test_failure_2"],
-            "recent_successes": [{"skills_used": ["code-analysis", "quality-standards"]}]
+            "recent_successes": [{"skills_used": ["code-analysis", "quality-standards"]}],
         }
 
-        adjusted = recommender.recommend_skills_with_context(
-            base_recommendations, task_info, context
-        )
+        adjusted = recommender.recommend_skills_with_context(base_recommendations, task_info, context)
 
         print("Context-Aware Skill Recommendation Test:")
         print("\nBase Recommendations:")
@@ -572,5 +530,5 @@ def main():
         print("Use --stats to see statistics or --test to run sample test")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

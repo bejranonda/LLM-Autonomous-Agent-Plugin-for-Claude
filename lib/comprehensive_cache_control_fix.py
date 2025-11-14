@@ -16,10 +16,11 @@ import sys
 from pathlib import Path
 from typing import List, Tuple, Dict, Any
 
+
 def find_all_empty_returns_in_js(file_path: str) -> List[Tuple[int, str, str]]:
     """Find all JavaScript return statements that could return empty content."""
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
@@ -28,22 +29,22 @@ def find_all_empty_returns_in_js(file_path: str) -> List[Tuple[int, str, str]]:
     issues = []
 
     # Find all JavaScript code blocks
-    js_blocks = re.findall(r'```javascript\s*\n(.*?)\n```', content, re.DOTALL)
+    js_blocks = re.findall(r"```javascript\s*\n(.*?)\n```", content, re.DOTALL)
 
     for i, js_code in enumerate(js_blocks):
-        lines = js_code.split('\n')
+        lines = js_code.split("\n")
         for line_num, line in enumerate(lines, 1):
             # Look for problematic return patterns
             problematic_patterns = [
-                (r'return\s*\[\s*\];', 'Empty array return'),
-                (r'return\s*""\s*;', 'Empty string return'),
-                (r'return\s*\'\s*\'\s*;', 'Empty string return'),
-                (r'return\s*null\s*;', 'Null return'),
-                (r'return\s*undefined\s*;', 'Undefined return'),
-                (r'\[\]\s*$', 'Array ending with empty array'),
-                (r'text:\s*""', 'Empty text property'),
-                (r'content:\s*""', 'Empty content property'),
-                (r'message:\s*""', 'Empty message property'),
+                (r"return\s*\[\s*\];", "Empty array return"),
+                (r'return\s*""\s*;', "Empty string return"),
+                (r"return\s*\'\s*\'\s*;", "Empty string return"),
+                (r"return\s*null\s*;", "Null return"),
+                (r"return\s*undefined\s*;", "Undefined return"),
+                (r"\[\]\s*$", "Array ending with empty array"),
+                (r'text:\s*""', "Empty text property"),
+                (r'content:\s*""', "Empty content property"),
+                (r'message:\s*""', "Empty message property"),
             ]
 
             for pattern, description in problematic_patterns:
@@ -52,10 +53,11 @@ def find_all_empty_returns_in_js(file_path: str) -> List[Tuple[int, str, str]]:
 
     return issues
 
+
 def find_message_construction_patterns(file_path: str) -> List[Tuple[int, str, str]]:
     """Find message construction patterns that could create empty content blocks."""
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
@@ -65,13 +67,13 @@ def find_message_construction_patterns(file_path: str) -> List[Tuple[int, str, s
 
     # Look for message array construction
     message_patterns = [
-        (r'messages\s*=\s*\[[^\]]*\]', 'Message array construction'),
-        (r'messages\.push\([^)]*\)', 'Message push operation'),
-        (r'content:\s*[^,}]*cache_control', 'Content with cache_control'),
-        (r'text:\s*[^,}]*cache_control', 'Text with cache_control'),
+        (r"messages\s*=\s*\[[^\]]*\]", "Message array construction"),
+        (r"messages\.push\([^)]*\)", "Message push operation"),
+        (r"content:\s*[^,}]*cache_control", "Content with cache_control"),
+        (r"text:\s*[^,}]*cache_control", "Text with cache_control"),
     ]
 
-    lines = content.split('\n')
+    lines = content.split("\n")
     for line_num, line in enumerate(lines, 1):
         for pattern, description in message_patterns:
             if re.search(pattern, line):
@@ -79,10 +81,11 @@ def find_message_construction_patterns(file_path: str) -> List[Tuple[int, str, s
 
     return issues
 
+
 def apply_comprehensive_fixes(file_path: str, dry_run: bool = True) -> bool:
     """Apply comprehensive fixes to eliminate empty content blocks."""
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
@@ -92,43 +95,27 @@ def apply_comprehensive_fixes(file_path: str, dry_run: bool = True) -> bool:
 
     # Fix 1: Replace empty array returns
     content = re.sub(
-        r'return\s*\[\s*\];',
-        'return [{ note: "No data available - using fallback", type: "fallback" }];',
-        content
+        r"return\s*\[\s*\];", 'return [{ note: "No data available - using fallback", type: "fallback" }];', content
     )
 
     # Fix 2: Replace empty string returns
-    content = re.sub(
-        r'return\s*["\']["\']\s*;',
-        'return "No content available - using fallback";',
-        content
-    )
+    content = re.sub(r'return\s*["\']["\']\s*;', 'return "No content available - using fallback";', content)
 
     # Fix 3: Replace empty text properties
-    content = re.sub(
-        r'text:\s*["\']["\'](?=\s*[,}])',
-        'text: "No content available"',
-        content
-    )
+    content = re.sub(r'text:\s*["\']["\'](?=\s*[,}])', 'text: "No content available"', content)
 
     # Fix 4: Replace empty content properties
-    content = re.sub(
-        r'content:\s*["\']["\'](?=\s*[,}])',
-        'content: "No content available"',
-        content
-    )
+    content = re.sub(r'content:\s*["\']["\'](?=\s*[,}])', 'content: "No content available"', content)
 
     # Fix 5: Ensure cache_control only appears with valid content
     content = re.sub(
-        r'cache_control:\s*\{\s*type:\s*["\']ephemeral["\']\s*\}',
-        '/* cache_control removed for safety */',
-        content
+        r'cache_control:\s*\{\s*type:\s*["\']ephemeral["\']\s*\}', "/* cache_control removed for safety */", content
     )
 
     # Only write if changes were made
     if content != original_content and not dry_run:
         try:
-            with open(file_path, 'w', encoding='utf-8') as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write(content)
             return True
         except Exception as e:
@@ -137,13 +124,14 @@ def apply_comprehensive_fixes(file_path: str, dry_run: bool = True) -> bool:
 
     return content != original_content
 
+
 def analyze_plugin_for_cache_control_issues():
     """Analyze entire plugin for cache control issues."""
-    plugin_dir = Path('.')
+    plugin_dir = Path(".")
 
     # Find all relevant files
     js_files = []
-    for pattern in ['**/*.md', '**/*.js', '**/*.json']:
+    for pattern in ["**/*.md", "**/*.js", "**/*.json"]:
         js_files.extend(plugin_dir.glob(pattern))
 
     print(f"Analyzing {len(js_files)} files for cache control issues...")
@@ -153,7 +141,7 @@ def analyze_plugin_for_cache_control_issues():
     files_with_issues = []
 
     for file_path in js_files:
-        if '.git' in str(file_path) or 'node_modules' in str(file_path):
+        if ".git" in str(file_path) or "node_modules" in str(file_path):
             continue
 
         issues = find_all_empty_returns_in_js(str(file_path))
@@ -187,19 +175,20 @@ def analyze_plugin_for_cache_control_issues():
 
     return files_with_issues, total_issues
 
+
 def create_emergency_fix():
     """Create emergency fix to eliminate all cache_control usage."""
     print("[EMERGENCY] Removing all cache_control usage...")
 
-    plugin_dir = Path('.')
+    plugin_dir = Path(".")
     modified_files = []
 
-    for file_path in plugin_dir.glob('**/*.md'):
-        if '.git' in str(file_path):
+    for file_path in plugin_dir.glob("**/*.md"):
+        if ".git" in str(file_path):
             continue
 
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
             original_content = content
@@ -207,19 +196,19 @@ def create_emergency_fix():
             # Remove all cache_control usage
             content = re.sub(
                 r'cache_control:\s*\{\s*type:\s*["\'][^"\']*["\']\s*\}',
-                '/* cache_control removed for emergency fix */',
-                content
+                "/* cache_control removed for emergency fix */",
+                content,
             )
 
             # Fix any remaining empty content issues
             content = re.sub(
-                r'return\s*\[\s*\];',
+                r"return\s*\[\s*\];",
                 'return [{ note: "Emergency fallback - empty array prevented", type: "emergency" }];',
-                content
+                content,
             )
 
             if content != original_content:
-                with open(file_path, 'w', encoding='utf-8') as f:
+                with open(file_path, "w", encoding="utf-8") as f:
                     f.write(content)
                 modified_files.append(str(file_path))
 
@@ -229,11 +218,13 @@ def create_emergency_fix():
     print(f"[COMPLETE] Emergency fix applied to {len(modified_files)} files")
     return modified_files
 
+
 def main():
-    parser = argparse.ArgumentParser(description='Comprehensive Cache Control Fix')
-    parser.add_argument('--apply-fixes', action='store_true', help='Apply fixes to files')
-    parser.add_argument('--emergency', action='store_true', help='Apply emergency fix (remove all cache_control)')
-    parser.add_argument('--analyze-only', action='store_true', help='Only analyze, no fixes')
+    """Main."""
+    parser = argparse.ArgumentParser(description="Comprehensive Cache Control Fix")
+    parser.add_argument("--apply-fixes", action="store_true", help="Apply fixes to files")
+    parser.add_argument("--emergency", action="store_true", help="Apply emergency fix (remove all cache_control)")
+    parser.add_argument("--analyze-only", action="store_true", help="Only analyze, no fixes")
 
     args = parser.parse_args()
 
@@ -274,6 +265,7 @@ def main():
             print(f"\n[INFO] Run with --apply-fixes to apply these changes.")
     else:
         print("\n[OK] No cache control issues found!")
+
 
 if __name__ == "__main__":
     main()

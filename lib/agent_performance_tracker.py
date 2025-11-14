@@ -15,10 +15,12 @@ from collections import defaultdict
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class AgentPerformanceTracker:
@@ -50,29 +52,25 @@ class AgentPerformanceTracker:
         initial_data = {
             "version": "1.0.0",
             "last_updated": datetime.now().isoformat(),
-            "metadata": {
-                "total_tasks_tracked": 0,
-                "agents_active": 0,
-                "tracking_start_date": datetime.now().isoformat()
-            },
+            "metadata": {"total_tasks_tracked": 0, "agents_active": 0, "tracking_start_date": datetime.now().isoformat()},
             "agent_metrics": {},
             "task_history": [],
             "specializations": {},
-            "performance_trends": {}
+            "performance_trends": {},
         }
 
         self._write_data(initial_data)
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -84,7 +82,7 @@ class AgentPerformanceTracker:
     def _read_data(self) -> Dict[str, Any]:
         """Read performance data with file locking."""
         try:
-            with open(self.performance_file, 'r', encoding='utf-8') as f:
+            with open(self.performance_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     data = json.load(f)
@@ -97,7 +95,7 @@ class AgentPerformanceTracker:
 
     def _write_data(self, data: Dict[str, Any]):
         """Write performance data with file locking."""
-        with open(self.performance_file, 'w', encoding='utf-8') as f:
+        with open(self.performance_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -115,8 +113,9 @@ class AgentPerformanceTracker:
         recommendations_followed: Optional[int] = None,
         auto_fix_applied: Optional[bool] = None,
         iterations: int = 1,
-        context: Optional[Dict[str, Any]] = None
+        context: Optional[Dict[str, Any]] = None,
     ):
+        """Record Task Execution."""
         """
         Record a task execution for performance tracking.
 
@@ -152,7 +151,7 @@ class AgentPerformanceTracker:
                 "total_iterations": 0,
                 "specializations": [],
                 "first_task": datetime.now().isoformat(),
-                "last_task": datetime.now().isoformat()
+                "last_task": datetime.now().isoformat(),
             }
 
         agent_metrics = perf_data["agent_metrics"][agent_name]
@@ -208,7 +207,7 @@ class AgentPerformanceTracker:
             "execution_time_seconds": execution_time_seconds,
             "iterations": iterations,
             "timestamp": datetime.now().isoformat(),
-            "context": context or {}
+            "context": context or {},
         }
 
         perf_data["task_history"].append(task_record)
@@ -232,11 +231,7 @@ class AgentPerformanceTracker:
         perf_data = self._read_data()
 
         if agent_name not in perf_data["agent_metrics"]:
-            return {
-                "agent_name": agent_name,
-                "total_tasks": 0,
-                "performance": "No data available"
-            }
+            return {"agent_name": agent_name, "total_tasks": 0, "performance": "No data available"}
 
         agent_metrics = perf_data["agent_metrics"][agent_name]
 
@@ -246,7 +241,7 @@ class AgentPerformanceTracker:
             **agent_metrics,
             "performance_rating": self._calculate_performance_rating(agent_metrics),
             "trend": self._calculate_trend(agent_metrics["quality_scores"]),
-            "specializations": self._get_agent_specializations(agent_name, perf_data)
+            "specializations": self._get_agent_specializations(agent_name, perf_data),
         }
 
         return performance
@@ -289,11 +284,7 @@ class AgentPerformanceTracker:
             else:
                 score = 0
 
-            performers.append({
-                "agent_name": agent_name,
-                "score": score,
-                "total_tasks": metrics["total_tasks"]
-            })
+            performers.append({"agent_name": agent_name, "score": score, "total_tasks": metrics["total_tasks"]})
 
         return sorted(performers, key=lambda x: x["score"], reverse=True)[:limit]
 
@@ -315,13 +306,15 @@ class AgentPerformanceTracker:
                 continue
 
             if metrics["average_quality_score"] < threshold:
-                weak_performers.append({
-                    "agent_name": agent_name,
-                    "average_quality_score": metrics["average_quality_score"],
-                    "success_rate": metrics["success_rate"],
-                    "total_tasks": metrics["total_tasks"],
-                    "improvement_needed": threshold - metrics["average_quality_score"]
-                })
+                weak_performers.append(
+                    {
+                        "agent_name": agent_name,
+                        "average_quality_score": metrics["average_quality_score"],
+                        "success_rate": metrics["success_rate"],
+                        "total_tasks": metrics["total_tasks"],
+                        "improvement_needed": threshold - metrics["average_quality_score"],
+                    }
+                )
 
         return sorted(weak_performers, key=lambda x: x["average_quality_score"])
 
@@ -389,25 +382,15 @@ class AgentPerformanceTracker:
 
         for task_type, count in task_types.items():
             if count / total_tasks >= 0.3:  # At least 30% of tasks
-                specializations.append({
-                    "task_type": task_type,
-                    "percentage": (count / total_tasks) * 100,
-                    "total_tasks": count
-                })
+                specializations.append(
+                    {"task_type": task_type, "percentage": (count / total_tasks) * 100, "total_tasks": count}
+                )
 
-        agent_metrics["specializations"] = sorted(
-            specializations,
-            key=lambda x: x["percentage"],
-            reverse=True
-        )
+        agent_metrics["specializations"] = sorted(specializations, key=lambda x: x["percentage"], reverse=True)
 
         self._write_data(perf_data)
 
-    def _get_agent_specializations(
-        self,
-        agent_name: str,
-        perf_data: Dict[str, Any]
-    ) -> List[Dict[str, Any]]:
+    def _get_agent_specializations(self, agent_name: str, perf_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Get agent specializations."""
         if agent_name not in perf_data["agent_metrics"]:
             return []
@@ -422,11 +405,7 @@ class AgentPerformanceTracker:
         total_tasks = perf_data["metadata"]["total_tasks_tracked"]
 
         if total_agents == 0:
-            return {
-                "total_agents": 0,
-                "total_tasks": 0,
-                "summary": "No performance data available"
-            }
+            return {"total_agents": 0, "total_tasks": 0, "summary": "No performance data available"}
 
         # Calculate averages across all agents
         all_quality_scores = []
@@ -449,8 +428,8 @@ class AgentPerformanceTracker:
             "weak_performers": self.get_weak_performers(),
             "tracking_period": {
                 "start": perf_data["metadata"]["tracking_start_date"],
-                "last_updated": perf_data["metadata"]["last_updated"]
-            }
+                "last_updated": perf_data["metadata"]["last_updated"],
+            },
         }
 
         return summary
@@ -460,37 +439,29 @@ def main():
     """Command-line interface for testing the performance tracker."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Agent Performance Tracker')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['record', 'get', 'top', 'weak', 'summary'],
-                       help='Action to perform')
-    parser.add_argument('--agent', help='Agent name')
-    parser.add_argument('--task-id', help='Task ID')
-    parser.add_argument('--task-type', help='Task type')
-    parser.add_argument('--quality', type=float, help='Quality score')
-    parser.add_argument('--success', action='store_true', help='Task successful')
-    parser.add_argument('--time', type=float, default=60, help='Execution time in seconds')
+    parser = argparse.ArgumentParser(description="Agent Performance Tracker")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["record", "get", "top", "weak", "summary"], help="Action to perform")
+    parser.add_argument("--agent", help="Agent name")
+    parser.add_argument("--task-id", help="Task ID")
+    parser.add_argument("--task-type", help="Task type")
+    parser.add_argument("--quality", type=float, help="Quality score")
+    parser.add_argument("--success", action="store_true", help="Task successful")
+    parser.add_argument("--time", type=float, default=60, help="Execution time in seconds")
 
     args = parser.parse_args()
 
     tracker = AgentPerformanceTracker(args.storage_dir)
 
-    if args.action == 'record':
+    if args.action == "record":
         if not all([args.agent, args.task_id, args.task_type, args.quality is not None]):
             print("Error: --agent, --task-id, --task-type, and --quality required for record")
             sys.exit(1)
 
-        tracker.record_task_execution(
-            args.agent,
-            args.task_id,
-            args.task_type,
-            args.success,
-            args.quality,
-            args.time
-        )
+        tracker.record_task_execution(args.agent, args.task_id, args.task_type, args.success, args.quality, args.time)
         print(f"Task recorded for {args.agent}")
 
-    elif args.action == 'get':
+    elif args.action == "get":
         if not args.agent:
             print("Error: --agent required for get")
             sys.exit(1)
@@ -502,19 +473,19 @@ def main():
         print(f"  Avg Quality: {perf['average_quality_score']:.1f}")
         print(f"  Rating: {perf['performance_rating']}")
 
-    elif args.action == 'top':
+    elif args.action == "top":
         top = tracker.get_top_performers()
         print("Top Performers:")
         for i, agent in enumerate(top, 1):
             print(f"  {i}. {agent['agent_name']}: {agent['score']:.1f}")
 
-    elif args.action == 'weak':
+    elif args.action == "weak":
         weak = tracker.get_weak_performers()
         print(f"Weak Performers ({len(weak)} agents):")
         for agent in weak:
             print(f"  {agent['agent_name']}: {agent['average_quality_score']:.1f} (needs +{agent['improvement_needed']:.1f})")
 
-    elif args.action == 'summary':
+    elif args.action == "summary":
         summary = tracker.get_performance_summary()
         print("Performance Summary:")
         print(f"  Total Agents: {summary['total_agents']}")
@@ -531,5 +502,5 @@ def main():
         print(f"Total Tasks: {summary['total_tasks']}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

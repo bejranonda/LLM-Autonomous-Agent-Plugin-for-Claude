@@ -22,15 +22,18 @@ import statistics
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 @dataclass
 class QuantumPattern:
     """Quantum-enhanced pattern representation."""
+
     pattern_id: str
     task_type: str
     context_vector: List[float]  # Multi-dimensional context embedding
@@ -49,6 +52,7 @@ class QuantumPattern:
 @dataclass
 class LearningQuantumState:
     """Quantum state of the learning system."""
+
     global_phase: complex
     coherence: float
     entanglement_degree: float
@@ -90,12 +94,12 @@ class QuantumLearningEngine:
             entanglement_degree=0.0,
             superposition_capacity=100.0,
             measurement_history=[],
-            collapse_events=[]
+            collapse_events=[],
         )
 
         # Neural network parameters
         self.embedding_dim = 64  # Context embedding dimension
-        self.quantum_dim = 32    # Quantum state dimension
+        self.quantum_dim = 32  # Quantum state dimension
         self.hidden_layers = [128, 64, 32]  # Neural network architecture
 
         # Learning hyperparameters
@@ -126,8 +130,8 @@ class QuantumLearningEngine:
                     "total_patterns": 0,
                     "learning_velocity": 0.0,
                     "convergence_rate": 0.0,
-                    "transfer_success_rate": 0.0
-                }
+                    "transfer_success_rate": 0.0,
+                },
             }
             self._write_quantum_data(initial_data)
 
@@ -137,7 +141,7 @@ class QuantumLearningEngine:
                 "neural_networks": {},
                 "embeddings": {},
                 "training_history": [],
-                "model_performance": {}
+                "model_performance": {},
             }
             self._write_neural_data(neural_data)
 
@@ -147,7 +151,7 @@ class QuantumLearningEngine:
                 "meta_learning_state": {},
                 "learning_strategies": {},
                 "adaptation_history": [],
-                "meta_performance": {}
+                "meta_performance": {},
             }
             self._write_meta_data(meta_data)
 
@@ -157,7 +161,7 @@ class QuantumLearningEngine:
                 "knowledge_transfer_graph": {},
                 "transfer_history": [],
                 "cross_domain_patterns": {},
-                "transfer_effectiveness": {}
+                "transfer_effectiveness": {},
             }
             self._write_transfer_data(transfer_data)
 
@@ -194,14 +198,14 @@ class QuantumLearningEngine:
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -212,7 +216,7 @@ class QuantumLearningEngine:
     def _read_quantum_data(self) -> Dict[str, Any]:
         """Read quantum data with file locking."""
         try:
-            with open(self.quantum_file, 'r', encoding='utf-8') as f:
+            with open(self.quantum_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -224,7 +228,7 @@ class QuantumLearningEngine:
 
     def _write_quantum_data(self, data: Dict[str, Any]):
         """Write quantum data with file locking."""
-        with open(self.quantum_file, 'w', encoding='utf-8') as f:
+        with open(self.quantum_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -234,7 +238,7 @@ class QuantumLearningEngine:
     def _read_neural_data(self) -> Dict[str, Any]:
         """Read neural network data with file locking."""
         try:
-            with open(self.neural_file, 'r', encoding='utf-8') as f:
+            with open(self.neural_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -245,7 +249,7 @@ class QuantumLearningEngine:
 
     def _write_neural_data(self, data: Dict[str, Any]):
         """Write neural network data with file locking."""
-        with open(self.neural_file, 'w', encoding='utf-8') as f:
+        with open(self.neural_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -255,7 +259,7 @@ class QuantumLearningEngine:
     def _read_meta_data(self) -> Dict[str, Any]:
         """Read meta-learning data with file locking."""
         try:
-            with open(self.meta_file, 'r', encoding='utf-8') as f:
+            with open(self.meta_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -266,7 +270,7 @@ class QuantumLearningEngine:
 
     def _write_meta_data(self, data: Dict[str, Any]):
         """Write meta-learning data with file locking."""
-        with open(self.meta_file, 'w', encoding='utf-8') as f:
+        with open(self.meta_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -276,7 +280,7 @@ class QuantumLearningEngine:
     def _read_transfer_data(self) -> Dict[str, Any]:
         """Read knowledge transfer data with file locking."""
         try:
-            with open(self.transfer_file, 'r', encoding='utf-8') as f:
+            with open(self.transfer_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -287,7 +291,7 @@ class QuantumLearningEngine:
 
     def _write_transfer_data(self, data: Dict[str, Any]):
         """Write knowledge transfer data with file locking."""
-        with open(self.transfer_file, 'w', encoding='utf-8') as f:
+        with open(self.transfer_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -318,7 +322,9 @@ class QuantumLearningEngine:
         # Framework features
         frameworks = context.get("frameworks", [])
         framework_features = [0.0] * 10  # Top 10 frameworks
-        for i, framework in enumerate(["react", "vue", "angular", "flask", "django", "fastapi", "express", "spring", "rails", "laravel"]):
+        for i, framework in enumerate(
+            ["react", "vue", "angular", "flask", "django", "fastapi", "express", "spring", "rails", "laravel"]
+        ):
             if framework in frameworks:
                 framework_features[i] = 1.0
         features.extend(framework_features)
@@ -346,7 +352,7 @@ class QuantumLearningEngine:
         if len(features) < self.embedding_dim:
             features.extend([0.0] * (self.embedding_dim - len(features)))
         else:
-            features = features[:self.embedding_dim]
+            features = features[: self.embedding_dim]
 
         # Apply quantum transformation
         quantum_features = self._apply_quantum_transformation(features)
@@ -367,19 +373,16 @@ class QuantumLearningEngine:
             quantum_features.append(abs(quantum_amplitude))
 
         # Normalize quantum state
-        norm = math.sqrt(sum(f ** 2 for f in quantum_features))
+        norm = math.sqrt(sum(f**2 for f in quantum_features))
         if norm > 0:
             quantum_features = [f / norm for f in quantum_features]
 
         return quantum_features
 
     def create_quantum_pattern(
-        self,
-        task_type: str,
-        context: Dict[str, Any],
-        execution: Dict[str, Any],
-        outcome: Dict[str, Any]
-    ) -> str:
+        self, task_type: str, context: Dict[str, Any], execution: Dict[str, Any], outcome: Dict[str, Any]
+    )-> str:
+        """Create Quantum Pattern."""
         """
         Create a quantum-enhanced learning pattern.
 
@@ -393,9 +396,9 @@ class QuantumLearningEngine:
             Pattern ID
         """
         # Generate unique pattern ID
-        pattern_id = hashlib.sha256(
-            f"{task_type}_{json.dumps(context, sort_keys=True)}_{time.time()}".encode()
-        ).hexdigest()[:16]
+        pattern_id = hashlib.sha256(f"{task_type}_{json.dumps(context, sort_keys=True)}_{time.time()}".encode()).hexdigest()[
+            :16
+        ]
 
         # Encode context as quantum state
         context_vector = self.encode_context_quantum(context)
@@ -430,7 +433,7 @@ class QuantumLearningEngine:
             transfer_potential=transfer_potential,
             created_at=datetime.now(),
             usage_count=0,
-            evolution_count=0
+            evolution_count=0,
         )
 
         # Store pattern
@@ -494,7 +497,7 @@ class QuantumLearningEngine:
             "testing": 0.6,
             "documentation": 0.5,
             "optimization": 0.85,
-            "security": 0.95
+            "security": 0.95,
         }
         return task_factors.get(task_type, 0.7)
 
@@ -558,17 +561,12 @@ class QuantumLearningEngine:
             self.quantum_state.coherence = max(0.1, self.quantum_state.coherence - 0.005)
 
         # Update entanglement degree
-        avg_entanglement = statistics.mean(
-            statistics.mean(row) for row in pattern.entanglement_matrix
-        )
-        self.quantum_state.entanglement_degree = (
-            self.quantum_state.entanglement_degree * 0.9 + avg_entanglement * 0.1
-        )
+        avg_entanglement = statistics.mean(statistics.mean(row) for row in pattern.entanglement_matrix)
+        self.quantum_state.entanglement_degree = self.quantum_state.entanglement_degree * 0.9 + avg_entanglement * 0.1
 
         # Update superposition capacity
         self.quantum_state.superposition_capacity = min(
-            1000.0,
-            self.quantum_state.superposition_capacity + len(pattern.superposition_weights) * 0.1
+            1000.0, self.quantum_state.superposition_capacity + len(pattern.superposition_weights) * 0.1
         )
 
         # Record measurement
@@ -605,11 +603,9 @@ class QuantumLearningEngine:
         pattern.evolution_count += 1
 
     def find_similar_quantum_patterns(
-        self,
-        task_type: str,
-        context: Dict[str, Any],
-        limit: int = 5
-    ) -> List[Tuple[QuantumPattern, float]]:
+        self, task_type: str, context: Dict[str, Any], limit: int = 5
+    )-> List[Tuple[QuantumPattern, float]]:
+        """Find Similar Quantum Patterns."""
         """
         Find similar patterns using quantum similarity metrics.
 
@@ -688,15 +684,11 @@ class QuantumLearningEngine:
         # Update success probability with exponential moving average
         alpha = 0.1  # Learning rate
         current_success = 1.0 if success else 0.0
-        pattern.success_probability = (
-            alpha * current_success + (1 - alpha) * pattern.success_probability
-        )
+        pattern.success_probability = alpha * current_success + (1 - alpha) * pattern.success_probability
 
         # Update confidence based on quality
         quality_factor = min(1.0, quality_score / 100)
-        pattern.confidence = (
-            alpha * quality_factor + (1 - alpha) * pattern.confidence
-        )
+        pattern.confidence = alpha * quality_factor + (1 - alpha) * pattern.confidence
 
         # Trigger pattern evolution
         self._evolve_pattern(pattern)
@@ -719,7 +711,11 @@ class QuantumLearningEngine:
         # Update convergence metrics
         if len(self.learning_velocity) >= 10:
             recent_velocity = statistics.mean(list(self.learning_velocity)[-10:])
-            older_velocity = statistics.mean(list(self.learning_velocity)[-20:-10]) if len(self.learning_velocity) >= 20 else recent_velocity
+            older_velocity = (
+                statistics.mean(list(self.learning_velocity)[-20:-10])
+                if len(self.learning_velocity) >= 20
+                else recent_velocity
+            )
 
             convergence = recent_velocity - older_velocity
             self.convergence_metrics["convergence_rate"] = convergence
@@ -733,7 +729,7 @@ class QuantumLearningEngine:
             "timestamp": current_time,
             "success": success,
             "quality_score": quality_score,
-            "learning_velocity": recent_velocity if len(self.learning_velocity) >= 10 else quality_score
+            "learning_velocity": recent_velocity if len(self.learning_velocity) >= 10 else quality_score,
         }
 
         self.meta_learning_state["learning_events"].append(event)
@@ -746,11 +742,9 @@ class QuantumLearningEngine:
         self._save_meta_learning_state()
 
     def transfer_knowledge_cross_domain(
-        self,
-        source_domain: str,
-        target_domain: str,
-        context: Dict[str, Any]
-    ) -> List[QuantumPattern]:
+        self, source_domain: str, target_domain: str, context: Dict[str, Any]
+    )-> List[QuantumPattern]:
+        """Transfer Knowledge Cross Domain."""
         """
         Transfer knowledge between different domains.
 
@@ -766,7 +760,8 @@ class QuantumLearningEngine:
 
         # Find high-transfer-potential patterns in source domain
         source_patterns = [
-            p for p in self.quantum_patterns.values()
+            p
+            for p in self.quantum_patterns.values()
             if p.task_type == source_domain and p.transfer_potential > self.transfer_threshold
         ]
 
@@ -783,9 +778,14 @@ class QuantumLearningEngine:
 
                 # Update knowledge transfer graph
                 self.knowledge_transfer_graph[source_domain][target_domain] = {
-                    "transfer_count": self.knowledge_transfer_graph[source_domain].get(target_domain, {}).get("transfer_count", 0) + 1,
-                    "success_rate": self.knowledge_transfer_graph[source_domain].get(target_domain, {}).get("success_rate", 0.5),
-                    "last_transfer": datetime.now().isoformat()
+                    "transfer_count": self.knowledge_transfer_graph[source_domain]
+                    .get(target_domain, {})
+                    .get("transfer_count", 0)
+                    + 1,
+                    "success_rate": self.knowledge_transfer_graph[source_domain]
+                    .get(target_domain, {})
+                    .get("success_rate", 0.5),
+                    "last_transfer": datetime.now().isoformat(),
                 }
 
         # Save transfer data
@@ -794,11 +794,9 @@ class QuantumLearningEngine:
         return transferred_patterns
 
     def _adapt_pattern_for_domain(
-        self,
-        pattern: QuantumPattern,
-        target_domain: str,
-        context: Dict[str, Any]
-    ) -> Optional[QuantumPattern]:
+        self, pattern: QuantumPattern, target_domain: str, context: Dict[str, Any]
+    )-> Optional[QuantumPattern]:
+        """ Adapt Pattern For Domain."""
         """Adapt a pattern for a different domain."""
         # Calculate adaptation feasibility
         adaptation_score = self._calculate_adaptation_feasibility(pattern, target_domain, context)
@@ -819,7 +817,7 @@ class QuantumLearningEngine:
             transfer_potential=pattern.transfer_potential * 0.9,  # Slightly reduced
             created_at=datetime.now(),
             usage_count=0,
-            evolution_count=0
+            evolution_count=0,
         )
 
         # Store adapted pattern
@@ -830,12 +828,7 @@ class QuantumLearningEngine:
 
         return adapted_pattern
 
-    def _calculate_adaptation_feasibility(
-        self,
-        pattern: QuantumPattern,
-        target_domain: str,
-        context: Dict[str, Any]
-    ) -> float:
+    def _calculate_adaptation_feasibility(self, pattern: QuantumPattern, target_domain: str, context: Dict[str, Any]) -> float:
         """Calculate feasibility of adapting pattern to target domain."""
         feasibility = 0.5  # Base feasibility
 
@@ -867,12 +860,9 @@ class QuantumLearningEngine:
         return sim
 
     def _record_transfer_event(
-        self,
-        source_pattern_id: str,
-        target_pattern_id: str,
-        target_domain: str,
-        adaptation_score: float
+        self, source_pattern_id: str, target_pattern_id: str, target_domain: str, adaptation_score: float
     ):
+        """ Record Transfer Event."""
         """Record knowledge transfer event."""
         transfer_data = self._read_transfer_data()
 
@@ -884,7 +874,7 @@ class QuantumLearningEngine:
             "source_pattern_id": source_pattern_id,
             "target_pattern_id": target_pattern_id,
             "target_domain": target_domain,
-            "adaptation_score": adaptation_score
+            "adaptation_score": adaptation_score,
         }
 
         transfer_data["transfer_history"].append(event)
@@ -913,7 +903,7 @@ class QuantumLearningEngine:
             "total_patterns": total_patterns,
             "learning_velocity": statistics.mean(list(self.learning_velocity)) if self.learning_velocity else 0,
             "convergence_rate": self.convergence_metrics.get("convergence_rate", 0),
-            "transfer_success_rate": self._calculate_transfer_success_rate()
+            "transfer_success_rate": self._calculate_transfer_success_rate(),
         }
 
         self._write_quantum_data(quantum_data)
@@ -925,7 +915,7 @@ class QuantumLearningEngine:
             "meta_learning_state": self.meta_learning_state,
             "learning_strategies": self._extract_learning_strategies(),
             "adaptation_history": self.meta_learning_state.get("learning_events", [])[-100:],
-            "meta_performance": self._calculate_meta_performance()
+            "meta_performance": self._calculate_meta_performance(),
         }
 
         self._write_meta_data(meta_data)
@@ -937,7 +927,7 @@ class QuantumLearningEngine:
             "knowledge_transfer_graph": dict(self.knowledge_transfer_graph),
             "transfer_history": self._read_transfer_data().get("transfer_history", []),
             "cross_domain_patterns": self._identify_cross_domain_patterns(),
-            "transfer_effectiveness": self._calculate_transfer_effectiveness()
+            "transfer_effectiveness": self._calculate_transfer_effectiveness(),
         }
 
         self._write_transfer_data(transfer_data)
@@ -948,7 +938,8 @@ class QuantumLearningEngine:
 
         # Analyze successful learning events
         successful_events = [
-            event for event in self.meta_learning_state.get("learning_events", [])
+            event
+            for event in self.meta_learning_state.get("learning_events", [])
             if event.get("success", False) and event.get("quality_score", 0) > 80
         ]
 
@@ -960,7 +951,7 @@ class QuantumLearningEngine:
             strategies["high_performance"] = {
                 "average_quality": avg_quality,
                 "learning_velocity": avg_velocity,
-                "sample_size": len(successful_events)
+                "sample_size": len(successful_events),
             }
 
         return strategies
@@ -982,7 +973,7 @@ class QuantumLearningEngine:
                 "overall_performance": avg_quality,
                 "success_rate": success_rate,
                 "learning_velocity": avg_velocity,
-                "event_count": len(recent_events)
+                "event_count": len(recent_events),
             }
 
         return {"overall_performance": 0.0}
@@ -1030,21 +1021,23 @@ class QuantumLearningEngine:
                 "quantum_coherence": self.quantum_state.coherence,
                 "entanglement_degree": self.quantum_state.entanglement_degree,
                 "superposition_capacity": self.quantum_state.superposition_capacity,
-                "learning_velocity": statistics.mean(list(self.learning_velocity)) if self.learning_velocity else 0
+                "learning_velocity": statistics.mean(list(self.learning_velocity)) if self.learning_velocity else 0,
             },
             "pattern_analysis": {
                 "high_confidence_patterns": len([p for p in self.quantum_patterns.values() if p.confidence > 0.8]),
                 "high_transfer_patterns": len([p for p in self.quantum_patterns.values() if p.transfer_potential > 0.8]),
                 "evolved_patterns": len([p for p in self.quantum_patterns.values() if p.evolution_count > 0]),
-                "recently_used_patterns": len([p for p in self.quantum_patterns.values() if p.last_used and (datetime.now() - p.last_used).days < 7])
+                "recently_used_patterns": len(
+                    [p for p in self.quantum_patterns.values() if p.last_used and (datetime.now() - p.last_used).days < 7]
+                ),
             },
             "meta_learning_insights": meta_data.get("meta_performance", {}),
             "knowledge_transfer_analysis": {
                 "transfer_success_rate": self._calculate_transfer_success_rate(),
                 "active_transfer_paths": len(self.knowledge_transfer_graph),
-                "cross_domain_patterns": len(self._identify_cross_domain_patterns())
+                "cross_domain_patterns": len(self._identify_cross_domain_patterns()),
             },
-            "learning_trends": self._analyze_learning_trends()
+            "learning_trends": self._analyze_learning_trends(),
         }
 
         return insights
@@ -1076,7 +1069,9 @@ class QuantumLearningEngine:
             "quality_trend": (recent_quality - older_quality) / older_quality if older_quality > 0 else 0,
             "success_trend": recent_success - older_success,
             "velocity_trend": (recent_velocity - older_velocity) / older_velocity if older_velocity > 0 else 0,
-            "status": "improving" if recent_quality > older_quality else "declining" if recent_quality < older_quality else "stable"
+            "status": (
+                "improving" if recent_quality > older_quality else "declining" if recent_quality < older_quality else "stable"
+            ),
         }
 
         return trends
@@ -1086,21 +1081,20 @@ def main():
     """Command-line interface for testing the quantum learning engine."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Quantum Learning Engine')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['create', 'find', 'insights', 'transfer'],
-                       help='Action to perform')
-    parser.add_argument('--task-type', help='Task type')
-    parser.add_argument('--context', help='Context JSON string')
-    parser.add_argument('--limit', type=int, default=5, help='Limit for find action')
-    parser.add_argument('--source-domain', help='Source domain for transfer')
-    parser.add_argument('--target-domain', help='Target domain for transfer')
+    parser = argparse.ArgumentParser(description="Quantum Learning Engine")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["create", "find", "insights", "transfer"], help="Action to perform")
+    parser.add_argument("--task-type", help="Task type")
+    parser.add_argument("--context", help="Context JSON string")
+    parser.add_argument("--limit", type=int, default=5, help="Limit for find action")
+    parser.add_argument("--source-domain", help="Source domain for transfer")
+    parser.add_argument("--target-domain", help="Target domain for transfer")
 
     args = parser.parse_args()
 
     engine = QuantumLearningEngine(args.storage_dir)
 
-    if args.action == 'create':
+    if args.action == "create":
         if not all([args.task_type, args.context]):
             print("Error: --task-type and --context required for create")
             sys.exit(1)
@@ -1112,7 +1106,7 @@ def main():
         pattern_id = engine.create_quantum_pattern(args.task_type, context, execution, outcome)
         print(f"Created quantum pattern: {pattern_id}")
 
-    elif args.action == 'find':
+    elif args.action == "find":
         if not all([args.task_type, args.context]):
             print("Error: --task-type and --context required for find")
             sys.exit(1)
@@ -1124,7 +1118,7 @@ def main():
         for pattern, similarity in patterns:
             print(f"  {pattern.pattern_id}: {similarity:.3f} similarity (confidence: {pattern.confidence:.2f})")
 
-    elif args.action == 'insights':
+    elif args.action == "insights":
         insights = engine.get_learning_insights()
         print("Quantum Learning Insights:")
         print(f"  Total Patterns: {insights['quantum_learning_summary']['total_patterns']}")
@@ -1132,12 +1126,12 @@ def main():
         print(f"  Learning Velocity: {insights['quantum_learning_summary']['learning_velocity']:.2f}")
         print(f"  Transfer Success Rate: {insights['knowledge_transfer_analysis']['transfer_success_rate']:.1%}")
 
-        if 'learning_trends' in insights and insights['learning_trends'].get('status') != 'insufficient_data':
-            trends = insights['learning_trends']
+        if "learning_trends" in insights and insights["learning_trends"].get("status") != "insufficient_data":
+            trends = insights["learning_trends"]
             print(f"  Learning Status: {trends['status']}")
             print(f"  Quality Trend: {trends['quality_trend']:+.1%}")
 
-    elif args.action == 'transfer':
+    elif args.action == "transfer":
         if not all([args.source_domain, args.target_domain, args.context]):
             print("Error: --source-domain, --target-domain, and --context required for transfer")
             sys.exit(1)
@@ -1158,5 +1152,5 @@ def main():
         print(f"  Transfer Success Rate: {insights['knowledge_transfer_analysis']['transfer_success_rate']:.1%}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

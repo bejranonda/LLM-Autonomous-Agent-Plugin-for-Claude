@@ -22,14 +22,16 @@ import pathlib
 
 class OptimizationLevel(Enum):
     """Optimization levels with target reduction ranges."""
-    CONSERVATIVE = "conservative"    # 15-20% reduction, maximum integrity
-    STANDARD = "standard"          # 25-30% reduction, good integrity
-    AGGRESSIVE = "aggressive"      # 35-45% reduction, acceptable integrity
+
+    CONSERVATIVE = "conservative"  # 15-20% reduction, maximum integrity
+    STANDARD = "standard"  # 25-30% reduction, good integrity
+    AGGRESSIVE = "aggressive"  # 35-45% reduction, acceptable integrity
 
 
 @dataclass
 class OptimizationResult:
     """Result of message optimization."""
+
     original_tokens: int
     optimized_tokens: int
     tokens_saved: int
@@ -74,7 +76,7 @@ class EnhancedAgentCommunicationOptimizer:
             "validation": {"validation", "val", "check", "verify"},
             "generation": {"generation", "gen", "creation", "build"},
             "implementation": {"implementation", "impl", "deployment"},
-            "testing": {"testing", "test", "verification", "validation"}
+            "testing": {"testing", "test", "verification", "validation"},
         }
 
         # Message type patterns for template-based optimization
@@ -88,7 +90,7 @@ class EnhancedAgentCommunicationOptimizer:
             "average_savings_percentage": 0.0,
             "processing_time_total": 0.0,
             "cache_hits": 0,
-            "compression_methods_used": {}
+            "compression_methods_used": {},
         }
 
         # Cache for repeated optimizations
@@ -99,322 +101,1021 @@ class EnhancedAgentCommunicationOptimizer:
         # Common abbreviations (extensive list)
         abbreviations = {
             # Technical terms
-            "application": "app", "architecture": "arch", "authentication": "auth", "authorization": "authz",
-            "configuration": "config", "development": "dev", "deployment": "deploy", "documentation": "doc",
-            "environment": "env", "functionality": "func", "implementation": "impl", "infrastructure": "infra",
-            "integration": "int", "interface": "int", "library": "lib", "management": "mgmt", "optimization": "opt",
-            "performance": "perf", "requirement": "req", "specification": "spec", "system": "sys", "technology": "tech",
-            "validation": "val", "verification": "vrfy", "database": "db", "protocol": "proto", "algorithm": "algo",
-            "component": "comp", "module": "mod", "service": "svc", "resource": "res", "process": "proc", "procedure": "proc",
-            "method": "meth", "operation": "op", "execution": "exec", "calculation": "calc", "evaluation": "eval",
-            "analysis": "anlys", "synthesis": "synth", "generation": "gen", "creation": "cre", "destruction": "dest",
-            "modification": "mod", "transformation": "trans", "conversion": "conv", "adaptation": "adapt",
-            "migration": "migr", "installation": "inst", "uninstallation": "uninst", "upgrade": "upg", "downgrade": "dng",
-
+            "application": "app",
+            "architecture": "arch",
+            "authentication": "auth",
+            "authorization": "authz",
+            "configuration": "config",
+            "development": "dev",
+            "deployment": "deploy",
+            "documentation": "doc",
+            "environment": "env",
+            "functionality": "func",
+            "implementation": "impl",
+            "infrastructure": "infra",
+            "integration": "int",
+            "interface": "int",
+            "library": "lib",
+            "management": "mgmt",
+            "optimization": "opt",
+            "performance": "perf",
+            "requirement": "req",
+            "specification": "spec",
+            "system": "sys",
+            "technology": "tech",
+            "validation": "val",
+            "verification": "vrfy",
+            "database": "db",
+            "protocol": "proto",
+            "algorithm": "algo",
+            "component": "comp",
+            "module": "mod",
+            "service": "svc",
+            "resource": "res",
+            "process": "proc",
+            "procedure": "proc",
+            "method": "meth",
+            "operation": "op",
+            "execution": "exec",
+            "calculation": "calc",
+            "evaluation": "eval",
+            "analysis": "anlys",
+            "synthesis": "synth",
+            "generation": "gen",
+            "creation": "cre",
+            "destruction": "dest",
+            "modification": "mod",
+            "transformation": "trans",
+            "conversion": "conv",
+            "adaptation": "adapt",
+            "migration": "migr",
+            "installation": "inst",
+            "uninstallation": "uninst",
+            "upgrade": "upg",
+            "downgrade": "dng",
             # Business terms
-            "business": "biz", "customer": "cust", "client": "cli", "user": "usr", "organization": "org",
-            "company": "co", "enterprise": "ent", "corporation": "corp", "department": "dept", "division": "div",
-            "team": "tm", "group": "grp", "committee": "comm", "board": "brd", "council": "cnc", "management": "mgmt",
-            "leadership": "ldr", "strategy": "strat", "planning": "plan", "execution": "exec", "monitoring": "mon",
-            "control": "ctrl", "administration": "admin", "governance": "gov", "oversight": "ovr", "supervision": "sup",
-
+            "business": "biz",
+            "customer": "cust",
+            "client": "cli",
+            "user": "usr",
+            "organization": "org",
+            "company": "co",
+            "enterprise": "ent",
+            "corporation": "corp",
+            "department": "dept",
+            "division": "div",
+            "team": "tm",
+            "group": "grp",
+            "committee": "comm",
+            "board": "brd",
+            "council": "cnc",
+            "management": "mgmt",
+            "leadership": "ldr",
+            "strategy": "strat",
+            "planning": "plan",
+            "execution": "exec",
+            "monitoring": "mon",
+            "control": "ctrl",
+            "administration": "admin",
+            "governance": "gov",
+            "oversight": "ovr",
+            "supervision": "sup",
             # Quality terms
-            "quality": "qlty", "standard": "std", "criteria": "crit", "measure": "meas", "metric": "met",
-            "assessment": "assess", "evaluation": "eval", "review": "rev", "audit": "aud", "inspection": "insp",
-            "examination": "exam", "testing": "test", "verification": "vrfy", "validation": "val", "compliance": "comp",
-            "excellence": "exc", "superiority": "sup", "perfection": "perf", "flawlessness": "flawless",
-
+            "quality": "qlty",
+            "standard": "std",
+            "criteria": "crit",
+            "measure": "meas",
+            "metric": "met",
+            "assessment": "assess",
+            "evaluation": "eval",
+            "review": "rev",
+            "audit": "aud",
+            "inspection": "insp",
+            "examination": "exam",
+            "testing": "test",
+            "verification": "vrfy",
+            "validation": "val",
+            "compliance": "comp",
+            "excellence": "exc",
+            "superiority": "sup",
+            "perfection": "perf",
+            "flawlessness": "flawless",
             # Data terms
-            "information": "info", "data": "dt", "content": "cnt", "message": "msg", "content": "cnt",
-            "text": "txt", "string": "str", "number": "num", "integer": "int", "boolean": "bool", "array": "arr",
-            "list": "lst", "dictionary": "dict", "collection": "coll", "sequence": "seq", "set": "set",
-            "record": "rec", "field": "fld", "column": "col", "row": "rw", "table": "tbl", "schema": "sch",
-
+            "information": "info",
+            "data": "dt",
+            "content": "cnt",
+            "message": "msg",
+            "content": "cnt",
+            "text": "txt",
+            "string": "str",
+            "number": "num",
+            "integer": "int",
+            "boolean": "bool",
+            "array": "arr",
+            "list": "lst",
+            "dictionary": "dict",
+            "collection": "coll",
+            "sequence": "seq",
+            "set": "set",
+            "record": "rec",
+            "field": "fld",
+            "column": "col",
+            "row": "rw",
+            "table": "tbl",
+            "schema": "sch",
             # Action verbs
-            "analyze": "anlz", "create": "cre", "generate": "gen", "produce": "prod", "build": "bld", "make": "mk",
-            "construct": "const", "develop": "dev", "implement": "impl", "execute": "exec", "perform": "perf",
-            "process": "proc", "handle": "hdl", "manage": "mgmt", "control": "ctrl", "coordinate": "coord",
-            "organize": "org", "arrange": "arr", "schedule": "sched", "plan": "plan", "design": "des", "specify": "spec",
-
+            "analyze": "anlz",
+            "create": "cre",
+            "generate": "gen",
+            "produce": "prod",
+            "build": "bld",
+            "make": "mk",
+            "construct": "const",
+            "develop": "dev",
+            "implement": "impl",
+            "execute": "exec",
+            "perform": "perf",
+            "process": "proc",
+            "handle": "hdl",
+            "manage": "mgmt",
+            "control": "ctrl",
+            "coordinate": "coord",
+            "organize": "org",
+            "arrange": "arr",
+            "schedule": "sched",
+            "plan": "plan",
+            "design": "des",
+            "specify": "spec",
             # Status and state
-            "active": "act", "inactive": "inact", "enabled": "en", "disabled": "dis", "available": "avail",
-            "unavailable": "unavail", "online": "on", "offline": "off", "connected": "conn", "disconnected": "disc",
-            "ready": "rdy", "pending": "pend", "processing": "proc", "completed": "comp", "failed": "fail",
-            "success": "succ", "error": "err", "warning": "warn", "info": "inf", "debug": "dbg",
-
+            "active": "act",
+            "inactive": "inact",
+            "enabled": "en",
+            "disabled": "dis",
+            "available": "avail",
+            "unavailable": "unavail",
+            "online": "on",
+            "offline": "off",
+            "connected": "conn",
+            "disconnected": "disc",
+            "ready": "rdy",
+            "pending": "pend",
+            "processing": "proc",
+            "completed": "comp",
+            "failed": "fail",
+            "success": "succ",
+            "error": "err",
+            "warning": "warn",
+            "info": "inf",
+            "debug": "dbg",
             # Direction and position
-            "input": "inp", "output": "out", "inbound": "in", "outbound": "out", "internal": "int", "external": "ext",
-            "global": "glob", "local": "loc", "public": "pub", "private": "priv", "protected": "prot",
-            "temporary": "tmp", "permanent": "perm", "dynamic": "dyn", "static": "stat", "variable": "var",
-            "constant": "const", "fixed": "fix", "flexible": "flex", "scalable": "scal", "portable": "port",
-
+            "input": "inp",
+            "output": "out",
+            "inbound": "in",
+            "outbound": "out",
+            "internal": "int",
+            "external": "ext",
+            "global": "glob",
+            "local": "loc",
+            "public": "pub",
+            "private": "priv",
+            "protected": "prot",
+            "temporary": "tmp",
+            "permanent": "perm",
+            "dynamic": "dyn",
+            "static": "stat",
+            "variable": "var",
+            "constant": "const",
+            "fixed": "fix",
+            "flexible": "flex",
+            "scalable": "scal",
+            "portable": "port",
             # Size and quantity
-            "size": "sz", "length": "len", "width": "wd", "height": "ht", "depth": "dpth", "weight": "wt",
-            "amount": "amt", "quantity": "qty", "number": "num", "count": "cnt", "total": "tot", "partial": "part",
-            "full": "full", "empty": "empty", "maximum": "max", "minimum": "min", "average": "avg", "median": "med",
-
+            "size": "sz",
+            "length": "len",
+            "width": "wd",
+            "height": "ht",
+            "depth": "dpth",
+            "weight": "wt",
+            "amount": "amt",
+            "quantity": "qty",
+            "number": "num",
+            "count": "cnt",
+            "total": "tot",
+            "partial": "part",
+            "full": "full",
+            "empty": "empty",
+            "maximum": "max",
+            "minimum": "min",
+            "average": "avg",
+            "median": "med",
             # Time and date
-            "time": "tm", "date": "dt", "timestamp": "ts", "duration": "dur", "period": "prd", "interval": "int",
-            "schedule": "sched", "deadline": "dl", "milestone": "mile", "phase": "ph", "stage": "stg", "step": "stp",
-            "beginning": "beg", "start": "st", "end": "end", "middle": "mid", "final": "fin", "initial": "init",
-
+            "time": "tm",
+            "date": "dt",
+            "timestamp": "ts",
+            "duration": "dur",
+            "period": "prd",
+            "interval": "int",
+            "schedule": "sched",
+            "deadline": "dl",
+            "milestone": "mile",
+            "phase": "ph",
+            "stage": "stg",
+            "step": "stp",
+            "beginning": "beg",
+            "start": "st",
+            "end": "end",
+            "middle": "mid",
+            "final": "fin",
+            "initial": "init",
             # Security and safety
-            "security": "sec", "safety": "safe", "protection": "prot", "defense": "def", "threat": "thr",
-            "vulnerability": "vuln", "risk": "rk", "attack": "atk", "breach": "br", "incident": "inc",
-            "prevention": "prev", "detection": "det", "response": "resp", "recovery": "rec", "backup": "bkp",
-
+            "security": "sec",
+            "safety": "safe",
+            "protection": "prot",
+            "defense": "def",
+            "threat": "thr",
+            "vulnerability": "vuln",
+            "risk": "rk",
+            "attack": "atk",
+            "breach": "br",
+            "incident": "inc",
+            "prevention": "prev",
+            "detection": "det",
+            "response": "resp",
+            "recovery": "rec",
+            "backup": "bkp",
             # Communication
-            "communication": "comm", "collaboration": "collab", "coordination": "coord", "interaction": "int",
-            "conversation": "conv", "discussion": "disc", "dialogue": "dlg", "negotiation": "neg", "agreement": "agr",
-            "contract": "ctr", "transaction": "txn", "exchange": "xch", "transfer": "xfr", "delivery": "del",
-
+            "communication": "comm",
+            "collaboration": "collab",
+            "coordination": "coord",
+            "interaction": "int",
+            "conversation": "conv",
+            "discussion": "disc",
+            "dialogue": "dlg",
+            "negotiation": "neg",
+            "agreement": "agr",
+            "contract": "ctr",
+            "transaction": "txn",
+            "exchange": "xch",
+            "transfer": "xfr",
+            "delivery": "del",
             # Web and internet
-            "website": "web", "application": "app", "service": "svc", "api": "api", "endpoint": "ep",
-            "server": "srv", "client": "cli", "browser": "br", "request": "req", "response": "resp",
-            "session": "sess", "cookie": "ck", "token": "tk", "authentication": "auth", "authorization": "authz",
-
+            "website": "web",
+            "application": "app",
+            "service": "svc",
+            "api": "api",
+            "endpoint": "ep",
+            "server": "srv",
+            "client": "cli",
+            "browser": "br",
+            "request": "req",
+            "response": "resp",
+            "session": "sess",
+            "cookie": "ck",
+            "token": "tk",
+            "authentication": "auth",
+            "authorization": "authz",
             # Programming concepts
-            "programming": "prog", "coding": "code", "script": "scr", "function": "func", "method": "meth",
-            "class": "cls", "object": "obj", "instance": "inst", "variable": "var", "parameter": "param",
-            "argument": "arg", "return": "ret", "loop": "loop", "condition": "cond", "exception": "exc",
-            "error": "err", "bug": "bug", "issue": "iss", "problem": "prob", "solution": "sol", "fix": "fix",
-
+            "programming": "prog",
+            "coding": "code",
+            "script": "scr",
+            "function": "func",
+            "method": "meth",
+            "class": "cls",
+            "object": "obj",
+            "instance": "inst",
+            "variable": "var",
+            "parameter": "param",
+            "argument": "arg",
+            "return": "ret",
+            "loop": "loop",
+            "condition": "cond",
+            "exception": "exc",
+            "error": "err",
+            "bug": "bug",
+            "issue": "iss",
+            "problem": "prob",
+            "solution": "sol",
+            "fix": "fix",
             # Documentation
-            "documentation": "doc", "manual": "man", "guide": "gd", "tutorial": "tut", "example": "ex",
-            "reference": "ref", "specification": "spec", "description": "desc", "explanation": "exp",
-            "instruction": "instr", "direction": "dir", "guideline": "guide", "procedure": "proc",
-
+            "documentation": "doc",
+            "manual": "man",
+            "guide": "gd",
+            "tutorial": "tut",
+            "example": "ex",
+            "reference": "ref",
+            "specification": "spec",
+            "description": "desc",
+            "explanation": "exp",
+            "instruction": "instr",
+            "direction": "dir",
+            "guideline": "guide",
+            "procedure": "proc",
             # Common words
-            "please": "plz", "thank": "thx", "thanks": "thx", "hello": "hi", "goodbye": "bye", "yes": "y", "no": "n",
-            "true": "t", "false": "f", "null": "nul", "undefined": "undef", "unknown": "unk", "other": "oth",
-            "additional": "add", "extra": "ext", "more": "mo", "less": "ls", "same": "same", "different": "diff",
-            "new": "new", "old": "old", "first": "1st", "second": "2nd", "third": "3rd", "last": "last",
-            "next": "nxt", "previous": "prev", "current": "curr", "future": "fut", "past": "pst",
-
+            "please": "plz",
+            "thank": "thx",
+            "thanks": "thx",
+            "hello": "hi",
+            "goodbye": "bye",
+            "yes": "y",
+            "no": "n",
+            "true": "t",
+            "false": "f",
+            "null": "nul",
+            "undefined": "undef",
+            "unknown": "unk",
+            "other": "oth",
+            "additional": "add",
+            "extra": "ext",
+            "more": "mo",
+            "less": "ls",
+            "same": "same",
+            "different": "diff",
+            "new": "new",
+            "old": "old",
+            "first": "1st",
+            "second": "2nd",
+            "third": "3rd",
+            "last": "last",
+            "next": "nxt",
+            "previous": "prev",
+            "current": "curr",
+            "future": "fut",
+            "past": "pst",
             # Measurement and evaluation
-            "measurement": "meas", "evaluation": "eval", "assessment": "assess", "judgment": "judg",
-            "opinion": "op", "view": "vw", "perspective": "persp", "standpoint": "stpt", "position": "pos",
-            "ranking": "rnk", "rating": "rat", "score": "scr", "grade": "grd", "mark": "mrk", "point": "pt",
-
+            "measurement": "meas",
+            "evaluation": "eval",
+            "assessment": "assess",
+            "judgment": "judg",
+            "opinion": "op",
+            "view": "vw",
+            "perspective": "persp",
+            "standpoint": "stpt",
+            "position": "pos",
+            "ranking": "rnk",
+            "rating": "rat",
+            "score": "scr",
+            "grade": "grd",
+            "mark": "mrk",
+            "point": "pt",
             # Financial terms
-            "cost": "cst", "price": "prc", "value": "val", "worth": "wth", "budget": "bgt", "finance": "fin",
-            "economy": "econ", "market": "mkt", "customer": "cust", "consumer": "cons", "buyer": "buy",
-            "seller": "sell", "supplier": "sup", "vendor": "vend", "partner": "prt", "stakeholder": "shk",
-
+            "cost": "cst",
+            "price": "prc",
+            "value": "val",
+            "worth": "wth",
+            "budget": "bgt",
+            "finance": "fin",
+            "economy": "econ",
+            "market": "mkt",
+            "customer": "cust",
+            "consumer": "cons",
+            "buyer": "buy",
+            "seller": "sell",
+            "supplier": "sup",
+            "vendor": "vend",
+            "partner": "prt",
+            "stakeholder": "shk",
             # Legal and compliance
-            "legal": "leg", "compliance": "comp", "regulation": "reg", "policy": "pol", "rule": "rul",
-            "law": "law", "contract": "ctr", "agreement": "agr", "terms": "tms", "conditions": "conds",
-            "rights": "rts", "obligations": "obs", "liability": "liab", "responsibility": "resp",
-
+            "legal": "leg",
+            "compliance": "comp",
+            "regulation": "reg",
+            "policy": "pol",
+            "rule": "rul",
+            "law": "law",
+            "contract": "ctr",
+            "agreement": "agr",
+            "terms": "tms",
+            "conditions": "conds",
+            "rights": "rts",
+            "obligations": "obs",
+            "liability": "liab",
+            "responsibility": "resp",
             # Learning and education
-            "learning": "lrn", "education": "edu", "training": "trn", "course": "crs", "lesson": "less",
-            "student": "stu", "teacher": "tchr", "instructor": "inst", "mentor": "mnt", "coach": "cch",
-            "knowledge": "know", "skill": "skl", "competence": "comp", "ability": "abl", "capability": "cap",
-
+            "learning": "lrn",
+            "education": "edu",
+            "training": "trn",
+            "course": "crs",
+            "lesson": "less",
+            "student": "stu",
+            "teacher": "tchr",
+            "instructor": "inst",
+            "mentor": "mnt",
+            "coach": "cch",
+            "knowledge": "know",
+            "skill": "skl",
+            "competence": "comp",
+            "ability": "abl",
+            "capability": "cap",
             # Tools and equipment
-            "tool": "tl", "equipment": "eqp", "device": "dev", "machine": "mach", "instrument": "inst",
-            "apparatus": "appar", "mechanism": "mech", "system": "sys", "platform": "plat", "framework": "fw",
-            "library": "lib", "package": "pkg", "module": "mod", "component": "comp", "assembly": "asm"
+            "tool": "tl",
+            "equipment": "eqp",
+            "device": "dev",
+            "machine": "mach",
+            "instrument": "inst",
+            "apparatus": "appar",
+            "mechanism": "mech",
+            "system": "sys",
+            "platform": "plat",
+            "framework": "fw",
+            "library": "lib",
+            "package": "pkg",
+            "module": "mod",
+            "component": "comp",
+            "assembly": "asm",
         }
 
         # Add more specialized technical terms
         more_abbreviations = {
             # Software development
-            "development": "dev", "testing": "test", "debugging": "dbg", "deployment": "deploy",
-            "version": "ver", "release": "rel", "build": "bld", "patch": "ptch", "update": "upd",
-            "upgrade": "upg", "migration": "migr", "installation": "inst", "configuration": "conf",
-            "customization": "cust", "extension": "ext", "plugin": "plg", "addon": "add",
-
+            "development": "dev",
+            "testing": "test",
+            "debugging": "dbg",
+            "deployment": "deploy",
+            "version": "ver",
+            "release": "rel",
+            "build": "bld",
+            "patch": "ptch",
+            "update": "upd",
+            "upgrade": "upg",
+            "migration": "migr",
+            "installation": "inst",
+            "configuration": "conf",
+            "customization": "cust",
+            "extension": "ext",
+            "plugin": "plg",
+            "addon": "add",
             # Data structures
-            "structure": "struct", "pattern": "pat", "template": "temp", "format": "fmt",
-            "encoding": "enc", "decoding": "dec", "encryption": "enc", "decryption": "dec",
-            "compression": "comp", "decompression": "decomp", "serialization": "ser",
-            "deserialization": "deser", "parsing": "pars", "rendering": "rend",
-
+            "structure": "struct",
+            "pattern": "pat",
+            "template": "temp",
+            "format": "fmt",
+            "encoding": "enc",
+            "decoding": "dec",
+            "encryption": "enc",
+            "decryption": "dec",
+            "compression": "comp",
+            "decompression": "decomp",
+            "serialization": "ser",
+            "deserialization": "deser",
+            "parsing": "pars",
+            "rendering": "rend",
             # Performance
-            "performance": "perf", "efficiency": "eff", "throughput": "thrpt", "latency": "lat",
-            "bandwidth": "bw", "capacity": "cap", "scalability": "scal", "availability": "avail",
-            "reliability": "rel", "robustness": "robust", "stability": "stability",
-
+            "performance": "perf",
+            "efficiency": "eff",
+            "throughput": "thrpt",
+            "latency": "lat",
+            "bandwidth": "bw",
+            "capacity": "cap",
+            "scalability": "scal",
+            "availability": "avail",
+            "reliability": "rel",
+            "robustness": "robust",
+            "stability": "stability",
             # Networking
-            "network": "net", "connection": "conn", "protocol": "proto", "interface": "int",
-            "gateway": "gtw", "firewall": "fw", "router": "rtr", "switch": "swt", "bridge": "brg",
-            "address": "addr", "port": "prt", "host": "hst", "client": "cli", "server": "srv",
-
+            "network": "net",
+            "connection": "conn",
+            "protocol": "proto",
+            "interface": "int",
+            "gateway": "gtw",
+            "firewall": "fw",
+            "router": "rtr",
+            "switch": "swt",
+            "bridge": "brg",
+            "address": "addr",
+            "port": "prt",
+            "host": "hst",
+            "client": "cli",
+            "server": "srv",
             # Security
-            "authentication": "auth", "authorization": "authz", "certificate": "cert",
-            "password": "pwd", "username": "usr", "login": "log", "logout": "logo",
-            "session": "sess", "token": "tk", "key": "k", "signature": "sig",
-            "encryption": "enc", "hash": "hash", "cipher": "cph", "algorithm": "algo",
-
+            "authentication": "auth",
+            "authorization": "authz",
+            "certificate": "cert",
+            "password": "pwd",
+            "username": "usr",
+            "login": "log",
+            "logout": "logo",
+            "session": "sess",
+            "token": "tk",
+            "key": "k",
+            "signature": "sig",
+            "encryption": "enc",
+            "hash": "hash",
+            "cipher": "cph",
+            "algorithm": "algo",
             # Database
-            "database": "db", "table": "tbl", "record": "rec", "field": "fld", "column": "col",
-            "index": "idx", "query": "qry", "transaction": "txn", "rollback": "rb",
-            "commit": "cmt", "migration": "migr", "schema": "sch", "constraint": "cons",
-
+            "database": "db",
+            "table": "tbl",
+            "record": "rec",
+            "field": "fld",
+            "column": "col",
+            "index": "idx",
+            "query": "qry",
+            "transaction": "txn",
+            "rollback": "rb",
+            "commit": "cmt",
+            "migration": "migr",
+            "schema": "sch",
+            "constraint": "cons",
             # Web technologies
-            "hyperlink": "link", "anchor": "anc", "element": "elem", "attribute": "attr",
-            "property": "prop", "method": "meth", "function": "func", "event": "evt",
-            "listener": "lst", "handler": "hdl", "callback": "cb", "promise": "prom",
-            "async": "async", "await": "awt", "sync": "sync",
-
+            "hyperlink": "link",
+            "anchor": "anc",
+            "element": "elem",
+            "attribute": "attr",
+            "property": "prop",
+            "method": "meth",
+            "function": "func",
+            "event": "evt",
+            "listener": "lst",
+            "handler": "hdl",
+            "callback": "cb",
+            "promise": "prom",
+            "async": "async",
+            "await": "awt",
+            "sync": "sync",
             # Project management
-            "project": "proj", "milestone": "ms", "deadline": "dl", "timeline": "tl",
-            "resource": "res", "task": "task", "activity": "act", "deliverable": "del",
-            "stakeholder": "shk", "sponsor": "spon", "owner": "own", "team": "tm",
-            "member": "mem", "leader": "ldr", "manager": "mgr", "director": "dir",
-
+            "project": "proj",
+            "milestone": "ms",
+            "deadline": "dl",
+            "timeline": "tl",
+            "resource": "res",
+            "task": "task",
+            "activity": "act",
+            "deliverable": "del",
+            "stakeholder": "shk",
+            "sponsor": "spon",
+            "owner": "own",
+            "team": "tm",
+            "member": "mem",
+            "leader": "ldr",
+            "manager": "mgr",
+            "director": "dir",
             # Quality assurance
-            "assurance": "assur", "quality": "qlty", "standard": "std", "metric": "met",
-            "benchmark": "bm", "kpi": "kpi", "sla": "sla", "slo": "slo", "test": "test",
-            "verification": "vrfy", "validation": "val", "inspection": "insp", "audit": "aud",
-            "review": "rev", "check": "chk", "control": "ctrl", "monitor": "mon",
-
+            "assurance": "assur",
+            "quality": "qlty",
+            "standard": "std",
+            "metric": "met",
+            "benchmark": "bm",
+            "kpi": "kpi",
+            "sla": "sla",
+            "slo": "slo",
+            "test": "test",
+            "verification": "vrfy",
+            "validation": "val",
+            "inspection": "insp",
+            "audit": "aud",
+            "review": "rev",
+            "check": "chk",
+            "control": "ctrl",
+            "monitor": "mon",
             # Common business terms
-            "business": "biz", "service": "svc", "product": "prod", "solution": "sol",
-            "customer": "cust", "client": "cli", "user": "usr", "consumer": "cons",
-            "market": "mkt", "industry": "ind", "sector": "sec", "domain": "dom",
-            "competition": "comp", "competitor": "comp", "advantage": "adv", "benefit": "ben",
-
+            "business": "biz",
+            "service": "svc",
+            "product": "prod",
+            "solution": "sol",
+            "customer": "cust",
+            "client": "cli",
+            "user": "usr",
+            "consumer": "cons",
+            "market": "mkt",
+            "industry": "ind",
+            "sector": "sec",
+            "domain": "dom",
+            "competition": "comp",
+            "competitor": "comp",
+            "advantage": "adv",
+            "benefit": "ben",
             # Communication patterns
-            "communication": "comm", "message": "msg", "notification": "notif",
-            "alert": "alrt", "report": "rpt", "summary": "sum", "detail": "det",
-            "information": "info", "data": "dt", "content": "cnt", "text": "txt",
-            "document": "doc", "file": "f", "record": "rec", "log": "log",
-
+            "communication": "comm",
+            "message": "msg",
+            "notification": "notif",
+            "alert": "alrt",
+            "report": "rpt",
+            "summary": "sum",
+            "detail": "det",
+            "information": "info",
+            "data": "dt",
+            "content": "cnt",
+            "text": "txt",
+            "document": "doc",
+            "file": "f",
+            "record": "rec",
+            "log": "log",
             # General adjectives
-            "important": "imp", "necessary": "nec", "essential": "ess", "critical": "crit",
-            "significant": "sig", "major": "maj", "minor": "min", "primary": "prim",
-            "secondary": "sec", "main": "main", "key": "k", "core": "core",
-            "central": "ctr", "basic": "bas", "advanced": "adv", "complex": "comp",
-            "simple": "simp", "easy": "easy", "difficult": "diff", "hard": "hard",
-            "quick": "qk", "fast": "fast", "slow": "slow", "urgent": "urg",
-            "high": "hi", "low": "lo", "medium": "med", "average": "avg",
-            "typical": "typ", "normal": "norm", "standard": "std", "regular": "reg",
-            "special": "spec", "unique": "uniq", "common": "comm", "general": "gen",
-            "specific": "spec", "particular": "part", "individual": "ind", "personal": "pers",
-            "public": "pub", "private": "priv", "internal": "int", "external": "ext",
-            "global": "glob", "local": "loc", "regional": "reg", "national": "nat",
-            "international": "intl", "universal": "univ", "worldwide": "ww",
-
+            "important": "imp",
+            "necessary": "nec",
+            "essential": "ess",
+            "critical": "crit",
+            "significant": "sig",
+            "major": "maj",
+            "minor": "min",
+            "primary": "prim",
+            "secondary": "sec",
+            "main": "main",
+            "key": "k",
+            "core": "core",
+            "central": "ctr",
+            "basic": "bas",
+            "advanced": "adv",
+            "complex": "comp",
+            "simple": "simp",
+            "easy": "easy",
+            "difficult": "diff",
+            "hard": "hard",
+            "quick": "qk",
+            "fast": "fast",
+            "slow": "slow",
+            "urgent": "urg",
+            "high": "hi",
+            "low": "lo",
+            "medium": "med",
+            "average": "avg",
+            "typical": "typ",
+            "normal": "norm",
+            "standard": "std",
+            "regular": "reg",
+            "special": "spec",
+            "unique": "uniq",
+            "common": "comm",
+            "general": "gen",
+            "specific": "spec",
+            "particular": "part",
+            "individual": "ind",
+            "personal": "pers",
+            "public": "pub",
+            "private": "priv",
+            "internal": "int",
+            "external": "ext",
+            "global": "glob",
+            "local": "loc",
+            "regional": "reg",
+            "national": "nat",
+            "international": "intl",
+            "universal": "univ",
+            "worldwide": "ww",
             # Time-related
-            "immediate": "imm", "instant": "inst", "current": "curr", "present": "pres",
-            "past": "pst", "future": "fut", "previous": "prev", "following": "fol",
-            "before": "bef", "after": "aft", "during": "dur", "while": "while",
-            "until": "unt", "since": "since", "already": "alrdy", "still": "stl",
-            "now": "nw", "then": "then", "soon": "soon", "later": "lat", "early": "early",
-            "late": "late", "on-time": "ot", "delayed": "del", "scheduled": "sch",
-
+            "immediate": "imm",
+            "instant": "inst",
+            "current": "curr",
+            "present": "pres",
+            "past": "pst",
+            "future": "fut",
+            "previous": "prev",
+            "following": "fol",
+            "before": "bef",
+            "after": "aft",
+            "during": "dur",
+            "while": "while",
+            "until": "unt",
+            "since": "since",
+            "already": "alrdy",
+            "still": "stl",
+            "now": "nw",
+            "then": "then",
+            "soon": "soon",
+            "later": "lat",
+            "early": "early",
+            "late": "late",
+            "on-time": "ot",
+            "delayed": "del",
+            "scheduled": "sch",
             # Quantity
-            "many": "many", "few": "few", "some": "some", "all": "all", "none": "none",
-            "each": "ea", "every": "ev", "both": "both", "either": "eith", "neither": "neith",
-            "first": "1st", "second": "2nd", "third": "3rd", "fourth": "4th",
-            "fifth": "5th", "sixth": "6th", "seventh": "7th", "eighth": "8th",
-            "ninth": "9th", "tenth": "10th", "hundred": "100", "thousand": "1000",
-            "million": "M", "billion": "B", "trillion": "T",
-
+            "many": "many",
+            "few": "few",
+            "some": "some",
+            "all": "all",
+            "none": "none",
+            "each": "ea",
+            "every": "ev",
+            "both": "both",
+            "either": "eith",
+            "neither": "neith",
+            "first": "1st",
+            "second": "2nd",
+            "third": "3rd",
+            "fourth": "4th",
+            "fifth": "5th",
+            "sixth": "6th",
+            "seventh": "7th",
+            "eighth": "8th",
+            "ninth": "9th",
+            "tenth": "10th",
+            "hundred": "100",
+            "thousand": "1000",
+            "million": "M",
+            "billion": "B",
+            "trillion": "T",
             # Colors and characteristics
-            "red": "rd", "blue": "blu", "green": "grn", "yellow": "ylw", "orange": "org",
-            "purple": "pur", "pink": "pnk", "brown": "brn", "black": "blk", "white": "wht",
-            "gray": "gy", "grey": "gy", "light": "lt", "dark": "dk", "bright": "brt",
-            "pale": "pal", "deep": "dp", "rich": "rch", "plain": "pln", "bold": "bld",
-
+            "red": "rd",
+            "blue": "blu",
+            "green": "grn",
+            "yellow": "ylw",
+            "orange": "org",
+            "purple": "pur",
+            "pink": "pnk",
+            "brown": "brn",
+            "black": "blk",
+            "white": "wht",
+            "gray": "gy",
+            "grey": "gy",
+            "light": "lt",
+            "dark": "dk",
+            "bright": "brt",
+            "pale": "pal",
+            "deep": "dp",
+            "rich": "rch",
+            "plain": "pln",
+            "bold": "bld",
             # Physical properties
-            "big": "bg", "small": "sm", "large": "lg", "tiny": "tn", "huge": "hg",
-            "long": "lg", "short": "sh", "tall": "tl", "wide": "wd", "narrow": "nrr",
-            "thick": "thk", "thin": "thn", "heavy": "hv", "light": "lt", "strong": "str",
-            "weak": "wk", "soft": "sft", "hard": "hd", "smooth": "smth", "rough": "rgh",
-
+            "big": "bg",
+            "small": "sm",
+            "large": "lg",
+            "tiny": "tn",
+            "huge": "hg",
+            "long": "lg",
+            "short": "sh",
+            "tall": "tl",
+            "wide": "wd",
+            "narrow": "nrr",
+            "thick": "thk",
+            "thin": "thn",
+            "heavy": "hv",
+            "light": "lt",
+            "strong": "str",
+            "weak": "wk",
+            "soft": "sft",
+            "hard": "hd",
+            "smooth": "smth",
+            "rough": "rgh",
             # Human-related
-            "person": "pers", "people": "ppl", "human": "hm", "man": "mn", "woman": "wm",
-            "child": "chld", "adult": "adlt", "family": "fam", "friend": "frnd", "colleague": "col",
-            "partner": "prt", "associate": "assoc", "member": "mem", "staff": "stf",
-            "employee": "emp", "worker": "wrk", "volunteer": "vol", "expert": "exp",
-
+            "person": "pers",
+            "people": "ppl",
+            "human": "hm",
+            "man": "mn",
+            "woman": "wm",
+            "child": "chld",
+            "adult": "adlt",
+            "family": "fam",
+            "friend": "frnd",
+            "colleague": "col",
+            "partner": "prt",
+            "associate": "assoc",
+            "member": "mem",
+            "staff": "stf",
+            "employee": "emp",
+            "worker": "wrk",
+            "volunteer": "vol",
+            "expert": "exp",
             # Emotional states
-            "happy": "hap", "sad": "sad", "angry": "ang", "excited": "exc", "nervous": "nerv",
-            "confident": "conf", "worried": "wry", "relaxed": "rel", "tired": "tird", "energetic": "enr",
-            "calm": "clm", "stressed": "strss", "motivated": "mot", "discouraged": "disc",
-            "satisfied": "sat", "disappointed": "dis", "pleased": "plsd", "grateful": "grtf",
-
+            "happy": "hap",
+            "sad": "sad",
+            "angry": "ang",
+            "excited": "exc",
+            "nervous": "nerv",
+            "confident": "conf",
+            "worried": "wry",
+            "relaxed": "rel",
+            "tired": "tird",
+            "energetic": "enr",
+            "calm": "clm",
+            "stressed": "strss",
+            "motivated": "mot",
+            "discouraged": "disc",
+            "satisfied": "sat",
+            "disappointed": "dis",
+            "pleased": "plsd",
+            "grateful": "grtf",
             # Educational terms
-            "student": "stu", "teacher": "tchr", "professor": "prof", "instructor": "inst",
-            "university": "univ", "college": "coll", "school": "sch", "class": "cls",
-            "course": "crs", "lesson": "les", "subject": "subj", "topic": "top",
-            "homework": "hw", "assignment": "asgn", "project": "proj", "exam": "exam",
-
+            "student": "stu",
+            "teacher": "tchr",
+            "professor": "prof",
+            "instructor": "inst",
+            "university": "univ",
+            "college": "coll",
+            "school": "sch",
+            "class": "cls",
+            "course": "crs",
+            "lesson": "les",
+            "subject": "subj",
+            "topic": "top",
+            "homework": "hw",
+            "assignment": "asgn",
+            "project": "proj",
+            "exam": "exam",
             # Technology-specific
-            "software": "sw", "hardware": "hw", "firmware": "fw", "middleware": "mw",
-            "frontend": "fe", "backend": "be", "fullstack": "fs", "devops": "do",
-            "cloud": "cld", "container": "cnt", "virtualization": "virt", "automation": "auto",
-            "artificial": "art", "intelligence": "intel", "machine": "mac", "learning": "lrn",
-            "neural": "neur", "network": "net", "wireless": "wl", "mobile": "mob",
-            "responsive": "resp", "interactive": "int", "dynamic": "dyn", "static": "stat",
-
+            "software": "sw",
+            "hardware": "hw",
+            "firmware": "fw",
+            "middleware": "mw",
+            "frontend": "fe",
+            "backend": "be",
+            "fullstack": "fs",
+            "devops": "do",
+            "cloud": "cld",
+            "container": "cnt",
+            "virtualization": "virt",
+            "automation": "auto",
+            "artificial": "art",
+            "intelligence": "intel",
+            "machine": "mac",
+            "learning": "lrn",
+            "neural": "neur",
+            "network": "net",
+            "wireless": "wl",
+            "mobile": "mob",
+            "responsive": "resp",
+            "interactive": "int",
+            "dynamic": "dyn",
+            "static": "stat",
             # Medical and health
-            "health": "hlth", "medical": "med", "doctor": "doc", "patient": "pat",
-            "hospital": "hosp", "clinic": "cln", "treatment": "tmt", "therapy": "ther",
-            "diagnosis": "dx", "symptom": "sym", "disease": "dis", "condition": "cond",
-            "prevention": "prev", "cure": "cure", "healing": "heal", "recovery": "rec",
-
+            "health": "hlth",
+            "medical": "med",
+            "doctor": "doc",
+            "patient": "pat",
+            "hospital": "hosp",
+            "clinic": "cln",
+            "treatment": "tmt",
+            "therapy": "ther",
+            "diagnosis": "dx",
+            "symptom": "sym",
+            "disease": "dis",
+            "condition": "cond",
+            "prevention": "prev",
+            "cure": "cure",
+            "healing": "heal",
+            "recovery": "rec",
             # Environmental
-            "environment": "env", "climate": "clim", "weather": "wthr", "temperature": "temp",
-            "pollution": "poll", "waste": "wst", "recycle": "rec", "renewable": "ren",
-            "sustainable": "sus", "green": "grn", "clean": "cln", "dirty": "drt",
-            "natural": "nat", "artificial": "art", "organic": "org", "synthetic": "syn",
-
+            "environment": "env",
+            "climate": "clim",
+            "weather": "wthr",
+            "temperature": "temp",
+            "pollution": "poll",
+            "waste": "wst",
+            "recycle": "rec",
+            "renewable": "ren",
+            "sustainable": "sus",
+            "green": "grn",
+            "clean": "cln",
+            "dirty": "drt",
+            "natural": "nat",
+            "artificial": "art",
+            "organic": "org",
+            "synthetic": "syn",
             # Financial and economic
-            "money": "mon", "cash": "csh", "currency": "curr", "exchange": "exch",
-            "investment": "inv", "profit": "prft", "loss": "loss", "budget": "bgt",
-            "expense": "exp", "income": "inc", "revenue": "rev", "asset": "ast",
-            "liability": "lib", "equity": "eq", "capital": "cap", "credit": "cr",
-            "debt": "dbt", "interest": "int", "rate": "rt", "tax": "tx",
-
+            "money": "mon",
+            "cash": "csh",
+            "currency": "curr",
+            "exchange": "exch",
+            "investment": "inv",
+            "profit": "prft",
+            "loss": "loss",
+            "budget": "bgt",
+            "expense": "exp",
+            "income": "inc",
+            "revenue": "rev",
+            "asset": "ast",
+            "liability": "lib",
+            "equity": "eq",
+            "capital": "cap",
+            "credit": "cr",
+            "debt": "dbt",
+            "interest": "int",
+            "rate": "rt",
+            "tax": "tx",
             # Legal and regulatory
-            "legal": "leg", "law": "law", "court": "crt", "judge": "jdg",
-            "lawyer": "lwy", "attorney": "atty", "contract": "ctr", "agreement": "agr",
-            "regulation": "reg", "compliance": "comp", "policy": "pol", "procedure": "proc",
-            "right": "rt", "duty": "dty", "obligation": "obl", "responsibility": "resp",
-
+            "legal": "leg",
+            "law": "law",
+            "court": "crt",
+            "judge": "jdg",
+            "lawyer": "lwy",
+            "attorney": "atty",
+            "contract": "ctr",
+            "agreement": "agr",
+            "regulation": "reg",
+            "compliance": "comp",
+            "policy": "pol",
+            "procedure": "proc",
+            "right": "rt",
+            "duty": "dty",
+            "obligation": "obl",
+            "responsibility": "resp",
             # Travel and transportation
-            "travel": "trvl", "transportation": "trans", "vehicle": "veh", "car": "cr",
-            "train": "trn", "plane": "pln", "ship": "shp", "bus": "bs", "taxi": "txi",
-            "airport": "apt", "station": "stn", "route": "rte", "destination": "dest",
-            "journey": "jrn", "trip": "trp", "vacation": "vac", "holiday": "hol",
-
+            "travel": "trvl",
+            "transportation": "trans",
+            "vehicle": "veh",
+            "car": "cr",
+            "train": "trn",
+            "plane": "pln",
+            "ship": "shp",
+            "bus": "bs",
+            "taxi": "txi",
+            "airport": "apt",
+            "station": "stn",
+            "route": "rte",
+            "destination": "dest",
+            "journey": "jrn",
+            "trip": "trp",
+            "vacation": "vac",
+            "holiday": "hol",
             # Food and dining
-            "food": "fd", "meal": "ml", "restaurant": "rest", "kitchen": "kitch",
-            "recipe": "rec", "ingredient": "ingr", "cooking": "cook", "baking": "bake",
-            "breakfast": "bkfst", "lunch": "lnch", "dinner": "dinn", "snack": "snk",
-            "dessert": "des", "beverage": "bev", "drink": "drnk", "coffee": "coffee",
-            "tea": "tea", "water": "h2o", "juice": "juice", "soda": "soda",
-
+            "food": "fd",
+            "meal": "ml",
+            "restaurant": "rest",
+            "kitchen": "kitch",
+            "recipe": "rec",
+            "ingredient": "ingr",
+            "cooking": "cook",
+            "baking": "bake",
+            "breakfast": "bkfst",
+            "lunch": "lnch",
+            "dinner": "dinn",
+            "snack": "snk",
+            "dessert": "des",
+            "beverage": "bev",
+            "drink": "drnk",
+            "coffee": "coffee",
+            "tea": "tea",
+            "water": "h2o",
+            "juice": "juice",
+            "soda": "soda",
             # Entertainment
-            "entertainment": "ent", "movie": "mov", "film": "flm", "music": "mus",
-            "game": "gm", "sport": "sp", "play": "ply", "show": "shw", "performance": "perf",
-            "concert": "conc", "theater": "thr", "museum": "mus", "park": "pk",
-            "festival": "fest", "party": "pty", "celebration": "celeb", "event": "evt",
-
+            "entertainment": "ent",
+            "movie": "mov",
+            "film": "flm",
+            "music": "mus",
+            "game": "gm",
+            "sport": "sp",
+            "play": "ply",
+            "show": "shw",
+            "performance": "perf",
+            "concert": "conc",
+            "theater": "thr",
+            "museum": "mus",
+            "park": "pk",
+            "festival": "fest",
+            "party": "pty",
+            "celebration": "celeb",
+            "event": "evt",
             # Home and living
-            "home": "hm", "house": "hs", "apartment": "apt", "room": "rm",
-            "furniture": "furn", "decoration": "decor", "kitchen": "kit", "bathroom": "bath",
-            "bedroom": "bed", "living": "liv", "dining": "din", "garden": "gard",
-            "garage": "gar", "basement": "base", "attic": "att", "porch": "por",
-            "neighborhood": "nbrhd", "community": "comm", "city": "cty",
-
+            "home": "hm",
+            "house": "hs",
+            "apartment": "apt",
+            "room": "rm",
+            "furniture": "furn",
+            "decoration": "decor",
+            "kitchen": "kit",
+            "bathroom": "bath",
+            "bedroom": "bed",
+            "living": "liv",
+            "dining": "din",
+            "garden": "gard",
+            "garage": "gar",
+            "basement": "base",
+            "attic": "att",
+            "porch": "por",
+            "neighborhood": "nbrhd",
+            "community": "comm",
+            "city": "cty",
             # Shopping and retail
-            "shopping": "shop", "store": "str", "mall": "mall", "market": "mkt",
-            "product": "prod", "brand": "brnd", "price": "prc", "sale": "sal",
-            "discount": "disc", "offer": "off", "deal": "dl", "bargain": "bar",
-            "purchase": "pur", "order": "ord", "delivery": "del", "shipping": "ship",
-            "customer": "cust", "service": "svc", "return": "ret", "exchange": "exch",
-
+            "shopping": "shop",
+            "store": "str",
+            "mall": "mall",
+            "market": "mkt",
+            "product": "prod",
+            "brand": "brnd",
+            "price": "prc",
+            "sale": "sal",
+            "discount": "disc",
+            "offer": "off",
+            "deal": "dl",
+            "bargain": "bar",
+            "purchase": "pur",
+            "order": "ord",
+            "delivery": "del",
+            "shipping": "ship",
+            "customer": "cust",
+            "service": "svc",
+            "return": "ret",
+            "exchange": "exch",
             # Sports and fitness
-            "sport": "sp", "exercise": "exer", "workout": "wrk", "training": "trn",
-            "fitness": "fit", "health": "hlth", "gym": "gym", "equipment": "eqp",
-            "competition": "comp", "tournament": "tourn", "match": "match", "game": "gm",
-            "team": "tm", "player": "plyr", "coach": "cch", "score": "scr",
-            "goal": "gl", "point": "pt", "win": "win", "lose": "lose"
+            "sport": "sp",
+            "exercise": "exer",
+            "workout": "wrk",
+            "training": "trn",
+            "fitness": "fit",
+            "health": "hlth",
+            "gym": "gym",
+            "equipment": "eqp",
+            "competition": "comp",
+            "tournament": "tourn",
+            "match": "match",
+            "game": "gm",
+            "team": "tm",
+            "player": "plyr",
+            "coach": "cch",
+            "score": "scr",
+            "goal": "gl",
+            "point": "pt",
+            "win": "win",
+            "lose": "lose",
         }
 
         # Combine all abbreviations
@@ -429,35 +1130,33 @@ class EnhancedAgentCommunicationOptimizer:
                 "field_mappings": {
                     "task": ["task", "job", "work", "operation"],
                     "priority": ["priority", "urgency", "importance"],
-                    "deadline": ["deadline", "due_date", "timeline"]
-                }
+                    "deadline": ["deadline", "due_date", "timeline"],
+                },
             },
             "status_update": {
                 "required_fields": ["type", "status"],
                 "compression_level": OptimizationLevel.AGGRESSIVE,
                 "field_mappings": {
                     "status": ["status", "state", "condition"],
-                    "progress": ["progress", "completion", "advancement"]
-                }
+                    "progress": ["progress", "completion", "advancement"],
+                },
             },
             "data_transfer": {
                 "required_fields": ["type", "data"],
                 "compression_level": OptimizationLevel.AGGRESSIVE,
-                "field_mappings": {
-                    "data": ["data", "content", "payload", "information"]
-                }
+                "field_mappings": {"data": ["data", "content", "payload", "information"]},
             },
             "error_report": {
                 "required_fields": ["type", "error"],
                 "compression_level": OptimizationLevel.CONSERVATIVE,
-                "field_mappings": {
-                    "error": ["error", "issue", "problem", "exception"]
-                }
-            }
+                "field_mappings": {"error": ["error", "issue", "problem", "exception"]},
+            },
         }
 
-    def optimize_message(self, message: Dict[str, Any],
-                         level: OptimizationLevel = OptimizationLevel.STANDARD) -> OptimizationResult:
+    def optimize_message(
+        self, message: Dict[str, Any], level: OptimizationLevel = OptimizationLevel.STANDARD
+    )-> OptimizationResult:
+        """Optimize Message."""
         """
         Optimize a message for token efficiency with guaranteed 25-35% reduction.
 
@@ -481,7 +1180,7 @@ class EnhancedAgentCommunicationOptimizer:
             return cached_result
 
         # Calculate original tokens
-        original_json = json.dumps(message, separators=(',', ':'))
+        original_json = json.dumps(message, separators=(",", ":"))
         original_tokens = self._estimate_tokens(original_json)
 
         # Determine message type for template-based optimization
@@ -522,7 +1221,7 @@ class EnhancedAgentCommunicationOptimizer:
             processing_time_ms=processing_time,
             optimization_method=level.value,
             compression_ratio=optimized_tokens / original_tokens if original_tokens > 0 else 1.0,
-            integrity_preserved=integrity_preserved
+            integrity_preserved=integrity_preserved,
         )
 
         # Cache the result
@@ -533,8 +1232,10 @@ class EnhancedAgentCommunicationOptimizer:
 
         return result
 
-    def optimize_conversation(self, conversation: List[Dict[str, Any]],
-                             level: OptimizationLevel = OptimizationLevel.STANDARD) -> Dict[str, Any]:
+    def optimize_conversation(
+        self, conversation: List[Dict[str, Any]], level: OptimizationLevel = OptimizationLevel.STANDARD
+    )-> Dict[str, Any]:
+        """Optimize Conversation."""
         """
         Optimize an entire conversation with context-aware optimization.
 
@@ -576,7 +1277,7 @@ class EnhancedAgentCommunicationOptimizer:
             "overall_savings_percentage": overall_savings_percentage,
             "messages_processed": len(optimized_messages),
             "optimization_level": level.value,
-            "conversation_context": conversation_context
+            "conversation_context": conversation_context,
         }
 
     def get_statistics(self) -> Dict[str, Any]:
@@ -591,7 +1292,7 @@ class EnhancedAgentCommunicationOptimizer:
             "cache_hit_rate": self.stats["cache_hits"] / max(1, len(self.optimization_cache)),
             "average_processing_time": self.stats["processing_time_total"] / max(1, self.stats["total_optimizations"]),
             "optimization_efficiency": self._calculate_efficiency_score(),
-            "cache_size": len(self.optimization_cache)
+            "cache_size": len(self.optimization_cache),
         }
 
     def _determine_message_type(self, message: Dict[str, Any]) -> str:
@@ -610,12 +1311,13 @@ class EnhancedAgentCommunicationOptimizer:
 
         return "general"
 
-    def _template_based_optimization(self, message: Dict[str, Any],
-                                     template_config: Dict[str, Any],
-                                     level: OptimizationLevel) -> str:
+    def _template_based_optimization(
+        self, message: Dict[str, Any], template_config: Dict[str, Any], level: OptimizationLevel
+    )-> str:
+        """ Template Based Optimization."""
         """Apply template-based optimization for known message types."""
         # Start with JSON optimization
-        json_str = json.dumps(message, separators=(',', ':'))
+        json_str = json.dumps(message, separators=(",", ":"))
 
         # Apply field mappings for this template
         field_mappings = template_config.get("field_mappings", {})
@@ -656,10 +1358,10 @@ class EnhancedAgentCommunicationOptimizer:
     def _basic_json_optimization(self, json_str: str) -> str:
         """Basic JSON optimization."""
         # Remove extra whitespace
-        optimized = re.sub(r'\s+', ' ', json_str.strip())
+        optimized = re.sub(r"\s+", " ", json_str.strip())
 
         # Remove unnecessary quotes around simple keys
-        optimized = re.sub(r'"([a-zA-Z_][a-zA-Z0-9_]*)":', r'\1:', optimized)
+        optimized = re.sub(r'"([a-zA-Z_][a-zA-Z0-9_]*)":', r"\1:", optimized)
 
         return optimized
 
@@ -668,7 +1370,7 @@ class EnhancedAgentCommunicationOptimizer:
         # Create a regex pattern that matches whole words
         for full_word, abbreviation in self.word_mappings.items():
             # Replace whole words only (word boundaries)
-            pattern = r'\b' + re.escape(full_word) + r'\b'
+            pattern = r"\b" + re.escape(full_word) + r"\b"
             text = re.sub(pattern, abbreviation, text, flags=re.IGNORECASE)
 
         return text
@@ -676,11 +1378,11 @@ class EnhancedAgentCommunicationOptimizer:
     def _apply_conservative_optimizations(self, text: str) -> str:
         """Apply conservative optimizations."""
         # Remove redundant spaces
-        text = re.sub(r' +', ' ', text)
+        text = re.sub(r" +", " ", text)
 
         # Remove unnecessary colons after brackets
-        text = re.sub(r'\[\s*\]', '[]', text)
-        text = re.sub(r'\{\s*\}', '{}', text)
+        text = re.sub(r"\[\s*\]", "[]", text)
+        text = re.sub(r"\{\s*\}", "{}", text)
 
         return text
 
@@ -690,14 +1392,14 @@ class EnhancedAgentCommunicationOptimizer:
         text = self._apply_conservative_optimizations(text)
 
         # Remove quotes around simple values
-        text = re.sub(r':\s*"([^"]+)"', r':\1', text)
+        text = re.sub(r':\s*"([^"]+)"', r":\1", text)
 
         # Compress arrays
-        text = re.sub(r',\s*', ',', text)
-        text = re.sub(r'\[\s*\]', '[]', text)
+        text = re.sub(r",\s*", ",", text)
+        text = re.sub(r"\[\s*\]", "[]", text)
 
         # Compress objects
-        text = re.sub(r'\{\s*\}', '{}', text)
+        text = re.sub(r"\{\s*\}", "{}", text)
 
         return text
 
@@ -707,11 +1409,11 @@ class EnhancedAgentCommunicationOptimizer:
         text = self._apply_standard_optimizations(text)
 
         # Remove all non-essential whitespace
-        text = re.sub(r'\s+', '', text)
+        text = re.sub(r"\s+", "", text)
 
         # Remove unnecessary brackets
-        text = re.sub(r':\{\}', ':{}', text)
-        text = re.sub(r':\[\]', ':[]', text)
+        text = re.sub(r":\{\}", ":{}", text)
+        text = re.sub(r":\[\]", ":[]", text)
 
         return text
 
@@ -722,12 +1424,12 @@ class EnhancedAgentCommunicationOptimizer:
 
         # Additional character-level optimizations
         # Replace common patterns with single characters
-        text = text.replace('"true"', 't')
-        text = text.replace('"false"', 'f')
-        text = text.replace('"null"', 'n')
+        text = text.replace('"true"', "t")
+        text = text.replace('"false"', "f")
+        text = text.replace('"null"', "n")
 
         # Remove remaining quotes around single character values
-        text = re.sub(r':\"([a-zA-Z])\"', r':\1', text)
+        text = re.sub(r":\"([a-zA-Z])\"", r":\1", text)
 
         return text
 
@@ -776,20 +1478,15 @@ class EnhancedAgentCommunicationOptimizer:
             "message_count": len(conversation),
             "message_types": list(set(msg.get("type", "unknown") for msg in conversation)),
             "participants": list(set(msg.get("sender", msg.get("from", "unknown")) for msg in conversation)),
-            "has_repetitive_patterns": len(conversation) > 3
+            "has_repetitive_patterns": len(conversation) > 3,
         }
 
-    def _add_conversation_context(self, message: Dict[str, Any], index: int,
-                                 context: Dict[str, Any]) -> Dict[str, Any]:
+    def _add_conversation_context(self, message: Dict[str, Any], index: int, context: Dict[str, Any]) -> Dict[str, Any]:
         """Add conversation context to message for better optimization."""
         enhanced_message = message.copy()
 
         # Add context metadata
-        enhanced_message["_ctx"] = {
-            "idx": index,
-            "total": context["message_count"],
-            "conv": context["message_count"] > 5
-        }
+        enhanced_message["_ctx"] = {"idx": index, "total": context["message_count"], "conv": context["message_count"] > 5}
 
         return enhanced_message
 
@@ -805,7 +1502,7 @@ class EnhancedAgentCommunicationOptimizer:
         savings_score = min(100, avg_savings / 30 * 100)  # Target 30% savings
         speed_score = min(100, 1000 / max(1, avg_time))  # Target <1ms
 
-        return (savings_score * 0.7 + speed_score * 0.3)
+        return savings_score * 0.7 + speed_score * 0.3
 
     def _update_statistics(self, result: OptimizationResult):
         """Update optimization statistics."""
@@ -829,8 +1526,7 @@ class EnhancedAgentCommunicationOptimizer:
 
 
 # Convenience functions for easy usage
-def optimize_agent_message(message: Dict[str, Any],
-                          level: str = "standard") -> Dict[str, Any]:
+def optimize_agent_message(message: Dict[str, Any], level: str = "standard") -> Dict[str, Any]:
     """
     Convenience function to optimize a single agent message.
 
@@ -861,7 +1557,7 @@ def optimize_agent_message(message: Dict[str, Any],
         "processing_time_ms": result.processing_time_ms,
         "compression_ratio": result.compression_ratio,
         "integrity_preserved": result.integrity_preserved,
-        "optimization_method": result.optimization_method
+        "optimization_method": result.optimization_method,
     }
 
 
@@ -891,7 +1587,7 @@ def main():
                     "check_input_validation": True,
                     "check_output_encoding": True,
                     "check_cryptography_standards": True,
-                    "check_error_handling": True
+                    "check_error_handling": True,
                 },
                 "performance_analysis": {
                     "check_algorithm_efficiency": True,
@@ -901,7 +1597,7 @@ def main():
                     "check_resource_leak_detection": True,
                     "check_concurrency_issues": True,
                     "check_caching_opportunities": True,
-                    "check_scalability_concerns": True
+                    "check_scalability_concerns": True,
                 },
                 "code_quality_analysis": {
                     "check_code_style_compliance": True,
@@ -911,8 +1607,8 @@ def main():
                     "check_test_coverage_requirements": True,
                     "check_modular_design_principles": True,
                     "check_dependency_management": True,
-                    "check_version_control_practices": True
-                }
+                    "check_version_control_practices": True,
+                },
             },
             "context": {
                 "project_framework": "django",
@@ -924,7 +1620,7 @@ def main():
                 "last_security_audit": "2024-10-15",
                 "compliance_standards": ["OWASP", "SOC2", "GDPR"],
                 "business_criticality": "high",
-                "user_impact_level": "significant"
+                "user_impact_level": "significant",
             },
             "additional_requirements": {
                 "review_priority": "high",
@@ -935,9 +1631,9 @@ def main():
                 "notification_requirements": {
                     "email_stakeholders": True,
                     "create_jira_ticket": True,
-                    "update_project_board": True
-                }
-            }
+                    "update_project_board": True,
+                },
+            },
         },
         "metadata": {
             "timestamp": "2024-11-05T15:30:00Z",
@@ -946,8 +1642,8 @@ def main():
             "user_id": "user_456_security_admin",
             "client_version": "2.1.0",
             "ip_address": "192.168.1.100",
-            "authentication_method": "oauth2"
-        }
+            "authentication_method": "oauth2",
+        },
     }
 
     print(f"\nOriginal message size: {len(str(test_message))} characters")
@@ -981,8 +1677,8 @@ def main():
                 "task": "comprehensive_vulnerability_assessment",
                 "priority": "critical",
                 "deadline": "2024-11-10",
-                "requirements": ["thorough_analysis", "detailed_reporting"]
-            }
+                "requirements": ["thorough_analysis", "detailed_reporting"],
+            },
         },
         {
             "type": "status_update",
@@ -990,8 +1686,8 @@ def main():
                 "status": "in_progress",
                 "progress": 65,
                 "current_phase": "security_scanning",
-                "estimated_completion": "2024-11-08"
-            }
+                "estimated_completion": "2024-11-08",
+            },
         },
         {
             "type": "data_transfer",
@@ -999,21 +1695,17 @@ def main():
                 "analysis_results": {
                     "vulnerabilities_found": 3,
                     "performance_issues": 5,
-                    "recommendations": ["patch_vulnerabilities", "optimize_queries", "implement_caching"]
+                    "recommendations": ["patch_vulnerabilities", "optimize_queries", "implement_caching"],
                 }
-            }
+            },
         },
         {
             "type": "status_update",
             "content": {
                 "status": "completed",
-                "final_results": {
-                    "vulnerabilities_fixed": 3,
-                    "performance_improvements": 15,
-                    "overall_quality_score": 92
-                }
-            }
-        }
+                "final_results": {"vulnerabilities_fixed": 3, "performance_improvements": 15, "overall_quality_score": 92},
+            },
+        },
     ]
 
     conv_result = optimizer.optimize_conversation(conversation, OptimizationLevel.STANDARD)
@@ -1038,7 +1730,7 @@ def main():
 
     # Show method usage statistics
     print(f"\nOptimization methods used:")
-    for method, count in stats['compression_methods_used'].items():
+    for method, count in stats["compression_methods_used"].items():
         print(f"   {method}: {count} times")
 
     print(f"\nEnhanced Agent Communication Optimizer demo completed!")

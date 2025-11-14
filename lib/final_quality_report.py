@@ -7,56 +7,48 @@ import sys
 from pathlib import Path
 import json
 
+
 def generate_final_report():
     """Generate the final quality report with proper formatting"""
 
     # Calculate final metrics based on our analysis
     metrics = {
-        'python_tests': {
-            'tests_run': 20,
-            'tests_passed': 20,
-            'tests_failed': 0,
-            'coverage_percentage': 4,
-            'python_files_total': 99,
-            'python_files_valid': 68,
-            'syntax_errors': 31
+        "python_tests": {
+            "tests_run": 20,
+            "tests_passed": 20,
+            "tests_failed": 0,
+            "coverage_percentage": 4,
+            "python_files_total": 99,
+            "python_files_valid": 68,
+            "syntax_errors": 31,
         },
-        'json_validation': {
-            'plugin_json': 'VALID',
-            'patterns_json': 'VALID',
-            'total_json_files': 2,
-            'valid_files': 2
+        "json_validation": {"plugin_json": "VALID", "patterns_json": "VALID", "total_json_files": 2, "valid_files": 2},
+        "yaml_validation": {
+            "agent_files": {"total": 22, "valid": 22, "errors": 0},
+            "skill_files": {"total": 17, "valid": 17, "errors": 0},
+            "total_files": 39,
+            "valid_files": 39,
         },
-        'yaml_validation': {
-            'agent_files': {'total': 22, 'valid': 22, 'errors': 0},
-            'skill_files': {'total': 17, 'valid': 17, 'errors': 0},
-            'total_files': 39,
-            'valid_files': 39
+        "documentation": {
+            "commands": 39,
+            "agents": 22,
+            "skills": 17,
+            "readme_files": 3,
+            "docs_directory_files": 107,
+            "total_documentation_files": 188,
         },
-        'documentation': {
-            'commands': 39,
-            'agents': 22,
-            'skills': 17,
-            'readme_files': 3,
-            'docs_directory_files': 107,
-            'total_documentation_files': 188
+        "plugin_structure": {
+            "required_directories_present": 5,
+            "component_counts": {"agents": 22, "skills": 17, "commands": 39},
         },
-        'plugin_structure': {
-            'required_directories_present': 5,
-            'component_counts': {
-                'agents': 22,
-                'skills': 17,
-                'commands': 39
-            }
-        }
     }
 
     # Calculate quality score
-    test_score = min(30, (metrics['python_tests']['coverage_percentage'] / 100) * 30)
-    standards_score = max(0, 25 - (metrics['python_tests']['syntax_errors'] * 0.8))
+    test_score = min(30, (metrics["python_tests"]["coverage_percentage"] / 100) * 30)
+    standards_score = max(0, 25 - (metrics["python_tests"]["syntax_errors"] * 0.8))
     docs_score = 20.0  # Excellent documentation
     patterns_score = 15.0  # Perfect structure adherence
-    code_metrics_score = (metrics['python_tests']['python_files_valid'] / metrics['python_tests']['python_files_total']) * 10
+    code_metrics_score = (metrics["python_tests"]["python_files_valid"] / metrics["python_tests"]["python_files_total"]) * 10
 
     total_score = test_score + standards_score + docs_score + patterns_score + code_metrics_score
 
@@ -263,6 +255,7 @@ For detailed technical analysis, see: .claude/reports/QUALITY_REPORT_2025-10-30.
 
     return report_content
 
+
 def main():
     """Generate and save the final quality report"""
     print("Generating final comprehensive quality report...")
@@ -270,10 +263,10 @@ def main():
     report_content = generate_final_report()
 
     # Save to report directory
-    report_file = Path('.claude/reports/QUALITY_CONTROL_REPORT_2025-10-30.md')
+    report_file = Path(".claude/reports/QUALITY_CONTROL_REPORT_2025-10-30.md")
     report_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(report_file, 'w', encoding='utf-8') as f:
+    with open(report_file, "w", encoding="utf-8") as f:
         f.write(report_content)
 
     print(f" Final quality report saved to: {report_file}")
@@ -286,6 +279,7 @@ def main():
 
     return True
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     success = main()
     sys.exit(0 if success else 1)

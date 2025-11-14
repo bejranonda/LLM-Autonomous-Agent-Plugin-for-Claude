@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
 
+
 class TargetedSyntaxFixer:
     def __init__(self, lib_dir: str = "lib"):
         self.lib_dir = Path(lib_dir)
@@ -21,7 +22,7 @@ class TargetedSyntaxFixer:
     def check_syntax(self, file_path: Path) -> Tuple[bool, Optional[str]]:
         """Check if a Python file has valid syntax."""
         try:
-            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
             ast.parse(content)
             return True, None
@@ -31,25 +32,25 @@ class TargetedSyntaxFixer:
             return False, f"Error reading file: {str(e)}"
 
     def fix_malformed_shebang(self, content: str) -> str:
-        """Fix malformed shebang lines like #!/usr/bin/env python3,\"\"\""""
-        lines = content.split('\n')
-        if lines and lines[0].startswith('#!/usr/bin/env python3'):
+        """Fix malformed shebang lines like #!/usr/bin/env python3,\"\"\" """
+        lines = content.split("\n")
+        if lines and lines[0].startswith("#!/usr/bin/env python3"):
             # Fix various shebang issues
-            lines[0] = '#!/usr/bin/env python3'
-        return '\n'.join(lines)
+            lines[0] = "#!/usr/bin/env python3"
+        return "\n".join(lines)
 
     def fix_malformed_docstring_start(self, content: str) -> str:
         """Fix malformed docstring starts"""
         # Pattern: #!/usr/bin/env python3,"""  ->  #!/usr/bin/env python3\n"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for i, line in enumerate(lines):
-            if i == 0 and line.startswith('#!/usr/bin/env python3'):
+            if i == 0 and line.startswith("#!/usr/bin/env python3"):
                 # Handle shebang
                 if line.count('"') >= 3:
                     # Extract just the shebang part
-                    fixed_lines.append('#!/usr/bin/env python3')
+                    fixed_lines.append("#!/usr/bin/env python3")
                     # Start docstring on next line
                     if '"""' in line:
                         remaining = line.split('"""', 1)[1].strip()
@@ -63,11 +64,11 @@ class TargetedSyntaxFixer:
             else:
                 fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_unterminated_triple_quotes(self, content: str) -> str:
         """Fix unterminated triple-quoted strings"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
         in_triple_quote = False
         quote_type = None
@@ -98,30 +99,30 @@ class TargetedSyntaxFixer:
             fixed_lines.append(quote_type)
             self.fixes_applied.append("Closed unterminated triple quote")
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_unmatched_parentheses(self, content: str) -> str:
         """Fix unmatched parentheses in function definitions and other structures"""
         # Fix malformed function definitions
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for line in lines:
             # Fix function definitions with malformed parameters
             if re.match(r'\s*def\s+\w+\s*\([^)]*"[^"]*?"', line):
                 # Remove quotes from function parameters
-                fixed_line = re.sub(r'"([^"]*?)"', r'\1', line)
+                fixed_line = re.sub(r'"([^"]*?)"', r"\1", line)
                 fixed_lines.append(fixed_line)
                 if fixed_line != line:
                     self.fixes_applied.append(f"Fixed function definition: {line.strip()}")
             else:
                 fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_invalid_syntax_start(self, content: str) -> str:
         """Fix invalid syntax at the start of files"""
-        lines = content.split('\n')
+        lines = content.split("\n")
 
         # Fix files that start with invalid syntax
         if len(lines) > 0:
@@ -130,14 +131,14 @@ class TargetedSyntaxFixer:
             # If first line is just a quote or malformed
             if first_line == '"' or first_line == "'" or first_line.startswith('"""') and not first_line.endswith('"""'):
                 # Insert proper shebang and docstring
-                lines.insert(0, '#!/usr/bin/env python3')
-                lines.insert(1, '')
+                lines.insert(0, "#!/usr/bin/env python3")
+                lines.insert(1, "")
                 lines.insert(2, '"""')
                 if not lines[3].endswith('"""'):
                     lines.append('"""')
                 self.fixes_applied.append("Fixed invalid file start")
 
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     def fix_string_literals(self, content: str) -> str:
         """Fix various string literal issues"""
@@ -145,8 +146,9 @@ class TargetedSyntaxFixer:
         content = re.sub(r'print\(\s*([^")\'][^)]*)\s*\)', r'print("\1")', content)
 
         # Fix malformed dictionary keys
-        content = re.sub(r'(\s*)([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*([a-zA-Z_][a-zA-Z0-9_]*)(\s*,|\s*\})',
-                        r'\1"\2": "\3"\4', content)
+        content = re.sub(
+            r"(\s*)([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*([a-zA-Z_][a-zA-Z0-9_]*)(\s*,|\s*\})", r'\1"\2": "\3"\4', content
+        )
 
         return content
 
@@ -172,7 +174,7 @@ class TargetedSyntaxFixer:
 
         try:
             # Read with error handling for encoding issues
-            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                 original_content = f.read()
 
             # Check if it already has valid syntax
@@ -187,9 +189,9 @@ class TargetedSyntaxFixer:
             fixed_content = self.apply_all_fixes(original_content)
 
             # Write fixed content to temp file and test
-            temp_file = file_path.with_suffix('.tmp')
+            temp_file = file_path.with_suffix(".tmp")
             try:
-                with open(temp_file, 'w', encoding='utf-8') as f:
+                with open(temp_file, "w", encoding="utf-8") as f:
                     f.write(fixed_content)
 
                 # Test the fixed content
@@ -197,7 +199,7 @@ class TargetedSyntaxFixer:
 
                 if is_valid:
                     # Success! Replace the original
-                    with open(file_path, 'w', encoding='utf-8') as f:
+                    with open(file_path, "w", encoding="utf-8") as f:
                         f.write(fixed_content)
                     print(f"  [FIXED] Successfully")
                     self.files_fixed.append(file_path.name)
@@ -250,7 +252,7 @@ class TargetedSyntaxFixer:
             "smart_agent_suggester.py",
             "trigger_learning.py",
             "validate_plugin.py",
-            "validation_hooks.py"
+            "validation_hooks.py",
         ]
 
         print(f"Starting targeted syntax fixing for {len(files_to_fix)} files...")
@@ -266,11 +268,12 @@ class TargetedSyntaxFixer:
             print()
 
         return {
-            'files_fixed': self.files_fixed,
-            'files_failed': self.files_failed,
-            'fixes_applied': self.fixes_applied,
-            'total_targeted': len(files_to_fix)
+            "files_fixed": self.files_fixed,
+            "files_failed": self.files_failed,
+            "fixes_applied": self.fixes_applied,
+            "total_targeted": len(files_to_fix),
         }
+
 
 def main():
     """Main execution function"""
@@ -290,33 +293,34 @@ def main():
     print(f"Files failed: {len(result['files_failed'])}")
     print()
 
-    if result['files_fixed']:
+    if result["files_fixed"]:
         print("SUCCESSFULLY FIXED:")
-        for filename in result['files_fixed']:
+        for filename in result["files_fixed"]:
             print(f"  [FIXED] {filename}")
         print()
 
-    if result['files_failed']:
+    if result["files_failed"]:
         print("FAILED TO FIX:")
-        for filename in result['files_failed']:
+        for filename in result["files_failed"]:
             print(f"  [FAILED] {filename}")
         print()
 
-    if result['fixes_applied']:
+    if result["fixes_applied"]:
         print("FIXES APPLIED:")
-        for i, fix in enumerate(result['fixes_applied'][:10]):
+        for i, fix in enumerate(result["fixes_applied"][:10]):
             print(f"  {i+1}. {fix}")
-        if len(result['fixes_applied']) > 10:
+        if len(result["fixes_applied"]) > 10:
             print(f"  ... and {len(result['fixes_applied']) - 10} more fixes")
         print()
 
-    success_rate = len(result['files_fixed']) / result['total_targeted'] * 100
+    success_rate = len(result["files_fixed"]) / result["total_targeted"] * 100
     print(f"Success rate: {success_rate:.1f}%")
 
-    if len(result['files_failed']) == 0:
+    if len(result["files_failed"]) == 0:
         print("SUCCESS: ALL TARGETED FILES FIXED!")
     else:
         print(f"WARNING: {len(result['files_failed'])} files still need manual attention")
+
 
 if __name__ == "__main__":
     main()

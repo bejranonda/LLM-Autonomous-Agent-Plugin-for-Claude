@@ -37,71 +37,151 @@ try:
     from token_monitoring_system import TokenMonitoringSystem, MetricType, AlertLevel
     from token_budget_manager import TokenBudgetManager, BudgetLevel, BudgetScope
     from advanced_token_optimizer import AdvancedTokenOptimizer, OptimizationObjective, AlgorithmType
-    from token_optimization_integration import TokenOptimizationIntegration, IntegrationMode, OptimizationLevel, IntegrationConfig
+    from token_optimization_integration import (
+        TokenOptimizationIntegration,
+        IntegrationMode,
+        OptimizationLevel,
+        IntegrationConfig,
+    )
 except ImportError as e:
     print(f"Import error: {e}")
     print("Running in mock mode - tests will validate structure only")
 
     # Mock classes for testing when imports fail
     class TokenOptimizer:
-        def __init__(self): self.enabled = False
-        def enable_progressive_loading(self): return 100
-        def enable_compression(self): return 150
-        def enable_adaptive_optimization(self): return 200
-        def get_current_usage_patterns(self): return {"patterns": []}
+        def __init__(self):
+            self.enabled = False
+
+        def enable_progressive_loading(self):
+            return 100
+
+        def enable_compression(self):
+            return 150
+
+        def enable_adaptive_optimization(self):
+            return 200
+
+        def get_current_usage_patterns(self):
+            return {"patterns": []}
 
     class ProgressiveContentLoader:
-        def __init__(self, data_dir): self.data_dir = data_dir
-        def load_content(self, task_type, tier, context): return {"content": "test content", "tokens_saved": 50}
+        def __init__(self, data_dir):
+            self.data_dir = data_dir
+
+        def load_content(self, task_type, tier, context):
+            return {"content": "test content", "tokens_saved": 50}
 
     class AutonomousTokenOptimizer:
-        def __init__(self, data_dir): self.data_dir = data_dir
-        def optimize_workflow(self, workflow): return {"tokens_saved": 75, "optimization_success": True}
+        def __init__(self, data_dir):
+            self.data_dir = data_dir
+
+        def optimize_workflow(self, workflow):
+            return {"tokens_saved": 75, "optimization_success": True}
 
     class SmartCache:
-        def __init__(self, data_dir): self.data_dir = data_dir
-        def get(self, key): return None
-        def set(self, key, value): pass
-        def get_cache_stats(self): return {"hit_rate": 0.85}
-        def optimize_cache_strategy(self): return 100
-        def enable_predictive_caching(self): return 120
+        def __init__(self, data_dir):
+            self.data_dir = data_dir
+
+        def get(self, key):
+            return None
+
+        def set(self, key, value):
+            pass
+
+        def get_cache_stats(self):
+            return {"hit_rate": 0.85}
+
+        def optimize_cache_strategy(self):
+            return 100
+
+        def enable_predictive_caching(self):
+            return 120
 
     class AgentCommunicationOptimizer:
-        def __init__(self, data_dir): self.data_dir = data_dir
-        def compress_message(self, content, priority, compression_type): return {"compressed_content": content, "tokens_saved": 80}
-        def get_communication_patterns(self): return {"patterns": []}
-        def enable_compression(self): return 90
-        def optimize_message_routing(self): return 60
-        def enable_adaptive_protocols(self): return 110
-        def get_compression_stats(self): return {"avg_compression": 0.7}
+        def __init__(self, data_dir):
+            self.data_dir = data_dir
+
+        def compress_message(self, content, priority, compression_type):
+            return {"compressed_content": content, "tokens_saved": 80}
+
+        def get_communication_patterns(self):
+            return {"patterns": []}
+
+        def enable_compression(self):
+            return 90
+
+        def optimize_message_routing(self):
+            return 60
+
+        def enable_adaptive_protocols(self):
+            return 110
+
+        def get_compression_stats(self):
+            return {"avg_compression": 0.7}
 
     class TokenMonitoringSystem:
-        def __init__(self, db_path, data_dir): self.db_path = db_path
-        def record_metric(self, metric_type, value, source, tags, context): pass
-        def get_recent_metrics(self, hours, metric_type): return []
-        def create_alert(self, level, message, source, tags): pass
-        def get_status_report(self): return {"status": "active"}
+        def __init__(self, db_path, data_dir):
+            self.db_path = db_path
+
+        def record_metric(self, metric_type, value, source, tags, context):
+            pass
+
+        def get_recent_metrics(self, hours, metric_type):
+            return []
+
+        def create_alert(self, level, message, source, tags):
+            pass
+
+        def get_status_report(self):
+            return {"status": "active"}
 
     class TokenBudgetManager:
-        def __init__(self, db_path, data_dir): self.db_path = db_path
-        def create_budget_constraint(self, level, scope, limit, tags): return "test_constraint"
-        def allocate_tokens(self, constraint_id, requested, task_type, agent_name, context): return True, requested
-        def get_budget_status(self, constraint_id): return {"usage_percentage": 0.6}
-        def get_optimization_recommendations(self, constraint_id): return []
-        def apply_optimization_strategy(self, constraint_id, strategy): return {"tokens_saved": 130}
+        def __init__(self, db_path, data_dir):
+            self.db_path = db_path
+
+        def create_budget_constraint(self, level, scope, limit, tags):
+            return "test_constraint"
+
+        def allocate_tokens(self, constraint_id, requested, task_type, agent_name, context):
+            return True, requested
+
+        def get_budget_status(self, constraint_id):
+            return {"usage_percentage": 0.6}
+
+        def get_optimization_recommendations(self, constraint_id):
+            return []
+
+        def apply_optimization_strategy(self, constraint_id, strategy):
+            return {"tokens_saved": 130}
 
     class AdvancedTokenOptimizer:
-        def __init__(self, data_dir): self.data_dir = data_dir
+        def __init__(self, data_dir):
+            self.data_dir = data_dir
+
         def auto_optimize(self, task_type, context, max_duration_seconds):
-            return type('Result', (), {"tokens_saved": 95, "efficiency_improvement": 0.8, "success": True})()
+            return type("Result", (), {"tokens_saved": 95, "efficiency_improvement": 0.8, "success": True})()
 
     class TokenOptimizationIntegration:
-        def __init__(self, config): self.config = config; self.active = False
-        def start(self): self.active = True; return True
-        def stop(self): self.active = False
-        def process_task_request(self, task_type, content, context): return content, 100
-        def get_integration_status(self): return {"active": self.active}
-        def get_optimization_report(self, hours): return {"summary": {"total_tokens_saved": 1000}}
+        def __init__(self, config):
+            self.config = config
+            self.active = False
+
+        def start(self):
+            self.active = True
+            return True
+
+        def stop(self):
+            self.active = False
+
+        def process_task_request(self, task_type, content, context):
+            return content, 100
+
+        def get_integration_status(self):
+            return {"active": self.active}
+
+        def get_optimization_report(self, hours):
+            return {"summary": {"total_tokens_saved": 1000}}
+
 
 class TestTokenOptimizer(unittest.TestCase):
     """Test cases for TokenOptimizer component."""
@@ -138,6 +218,7 @@ class TestTokenOptimizer(unittest.TestCase):
         patterns = self.optimizer.get_current_usage_patterns()
         self.assertIsInstance(patterns, dict)
 
+
 class TestProgressiveContentLoader(unittest.TestCase):
     """Test cases for ProgressiveContentLoader component."""
 
@@ -154,19 +235,20 @@ class TestProgressiveContentLoader(unittest.TestCase):
         """Test loading content with essential tier."""
         result = self.loader.load_content("test_task", LoadingTier.ESSENTIAL, {})
         self.assertIsInstance(result, dict)
-        self.assertIn('content', result)
+        self.assertIn("content", result)
 
     def test_content_loading_standard_tier(self):
         """Test loading content with standard tier."""
         result = self.loader.load_content("test_task", LoadingTier.STANDARD, {})
         self.assertIsInstance(result, dict)
-        self.assertIn('content', result)
+        self.assertIn("content", result)
 
     def test_content_loading_comprehensive_tier(self):
         """Test loading content with comprehensive tier."""
         result = self.loader.load_content("test_task", LoadingTier.COMPREHENSIVE, {})
         self.assertIsInstance(result, dict)
-        self.assertIn('content', result)
+        self.assertIn("content", result)
+
 
 class TestSmartCache(unittest.TestCase):
     """Test cases for SmartCache component."""
@@ -191,7 +273,7 @@ class TestSmartCache(unittest.TestCase):
         # Get value
         retrieved = self.cache.get(test_key)
         self.assertIsNotNone(retrieved)
-        self.assertEqual(retrieved['content'], test_value['content'])
+        self.assertEqual(retrieved["content"], test_value["content"])
 
     def test_cache_miss(self):
         """Test cache miss scenario."""
@@ -202,13 +284,14 @@ class TestSmartCache(unittest.TestCase):
         """Test cache statistics."""
         stats = self.cache.get_cache_stats()
         self.assertIsInstance(stats, dict)
-        self.assertIn('hit_rate', stats)
+        self.assertIn("hit_rate", stats)
 
     def test_cache_optimization(self):
         """Test cache optimization."""
         tokens_saved = self.cache.optimize_cache_strategy()
         self.assertIsInstance(tokens_saved, int)
         self.assertGreaterEqual(tokens_saved, 0)
+
 
 class TestAgentCommunicationOptimizer(unittest.TestCase):
     """Test cases for AgentCommunicationOptimizer component."""
@@ -225,15 +308,11 @@ class TestAgentCommunicationOptimizer(unittest.TestCase):
     def test_message_compression(self):
         """Test message compression."""
         test_content = "This is a test message for compression"
-        result = self.optimizer.compress_message(
-            test_content,
-            MessagePriority.NORMAL,
-            CompressionType.SEMANTIC
-        )
+        result = self.optimizer.compress_message(test_content, MessagePriority.NORMAL, CompressionType.SEMANTIC)
 
         self.assertIsInstance(result, dict)
-        self.assertIn('compressed_content', result)
-        self.assertIn('tokens_saved', result)
+        self.assertIn("compressed_content", result)
+        self.assertIn("tokens_saved", result)
 
     def test_communication_patterns(self):
         """Test communication patterns analysis."""
@@ -244,6 +323,7 @@ class TestAgentCommunicationOptimizer(unittest.TestCase):
         """Test compression statistics."""
         stats = self.optimizer.get_compression_stats()
         self.assertIsInstance(stats, dict)
+
 
 class TestTokenMonitoringSystem(unittest.TestCase):
     """Test cases for TokenMonitoringSystem component."""
@@ -260,38 +340,24 @@ class TestTokenMonitoringSystem(unittest.TestCase):
 
     def test_metric_recording(self):
         """Test token metric recording."""
-        self.monitoring.record_metric(
-            MetricType.TOKEN_USAGE,
-            1000,
-            "test_source",
-            {"test": "tag"},
-            {"context": "data"}
-        )
+        self.monitoring.record_metric(MetricType.TOKEN_USAGE, 1000, "test_source", {"test": "tag"}, {"context": "data"})
         # No exception means success
 
     def test_alert_creation(self):
         """Test alert creation."""
-        self.monitoring.create_alert(
-            AlertLevel.WARNING,
-            "Test alert message",
-            "test_source",
-            {"test": "tag"}
-        )
+        self.monitoring.create_alert(AlertLevel.WARNING, "Test alert message", "test_source", {"test": "tag"})
         # No exception means success
 
     def test_recent_metrics_retrieval(self):
         """Test retrieval of recent metrics."""
         # Record some test metrics
         for i in range(5):
-            self.monitoring.record_metric(
-                MetricType.TOKEN_USAGE,
-                100 * i,
-                "test_source"
-            )
+            self.monitoring.record_metric(MetricType.TOKEN_USAGE, 100 * i, "test_source")
 
         # Retrieve recent metrics
         metrics = self.monitoring.get_recent_metrics(1, MetricType.TOKEN_USAGE)
         self.assertIsInstance(metrics, list)
+
 
 class TestTokenBudgetManager(unittest.TestCase):
     """Test cases for TokenBudgetManager component."""
@@ -309,10 +375,7 @@ class TestTokenBudgetManager(unittest.TestCase):
     def test_budget_constraint_creation(self):
         """Test budget constraint creation."""
         constraint_id = self.budget_manager.create_budget_constraint(
-            level=BudgetLevel.TASK,
-            scope=BudgetScope.TASK_BASED,
-            limit=1000,
-            tags={"test": "constraint"}
+            level=BudgetLevel.TASK, scope=BudgetScope.TASK_BASED, limit=1000, tags={"test": "constraint"}
         )
 
         self.assertIsInstance(constraint_id, str)
@@ -322,18 +385,11 @@ class TestTokenBudgetManager(unittest.TestCase):
         """Test token allocation."""
         # Create constraint first
         constraint_id = self.budget_manager.create_budget_constraint(
-            level=BudgetLevel.TASK,
-            scope=BudgetScope.TASK_BASED,
-            limit=1000
+            level=BudgetLevel.TASK, scope=BudgetScope.TASK_BASED, limit=1000
         )
 
         # Allocate tokens
-        success, allocated = self.budget_manager.allocate_tokens(
-            constraint_id,
-            500,
-            "test_task",
-            "test_agent"
-        )
+        success, allocated = self.budget_manager.allocate_tokens(constraint_id, 500, "test_task", "test_agent")
 
         self.assertTrue(success)
         self.assertEqual(allocated, 500)
@@ -342,6 +398,7 @@ class TestTokenBudgetManager(unittest.TestCase):
         """Test budget status retrieval."""
         status = self.budget_manager.get_budget_status()
         self.assertIsInstance(status, dict)
+
 
 class TestAdvancedTokenOptimizer(unittest.TestCase):
     """Test cases for AdvancedTokenOptimizer component."""
@@ -357,20 +414,14 @@ class TestAdvancedTokenOptimizer(unittest.TestCase):
 
     def test_auto_optimization(self):
         """Test automatic optimization."""
-        context = {
-            "current_efficiency": 0.6,
-            "task_complexity": "medium"
-        }
+        context = {"current_efficiency": 0.6, "task_complexity": "medium"}
 
-        result = self.optimizer.auto_optimize(
-            task_type="test_task",
-            context=context,
-            max_duration_seconds=10
-        )
+        result = self.optimizer.auto_optimize(task_type="test_task", context=context, max_duration_seconds=10)
 
-        self.assertTrue(hasattr(result, 'tokens_saved'))
-        self.assertTrue(hasattr(result, 'success'))
+        self.assertTrue(hasattr(result, "tokens_saved"))
+        self.assertTrue(hasattr(result, "success"))
         self.assertIsInstance(result.tokens_saved, int)
+
 
 class TestTokenOptimizationIntegration(unittest.TestCase):
     """Test cases for TokenOptimizationIntegration component."""
@@ -383,7 +434,7 @@ class TestTokenOptimizationIntegration(unittest.TestCase):
             level=OptimizationLevel.STANDARD,
             data_directory=self.temp_dir,
             monitoring_interval=1,
-            optimization_interval=2
+            optimization_interval=2,
         )
         self.integration = TokenOptimizationIntegration(self.config)
 
@@ -409,11 +460,7 @@ class TestTokenOptimizationIntegration(unittest.TestCase):
         test_content = "This is a test task content for optimization testing."
         test_context = {"task_type": "test", "priority": "normal"}
 
-        optimized_content, tokens_saved = self.integration.process_task_request(
-            "test_task",
-            test_content,
-            test_context
-        )
+        optimized_content, tokens_saved = self.integration.process_task_request("test_task", test_content, test_context)
 
         self.assertIsInstance(optimized_content, str)
         self.assertIsInstance(tokens_saved, int)
@@ -423,15 +470,16 @@ class TestTokenOptimizationIntegration(unittest.TestCase):
         """Test integration status retrieval."""
         status = self.integration.get_integration_status()
         self.assertIsInstance(status, dict)
-        self.assertIn('integration', status)
-        self.assertIn('config', status)
+        self.assertIn("integration", status)
+        self.assertIn("config", status)
 
     def test_optimization_report(self):
         """Test optimization report generation."""
         report = self.integration.get_optimization_report(1)  # 1 hour
         self.assertIsInstance(report, dict)
-        self.assertIn('summary', report)
-        self.assertIn('current_metrics', report)
+        self.assertIn("summary", report)
+        self.assertIn("current_metrics", report)
+
 
 class TestPerformanceOptimization(unittest.TestCase):
     """Performance tests for optimization effectiveness."""
@@ -444,7 +492,7 @@ class TestPerformanceOptimization(unittest.TestCase):
             level=OptimizationLevel.AGGRESSIVE,
             data_directory=self.temp_dir,
             monitoring_interval=1,
-            optimization_interval=1
+            optimization_interval=1,
         )
         self.integration = TokenOptimizationIntegration(self.config)
 
@@ -465,7 +513,7 @@ class TestPerformanceOptimization(unittest.TestCase):
             ("documentation_task", "Generate comprehensive documentation"),
             ("testing_task", "Run comprehensive test suite"),
             ("optimization_task", "Optimize performance and efficiency"),
-            ("reporting_task", "Generate detailed reports and metrics")
+            ("reporting_task", "Generate detailed reports and metrics"),
         ]
 
         original_tokens = 0
@@ -475,11 +523,7 @@ class TestPerformanceOptimization(unittest.TestCase):
             content_tokens = len(content.split())
             original_tokens += content_tokens
 
-            optimized_content, tokens_saved = self.integration.process_task_request(
-                task_type,
-                content,
-                {"priority": "high"}
-            )
+            optimized_content, tokens_saved = self.integration.process_task_request(task_type, content, {"priority": "high"})
 
             saved_tokens += tokens_saved
 
@@ -506,9 +550,7 @@ class TestPerformanceOptimization(unittest.TestCase):
         for i in range(task_count):
             content = f"Task {i} content for performance testing under load conditions"
             optimized_content, tokens_saved = self.integration.process_task_request(
-                f"load_test_task_{i}",
-                content,
-                {"batch_id": i}
+                f"load_test_task_{i}", content, {"batch_id": i}
             )
 
         end_time = time.time()
@@ -524,6 +566,7 @@ class TestPerformanceOptimization(unittest.TestCase):
         print(f"Processed {task_count} tasks in {total_time:.2f} seconds")
         print(f"Average time per task: {avg_time_per_task*1000:.2f}ms")
 
+
 class TestEndToEndWorkflows(unittest.TestCase):
     """End-to-end workflow tests."""
 
@@ -535,7 +578,7 @@ class TestEndToEndWorkflows(unittest.TestCase):
             level=OptimizationLevel.ADAPTIVE,
             data_directory=self.temp_dir,
             monitoring_interval=1,
-            optimization_interval=2
+            optimization_interval=2,
         )
         self.integration = TokenOptimizationIntegration(self.config)
 
@@ -556,7 +599,7 @@ class TestEndToEndWorkflows(unittest.TestCase):
             ("implementation", "Implement solution with optimizations"),
             ("testing", "Run tests and validation"),
             ("documentation", "Generate documentation and reports"),
-            ("optimization", "Apply final optimizations and improvements")
+            ("optimization", "Apply final optimizations and improvements"),
         ]
 
         workflow_tokens_saved = 0
@@ -564,22 +607,18 @@ class TestEndToEndWorkflows(unittest.TestCase):
 
         for step_name, content in workflow_steps:
             optimized_content, tokens_saved = self.integration.process_task_request(
-                step_name,
-                content,
-                {
-                    "workflow": "autonomous_agent",
-                    "step": step_name,
-                    "priority": "high"
-                }
+                step_name, content, {"workflow": "autonomous_agent", "step": step_name, "priority": "high"}
             )
 
             workflow_tokens_saved += tokens_saved
-            step_results.append({
-                "step": step_name,
-                "original_length": len(content.split()),
-                "optimized_length": len(optimized_content.split()),
-                "tokens_saved": tokens_saved
-            })
+            step_results.append(
+                {
+                    "step": step_name,
+                    "original_length": len(content.split()),
+                    "optimized_length": len(optimized_content.split()),
+                    "tokens_saved": tokens_saved,
+                }
+            )
 
         self.integration.stop()
 
@@ -609,32 +648,25 @@ class TestEndToEndWorkflows(unittest.TestCase):
                     optimized_content, tokens_saved = self.integration.process_task_request(
                         f"agent_communication_{agent}_{other_agent}",
                         message,
-                        {
-                            "sender": agent,
-                            "receiver": other_agent,
-                            "type": "coordination"
-                        }
+                        {"sender": agent, "receiver": other_agent, "type": "coordination"},
                     )
 
-                    coordination_tasks.append({
-                        "sender": agent,
-                        "receiver": other_agent,
-                        "tokens_saved": tokens_saved
-                    })
+                    coordination_tasks.append({"sender": agent, "receiver": other_agent, "tokens_saved": tokens_saved})
 
         self.integration.stop()
 
         # Validate coordination results
-        total_coordination_savings = sum(task['tokens_saved'] for task in coordination_tasks)
+        total_coordination_savings = sum(task["tokens_saved"] for task in coordination_tasks)
         self.assertGreater(total_coordination_savings, 0, "Agent coordination should save tokens")
 
         print(f"Multi-agent coordination tokens saved: {total_coordination_savings}")
 
+
 def run_performance_benchmark():
     """Run performance benchmark for the optimization system."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("PERFORMANCE BENCHMARK")
-    print("="*60)
+    print("=" * 60)
 
     temp_dir = tempfile.mkdtemp()
     config = IntegrationConfig(
@@ -642,7 +674,7 @@ def run_performance_benchmark():
         level=OptimizationLevel.AGGRESSIVE,
         data_directory=temp_dir,
         monitoring_interval=1,
-        optimization_interval=1
+        optimization_interval=1,
     )
 
     integration = TokenOptimizationIntegration(config)
@@ -654,12 +686,22 @@ def run_performance_benchmark():
         scenarios = [
             ("Small Tasks", ["Small task content"] * 100),
             ("Medium Tasks", ["This is a medium sized task content for testing purposes"] * 50),
-            ("Large Tasks", ["This is a large task content with comprehensive details and extensive information for testing the optimization system performance under various conditions and workloads"] * 20),
-            ("Mixed Tasks", [
-                "Small task",
-                "Medium task content with some details",
-                "Large task content with comprehensive information and extensive details for performance testing"
-            ] * 30)
+            (
+                "Large Tasks",
+                [
+                    "This is a large task content with comprehensive details and extensive information for testing the optimization system performance under various conditions and workloads"
+                ]
+                * 20,
+            ),
+            (
+                "Mixed Tasks",
+                [
+                    "Small task",
+                    "Medium task content with some details",
+                    "Large task content with comprehensive information and extensive details for performance testing",
+                ]
+                * 30,
+            ),
         ]
 
         for scenario_name, tasks in scenarios:
@@ -668,11 +710,7 @@ def run_performance_benchmark():
 
             total_saved = 0
             for i, task in enumerate(tasks):
-                optimized, saved = integration.process_task_request(
-                    f"benchmark_task_{i}",
-                    task,
-                    {"scenario": scenario_name}
-                )
+                optimized, saved = integration.process_task_request(f"benchmark_task_{i}", task, {"scenario": scenario_name})
                 total_saved += saved
 
             end_time = time.time()
@@ -695,6 +733,7 @@ def run_performance_benchmark():
         integration.stop()
         shutil.rmtree(temp_dir, ignore_errors=True)
 
+
 def main():
     """Main test runner."""
     print("Token Optimization Framework Test Suite")
@@ -714,7 +753,7 @@ def main():
         TestAdvancedTokenOptimizer,
         TestTokenOptimizationIntegration,
         TestPerformanceOptimization,
-        TestEndToEndWorkflows
+        TestEndToEndWorkflows,
     ]
 
     for test_class in test_classes:
@@ -732,9 +771,9 @@ def main():
         print("\nSkipping performance benchmark due to test failures.")
 
     # Print summary
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("TEST SUMMARY")
-    print("="*60)
+    print("=" * 60)
     print(f"Tests run: {result.testsRun}")
     print(f"Failures: {len(result.failures)}")
     print(f"Errors: {len(result.errors)}")
@@ -751,6 +790,7 @@ def main():
             print(f"  - {test}: {traceback.split('Exception:')[-1].strip()}")
 
     return 0 if result.wasSuccessful() else 1
+
 
 if __name__ == "__main__":
     exit(main())

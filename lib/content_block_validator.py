@@ -5,6 +5,7 @@ Content Block Validator
 Simulates message construction to identify which content block becomes empty.
 """
 
+
 def analyze_orchestrator_response():
     """Analyze how the orchestrator constructs responses and identify empty blocks."""
 
@@ -94,11 +95,11 @@ Skills Loaded: code-analysis, documentation-best-practices"""
     for i, block in enumerate(content_blocks):
         # Simulate the validation function from our fix
         is_valid_for_cache = (
-            block is not None and
-            len(str(block)) > 0 and
-            len(str(block).strip()) > 0 and
-            len(str(block).strip()) >= 5 and
-            str(block).strip().lower() not in ['null', 'undefined', '[]', '{}', 'none', 'empty']
+            block is not None
+            and len(str(block)) > 0
+            and len(str(block).strip()) > 0
+            and len(str(block).strip()) >= 5
+            and str(block).strip().lower() not in ["null", "undefined", "[]", "{}", "none", "empty"]
         )
 
         if is_valid_for_cache:
@@ -108,6 +109,7 @@ Skills Loaded: code-analysis, documentation-best-practices"""
 
     return empty_blocks
 
+
 def test_edge_cases():
     """Test edge cases that might cause empty content blocks."""
 
@@ -116,7 +118,7 @@ def test_edge_cases():
         ("Whitespace only", "   \n\t  "),
         ("Very short", "abc"),
         ("Null indicators", ["null", "undefined", "[]", "{}", "none", "empty"]),
-        ("Valid content", "This is valid content with enough characters.")
+        ("Valid content", "This is valid content with enough characters."),
     ]
 
     print("\nEdge Case Testing:")
@@ -125,11 +127,26 @@ def test_edge_cases():
     for name, content in test_cases:
         if isinstance(content, list):
             for item in content:
-                is_valid = len(str(item).strip()) >= 5 and str(item).strip().lower() not in ['null', 'undefined', '[]', '{}', 'none', 'empty']
+                is_valid = len(str(item).strip()) >= 5 and str(item).strip().lower() not in [
+                    "null",
+                    "undefined",
+                    "[]",
+                    "{}",
+                    "none",
+                    "empty",
+                ]
                 print(f"{name} ('{item}'): {'VALID' if is_valid else 'INVALID'}")
         else:
-            is_valid = len(str(content).strip()) >= 5 and str(content).strip().lower() not in ['null', 'undefined', '[]', '{}', 'none', 'empty']
+            is_valid = len(str(content).strip()) >= 5 and str(content).strip().lower() not in [
+                "null",
+                "undefined",
+                "[]",
+                "{}",
+                "none",
+                "empty",
+            ]
             print(f"{name}: {'VALID' if is_valid else 'INVALID'}")
+
 
 if __name__ == "__main__":
     empty_blocks = analyze_orchestrator_response()

@@ -21,14 +21,16 @@ import pathlib
 
 class OptimizationLevel(Enum):
     """Optimization levels for agent communication."""
-    CONSERVATIVE = "conservative"    # 10-15% reduction, maximum integrity
-    STANDARD = "standard"          # 20-30% reduction, good integrity
-    AGGRESSIVE = "aggressive"      # 30-40% reduction, acceptable integrity
+
+    CONSERVATIVE = "conservative"  # 10-15% reduction, maximum integrity
+    STANDARD = "standard"  # 20-30% reduction, good integrity
+    AGGRESSIVE = "aggressive"  # 30-40% reduction, acceptable integrity
 
 
 @dataclass
 class OptimizationResult:
     """Result of message optimization."""
+
     original_tokens: int
     optimized_tokens: int
     tokens_saved: int
@@ -397,170 +399,170 @@ class EffectiveAgentCommunicationOptimizer:
             "validity": "val",
             "authenticity": "auth",
             "genuineness": "gen",
-                    "originality": "orig",
-                    "creativity": "cre",
-                    "innovation": "inn",
-                    "invention": "inv",
-                    "discovery": "disc",
-                    "exploration": "expl",
-                    "investigation": "inv",
-                    "research": "res",
-                    "study": "stdy",
-                    "analysis": "anlys",
-                    "examination": "exam",
-                    "inspection": "insp",
-                    "review": "rev",
-                    "audit": "aud",
-                    "check": "chk",
-                    "verification": "vrfy",
-                    "validation": "val",
-                    "testing": "test",
-                    "trial": "trl",
-                    "experiment": "exp",
-                    "demonstration": "demo",
-                    "presentation": "pres",
-                    "exhibition": "exhib",
-                    "show": "shw",
-                    "display": "disp",
-                    "illustration": "illus",
-                    "example": "ex",
-                    "instance": "inst",
-                    "case": "cs",
-                    "scenario": "scen",
-                    "situation": "sit",
-                    "condition": "cond",
-                    "state": "st",
-                    "status": "stat",
-                    "phase": "ph",
-                    "stage": "stg",
-                    "level": "lvl",
-                    "grade": "grd",
-                    "rank": "rnk",
-                    "position": "pos",
-                    "standing": "stand",
-                    "rating": "rat",
-                    "score": "scr",
-                    "points": "pts",
-                    "marks": "mrks",
-                    "grades": "grds",
-                    "assessment": "assess",
-                    "evaluation": "eval",
-                    "judgment": "judg",
-                    "opinion": "op",
-                    "view": "vw",
-                    "perspective": "persp",
-                    "standpoint": "stand",
-                    "viewpoint": "viewp",
-                    "angle": "ang",
-                    "approach": "app",
-                    "method": "meth",
-                    "technique": "tech",
-                    "procedure": "proc",
-                    "process": "proc",
-                    "workflow": "wrkflw",
-                    "pipeline": "pipe",
-                    "sequence": "seq",
-                    "order": "ord",
-                    "arrangement": "arr",
-                    "structure": "struct",
-                    "organization": "org",
-                    "layout": "lay",
-                    "design": "des",
-                    "pattern": "pat",
-                    "template": "temp",
-                    "model": "mdl",
-                    "framework": "fw",
-                    "architecture": "arch",
-                    "system": "sys",
-                    "platform": "plat",
-                    "infrastructure": "infra",
-                    "foundation": "found",
-                    "base": "bs",
-                    "core": "cr",
-                    "center": "ctr",
-                    "hub": "hb",
-                    "node": "nd",
-                    "network": "net",
-                    "web": "wb",
-                    "site": "st",
-                    "portal": "port",
-                    "gateway": "gtw",
-                    "interface": "int",
-                    "endpoint": "ep",
-                    "service": "svc",
-                    "function": "func",
-                    "operation": "op",
-                    "task": "tsk",
-                    "job": "jb",
-                    "work": "wrk",
-                    "activity": "act",
-                    "action": "act",
-                    "step": "stp",
-                    "phase": "ph",
-                    "stage": "stg",
-                    "milestone": "mile",
-                    "deadline": "dl",
-                    "timeline": "tl",
-                    "schedule": "sched",
-                    "calendar": "cal",
-                    "agenda": "ag",
-                    "plan": "pln",
-                    "strategy": "strat",
-                    "tactic": "tact",
-                    "approach": "app",
-                    "methodology": "meth",
-                    "practice": "pract",
-                    "technique": "tech",
-                    "skill": "skl",
-                    "competence": "comp",
-                    "capability": "cap",
-                    "ability": "abl",
-                    "capacity": "cap",
-                    "potential": "pot",
-                    "performance": "perf",
-                    "efficiency": "eff",
-                    "effectiveness": "eff",
-                    "productivity": "prod",
-                    "quality": "qlty",
-                    "excellence": "exc",
-                    "superiority": "sup",
-                    "advantage": "adv",
-                    "benefit": "ben",
-                    "profit": "prof",
-                    "gain": "gain",
-                    "return": "ret",
-                    "investment": "inv",
-                    "cost": "cst",
-                    "expense": "exp",
-                    "budget": "bgt",
-                    "finance": "fin",
-                    "economy": "econ",
-                    "market": "mkt",
-                    "customer": "cust",
-                    "client": "cli",
-                    "user": "usr",
-                    "consumer": "cons",
-                    "buyer": "buy",
-                    "seller": "sell",
-                    "provider": "prov",
-                    "supplier": "sup",
-                    "vendor": "vend",
-                    "partner": "part",
-                    "stakeholder": "stake",
-                    "shareholder": "share",
-                    "investor": "inv",
-                    "owner": "own",
-                    "founder": "found",
-                    "creator": "cre",
-                    "developer": "dev",
-                    "designer": "des",
-                    "builder": "build",
-                    "maker": "make",
-                    "producer": "prod",
-                    "manufacturer": "manu",
-                    "distributor": "dist",
-                    "retailer": "ret",
-                    "wholesaler": "whole"
+            "originality": "orig",
+            "creativity": "cre",
+            "innovation": "inn",
+            "invention": "inv",
+            "discovery": "disc",
+            "exploration": "expl",
+            "investigation": "inv",
+            "research": "res",
+            "study": "stdy",
+            "analysis": "anlys",
+            "examination": "exam",
+            "inspection": "insp",
+            "review": "rev",
+            "audit": "aud",
+            "check": "chk",
+            "verification": "vrfy",
+            "validation": "val",
+            "testing": "test",
+            "trial": "trl",
+            "experiment": "exp",
+            "demonstration": "demo",
+            "presentation": "pres",
+            "exhibition": "exhib",
+            "show": "shw",
+            "display": "disp",
+            "illustration": "illus",
+            "example": "ex",
+            "instance": "inst",
+            "case": "cs",
+            "scenario": "scen",
+            "situation": "sit",
+            "condition": "cond",
+            "state": "st",
+            "status": "stat",
+            "phase": "ph",
+            "stage": "stg",
+            "level": "lvl",
+            "grade": "grd",
+            "rank": "rnk",
+            "position": "pos",
+            "standing": "stand",
+            "rating": "rat",
+            "score": "scr",
+            "points": "pts",
+            "marks": "mrks",
+            "grades": "grds",
+            "assessment": "assess",
+            "evaluation": "eval",
+            "judgment": "judg",
+            "opinion": "op",
+            "view": "vw",
+            "perspective": "persp",
+            "standpoint": "stand",
+            "viewpoint": "viewp",
+            "angle": "ang",
+            "approach": "app",
+            "method": "meth",
+            "technique": "tech",
+            "procedure": "proc",
+            "process": "proc",
+            "workflow": "wrkflw",
+            "pipeline": "pipe",
+            "sequence": "seq",
+            "order": "ord",
+            "arrangement": "arr",
+            "structure": "struct",
+            "organization": "org",
+            "layout": "lay",
+            "design": "des",
+            "pattern": "pat",
+            "template": "temp",
+            "model": "mdl",
+            "framework": "fw",
+            "architecture": "arch",
+            "system": "sys",
+            "platform": "plat",
+            "infrastructure": "infra",
+            "foundation": "found",
+            "base": "bs",
+            "core": "cr",
+            "center": "ctr",
+            "hub": "hb",
+            "node": "nd",
+            "network": "net",
+            "web": "wb",
+            "site": "st",
+            "portal": "port",
+            "gateway": "gtw",
+            "interface": "int",
+            "endpoint": "ep",
+            "service": "svc",
+            "function": "func",
+            "operation": "op",
+            "task": "tsk",
+            "job": "jb",
+            "work": "wrk",
+            "activity": "act",
+            "action": "act",
+            "step": "stp",
+            "phase": "ph",
+            "stage": "stg",
+            "milestone": "mile",
+            "deadline": "dl",
+            "timeline": "tl",
+            "schedule": "sched",
+            "calendar": "cal",
+            "agenda": "ag",
+            "plan": "pln",
+            "strategy": "strat",
+            "tactic": "tact",
+            "approach": "app",
+            "methodology": "meth",
+            "practice": "pract",
+            "technique": "tech",
+            "skill": "skl",
+            "competence": "comp",
+            "capability": "cap",
+            "ability": "abl",
+            "capacity": "cap",
+            "potential": "pot",
+            "performance": "perf",
+            "efficiency": "eff",
+            "effectiveness": "eff",
+            "productivity": "prod",
+            "quality": "qlty",
+            "excellence": "exc",
+            "superiority": "sup",
+            "advantage": "adv",
+            "benefit": "ben",
+            "profit": "prof",
+            "gain": "gain",
+            "return": "ret",
+            "investment": "inv",
+            "cost": "cst",
+            "expense": "exp",
+            "budget": "bgt",
+            "finance": "fin",
+            "economy": "econ",
+            "market": "mkt",
+            "customer": "cust",
+            "client": "cli",
+            "user": "usr",
+            "consumer": "cons",
+            "buyer": "buy",
+            "seller": "sell",
+            "provider": "prov",
+            "supplier": "sup",
+            "vendor": "vend",
+            "partner": "part",
+            "stakeholder": "stake",
+            "shareholder": "share",
+            "investor": "inv",
+            "owner": "own",
+            "founder": "found",
+            "creator": "cre",
+            "developer": "dev",
+            "designer": "des",
+            "builder": "build",
+            "maker": "make",
+            "producer": "prod",
+            "manufacturer": "manu",
+            "distributor": "dist",
+            "retailer": "ret",
+            "wholesaler": "whole",
         }
 
         # Optimization statistics
@@ -569,11 +571,13 @@ class EffectiveAgentCommunicationOptimizer:
             "total_tokens_saved": 0,
             "total_tokens_processed": 0,
             "average_savings_percentage": 0.0,
-            "processing_time_total": 0.0
+            "processing_time_total": 0.0,
         }
 
-    def optimize_message(self, message: Dict[str, Any],
-                         level: OptimizationLevel = OptimizationLevel.STANDARD) -> OptimizationResult:
+    def optimize_message(
+        self, message: Dict[str, Any], level: OptimizationLevel = OptimizationLevel.STANDARD
+    )-> OptimizationResult:
+        """Optimize Message."""
         """
         Optimize a message for token efficiency.
 
@@ -587,7 +591,7 @@ class EffectiveAgentCommunicationOptimizer:
         start_time = time.time()
 
         # Calculate original tokens
-        original_json = json.dumps(message, separators=(',', ':'))
+        original_json = json.dumps(message, separators=(",", ":"))
         original_tokens = self._estimate_tokens(original_json)
 
         # Apply optimization based on level
@@ -617,7 +621,7 @@ class EffectiveAgentCommunicationOptimizer:
             savings_percentage=savings_percentage,
             processing_time_ms=processing_time,
             optimization_method=level.value,
-            integrity_score=integrity_score
+            integrity_score=integrity_score,
         )
 
         # Update statistics
@@ -625,8 +629,10 @@ class EffectiveAgentCommunicationOptimizer:
 
         return result
 
-    def optimize_conversation(self, conversation: List[Dict[str, Any]],
-                             level: OptimizationLevel = OptimizationLevel.STANDARD) -> Dict[str, Any]:
+    def optimize_conversation(
+        self, conversation: List[Dict[str, Any]], level: OptimizationLevel = OptimizationLevel.STANDARD
+    )-> Dict[str, Any]:
+        """Optimize Conversation."""
         """
         Optimize an entire conversation.
 
@@ -659,7 +665,7 @@ class EffectiveAgentCommunicationOptimizer:
             "total_tokens_saved": total_tokens_saved,
             "overall_savings_percentage": overall_savings_percentage,
             "messages_processed": len(optimized_messages),
-            "optimization_level": level.value
+            "optimization_level": level.value,
         }
 
     def get_statistics(self) -> Dict[str, Any]:
@@ -674,10 +680,10 @@ class EffectiveAgentCommunicationOptimizer:
     def _conservative_optimization(self, json_str: str) -> str:
         """Conservative optimization - basic whitespace and redundancy removal."""
         # Remove extra whitespace
-        optimized = re.sub(r'\s+', ' ', json_str.strip())
+        optimized = re.sub(r"\s+", " ", json_str.strip())
 
         # Remove unnecessary quotes around simple keys
-        optimized = re.sub(r'"(\w+)":', r'\1:', optimized)
+        optimized = re.sub(r'"(\w+)":', r"\1:", optimized)
 
         return optimized
 
@@ -688,7 +694,7 @@ class EffectiveAgentCommunicationOptimizer:
         # Apply abbreviations
         for full_word, abbreviation in self.abbreviations.items():
             # Only replace whole words
-            optimized = re.sub(r'\b' + re.escape(full_word) + r'\b', abbreviation, optimized, flags=re.IGNORECASE)
+            optimized = re.sub(r"\b" + re.escape(full_word) + r"\b", abbreviation, optimized, flags=re.IGNORECASE)
 
         return optimized
 
@@ -698,13 +704,13 @@ class EffectiveAgentCommunicationOptimizer:
 
         # Additional aggressive optimizations
         # Remove common JSON formatting characters where possible
-        optimized = re.sub(r'\[\s*\]', '[]', optimized)  # Empty arrays
-        optimized = re.sub(r'\{\s*\}', '{}', optimized)  # Empty objects
-        optimized = re.sub(r':\s*"', ':"', optimized)    # Remove space before string values
-        optimized = re.sub(r'",\s*"', '","', optimized)   # Remove space between array items
+        optimized = re.sub(r"\[\s*\]", "[]", optimized)  # Empty arrays
+        optimized = re.sub(r"\{\s*\}", "{}", optimized)  # Empty objects
+        optimized = re.sub(r':\s*"', ':"', optimized)  # Remove space before string values
+        optimized = re.sub(r'",\s*"', '","', optimized)  # Remove space between array items
 
         # Compress consecutive spaces
-        optimized = re.sub(r' +', ' ', optimized)
+        optimized = re.sub(r" +", " ", optimized)
 
         return optimized
 
@@ -714,8 +720,7 @@ class EffectiveAgentCommunicationOptimizer:
         # This is a simplified estimate for demonstration
         return len(text) // 4
 
-    def _calculate_integrity_score(self, original_message: Dict[str, Any],
-                                  optimized_json: str) -> float:
+    def _calculate_integrity_score(self, original_message: Dict[str, Any], optimized_json: str) -> float:
         """Calculate integrity score (0-1)."""
         try:
             # Try to parse the optimized JSON
@@ -767,8 +772,7 @@ class EffectiveAgentCommunicationOptimizer:
 
 
 # Convenience function for easy usage
-def optimize_agent_message(message: Dict[str, Any],
-                          level: str = "standard") -> Dict[str, Any]:
+def optimize_agent_message(message: Dict[str, Any], level: str = "standard") -> Dict[str, Any]:
     """
     Convenience function to optimize a single agent message.
 
@@ -798,7 +802,7 @@ def optimize_agent_message(message: Dict[str, Any],
         "savings_percentage": result.savings_percentage,
         "processing_time_ms": result.processing_time_ms,
         "integrity_score": result.integrity_score,
-        "optimization_method": result.optimization_method
+        "optimization_method": result.optimization_method,
     }
 
 
@@ -824,7 +828,7 @@ def main():
                     "check_authentication_bypass": True,
                     "check_authorization_issues": True,
                     "check_data_validation": True,
-                    "check_encryption_standards": True
+                    "check_encryption_standards": True,
                 },
                 "performance_analysis": {
                     "check_algorithm_efficiency": True,
@@ -832,7 +836,7 @@ def main():
                     "check_database_queries": True,
                     "check_response_time": True,
                     "check_resource_leaks": True,
-                    "check_concurrency_issues": True
+                    "check_concurrency_issues": True,
                 },
                 "quality_analysis": {
                     "check_code_style": True,
@@ -840,8 +844,8 @@ def main():
                     "check_documentation": True,
                     "check_error_handling": True,
                     "check_test_coverage": True,
-                    "check_modular_design": True
-                }
+                    "check_modular_design": True,
+                },
             },
             "context": {
                 "project_framework": "django",
@@ -850,23 +854,23 @@ def main():
                 "deployment_environment": "production",
                 "team_size": 12,
                 "project_maturity": "mature",
-                "last_review_date": "2024-10-15"
+                "last_review_date": "2024-10-15",
             },
             "additional_information": {
                 "review_priority": "high",
                 "estimated_review_time": "45 minutes",
                 "reviewer_assigned": "senior_developer_01",
                 "deadline": "2024-11-10T17:00:00Z",
-                "related_tickets": ["TICKET-1234", "TICKET-1235", "TICKET-1236"]
-            }
+                "related_tickets": ["TICKET-1234", "TICKET-1235", "TICKET-1236"],
+            },
         },
         "metadata": {
             "timestamp": "2024-11-05T15:30:00Z",
             "request_id": "REQ-001",
             "session_id": "SESSION-ABC123",
             "user_id": "user_456",
-            "client_version": "2.1.0"
-        }
+            "client_version": "2.1.0",
+        },
     }
 
     print(f"\nOriginal message size: {len(str(test_message))} characters")
@@ -886,30 +890,16 @@ def main():
     print(f"\n=== Conversation Optimization Test ===")
 
     conversation = [
-        {
-            "type": "task_assignment",
-            "content": {
-                "task": "code_review",
-                "priority": "high",
-                "deadline": "2024-11-10"
-            }
-        },
+        {"type": "task_assignment", "content": {"task": "code_review", "priority": "high", "deadline": "2024-11-10"}},
         {
             "type": "analysis_request",
             "content": {
                 "analysis_type": "security_vulnerability_scan",
                 "target_files": ["auth.py", "database.py"],
-                "requirements": {"thoroughness": "comprehensive", "priority": "critical"}
-            }
+                "requirements": {"thoroughness": "comprehensive", "priority": "critical"},
+            },
         },
-        {
-            "type": "status_update",
-            "content": {
-                "status": "in_progress",
-                "progress": 65,
-                "estimated_completion": "2024-11-08"
-            }
-        }
+        {"type": "status_update", "content": {"status": "in_progress", "progress": 65, "estimated_completion": "2024-11-08"}},
     ]
 
     conv_result = optimizer.optimize_conversation(conversation, OptimizationLevel.STANDARD)

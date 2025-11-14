@@ -12,10 +12,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import lru_cache
 import hashlib
 
+
 class PerformanceOptimizer:
     """Optimizes concurrent operations performance for dashboard"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(exist_ok=True)
 
@@ -32,7 +34,7 @@ class PerformanceOptimizer:
             "cache_hits": 0,
             "avg_response_time": 0.0,
             "concurrent_requests": 0,
-            "last_optimization": time.time()
+            "last_optimization": time.time(),
         }
 
         # Lock for thread safety
@@ -43,7 +45,7 @@ class PerformanceOptimizer:
         try:
             with self.cache_lock:
                 if self.cache_file.exists():
-                    with open(self.cache_file, 'r') as f:
+                    with open(self.cache_file, "r") as f:
                         return json.load(f)
         except:
             pass
@@ -53,7 +55,7 @@ class PerformanceOptimizer:
         """Save performance cache with thread safety"""
         try:
             with self.cache_lock:
-                with open(self.cache_file, 'w') as f:
+                with open(self.cache_file, "w") as f:
                     json.dump(self.cache_data, f, indent=2)
         except Exception as e:
             print(f"Error saving cache: {e}")
@@ -83,15 +85,11 @@ class PerformanceOptimizer:
         cache_key = self.get_cache_key(endpoint, params)
 
         with self.cache_lock:
-            self.cache_data[cache_key] = {
-                "data": data,
-                "timestamp": time.time()
-            }
+            self.cache_data[cache_key] = {"data": data, "timestamp": time.time()}
 
             # Limit cache size to prevent memory issues
             if len(self.cache_data) > 200:
-                oldest_key = min(self.cache_data.keys(),
-                               key=lambda k: self.cache_data[k]["timestamp"])
+                oldest_key = min(self.cache_data.keys(), key=lambda k: self.cache_data[k]["timestamp"])
                 del self.cache_data[oldest_key]
 
         # Save cache asynchronously
@@ -100,16 +98,14 @@ class PerformanceOptimizer:
     def get_performance_metrics(self) -> Dict[str, Any]:
         """Get current performance metrics"""
         with self.cache_lock:
-            cache_hit_rate = (
-                self.metrics["cache_hits"] / max(self.metrics["api_calls"], 1) * 100
-            )
+            cache_hit_rate = self.metrics["cache_hits"] / max(self.metrics["api_calls"], 1) * 100
 
         return {
             **self.metrics,
             "cache_size": len(self.cache_data),
             "cache_hit_rate": round(cache_hit_rate, 1),
             "concurrent_capacity": "4 workers",
-            "performance_grade": self._calculate_performance_grade()
+            "performance_grade": self._calculate_performance_grade(),
         }
 
     def _calculate_performance_grade(self) -> str:
@@ -135,8 +131,10 @@ class PerformanceOptimizer:
             self.cache_data.clear()
             self._save_cache()
 
+
 # Global performance optimizer instance
 _performance_optimizer = None
+
 
 def get_performance_optimizer(patterns_dir: str = ".claude-patterns") -> PerformanceOptimizer:
     """Get global performance optimizer instance"""
@@ -145,15 +143,18 @@ def get_performance_optimizer(patterns_dir: str = ".claude-patterns") -> Perform
         _performance_optimizer = PerformanceOptimizer(patterns_dir)
     return _performance_optimizer
 
+
 def cache_api_response(endpoint: str, data: Any, params: str = ""):
     """Cache API response data"""
     optimizer = get_performance_optimizer()
     optimizer.set_cached_data(endpoint, data, params)
 
+
 def get_cached_api_response(endpoint: str, params: str = "") -> Optional[Any]:
     """Get cached API response data"""
     optimizer = get_performance_optimizer()
     return optimizer.get_cached_data(endpoint, params)
+
 
 def record_api_call(response_time: float):
     """Record API call for performance tracking"""
@@ -162,6 +163,4 @@ def record_api_call(response_time: float):
     # Update rolling average
     total_calls = optimizer.metrics["api_calls"]
     current_avg = optimizer.metrics["avg_response_time"]
-    optimizer.metrics["avg_response_time"] = (
-        (current_avg * (total_calls - 1) + response_time) / total_calls
-    )
+    optimizer.metrics["avg_response_time"] = (current_avg * (total_calls - 1) + response_time) / total_calls

@@ -16,10 +16,12 @@ from typing import Dict, List, Any, Optional
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class DecisionExplainer:
@@ -47,25 +49,22 @@ class DecisionExplainer:
         initial_data = {
             "version": "1.0.0",
             "last_updated": datetime.now().isoformat(),
-            "metadata": {
-                "total_decisions": 0,
-                "total_explanations": 0
-            },
-            "decision_history": []
+            "metadata": {"total_decisions": 0, "total_explanations": 0},
+            "decision_history": [],
         }
 
         self._write_data(initial_data)
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -76,7 +75,7 @@ class DecisionExplainer:
     def _read_data(self) -> Dict[str, Any]:
         """Read explanation data with file locking."""
         try:
-            with open(self.explanations_file, 'r', encoding='utf-8') as f:
+            with open(self.explanations_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     data = json.load(f)
@@ -89,7 +88,7 @@ class DecisionExplainer:
 
     def _write_data(self, data: Dict[str, Any]):
         """Write explanation data with file locking."""
-        with open(self.explanations_file, 'w', encoding='utf-8') as f:
+        with open(self.explanations_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -103,8 +102,9 @@ class DecisionExplainer:
         recommendations: List[Dict[str, Any]],
         user_preferences: Dict[str, Any],
         historical_data: Optional[Dict[str, Any]] = None,
-        context: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+        context: Optional[Dict[str, Any]] = None,
+    )-> Dict[str, Any]:
+        """Create Explanation."""
         """
         Create a comprehensive explanation for a decision.
 
@@ -123,49 +123,20 @@ class DecisionExplainer:
             "decision_id": decision_id,
             "decision": decision,
             "timestamp": datetime.now().isoformat(),
-
             # Why this decision?
-            "why_this_decision": self._explain_why_chosen(
-                decision,
-                recommendations,
-                user_preferences,
-                historical_data
-            ),
-
+            "why_this_decision": self._explain_why_chosen(decision, recommendations, user_preferences, historical_data),
             # Why not alternatives?
-            "why_not_alternatives": self._explain_why_not_alternatives(
-                decision,
-                recommendations,
-                user_preferences
-            ),
-
+            "why_not_alternatives": self._explain_why_not_alternatives(decision, recommendations, user_preferences),
             # Trade-offs considered
-            "trade_offs": self._explain_trade_offs(
-                decision,
-                recommendations,
-                context
-            ),
-
+            "trade_offs": self._explain_trade_offs(decision, recommendations, context),
             # Confidence factors
-            "confidence_factors": self._explain_confidence(
-                recommendations,
-                historical_data
-            ),
-
+            "confidence_factors": self._explain_confidence(recommendations, historical_data),
             # User preference alignment
-            "user_alignment": self._explain_user_alignment(
-                decision,
-                user_preferences
-            ),
-
+            "user_alignment": self._explain_user_alignment(decision, user_preferences),
             # Human analogy
             "human_analogy": self._generate_analogy(decision, context),
-
             # Supporting evidence
-            "supporting_evidence": self._compile_evidence(
-                recommendations,
-                historical_data
-            )
+            "supporting_evidence": self._compile_evidence(recommendations, historical_data),
         }
 
         # Store explanation
@@ -178,8 +149,9 @@ class DecisionExplainer:
         decision: str,
         recommendations: List[Dict[str, Any]],
         user_preferences: Dict[str, Any],
-        historical_data: Optional[Dict[str, Any]]
-    ) -> Dict[str, Any]:
+        historical_data: Optional[Dict[str, Any]],
+    )-> Dict[str, Any]:
+        """ Explain Why Chosen."""
         """Explain why this decision was chosen."""
         # Find the recommendation that matches the decision
         chosen_recommendation = None
@@ -189,10 +161,7 @@ class DecisionExplainer:
                 break
 
         if not chosen_recommendation:
-            return {
-                "primary_reason": "Decision synthesized from multiple recommendations",
-                "supporting_reasons": []
-            }
+            return {"primary_reason": "Decision synthesized from multiple recommendations", "supporting_reasons": []}
 
         supporting_reasons = []
 
@@ -200,50 +169,36 @@ class DecisionExplainer:
         if user_preferences:
             alignment_score = self._calculate_alignment(chosen_recommendation, user_preferences)
             if alignment_score > 0.8:
-                supporting_reasons.append(
-                    f"Excellent alignment with user preferences ({alignment_score*100:.0f}%)"
-                )
+                supporting_reasons.append(f"Excellent alignment with user preferences ({alignment_score*100:.0f}%)")
 
         # Historical success
         if historical_data and historical_data.get("success_rate"):
             success_rate = historical_data["success_rate"]
             if success_rate > 0.8:
                 similar_tasks = historical_data.get("similar_tasks", 0)
-                supporting_reasons.append(
-                    f"Historical success rate: {success_rate*100:.0f}% ({similar_tasks} similar tasks)"
-                )
+                supporting_reasons.append(f"Historical success rate: {success_rate*100:.0f}% ({similar_tasks} similar tasks)")
 
         # Confidence from recommending agent
         if chosen_recommendation.get("confidence"):
             confidence = chosen_recommendation["confidence"]
             if confidence > 0.8:
                 agent = chosen_recommendation.get("agent", "analysis agent")
-                supporting_reasons.append(
-                    f"Recommended by {agent} with high confidence ({confidence*100:.0f}%)"
-                )
+                supporting_reasons.append(f"Recommended by {agent} with high confidence ({confidence*100:.0f}%)")
 
         # Benefits
         if chosen_recommendation.get("benefits"):
             benefits = chosen_recommendation["benefits"]
-            supporting_reasons.append(
-                f"Key benefits: {', '.join(benefits)}"
-            )
+            supporting_reasons.append(f"Key benefits: {', '.join(benefits)}")
 
         return {
-            "primary_reason": self._identify_primary_reason(
-                chosen_recommendation,
-                user_preferences,
-                historical_data
-            ),
-            "supporting_reasons": supporting_reasons
+            "primary_reason": self._identify_primary_reason(chosen_recommendation, user_preferences, historical_data),
+            "supporting_reasons": supporting_reasons,
         }
 
     def _identify_primary_reason(
-        self,
-        recommendation: Dict[str, Any],
-        user_preferences: Dict[str, Any],
-        historical_data: Optional[Dict[str, Any]]
-    ) -> str:
+        self, recommendation: Dict[str, Any], user_preferences: Dict[str, Any], historical_data: Optional[Dict[str, Any]]
+    )-> str:
+        """ Identify Primary Reason."""
         """Identify the primary reason for choosing this decision."""
         # Calculate scores for different reasons
         preference_score = 0
@@ -264,7 +219,7 @@ class DecisionExplainer:
         scores = {
             "user_preference": preference_score,
             "historical_success": historical_score,
-            "high_confidence": confidence_score
+            "high_confidence": confidence_score,
         }
 
         primary = max(scores.items(), key=lambda x: x[1])
@@ -277,11 +232,9 @@ class DecisionExplainer:
             return f"High-confidence recommendation ({primary[1]:.0f}%)"
 
     def _explain_why_not_alternatives(
-        self,
-        decision: str,
-        recommendations: List[Dict[str, Any]],
-        user_preferences: Dict[str, Any]
-    ) -> Dict[str, Dict[str, str]]:
+        self, decision: str, recommendations: List[Dict[str, Any]], user_preferences: Dict[str, Any]
+    )-> Dict[str, Dict[str, str]]:
+        """ Explain Why Not Alternatives."""
         """Explain why alternative recommendations were not chosen."""
         alternatives_explanation = {}
 
@@ -295,16 +248,12 @@ class DecisionExplainer:
 
                 alternatives_explanation[recommendation_name] = {
                     "rejected_because": rejected_reason,
-                    "would_be_better_if": better_if
+                    "would_be_better_if": better_if,
                 }
 
         return alternatives_explanation
 
-    def _determine_rejection_reason(
-        self,
-        recommendation: Dict[str, Any],
-        user_preferences: Dict[str, Any]
-    ) -> str:
+    def _determine_rejection_reason(self, recommendation: Dict[str, Any], user_preferences: Dict[str, Any]) -> str:
         """Determine why a recommendation was rejected."""
         # Check confidence
         confidence = recommendation.get("confidence", 0)
@@ -327,11 +276,7 @@ class DecisionExplainer:
 
         return "Lower overall score when considering all factors"
 
-    def _determine_when_better(
-        self,
-        recommendation: Dict[str, Any],
-        user_preferences: Dict[str, Any]
-    ) -> str:
+    def _determine_when_better(self, recommendation: Dict[str, Any], user_preferences: Dict[str, Any]) -> str:
         """Determine under what conditions this recommendation would be better."""
         conditions = []
 
@@ -357,11 +302,9 @@ class DecisionExplainer:
             return "Chosen approach is superior in current context"
 
     def _explain_trade_offs(
-        self,
-        decision: str,
-        recommendations: List[Dict[str, Any]],
-        context: Optional[Dict[str, Any]]
-    ) -> Dict[str, str]:
+        self, decision: str, recommendations: List[Dict[str, Any]], context: Optional[Dict[str, Any]]
+    )-> Dict[str, str]:
+        """ Explain Trade Offs."""
         """Explain trade-offs considered in the decision."""
         trade_offs = {}
 
@@ -391,10 +334,9 @@ class DecisionExplainer:
         return trade_offs
 
     def _explain_confidence(
-        self,
-        recommendations: List[Dict[str, Any]],
-        historical_data: Optional[Dict[str, Any]]
-    ) -> Dict[str, List[str]]:
+        self, recommendations: List[Dict[str, Any]], historical_data: Optional[Dict[str, Any]]
+    )-> Dict[str, List[str]]:
+        """ Explain Confidence."""
         """Explain factors affecting confidence in the decision."""
         high_confidence_factors = []
         uncertainty_factors = []
@@ -403,20 +345,14 @@ class DecisionExplainer:
         if historical_data:
             similar_tasks = historical_data.get("similar_tasks", 0)
             if similar_tasks >= 5:
-                high_confidence_factors.append(
-                    f"Strong historical data ({similar_tasks} similar tasks)"
-                )
+                high_confidence_factors.append(f"Strong historical data ({similar_tasks} similar tasks)")
             elif similar_tasks > 0:
-                uncertainty_factors.append(
-                    f"Limited historical data (only {similar_tasks} similar tasks)"
-                )
+                uncertainty_factors.append(f"Limited historical data (only {similar_tasks} similar tasks)")
 
         # Check recommendation consensus
         high_conf_recs = [r for r in recommendations if r.get("confidence", 0) > 0.8]
         if len(high_conf_recs) >= 2:
-            high_confidence_factors.append(
-                f"Multiple high-confidence recommendations ({len(high_conf_recs)} agents)"
-            )
+            high_confidence_factors.append(f"Multiple high-confidence recommendations ({len(high_conf_recs)} agents)")
 
         # Check user preference clarity
         high_confidence_factors.append("Clear user preference match")
@@ -429,16 +365,9 @@ class DecisionExplainer:
         # Identify uncertainties
         uncertainty_factors.append("Actual execution time may vary")
 
-        return {
-            "high_confidence_factors": high_confidence_factors,
-            "uncertainty_factors": uncertainty_factors
-        }
+        return {"high_confidence_factors": high_confidence_factors, "uncertainty_factors": uncertainty_factors}
 
-    def _explain_user_alignment(
-        self,
-        decision: str,
-        user_preferences: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    def _explain_user_alignment(self, decision: str, user_preferences: Dict[str, Any]) -> Dict[str, Any]:
         """Explain how decision aligns with user preferences."""
         alignment_details = {}
 
@@ -452,7 +381,9 @@ class DecisionExplainer:
         if "quality_priorities" in user_preferences:
             priorities = user_preferences["quality_priorities"]
             top_priority = max(priorities.items(), key=lambda x: x[1])
-            alignment_details["quality_priorities"] = f"Aligned with user's top priority: {top_priority[0]} ({top_priority[1]*100:.0f}%)"
+            alignment_details["quality_priorities"] = (
+                f"Aligned with user's top priority: {top_priority[0]} ({top_priority[1]*100:.0f}%)"
+            )
 
         # Risk tolerance
         if "workflow" in user_preferences:
@@ -461,11 +392,7 @@ class DecisionExplainer:
 
         return alignment_details
 
-    def _generate_analogy(
-        self,
-        decision: str,
-        context: Optional[Dict[str, Any]]
-    ) -> str:
+    def _generate_analogy(self, decision: str, context: Optional[Dict[str, Any]]) -> str:
         """Generate a human-friendly analogy for the decision."""
         # Simple pattern matching for common decision types
         decision_lower = decision.lower()
@@ -483,11 +410,7 @@ class DecisionExplainer:
         else:
             return "Best approach based on evidence and experience"
 
-    def _compile_evidence(
-        self,
-        recommendations: List[Dict[str, Any]],
-        historical_data: Optional[Dict[str, Any]]
-    ) -> List[str]:
+    def _compile_evidence(self, recommendations: List[Dict[str, Any]], historical_data: Optional[Dict[str, Any]]) -> List[str]:
         """Compile supporting evidence for the decision."""
         evidence = []
 
@@ -500,22 +423,14 @@ class DecisionExplainer:
         # Evidence from historical data
         if historical_data:
             if historical_data.get("success_rate"):
-                evidence.append(
-                    f"{historical_data['success_rate']*100:.0f}% success rate in similar past tasks"
-                )
+                evidence.append(f"{historical_data['success_rate']*100:.0f}% success rate in similar past tasks")
 
             if historical_data.get("avg_quality_score"):
-                evidence.append(
-                    f"Average quality score of {historical_data['avg_quality_score']:.1f}/100 for this approach"
-                )
+                evidence.append(f"Average quality score of {historical_data['avg_quality_score']:.1f}/100 for this approach")
 
         return evidence
 
-    def _calculate_alignment(
-        self,
-        recommendation: Dict[str, Any],
-        user_preferences: Dict[str, Any]
-    ) -> float:
+    def _calculate_alignment(self, recommendation: Dict[str, Any], user_preferences: Dict[str, Any]) -> float:
         """Calculate alignment score between recommendation and user preferences."""
         # Simplified alignment calculation
         # In real implementation, this would use preference-coordinator's logic
@@ -586,9 +501,9 @@ def main():
     """Command-line interface for testing the decision explainer."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Decision Explainer')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--decision-id', help='Decision ID to explain')
+    parser = argparse.ArgumentParser(description="Decision Explainer")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--decision-id", help="Decision ID to explain")
 
     args = parser.parse_args()
 
@@ -606,5 +521,5 @@ def main():
         print(f"Storage: {explainer.explanations_file}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

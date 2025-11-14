@@ -18,6 +18,7 @@ class ClaudePluginValidator:
     """Validates Claude Code plugins against official guidelines."""
 
     def __init__(self, plugin_dir: str = "."):
+        """  Init  ."""
         self.plugin_dir = Path(plugin_dir)
         self.issues = []
         self.warnings = []
@@ -164,7 +165,8 @@ class ClaudePluginValidator:
                 if dir_path.is_dir():
                     file_count = len(list(dir_path.glob("*")))
                     print(
-                        f"  [OK] {dir_name}/: Present ({file_count} files - {description})", )
+                        f"  [OK] {dir_name}/: Present ({file_count} files - {description})",
+                    )
                 else:
                     self.warnings.append(
                         f"[WARN]  {dir_name} exists but is not a directory",
@@ -251,7 +253,8 @@ class ClaudePluginValidator:
                         if "description" not in frontmatter:
                             self.warnings.append(
                                 f"[WARN]  Missing description in {file_type}: {
-                                    file_path.name}", )
+                                    file_path.name}",
+                            )
                         if file_type == "skill" and "version" not in frontmatter:
                             self.warnings.append(
                                 f"[WARN]  Missing version in skill: {file_path.name}",
@@ -302,7 +305,8 @@ class ClaudePluginValidator:
             print(f"  [OK] File encoding: UTF-8 ({files_checked} files)")
         else:
             print(
-                f"  [ERROR] File encoding: {encoding_issues} issues out of {files_checked} files", )
+                f"  [ERROR] File encoding: {encoding_issues} issues out of {files_checked} files",
+            )
 
     def _validate_cross_platform_compatibility(self):
         """Validate cross-platform compatibility."""
@@ -319,7 +323,8 @@ class ClaudePluginValidator:
         if long_paths:
             self.warnings.append(
                 f"[WARN]  Long file paths found (Windows limit 260 chars): {
-                    len(long_paths)} files", )
+                    len(long_paths)} files",
+            )
         else:
             print("  [OK] Path lengths: All under limits")
 
@@ -346,7 +351,8 @@ class ClaudePluginValidator:
                     if b"\r\n" in content:
                         self.warnings.append(
                             f"[WARN]  CRLF line endings in {
-                                script_file.name} (should be LF)", )
+                                script_file.name} (should be LF)",
+                        )
             except BaseException:
                 pass
 
@@ -388,10 +394,7 @@ class ClaudePluginValidator:
 
         if installation_blockers:
             self.issues.extend(
-                [
-                    f"[ERROR] Installation blocker: {blocker}"
-                    for blocker in installation_blockers
-                ],
+                [f"[ERROR] Installation blocker: {blocker}" for blocker in installation_blockers],
             )
         else:
             print("  [OK] Installation readiness: No blockers found")
@@ -467,9 +470,7 @@ class ClaudePluginValidator:
 
 def main():
     """Command line interface."""
-    parser = argparse.ArgumentParser(
-        description="Validate Claude Code plugin compliance"
-    )
+    parser = argparse.ArgumentParser(description="Validate Claude Code plugin compliance")
     parser.add_argument("--dir", default=".", help="Plugin directory")
     parser.add_argument(
         "--strict",

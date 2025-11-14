@@ -27,6 +27,7 @@ except ImportError as e:
 
 
 def main():
+    """Main."""
     if len(sys.argv) < 2:
         print("Usage: python run_script.py <script_name> [args...]", file=sys.stderr)
         print("Example: python run_script.py dashboard.py --port 8080", file=sys.stderr)

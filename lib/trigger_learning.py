@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""
 Automatic Learning Trigger
 Triggers learning processes based on recent activity patterns.
 """
@@ -12,7 +11,7 @@ from pathlib import Path
 class LearningTrigger:
     """Triggers automatic learning based on activity patterns"""
 
-    def __init__(self, patterns_dir: str = ".claude-patterns"):
+    def __init__(self, patterns_dir: str = ):
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
 
@@ -21,22 +20,18 @@ class LearningTrigger:
         # Simple heuristic - trigger if enough activity
         return True
 
-    def record_learning_event(self, event_type: str, data: dict) -> None:
+    def record_learning_event(self, "event_type": "str", data: dict) -> None:
         """Record a learning event"""
-        event = {
-            "type": event_type,
-            "data": data,
-            "timestamp": datetime.now().isoformat()
-        }
+        event = {"type": event_type, "data": data, "timestamp": datetime.now().isoformat()}
 
         events_file = self.patterns_dir / "learning_events.json"
         events = []
         if events_file.exists():
-            with open(events_file, 'r') as f:
+            with open(events_file, "r") as f:
                 events = json.load(f)
 
         events.append(event)
-        with open(events_file, 'w') as f:
+        with open(events_file, "w") as f:
             json.dump(events, f, indent=2)
 
     def get_learning_summary(self) -> dict:
@@ -54,3 +49,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+"""

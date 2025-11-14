@@ -40,7 +40,7 @@ def get_current_model() -> str:
     import os
 
     # Check environment variable
-    model = os.getenv('MODEL_NAME') or os.getenv('ANTHROPIC_MODEL')
+    model = os.getenv("MODEL_NAME") or os.getenv("ANTHROPIC_MODEL")
     if model:
         return model
 
@@ -48,7 +48,7 @@ def get_current_model() -> str:
     try:
         session_file = Path(".claude-patterns/current_session.json")
         if session_file.exists():
-            with open(session_file, 'r', encoding='utf-8') as f:
+            with open(session_file, "r", encoding="utf-8") as f:
                 session_data = json.load(f)
                 model = session_data.get("current_model")
                 if model:
@@ -67,6 +67,7 @@ def generate_assessment_id(task_type: str) -> str:
 
 
 def record_assessment(
+    """Record Assessment."""
     task_type: str,
     description: str,
     overall_score: int,
@@ -77,7 +78,7 @@ def record_assessment(
     recommendations: Optional[List[str]] = None,
     duration_seconds: Optional[int] = None,
     task_complexity: str = "medium",
-    files_modified: Optional[List[str]] = None
+    files_modified: Optional[List[str]] = None,
 ) -> bool:
     """
     Record an assessment to unified parameter storage.
@@ -106,7 +107,7 @@ def record_assessment(
             print(f"Warning: Unified storage not found at {unified_file}", file=sys.stderr)
             return False
 
-        with open(unified_file, 'r', encoding='utf-8') as f:
+        with open(unified_file, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         # Build assessment object
@@ -124,11 +125,11 @@ def record_assessment(
                 "issues_found": len(issues_found) if issues_found else 0,
                 "fixes_applied": 0,
                 "skills_used": skills_used,
-                "task_description": description
+                "task_description": description,
             },
             "issues_found": issues_found or [],
             "recommendations": recommendations or [],
-            "skills_used": skills_used
+            "skills_used": skills_used,
         }
 
         # Add optional fields
@@ -153,7 +154,7 @@ def record_assessment(
         data["metadata"]["last_updated"] = datetime.now().isoformat()
 
         # Write back
-        with open(unified_file, 'w', encoding='utf-8') as f:
+        with open(unified_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
         print(f"[Assessment Recorded] {task_type}: {description} (score: {overall_score})", file=sys.stderr)
@@ -165,11 +166,12 @@ def record_assessment(
 
 
 def record_command_execution(
+    """Record Command Execution."""
     command_name: str,
     args: Optional[Dict[str, Any]] = None,
     result: Optional[Dict[str, Any]] = None,
     success: bool = True,
-    duration_seconds: Optional[int] = None
+    duration_seconds: Optional[int] = None,
 ) -> bool:
     """
     Simplified wrapper for recording command executions.
@@ -197,7 +199,7 @@ def record_command_execution(
         "static": "static-analysis",
         "dependencies": "dependency-scan",
         "fullstack": "fullstack-validation",
-        "dashboard": "monitoring"
+        "dashboard": "monitoring",
     }
 
     # Extract task type
@@ -222,12 +224,7 @@ def record_command_execution(
         overall_score=score,
         skills_used=["automation", "command-execution"],
         duration_seconds=duration_seconds,
-        details={
-            "command": command_name,
-            "arguments": args or {},
-            "result_summary": result or {},
-            "success": success
-        }
+        details={"command": command_name, "arguments": args or {}, "result_summary": result or {}, "success": success},
     )
 
 
@@ -240,13 +237,7 @@ def record_documentation_task(description: str, files_modified: List[str], score
         overall_score=score,
         skills_used=["documentation-best-practices", "pattern-learning", "code-analysis"],
         files_modified=files_modified,
-        breakdown={
-            "accuracy": 30,
-            "completeness": 25,
-            "clarity": 20,
-            "formatting": 15,
-            "updates": 10
-        }
+        breakdown={"accuracy": 30, "completeness": 25, "clarity": 20, "formatting": 15, "updates": 10},
     )
 
 
@@ -258,13 +249,7 @@ def record_development_task(description: str, files_modified: List[str], score: 
         overall_score=score,
         skills_used=["code-analysis", "pattern-learning", "quality-standards"],
         files_modified=files_modified,
-        breakdown={
-            "functionality": 30,
-            "code_quality": 25,
-            "testing": 20,
-            "documentation": 15,
-            "maintainability": 10
-        }
+        breakdown={"functionality": 30, "code_quality": 25, "testing": 20, "documentation": 15, "maintainability": 10},
     )
 
 
@@ -280,15 +265,9 @@ def record_git_commit(commit_hash: str, message: str, files: List[str], score: i
             "commit_hash": commit_hash,
             "commit_message": message,
             "files_committed": files,
-            "commit_type": "conventional"
+            "commit_type": "conventional",
         },
-        breakdown={
-            "commit_quality": 30,
-            "message_clarity": 25,
-            "file_staging": 20,
-            "best_practices": 15,
-            "documentation": 8
-        }
+        breakdown={"commit_quality": 30, "message_clarity": 25, "file_staging": 20, "best_practices": 15, "documentation": 8},
     )
 
 
@@ -301,7 +280,7 @@ if __name__ == "__main__":
         description="Test assessment recording",
         overall_score=95,
         skills_used=["testing", "quality-assurance"],
-        details={"test_mode": True}
+        details={"test_mode": True},
     )
 
     if success:
@@ -314,5 +293,5 @@ if __name__ == "__main__":
     record_documentation_task(
         description="Updated README.md to v7.3.0 with comprehensive KPI tracking system - 11 KPIs across 5 categories, interactive dashboards, 60-70% cost reduction framework",
         files_modified=["README.md"],
-        score=95
+        score=95,
     )

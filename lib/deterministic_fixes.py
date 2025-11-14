@@ -1,4 +1,5 @@
 def _deterministic_score(
+    """ Deterministic Score."""
     self,
     base_score: float,
     variance: float,
@@ -11,6 +12,7 @@ def _deterministic_score(
 
 
 def _deterministic_contribution(
+    """ Deterministic Contribution."""
     self,
     score: float,
     base_contribution: float,
@@ -38,9 +40,7 @@ def _load_historical_model_performance(self) -> Dict[str, Any]:
         if timestamp and quality_score is not None and model_used != "Unknown":
             if model_used not in model_scores:
                 model_scores[model_used] = []
-            model_scores[model_used].append(
-                {"timestamp": timestamp, "score": quality_score}
-            )
+            model_scores[model_used].append({"timestamp": timestamp, "score": quality_score})
 
     # Convert to dashboard format
     for model_name, scores in model_scores.items():

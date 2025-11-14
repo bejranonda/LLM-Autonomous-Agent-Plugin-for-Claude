@@ -20,6 +20,7 @@ sys.path.insert(0, str(plugin_lib))
 
 try:
     from web_page_validator import WebPageValidator
+
     VALIDATOR_AVAILABLE = True
 except ImportError:
     VALIDATOR_AVAILABLE = False
@@ -29,6 +30,7 @@ class DashboardDebugger:
     """Iterative debugger that continues until issues are resolved"""
 
     def __init__(self, dashboard_url="http://127.0.0.1:5001"):
+        """  Init  ."""
         self.dashboard_url = dashboard_url
         self.debug_log = []
         self.fix_attempts = 0
@@ -36,7 +38,7 @@ class DashboardDebugger:
 
     def log_debug(self, level: str, message: str):
         """Log debug messages with timestamp"""
-        timestamp = datetime.now().strftime('%H:%M:%S')
+        timestamp = datetime.now().strftime("%H:%M:%S")
         log_entry = f"[{timestamp}] [{level}] {message}"
         self.debug_log.append(log_entry)
         print(log_entry)
@@ -46,20 +48,20 @@ class DashboardDebugger:
         errors = []
 
         # Look for common JavaScript syntax issues
-        lines = html_content.split('\n')
+        lines = html_content.split("\n")
         for i, line in enumerate(lines, 1):
-            if 'Uncaught SyntaxError' in line or 'missing ) after argument list' in line:
+            if "Uncaught SyntaxError" in line or "missing ) after argument list" in line:
                 errors.append(f"Line {i}: {line.strip()}")
 
             # Check for template literal issues
-            if '`' in line and '${' in line:
+            if "`" in line and "${" in line:
                 # Check if template literal is properly closed
-                backtick_count = line.count('`')
+                backtick_count = line.count("`")
                 if backtick_count % 2 != 0:
                     errors.append(f"Line {i}: Unclosed template literal: {line.strip()}")
 
             # Check for arrow function issues
-            if '=>' in line and line.count('(') != line.count(')'):
+            if "=>" in line and line.count("(") != line.count(")"):
                 errors.append(f"Line {i}: Mismatched parentheses in arrow function: {line.strip()}")
 
         return errors
@@ -67,54 +69,54 @@ class DashboardDebugger:
     def check_data_display(self, html_content: str) -> Dict[str, bool]:
         """Check if dashboard sections are displaying actual data"""
         checks = {
-            'token_savings_shown': False,
-            'kpi_scores_shown': False,
-            'system_metrics_shown': False,
-            'charts_rendered': False,
-            'tables_populated': False
+            "token_savings_shown": False,
+            "kpi_scores_shown": False,
+            "system_metrics_shown": False,
+            "charts_rendered": False,
+            "tables_populated": False,
         }
 
         # Check for actual data values (not placeholder zeros)
-        if 'token-savings' in html_content:
+        if "token-savings" in html_content:
             # Look for non-zero token values
             token_pattern = r'id="token-savings"[^>]*>([^<]+)'
             match = re.search(token_pattern, html_content)
-            if match and match.group(1).strip() not in ['0', '0.0', '$0', '0%']:
-                checks['token_savings_shown'] = True
+            if match and match.group(1).strip() not in ["0", "0.0", "$0", "0%"]:
+                checks["token_savings_shown"] = True
 
         # Check for KPI scores
-        if 'overall-score' in html_content:
+        if "overall-score" in html_content:
             kpi_pattern = r'id="overall-score"[^>]*>([^<]+)'
             match = re.search(kpi_pattern, html_content)
-            if match and match.group(1).strip() not in ['0', '0.0']:
-                checks['kpi_scores_shown'] = True
+            if match and match.group(1).strip() not in ["0", "0.0"]:
+                checks["kpi_scores_shown"] = True
 
         # Check for system metrics
-        if 'cpu-value' in html_content or 'memory-value' in html_content:
+        if "cpu-value" in html_content or "memory-value" in html_content:
             sys_pattern = r'id="(cpu|memory)-value"[^>]*>([^<]+)'
             matches = re.findall(sys_pattern, html_content)
             for match in matches:
-                if match[1].strip() not in ['0', '0.0', '0%']:
-                    checks['system_metrics_shown'] = True
+                if match[1].strip() not in ["0", "0.0", "0%"]:
+                    checks["system_metrics_shown"] = True
                     break
 
         # Check for chart elements
-        if 'canvas' in html_content or 'chart' in html_content.lower():
-            checks['charts_rendered'] = True
+        if "canvas" in html_content or "chart" in html_content.lower():
+            checks["charts_rendered"] = True
 
         # Check for table data
-        if '<table' in html_content and ('<td>' in html_content and len(re.findall(r'<td>([^<]+)</td>', html_content)) > 5):
-            checks['tables_populated'] = True
+        if "<table" in html_content and ("<td>" in html_content and len(re.findall(r"<td>([^<]+)</td>", html_content)) > 5):
+            checks["tables_populated"] = True
 
         return checks
 
     def analyze_apis(self) -> Dict[str, bool]:
         """Test if dashboard APIs are returning data"""
         apis = {
-            'tokens_api': f'{self.dashboard_url}/api/sections/tokens',
-            'kpi_api': f'{self.dashboard_url}/api/sections/kpi',
-            'system_api': f'{self.dashboard_url}/api/sections/system',
-            'analytics_api': f'{self.dashboard_url}/api/analytics'
+            "tokens_api": f"{self.dashboard_url}/api/sections/tokens",
+            "kpi_api": f"{self.dashboard_url}/api/sections/kpi",
+            "system_api": f"{self.dashboard_url}/api/sections/system",
+            "analytics_api": f"{self.dashboard_url}/api/analytics",
         }
 
         results = {}
@@ -127,7 +129,7 @@ class DashboardDebugger:
                 try:
                     with urllib.request.urlopen(url, timeout=5) as response:
                         if response.getcode() == 200:
-                            data = json.loads(response.read().decode('utf-8'))
+                            data = json.loads(response.read().decode("utf-8"))
                             # Check if API returns meaningful data
                             has_data = bool(data and len(str(data)) > 50)
                             results[api_name] = has_data
@@ -151,28 +153,29 @@ class DashboardDebugger:
         if not errors:
             return False
 
-        dashboard_path = Path('.claude-patterns/dashboard.py')
+        dashboard_path = Path(".claude-patterns/dashboard.py")
         if not dashboard_path.exists():
             self.log_debug("ERROR", "Dashboard file not found")
             return False
 
         try:
-            with open(dashboard_path, 'r', encoding='utf-8') as f:
+            with open(dashboard_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
             original_content = content
             fixes_applied = 0
 
             # Fix 1: Convert remaining template literals to string concatenation
-            template_pattern = r'`([^`]*\$\{[^}]*\}[^`]*)`'
+            template_pattern = r"`([^`]*\$\{[^}]*\}[^`]*)`"
 
             def replace_template(match):
+                """Replace Template."""
                 nonlocal fixes_applied
                 fixes_applied += 1
                 template_content = match.group(1)
 
                 # Convert template literal to string concatenation
-                parts = re.split(r'\$\{([^}]+)\}', template_content)
+                parts = re.split(r"\$\{([^}]+)\}", template_content)
                 result = "'"
                 for i, part in enumerate(parts):
                     if i % 2 == 0:
@@ -188,29 +191,29 @@ class DashboardDebugger:
             content = re.sub(template_pattern, replace_template, content)
 
             # Fix 2: Convert arrow functions to traditional functions
-            arrow_pattern = r'(\w+)\s*=\s*\(([^)]*)\)\s*=>\s*\{'
-            content = re.sub(arrow_pattern, r'function \1(\2) {', content)
+            arrow_pattern = r"(\w+)\s*=\s*\(([^)]*)\)\s*=>\s*\{"
+            content = re.sub(arrow_pattern, r"function \1(\2) {", content)
 
             # Fix 3: Fix setTimeout with arrow functions
-            timeout_pattern = r'setTimeout\(\s*\(\)\s*=>\s*\{([^}]+)\},\s*(\d+)\s*\)'
-            content = re.sub(timeout_pattern, r'setTimeout(function() {\1}, \2)', content)
+            timeout_pattern = r"setTimeout\(\s*\(\)\s*=>\s*\{([^}]+)\},\s*(\d+)\s*\)"
+            content = re.sub(timeout_pattern, r"setTimeout(function() {\1}, \2)", content)
 
             # Fix 4: Handle unclosed template literals
-            lines = content.split('\n')
+            lines = content.split("\n")
             fixed_lines = []
             for i, line in enumerate(lines):
-                if '`' in line and line.count('`') % 2 != 0:
+                if "`" in line and line.count("`") % 2 != 0:
                     # Unclosed template literal - close it
-                    if not line.strip().endswith('`'):
+                    if not line.strip().endswith("`"):
                         line += "`"
                     fixes_applied += 1
                 fixed_lines.append(line)
 
-            content = '\n'.join(fixed_lines)
+            content = "\n".join(fixed_lines)
 
             # Write back if changes were made
             if content != original_content:
-                with open(dashboard_path, 'w', encoding='utf-8') as f:
+                with open(dashboard_path, "w", encoding="utf-8") as f:
                     f.write(content)
 
                 self.log_debug("FIX", f"Applied {fixes_applied} automatic fixes")
@@ -234,6 +237,7 @@ class DashboardDebugger:
             # Step 1: Check if dashboard is running
             try:
                 import urllib.request
+
                 with urllib.request.urlopen(self.dashboard_url, timeout=5) as response:
                     if response.getcode() != 200:
                         self.log_debug("ERROR", "Dashboard not responding correctly")
@@ -245,8 +249,9 @@ class DashboardDebugger:
             # Step 2: Get page content and analyze
             try:
                 import urllib.request
+
                 with urllib.request.urlopen(self.dashboard_url, timeout=10) as response:
-                    html_content = response.read().decode('utf-8')
+                    html_content = response.read().decode("utf-8")
             except Exception as e:
                 self.log_debug("ERROR", f"Failed to fetch page content: {e}")
                 return False
@@ -351,13 +356,10 @@ def main():
     """Main execution"""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Comprehensive dashboard debugging')
-    parser.add_argument('--url', default='http://127.0.0.1:5001',
-                       help='Dashboard URL to debug')
-    parser.add_argument('--max-attempts', type=int, default=10,
-                       help='Maximum debugging attempts')
-    parser.add_argument('--report', action='store_true',
-                       help='Save debug report to file')
+    parser = argparse.ArgumentParser(description="Comprehensive dashboard debugging")
+    parser.add_argument("--url", default="http://127.0.0.1:5001", help="Dashboard URL to debug")
+    parser.add_argument("--max-attempts", type=int, default=10, help="Maximum debugging attempts")
+    parser.add_argument("--report", action="store_true", help="Save debug report to file")
 
     args = parser.parse_args()
 
@@ -367,17 +369,17 @@ def main():
     success = debugger.run_debugging_loop()
 
     if args.report or not success:
-        report_dir = Path('.claude/reports')
+        report_dir = Path(".claude/reports")
         report_dir.mkdir(parents=True, exist_ok=True)
 
-        timestamp = datetime.now().strftime('%Y-%m-%d_%H%M%S')
-        report_file = report_dir / f'dashboard-debug-{timestamp}.md'
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+        report_file = report_dir / f"dashboard-debug-{timestamp}.md"
 
-        report_file.write_text(debugger.generate_debug_report(), encoding='utf-8')
+        report_file.write_text(debugger.generate_debug_report(), encoding="utf-8")
         print(f"[OK] Debug report saved to: {report_file}")
 
     return 0 if success else 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

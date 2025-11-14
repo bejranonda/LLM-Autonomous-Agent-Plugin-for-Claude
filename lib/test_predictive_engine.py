@@ -5,10 +5,12 @@ Test script for the advanced predictive engine
 
 import sys
 import os
+
 sys.path.insert(0, os.path.dirname(__file__))
 
 from advanced_predictive_engine import AdvancedPredictiveEngine
 import json
+
 
 def test_predictive_engine():
     """Test the advanced predictive engine functionality"""
@@ -19,14 +21,7 @@ def test_predictive_engine():
     print("Engine initialized successfully")
 
     # Test prediction
-    test_task = {
-        'task_type': 'refactoring',
-        'context': {
-            'complexity': 'medium',
-            'language': 'python',
-            'framework': 'flask'
-        }
-    }
+    test_task = {"task_type": "refactoring", "context": {"complexity": "medium", "language": "python", "framework": "flask"}}
 
     result = engine.predict_task_completion(test_task)
     print(f"Prediction completed: {result['ensemble_prediction']:.3f}")
@@ -44,7 +39,8 @@ def test_predictive_engine():
     print("\nAll tests passed! Predictive engine is operational.")
     return result
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     try:
         result = test_predictive_engine()
         print("\nFinal Result:")
@@ -52,5 +48,6 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"Test failed: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

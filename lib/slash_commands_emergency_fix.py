@@ -22,6 +22,7 @@ Version: 1.0.0
 
 import re
 from typing import Dict, Any, List, Optional, Union
+
 try:
     from .command_response_fix import safe_command_response, safe_list_response, safe_table_response
 except ImportError:
@@ -34,47 +35,65 @@ except ImportError:
         content_blocks = []
 
         if title and str(title).strip():
-            content_blocks.append({
-                'type': 'text',
-                'text': str(title).strip()
-            })
+            content_blocks.append({"type": "text", "text": str(title).strip()})
 
         if sections and isinstance(sections, dict):
             for section_title, section_content in sections.items():
                 content = str(section_content).strip()
                 if content:
-                    content_blocks.append({
-                        'type': 'text',
-                        'text': f"\n## {str(section_title).strip()}\n\n{content}"
-                    })
+                    content_blocks.append({"type": "text", "text": f"\n## {str(section_title).strip()}\n\n{content}"})
 
         if not content_blocks:
-            content_blocks = [{'type': 'text', 'text': title or 'Processing...'}]
+            content_blocks = [{"type": "text", "text": title or "Processing..."}]
 
-        return {
-            'role': 'assistant',
-            'content': content_blocks
-        }
+        return {"role": "assistant", "content": content_blocks}
 
     def safe_list_response(title, items, item_format="• {item}"):
         """Fallback safe list response."""
-        return safe_command_response(title, {"Items": '\n'.join(item_format.format(item=item) for item in items if str(item).strip())})
+        return safe_command_response(
+            title, {"Items": "\n".join(item_format.format(item=item) for item in items if str(item).strip())}
+        )
 
     def safe_table_response(title, headers, rows):
         """Fallback safe table response."""
         return safe_command_response(title, {"Table": f"Headers: {headers}, Rows: {len(rows)}"})
+
 
 # ============================================================================
 # SAFE BOX DRAWING FUNCTIONS - Replace Unicode box characters
 # ============================================================================
 
 SAFE_BOX_CHARS = {
-    '═': '=', '║': '|', '╔': '+', '╗': '+', '╚': '+', '╝': '+',
-    '╠': '+', '╣': '+', '╦': '+', '╩': '+', '╬': '+', '│': '|',
-    '┌': '+', '┐': '+', '└': '+', '┘': '+', '├': '+', '┤': '+',
-    '┬': '+', '┴': '+', '┼': '+', '─': '-', '┆': '|', '┊': '|',
-    '✓': '[OK]', '✗': '[X]', '★': '[*]', '☆': '[ ]'
+    "═": "=",
+    "║": "|",
+    "╔": "+",
+    "╗": "+",
+    "╚": "+",
+    "╝": "+",
+    "╠": "+",
+    "╣": "+",
+    "╦": "+",
+    "╩": "+",
+    "╬": "+",
+    "│": "|",
+    "┌": "+",
+    "┐": "+",
+    "└": "+",
+    "┘": "+",
+    "├": "+",
+    "┤": "+",
+    "┬": "+",
+    "┴": "+",
+    "┼": "+",
+    "─": "-",
+    "┆": "|",
+    "┊": "|",
+    "✓": "[OK]",
+    "✗": "[X]",
+    "★": "[*]",
+    "☆": "[ ]",
 }
+
 
 def safe_box_drawing(text: str) -> str:
     """
@@ -100,6 +119,7 @@ def safe_box_drawing(text: str) -> str:
 
     return result
 
+
 def safe_border_box(title: str, content: List[str], width: int = 50) -> str:
     """
     Create safe ASCII border box instead of Unicode box.
@@ -124,7 +144,7 @@ def safe_border_box(title: str, content: List[str], width: int = 50) -> str:
     width = max(width, len(title) + 4)
 
     # Create safe ASCII borders
-    border = '+' + '-' * (width - 2) + '+'
+    border = "+" + "-" * (width - 2) + "+"
     title_line = f"| {title.center(width - 4)} |"
 
     lines = [border, title_line, border]
@@ -134,20 +154,22 @@ def safe_border_box(title: str, content: List[str], width: int = 50) -> str:
             safe_line = safe_box_drawing(str(line).strip())
             # Truncate if too long
             if len(safe_line) > width - 4:
-                safe_line = safe_line[:width - 7] + '...'
+                safe_line = safe_line[: width - 7] + "..."
             lines.append(f"| {safe_line.ljust(width - 4)} |")
 
     lines.append(border)
-    return '\n'.join(lines)
+    return "\n".join(lines)
+
 
 # ============================================================================
 # SAFE LEARN INIT COMMAND RESPONSE GENERATION
 # ============================================================================
 
-def safe_learn_init_response(project_analysis: Dict[str, Any],
-                           patterns_created: List[str],
-                           initial_patterns: List[str],
-                           skills_loaded: List[str]) -> Dict[str, Any]:
+
+def safe_learn_init_response(
+    """Safe Learn Init Response."""
+    project_analysis: Dict[str, Any], patterns_created: List[str], initial_patterns: List[str], skills_loaded: List[str]
+) -> Dict[str, Any]:
     """
     Generate safe response for /learn:init command.
 
@@ -186,24 +208,26 @@ Status: Ready for pattern capture
 """.strip()
 
     # Safe initial patterns section
-    patterns_list = '\n'.join(f"• {pattern}" for pattern in initial_patterns[:5])
+    patterns_list = "\n".join(f"• {pattern}" for pattern in initial_patterns[:5])
     initial_section = patterns_list if patterns_list else "No specific patterns detected yet"
 
     # Safe skills section
-    skills_list = ', '.join(skills_loaded) if skills_loaded else "pattern-learning"
+    skills_list = ", ".join(skills_loaded) if skills_loaded else "pattern-learning"
 
     sections = {
         "Project Analysis": project_section,
         "Pattern Database Created": patterns_section,
         "Initial Patterns Detected": initial_section,
-        "Skills Loaded": skills_list
+        "Skills Loaded": skills_list,
     }
 
     return safe_command_response("Pattern Learning Initialized", sections)
 
+
 # ============================================================================
 # SAFE VALIDATE PLUGIN COMMAND RESPONSE GENERATION
 # ============================================================================
+
 
 def safe_validate_plugin_response(validation_results: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -221,9 +245,9 @@ def safe_validate_plugin_response(validation_results: Dict[str, Any]) -> Dict[st
         >>> 'content' in response
         True
     """
-    score = validation_results.get('score', 0)
-    issues = validation_results.get('issues', [])
-    manifest_valid = validation_results.get('manifest_valid', False)
+    score = validation_results.get("score", 0)
+    issues = validation_results.get("issues", [])
+    manifest_valid = validation_results.get("manifest_valid", False)
 
     # Status determination
     if score >= 100:
@@ -244,19 +268,19 @@ def safe_validate_plugin_response(validation_results: Dict[str, Any]) -> Dict[st
         f"Overall Status: {status_symbol} {status}",
         f"Validation Score: {score}/100",
         f"Manifest Valid: {'[OK]' if manifest_valid else '[FAIL]'}",
-        f"Issues Found: {len(issues)} critical, {len([i for i in issues if i.get('critical')])} warnings"
+        f"Issues Found: {len(issues)} critical, {len([i for i in issues if i.get('critical')])} warnings",
     ]
 
-    summary_section = '\n'.join(summary_lines)
+    summary_section = "\n".join(summary_lines)
 
     # Issues section (if any)
     if issues:
         issue_lines = []
         for i, issue in enumerate(issues[:10], 1):  # Limit to 10 issues
-            severity = "[CRITICAL]" if issue.get('critical') else "[WARNING]"
+            severity = "[CRITICAL]" if issue.get("critical") else "[WARNING]"
             issue_lines.append(f"{i}. {severity} {issue.get('message', 'Unknown issue')}")
 
-        issues_section = '\n'.join(issue_lines)
+        issues_section = "\n".join(issue_lines)
     else:
         issues_section = "No validation issues found - plugin is ready for release!"
 
@@ -265,23 +289,25 @@ def safe_validate_plugin_response(validation_results: Dict[str, Any]) -> Dict[st
         recommendations = [
             "Fix all critical issues before release",
             "Address warnings for better marketplace compatibility",
-            "Run validation again after making fixes"
+            "Run validation again after making fixes",
         ]
-        recommendations_section = '\n'.join(f"• {rec}" for rec in recommendations)
+        recommendations_section = "\n".join(f"• {rec}" for rec in recommendations)
     else:
         recommendations_section = "Plugin is ready for distribution!"
 
     sections = {
         "Validation Summary": summary_section,
         "Issues Found": issues_section,
-        "Recommendations": recommendations_section
+        "Recommendations": recommendations_section,
     }
 
     return safe_command_response("Plugin Validation Results", sections)
 
+
 # ============================================================================
 # SAFE ANALYZE DEPENDENCIES COMMAND RESPONSE GENERATION
 # ============================================================================
+
 
 def safe_analyze_dependencies_response(analysis_results: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -293,29 +319,29 @@ def safe_analyze_dependencies_response(analysis_results: Dict[str, Any]) -> Dict
     Returns:
         Safe Claude message dictionary
     """
-    total_deps = analysis_results.get('total_dependencies', 0)
-    vulnerabilities = analysis_results.get('vulnerabilities', [])
-    outdated = analysis_results.get('outdated', [])
+    total_deps = analysis_results.get("total_dependencies", 0)
+    vulnerabilities = analysis_results.get("vulnerabilities", [])
+    outdated = analysis_results.get("outdated", [])
 
     # Summary section
     summary_lines = [
         f"Total Dependencies: {total_deps}",
         f"Vulnerabilities Found: {len(vulnerabilities)}",
         f"Outdated Packages: {len(outdated)}",
-        f"Security Score: {analysis_results.get('security_score', 'Unknown')}"
+        f"Security Score: {analysis_results.get('security_score', 'Unknown')}",
     ]
 
-    summary_section = '\n'.join(summary_lines)
+    summary_section = "\n".join(summary_lines)
 
     # Vulnerabilities section
     if vulnerabilities:
         vuln_lines = []
         for vuln in vulnerabilities[:5]:  # Limit to top 5
-            severity = vuln.get('severity', 'Unknown')
-            package = vuln.get('package', 'Unknown')
+            severity = vuln.get("severity", "Unknown")
+            package = vuln.get("package", "Unknown")
             vuln_lines.append(f"• {severity}: {package}")
 
-        vuln_section = '\n'.join(vuln_lines)
+        vuln_section = "\n".join(vuln_lines)
     else:
         vuln_section = "No vulnerabilities found - all dependencies secure!"
 
@@ -331,19 +357,17 @@ def safe_analyze_dependencies_response(analysis_results: Dict[str, Any]) -> Dict
     if not recommendations:
         recommendations = ["Dependencies look good - maintain current security practices"]
 
-    rec_section = '\n'.join(f"• {rec}" for rec in recommendations)
+    rec_section = "\n".join(f"• {rec}" for rec in recommendations)
 
-    sections = {
-        "Dependencies Summary": summary_section,
-        "Security Issues": vuln_section,
-        "Recommendations": rec_section
-    }
+    sections = {"Dependencies Summary": summary_section, "Security Issues": vuln_section, "Recommendations": rec_section}
 
     return safe_command_response("Dependencies Analysis", sections)
+
 
 # ============================================================================
 # SAFE MONITOR DASHBOARD COMMAND RESPONSE GENERATION
 # ============================================================================
+
 
 def safe_monitor_dashboard_response(dashboard_info: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -355,57 +379,50 @@ def safe_monitor_dashboard_response(dashboard_info: Dict[str, Any]) -> Dict[str,
     Returns:
         Safe Claude message dictionary
     """
-    status = dashboard_info.get('status', 'unknown')
-    url = dashboard_info.get('url', 'http://localhost:5000')
-    port = dashboard_info.get('port', 5000)
-    auto_open = dashboard_info.get('auto_open', False)
+    status = dashboard_info.get("status", "unknown")
+    url = dashboard_info.get("url", "http://localhost:5000")
+    port = dashboard_info.get("port", 5000)
+    auto_open = dashboard_info.get("auto_open", False)
 
     # Status section
     status_text = f"Dashboard Status: {status.upper()}"
-    if status == 'running':
+    if status == "running":
         status_text += f" [RUNNING]"
-    elif status == 'stopped':
+    elif status == "stopped":
         status_text += f" [STOPPED]"
     else:
         status_text += f" [UNKNOWN]"
 
     # Connection info
-    connection_lines = [
-        f"URL: {url}",
-        f"Port: {port}",
-        f"Auto-open: {'Enabled' if auto_open else 'Disabled'}"
-    ]
+    connection_lines = [f"URL: {url}", f"Port: {port}", f"Auto-open: {'Enabled' if auto_open else 'Disabled'}"]
 
-    connection_section = '\n'.join(connection_lines)
+    connection_section = "\n".join(connection_lines)
 
     # Quick actions
-    actions = [
-        "Open dashboard in browser",
-        "View real-time metrics",
-        "Monitor agent performance",
-        "Check task queue status"
-    ]
+    actions = ["Open dashboard in browser", "View real-time metrics", "Monitor agent performance", "Check task queue status"]
 
-    actions_section = '\n'.join(f"• {action}" for action in actions)
+    actions_section = "\n".join(f"• {action}" for action in actions)
 
     sections = {
         "Dashboard Status": status_text,
         "Connection Information": connection_section,
-        "Available Actions": actions_section
+        "Available Actions": actions_section,
     }
 
     return safe_command_response("Dashboard Monitor", sections)
+
 
 # ============================================================================
 # SAFE COMMAND REGISTRATION AND DISPATCH
 # ============================================================================
 
 COMMAND_FIXES = {
-    '/learn:init': safe_learn_init_response,
-    '/validate:plugin': safe_validate_plugin_response,
-    '/analyze:dependencies': safe_analyze_dependencies_response,
-    '/monitor:dashboard': safe_monitor_dashboard_response,
+    "/learn:init": safe_learn_init_response,
+    "/validate:plugin": safe_validate_plugin_response,
+    "/analyze:dependencies": safe_analyze_dependencies_response,
+    "/monitor:dashboard": safe_monitor_dashboard_response,
 }
+
 
 def get_safe_command_formatter(command_name: str):
     """
@@ -423,6 +440,7 @@ def get_safe_command_formatter(command_name: str):
         True
     """
     return COMMAND_FIXES.get(command_name)
+
 
 def safe_format_command_response(command_name: str, results: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -448,19 +466,17 @@ def safe_format_command_response(command_name: str, results: Dict[str, Any]) -> 
         except Exception as e:
             # Fallback to generic safe response
             return safe_command_response(
-                f"{command_name} Results",
-                {"Command Completed": f"Command executed successfully. Error details: {str(e)}"}
+                f"{command_name} Results", {"Command Completed": f"Command executed successfully. Error details: {str(e)}"}
             )
     else:
         # Generic safe response for unknown commands
-        return safe_command_response(
-            f"{command_name} Results",
-            {"Status": "Command completed successfully"}
-        )
+        return safe_command_response(f"{command_name} Results", {"Status": "Command completed successfully"})
+
 
 # ============================================================================
 # SAFE MULTI-SECTION CONTENT GENERATION
 # ============================================================================
+
 
 def safe_multi_command_response(commands_data: List[tuple]) -> Dict[str, Any]:
     """
@@ -481,7 +497,7 @@ def safe_multi_command_response(commands_data: List[tuple]) -> Dict[str, Any]:
     sections = {}
 
     for command_name, results in commands_data:
-        section_title = command_name.replace('/', '').replace(':', ' ').title()
+        section_title = command_name.replace("/", "").replace(":", " ").title()
 
         try:
             # Try to use specific formatter
@@ -489,16 +505,16 @@ def safe_multi_command_response(commands_data: List[tuple]) -> Dict[str, Any]:
             if formatter:
                 formatted_response = formatter(results)
                 # Extract the main content text
-                if formatted_response and 'content' in formatted_response:
-                    content_blocks = formatted_response['content']
+                if formatted_response and "content" in formatted_response:
+                    content_blocks = formatted_response["content"]
                     if content_blocks and len(content_blocks) > 0:
                         # Combine all text blocks into one section
                         text_parts = []
                         for block in content_blocks:
-                            if block.get('type') == 'text':
-                                text_parts.append(block.get('text', ''))
+                            if block.get("type") == "text":
+                                text_parts.append(block.get("text", ""))
 
-                        sections[section_title] = '\n\n'.join(text_parts)
+                        sections[section_title] = "\n\n".join(text_parts)
                     else:
                         sections[section_title] = f"{command_name} completed successfully"
                 else:
@@ -511,9 +527,11 @@ def safe_multi_command_response(commands_data: List[tuple]) -> Dict[str, Any]:
 
     return safe_command_response("Multiple Commands Results", sections)
 
+
 # ============================================================================
 # VALIDATION AND TESTING
 # ============================================================================
+
 
 def validate_command_response(response: Dict[str, Any]) -> List[str]:
     """
@@ -531,37 +549,44 @@ def validate_command_response(response: Dict[str, Any]) -> List[str]:
         issues.append("Response is not a dictionary")
         return issues
 
-    if 'content' not in response:
+    if "content" not in response:
         issues.append("Missing content field in response")
         return issues
 
-    if not isinstance(response['content'], list):
+    if not isinstance(response["content"], list):
         issues.append("Content is not a list")
         return issues
 
-    if not response['content']:
+    if not response["content"]:
         issues.append("Content array is empty")
         return issues
 
-    for i, block in enumerate(response['content']):
+    for i, block in enumerate(response["content"]):
         if not isinstance(block, dict):
             issues.append(f"Content block {i} is not a dictionary")
             continue
 
-        if block.get('type') == 'text':
-            text = block.get('text', '')
+        if block.get("type") == "text":
+            text = block.get("text", "")
             if not text or not str(text).strip():
                 issues.append(f"Content block {i} has empty or whitespace-only text")
 
     return issues
 
+
 # Export functions for immediate integration
 __all__ = [
-    'safe_box_drawing', 'safe_border_box', 'safe_learn_init_response',
-    'safe_validate_plugin_response', 'safe_analyze_dependencies_response',
-    'safe_monitor_dashboard_response', 'get_safe_command_formatter',
-    'safe_format_command_response', 'safe_multi_command_response',
-    'validate_command_response', 'COMMAND_FIXES'
+    "safe_box_drawing",
+    "safe_border_box",
+    "safe_learn_init_response",
+    "safe_validate_plugin_response",
+    "safe_analyze_dependencies_response",
+    "safe_monitor_dashboard_response",
+    "get_safe_command_formatter",
+    "safe_format_command_response",
+    "safe_multi_command_response",
+    "validate_command_response",
+    "COMMAND_FIXES",
 ]
 
 # ============================================================================
@@ -576,7 +601,7 @@ if __name__ == "__main__":
 
     unicode_box = "╔═══════════════════════════════════════════════════════"
     safe_box = safe_box_drawing(unicode_box)
-    assert '=' in safe_box, f"Expected '=' in safe box, got {safe_box}"
+    assert "=" in safe_box, f"Expected '=' in safe box, got {safe_box}"
     print("   [OK] safe_box_drawing converts Unicode to ASCII")
 
     border = safe_border_box("Test Box", ["Line 1", "Line 2"], 20)
@@ -588,49 +613,45 @@ if __name__ == "__main__":
     print("\n2. Testing safe learn init response:")
 
     project_data = {
-        'type': 'Python project',
-        'files': 127,
-        'frameworks': ['FastAPI', 'SQLAlchemy'],
-        'structure': 'Backend API with modular design'
+        "type": "Python project",
+        "files": 127,
+        "frameworks": ["FastAPI", "SQLAlchemy"],
+        "structure": "Backend API with modular design",
     }
 
     response = safe_learn_init_response(
         project_data,
-        ['patterns.json', 'config.json'],
-        ['RESTful API endpoint pattern', 'Database model pattern'],
-        ['pattern-learning', 'code-analysis']
+        ["patterns.json", "config.json"],
+        ["RESTful API endpoint pattern", "Database model pattern"],
+        ["pattern-learning", "code-analysis"],
     )
 
     issues = validate_command_response(response)
     assert len(issues) == 0, f"Expected no issues, got {issues}"
-    assert len(response['content']) > 0, "Expected content blocks in response"
+    assert len(response["content"]) > 0, "Expected content blocks in response"
     print("   [OK] safe_learn_init_response generates valid response")
 
     # Test validate plugin response
     print("\n3. Testing safe validate plugin response:")
 
-    validation_data = {
-        'score': 100,
-        'issues': [],
-        'manifest_valid': True
-    }
+    validation_data = {"score": 100, "issues": [], "manifest_valid": True}
 
     response = safe_validate_plugin_response(validation_data)
     issues = validate_command_response(response)
     assert len(issues) == 0, f"Expected no issues, got {issues}"
 
     # Check if success message is in any content block
-    success_found = any("VALIDATION PASSED" in block.get('text', '') for block in response.get('content', []))
+    success_found = any("VALIDATION PASSED" in block.get("text", "") for block in response.get("content", []))
     assert success_found, "Expected success message in response"
     print("   [OK] safe_validate_plugin_response handles perfect score")
 
     validation_data = {
-        'score': 65,
-        'issues': [
-            {'critical': True, 'message': 'Missing plugin.json'},
-            {'critical': False, 'message': 'Long file path detected'}
+        "score": 65,
+        "issues": [
+            {"critical": True, "message": "Missing plugin.json"},
+            {"critical": False, "message": "Long file path detected"},
         ],
-        'manifest_valid': False
+        "manifest_valid": False,
     }
 
     response = safe_validate_plugin_response(validation_data)
@@ -638,19 +659,19 @@ if __name__ == "__main__":
     assert len(issues) == 0, f"Expected no issues, got {issues}"
 
     # Check if failure message is in any content block
-    failure_found = any("VALIDATION FAILED" in block.get('text', '') for block in response.get('content', []))
+    failure_found = any("VALIDATION FAILED" in block.get("text", "") for block in response.get("content", []))
     assert failure_found, "Expected failure message in response"
     print("   [OK] safe_validate_plugin_response handles failures")
 
     # Test command dispatch
     print("\n4. Testing command dispatch:")
 
-    response = safe_format_command_response('/learn:init', project_data)
+    response = safe_format_command_response("/learn:init", project_data)
     issues = validate_command_response(response)
     assert len(issues) == 0, f"Expected no issues, got {issues}"
     print("   [OK] safe_format_command_response dispatches correctly")
 
-    response = safe_format_command_response('/unknown:command', {})
+    response = safe_format_command_response("/unknown:command", {})
     issues = validate_command_response(response)
     assert len(issues) == 0, f"Expected no issues for unknown command, got {issues}"
     print("   [OK] safe_format_command_response handles unknown commands")
@@ -658,15 +679,12 @@ if __name__ == "__main__":
     # Test multi-command response
     print("\n5. Testing multi-command response:")
 
-    commands_data = [
-        ('/learn:init', project_data),
-        ('/validate:plugin', validation_data)
-    ]
+    commands_data = [("/learn:init", project_data), ("/validate:plugin", validation_data)]
 
     response = safe_multi_command_response(commands_data)
     issues = validate_command_response(response)
     assert len(issues) == 0, f"Expected no issues for multi-command, got {issues}"
-    assert len(response['content']) >= 1, "Expected at least one content block"
+    assert len(response["content"]) >= 1, "Expected at least one content block"
     print("   [OK] safe_multi_command_response handles multiple commands")
 
     print("\n=== ALL SLASH COMMAND FIXES VALIDATED ===")

@@ -13,6 +13,7 @@ from enum import Enum
 
 class TaskType(Enum):
     """Task type enumeration."""
+
     SECURITY = "security"
     PRODUCTION = "production"
     REFACTORING = "refactoring"
@@ -27,6 +28,7 @@ class TaskType(Enum):
 
 class ProjectPhase(Enum):
     """Project phase enumeration."""
+
     EXPLORATION = "exploration"
     DEVELOPMENT = "development"
     PRE_RELEASE = "pre-release"
@@ -61,20 +63,20 @@ class AdaptiveQualityThresholds:
 
     # Phase multipliers
     PHASE_MULTIPLIERS = {
-        ProjectPhase.EXPLORATION: 0.85,      # More lenient in exploration
-        ProjectPhase.DEVELOPMENT: 0.95,      # Standard development
-        ProjectPhase.PRE_RELEASE: 1.10,      # Stricter before release
-        ProjectPhase.PRODUCTION: 1.05,       # Production code
-        ProjectPhase.MAINTENANCE: 1.00,      # Maintenance standard
+        ProjectPhase.EXPLORATION: 0.85,  # More lenient in exploration
+        ProjectPhase.DEVELOPMENT: 0.95,  # Standard development
+        ProjectPhase.PRE_RELEASE: 1.10,  # Stricter before release
+        ProjectPhase.PRODUCTION: 1.05,  # Production code
+        ProjectPhase.MAINTENANCE: 1.00,  # Maintenance standard
     }
 
     # Criticality adjustments
     CRITICALITY_ADJUSTMENTS = {
-        "critical": 1.15,      # +15% for critical tasks
-        "high": 1.08,          # +8% for high priority
-        "medium": 1.00,        # Baseline
-        "low": 0.92,           # -8% for low priority
-        "trivial": 0.85,       # -15% for trivial tasks
+        "critical": 1.15,  # +15% for critical tasks
+        "high": 1.08,  # +8% for high priority
+        "medium": 1.00,  # Baseline
+        "low": 0.92,  # -8% for low priority
+        "trivial": 0.85,  # -15% for trivial tasks
     }
 
     def __init__(self, storage_dir: str = ".claude-patterns"):
@@ -93,14 +95,9 @@ class AdaptiveQualityThresholds:
 
     def _initialize_history(self):
         """Initialize threshold history file."""
-        initial_data = {
-            "version": "1.0.0",
-            "threshold_history": [],
-            "recent_failures": [],
-            "adjustments_applied": 0
-        }
+        initial_data = {"version": "1.0.0", "threshold_history": [], "recent_failures": [], "adjustments_applied": 0}
 
-        with open(self.history_file, 'w', encoding='utf-8') as f:
+        with open(self.history_file, "w", encoding="utf-8") as f:
             json.dump(initial_data, f, indent=2)
 
     def get_threshold(
@@ -109,8 +106,9 @@ class AdaptiveQualityThresholds:
         project_phase: Optional[str] = None,
         criticality: str = "medium",
         is_user_facing: bool = False,
-        context: Optional[Dict[str, Any]] = None
-    ) -> int:
+        context: Optional[Dict[str, Any]] = None,
+    )-> int:
+        """Get Threshold."""
         """
         Get adaptive quality threshold for a task.
 
@@ -144,9 +142,7 @@ class AdaptiveQualityThresholds:
                 pass  # Use base threshold if invalid phase
 
         # Apply criticality adjustment
-        criticality_multiplier = self.CRITICALITY_ADJUSTMENTS.get(
-            criticality.lower(), 1.0
-        )
+        criticality_multiplier = self.CRITICALITY_ADJUSTMENTS.get(criticality.lower(), 1.0)
         base_threshold *= criticality_multiplier
 
         # User-facing code gets +5% stricter
@@ -170,8 +166,8 @@ class AdaptiveQualityThresholds:
                 "project_phase": project_phase,
                 "criticality": criticality,
                 "is_user_facing": is_user_facing,
-                "had_recent_failures": self._has_recent_failures(context) if context else False
-            }
+                "had_recent_failures": self._has_recent_failures(context) if context else False,
+            },
         )
 
         return threshold
@@ -182,17 +178,16 @@ class AdaptiveQualityThresholds:
         project_phase: Optional[str] = None,
         criticality: str = "medium",
         is_user_facing: bool = False,
-        context: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+        context: Optional[Dict[str, Any]] = None,
+    )-> Dict[str, Any]:
+        """Get Threshold With Explanation."""
         """
         Get threshold with detailed explanation of how it was calculated.
 
         Returns:
             Dictionary with threshold and explanation
         """
-        threshold = self.get_threshold(
-            task_type, project_phase, criticality, is_user_facing, context
-        )
+        threshold = self.get_threshold(task_type, project_phase, criticality, is_user_facing, context)
 
         try:
             task_enum = TaskType(task_type.lower())
@@ -201,27 +196,19 @@ class AdaptiveQualityThresholds:
             task_enum = TaskType.FEATURE
             base = self.BASE_THRESHOLDS[task_enum]
 
-        explanation_parts = [
-            f"Base threshold for {task_type}: {base}/100"
-        ]
+        explanation_parts = [f"Base threshold for {task_type}: {base}/100"]
 
         if project_phase:
             try:
                 phase_enum = ProjectPhase(project_phase.lower())
                 multiplier = self.PHASE_MULTIPLIERS[phase_enum]
-                explanation_parts.append(
-                    f"Phase adjustment ({project_phase}): ×{multiplier:.2f}"
-                )
+                explanation_parts.append(f"Phase adjustment ({project_phase}): ×{multiplier:.2f}")
             except ValueError:
                 pass
 
-        criticality_multiplier = self.CRITICALITY_ADJUSTMENTS.get(
-            criticality.lower(), 1.0
-        )
+        criticality_multiplier = self.CRITICALITY_ADJUSTMENTS.get(criticality.lower(), 1.0)
         if criticality_multiplier != 1.0:
-            explanation_parts.append(
-                f"Criticality adjustment ({criticality}): ×{criticality_multiplier:.2f}"
-            )
+            explanation_parts.append(f"Criticality adjustment ({criticality}): ×{criticality_multiplier:.2f}")
 
         if is_user_facing:
             explanation_parts.append("User-facing code: ×1.05")
@@ -234,7 +221,7 @@ class AdaptiveQualityThresholds:
             "base_threshold": base,
             "task_type": task_type,
             "explanation": explanation_parts,
-            "rationale": self._get_rationale(threshold, task_type)
+            "rationale": self._get_rationale(threshold, task_type),
         }
 
     def _get_rationale(self, threshold: int, task_type: str) -> str:
@@ -265,26 +252,22 @@ class AdaptiveQualityThresholds:
 
         return False
 
-    def _record_threshold_decision(
-        self,
-        task_type: str,
-        threshold: int,
-        base: int,
-        context: Dict[str, Any]
-    ):
+    def _record_threshold_decision(self, task_type: str, threshold: int, base: int, context: Dict[str, Any]):
         """Record threshold decision for analysis."""
         try:
-            with open(self.history_file, 'r', encoding='utf-8') as f:
+            with open(self.history_file, "r", encoding="utf-8") as f:
                 history = json.load(f)
 
-            history["threshold_history"].append({
-                "task_type": task_type,
-                "threshold": threshold,
-                "base_threshold": base,
-                "adjustment": threshold - base,
-                "context": context,
-                "timestamp": self._get_timestamp()
-            })
+            history["threshold_history"].append(
+                {
+                    "task_type": task_type,
+                    "threshold": threshold,
+                    "base_threshold": base,
+                    "adjustment": threshold - base,
+                    "context": context,
+                    "timestamp": self._get_timestamp(),
+                }
+            )
 
             # Keep last 100 decisions
             if len(history["threshold_history"]) > 100:
@@ -292,7 +275,7 @@ class AdaptiveQualityThresholds:
 
             history["adjustments_applied"] += 1
 
-            with open(self.history_file, 'w', encoding='utf-8') as f:
+            with open(self.history_file, "w", encoding="utf-8") as f:
                 json.dump(history, f, indent=2)
 
         except Exception as e:
@@ -302,22 +285,19 @@ class AdaptiveQualityThresholds:
     def get_statistics(self) -> Dict[str, Any]:
         """Get statistics on threshold usage."""
         try:
-            with open(self.history_file, 'r', encoding='utf-8') as f:
+            with open(self.history_file, "r", encoding="utf-8") as f:
                 history = json.load(f)
 
             threshold_history = history["threshold_history"]
 
             if not threshold_history:
-                return {
-                    "total_decisions": 0,
-                    "average_threshold": 0,
-                    "most_common_task_type": None
-                }
+                return {"total_decisions": 0, "average_threshold": 0, "most_common_task_type": None}
 
             thresholds = [d["threshold"] for d in threshold_history]
             task_types = [d["task_type"] for d in threshold_history]
 
             from collections import Counter
+
             task_type_counts = Counter(task_types)
 
             return {
@@ -326,7 +306,7 @@ class AdaptiveQualityThresholds:
                 "min_threshold": min(thresholds),
                 "max_threshold": max(thresholds),
                 "most_common_task_type": task_type_counts.most_common(1)[0][0] if task_type_counts else None,
-                "task_type_distribution": dict(task_type_counts)
+                "task_type_distribution": dict(task_type_counts),
             }
 
         except Exception as e:
@@ -337,6 +317,7 @@ class AdaptiveQualityThresholds:
     def _get_timestamp() -> str:
         """Get current timestamp."""
         from datetime import datetime
+
         return datetime.now().isoformat()
 
 
@@ -344,14 +325,14 @@ def main():
     """Command-line interface for testing adaptive quality thresholds."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Adaptive Quality Thresholds')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--task-type', default='feature', help='Task type')
-    parser.add_argument('--phase', help='Project phase')
-    parser.add_argument('--criticality', default='medium', help='Task criticality')
-    parser.add_argument('--user-facing', action='store_true', help='User-facing task')
-    parser.add_argument('--explain', action='store_true', help='Show explanation')
-    parser.add_argument('--stats', action='store_true', help='Show statistics')
+    parser = argparse.ArgumentParser(description="Adaptive Quality Thresholds")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--task-type", default="feature", help="Task type")
+    parser.add_argument("--phase", help="Project phase")
+    parser.add_argument("--criticality", default="medium", help="Task criticality")
+    parser.add_argument("--user-facing", action="store_true", help="User-facing task")
+    parser.add_argument("--explain", action="store_true", help="Show explanation")
+    parser.add_argument("--stats", action="store_true", help="Show statistics")
 
     args = parser.parse_args()
 
@@ -362,31 +343,21 @@ def main():
         print("Adaptive Quality Threshold Statistics:")
         print(f"  Total Decisions: {stats.get('total_decisions', 0)}")
         print(f"  Average Threshold: {stats.get('average_threshold', 0):.1f}/100")
-        if stats.get('min_threshold'):
+        if stats.get("min_threshold"):
             print(f"  Range: {stats['min_threshold']}-{stats['max_threshold']}/100")
-        if stats.get('most_common_task_type'):
+        if stats.get("most_common_task_type"):
             print(f"  Most Common Type: {stats['most_common_task_type']}")
     elif args.explain:
-        result = system.get_threshold_with_explanation(
-            args.task_type,
-            args.phase,
-            args.criticality,
-            args.user_facing
-        )
+        result = system.get_threshold_with_explanation(args.task_type, args.phase, args.criticality, args.user_facing)
         print(f"Quality Threshold: {result['threshold']}/100")
         print(f"\nCalculation:")
-        for step in result['explanation']:
+        for step in result["explanation"]:
             print(f"  {step}")
         print(f"\nRationale: {result['rationale']}")
     else:
-        threshold = system.get_threshold(
-            args.task_type,
-            args.phase,
-            args.criticality,
-            args.user_facing
-        )
+        threshold = system.get_threshold(args.task_type, args.phase, args.criticality, args.user_facing)
         print(f"Quality Threshold for {args.task_type}: {threshold}/100")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -14,10 +14,12 @@ from typing import Dict, List, Tuple, Optional
 from collections import defaultdict
 import statistics
 
+
 class PredictiveQualityAnalyzer:
     """Advanced predictive analytics for quality optimization"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = patterns_dir
         self.patterns_file = os.path.join(patterns_dir, "patterns.json")
         self.predictions_file = os.path.join(patterns_dir, "quality_predictions.json")
@@ -25,7 +27,7 @@ class PredictiveQualityAnalyzer:
     def load_patterns(self) -> Dict:
         """Load and validate pattern data"""
         try:
-            with open(self.patterns_file, 'r', encoding='utf-8') as f:
+            with open(self.patterns_file, "r", encoding="utf-8") as f:
                 return json.load(f)
         except FileNotFoundError:
             return {"patterns": [], "skill_effectiveness": {}, "agent_effectiveness": {}}
@@ -48,7 +50,7 @@ class PredictiveQualityAnalyzer:
                     "agents_count": len(pattern.get("execution", {}).get("agents_delegated", [])),
                     "timestamp": pattern.get("timestamp", ""),
                     "issues_found": pattern.get("outcome", {}).get("issues_found", 0),
-                    "pattern_id": pattern.get("pattern_id", "")
+                    "pattern_id": pattern.get("pattern_id", ""),
                 }
             else:
                 # Old format pattern
@@ -62,7 +64,7 @@ class PredictiveQualityAnalyzer:
                     "agents_count": len(pattern.get("execution", {}).get("agents_delegated", [])),
                     "timestamp": pattern.get("timestamp", ""),
                     "issues_found": pattern.get("outcome", {}).get("issues_found", 0),
-                    "pattern_id": pattern.get("pattern_id", "")
+                    "pattern_id": pattern.get("pattern_id", ""),
                 }
 
             features.append(feature)
@@ -90,7 +92,7 @@ class PredictiveQualityAnalyzer:
                     "avg_duration": statistics.mean(durations) if durations else 0,
                     "success_rate": sum(1 for f in type_features if f["success"]) / len(type_features),
                     "avg_issues": statistics.mean([f["issues_found"] for f in type_features]),
-                    "confidence": min(len(type_features) / 5.0, 1.0)  # Confidence increases with more data
+                    "confidence": min(len(type_features) / 5.0, 1.0),  # Confidence increases with more data
                 }
 
         return results
@@ -100,11 +102,7 @@ class PredictiveQualityAnalyzer:
         high_quality = [f for f in features if f["quality_score"] >= 90]
         low_quality = [f for f in features if f["quality_score"] < 80 and f["quality_score"] > 0]
 
-        patterns = {
-            "high_quality_indicators": {},
-            "low_quality_indicators": {},
-            "optimal_combinations": []
-        }
+        patterns = {"high_quality_indicators": {}, "low_quality_indicators": {}, "optimal_combinations": []}
 
         # Analyze skill combinations for high quality outcomes
         if high_quality:
@@ -130,19 +128,21 @@ class PredictiveQualityAnalyzer:
                 patterns["high_quality_indicators"]["optimal_duration"] = {
                     "min": min(high_durations),
                     "max": max(high_durations),
-                    "avg": statistics.mean(high_durations)
+                    "avg": statistics.mean(high_durations),
                 }
 
             if low_durations:
                 patterns["low_quality_indicators"]["problematic_duration"] = {
                     "too_fast": min(low_durations) if len(low_durations) > 1 else None,
-                    "too_slow": max(low_durations) if len(low_durations) > 1 else None
+                    "too_slow": max(low_durations) if len(low_durations) > 1 else None,
                 }
 
         return patterns
 
-    def predict_quality_outcome(self, task_type: str, complexity: str = "medium",
-                              skills: List[str] = None, estimated_duration: int = None) -> Dict:
+    def predict_quality_outcome(
+        self, task_type: str, complexity: str = "medium", skills: List[str] = None, estimated_duration: int = None
+    )-> Dict:
+        """Predict Quality Outcome."""
         """Predict quality outcome for a given task"""
         patterns_data = self.load_patterns()
         features = self.extract_quality_features(patterns_data.get("patterns", []))
@@ -155,7 +155,7 @@ class PredictiveQualityAnalyzer:
                 "predicted_quality": 85,  # Default baseline
                 "confidence": 0.3,
                 "recommendations": ["Insufficient data for this task type"],
-                "risk_factors": ["No historical patterns available"]
+                "risk_factors": ["No historical patterns available"],
             }
 
         # Base prediction from historical average
@@ -167,7 +167,7 @@ class PredictiveQualityAnalyzer:
             "simple": {"multiplier": 1.05, "confidence_boost": 0.1},
             "medium": {"multiplier": 1.0, "confidence_boost": 0.0},
             "complex": {"multiplier": 0.95, "confidence_boost": -0.1},
-            "expert": {"multiplier": 0.9, "confidence_boost": -0.2}
+            "expert": {"multiplier": 0.9, "confidence_boost": -0.2},
         }
 
         if complexity in complexity_adjustments:
@@ -216,7 +216,7 @@ class PredictiveQualityAnalyzer:
             "risk_factors": risk_factors,
             "recommendations": recommendations,
             "historical_success_rate": round(baseline["success_rate"] * 100, 1),
-            "estimated_duration": baseline["avg_duration"]
+            "estimated_duration": baseline["avg_duration"],
         }
 
     def generate_intervention_triggers(self) -> Dict[str, List[Dict]]:
@@ -225,46 +225,48 @@ class PredictiveQualityAnalyzer:
         features = self.extract_quality_features(patterns_data.get("patterns", []))
         baselines = self.calculate_task_type_baselines(features)
 
-        triggers = {
-            "quality_gates": [],
-            "resource_recommendations": [],
-            "timing_alerts": []
-        }
+        triggers = {"quality_gates": [], "resource_recommendations": [], "timing_alerts": []}
 
         # Quality gates for different task types
         for task_type, baseline in baselines.items():
             if baseline["confidence"] > 0.5:  # Only for confident baselines
                 quality_threshold = max(85, baseline["avg_quality"] - 5)
 
-                triggers["quality_gates"].append({
-                    "task_type": task_type,
-                    "min_quality_score": quality_threshold,
-                    "confidence_required": 0.7,
-                    "action_if_failed": "Enhanced validation and additional review"
-                })
+                triggers["quality_gates"].append(
+                    {
+                        "task_type": task_type,
+                        "min_quality_score": quality_threshold,
+                        "confidence_required": 0.7,
+                        "action_if_failed": "Enhanced validation and additional review",
+                    }
+                )
 
         # Resource recommendations based on historical success
         quality_patterns = self.identify_quality_patterns(features)
 
         for combo in quality_patterns.get("optimal_combinations", []):
             if combo["frequency"] >= 2:  # Repeated success patterns
-                triggers["resource_recommendations"].append({
-                    "skills_combination": combo["skills"],
-                    "expected_quality": combo["avg_quality"],
-                    "success_frequency": combo["frequency"],
-                    "recommendation": "Use this skill combination for similar tasks"
-                })
+                triggers["resource_recommendations"].append(
+                    {
+                        "skills_combination": combo["skills"],
+                        "expected_quality": combo["avg_quality"],
+                        "success_frequency": combo["frequency"],
+                        "recommendation": "Use this skill combination for similar tasks",
+                    }
+                )
 
         # Timing alerts for unusual durations
         for task_type, baseline in baselines.items():
             if baseline["avg_duration"] > 0:
-                triggers["timing_alerts"].append({
-                    "task_type": task_type,
-                    "expected_duration": baseline["avg_duration"],
-                    "alert_if_longer": baseline["avg_duration"] * 2.0,
-                    "alert_if_shorter": baseline["avg_duration"] * 0.5,
-                    "recommendation": "Investigate unusual execution times"
-                })
+                triggers["timing_alerts"].append(
+                    {
+                        "task_type": task_type,
+                        "expected_duration": baseline["avg_duration"],
+                        "alert_if_longer": baseline["avg_duration"] * 2.0,
+                        "alert_if_shorter": baseline["avg_duration"] * 0.5,
+                        "recommendation": "Investigate unusual execution times",
+                    }
+                )
 
         return triggers
 
@@ -277,10 +279,10 @@ class PredictiveQualityAnalyzer:
             "generated_at": datetime.now().isoformat(),
             "model_version": "1.0.0",
             "patterns_analyzed": len(self.load_patterns().get("patterns", [])),
-            "prediction_confidence": "improving with more data"
+            "prediction_confidence": "improving with more data",
         }
 
-        with open(self.predictions_file, 'w', encoding='utf-8') as f:
+        with open(self.predictions_file, "w", encoding="utf-8") as f:
             json.dump(predictions, f, indent=2, ensure_ascii=False)
 
     def run_comprehensive_analysis(self) -> Dict:
@@ -315,13 +317,13 @@ class PredictiveQualityAnalyzer:
                 "patterns_analyzed": len(features),
                 "task_types_covered": len(baselines),
                 "high_confidence_predictions": len([b for b in baselines.values() if b["confidence"] > 0.7]),
-                "quality_patterns_found": len(quality_patterns.get("optimal_combinations", []))
+                "quality_patterns_found": len(quality_patterns.get("optimal_combinations", [])),
             },
             "baselines": baselines,
             "quality_patterns": quality_patterns,
             "intervention_triggers": intervention_triggers,
             "predictions": predictions,
-            "recommendations": self._generate_strategic_recommendations(baselines, quality_patterns)
+            "recommendations": self._generate_strategic_recommendations(baselines, quality_patterns),
         }
 
         # Save results
@@ -340,47 +342,51 @@ class PredictiveQualityAnalyzer:
 
         # Identify task types needing improvement
         low_quality_tasks = [
-            task_type for task_type, baseline in baselines.items()
+            task_type
+            for task_type, baseline in baselines.items()
             if baseline["avg_quality"] < 85 and baseline["confidence"] > 0.5
         ]
 
         if low_quality_tasks:
-            recommendations.append({
-                "priority": "high",
-                "category": "quality_improvement",
-                "title": "Focus on Quality Improvement",
-                "description": f"Task types with suboptimal quality: {', '.join(low_quality_tasks)}",
-                "action": "Implement enhanced validation for these task types",
-                "expected_impact": "+10-15 quality points"
-            })
+            recommendations.append(
+                {
+                    "priority": "high",
+                    "category": "quality_improvement",
+                    "title": "Focus on Quality Improvement",
+                    "description": f"Task types with suboptimal quality: {', '.join(low_quality_tasks)}",
+                    "action": "Implement enhanced validation for these task types",
+                    "expected_impact": "+10-15 quality points",
+                }
+            )
 
         # Identify successful patterns to leverage
         if patterns.get("optimal_combinations"):
             top_combination = patterns["optimal_combinations"][0]
-            recommendations.append({
-                "priority": "medium",
-                "category": "pattern_leverage",
-                "title": "Leverage Successful Skill Combinations",
-                "description": f"Top combination: {', '.join(top_combination['skills'])}",
-                "action": "Apply this skill combination to similar tasks",
-                "expected_impact": "+5-8 quality points"
-            })
+            recommendations.append(
+                {
+                    "priority": "medium",
+                    "category": "pattern_leverage",
+                    "title": "Leverage Successful Skill Combinations",
+                    "description": f"Top combination: {', '.join(top_combination['skills'])}",
+                    "action": "Apply this skill combination to similar tasks",
+                    "expected_impact": "+5-8 quality points",
+                }
+            )
 
         # Data collection recommendations
-        low_confidence_tasks = [
-            task_type for task_type, baseline in baselines.items()
-            if baseline["confidence"] < 0.5
-        ]
+        low_confidence_tasks = [task_type for task_type, baseline in baselines.items() if baseline["confidence"] < 0.5]
 
         if low_confidence_tasks:
-            recommendations.append({
-                "priority": "medium",
-                "category": "data_collection",
-                "title": "Expand Pattern Coverage",
-                "description": f"Task types needing more data: {', '.join(low_confidence_tasks)}",
-                "action": "Execute more tasks of these types to improve predictions",
-                "expected_impact": "+20-30% prediction accuracy"
-            })
+            recommendations.append(
+                {
+                    "priority": "medium",
+                    "category": "data_collection",
+                    "title": "Expand Pattern Coverage",
+                    "description": f"Task types needing more data: {', '.join(low_confidence_tasks)}",
+                    "action": "Execute more tasks of these types to improve predictions",
+                    "expected_impact": "+20-30% prediction accuracy",
+                }
+            )
 
         return recommendations
 
@@ -391,8 +397,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Predictive Quality Analytics")
     parser.add_argument("--dir", default=".claude-patterns", help="Patterns directory")
-    parser.add_argument("--predict", nargs=2, metavar=("TASK_TYPE", "COMPLEXITY"),
-                       help="Predict quality for specific task")
+    parser.add_argument("--predict", nargs=2, metavar=("TASK_TYPE", "COMPLEXITY"), help="Predict quality for specific task")
     parser.add_argument("--analyze", action="store_true", help="Run comprehensive analysis")
     parser.add_argument("--triggers", action="store_true", help="Generate intervention triggers")
 
@@ -407,7 +412,7 @@ def main():
         print(f"   Predicted Score: {prediction['predicted_quality']}/100")
         print(f"   Confidence: {prediction['confidence']*100:.1f}%")
         print(f"   Historical Success Rate: {prediction['historical_success_rate']}%")
-        if prediction['recommendations']:
+        if prediction["recommendations"]:
             print(f"   Recommendations: {', '.join(prediction['recommendations'])}")
 
     elif args.analyze:

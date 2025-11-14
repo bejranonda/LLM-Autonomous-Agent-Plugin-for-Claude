@@ -28,23 +28,26 @@ from progressive_content_loader import get_progressive_loader, LoadingTier
 
 class CachePolicy(Enum):
     """Caching policies for different types of content."""
-    LRU = "lru"                    # Least Recently Used
-    LFU = "lfu"                    # Least Frequently Used
-    TTL = "ttl"                    # Time To Live
-    ADAPTIVE = "adaptive"          # Adaptive based on usage patterns
+
+    LRU = "lru"  # Least Recently Used
+    LFU = "lfu"  # Least Frequently Used
+    TTL = "ttl"  # Time To Live
+    ADAPTIVE = "adaptive"  # Adaptive based on usage patterns
 
 
 class PredictionModel(Enum):
     """Prediction models for anticipating user needs."""
-    MARKOV_CHAIN = "markov_chain"    # Markov chain based prediction
+
+    MARKOV_CHAIN = "markov_chain"  # Markov chain based prediction
     FREQUENCY_ANALYSIS = "frequency"  # Frequency-based prediction
-    NEURAL_NETWORK = "neural"      # Neural network prediction (future)
-    HYBRID = "hybrid"              # Combination of models
+    NEURAL_NETWORK = "neural"  # Neural network prediction (future)
+    HYBRID = "hybrid"  # Combination of models
 
 
 @dataclass
 class CacheEntry:
     """Represents a cached content entry."""
+
     key: str
     content: Any
     tokens: int
@@ -69,6 +72,7 @@ class CacheEntry:
 @dataclass
 class UserPattern:
     """Represents a user's content access pattern."""
+
     user_id: str
     common_sequences: List[List[str]]
     content_preferences: Dict[str, float]
@@ -83,6 +87,7 @@ class SmartCache:
     """
 
     def __init__(self, cache_dir: str = ".claude-patterns", max_size_mb: int = 100):
+        """  Init  ."""
         self.cache_dir = pathlib.Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
 
@@ -101,14 +106,7 @@ class SmartCache:
         self.prediction_model = PredictionModel.MARKOV_CHAIN
 
         # Statistics
-        self.stats = {
-            'hits': 0,
-            'misses': 0,
-            'predictions': 0,
-            'prediction_hits': 0,
-            'evictions': 0,
-            'total_tokens_saved': 0
-        }
+        self.stats = {"hits": 0, "misses": 0, "predictions": 0, "prediction_hits": 0, "evictions": 0, "total_tokens_saved": 0}
 
         # Background cleanup thread
         self.cleanup_thread = threading.Thread(target=self._cleanup_worker, daemon=True)
@@ -138,8 +136,8 @@ class SmartCache:
             # Update frequency tracking
             self.cache_keys_by_frequency[key] += 1
 
-            self.stats['hits'] += 1
-            self.stats['total_tokens_saved'] += entry.tokens
+            self.stats["hits"] += 1
+            self.stats["total_tokens_saved"] += entry.tokens
 
             return entry.content
 
@@ -147,22 +145,21 @@ class SmartCache:
         if user_id and user_id in self.user_patterns:
             predictions = self._predict_next_content(user_id, key)
             if predictions:
-                self.stats['predictions'] += 1
+                self.stats["predictions"] += 1
                 # Try to load predicted content
                 for predicted_key in predictions[:3]:  # Try top 3 predictions
                     if predicted_key in self.cache:
                         predicted_entry = self.cache[predicted_key]
                         if not predicted_entry.is_expired:
-                            self.stats['prediction_hits'] += 1
+                            self.stats["prediction_hits"] += 1
                             # Update prediction score
                             predicted_entry.prediction_score += 0.1
                             return predicted_entry.content
 
-        self.stats['misses'] += 1
+        self.stats["misses"] += 1
         return None
 
-    def put(self, key: str, content: Any, user_id: str = None,
-              ttl: Optional[int] = None, priority: int = 1) -> bool:
+    def put(self, key: str, content: Any, user_id: str = None, ttl: Optional[int] = None, priority: int = 1) -> bool:
         """Put content into cache with intelligent management."""
         # Calculate token count
         tokens = self._estimate_tokens(content)
@@ -186,7 +183,7 @@ class SmartCache:
             access_count=1,
             last_accessed=time.time(),
             created_at=time.time(),
-            expires_at=expires_at
+            expires_at=expires_at,
         )
 
         # Store in cache
@@ -209,16 +206,14 @@ class SmartCache:
                 results[key] = content
         return results
 
-    def put_batch(self, items: Dict[str, Any], user_id: str = None,
-                   ttl: Optional[int] = None) -> Dict[str, bool]:
+    def put_batch(self, items: Dict[str, Any], user_id: str = None, ttl: Optional[int] = None) -> Dict[str, bool]:
         """Put multiple items into cache efficiently."""
         results = {}
         for key, content in items.items():
             results[key] = self.put(key, content, user_id, ttl)
         return results
 
-    def preload_content(self, keys: List[str], user_id: str = None,
-                       priority_threshold: float = 0.5) -> int:
+    def preload_content(self, keys: List[str], user_id: str = None, priority_threshold: float = 0.5) -> int:
         """Preload content based on predictions and priority."""
         preloaded_count = 0
 
@@ -262,15 +257,14 @@ class SmartCache:
                     current_index = sequence.index(current_key)
                     if current_index < len(sequence) - 1:
                         # Return next items in sequence
-                        next_items = sequence[current_index + 1:current_index + 4]
+                        next_items = sequence[current_index + 1 : current_index + 4]
                         return next_items
 
         # Frequency-based prediction
         content_preferences = pattern.content_preferences
         if content_preferences:
             # Sort by preference and return top candidates
-            sorted_prefs = sorted(content_preferences.items(),
-                                  key=lambda x: x[1], reverse=True)
+            sorted_prefs = sorted(content_preferences.items(), key=lambda x: x[1], reverse=True)
             return [item[0] for item in sorted_prefs[:5]]
 
         return []
@@ -279,11 +273,7 @@ class SmartCache:
         """Update user access patterns."""
         if user_id not in self.user_patterns:
             self.user_patterns[user_id] = UserPattern(
-                user_id=user_id,
-                common_sequences=[],
-                content_preferences={},
-                time_patterns={},
-                last_updated=time.time()
+                user_id=user_id, common_sequences=[], content_preferences={}, time_patterns={}, last_updated=time.time()
             )
 
         pattern = self.user_patterns[user_id]
@@ -292,7 +282,7 @@ class SmartCache:
         pattern.content_preferences[content_key] = pattern.content_preferences.get(content_key, 0) + 1
 
         # Update sequences (simplified Markov chain)
-        if hasattr(self, '_last_key') and hasattr(self, '_last_user_id'):
+        if hasattr(self, "_last_key") and hasattr(self, "_last_user_id"):
             if self._last_user_id == user_id:
                 # Add to existing sequence or create new one
                 added_to_sequence = False
@@ -333,12 +323,14 @@ class SmartCache:
         entries = list(self.cache.values())
 
         # Priority: expired > low access count > old > low hit rate
-        entries.sort(key=lambda x: (
-            not x.is_expired,  # Expired first
-            x.access_count,    # Low access count first
-            x.age_seconds,     # Old first
-            -x.hit_rate        # Low hit rate first
-        ))
+        entries.sort(
+            key=lambda x: (
+                not x.is_expired,  # Expired first
+                x.access_count,  # Low access count first
+                x.age_seconds,  # Old first
+                -x.hit_rate,  # Low hit rate first
+            )
+        )
 
         for entry in entries:
             if space_freed >= needed_space:
@@ -360,7 +352,7 @@ class SmartCache:
                 if key_to_remove in self.cache_keys_by_frequency:
                     del self.cache_keys_by_frequency[key_to_remove]
 
-        self.stats['evictions'] += evicted_count
+        self.stats["evictions"] += evicted_count
         return evicted_count
 
     def _should_preload(self, key: str, user_id: str, threshold: float) -> bool:
@@ -397,10 +389,7 @@ class SmartCache:
 
     def _cleanup_expired_entries(self) -> None:
         """Remove expired entries from cache."""
-        expired_keys = [
-            key for key, entry in self.cache.items()
-            if entry.is_expired
-        ]
+        expired_keys = [key for key, entry in self.cache.items() if entry.is_expired]
 
         for key in expired_keys:
             del self.cache[key]
@@ -409,14 +398,10 @@ class SmartCache:
 
     def _update_statistics(self) -> None:
         """Update cache statistics."""
-        self.stats['cache_size'] = len(self.cache)
-        self.stats['total_tokens'] = sum(entry.tokens for entry in self.cache.values())
-        self.stats['hit_rate'] = (
-            self.stats['hits'] / max(1, self.stats['hits'] + self.stats['misses'])
-        )
-        self.stats['prediction_accuracy'] = (
-            self.stats['prediction_hits'] / max(1, self.stats['predictions'])
-        )
+        self.stats["cache_size"] = len(self.cache)
+        self.stats["total_tokens"] = sum(entry.tokens for entry in self.cache.values())
+        self.stats["hit_rate"] = self.stats["hits"] / max(1, self.stats["hits"] + self.stats["misses"])
+        self.stats["prediction_accuracy"] = self.stats["prediction_hits"] / max(1, self.stats["predictions"])
 
         self._save_stats()
 
@@ -424,13 +409,13 @@ class SmartCache:
         """Get comprehensive cache statistics."""
         return {
             **self.stats,
-            'cache_size': len(self.cache),
-            'total_tokens_cached': sum(entry.tokens for entry in self.cache.values()),
-            'average_hit_rate': self.stats['hit_rate'],
-            'prediction_accuracy': self.stats['prediction_accuracy'],
-            'total_tokens_saved': self.stats['total_tokens_saved'],
-            'user_patterns_count': len(self.user_patterns),
-            'cache_efficiency': self._calculate_efficiency()
+            "cache_size": len(self.cache),
+            "total_tokens_cached": sum(entry.tokens for entry in self.cache.values()),
+            "average_hit_rate": self.stats["hit_rate"],
+            "prediction_accuracy": self.stats["prediction_accuracy"],
+            "total_tokens_saved": self.stats["total_tokens_saved"],
+            "user_patterns_count": len(self.user_patterns),
+            "cache_efficiency": self._calculate_efficiency(),
         }
 
     def _calculate_efficiency(self) -> float:
@@ -445,7 +430,7 @@ class SmartCache:
             return 0.0
 
         # Efficiency based on hit rates and access patterns
-        hit_rate = self.stats['hits'] / max(1, self.stats['hits'] + self.stats['misses'])
+        hit_rate = self.stats["hits"] / max(1, self.stats["hits"] + self.stats["misses"])
         avg_access_per_entry = total_accesses / len(self.cache)
 
         return (hit_rate * 0.7) + (min(1.0, avg_access_per_entry / 10) * 0.3)
@@ -454,7 +439,7 @@ class SmartCache:
         """Load cache from disk."""
         if self.cache_file.exists():
             try:
-                with open(self.cache_file, 'rb') as f:
+                with open(self.cache_file, "rb") as f:
                     self.cache = pickle.load(f)
             except Exception as e:
                 print(f"Error loading cache: {e}")
@@ -462,7 +447,7 @@ class SmartCache:
     def _save_cache(self) -> None:
         """Save cache to disk."""
         try:
-            with open(self.cache_file, 'wb') as f:
+            with open(self.cache_file, "wb") as f:
                 pickle.dump(self.cache, f)
         except Exception as e:
             print(f"Error saving cache: {e}")
@@ -471,7 +456,7 @@ class SmartCache:
         """Load user patterns from disk."""
         if self.patterns_file.exists():
             try:
-                with open(self.patterns_file, 'r') as f:
+                with open(self.patterns_file, "r") as f:
                     data = json.load(f)
                     for user_id, pattern_data in data.items():
                         self.user_patterns[user_id] = UserPattern(**pattern_data)
@@ -481,14 +466,13 @@ class SmartCache:
     def _save_patterns(self) -> None:
         """Save user patterns to disk."""
         try:
-            with open(self.patterns_file, 'w') as f:
+            with open(self.patterns_file, "w") as f:
                 data = {}
                 for user_id, pattern in self.user_patterns.items():
                     pattern_dict = asdict(pattern)
                     # Convert sets to lists for JSON serialization
-                    pattern_dict['common_sequences'] = [
-                        seq if isinstance(seq, list) else list(seq)
-                        for seq in pattern.common_sequences
+                    pattern_dict["common_sequences"] = [
+                        seq if isinstance(seq, list) else list(seq) for seq in pattern.common_sequences
                     ]
                     data[user_id] = pattern_dict
                 json.dump(data, f, indent=2)
@@ -499,7 +483,7 @@ class SmartCache:
         """Load statistics from disk."""
         if self.stats_file.exists():
             try:
-                with open(self.stats_file, 'r') as f:
+                with open(self.stats_file, "r") as f:
                     self.stats = json.load(f)
             except Exception as e:
                 print(f"Error loading stats: {e}")
@@ -507,7 +491,7 @@ class SmartCache:
     def _save_stats(self) -> None:
         """Save statistics to disk."""
         try:
-            with open(self.stats_file, 'w') as f:
+            with open(self.stats_file, "w") as f:
                 json.dump(self.stats, f, indent=2)
         except Exception as e:
             print(f"Error saving stats: {e}")
@@ -530,6 +514,7 @@ class PredictiveLoader:
     """
 
     def __init__(self, cache: SmartCache):
+        """  Init  ."""
         self.cache = cache
         self.prediction_accuracy = {}
         self.loading_strategies = {}
@@ -540,8 +525,8 @@ class PredictiveLoader:
         transitions = defaultdict(list)
 
         for data_point in training_data:
-            sequence = data_point.get('sequence', [])
-            user_id = data_point.get('user_id', 'default')
+            sequence = data_point.get("sequence", [])
+            user_id = data_point.get("user_id", "default")
 
             for i in range(len(sequence) - 1):
                 current = sequence[i]
@@ -553,8 +538,7 @@ class PredictiveLoader:
             key = f"transition_{user_id}_{current}"
             self.cache.put(key, list(set(next_items)), ttl=86400)  # 24 hours
 
-    def predict_next_requests(self, user_id: str, current_request: str,
-                            top_k: int = 5) -> List[str]:
+    def predict_next_requests(self, user_id: str, current_request: str, top_k: int = 5) -> List[str]:
         """Predict next requests based on patterns."""
         key = f"transition_{user_id}_{current_request}"
         predictions = self.cache.get(key)
@@ -565,8 +549,7 @@ class PredictiveLoader:
 
         return []
 
-    def evaluate_prediction_accuracy(self, user_id: str, predicted: List[str],
-                                    actual: List[str]) -> float:
+    def evaluate_prediction_accuracy(self, user_id: str, predicted: List[str], actual: List[str]) -> float:
         """Evaluate prediction accuracy."""
         if not predicted:
             return 0.0
@@ -590,29 +573,29 @@ class PredictiveLoader:
 
         # Get cache efficiency
         cache_stats = self.cache.get_cache_statistics()
-        efficiency = cache_stats.get('cache_efficiency', 0.5)
+        efficiency = cache_stats.get("cache_efficiency", 0.5)
 
         # Determine optimal strategy
         if accuracy > 0.8 and efficiency > 0.7:
             strategy = {
-                'preload_confidence': 'high',
-                'preload_count': 5,
-                'cache_ttl': 7200,  # 2 hours
-                'prediction_model': 'markov_chain'
+                "preload_confidence": "high",
+                "preload_count": 5,
+                "cache_ttl": 7200,  # 2 hours
+                "prediction_model": "markov_chain",
             }
         elif accuracy > 0.6:
             strategy = {
-                'preload_confidence': 'medium',
-                'preload_count': 3,
-                'cache_ttl': 3600,  # 1 hour
-                'prediction_model': 'frequency'
+                "preload_confidence": "medium",
+                "preload_count": 3,
+                "cache_ttl": 3600,  # 1 hour
+                "prediction_model": "frequency",
             }
         else:
             strategy = {
-                'preload_confidence': 'low',
-                'preload_count': 1,
-                'cache_ttl': 1800,  # 30 minutes
-                'prediction_model': 'adaptive'
+                "preload_confidence": "low",
+                "preload_count": 1,
+                "cache_ttl": 1800,  # 30 minutes
+                "prediction_model": "adaptive",
             }
 
         return strategy
@@ -622,12 +605,14 @@ class PredictiveLoader:
 _smart_cache = None
 _predictive_loader = None
 
+
 def get_smart_cache() -> SmartCache:
     """Get or create global smart cache instance."""
     global _smart_cache
     if _smart_cache is None:
         _smart_cache = SmartCache()
     return _smart_cache
+
 
 def get_predictive_loader() -> PredictiveLoader:
     """Get or create global predictive loader instance."""

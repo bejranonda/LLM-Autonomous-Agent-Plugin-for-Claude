@@ -13,8 +13,10 @@ import subprocess
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 
+
 class AutoActivityRecorder:
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = patterns_dir
         self.performance_records_file = os.path.join(patterns_dir, "performance_records.json")
         self.auto_trigger_log = os.path.join(patterns_dir, "auto_trigger_log.json")
@@ -24,16 +26,16 @@ class AutoActivityRecorder:
         """Get the timestamp of the last commit scan."""
         if os.path.exists(self.last_scan_file):
             try:
-                with open(self.last_scan_file, 'r', encoding='utf-8') as f:
+                with open(self.last_scan_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                    return datetime.fromisoformat(data.get('last_scan', '2025-01-01T00:00:00'))
+                    return datetime.fromisoformat(data.get("last_scan", "2025-01-01T00:00:00"))
             except:
                 pass
         return datetime.now() - timedelta(hours=24)  # Default to 24 hours ago
 
     def update_last_scan_time(self) -> None:
         """Update the last scan time to now."""
-        with open(self.last_scan_file, 'w', encoding='utf-8') as f:
+        with open(self.last_scan_file, "w", encoding="utf-8") as f:
             json.dump({"last_scan": datetime.now().isoformat()}, f, indent=2)
 
     def get_new_commits(self, since: datetime) -> List[Dict[str, Any]]:
@@ -41,21 +43,19 @@ class AutoActivityRecorder:
         since_str = since.strftime("%Y-%m-%d %H:%M:%S")
 
         try:
-            result = subprocess.run([
-                "git", "log", f"--since={since_str}",
-                "--pretty=format:%H|%ad|%s", "--date=iso", "--no-merges"
-            ], capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                ["git", "log", f"--since={since_str}", "--pretty=format:%H|%ad|%s", "--date=iso", "--no-merges"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
 
             commits = []
-            for line in result.stdout.strip().split('\n'):
+            for line in result.stdout.strip().split("\n"):
                 if line:
-                    parts = line.split('|')
+                    parts = line.split("|")
                     if len(parts) >= 3:
-                        commits.append({
-                            "hash": parts[0],
-                            "date": parts[1],
-                            "message": parts[2]
-                        })
+                        commits.append({"hash": parts[0], "date": parts[1], "message": parts[2]})
             return commits
         except subprocess.CalledProcessError:
             return []
@@ -65,11 +65,11 @@ class AutoActivityRecorder:
         ids = set()
 
         if os.path.exists(self.performance_records_file):
-            with open(self.performance_records_file, 'r', encoding='utf-8') as f:
+            with open(self.performance_records_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                for record in data.get('records', []):
-                    if record.get('assessment_id'):
-                        ids.add(record['assessment_id'])
+                for record in data.get("records", []):
+                    if record.get("assessment_id"):
+                        ids.add(record["assessment_id"])
 
         return ids
 
@@ -78,22 +78,22 @@ class AutoActivityRecorder:
         msg_lower = message.lower()
 
         # Determine task type
-        if msg_lower.startswith('feat:') or msg_lower.startswith('feature:'):
+        if msg_lower.startswith("feat:") or msg_lower.startswith("feature:"):
             task_type = "feature-implementation"
             base_score = 95
-        elif msg_lower.startswith('fix:') or msg_lower.startswith('bugfix:'):
+        elif msg_lower.startswith("fix:") or msg_lower.startswith("bugfix:"):
             task_type = "bug-fix"
             base_score = 92
-        elif msg_lower.startswith('refactor:'):
+        elif msg_lower.startswith("refactor:"):
             task_type = "refactoring"
             base_score = 90
-        elif msg_lower.startswith('docs:'):
+        elif msg_lower.startswith("docs:"):
             task_type = "documentation"
             base_score = 88
-        elif msg_lower.startswith('release:') or msg_lower.startswith('bump:'):
+        elif msg_lower.startswith("release:") or msg_lower.startswith("bump:"):
             task_type = "release-management"
             base_score = 89
-        elif 'quality' in msg_lower:
+        elif "quality" in msg_lower:
             task_type = "quality-improvement"
             base_score = 93
         else:
@@ -106,10 +106,10 @@ class AutoActivityRecorder:
             duration = 15.0  # Complex commit
             score = base_score - 2
         elif words > 10:
-            duration = 8.0   # Medium commit
+            duration = 8.0  # Medium commit
             score = base_score
         else:
-            duration = 3.0   # Simple commit
+            duration = 3.0  # Simple commit
             score = base_score + 1
 
         score = max(80, min(100, score))
@@ -118,20 +118,20 @@ class AutoActivityRecorder:
     def get_files_changed(self, commit_hash: str) -> int:
         """Get number of files changed in a commit."""
         try:
-            result = subprocess.run([
-                "git", "show", "--name-only", "--pretty=format:", commit_hash
-            ], capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                ["git", "show", "--name-only", "--pretty=format:", commit_hash], capture_output=True, text=True, check=True
+            )
 
-            files = [f.strip() for f in result.stdout.strip().split('\n') if f.strip()]
+            files = [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
             return len(files)
         except subprocess.CalledProcessError:
             return 1
 
     def create_performance_record(self, commit: Dict[str, Any], existing_ids: set) -> Optional[Dict[str, Any]]:
         """Create a performance record for a commit."""
-        timestamp = datetime.fromisoformat(commit['date'].replace(' ', 'T'))
-        task_type, score, duration = self.classify_commit(commit['message'])
-        files_changed = self.get_files_changed(commit['hash'])
+        timestamp = datetime.fromisoformat(commit["date"].replace(" ", "T"))
+        task_type, score, duration = self.classify_commit(commit["message"])
+        files_changed = self.get_files_changed(commit["hash"])
 
         # Create assessment ID
         assessment_id = f"{task_type.replace('-', '')}-{timestamp.strftime('%Y%m%d-%H%M%S')}-{commit['hash'][:8]}"
@@ -150,22 +150,22 @@ class AutoActivityRecorder:
             "auto_generated": True,
             "evaluation_target": task_type,
             "issues_found": 0,
-            "fixes_applied": 1 if 'fix' in task_type else 0,
-            "quality_improvement": 5 if 'quality' in task_type or 'refactor' in task_type else 0,
+            "fixes_applied": 1 if "fix" in task_type else 0,
+            "quality_improvement": 5 if "quality" in task_type or "refactor" in task_type else 0,
             "performance_index": score * 0.9,
             "success_rate": 100,
             "time_elapsed_minutes": duration,
             "model": "GLM-4.6",
-            "description": commit['message'][:100],
+            "description": commit["message"][:100],
             "files_modified": files_changed,
             "source": "automatic-git-monitoring",
-            "commit_hash": commit['hash'],
+            "commit_hash": commit["hash"],
             "details": {
                 "source": "automatic-git-monitoring",
-                "commit_hash": commit['hash'],
+                "commit_hash": commit["hash"],
                 "files_modified": files_changed,
-                "auto_captured": True
-            }
+                "auto_captured": True,
+            },
         }
 
         return record
@@ -178,21 +178,21 @@ class AutoActivityRecorder:
         # Load existing data
         performance_data = {"records": [], "version": "2.0.0"}
         if os.path.exists(self.performance_records_file):
-            with open(self.performance_records_file, 'r', encoding='utf-8') as f:
+            with open(self.performance_records_file, "r", encoding="utf-8") as f:
                 performance_data = json.load(f)
 
         # Add new records at the beginning
         for record in records:
-            performance_data['records'].insert(0, record)
+            performance_data["records"].insert(0, record)
 
         # Update metadata
-        if 'metadata' not in performance_data:
-            performance_data['metadata'] = {}
-        performance_data['metadata']['total_records'] = len(performance_data['records'])
-        performance_data['metadata']['last_updated'] = datetime.now().isoformat()
+        if "metadata" not in performance_data:
+            performance_data["metadata"] = {}
+        performance_data["metadata"]["total_records"] = len(performance_data["records"])
+        performance_data["metadata"]["last_updated"] = datetime.now().isoformat()
 
         # Save updated data
-        with open(self.performance_records_file, 'w', encoding='utf-8') as f:
+        with open(self.performance_records_file, "w", encoding="utf-8") as f:
             json.dump(performance_data, f, indent=2, ensure_ascii=False)
 
         return len(records)
@@ -205,7 +205,7 @@ class AutoActivityRecorder:
         # Load existing log
         log_data = {"version": "1.0.0", "captures": [], "metadata": {}}
         if os.path.exists(self.auto_trigger_log):
-            with open(self.auto_trigger_log, 'r', encoding='utf-8') as f:
+            with open(self.auto_trigger_log, "r", encoding="utf-8") as f:
                 log_data = json.load(f)
 
         # Add new capture entries
@@ -213,24 +213,24 @@ class AutoActivityRecorder:
             capture_entry = {
                 "timestamp": datetime.now().isoformat(),
                 "type": "automatic_git_capture",
-                "assessment_id": record['assessment_id'],
-                "task_type": record['task_type'],
-                "duration_seconds": record['time_elapsed_minutes'] * 60,
-                "quality_score": record['overall_score'],
+                "assessment_id": record["assessment_id"],
+                "task_type": record["task_type"],
+                "duration_seconds": record["time_elapsed_minutes"] * 60,
+                "quality_score": record["overall_score"],
                 "success": True,
-                "source": "auto_activity_recorder"
+                "source": "auto_activity_recorder",
             }
-            log_data['captures'].append(capture_entry)
+            log_data["captures"].append(capture_entry)
 
         # Update metadata
-        log_data['metadata'] = {
-            "total_captures": len(log_data['captures']),
+        log_data["metadata"] = {
+            "total_captures": len(log_data["captures"]),
             "last_capture": datetime.now().isoformat(),
-            "auto_recording_enabled": True
+            "auto_recording_enabled": True,
         }
 
         # Save log
-        with open(self.auto_trigger_log, 'w', encoding='utf-8') as f:
+        with open(self.auto_trigger_log, "w", encoding="utf-8") as f:
             json.dump(log_data, f, indent=2, ensure_ascii=False)
 
     def scan_and_record(self) -> Dict[str, Any]:
@@ -259,7 +259,7 @@ class AutoActivityRecorder:
             record = self.create_performance_record(commit, existing_ids)
             if record:
                 new_records.append(record)
-                existing_ids.add(record['assessment_id'])
+                existing_ids.add(record["assessment_id"])
 
         print(f"[AutoActivityRecorder] Created {len(new_records)} new records")
 
@@ -276,16 +276,18 @@ class AutoActivityRecorder:
             "status": "success",
             "records_added": added_count,
             "commits_scanned": len(new_commits),
-            "scan_time": datetime.now().isoformat()
+            "scan_time": datetime.now().isoformat(),
         }
 
         print(f"[AutoActivityRecorder] Scan complete: {added_count} records added")
         return result
 
+
 def run_automatic_scan():
     """Run automatic scan and return results."""
     recorder = AutoActivityRecorder()
     return recorder.scan_and_record()
+
 
 if __name__ == "__main__":
     # Run automatic scan

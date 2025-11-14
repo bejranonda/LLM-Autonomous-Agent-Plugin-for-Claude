@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
 
+
 class TargetedSyntaxFixer:
     def __init__(self, lib_dir: str = "lib"):
         self.lib_dir = Path(lib_dir)
@@ -18,7 +19,7 @@ class TargetedSyntaxFixer:
 
     def fix_function_signature_patterns(self, content: str) -> str:
         """Fix the specific function signature patterns found"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for line in lines:
@@ -48,11 +49,11 @@ class TargetedSyntaxFixer:
 
             fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_unterminated_docstrings(self, content: str) -> str:
         """Fix unterminated docstring patterns"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
         in_docstring = False
         docstring_start = None
@@ -88,11 +89,11 @@ class TargetedSyntaxFixer:
             fixed_lines.append('"""')
             self.fixes_applied.append(f"Closed unterminated docstring starting at line {docstring_start+1}")
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_f_string_errors(self, content: str) -> str:
         """Fix f-string syntax errors"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for line in lines:
@@ -111,16 +112,16 @@ class TargetedSyntaxFixer:
             # Fix pattern: f"text{var}": ".format"
             if re.search(r'f["\'][^"\']*}[^"\']*["\']:\s*["\'][^"\']*format', line):
                 # This is malformed f-string + format mix
-                line = re.sub(r'f(["\'][^"\']*}[^"\']*)["\']:\s*["\'][^"\']*format', r'\1.format', line)
+                line = re.sub(r'f(["\'][^"\']*}[^"\']*)["\']:\s*["\'][^"\']*format', r"\1.format", line)
                 self.fixes_applied.append(f"Fixed f-string/format mix: {original_line.strip()}")
 
             fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_invalid_syntax_lines(self, content: str) -> str:
         """Fix invalid syntax on specific lines"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for i, line in enumerate(lines):
@@ -128,28 +129,30 @@ class TargetedSyntaxFixer:
 
             # Line 2-4: Comment out invalid description lines
             if 1 <= i <= 3:  # Lines 2-4 (0-indexed)
-                if (line.strip() and
-                    not line.startswith('#') and
-                    not line.startswith('"""') and
-                    not line.startswith("'''") and
-                    not line.startswith('import') and
-                    not line.startswith('from') and
-                    not '=' in line and
-                    not 'def ' in line and
-                    not 'class ' in line and
-                    not line.strip().endswith(':') and
-                    not line.strip().endswith('.') and
-                    ' ' in line):
+                if (
+                    line.strip()
+                    and not line.startswith("#")
+                    and not line.startswith('"""')
+                    and not line.startswith("'''")
+                    and not line.startswith("import")
+                    and not line.startswith("from")
+                    and not "=" in line
+                    and not "def " in line
+                    and not "class " in line
+                    and not line.strip().endswith(":")
+                    and not line.strip().endswith(".")
+                    and " " in line
+                ):
                     line = f"# {line}"
                     self.fixes_applied.append(f"Commented out invalid line {i+1}: {original_line.strip()}")
 
             fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_bracket_mismatches(self, content: str) -> str:
         """Fix bracket/brace mismatches"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for line in lines:
@@ -157,22 +160,22 @@ class TargetedSyntaxFixer:
 
             # Fix pattern: "key": value})  - extra closing brace
             if re.search(r'["\'][^"\']*["\']:\s*[^,\s]*\}\)', line):
-                line = re.sub(r'\}\)', '}', line)
+                line = re.sub(r"\}\)", "}", line)
                 self.fixes_applied.append(f"Fixed extra closing brace: {original_line.strip()}")
 
             # Fix pattern: [item,}  - wrong closing bracket
-            if re.search(r'\[[^\]]*,\s*\}', line):
-                line = re.sub(r',\s*\}', ']', line)
+            if re.search(r"\[[^\]]*,\s*\}", line):
+                line = re.sub(r",\s*\}", "]", line)
                 self.fixes_applied.append(f"Fixed bracket mismatch: {original_line.strip()}")
 
             fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_file(self, file_path: Path) -> bool:
         """Apply targeted fixes to a single file"""
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 original_content = f.read()
 
             content = original_content
@@ -189,7 +192,7 @@ class TargetedSyntaxFixer:
                 ast.parse(content)
                 # If parsing succeeds, write the fixed content
                 if content != original_content:
-                    with open(file_path, 'w', encoding='utf-8') as f:
+                    with open(file_path, "w", encoding="utf-8") as f:
                         f.write(content)
                     print(f"FIXED: {file_path}")
                     self.errors_fixed += 1
@@ -200,7 +203,7 @@ class TargetedSyntaxFixer:
             except SyntaxError as e:
                 print(f"ERROR: Still has syntax errors: {file_path} - {e}")
                 # Show the problematic line
-                lines = content.split('\n')
+                lines = content.split("\n")
                 if e.lineno and e.lineno <= len(lines):
                     error_line = lines[e.lineno - 1]
                     print(f"       Error line {e.lineno}: {error_line.strip()}")
@@ -214,34 +217,42 @@ class TargetedSyntaxFixer:
         """Manually fix some of the most problematic files"""
         # List of files that need manual intervention
         problem_files = [
-            'lib/debug_evaluator.py',
-            'lib/fix_plugin.py',
-            'lib/git_operations.py',
-            'lib/trigger_learning.py',
-            'lib/validate_plugin.py'
+            "lib/debug_evaluator.py",
+            "lib/fix_plugin.py",
+            "lib/git_operations.py",
+            "lib/trigger_learning.py",
+            "lib/validate_plugin.py",
         ]
 
         for file_path in problem_files:
             full_path = self.lib_dir / file_path
             if full_path.exists():
                 try:
-                    with open(full_path, 'r', encoding='utf-8') as f:
+                    with open(full_path, "r", encoding="utf-8") as f:
                         content = f.read()
 
-                    lines = content.split('\n')
+                    lines = content.split("\n")
                     fixed_lines = []
 
                     for i, line in enumerate(lines):
                         # Comment out problematic description lines
-                        if i < 5 and line.strip() and not line.startswith('#') and not line.startswith('"""') and not line.startswith("'''") and not line.startswith('import') and not line.startswith('from'):
+                        if (
+                            i < 5
+                            and line.strip()
+                            and not line.startswith("#")
+                            and not line.startswith('"""')
+                            and not line.startswith("'''")
+                            and not line.startswith("import")
+                            and not line.startswith("from")
+                        ):
                             line = f"# {line}"
                         fixed_lines.append(line)
 
-                    fixed_content = '\n'.join(fixed_lines)
+                    fixed_content = "\n".join(fixed_lines)
 
                     try:
                         ast.parse(fixed_content)
-                        with open(full_path, 'w', encoding='utf-8') as f:
+                        with open(full_path, "w", encoding="utf-8") as f:
                             f.write(fixed_content)
                         print(f"MANUAL FIX: {file_path}")
                         self.errors_fixed += 1
@@ -262,7 +273,7 @@ class TargetedSyntaxFixer:
 
         for file_path in python_files:
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     content = f.read()
                 ast.parse(content)
             except SyntaxError:
@@ -283,7 +294,7 @@ class TargetedSyntaxFixer:
         final_errors = []
         for file_path in python_files:
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     content = f.read()
                 ast.parse(content)
             except SyntaxError:
@@ -292,13 +303,14 @@ class TargetedSyntaxFixer:
                 pass
 
         return {
-            'total_files': len(python_files),
-            'initial_errors': len(error_files),
-            'files_fixed': self.errors_fixed,
-            'remaining_errors': len(final_errors),
-            'error_files': final_errors,
-            'fixes_applied': self.fixes_applied
+            "total_files": len(python_files),
+            "initial_errors": len(error_files),
+            "files_fixed": self.errors_fixed,
+            "remaining_errors": len(final_errors),
+            "error_files": final_errors,
+            "fixes_applied": self.fixes_applied,
         }
+
 
 def main():
     """Main execution function"""
@@ -310,32 +322,33 @@ def main():
     fixer = TargetedSyntaxFixer(lib_dir)
     result = fixer.fix_all_error_files()
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("TARGETED SYNTAX FIX REPORT")
-    print("="*60)
+    print("=" * 60)
     print(f"Total Python files: {result['total_files']}")
     print(f"Initial syntax errors: {result['initial_errors']}")
     print(f"Files fixed: {result['files_fixed']}")
     print(f"Remaining errors: {result['remaining_errors']}")
     print(f"Total fixes applied: {len(result['fixes_applied'])}")
 
-    if result['remaining_errors'] > 0:
+    if result["remaining_errors"] > 0:
         print(f"\nRemaining files with errors:")
-        for error_file in result['error_files'][:10]:
+        for error_file in result["error_files"][:10]:
             print(f"  - {error_file}")
-        if len(result['error_files']) > 10:
+        if len(result["error_files"]) > 10:
             print(f"  ... and {len(result['error_files']) - 10} more")
     else:
         print("\nSUCCESS: All Python files now compile successfully!")
 
-    if result['fixes_applied']:
+    if result["fixes_applied"]:
         print(f"\nSample fixes applied:")
-        for fix in result['fixes_applied'][:15]:
+        for fix in result["fixes_applied"][:15]:
             print(f"  - {fix}")
-        if len(result['fixes_applied']) > 15:
+        if len(result["fixes_applied"]) > 15:
             print(f"  ... and {len(result['fixes_applied']) - 15} more fixes")
 
     return result
+
 
 if __name__ == "__main__":
     main()

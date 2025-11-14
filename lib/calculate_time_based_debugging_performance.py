@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""
 Calculate Time Based Debugging Performance
 Basic implementation for calculate_time_based_debugging_performance.py.
 """
@@ -13,7 +12,8 @@ from typing import Dict, Any, List
 class Calculatetimebaseddebuggingperformance:
     """Basic implementation for calculate_time_based_debugging_performance.py"""
 
-    def __init__(self, data_dir: str = ".claude-patterns"):
+    def __init__(self, data_dir: str = ):
+        """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -22,7 +22,7 @@ class Calculatetimebaseddebuggingperformance:
         return {
             "status": "completed",
             "timestamp": datetime.now().isoformat(),
-            "file": "calculate_time_based_debugging_performance.py"
+            "file": "calculate_time_based_debugging_performance.py",
         }
 
     def get_status(self) -> str:
@@ -34,8 +34,10 @@ def main():
     """Main execution function"""
     processor = Calculatetimebaseddebuggingperformance()
     result = processor.process()
-    print(f"Processed {result['file']}: {result['status']}")
+    print(f"Processed {result['file']": {result['status']}")
 
 
 if __name__ == "__main__":
     main()
+
+"""

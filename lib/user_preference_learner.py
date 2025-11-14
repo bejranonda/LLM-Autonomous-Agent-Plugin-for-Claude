@@ -13,10 +13,12 @@ from typing import Dict, List, Any, Optional
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class UserPreferenceLearner:
@@ -54,7 +56,7 @@ class UserPreferenceLearner:
                 "approvals": 0,
                 "rejections": 0,
                 "modifications": 0,
-                "learning_confidence": 0.0
+                "learning_confidence": 0.0,
             },
             "coding_style": {
                 "verbosity": "balanced",  # concise, balanced, verbose
@@ -62,7 +64,7 @@ class UserPreferenceLearner:
                 "naming_convention": "auto",  # auto-detect
                 "test_coverage_preference": "medium",  # low, medium, high
                 "documentation_level": "standard",  # minimal, standard, comprehensive
-                "error_handling": "standard"  # minimal, standard, extensive
+                "error_handling": "standard",  # minimal, standard, extensive
             },
             "workflow_preferences": {
                 "auto_fix_enabled": True,
@@ -70,42 +72,42 @@ class UserPreferenceLearner:
                 "confirmation_required_for": ["breaking_changes", "security_fixes"],
                 "parallel_execution_preferred": True,
                 "background_tasks_enabled": True,
-                "quality_threshold": 70
+                "quality_threshold": 70,
             },
             "quality_weights": {
                 "tests": 0.30,
                 "documentation": 0.20,
                 "code_quality": 0.25,
                 "standards": 0.15,
-                "patterns": 0.10
+                "patterns": 0.10,
             },
             "communication_style": {
                 "detail_level": "balanced",  # brief, balanced, detailed
                 "technical_depth": "medium",  # low, medium, high
                 "explanation_preference": "when_needed",  # minimal, when_needed, always
-                "progress_updates": "summary"  # none, summary, detailed
+                "progress_updates": "summary",  # none, summary, detailed
             },
             "task_preferences": {
                 "preferred_task_order": [],  # learned from history
                 "task_type_preferences": {},  # task_type -> preference_score
-                "agent_preferences": {}  # agent_name -> preference_score
+                "agent_preferences": {},  # agent_name -> preference_score
             },
             "interaction_history": [],
-            "learned_patterns": []
+            "learned_patterns": [],
         }
 
         self._write_data(initial_data)
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -117,7 +119,7 @@ class UserPreferenceLearner:
     def _read_data(self) -> Dict[str, Any]:
         """Read preference data with file locking."""
         try:
-            with open(self.preference_file, 'r', encoding='utf-8') as f:
+            with open(self.preference_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     data = json.load(f)
@@ -130,7 +132,7 @@ class UserPreferenceLearner:
 
     def _write_data(self, data: Dict[str, Any]):
         """Write preference data with file locking."""
-        with open(self.preference_file, 'w', encoding='utf-8') as f:
+        with open(self.preference_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -138,11 +140,7 @@ class UserPreferenceLearner:
                 self._unlock_file(f)
 
     def record_interaction(
-        self,
-        interaction_type: str,
-        task_id: str,
-        user_feedback: str,
-        context: Optional[Dict[str, Any]] = None
+        self, interaction_type: str, task_id: str, user_feedback: str, context: Optional[Dict[str, Any]] = None
     ):
         """
         Record a user interaction for learning.
@@ -161,7 +159,7 @@ class UserPreferenceLearner:
             "task_id": task_id,
             "feedback": user_feedback,
             "context": context or {},
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         pref_data["interaction_history"].append(interaction)
@@ -192,11 +190,7 @@ class UserPreferenceLearner:
         # Analyze and update preferences
         self._analyze_and_update_preferences(interaction, context)
 
-    def _analyze_and_update_preferences(
-        self,
-        interaction: Dict[str, Any],
-        context: Optional[Dict[str, Any]]
-    ):
+    def _analyze_and_update_preferences(self, interaction: Dict[str, Any], context: Optional[Dict[str, Any]]):
         """Analyze interaction and update preferences accordingly."""
         if not context:
             return
@@ -226,10 +220,7 @@ class UserPreferenceLearner:
         self._write_data(pref_data)
 
     def _update_coding_style_preferences(
-        self,
-        pref_data: Dict[str, Any],
-        interaction: Dict[str, Any],
-        style_context: Dict[str, Any]
+        self, pref_data: Dict[str, Any], interaction: Dict[str, Any], style_context: Dict[str, Any]
     ):
         """Update coding style preferences based on user feedback."""
         if interaction["type"] == "approval":
@@ -258,10 +249,7 @@ class UserPreferenceLearner:
                 pref_data["coding_style"]["comments"] = "minimal"
 
     def _update_workflow_preferences(
-        self,
-        pref_data: Dict[str, Any],
-        interaction: Dict[str, Any],
-        workflow_context: Dict[str, Any]
+        self, pref_data: Dict[str, Any], interaction: Dict[str, Any], workflow_context: Dict[str, Any]
     ):
         """Update workflow preferences based on user feedback."""
         if "auto_fix_accepted" in workflow_context:
@@ -277,12 +265,7 @@ class UserPreferenceLearner:
         if "parallel_execution" in workflow_context:
             pref_data["workflow_preferences"]["parallel_execution_preferred"] = workflow_context["parallel_execution"]
 
-    def _update_quality_weights(
-        self,
-        pref_data: Dict[str, Any],
-        interaction: Dict[str, Any],
-        quality_focus: Dict[str, Any]
-    ):
+    def _update_quality_weights(self, pref_data: Dict[str, Any], interaction: Dict[str, Any], quality_focus: Dict[str, Any]):
         """Update quality weight preferences based on user feedback."""
         if interaction["type"] == "approval":
             # Gradually shift weights toward user's focus areas
@@ -299,10 +282,7 @@ class UserPreferenceLearner:
                     pref_data["quality_weights"][dim] /= total
 
     def _update_communication_preferences(
-        self,
-        pref_data: Dict[str, Any],
-        interaction: Dict[str, Any],
-        comm_context: Dict[str, Any]
+        self, pref_data: Dict[str, Any], interaction: Dict[str, Any], comm_context: Dict[str, Any]
     ):
         """Update communication style preferences based on user feedback."""
         feedback = interaction["feedback"].lower()
@@ -317,12 +297,7 @@ class UserPreferenceLearner:
         elif "skip explanation" in feedback:
             pref_data["communication_style"]["explanation_preference"] = "minimal"
 
-    def _update_task_preferences(
-        self,
-        pref_data: Dict[str, Any],
-        interaction: Dict[str, Any],
-        context: Dict[str, Any]
-    ):
+    def _update_task_preferences(self, pref_data: Dict[str, Any], interaction: Dict[str, Any], context: Dict[str, Any]):
         """Update task and agent preferences based on user feedback."""
         task_type = context.get("task_type")
         agent_used = context.get("agent_used")
@@ -344,8 +319,9 @@ class UserPreferenceLearner:
                 pref_data["task_preferences"]["task_type_preferences"][task_type] -= 0.05
 
             # Clamp to [0, 1]
-            pref_data["task_preferences"]["task_type_preferences"][task_type] = max(0, min(1,
-                pref_data["task_preferences"]["task_type_preferences"][task_type]))
+            pref_data["task_preferences"]["task_type_preferences"][task_type] = max(
+                0, min(1, pref_data["task_preferences"]["task_type_preferences"][task_type])
+            )
 
         # Update agent preferences
         if agent_used:
@@ -358,8 +334,9 @@ class UserPreferenceLearner:
                 pref_data["task_preferences"]["agent_preferences"][agent_used] -= 0.05
 
             # Clamp to [0, 1]
-            pref_data["task_preferences"]["agent_preferences"][agent_used] = max(0, min(1,
-                pref_data["task_preferences"]["agent_preferences"][agent_used]))
+            pref_data["task_preferences"]["agent_preferences"][agent_used] = max(
+                0, min(1, pref_data["task_preferences"]["agent_preferences"][agent_used])
+            )
 
     def get_preferences(self) -> Dict[str, Any]:
         """Get current user preferences."""
@@ -417,25 +394,24 @@ class UserPreferenceLearner:
         summary = {
             "learning_confidence": pref_data["metadata"]["learning_confidence"],
             "total_interactions": pref_data["metadata"]["total_interactions"],
-            "approval_rate": (pref_data["metadata"]["approvals"] / pref_data["metadata"]["total_interactions"] * 100
-                            if pref_data["metadata"]["total_interactions"] > 0 else 0),
+            "approval_rate": (
+                pref_data["metadata"]["approvals"] / pref_data["metadata"]["total_interactions"] * 100
+                if pref_data["metadata"]["total_interactions"] > 0
+                else 0
+            ),
             "coding_style": pref_data["coding_style"],
             "workflow_preferences": pref_data["workflow_preferences"],
-            "quality_priorities": sorted(
-                pref_data["quality_weights"].items(),
-                key=lambda x: x[1],
-                reverse=True
+            "quality_priorities": sorted(pref_data["quality_weights"].items(), key=lambda x: x[1], reverse=True),
+            "top_task_preferences": (
+                sorted(pref_data["task_preferences"]["task_type_preferences"].items(), key=lambda x: x[1], reverse=True)[:5]
+                if pref_data["task_preferences"]["task_type_preferences"]
+                else []
             ),
-            "top_task_preferences": sorted(
-                pref_data["task_preferences"]["task_type_preferences"].items(),
-                key=lambda x: x[1],
-                reverse=True
-            )[:5] if pref_data["task_preferences"]["task_type_preferences"] else [],
-            "top_agent_preferences": sorted(
-                pref_data["task_preferences"]["agent_preferences"].items(),
-                key=lambda x: x[1],
-                reverse=True
-            )[:5] if pref_data["task_preferences"]["agent_preferences"] else []
+            "top_agent_preferences": (
+                sorted(pref_data["task_preferences"]["agent_preferences"].items(), key=lambda x: x[1], reverse=True)[:5]
+                if pref_data["task_preferences"]["agent_preferences"]
+                else []
+            ),
         }
 
         return summary
@@ -445,21 +421,20 @@ def main():
     """Command-line interface for testing the preference learner."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='User Preference Learner')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['record', 'get', 'summary', 'should-autofix'],
-                       help='Action to perform')
-    parser.add_argument('--type', help='Interaction type (approval, rejection, modification)')
-    parser.add_argument('--task-id', help='Task ID')
-    parser.add_argument('--feedback', help='User feedback')
-    parser.add_argument('--confidence', type=float, help='Confidence score for auto-fix')
-    parser.add_argument('--category', help='Fix category')
+    parser = argparse.ArgumentParser(description="User Preference Learner")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["record", "get", "summary", "should-autofix"], help="Action to perform")
+    parser.add_argument("--type", help="Interaction type (approval, rejection, modification)")
+    parser.add_argument("--task-id", help="Task ID")
+    parser.add_argument("--feedback", help="User feedback")
+    parser.add_argument("--confidence", type=float, help="Confidence score for auto-fix")
+    parser.add_argument("--category", help="Fix category")
 
     args = parser.parse_args()
 
     learner = UserPreferenceLearner(args.storage_dir)
 
-    if args.action == 'record':
+    if args.action == "record":
         if not all([args.type, args.task_id, args.feedback]):
             print("Error: --type, --task-id, and --feedback required for record")
             sys.exit(1)
@@ -467,14 +442,14 @@ def main():
         learner.record_interaction(args.type, args.task_id, args.feedback)
         print(f"Interaction recorded: {args.type}")
 
-    elif args.action == 'get':
+    elif args.action == "get":
         prefs = learner.get_preferences()
         print("User Preferences:")
         print(f"  Coding Style: {prefs['coding_style']['verbosity']}")
         print(f"  Auto-fix Threshold: {prefs['workflow_preferences']['auto_fix_confidence_threshold']:.2f}")
         print(f"  Quality Priority: {max(prefs['quality_weights'].items(), key=lambda x: x[1])[0]}")
 
-    elif args.action == 'summary':
+    elif args.action == "summary":
         summary = learner.get_preference_summary()
         print("Preference Summary:")
         print(f"  Learning Confidence: {summary['learning_confidence']:.1%}")
@@ -482,7 +457,7 @@ def main():
         print(f"  Approval Rate: {summary['approval_rate']:.1f}%")
         print(f"  Coding Style: {summary['coding_style']['verbosity']}")
 
-    elif args.action == 'should-autofix':
+    elif args.action == "should-autofix":
         if args.confidence is None or not args.category:
             print("Error: --confidence and --category required for should-autofix")
             sys.exit(1)
@@ -499,5 +474,5 @@ def main():
         print(f"Total Interactions: {summary['total_interactions']}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

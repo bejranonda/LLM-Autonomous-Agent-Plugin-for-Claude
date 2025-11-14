@@ -24,14 +24,17 @@ import hashlib
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class WorkflowStatus(Enum):
     """Workflow execution status."""
+
     PENDING = "pending"
     RUNNING = "running"
     WAITING = "waiting"
@@ -44,6 +47,7 @@ class WorkflowStatus(Enum):
 
 class TaskPriority(Enum):
     """Task priority levels."""
+
     CRITICAL = 1
     HIGH = 2
     MEDIUM = 3
@@ -54,6 +58,7 @@ class TaskPriority(Enum):
 @dataclass
 class WorkflowTask:
     """Individual workflow task definition."""
+
     task_id: str
     workflow_id: str
     task_type: str
@@ -74,6 +79,7 @@ class WorkflowTask:
     execution_context: Dict[str, Any] = None
 
     def __post_init__(self):
+        """  Post Init  ."""
         if self.created_at is None:
             self.created_at = datetime.now()
         if self.execution_context is None:
@@ -83,6 +89,7 @@ class WorkflowTask:
 @dataclass
 class WorkflowDefinition:
     """Complete workflow definition."""
+
     workflow_id: str
     name: str
     description: str
@@ -96,6 +103,7 @@ class WorkflowDefinition:
     rollback_on_failure: bool = True
 
     def __post_init__(self):
+        """  Post Init  ."""
         if self.created_at is None:
             self.created_at = datetime.now()
         if self.context is None:
@@ -105,6 +113,7 @@ class WorkflowDefinition:
 @dataclass
 class WorkflowExecution:
     """Workflow execution instance."""
+
     execution_id: str
     workflow_id: str
     status: WorkflowStatus
@@ -118,6 +127,7 @@ class WorkflowExecution:
     execution_context: Dict[str, Any] = None
 
     def __post_init__(self):
+        """  Post Init  ."""
         if self.current_tasks is None:
             self.current_tasks = []
         if self.completed_tasks is None:
@@ -199,8 +209,8 @@ class AutonomousWorkflowOrchestrator:
                     "total_workflows": 0,
                     "successful_executions": 0,
                     "failed_executions": 0,
-                    "average_execution_time": 0.0
-                }
+                    "average_execution_time": 0.0,
+                },
             }
             self._write_workflows_data(initial_data)
 
@@ -210,7 +220,7 @@ class AutonomousWorkflowOrchestrator:
                 "last_updated": datetime.now().isoformat(),
                 "executions": {},
                 "active_executions": {},
-                "execution_history": []
+                "execution_history": [],
             }
             self._write_executions_data(executions_data)
 
@@ -219,7 +229,7 @@ class AutonomousWorkflowOrchestrator:
                 "version": "1.0.0",
                 "last_updated": datetime.now().isoformat(),
                 "templates": {},
-                "template_categories": {}
+                "template_categories": {},
             }
             self._write_templates_data(templates_data)
 
@@ -230,7 +240,7 @@ class AutonomousWorkflowOrchestrator:
                 "rules": [],
                 "triggers": [],
                 "actions": [],
-                "conditions": []
+                "conditions": [],
             }
             self._write_automation_data(automation_data)
 
@@ -254,7 +264,7 @@ class AutonomousWorkflowOrchestrator:
                     context=workflow_data.get("context", {}),
                     auto_heal=workflow_data.get("auto_heal", True),
                     parallel_execution=workflow_data.get("parallel_execution", False),
-                    rollback_on_failure=workflow_data.get("rollback_on_failure", True)
+                    rollback_on_failure=workflow_data.get("rollback_on_failure", True),
                 )
                 self.workflows[workflow_id] = workflow
 
@@ -271,13 +281,15 @@ class AutonomousWorkflowOrchestrator:
                     workflow_id=execution_data["workflow_id"],
                     status=WorkflowStatus(execution_data["status"]),
                     started_at=datetime.fromisoformat(execution_data["started_at"]),
-                    completed_at=datetime.fromisoformat(execution_data["completed_at"]) if execution_data.get("completed_at") else None,
+                    completed_at=(
+                        datetime.fromisoformat(execution_data["completed_at"]) if execution_data.get("completed_at") else None
+                    ),
                     current_tasks=execution_data.get("current_tasks", []),
                     completed_tasks=execution_data.get("completed_tasks", []),
                     failed_tasks=execution_data.get("failed_tasks", []),
                     results=execution_data.get("results", {}),
                     error=execution_data.get("error"),
-                    execution_context=execution_data.get("execution_context", {})
+                    execution_context=execution_data.get("execution_context", {}),
                 )
                 self.active_executions[execution_id] = execution
 
@@ -286,14 +298,14 @@ class AutonomousWorkflowOrchestrator:
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -304,7 +316,7 @@ class AutonomousWorkflowOrchestrator:
     def _read_workflows_data(self) -> Dict[str, Any]:
         """Read workflows data with file locking."""
         try:
-            with open(self.workflows_file, 'r', encoding='utf-8') as f:
+            with open(self.workflows_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -316,7 +328,7 @@ class AutonomousWorkflowOrchestrator:
 
     def _write_workflows_data(self, data: Dict[str, Any]):
         """Write workflows data with file locking."""
-        with open(self.workflows_file, 'w', encoding='utf-8') as f:
+        with open(self.workflows_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -326,7 +338,7 @@ class AutonomousWorkflowOrchestrator:
     def _read_executions_data(self) -> Dict[str, Any]:
         """Read executions data with file locking."""
         try:
-            with open(self.executions_file, 'r', encoding='utf-8') as f:
+            with open(self.executions_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -337,7 +349,7 @@ class AutonomousWorkflowOrchestrator:
 
     def _write_executions_data(self, data: Dict[str, Any]):
         """Write executions data with file locking."""
-        with open(self.executions_file, 'w', encoding='utf-8') as f:
+        with open(self.executions_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -347,7 +359,7 @@ class AutonomousWorkflowOrchestrator:
     def _read_templates_data(self) -> Dict[str, Any]:
         """Read templates data with file locking."""
         try:
-            with open(self.templates_file, 'r', encoding='utf-8') as f:
+            with open(self.templates_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -358,7 +370,7 @@ class AutonomousWorkflowOrchestrator:
 
     def _write_templates_data(self, data: Dict[str, Any]):
         """Write templates data with file locking."""
-        with open(self.templates_file, 'w', encoding='utf-8') as f:
+        with open(self.templates_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -368,7 +380,7 @@ class AutonomousWorkflowOrchestrator:
     def _read_automation_data(self) -> Dict[str, Any]:
         """Read automation data with file locking."""
         try:
-            with open(self.automation_file, 'r', encoding='utf-8') as f:
+            with open(self.automation_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -379,7 +391,7 @@ class AutonomousWorkflowOrchestrator:
 
     def _write_automation_data(self, data: Dict[str, Any]):
         """Write automation data with file locking."""
-        with open(self.automation_file, 'w', encoding='utf-8') as f:
+        with open(self.automation_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -395,8 +407,9 @@ class AutonomousWorkflowOrchestrator:
         context: Optional[Dict[str, Any]] = None,
         auto_heal: bool = True,
         parallel_execution: bool = False,
-        rollback_on_failure: bool = True
-    ) -> str:
+        rollback_on_failure: bool = True,
+    )-> str:
+        """Create Workflow."""
         """
         Create a new workflow definition.
 
@@ -428,7 +441,7 @@ class AutonomousWorkflowOrchestrator:
                 dependencies=task_data.get("dependencies", []),
                 payload=task_data.get("payload", {}),
                 timeout_seconds=task_data.get("timeout_seconds", self.default_timeout),
-                max_retries=task_data.get("max_retries", 3)
+                max_retries=task_data.get("max_retries", 3),
             )
             workflow_tasks.append(task)
 
@@ -442,7 +455,7 @@ class AutonomousWorkflowOrchestrator:
             context=context or {},
             auto_heal=auto_heal,
             parallel_execution=parallel_execution,
-            rollback_on_failure=rollback_on_failure
+            rollback_on_failure=rollback_on_failure,
         )
 
         # Store workflow
@@ -454,11 +467,7 @@ class AutonomousWorkflowOrchestrator:
         print(f"Created workflow: {name} (ID: {workflow_id})")
         return workflow_id
 
-    def execute_workflow(
-        self,
-        workflow_id: str,
-        execution_context: Optional[Dict[str, Any]] = None
-    ) -> str:
+    def execute_workflow(self, workflow_id: str, execution_context: Optional[Dict[str, Any]] = None) -> str:
         """
         Execute a workflow.
 
@@ -481,7 +490,7 @@ class AutonomousWorkflowOrchestrator:
             workflow_id=workflow_id,
             status=WorkflowStatus.RUNNING,
             started_at=datetime.now(),
-            execution_context=execution_context or {}
+            execution_context=execution_context or {},
         )
 
         # Store execution
@@ -500,7 +509,7 @@ class AutonomousWorkflowOrchestrator:
                 dependencies=task.dependencies,
                 payload=task.payload,
                 timeout_seconds=task.timeout_seconds,
-                max_retries=task.max_retries
+                max_retries=task.max_retries,
             )
             self.running_tasks[execution_task.task_id] = execution_task
 
@@ -574,7 +583,7 @@ class AutonomousWorkflowOrchestrator:
                 print(f"Task failed, retrying ({task.retry_count}/{task.max_retries}): {e}")
 
                 # Add back to queue with delay
-                await asyncio.sleep(2 ** task.retry_count)  # Exponential backoff
+                await asyncio.sleep(2**task.retry_count)  # Exponential backoff
                 priority_value = (task.priority.value, time.time())
                 await self.task_queue.put((priority_value, task))
             else:
@@ -596,7 +605,7 @@ class AutonomousWorkflowOrchestrator:
             "documentation": 6,
             "quality_check": 4,
             "security_scan": 10,
-            "deployment": 15
+            "deployment": 15,
         }
 
         base_time = execution_times.get(task.task_type, 5)
@@ -632,13 +641,7 @@ class AutonomousWorkflowOrchestrator:
                 return False
         return True
 
-    def _update_agent_performance(
-        self,
-        agent_id: str,
-        task_type: str,
-        success: bool,
-        execution_time: float
-    ):
+    def _update_agent_performance(self, agent_id: str, task_type: str, success: bool, execution_time: float):
         """Update agent performance metrics."""
         if agent_id not in self.agent_performance:
             self.agent_performance[agent_id] = {
@@ -646,7 +649,7 @@ class AutonomousWorkflowOrchestrator:
                 "successful_tasks": 0,
                 "failed_tasks": 0,
                 "average_execution_time": 0.0,
-                "task_types": defaultdict(int)
+                "task_types": defaultdict(int),
             }
 
         perf = self.agent_performance[agent_id]
@@ -662,9 +665,8 @@ class AutonomousWorkflowOrchestrator:
             perf["average_execution_time"] = execution_time
         else:
             perf["average_execution_time"] = (
-                (perf["average_execution_time"] * (perf["total_tasks"] - 1) + execution_time) /
-                perf["total_tasks"]
-            )
+                perf["average_execution_time"] * (perf["total_tasks"] - 1) + execution_time
+            ) / perf["total_tasks"]
 
         # Update task type statistics
         perf["task_types"][task_type] += 1
@@ -717,11 +719,7 @@ class AutonomousWorkflowOrchestrator:
         else:
             return "generic_retry"
 
-    async def _apply_healing_strategy(
-        self,
-        task: WorkflowTask,
-        strategy: str
-    ) -> Optional[WorkflowTask]:
+    async def _apply_healing_strategy(self, task: WorkflowTask, strategy: str) -> Optional[WorkflowTask]:
         """Apply a specific healing strategy to a task."""
         try:
             # Create healed task copy
@@ -737,7 +735,7 @@ class AutonomousWorkflowOrchestrator:
                 timeout_seconds=task.timeout_seconds,
                 max_retries=task.max_retries,
                 retry_count=0,  # Reset retry count for healed task
-                execution_context=task.execution_context.copy() if task.execution_context else {}
+                execution_context=task.execution_context.copy() if task.execution_context else {},
             )
 
             # Apply strategy-specific modifications
@@ -807,9 +805,11 @@ class AutonomousWorkflowOrchestrator:
         self.orchestrator_active = False
 
         # Wait for threads to finish
-        for thread, name in [(self.execution_thread, "execution"),
-                            (self.healing_thread, "healing"),
-                            (self.learning_thread, "learning")]:
+        for thread, name in [
+            (self.execution_thread, "execution"),
+            (self.healing_thread, "healing"),
+            (self.learning_thread, "learning"),
+        ]:
             if thread and thread.is_alive():
                 thread.join(timeout=5)
                 print(f"  {name} thread stopped")
@@ -870,8 +870,7 @@ class AutonomousWorkflowOrchestrator:
                 stuck_tasks = []
 
                 for task_id, task in self.running_tasks.items():
-                    if (task.started_at and
-                        (current_time - task.started_at.timestamp()) > task.timeout_seconds):
+                    if task.started_at and (current_time - task.started_at.timestamp()) > task.timeout_seconds:
                         stuck_tasks.append(task)
 
                 # Attempt to heal stuck tasks
@@ -929,8 +928,7 @@ class AutonomousWorkflowOrchestrator:
                 # Check if workflow is complete
                 workflow = self.workflows[task.workflow_id]
                 all_tasks_completed = all(
-                    task_id in execution.completed_tasks or task_id in execution.failed_tasks
-                    for task in workflow.tasks
+                    task_id in execution.completed_tasks or task_id in execution.failed_tasks for task in workflow.tasks
                 )
 
                 if all_tasks_completed:
@@ -1052,7 +1050,7 @@ class AutonomousWorkflowOrchestrator:
                 name=f"Auto-created from {template['name']}",
                 description=template.get("description", ""),
                 tasks=template.get("tasks", []),
-                auto_heal=template.get("auto_heal", True)
+                auto_heal=template.get("auto_heal", True),
             )
             print(f"Created workflow from template: {template_id}")
 
@@ -1079,7 +1077,8 @@ class AutonomousWorkflowOrchestrator:
 
         # Clean up completed tasks older than 1 hour
         old_tasks = [
-            task_id for task_id, task in self.completed_tasks.items()
+            task_id
+            for task_id, task in self.completed_tasks.items()
             if task.completed_at and (current_time - task.completed_at).total_seconds() > 3600
         ]
 
@@ -1088,7 +1087,8 @@ class AutonomousWorkflowOrchestrator:
 
         # Clean up completed executions older than 24 hours
         old_executions = [
-            exec_id for exec_id, execution in self.active_executions.items()
+            exec_id
+            for exec_id, execution in self.active_executions.items()
             if execution.completed_at and (current_time - execution.completed_at).total_seconds() > 86400
         ]
 
@@ -1141,13 +1141,15 @@ class AutonomousWorkflowOrchestrator:
                     print(f"Detected {len(outliers)} outliers for task type {task_type}")
 
                     # Store learning pattern
-                    self.learning_patterns[task_type].append({
-                        "timestamp": datetime.now().isoformat(),
-                        "pattern_type": "execution_time_outlier",
-                        "outlier_count": len(outliers),
-                        "avg_time": avg_time,
-                        "std_dev": std_dev
-                    })
+                    self.learning_patterns[task_type].append(
+                        {
+                            "timestamp": datetime.now().isoformat(),
+                            "pattern_type": "execution_time_outlier",
+                            "outlier_count": len(outliers),
+                            "avg_time": avg_time,
+                            "std_dev": std_dev,
+                        }
+                    )
 
     def _update_performance_models(self):
         """Update performance prediction models."""
@@ -1187,17 +1189,19 @@ class AutonomousWorkflowOrchestrator:
             error_groups = defaultdict(list)
             for task in failed_tasks:
                 if task.error:
-                    error_type = task.error.split(':')[0]  # Get first part of error
+                    error_type = task.error.split(":")[0]  # Get first part of error
                     error_groups[error_type].append(task)
 
             for error_type, tasks in error_groups.items():
                 if len(tasks) >= 3:
-                    suggestions.append({
-                        "type": "healing_rule",
-                        "description": f"Auto-heal rule for {error_type} errors",
-                        "trigger_error": error_type,
-                        "healing_strategy": self._determine_healing_strategy(tasks[0])
-                    })
+                    suggestions.append(
+                        {
+                            "type": "healing_rule",
+                            "description": f"Auto-heal rule for {error_type} errors",
+                            "trigger_error": error_type,
+                            "healing_strategy": self._determine_healing_strategy(tasks[0]),
+                        }
+                    )
 
         # Store suggestions for later review
         if suggestions:
@@ -1216,7 +1220,7 @@ class AutonomousWorkflowOrchestrator:
             "auto_heal": workflow.auto_heal,
             "parallel_execution": workflow.parallel_execution,
             "rollback_on_failure": workflow.rollback_on_failure,
-            "tasks": [asdict(task) for task in workflow.tasks]
+            "tasks": [asdict(task) for task in workflow.tasks],
         }
         workflows_data["last_updated"] = datetime.now().isoformat()
         self._write_workflows_data(workflows_data)
@@ -1234,7 +1238,7 @@ class AutonomousWorkflowOrchestrator:
             "failed_tasks": execution.failed_tasks,
             "results": execution.results,
             "error": execution.error,
-            "execution_context": execution.execution_context
+            "execution_context": execution.execution_context,
         }
 
         # Move completed executions to history
@@ -1257,26 +1261,28 @@ class AutonomousWorkflowOrchestrator:
                 "max_concurrent_tasks": self.max_concurrent_tasks,
                 "running_tasks": len(self.running_tasks),
                 "completed_tasks": len(self.completed_tasks),
-                "active_workflows": len(self.active_executions)
+                "active_workflows": len(self.active_executions),
             },
             "workflow_statistics": {
                 "total_workflows": len(self.workflows),
                 "active_executions": len(self.active_executions),
                 "success_rate": self._calculate_overall_success_rate(),
-                "average_execution_time": self._calculate_average_execution_time()
+                "average_execution_time": self._calculate_average_execution_time(),
             },
             "agent_performance": dict(self.agent_performance),
             "learning_status": {
                 "enabled": self.learning_enabled,
                 "healing_enabled": self.healing_enabled,
                 "patterns_learned": len(self.learning_patterns),
-                "automation_rules": len(self.automation_rules)
+                "automation_rules": len(self.automation_rules),
             },
             "system_health": {
                 "success_rate": self._calculate_overall_success_rate(),
                 "error_rate": 1.0 - self._calculate_overall_success_rate(),
-                "active_threads": sum(1 for t in [self.execution_thread, self.healing_thread, self.learning_thread] if t and t.is_alive())
-            }
+                "active_threads": sum(
+                    1 for t in [self.execution_thread, self.healing_thread, self.learning_thread] if t and t.is_alive()
+                ),
+            },
         }
 
     def _calculate_overall_success_rate(self) -> float:
@@ -1304,18 +1310,17 @@ def main():
     import argparse
     import random
 
-    parser = argparse.ArgumentParser(description='Autonomous Workflow Orchestrator')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['start', 'stop', 'status', 'create', 'execute', 'test'],
-                       help='Action to perform')
-    parser.add_argument('--workflow-name', help='Workflow name')
-    parser.add_argument('--duration', type=int, default=60, help='Test duration in seconds')
+    parser = argparse.ArgumentParser(description="Autonomous Workflow Orchestrator")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["start", "stop", "status", "create", "execute", "test"], help="Action to perform")
+    parser.add_argument("--workflow-name", help="Workflow name")
+    parser.add_argument("--duration", type=int, default=60, help="Test duration in seconds")
 
     args = parser.parse_args()
 
     orchestrator = AutonomousWorkflowOrchestrator(args.storage_dir)
 
-    if args.action == 'start':
+    if args.action == "start":
         orchestrator.start_orchestrator()
         print("Orchestrator started. Press Ctrl+C to stop.")
         try:
@@ -1324,10 +1329,10 @@ def main():
         except KeyboardInterrupt:
             orchestrator.stop_orchestrator()
 
-    elif args.action == 'stop':
+    elif args.action == "stop":
         orchestrator.stop_orchestrator()
 
-    elif args.action == 'status':
+    elif args.action == "status":
         status = orchestrator.get_orchestrator_status()
         print("Autonomous Workflow Orchestrator Status:")
         print(f"  Active: {status['orchestrator_status']['active']}")
@@ -1336,39 +1341,34 @@ def main():
         print(f"  Success Rate: {status['workflow_statistics']['success_rate']:.1%}")
         print(f"  Learning Enabled: {status['learning_status']['enabled']}")
 
-    elif args.action == 'create':
+    elif args.action == "create":
         if not args.workflow_name:
             args.workflow_name = "Test Workflow"
 
         # Create sample workflow
         tasks = [
-            {
-                "task_type": "analysis",
-                "agent_id": "code-analyzer",
-                "tier": "analysis",
-                "payload": {"target": "sample.py"}
-            },
+            {"task_type": "analysis", "agent_id": "code-analyzer", "tier": "analysis", "payload": {"target": "sample.py"}},
             {
                 "task_type": "validation",
                 "agent_id": "validation-controller",
                 "tier": "analysis",
                 "dependencies": ["analysis"],
-                "payload": {"strict": True}
+                "payload": {"strict": True},
             },
             {
                 "task_type": "testing",
                 "agent_id": "test-engineer",
                 "tier": "execution",
                 "dependencies": ["validation"],
-                "payload": {"coverage": 80}
+                "payload": {"coverage": 80},
             },
             {
                 "task_type": "quality_check",
                 "agent_id": "quality-controller",
                 "tier": "execution",
                 "dependencies": ["testing"],
-                "payload": {"threshold": 85}
-            }
+                "payload": {"threshold": 85},
+            },
         ]
 
         workflow_id = orchestrator.create_workflow(
@@ -1376,11 +1376,11 @@ def main():
             description="Sample autonomous workflow",
             tasks=tasks,
             auto_heal=True,
-            parallel_execution=False
+            parallel_execution=False,
         )
         print(f"Created workflow: {workflow_id}")
 
-    elif args.action == 'execute':
+    elif args.action == "execute":
         if not args.workflow_name:
             # Find first workflow
             if orchestrator.workflows:
@@ -1408,31 +1408,26 @@ def main():
             orchestrator.start_orchestrator()
             print("Orchestrator started to handle execution")
 
-    elif args.action == 'test':
+    elif args.action == "test":
         print("Running autonomous workflow orchestrator test...")
 
         # Create test workflow
         tasks = [
-            {
-                "task_type": "analysis",
-                "agent_id": "code-analyzer",
-                "tier": "analysis",
-                "payload": {"simulate": True}
-            },
+            {"task_type": "analysis", "agent_id": "code-analyzer", "tier": "analysis", "payload": {"simulate": True}},
             {
                 "task_type": "validation",
                 "agent_id": "validation-controller",
                 "tier": "analysis",
                 "dependencies": ["analysis"],
-                "payload": {"simulate": True}
+                "payload": {"simulate": True},
             },
             {
                 "task_type": "testing",
                 "agent_id": "test-engineer",
                 "tier": "execution",
                 "dependencies": ["validation"],
-                "payload": {"simulate": True}
-            }
+                "payload": {"simulate": True},
+            },
         ]
 
         workflow_id = orchestrator.create_workflow(
@@ -1440,7 +1435,7 @@ def main():
             description="Test workflow for autonomous orchestrator",
             tasks=tasks,
             auto_heal=True,
-            parallel_execution=False
+            parallel_execution=False,
         )
 
         # Start orchestrator
@@ -1479,5 +1474,5 @@ def main():
         print(f"  Success Rate: {status['workflow_statistics']['success_rate']:.1%}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

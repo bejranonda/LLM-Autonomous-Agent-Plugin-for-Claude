@@ -27,11 +27,13 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
 
 class TestType(Enum):
     """Types of performance tests."""
+
     UNIT = "unit"
     INTEGRATION = "integration"
     STRESS = "stress"
@@ -39,8 +41,10 @@ class TestType(Enum):
     BENCHMARK = "benchmark"
     END_TO_END = "end_to_end"
 
+
 class TestStatus(Enum):
     """Test execution status."""
+
     PENDING = "pending"
     RUNNING = "running"
     PASSED = "passed"
@@ -48,16 +52,20 @@ class TestStatus(Enum):
     SKIPPED = "skipped"
     ERROR = "error"
 
+
 class ValidationLevel(Enum):
     """Validation levels."""
+
     BASIC = "basic"
     STANDARD = "standard"
     COMPREHENSIVE = "comprehensive"
     PRODUCTION = "production"
 
+
 @dataclass
 class TestResult:
     """Result of a performance test."""
+
     test_name: str
     test_type: TestType
     status: TestStatus
@@ -71,11 +79,14 @@ class TestResult:
 
     @property
     def passed(self) -> bool:
+        """Passed."""
         return self.status == TestStatus.PASSED
+
 
 @dataclass
 class PerformanceMetrics:
     """Performance metrics for system validation."""
+
     total_tests: int
     passed_tests: int
     failed_tests: int
@@ -90,11 +101,14 @@ class PerformanceMetrics:
 
     @property
     def success_rate_percentage(self) -> float:
+        """Success Rate Percentage."""
         return self.success_rate
+
 
 @dataclass
 class ComponentValidation:
     """Validation results for a specific component."""
+
     component_name: str
     tests_run: int
     tests_passed: int
@@ -104,10 +118,12 @@ class ComponentValidation:
     recommendations: List[str]
     validation_timestamp: datetime
 
+
 class PerformanceTestSuite:
     """Individual performance test suite."""
 
     def __init__(self, name: str, test_type: TestType):
+        """  Init  ."""
         self.name = name
         self.test_type = test_type
         self.tests: List[Callable] = []
@@ -184,7 +200,7 @@ class PerformanceTestSuite:
                 end_time=datetime.now(),
                 metrics=metrics,
                 details=details,
-                validation_level=validation_level
+                validation_level=validation_level,
             )
 
         except Exception as e:
@@ -201,13 +217,15 @@ class PerformanceTestSuite:
                 metrics={},
                 details=f"Test failed with error",
                 error_message=error_msg,
-                validation_level=validation_level
+                validation_level=validation_level,
             )
+
 
 class PerformanceValidationFramework:
     """Main performance validation framework."""
 
     def __init__(self, db_path: str = "performance_validation.db"):
+        """  Init  ."""
         self.db_path = db_path
         self.test_suites: Dict[str, PerformanceTestSuite] = {}
         self.validation_history: List[PerformanceMetrics] = []
@@ -217,7 +235,7 @@ class PerformanceValidationFramework:
         self.performance_thresholds = {
             "success_rate_min": 90.0,  # Minimum 90% success rate
             "avg_test_time_max": 5.0,  # Maximum 5 seconds per test
-            "performance_score_min": 75.0  # Minimum performance score
+            "performance_score_min": 75.0,  # Minimum performance score
         }
 
         # Initialize database
@@ -229,7 +247,8 @@ class PerformanceValidationFramework:
     def _init_database(self) -> None:
         """Initialize SQLite database for validation data."""
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS test_results (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     test_name TEXT NOT NULL,
@@ -243,9 +262,11 @@ class PerformanceValidationFramework:
                     error_message TEXT,
                     validation_level TEXT NOT NULL
                 )
-            """)
+            """
+            )
 
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS validation_metrics (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     total_tests INTEGER NOT NULL,
@@ -260,9 +281,11 @@ class PerformanceValidationFramework:
                     validation_level TEXT NOT NULL,
                     timestamp TEXT NOT NULL
                 )
-            """)
+            """
+            )
 
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS component_validations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     component_name TEXT NOT NULL,
@@ -274,7 +297,8 @@ class PerformanceValidationFramework:
                     recommendations TEXT NOT NULL,
                     validation_timestamp TEXT NOT NULL
                 )
-            """)
+            """
+            )
 
             conn.commit()
 
@@ -351,9 +375,9 @@ class PerformanceValidationFramework:
                 "metrics": {
                     "avg_load_time": avg_load_time,
                     "max_load_time": max_load_time,
-                    "load_variance": statistics.stdev(load_times) if len(load_times) > 1 else 0
+                    "load_variance": statistics.stdev(load_times) if len(load_times) > 1 else 0,
                 },
-                "details": f"Progressive loading: avg {avg_load_time:.3f}s, max {max_load_time:.3f}s"
+                "details": f"Progressive loading: avg {avg_load_time:.3f}s, max {max_load_time:.3f}s",
             }
 
         except Exception as e:
@@ -378,11 +402,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "linear_regression_score": linear_regression_score,
-                "performance_data": performance_data
-            },
-            "details": f"Performance scaling: {linear_regression_score:.2f} linearity"
+            "metrics": {"linear_regression_score": linear_regression_score, "performance_data": performance_data},
+            "details": f"Performance scaling: {linear_regression_score:.2f} linearity",
         }
 
     def _test_progressive_loader_stress(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -409,12 +430,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "success_rate": success_rate,
-                "avg_time": avg_time,
-                "concurrent_loads": concurrent_loads
-            },
-            "details": f"Stress test: {success_rate:.1f}% success rate"
+            "metrics": {"success_rate": success_rate, "avg_time": avg_time, "concurrent_loads": concurrent_loads},
+            "details": f"Stress test: {success_rate:.1f}% success rate",
         }
 
     def _test_cache_basic_functionality(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -446,9 +463,9 @@ class PerformanceValidationFramework:
                 "hit_rate": hit_rate,
                 "cache_hits": cache_hits,
                 "cache_misses": cache_misses,
-                "cache_size": len(cache)
+                "cache_size": len(cache),
             },
-            "details": f"Cache hit rate: {hit_rate:.1f}%"
+            "details": f"Cache hit rate: {hit_rate:.1f}%",
         }
 
     def _test_cache_performance(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -470,12 +487,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "avg_access_time": avg_access_time,
-                "max_access_time": max_access_time,
-                "operations": operations
-            },
-            "details": f"Cache access: avg {avg_access_time*1000:.2f}ms"
+            "metrics": {"avg_access_time": avg_access_time, "max_access_time": max_access_time, "operations": operations},
+            "details": f"Cache access: avg {avg_access_time*1000:.2f}ms",
         }
 
     def _test_cache_memory_usage(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -493,12 +506,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "memory_efficiency": memory_efficiency,
-                "total_memory": total_memory,
-                "cache_entries": cache_entries
-            },
-            "details": f"Memory efficiency: {memory_efficiency:.1f}%"
+            "metrics": {"memory_efficiency": memory_efficiency, "total_memory": total_memory, "cache_entries": cache_entries},
+            "details": f"Memory efficiency: {memory_efficiency:.1f}%",
         }
 
     def _test_token_monitoring_accuracy(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -525,12 +534,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "accuracy": accuracy,
-                "avg_error": avg_error,
-                "max_error": max_error
-            },
-            "details": f"Token monitoring accuracy: {accuracy:.2f}%"
+            "metrics": {"accuracy": accuracy, "avg_error": avg_error, "max_error": max_error},
+            "details": f"Token monitoring accuracy: {accuracy:.2f}%",
         }
 
     def _test_token_monitoring_real_time(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -553,12 +558,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "avg_monitor_time": avg_monitor_time,
-                "throughput": throughput,
-                "measurements": len(monitoring_times)
-            },
-            "details": f"Real-time monitoring: {throughput:.0f} ops/sec"
+            "metrics": {"avg_monitor_time": avg_monitor_time, "throughput": throughput, "measurements": len(monitoring_times)},
+            "details": f"Real-time monitoring: {throughput:.0f} ops/sec",
         }
 
     def _test_budget_allocation(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -591,9 +592,9 @@ class PerformanceValidationFramework:
                 "total_allocated": total_allocated,
                 "total_budget": total_budget,
                 "min_allocation": min_allocation,
-                "allocations": allocations
+                "allocations": allocations,
             },
-            "details": f"Budget allocation: {total_allocated:,}/{total_budget:,}"
+            "details": f"Budget allocation: {total_allocated:,}/{total_budget:,}",
         }
 
     def _test_budget_rebalancing(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -615,12 +616,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "avg_rebalance_time": avg_rebalance_time,
-                "max_rebalance_time": max_rebalance_time,
-                "cycles": cycles
-            },
-            "details": f"Rebalancing: avg {avg_rebalance_time*1000:.1f}ms"
+            "metrics": {"avg_rebalance_time": avg_rebalance_time, "max_rebalance_time": max_rebalance_time, "cycles": cycles},
+            "details": f"Rebalancing: avg {avg_rebalance_time*1000:.1f}ms",
         }
 
     def _test_budget_optimization(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -631,7 +628,7 @@ class PerformanceValidationFramework:
             {"initial": 2000, "optimized": 1500},
             {"initial": 1500, "optimized": 1200},
             {"initial": 3000, "optimized": 2200},
-            {"initial": 2500, "optimized": 1800}
+            {"initial": 2500, "optimized": 1800},
         ]
 
         savings = []
@@ -644,12 +641,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "avg_saving": avg_saving,
-                "savings": savings,
-                "scenarios": len(scenarios)
-            },
-            "details": f"Budget optimization: {avg_saving:.1f}% average savings"
+            "metrics": {"avg_saving": avg_saving, "savings": savings, "scenarios": len(scenarios)},
+            "details": f"Budget optimization: {avg_saving:.1f}% average savings",
         }
 
     def _test_ml_model_training(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -674,9 +667,9 @@ class PerformanceValidationFramework:
             "metrics": {
                 "avg_training_time": avg_training_time,
                 "max_training_time": max_training_time,
-                "models_trained": len(models)
+                "models_trained": len(models),
             },
-            "details": f"ML training: avg {avg_training_time*1000:.0f}ms per model"
+            "details": f"ML training: avg {avg_training_time*1000:.0f}ms per model",
         }
 
     def _test_ml_prediction_accuracy(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -693,9 +686,9 @@ class PerformanceValidationFramework:
             "metrics": {
                 "accuracy": accuracy,
                 "predictions_made": predictions_made,
-                "accurate_predictions": accurate_predictions
+                "accurate_predictions": accurate_predictions,
             },
-            "details": f"ML prediction accuracy: {accuracy:.1f}%"
+            "details": f"ML prediction accuracy: {accuracy:.1f}%",
         }
 
     def _test_ml_performance(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -717,12 +710,8 @@ class PerformanceValidationFramework:
 
         return {
             "passed": passed,
-            "metrics": {
-                "avg_prediction_time": avg_prediction_time,
-                "throughput": throughput,
-                "predictions": predictions
-            },
-            "details": f"ML performance: {throughput:.0f} predictions/sec"
+            "metrics": {"avg_prediction_time": avg_prediction_time, "throughput": throughput, "predictions": predictions},
+            "details": f"ML performance: {throughput:.0f} predictions/sec",
         }
 
     def _test_full_optimization_pipeline(self, validation_level: ValidationLevel) -> Dict[str, Any]:
@@ -735,7 +724,7 @@ class PerformanceValidationFramework:
             ("caching", 0.05),
             ("token_monitoring", 0.02),
             ("budget_management", 0.08),
-            ("ml_optimization", 0.15)
+            ("ml_optimization", 0.15),
         ]
 
         stage_times = []
@@ -761,15 +750,14 @@ class PerformanceValidationFramework:
                 "total_time": total_time,
                 "avg_stage_time": avg_stage_time,
                 "cost_reduction": cost_reduction,
-                "stages_completed": len(stages)
+                "stages_completed": len(stages),
             },
-            "details": f"Pipeline: {total_time:.2f}s, {cost_reduction:.1f}% cost reduction"
+            "details": f"Pipeline: {total_time:.2f}s, {cost_reduction:.1f}% cost reduction",
         }
 
     def _test_system_integration(self, validation_level: ValidationLevel) -> Dict[str, Any]:
         """Test system integration."""
-        components = ["progressive_loader", "smart_cache", "token_monitor",
-                     "budget_manager", "ml_optimization"]
+        components = ["progressive_loader", "smart_cache", "token_monitor", "budget_manager", "ml_optimization"]
 
         integration_results = []
         for component in components:
@@ -780,11 +768,7 @@ class PerformanceValidationFramework:
 
             # Simulate integration success rate
             success = random.random() > 0.05  # 95% success rate
-            integration_results.append({
-                "component": component,
-                "time": integration_time,
-                "success": success
-            })
+            integration_results.append({"component": component, "time": integration_time, "success": success})
 
         successful_integrations = sum(1 for r in integration_results if r["success"])
         integration_rate = (successful_integrations / len(components)) * 100
@@ -798,27 +782,22 @@ class PerformanceValidationFramework:
                 "integration_rate": integration_rate,
                 "avg_integration_time": avg_integration_time,
                 "components_tested": len(components),
-                "successful_integrations": successful_integrations
+                "successful_integrations": successful_integrations,
             },
-            "details": f"Integration: {integration_rate:.1f}% success rate"
+            "details": f"Integration: {integration_rate:.1f}% success rate",
         }
 
     def _test_performance_regression(self, validation_level: ValidationLevel) -> Dict[str, Any]:
         """Test for performance regressions."""
         # Simulate baseline performance
-        baseline_metrics = {
-            "load_time": 0.05,
-            "cache_hit_rate": 85.0,
-            "accuracy": 98.0,
-            "throughput": 150.0
-        }
+        baseline_metrics = {"load_time": 0.05, "cache_hit_rate": 85.0, "accuracy": 98.0, "throughput": 150.0}
 
         # Simulate current performance
         current_metrics = {
             "load_time": 0.052,  # 4% slower
             "cache_hit_rate": 87.0,  # 2% better
             "accuracy": 97.5,  # 0.5% worse
-            "throughput": 155.0  # 3% better
+            "throughput": 155.0,  # 3% better
         }
 
         # Calculate regressions
@@ -843,9 +822,9 @@ class PerformanceValidationFramework:
                 "regressions": regression_count,
                 "regression_details": regressions,
                 "baseline_metrics": baseline_metrics,
-                "current_metrics": current_metrics
+                "current_metrics": current_metrics,
             },
-            "details": f"Regression test: {regression_count} regressions found"
+            "details": f"Regression test: {regression_count} regressions found",
         }
 
     def _calculate_linear_regression_score(self, data: List[Tuple[int, float]]) -> float:
@@ -871,9 +850,10 @@ class PerformanceValidationFramework:
         correlation = numerator / (x_variance * y_variance) ** 0.5
         return abs(correlation)  # Return absolute value
 
-    def run_validation(self,
-                      validation_level: ValidationLevel = ValidationLevel.STANDARD,
-                      suites: Optional[List[str]] = None) -> PerformanceMetrics:
+    def run_validation(
+        self, validation_level: ValidationLevel = ValidationLevel.STANDARD, suites: Optional[List[str]] = None
+    )-> PerformanceMetrics:
+        """Run Validation."""
         """Run performance validation for specified test suites."""
 
         if suites is None:
@@ -925,7 +905,7 @@ class PerformanceValidationFramework:
             success_rate=success_rate,
             performance_score=performance_score,
             validation_level=validation_level,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
 
         # Save metrics to database
@@ -973,47 +953,53 @@ class PerformanceValidationFramework:
         """Save test results to database."""
         with sqlite3.connect(self.db_path) as conn:
             for result in results:
-                conn.execute("""
+                conn.execute(
+                    """
                     INSERT INTO test_results
                     (test_name, test_type, status, execution_time, start_time, end_time,
                      metrics, details, error_message, validation_level)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    result.test_name,
-                    result.test_type.value,
-                    result.status.value,
-                    result.execution_time,
-                    result.start_time.isoformat(),
-                    result.end_time.isoformat(),
-                    json.dumps(result.metrics),
-                    result.details,
-                    result.error_message,
-                    result.validation_level.value
-                ))
+                """,
+                    (
+                        result.test_name,
+                        result.test_type.value,
+                        result.status.value,
+                        result.execution_time,
+                        result.start_time.isoformat(),
+                        result.end_time.isoformat(),
+                        json.dumps(result.metrics),
+                        result.details,
+                        result.error_message,
+                        result.validation_level.value,
+                    ),
+                )
             conn.commit()
 
     def _save_validation_metrics(self, metrics: PerformanceMetrics) -> None:
         """Save validation metrics to database."""
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 INSERT INTO validation_metrics
                 (total_tests, passed_tests, failed_tests, skipped_tests, error_tests,
                  total_execution_time, average_test_time, success_rate, performance_score,
                  validation_level, timestamp)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                metrics.total_tests,
-                metrics.passed_tests,
-                metrics.failed_tests,
-                metrics.skipped_tests,
-                metrics.error_tests,
-                metrics.total_execution_time,
-                metrics.average_test_time,
-                metrics.success_rate,
-                metrics.performance_score,
-                metrics.validation_level.value,
-                metrics.timestamp.isoformat()
-            ))
+            """,
+                (
+                    metrics.total_tests,
+                    metrics.passed_tests,
+                    metrics.failed_tests,
+                    metrics.skipped_tests,
+                    metrics.error_tests,
+                    metrics.total_execution_time,
+                    metrics.average_test_time,
+                    metrics.success_rate,
+                    metrics.performance_score,
+                    metrics.validation_level.value,
+                    metrics.timestamp.isoformat(),
+                ),
+            )
             conn.commit()
 
     def _generate_component_validations(self, results: List[TestResult]) -> None:
@@ -1022,7 +1008,7 @@ class PerformanceValidationFramework:
 
         for result in results:
             # Extract component name from test name
-            component = result.test_name.split('_')[0] if '_' in result.test_name else 'unknown'
+            component = result.test_name.split("_")[0] if "_" in result.test_name else "unknown"
             component_results[component].append(result)
 
         for component, comp_results in component_results.items():
@@ -1057,7 +1043,7 @@ class PerformanceValidationFramework:
                 key_metrics=key_metrics,
                 issues_found=issues_found,
                 recommendations=recommendations,
-                validation_timestamp=datetime.now()
+                validation_timestamp=datetime.now(),
             )
 
             self.component_validations[component] = validation
@@ -1084,21 +1070,24 @@ class PerformanceValidationFramework:
     def _save_component_validation(self, validation: ComponentValidation) -> None:
         """Save component validation to database."""
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 INSERT INTO component_validations
                 (component_name, tests_run, tests_passed, performance_score,
                  key_metrics, issues_found, recommendations, validation_timestamp)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                validation.component_name,
-                validation.tests_run,
-                validation.tests_passed,
-                validation.performance_score,
-                json.dumps(validation.key_metrics),
-                json.dumps(validation.issues_found),
-                json.dumps(validation.recommendations),
-                validation.validation_timestamp.isoformat()
-            ))
+            """,
+                (
+                    validation.component_name,
+                    validation.tests_run,
+                    validation.tests_passed,
+                    validation.performance_score,
+                    json.dumps(validation.key_metrics),
+                    json.dumps(validation.issues_found),
+                    json.dumps(validation.recommendations),
+                    validation.validation_timestamp.isoformat(),
+                ),
+            )
             conn.commit()
 
     def generate_validation_report(self, hours: int = 24) -> Dict[str, Any]:
@@ -1130,21 +1119,19 @@ class PerformanceValidationFramework:
                     "tests_passed": validation.tests_passed,
                     "performance_score": validation.performance_score,
                     "issues_count": len(validation.issues_found),
-                    "recommendations_count": len(validation.recommendations)
+                    "recommendations_count": len(validation.recommendations),
                 }
 
         return {
             "report_period_hours": hours,
             "generated_at": datetime.now().isoformat(),
             "latest_metrics": asdict(latest_metrics),
-            "trends": {
-                "success_rate_trend": success_rate_trend,
-                "performance_trend": performance_trend
-            },
+            "trends": {"success_rate_trend": success_rate_trend, "performance_trend": performance_trend},
             "component_summary": component_summary,
             "validation_count": len(recent_metrics),
-            "thresholds": self.performance_thresholds
+            "thresholds": self.performance_thresholds,
         }
+
 
 def main():
     """Demo the performance validation framework."""
@@ -1163,11 +1150,7 @@ def main():
     # Run comprehensive validation
     print("=== Running Comprehensive Validation ===")
 
-    validation_levels = [
-        ValidationLevel.BASIC,
-        ValidationLevel.STANDARD,
-        ValidationLevel.COMPREHENSIVE
-    ]
+    validation_levels = [ValidationLevel.BASIC, ValidationLevel.STANDARD, ValidationLevel.COMPREHENSIVE]
 
     for level in validation_levels:
         print(f"\nRunning {level.value} validation...")
@@ -1186,8 +1169,8 @@ def main():
 
         # Check thresholds
         thresholds_met = (
-            metrics.success_rate >= framework.performance_thresholds["success_rate_min"] and
-            metrics.performance_score >= framework.performance_thresholds["performance_score_min"]
+            metrics.success_rate >= framework.performance_thresholds["success_rate_min"]
+            and metrics.performance_score >= framework.performance_thresholds["performance_score_min"]
         )
 
         print(f"   Thresholds met: {'YES' if thresholds_met else 'NO'}")
@@ -1218,30 +1201,28 @@ def main():
     print(f"Latest success rate: {report['latest_metrics']['success_rate']:.1f}%")
     print(f"Latest performance score: {report['latest_metrics']['performance_score']:.1f}/100")
 
-    if report['trends']['success_rate_trend'] != 0:
-        trend_str = "improving" if report['trends']['success_rate_trend'] > 0 else "declining"
+    if report["trends"]["success_rate_trend"] != 0:
+        trend_str = "improving" if report["trends"]["success_rate_trend"] > 0 else "declining"
         print(f"Success rate trend: {trend_str} ({abs(report['trends']['success_rate_trend']):.1f}%)")
 
     print(f"\nComponent performance:")
-    for component, summary in report['component_summary'].items():
-        status = "GOOD" if summary['performance_score'] >= 80 else "NEEDS ATTENTION"
+    for component, summary in report["component_summary"].items():
+        status = "GOOD" if summary["performance_score"] >= 80 else "NEEDS ATTENTION"
         print(f"   {component}: {summary['performance_score']:.1f}/100 ({status})")
 
     # Overall assessment
     print(f"\n=== Overall Assessment ===")
-    latest_metrics = report['latest_metrics']
+    latest_metrics = report["latest_metrics"]
 
-    if (latest_metrics['success_rate'] >= 95 and
-        latest_metrics['performance_score'] >= 85):
+    if latest_metrics["success_rate"] >= 95 and latest_metrics["performance_score"] >= 85:
         print("EXCELLENT: Framework validation passed with high scores")
         print("System is production-ready and performing optimally")
         return True
-    elif (latest_metrics['success_rate'] >= 90 and
-          latest_metrics['performance_score'] >= 75):
+    elif latest_metrics["success_rate"] >= 90 and latest_metrics["performance_score"] >= 75:
         print("GOOD: Framework validation passed successfully")
         print("System is ready for production deployment")
         return True
-    elif latest_metrics['success_rate'] >= 80:
+    elif latest_metrics["success_rate"] >= 80:
         print("ACCEPTABLE: Framework validation completed with some issues")
         print("System needs minor improvements before production")
         return False
@@ -1249,6 +1230,7 @@ def main():
         print("NEEDS WORK: Framework validation shows significant issues")
         print("System requires major improvements before production")
         return False
+
 
 if __name__ == "__main__":
     # Import required modules

@@ -24,11 +24,13 @@ import pickle
 import os
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
 
 class MLModelType(Enum):
     """Types of ML models."""
+
     LINEAR_REGRESSION = "linear_regression"
     POLYNOMIAL_REGRESSION = "polynomial_regression"
     MOVING_AVERAGE = "moving_average"
@@ -36,21 +38,25 @@ class MLModelType(Enum):
     NEURAL_NETWORK = "neural_network"
     ENSEMBLE = "ensemble"
 
+
 class OptimizationTarget(Enum):
     """Optimization targets."""
+
     COST_REDUCTION = "cost_reduction"
     PERFORMANCE_IMPROVEMENT = "performance_improvement"
     EFFICIENCY_GAIN = "efficiency_gain"
     PREDICTIVE_SCALING = "predictive_scaling"
 
+
 @dataclass
 class MLModelMetrics:
     """Performance metrics for ML models."""
+
     model_name: str
     model_type: MLModelType
     accuracy: float  # 0-100
     precision: float  # 0-100
-    recall: float    # 0-100
+    recall: float  # 0-100
     f1_score: float  # 0-100
     training_time: float  # seconds
     prediction_time: float  # milliseconds
@@ -58,9 +64,11 @@ class MLModelMetrics:
     training_samples: int
     validation_samples: int
 
+
 @dataclass
 class OptimizationPrediction:
     """ML-based optimization prediction."""
+
     target: OptimizationTarget
     predicted_value: float
     confidence: float  # 0-100
@@ -70,10 +78,12 @@ class OptimizationPrediction:
     model_used: str
     timestamp: datetime
 
+
 class SimpleMLModel:
     """Simplified ML model implementation."""
 
     def __init__(self, model_type: MLModelType, name: str):
+        """  Init  ."""
         self.model_type = model_type
         self.name = name
         self.is_trained = False
@@ -102,12 +112,7 @@ class SimpleMLModel:
         self.is_trained = True
         self.accuracy_score = metrics.get("accuracy", 0.0)
 
-        return {
-            "training_time": training_time,
-            "samples": len(X),
-            "accuracy": self.accuracy_score,
-            **metrics
-        }
+        return {"training_time": training_time, "samples": len(X), "accuracy": self.accuracy_score, **metrics}
 
     def _train_linear_regression(self, X: List[List[float]], y: List[float]) -> Dict[str, float]:
         """Simple linear regression implementation."""
@@ -154,7 +159,7 @@ class SimpleMLModel:
         for window in range(2, min(10, len(y) // 2)):
             predictions = []
             for i in range(window, len(y)):
-                avg = sum(y[i-window:i]) / window
+                avg = sum(y[i - window : i]) / window
                 predictions.append(avg)
 
             # Calculate accuracy
@@ -184,7 +189,7 @@ class SimpleMLModel:
             smoothed = [y[0]]
 
             for i in range(1, len(y)):
-                next_val = alpha * y[i-1] + (1 - alpha) * smoothed[-1]
+                next_val = alpha * y[i - 1] + (1 - alpha) * smoothed[-1]
                 smoothed.append(next_val)
                 predictions.append(next_val)
 
@@ -249,10 +254,12 @@ class SimpleMLModel:
 
         return predictions
 
+
 class MLOptimizationEngine:
     """Main ML optimization engine."""
 
     def __init__(self, db_path: str = "ml_optimization.db"):
+        """  Init  ."""
         self.db_path = db_path
         self.models: Dict[str, SimpleMLModel] = {}
         self.prediction_history: List[OptimizationPrediction] = []
@@ -277,7 +284,8 @@ class MLOptimizationEngine:
     def _init_database(self) -> None:
         """Initialize SQLite database for ML operations."""
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS ml_models (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT UNIQUE NOT NULL,
@@ -289,9 +297,11 @@ class MLOptimizationEngine:
                     last_trained TEXT NOT NULL,
                     is_active BOOLEAN DEFAULT 1
                 )
-            """)
+            """
+            )
 
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS training_data (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     model_name TEXT NOT NULL,
@@ -299,9 +309,11 @@ class MLOptimizationEngine:
                     target REAL NOT NULL,
                     timestamp TEXT NOT NULL
                 )
-            """)
+            """
+            )
 
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS predictions (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     model_name TEXT NOT NULL,
@@ -313,9 +325,11 @@ class MLOptimizationEngine:
                     actual_savings INTEGER DEFAULT 0,
                     timestamp TEXT NOT NULL
                 )
-            """)
+            """
+            )
 
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS model_performance (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     model_name TEXT NOT NULL,
@@ -326,7 +340,8 @@ class MLOptimizationEngine:
                     prediction_time REAL NOT NULL,
                     timestamp TEXT NOT NULL
                 )
-            """)
+            """
+            )
 
             conn.commit()
 
@@ -347,11 +362,13 @@ class MLOptimizationEngine:
     def _load_saved_models(self) -> None:
         """Load saved models from database."""
         with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.execute("""
+            cursor = conn.execute(
+                """
                 SELECT name, model_type, parameters, accuracy, training_time, training_samples, last_trained
                 FROM ml_models
                 WHERE is_active = 1
-            """)
+            """
+            )
 
             models_loaded = 0
             for row in cursor.fetchall():
@@ -380,16 +397,14 @@ class MLOptimizationEngine:
 
             # Store in database
             with sqlite3.connect(self.db_path) as conn:
-                conn.execute("""
+                conn.execute(
+                    """
                     INSERT INTO training_data
                     (model_name, features, target, timestamp)
                     VALUES (?, ?, ?, ?)
-                """, (
-                    model_name,
-                    json.dumps(features),
-                    target,
-                    datetime.now().isoformat()
-                ))
+                """,
+                    (model_name, json.dumps(features), target, datetime.now().isoformat()),
+                )
                 conn.commit()
 
     def train_model(self, model_name: str, min_samples: int = 10) -> Dict[str, Any]:
@@ -417,19 +432,22 @@ class MLOptimizationEngine:
 
             # Save model to database
             with sqlite3.connect(self.db_path) as conn:
-                conn.execute("""
+                conn.execute(
+                    """
                     INSERT OR REPLACE INTO ml_models
                     (name, model_type, parameters, accuracy, training_time, training_samples, last_trained)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    model_name,
-                    model.model_type.value,
-                    json.dumps(model.parameters),
-                    model.accuracy_score,
-                    training_time,
-                    len(training_samples),
-                    datetime.now().isoformat()
-                ))
+                """,
+                    (
+                        model_name,
+                        model.model_type.value,
+                        json.dumps(model.parameters),
+                        model.accuracy_score,
+                        training_time,
+                        len(training_samples),
+                        datetime.now().isoformat(),
+                    ),
+                )
                 conn.commit()
 
             logger.info(f"Trained model {model_name} with accuracy: {model.accuracy_score:.1f}%")
@@ -439,12 +457,13 @@ class MLOptimizationEngine:
                 "accuracy": model.accuracy_score,
                 "training_time": training_time,
                 "samples": len(training_samples),
-                "parameters": model.parameters
+                "parameters": model.parameters,
             }
 
-    def predict_optimization(self, target: OptimizationTarget,
-                           features: List[float],
-                           model_name: Optional[str] = None) -> OptimizationPrediction:
+    def predict_optimization(
+        self, target: OptimizationTarget, features: List[float], model_name: Optional[str] = None
+    )-> OptimizationPrediction:
+        """Predict Optimization."""
         """Make optimization prediction using ML models."""
         with self._lock:
             # Select best model for the target
@@ -480,7 +499,7 @@ class MLOptimizationEngine:
                 expected_savings=expected_savings,
                 implementation_effort=self._estimate_implementation_effort(target),
                 model_used=model_name,
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
             )
 
             # Store prediction
@@ -488,19 +507,22 @@ class MLOptimizationEngine:
 
             # Save to database
             with sqlite3.connect(self.db_path) as conn:
-                conn.execute("""
+                conn.execute(
+                    """
                     INSERT INTO predictions
                     (model_name, target_type, predicted_value, confidence, recommendation, expected_savings, timestamp)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    model_name,
-                    target.value,
-                    prediction,
-                    confidence,
-                    recommendation,
-                    expected_savings,
-                    datetime.now().isoformat()
-                ))
+                """,
+                    (
+                        model_name,
+                        target.value,
+                        prediction,
+                        confidence,
+                        recommendation,
+                        expected_savings,
+                        datetime.now().isoformat(),
+                    ),
+                )
                 conn.commit()
 
             return opt_prediction
@@ -511,7 +533,7 @@ class MLOptimizationEngine:
             OptimizationTarget.COST_REDUCTION: ["cost_predictor", "budget_optimizer"],
             OptimizationTarget.PERFORMANCE_IMPROVEMENT: ["performance_optimizer", "efficiency_analyzer"],
             OptimizationTarget.EFFICIENCY_GAIN: ["efficiency_analyzer", "cost_predictor"],
-            OptimizationTarget.PREDICTIVE_SCALING: ["usage_forecaster", "performance_optimizer"]
+            OptimizationTarget.PREDICTIVE_SCALING: ["usage_forecaster", "performance_optimizer"],
         }
 
         candidate_models = model_mapping.get(target, list(self.models.keys()))
@@ -557,7 +579,7 @@ class MLOptimizationEngine:
             expected_savings=int(prediction * 100),
             implementation_effort="medium",
             model_used="fallback",
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
 
     def _generate_recommendation(self, target: OptimizationTarget, prediction: float, confidence: float) -> str:
@@ -609,7 +631,7 @@ class MLOptimizationEngine:
             OptimizationTarget.COST_REDUCTION: "medium",
             OptimizationTarget.PERFORMANCE_IMPROVEMENT: "high",
             OptimizationTarget.EFFICIENCY_GAIN: "low",
-            OptimizationTarget.PREDICTIVE_SCALING: "high"
+            OptimizationTarget.PREDICTIVE_SCALING: "high",
         }
         return effort_mapping.get(target, "medium")
 
@@ -689,13 +711,13 @@ class MLOptimizationEngine:
                         model_type=model.model_type,
                         accuracy=model.accuracy_score,
                         precision=model.accuracy_score * 0.9,  # Estimated
-                        recall=model.accuracy_score * 0.95,    # Estimated
-                        f1_score=model.accuracy_score * 0.92, # Estimated
+                        recall=model.accuracy_score * 0.95,  # Estimated
+                        f1_score=model.accuracy_score * 0.92,  # Estimated
                         training_time=0.0,  # Not tracked
                         prediction_time=1.0,  # Estimated
                         last_trained=datetime.now(),  # Not tracked
                         training_samples=len(self.training_data[model_name]),
-                        validation_samples=max(1, len(self.training_data[model_name]) // 5)
+                        validation_samples=max(1, len(self.training_data[model_name]) // 5),
                     )
                     performance_data[model_name] = metrics
 
@@ -706,9 +728,7 @@ class MLOptimizationEngine:
         with self._lock:
             # Sort predictions by expected savings and confidence
             sorted_predictions = sorted(
-                self.prediction_history,
-                key=lambda p: (p.expected_savings * p.confidence / 100),
-                reverse=True
+                self.prediction_history, key=lambda p: (p.expected_savings * p.confidence / 100), reverse=True
             )
 
             # Return top recommendations
@@ -720,10 +740,7 @@ class MLOptimizationEngine:
 
         with self._lock:
             # Filter recent predictions
-            recent_predictions = [
-                p for p in self.prediction_history
-                if p.timestamp > cutoff_time
-            ]
+            recent_predictions = [p for p in self.prediction_history if p.timestamp > cutoff_time]
 
             # Calculate metrics
             total_predictions = len(recent_predictions)
@@ -743,7 +760,7 @@ class MLOptimizationEngine:
             for model_name, data in self.training_data.items():
                 training_stats[model_name] = {
                     "total_samples": len(data),
-                    "recent_samples": len([1 for _, _ in data if datetime.now().isoformat() > cutoff_time.isoformat()])
+                    "recent_samples": len([1 for _, _ in data if datetime.now().isoformat() > cutoff_time.isoformat()]),
                 }
 
             return {
@@ -753,19 +770,17 @@ class MLOptimizationEngine:
                     "total_predictions": total_predictions,
                     "average_confidence": avg_confidence,
                     "total_potential_savings": total_potential_savings,
-                    "active_models": len([m for m in self.models.values() if m.is_trained])
+                    "active_models": len([m for m in self.models.values() if m.is_trained]),
                 },
                 "target_breakdown": {
                     target: {
                         "predictions": len(predictions),
                         "avg_confidence": statistics.mean([p.confidence for p in predictions]) if predictions else 0,
-                        "total_savings": sum(p.expected_savings for p in predictions)
+                        "total_savings": sum(p.expected_savings for p in predictions),
                     }
                     for target, predictions in target_breakdown.items()
                 },
-                "model_performance": {
-                    name: asdict(metrics) for name, metrics in model_performance.items()
-                },
+                "model_performance": {name: asdict(metrics) for name, metrics in model_performance.items()},
                 "training_statistics": training_stats,
                 "top_recommendations": [
                     {
@@ -774,11 +789,12 @@ class MLOptimizationEngine:
                         "confidence": p.confidence,
                         "expected_savings": p.expected_savings,
                         "recommendation": p.recommendation,
-                        "implementation_effort": p.implementation_effort
+                        "implementation_effort": p.implementation_effort,
                     }
                     for p in self.get_optimization_recommendations(3)
-                ]
+                ],
             }
+
 
 def main():
     """Demo the ML optimization engine."""
@@ -804,13 +820,11 @@ def main():
         ([500, 4, 80, 0.008], 12.0),
         ([3000, 16, 60, 0.015], 22.0),
         ([1500, 10, 75, 0.009], 16.0),
-
         # Performance improvement examples
-        ([800, 6, 85, 0.007], 8.0),   # 8% performance improvement
+        ([800, 6, 85, 0.007], 8.0),  # 8% performance improvement
         ([2500, 14, 70, 0.011], 15.0),
         ([1200, 9, 78, 0.008], 11.0),
         ([4000, 18, 55, 0.016], 20.0),
-
         # Efficiency gain examples
         ([1800, 11, 72, 0.010], 10.0),  # 10% efficiency gain
         ([900, 5, 82, 0.006], 7.0),
@@ -821,7 +835,7 @@ def main():
     for features, target in sample_data:
         ml_engine.add_training_data("cost_predictor", features, target)
         ml_engine.add_training_data("performance_optimizer", features, target * 0.6)  # Performance gains are smaller
-        ml_engine.add_training_data("efficiency_analyzer", features, target * 0.8)   # Efficiency gains are moderate
+        ml_engine.add_training_data("efficiency_analyzer", features, target * 0.8)  # Efficiency gains are moderate
 
     print(f"Added training samples: {len(sample_data)} per model")
     print()
@@ -834,8 +848,7 @@ def main():
         result = ml_engine.train_model(model_name, min_samples=5)
         if "error" not in result:
             training_results[model_name] = result
-            print(f"   {model_name}: Accuracy {result['accuracy']:.1f}%, "
-                  f"Time {result['training_time']:.3f}s")
+            print(f"   {model_name}: Accuracy {result['accuracy']:.1f}%, " f"Time {result['training_time']:.3f}s")
         else:
             print(f"   {model_name}: {result['error']}")
 
@@ -848,7 +861,7 @@ def main():
         ("High Usage Scenario", [2500, 15, 65, 0.014]),
         ("Low Usage Scenario", [600, 4, 85, 0.006]),
         ("Peak Performance", [3500, 18, 55, 0.018]),
-        ("Balanced Load", [1800, 10, 75, 0.009])
+        ("Balanced Load", [1800, 10, 75, 0.009]),
     ]
 
     all_predictions = []
@@ -891,12 +904,11 @@ def main():
     print(f"Active models: {report['summary']['active_models']}")
 
     print(f"\nModel Performance:")
-    for model_name, metrics in report['model_performance'].items():
-        print(f"   {model_name}: Accuracy {metrics['accuracy']:.1f}%, "
-              f"Samples trained: {metrics['training_samples']}")
+    for model_name, metrics in report["model_performance"].items():
+        print(f"   {model_name}: Accuracy {metrics['accuracy']:.1f}%, " f"Samples trained: {metrics['training_samples']}")
 
     # Calculate estimated optimization impact
-    total_potential = report['summary']['total_potential_savings']
+    total_potential = report["summary"]["total_potential_savings"]
     if total_potential > 0:
         estimated_impact = (total_potential / 10000) * 15  # Estimate 15% of potential realized
         print(f"\nEstimated optimization impact: {estimated_impact:.1f}%")
@@ -906,6 +918,7 @@ def main():
         print(f"Target achieved: NO")
 
     return True
+
 
 if __name__ == "__main__":
     main()

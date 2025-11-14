@@ -24,69 +24,82 @@ class AgentSpecializationTracker:
 
     # Agent group classifications
     ANALYSIS_AGENTS = {
-        'code-analyzer', 'smart-recommender', 'security-auditor',
-        'performance-analytics', 'pr-reviewer', 'learning-engine',
-        'validation-controller'
+        "code-analyzer",
+        "smart-recommender",
+        "security-auditor",
+        "performance-analytics",
+        "pr-reviewer",
+        "learning-engine",
+        "validation-controller",
     }
 
     EXECUTION_AGENTS = {
-        'quality-controller', 'test-engineer', 'frontend-analyzer',
-        'documentation-generator', 'build-validator', 'git-repository-manager',
-        'api-contract-validator', 'gui-validator', 'dev-orchestrator',
-        'version-release-manager', 'workspace-organizer', 'report-management-organizer',
-        'background-task-manager', 'claude-plugin-validator'
+        "quality-controller",
+        "test-engineer",
+        "frontend-analyzer",
+        "documentation-generator",
+        "build-validator",
+        "git-repository-manager",
+        "api-contract-validator",
+        "gui-validator",
+        "dev-orchestrator",
+        "version-release-manager",
+        "workspace-organizer",
+        "report-management-organizer",
+        "background-task-manager",
+        "claude-plugin-validator",
     }
 
     # Task type mappings for agent selection
     AGENT_CAPABILITIES = {
-        'code-analyzer': {
-            'primary_tasks': ['refactoring', 'bug-fix', 'optimization', 'analysis'],
-            'skills': ['code-analysis', 'pattern-learning', 'ast-analyzer'],
-            'base_success_rate': 0.96,
-            'base_quality_score': 94
+        "code-analyzer": {
+            "primary_tasks": ["refactoring", "bug-fix", "optimization", "analysis"],
+            "skills": ["code-analysis", "pattern-learning", "ast-analyzer"],
+            "base_success_rate": 0.96,
+            "base_quality_score": 94,
         },
-        'quality-controller': {
-            'primary_tasks': ['refactoring', 'bug-fix', 'validation', 'testing'],
-            'skills': ['quality-standards', 'validation-standards', 'pattern-learning'],
-            'base_success_rate': 0.89,
-            'base_quality_score': 91
+        "quality-controller": {
+            "primary_tasks": ["refactoring", "bug-fix", "validation", "testing"],
+            "skills": ["quality-standards", "validation-standards", "pattern-learning"],
+            "base_success_rate": 0.89,
+            "base_quality_score": 91,
         },
-        'test-engineer': {
-            'primary_tasks': ['testing', 'bug-fix', 'validation'],
-            'skills': ['testing-strategies', 'code-analysis', 'quality-standards'],
-            'base_success_rate': 0.93,
-            'base_quality_score': 91
+        "test-engineer": {
+            "primary_tasks": ["testing", "bug-fix", "validation"],
+            "skills": ["testing-strategies", "code-analysis", "quality-standards"],
+            "base_success_rate": 0.93,
+            "base_quality_score": 91,
         },
-        'security-auditor': {
-            'primary_tasks': ['security', 'refactoring', 'validation'],
-            'skills': ['security-patterns', 'code-analysis', 'validation-standards'],
-            'base_success_rate': 0.91,
-            'base_quality_score': 89
+        "security-auditor": {
+            "primary_tasks": ["security", "refactoring", "validation"],
+            "skills": ["security-patterns", "code-analysis", "validation-standards"],
+            "base_success_rate": 0.91,
+            "base_quality_score": 89,
         },
-        'performance-analytics': {
-            'primary_tasks': ['optimization', 'analysis', 'monitoring'],
-            'skills': ['performance-scaling', 'pattern-learning', 'code-analysis'],
-            'base_success_rate': 0.88,
-            'base_quality_score': 90
+        "performance-analytics": {
+            "primary_tasks": ["optimization", "analysis", "monitoring"],
+            "skills": ["performance-scaling", "pattern-learning", "code-analysis"],
+            "base_success_rate": 0.88,
+            "base_quality_score": 90,
         },
-        'documentation-generator': {
-            'primary_tasks': ['documentation', 'feature', 'refactoring'],
-            'skills': ['documentation-best-practices', 'code-analysis'],
-            'base_success_rate': 0.94,
-            'base_quality_score': 92
+        "documentation-generator": {
+            "primary_tasks": ["documentation", "feature", "refactoring"],
+            "skills": ["documentation-best-practices", "code-analysis"],
+            "base_success_rate": 0.94,
+            "base_quality_score": 92,
         },
-        'frontend-analyzer': {
-            'primary_tasks': ['frontend', 'bug-fix', 'refactoring'],
-            'skills': ['code-analysis', 'quality-standards', 'pattern-learning'],
-            'base_success_rate': 0.87,
-            'base_quality_score': 89
+        "frontend-analyzer": {
+            "primary_tasks": ["frontend", "bug-fix", "refactoring"],
+            "skills": ["code-analysis", "quality-standards", "pattern-learning"],
+            "base_success_rate": 0.87,
+            "base_quality_score": 89,
         },
-        'smart-recommender': {
-            'primary_tasks': ['analysis', 'recommendation', 'optimization'],
-            'skills': ['pattern-learning', 'performance-scaling', 'contextual-pattern-learning'],
-            'base_success_rate': 0.89,
-            'base_quality_score': 88
-        }
+        "smart-recommender": {
+            "primary_tasks": ["analysis", "recommendation", "optimization"],
+            "skills": ["pattern-learning", "performance-scaling", "contextual-pattern-learning"],
+            "base_success_rate": 0.89,
+            "base_quality_score": 88,
+        },
     }
 
     def __init__(self, storage_dir: str = ".claude-patterns"):
@@ -101,7 +114,7 @@ class AgentSpecializationTracker:
         try:
             # Load from performance tracker
             if self.performance_tracker_file.exists():
-                with open(self.performance_tracker_file, 'r', encoding='utf-8') as f:
+                with open(self.performance_tracker_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 if agent_name in data.get("agent_metrics", {}):
@@ -110,18 +123,15 @@ class AgentSpecializationTracker:
             pass
 
         # Return base capabilities if no performance data
-        return self.AGENT_CAPABILITIES.get(agent_name, {
-            'primary_tasks': [],
-            'skills': [],
-            'base_success_rate': 0.80,
-            'base_quality_score': 80
-        })
+        return self.AGENT_CAPABILITIES.get(
+            agent_name, {"primary_tasks": [], "skills": [], "base_success_rate": 0.80, "base_quality_score": 80}
+        )
 
     def get_collaboration_effectiveness(self, from_agent: str, to_agent: str) -> float:
         """Get collaboration effectiveness between two agents."""
         try:
             if self.collaboration_file.exists():
-                with open(self.collaboration_file, 'r', encoding='utf-8') as f:
+                with open(self.collaboration_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 collab_key = f"{from_agent}->{to_agent}"
@@ -140,12 +150,7 @@ class AgentSpecializationTracker:
         # Default collaboration effectiveness
         return 0.85
 
-    def calculate_specialization_score(
-        self,
-        agent_name: str,
-        task_type: str,
-        context: Dict[str, Any]
-    ) -> float:
+    def calculate_specialization_score(self, agent_name: str, task_type: str, context: Dict[str, Any]) -> float:
         """
         Calculate how well an agent is specialized for a specific task.
         """
@@ -170,10 +175,10 @@ class AgentSpecializationTracker:
 
         # Calculate specialization score
         specialization_score = (
-            base_score * 0.35 +           # Task type match
-            success_rate * 0.30 +          # Historical success
-            quality_normalized * 0.20 +   # Quality output
-            self._get_specialization_boost(agent_name, task_type) * 0.15  # Learning bonus
+            base_score * 0.35  # Task type match
+            + success_rate * 0.30  # Historical success
+            + quality_normalized * 0.20  # Quality output
+            + self._get_specialization_boost(agent_name, task_type) * 0.15  # Learning bonus
         )
 
         return max(0.0, min(1.0, specialization_score))
@@ -184,13 +189,13 @@ class AgentSpecializationTracker:
 
         # Define secondary relationships
         secondary_map = {
-            'code-analyzer': ['documentation', 'testing', 'security'],
-            'quality-controller': ['refactoring', 'optimization'],
-            'test-engineer': ['bug-fix', 'validation'],
-            'security-auditor': ['refactoring', 'validation'],
-            'documentation-generator': ['feature', 'refactoring'],
-            'frontend-analyzer': ['bug-fix', 'testing'],
-            'smart-recommender': ['optimization', 'analysis'],
+            "code-analyzer": ["documentation", "testing", "security"],
+            "quality-controller": ["refactoring", "optimization"],
+            "test-engineer": ["bug-fix", "validation"],
+            "security-auditor": ["refactoring", "validation"],
+            "documentation-generator": ["feature", "refactoring"],
+            "frontend-analyzer": ["bug-fix", "testing"],
+            "smart-recommender": ["optimization", "analysis"],
         }
 
         return task_type in secondary_map.get(agent_name, [])
@@ -221,14 +226,11 @@ class AgentSpecializationTracker:
         """Get workload balance factor (0-1, higher = less loaded)."""
         try:
             if self.performance_tracker_file.exists():
-                with open(self.performance_tracker_file, 'r', encoding='utf-8') as f:
+                with open(self.performance_tracker_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 # Calculate relative workload
-                all_tasks = sum(
-                    metrics.get("total_tasks", 0)
-                    for metrics in data.get("agent_metrics", {}).values()
-                )
+                all_tasks = sum(metrics.get("total_tasks", 0) for metrics in data.get("agent_metrics", {}).values())
 
                 if all_tasks == 0:
                     return 1.0
@@ -237,10 +239,7 @@ class AgentSpecializationTracker:
                 workload_ratio = agent_tasks / all_tasks
 
                 # Ideal workload is 1/n where n = number of active agents
-                active_agents = len([
-                    m for m in data.get("agent_metrics", {}).values()
-                    if m.get("total_tasks", 0) > 0
-                ])
+                active_agents = len([m for m in data.get("agent_metrics", {}).values() if m.get("total_tasks", 0) > 0])
 
                 if active_agents == 0:
                     return 1.0
@@ -255,11 +254,7 @@ class AgentSpecializationTracker:
 
         return 1.0  # Default to balanced
 
-    def get_optimal_collaboration_path(
-        self,
-        primary_agent: str,
-        task_info: Dict[str, Any]
-    ) -> List[str]:
+    def get_optimal_collaboration_path(self, primary_agent: str, task_info: Dict[str, Any]) -> List[str]:
         """
         Get optimal collaboration path starting with primary agent.
         """
@@ -268,14 +263,14 @@ class AgentSpecializationTracker:
 
         # Known high-performing collaborations
         known_collaborations = {
-            'code-analyzer': ['quality-controller', 'test-engineer'],
-            'security-auditor': ['test-engineer', 'quality-controller'],
-            'frontend-analyzer': ['api-contract-validator', 'quality-controller'],
-            'smart-recommender': ['code-analyzer', 'quality-controller'],
-            'performance-analytics': ['code-analyzer', 'test-engineer'],
-            'documentation-generator': ['code-analyzer'],
-            'test-engineer': ['quality-controller'],
-            'quality-controller': [],  # Usually final step
+            "code-analyzer": ["quality-controller", "test-engineer"],
+            "security-auditor": ["test-engineer", "quality-controller"],
+            "frontend-analyzer": ["api-contract-validator", "quality-controller"],
+            "smart-recommender": ["code-analyzer", "quality-controller"],
+            "performance-analytics": ["code-analyzer", "test-engineer"],
+            "documentation-generator": ["code-analyzer"],
+            "test-engineer": ["quality-controller"],
+            "quality-controller": [],  # Usually final step
         }
 
         # Start with known collaborations
@@ -322,20 +317,12 @@ class IntelligentAgentRouter:
             initial_data = {
                 "version": "1.0.0",
                 "routing_decisions": [],
-                "performance_metrics": {
-                    "total_routes": 0,
-                    "average_confidence": 0.0,
-                    "success_rate": 0.0
-                }
+                "performance_metrics": {"total_routes": 0, "average_confidence": 0.0, "success_rate": 0.0},
             }
-            with open(self.history_file, 'w', encoding='utf-8') as f:
+            with open(self.history_file, "w", encoding="utf-8") as f:
                 json.dump(initial_data, f, indent=2)
 
-    def route_task(
-        self,
-        task_info: Dict[str, Any],
-        tier: str = "analysis"
-    ) -> Dict[str, Any]:
+    def route_task(self, task_info: Dict[str, Any], tier: str = "analysis") -> Dict[str, Any]:
         """
         Route task to optimal agent(s).
 
@@ -365,30 +352,25 @@ class IntelligentAgentRouter:
         scored_candidates = []
         for agent in candidates:
             score = self._calculate_routing_score(agent, task_info)
-            scored_candidates.append({
-                "agent": agent,
-                "score": score,
-                "specialization": self.specialization_tracker.calculate_specialization_score(
-                    agent, task_type, task_info
-                ),
-                "workload_balance": self.specialization_tracker.get_workload_balance(agent),
-                "estimated_time": self._estimate_execution_time(agent, task_info),
-                "estimated_quality": self._estimate_quality_score(agent, task_info)
-            })
+            scored_candidates.append(
+                {
+                    "agent": agent,
+                    "score": score,
+                    "specialization": self.specialization_tracker.calculate_specialization_score(agent, task_type, task_info),
+                    "workload_balance": self.specialization_tracker.get_workload_balance(agent),
+                    "estimated_time": self._estimate_execution_time(agent, task_info),
+                    "estimated_quality": self._estimate_quality_score(agent, task_info),
+                }
+            )
 
         # Sort by score
         scored_candidates.sort(key=lambda x: x["score"], reverse=True)
 
         # Select optimal routing
-        routing_decision = self._create_routing_decision(
-            scored_candidates, task_info, tier
-        )
+        routing_decision = self._create_routing_decision(scored_candidates, task_info, tier)
 
         # Cache result
-        self.routing_cache[cache_key] = {
-            "decision": routing_decision,
-            "timestamp": time.time()
-        }
+        self.routing_cache[cache_key] = {"decision": routing_decision, "timestamp": time.time()}
 
         # Record routing decision
         self._record_routing_decision(routing_decision, task_info)
@@ -413,11 +395,7 @@ class IntelligentAgentRouter:
 
         return qualified if qualified else list(candidates)
 
-    def _calculate_routing_score(
-        self,
-        agent_name: str,
-        task_info: Dict[str, Any]
-    ) -> float:
+    def _calculate_routing_score(self, agent_name: str, task_info: Dict[str, Any]) -> float:
         """
         Calculate routing score for an agent.
 
@@ -430,9 +408,7 @@ class IntelligentAgentRouter:
         task_type = task_info.get("type", "unknown")
 
         # Specialization score
-        specialization_score = self.specialization_tracker.calculate_specialization_score(
-            agent_name, task_type, task_info
-        )
+        specialization_score = self.specialization_tracker.calculate_specialization_score(agent_name, task_type, task_info)
 
         # Performance metrics
         performance = self.specialization_tracker.get_agent_performance(agent_name)
@@ -448,11 +424,11 @@ class IntelligentAgentRouter:
 
         # Calculate total score
         total_score = (
-            specialization_score * 0.35 +
-            success_rate * 0.30 +
-            avg_quality * 0.20 +
-            time_score * 0.10 +
-            workload_balance * 0.05
+            specialization_score * 0.35
+            + success_rate * 0.30
+            + avg_quality * 0.20
+            + time_score * 0.10
+            + workload_balance * 0.05
         )
 
         return max(0.0, min(1.0, total_score))
@@ -469,9 +445,7 @@ class IntelligentAgentRouter:
 
         # Adjust for specialization
         task_type = task_info.get("type", "unknown")
-        spec_score = self.specialization_tracker.calculate_specialization_score(
-            agent_name, task_type, task_info
-        )
+        spec_score = self.specialization_tracker.calculate_specialization_score(agent_name, task_type, task_info)
         specialization_mult = 1.0 + (1.0 - spec_score) * 0.3  # Less specialized = slower
 
         return int(base_time * complexity_mult * specialization_mult)
@@ -483,19 +457,15 @@ class IntelligentAgentRouter:
 
         # Adjust for specialization
         task_type = task_info.get("type", "unknown")
-        spec_score = self.specialization_tracker.calculate_specialization_score(
-            agent_name, task_type, task_info
-        )
+        spec_score = self.specialization_tracker.calculate_specialization_score(agent_name, task_type, task_info)
         specialization_boost = spec_score * 10  # Up to +10 points for specialization
 
         return min(100, int(base_quality + specialization_boost))
 
     def _create_routing_decision(
-        self,
-        scored_candidates: List[Dict[str, Any]],
-        task_info: Dict[str, Any],
-        tier: str
-    ) -> Dict[str, Any]:
+        self, scored_candidates: List[Dict[str, Any]], task_info: Dict[str, Any], tier: str
+    )-> Dict[str, Any]:
+        """ Create Routing Decision."""
         """Create routing decision from scored candidates."""
         if not scored_candidates:
             return self._create_default_routing(task_info, tier)
@@ -503,9 +473,7 @@ class IntelligentAgentRouter:
         primary = scored_candidates[0]
 
         # Get collaboration path
-        collaboration_path = self.specialization_tracker.get_optimal_collaboration_path(
-            primary["agent"], task_info
-        )
+        collaboration_path = self.specialization_tracker.get_optimal_collaboration_path(primary["agent"], task_info)
 
         decision = {
             "primary_agent": primary["agent"],
@@ -516,13 +484,9 @@ class IntelligentAgentRouter:
             "tier": tier,
             "reasoning": self._generate_reasoning(primary, task_info),
             "alternatives": [
-                {
-                    "agent": cand["agent"],
-                    "score": cand["score"],
-                    "reason": "Alternative with lower confidence"
-                }
+                {"agent": cand["agent"], "score": cand["score"], "reason": "Alternative with lower confidence"}
                 for cand in scored_candidates[1:3]  # Top 2 alternatives
-            ]
+            ],
         }
 
         return decision
@@ -545,7 +509,7 @@ class IntelligentAgentRouter:
             "estimated_quality": 80,
             "tier": tier,
             "reasoning": f"Default routing for {task_type} task in {tier} tier",
-            "alternatives": []
+            "alternatives": [],
         }
 
     def _generate_reasoning(self, candidate: Dict[str, Any], task_info: Dict[str, Any]) -> str:
@@ -572,7 +536,7 @@ class IntelligentAgentRouter:
     def _record_routing_decision(self, decision: Dict[str, Any], task_info: Dict[str, Any]):
         """Record routing decision for learning and analytics."""
         try:
-            with open(self.history_file, 'r', encoding='utf-8') as f:
+            with open(self.history_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             routing_entry = {
@@ -582,7 +546,7 @@ class IntelligentAgentRouter:
                 "confidence": decision["confidence"],
                 "estimated_time": decision["estimated_time"],
                 "estimated_quality": decision["estimated_quality"],
-                "tier": decision["tier"]
+                "tier": decision["tier"],
             }
 
             data["routing_decisions"].append(routing_entry)
@@ -592,7 +556,7 @@ class IntelligentAgentRouter:
             if len(data["routing_decisions"]) > 100:
                 data["routing_decisions"] = data["routing_decisions"][-100:]
 
-            with open(self.history_file, 'w', encoding='utf-8') as f:
+            with open(self.history_file, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
 
         except Exception as e:
@@ -601,17 +565,13 @@ class IntelligentAgentRouter:
     def get_routing_statistics(self) -> Dict[str, Any]:
         """Get routing statistics and performance metrics."""
         try:
-            with open(self.history_file, 'r', encoding='utf-8') as f:
+            with open(self.history_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             decisions = data["routing_decisions"]
 
             if not decisions:
-                return {
-                    "total_routes": 0,
-                    "average_confidence": 0.0,
-                    "most_used_agent": None
-                }
+                return {"total_routes": 0, "average_confidence": 0.0, "most_used_agent": None}
 
             # Calculate statistics
             total_routes = len(decisions)
@@ -637,7 +597,7 @@ class IntelligentAgentRouter:
                 "most_used_agent": most_used[0] if most_used else None,
                 "most_used_count": most_used[1] if most_used else 0,
                 "agent_usage_distribution": dict(agent_counts),
-                "agent_success_rates": agent_success_rates
+                "agent_success_rates": agent_success_rates,
             }
 
         except Exception as e:
@@ -649,12 +609,12 @@ def main():
     """Command-line interface for testing intelligent agent router."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Intelligent Agent Router')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--task-type', default='refactoring', help='Task type')
-    parser.add_argument('--tier', choices=['analysis', 'execution'], default='analysis', help='Tier')
-    parser.add_argument('--stats', action='store_true', help='Show statistics')
-    parser.add_argument('--test', action='store_true', help='Test routing')
+    parser = argparse.ArgumentParser(description="Intelligent Agent Router")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--task-type", default="refactoring", help="Task type")
+    parser.add_argument("--tier", choices=["analysis", "execution"], default="analysis", help="Tier")
+    parser.add_argument("--stats", action="store_true", help="Show statistics")
+    parser.add_argument("--test", action="store_true", help="Test routing")
 
     args = parser.parse_args()
 
@@ -668,11 +628,7 @@ def main():
         print(f"  Most Used Agent: {stats.get('most_used_agent', 'None')} ({stats.get('most_used_count', 0)} times)")
 
     elif args.test:
-        task_info = {
-            "type": args.task_type,
-            "complexity": "medium",
-            "description": f"Test {args.task_type} task"
-        }
+        task_info = {"type": args.task_type, "complexity": "medium", "description": f"Test {args.task_type} task"}
 
         decision = router.route_task(task_info, args.tier)
 
@@ -683,12 +639,12 @@ def main():
         print(f"Estimated Quality: {decision['estimated_quality']}/100")
         print(f"Reasoning: {decision['reasoning']}")
 
-        if decision['supporting_agents']:
+        if decision["supporting_agents"]:
             print(f"Supporting Agents: {', '.join(decision['supporting_agents'])}")
 
-        if decision['alternatives']:
+        if decision["alternatives"]:
             print(f"\nAlternatives:")
-            for i, alt in enumerate(decision['alternatives'], 1):
+            for i, alt in enumerate(decision["alternatives"], 1):
                 print(f"  {i}. {alt['agent']} ({alt['score'] * 100:.1f}% confidence)")
 
     else:
@@ -696,5 +652,5 @@ def main():
         print("Use --stats to see statistics or --test to run routing test")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

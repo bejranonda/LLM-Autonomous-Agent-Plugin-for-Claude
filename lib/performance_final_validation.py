@@ -9,6 +9,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+
 def run_final_performance_validation():
     """Run final comprehensive performance validation"""
     print("FINAL PERFORMANCE VALIDATION")
@@ -21,7 +22,7 @@ def run_final_performance_validation():
     # Load the comprehensive test results
     results_file = Path(".claude-patterns/performance_test_results_20251110_214709.json")
     if results_file.exists():
-        with open(results_file, 'r') as f:
+        with open(results_file, "r") as f:
             test_results = json.load(f)
 
         print("COMPREHENSIVE PERFORMANCE TEST RESULTS")
@@ -59,7 +60,7 @@ def run_final_performance_validation():
     integration_files = list(Path(".claude-patterns").glob("performance_integration_report_*.json"))
     if integration_files:
         latest_file = max(integration_files, key=lambda p: p.stat().st_mtime)
-        with open(latest_file, 'r') as f:
+        with open(latest_file, "r") as f:
             integration_results = json.load(f)
 
         print("REAL-TIME MONITORING VALIDATION")
@@ -92,7 +93,7 @@ def run_final_performance_validation():
     # Load plugin version
     plugin_version = "unknown"
     try:
-        with open(".claude-plugin/plugin.json", 'r') as f:
+        with open(".claude-plugin/plugin.json", "r") as f:
             plugin_data = json.load(f)
             plugin_version = plugin_data.get("version", "unknown")
     except:
@@ -105,23 +106,23 @@ def run_final_performance_validation():
         "performance_score": 100,
         "production_ready": True,
         "key_metrics": {
-            "command_success_rate": overall_success if 'overall_success' in locals() else 100,
+            "command_success_rate": overall_success if "overall_success" in locals() else 100,
             "memory_efficiency": "Excellent",
             "scalability_rating": "Excellent",
             "memory_leak_status": "Clean",
-            "monitoring_status": "Active"
+            "monitoring_status": "Active",
         },
         "recommendations": [],
-        "next_review": datetime.fromtimestamp(time.time() + 30*24*3600).isoformat()[:10]  # 30 days
+        "next_review": datetime.fromtimestamp(time.time() + 30 * 24 * 3600).isoformat()[:10],  # 30 days
     }
 
     # Add specific recommendations based on test results
     recommendations = []
 
-    if 'overall_success' in locals() and overall_success < 95:
+    if "overall_success" in locals() and overall_success < 95:
         recommendations.append("Investigate failed commands and improve error handling")
 
-    if 'memory_growth_leak' in locals() and memory_growth_leak > 10:
+    if "memory_growth_leak" in locals() and memory_growth_leak > 10:
         recommendations.append("Monitor memory usage for potential leaks")
 
     if integration_files and total_samples < 50:
@@ -134,7 +135,7 @@ def run_final_performance_validation():
 
     # Save certification
     cert_file = Path(".claude-patterns/performance_certification.json")
-    with open(cert_file, 'w') as f:
+    with open(cert_file, "w") as f:
         json.dump(certification, f, indent=2)
 
     print(f"Plugin Version: {certification['plugin_version']}")
@@ -160,6 +161,7 @@ def run_final_performance_validation():
 
     return certification
 
+
 def main():
     """Main execution"""
     try:
@@ -174,8 +176,10 @@ def main():
     except Exception as e:
         print(f"Final validation failed: {e}")
         import traceback
+
         traceback.print_exc()
         return False
+
 
 if __name__ == "__main__":
     success = main()

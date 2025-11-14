@@ -58,11 +58,11 @@ class RecommendationEngine:
                 "original": "",
                 "domain": "general",
                 "urgency": "normal",
-                "specificity_score": 0
+                "specificity_score": 0,
             }
 
         # Extract keywords and normalize
-        keywords = re.findall(r'\b\w+\b', task_description.lower())
+        keywords = re.findall(r"\b\w+\b", task_description.lower())
 
         # Enhanced task type classification with scoring
         task_type_scores = {
@@ -77,7 +77,7 @@ class RecommendationEngine:
             "api": ["api", "endpoint", "rest", "graphql", "service", "controller", "route"],
             "ui-frontend": ["ui", "frontend", "component", "interface", "user", "design", "css"],
             "deployment": ["deploy", "deployment", "production", "staging", "release", "ci/cd"],
-            "analysis": ["analyze", "analysis", "review", "audit", "investigate", "research"]
+            "analysis": ["analyze", "analysis", "review", "audit", "investigate", "research"],
         }
 
         # Score each task type
@@ -101,23 +101,19 @@ class RecommendationEngine:
             "high": {
                 "keywords": ["implement", "create", "build", "architecture", "system", "complex", "multiple"],
                 "patterns": [r"\b(from\s+scratch|new\s+system|complete\s+rewrite|architecture)\b"],
-                "weight": 3
+                "weight": 3,
             },
             "medium-high": {
                 "keywords": ["integrate", "migrate", "refactor", "optimize", "enhance"],
                 "patterns": [r"\b(significant|major|substantial)\b"],
-                "weight": 2
+                "weight": 2,
             },
-            "medium": {
-                "keywords": ["update", "modify", "improve", "add", "extend"],
-                "patterns": [],
-                "weight": 1
-            },
+            "medium": {"keywords": ["update", "modify", "improve", "add", "extend"], "patterns": [], "weight": 1},
             "low": {
                 "keywords": ["fix", "simple", "minor", "quick", "small", "trivial"],
                 "patterns": [r"\b(just|simply|only|quick\s+fix)\b"],
-                "weight": 0.5
-            }
+                "weight": 0.5,
+            },
         }
 
         complexity_score = 1  # Default to medium
@@ -142,7 +138,7 @@ class RecommendationEngine:
             "mobile": ["mobile", "ios", "android", "app", "react-native", "flutter"],
             "data": ["data", "analytics", "ml", "ai", "machine learning", "statistics"],
             "devops": ["deploy", "ci", "cd", "docker", "kubernetes", "infrastructure"],
-            "security": ["security", "auth", "encryption", "vulnerability", "penetration"]
+            "security": ["security", "auth", "encryption", "vulnerability", "penetration"],
         }
 
         domain = "general"
@@ -156,7 +152,7 @@ class RecommendationEngine:
             "urgent": ["urgent", "critical", "asap", "immediately", "emergency", "blocking"],
             "high": ["high", "priority", "soon", "quickly"],
             "normal": [],  # default
-            "low": ["low", "when", "time", "eventually", "sometime"]
+            "low": ["low", "when", "time", "eventually", "sometime"],
         }
 
         urgency = "normal"
@@ -183,7 +179,7 @@ class RecommendationEngine:
             "domain": domain,
             "urgency": urgency,
             "specificity_score": round(specificity_score, 2),
-            "confidence_scores": type_scores
+            "confidence_scores": type_scores,
         }
 
     def get_pattern_recommendations(self, task_analysis: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -198,9 +194,7 @@ class RecommendationEngine:
         """
         # Search for similar patterns
         patterns = self.storage.get_similar_patterns(
-            task_type=task_analysis["type"],
-            context={"keywords": task_analysis["keywords"]},
-            limit=5
+            task_type=task_analysis["type"], context={"keywords": task_analysis["keywords"]}, limit=5
         )
 
         recommendations = []
@@ -208,16 +202,18 @@ class RecommendationEngine:
             # Calculate recommendation score
             score = self._calculate_recommendation_score(pattern, task_analysis)
 
-            recommendations.append({
-                "pattern_id": pattern.get("id", "unknown"),
-                "quality_score": pattern.get("quality_score", 0),
-                "success_rate": pattern.get("success_rate", 0),
-                "skills_used": pattern.get("skills_used", []),
-                "agents_delegated": pattern.get("agents_delegated", []),
-                "execution_time": pattern.get("execution_time", 0),
-                "recommendation_score": score,
-                "reuse_count": pattern.get("reuse_count", 0)
-            })
+            recommendations.append(
+                {
+                    "pattern_id": pattern.get("id", "unknown"),
+                    "quality_score": pattern.get("quality_score", 0),
+                    "success_rate": pattern.get("success_rate", 0),
+                    "skills_used": pattern.get("skills_used", []),
+                    "agents_delegated": pattern.get("agents_delegated", []),
+                    "execution_time": pattern.get("execution_time", 0),
+                    "recommendation_score": score,
+                    "reuse_count": pattern.get("reuse_count", 0),
+                }
+            )
 
         # Sort by recommendation score
         recommendations.sort(key=lambda x: x["recommendation_score"], reverse=True)
@@ -253,7 +249,10 @@ class RecommendationEngine:
 
         return score
 
-    def generate_intelligent_skill_recommendations(self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def generate_intelligent_skill_recommendations(
+        self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]]
+    )-> Dict[str, Any]:
+        """Generate Intelligent Skill Recommendations."""
         """
         Generate intelligent skill recommendations based on task analysis and patterns.
 
@@ -274,53 +273,53 @@ class RecommendationEngine:
             "security-authentication": {
                 "core": ["security-patterns", "code-analysis", "testing-strategies"],
                 "enhanced": ["quality-standards", "pattern-learning"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "feature-implementation": {
                 "core": ["code-analysis", "pattern-learning", "quality-standards"],
                 "enhanced": ["testing-strategies", "documentation-best-practices"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "bugfix": {
                 "core": ["code-analysis", "testing-strategies", "quality-standards"],
                 "enhanced": ["pattern-learning"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "refactoring": {
                 "core": ["code-analysis", "quality-standards", "pattern-learning"],
                 "enhanced": ["testing-strategies"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "testing": {
                 "core": ["testing-strategies", "code-analysis"],
                 "enhanced": ["quality-standards", "pattern-learning"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "performance": {
                 "core": ["performance-scaling", "code-analysis", "pattern-learning"],
                 "enhanced": ["quality-standards"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "api": {
                 "core": ["code-analysis", "quality-standards", "testing-strategies"],
                 "enhanced": ["pattern-learning"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "database": {
                 "core": ["code-analysis", "quality-standards"],
                 "enhanced": ["pattern-learning", "testing-strategies"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "ui-frontend": {
                 "core": ["code-analysis", "quality-standards"],
                 "enhanced": ["pattern-learning", "testing-strategies"],
-                "domain_specific": []
+                "domain_specific": [],
             },
             "deployment": {
                 "core": ["quality-standards", "code-analysis"],
                 "enhanced": ["pattern-learning", "testing-strategies"],
-                "domain_specific": []
-            }
+                "domain_specific": [],
+            },
         }
 
         # Domain-specific skill additions
@@ -329,7 +328,7 @@ class RecommendationEngine:
             "mobile": ["mobile-validation", "testing-strategies"],
             "data": ["data-validation", "performance-scaling"],
             "devops": ["deployment-validation", "quality-standards"],
-            "security": ["security-patterns", "testing-strategies"]
+            "security": ["security-patterns", "testing-strategies"],
         }
 
         # Get base skills for task type
@@ -338,41 +337,44 @@ class RecommendationEngine:
 
         # Add core skills
         for skill in base_skills["core"]:
-            recommended_skills.append({
-                "skill": skill,
-                "priority": "HIGH",
-                "reasoning": f"Core skill for {task_type} tasks",
-                "confidence": 90
-            })
+            recommended_skills.append(
+                {"skill": skill, "priority": "HIGH", "reasoning": f"Core skill for {task_type} tasks", "confidence": 90}
+            )
 
         # Add enhanced skills based on complexity
         if complexity in ["high", "medium-high"]:
             for skill in base_skills["enhanced"]:
-                recommended_skills.append({
-                    "skill": skill,
-                    "priority": "MEDIUM",
-                    "reasoning": f"Enhanced skill for high-complexity {task_type}",
-                    "confidence": 80
-                })
+                recommended_skills.append(
+                    {
+                        "skill": skill,
+                        "priority": "MEDIUM",
+                        "reasoning": f"Enhanced skill for high-complexity {task_type}",
+                        "confidence": 80,
+                    }
+                )
 
         # Add domain-specific skills
         if domain in domain_skills:
             for skill in domain_skills[domain]:
-                recommended_skills.append({
-                    "skill": skill,
-                    "priority": "MEDIUM",
-                    "reasoning": f"Domain-specific skill for {domain} projects",
-                    "confidence": 75
-                })
+                recommended_skills.append(
+                    {
+                        "skill": skill,
+                        "priority": "MEDIUM",
+                        "reasoning": f"Domain-specific skill for {domain} projects",
+                        "confidence": 75,
+                    }
+                )
 
         # Add urgency-based skills
         if urgency in ["urgent", "high"]:
-            recommended_skills.append({
-                "skill": "validation-standards",
-                "priority": "HIGH",
-                "reasoning": "Critical for urgent tasks to prevent regressions",
-                "confidence": 85
-            })
+            recommended_skills.append(
+                {
+                    "skill": "validation-standards",
+                    "priority": "HIGH",
+                    "reasoning": "Critical for urgent tasks to prevent regressions",
+                    "confidence": 85,
+                }
+            )
 
         # Incorporate pattern-based insights
         if pattern_recommendations:
@@ -400,12 +402,14 @@ class RecommendationEngine:
         for pattern in pattern_recommendations:
             for skill in pattern["skills_used"]:
                 if skill not in all_base_skills and pattern["success_rate"] >= 80:
-                    recommended_skills.append({
-                        "skill": skill,
-                        "priority": "LOW",
-                        "reasoning": f"Skill from successful pattern (quality: {pattern['quality_score']})",
-                        "confidence": 70
-                    })
+                    recommended_skills.append(
+                        {
+                            "skill": skill,
+                            "priority": "LOW",
+                            "reasoning": f"Skill from successful pattern (quality: {pattern['quality_score']})",
+                            "confidence": 70,
+                        }
+                    )
 
         # Sort by priority and confidence
         priority_order = {"HIGH": 3, "MEDIUM": 2, "LOW": 1}
@@ -420,17 +424,27 @@ class RecommendationEngine:
             "high_priority": len([s for s in recommended_skills if s["priority"] == "HIGH"]),
             "medium_priority": len([s for s in recommended_skills if s["priority"] == "MEDIUM"]),
             "low_priority": len([s for s in recommended_skills if s["priority"] == "LOW"]),
-            "avg_confidence": round(sum(s["confidence"] for s in recommended_skills) / len(recommended_skills), 1) if recommended_skills else 0,
-            "pattern_informed": len(pattern_recommendations) > 0
+            "avg_confidence": (
+                round(sum(s["confidence"] for s in recommended_skills) / len(recommended_skills), 1)
+                if recommended_skills
+                else 0
+            ),
+            "pattern_informed": len(pattern_recommendations) > 0,
         }
 
         return {
             "skills": recommended_skills,
             "summary": summary,
-            "reasoning": f"Based on {task_type} task with {complexity} complexity in {domain} domain"
+            "reasoning": f"Based on {task_type} task with {complexity} complexity in {domain} domain",
         }
 
-    def assess_enhanced_risks(self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]], skill_recommendations: Dict[str, Any]) -> Dict[str, Any]:
+    def assess_enhanced_risks(
+        self,
+        task_analysis: Dict[str, Any],
+        pattern_recommendations: List[Dict[str, Any]],
+        skill_recommendations: Dict[str, Any],
+    )-> Dict[str, Any]:
+        """Assess Enhanced Risks."""
         """
         Enhanced risk assessment with comprehensive analysis.
 
@@ -454,143 +468,165 @@ class RecommendationEngine:
 
         # 1. COMPLEXITY RISKS
         if complexity == "high":
-            risks.append({
-                "category": "COMPLEXITY",
-                "level": "HIGH",
-                "description": "High complexity task with multiple interdependencies",
-                "impact": "May require 2-3x more time than estimated",
-                "mitigation": "Break into 3-5 smaller, manageable sub-tasks",
-                "time_adjustment": "+15-25 minutes",
-                "quality_adjustment": "-5-8 points"
-            })
+            risks.append(
+                {
+                    "category": "COMPLEXITY",
+                    "level": "HIGH",
+                    "description": "High complexity task with multiple interdependencies",
+                    "impact": "May require 2-3x more time than estimated",
+                    "mitigation": "Break into 3-5 smaller, manageable sub-tasks",
+                    "time_adjustment": "+15-25 minutes",
+                    "quality_adjustment": "-5-8 points",
+                }
+            )
             risk_score += 35
             mitigations.append("Create sub-task breakdown before starting")
         elif complexity == "medium-high":
-            risks.append({
-                "category": "COMPLEXITY",
-                "level": "MEDIUM",
-                "description": "Medium-high complexity with some challenges",
-                "impact": "May require additional testing and validation",
-                "mitigation": "Plan extra validation steps",
-                "time_adjustment": "+8-12 minutes",
-                "quality_adjustment": "-3-5 points"
-            })
+            risks.append(
+                {
+                    "category": "COMPLEXITY",
+                    "level": "MEDIUM",
+                    "description": "Medium-high complexity with some challenges",
+                    "impact": "May require additional testing and validation",
+                    "mitigation": "Plan extra validation steps",
+                    "time_adjustment": "+8-12 minutes",
+                    "quality_adjustment": "-3-5 points",
+                }
+            )
             risk_score += 20
             mitigations.append("Add comprehensive testing")
 
         # 2. PATTERN DATA RISKS
         if not pattern_recommendations:
-            risks.append({
-                "category": "KNOWLEDGE",
-                "level": "HIGH",
-                "description": "No similar patterns found in learning database",
-                "impact": "No historical guidance available",
-                "mitigation": "Use comprehensive approach with all recommended skills",
-                "time_adjustment": "+10-15 minutes",
-                "quality_adjustment": "-5-7 points"
-            })
+            risks.append(
+                {
+                    "category": "KNOWLEDGE",
+                    "level": "HIGH",
+                    "description": "No similar patterns found in learning database",
+                    "impact": "No historical guidance available",
+                    "mitigation": "Use comprehensive approach with all recommended skills",
+                    "time_adjustment": "+10-15 minutes",
+                    "quality_adjustment": "-5-7 points",
+                }
+            )
             risk_score += 40
             mitigations.append("Proceed with full skill set and extra validation")
         elif len(pattern_recommendations) < 2:
-            risks.append({
-                "category": "KNOWLEDGE",
-                "level": "MEDIUM",
-                "description": "Limited pattern data available",
-                "impact": "Lower confidence in recommendations",
-                "mitigation": "Validate results frequently during execution",
-                "time_adjustment": "+5-8 minutes",
-                "quality_adjustment": "-2-4 points"
-            })
+            risks.append(
+                {
+                    "category": "KNOWLEDGE",
+                    "level": "MEDIUM",
+                    "description": "Limited pattern data available",
+                    "impact": "Lower confidence in recommendations",
+                    "mitigation": "Validate results frequently during execution",
+                    "time_adjustment": "+5-8 minutes",
+                    "quality_adjustment": "-2-4 points",
+                }
+            )
             risk_score += 25
             mitigations.append("Frequent validation checkpoints")
 
         # 3. TASK TYPE-SPECIFIC RISKS
         if task_type == "security-authentication":
-            risks.append({
-                "category": "SECURITY",
-                "level": "HIGH",
-                "description": "Security-critical authentication implementation",
-                "impact": "Security vulnerabilities could have severe consequences",
-                "mitigation": "Use security-patterns skill, conduct thorough testing",
-                "time_adjustment": "+12-18 minutes",
-                "quality_adjustment": "N/A (security threshold is absolute)"
-            })
+            risks.append(
+                {
+                    "category": "SECURITY",
+                    "level": "HIGH",
+                    "description": "Security-critical authentication implementation",
+                    "impact": "Security vulnerabilities could have severe consequences",
+                    "mitigation": "Use security-patterns skill, conduct thorough testing",
+                    "time_adjustment": "+12-18 minutes",
+                    "quality_adjustment": "N/A (security threshold is absolute)",
+                }
+            )
             risk_score += 30
             mitigations.append("Mandatory security review before deployment")
         elif task_type == "performance":
-            risks.append({
-                "category": "PERFORMANCE",
-                "level": "MEDIUM",
-                "description": "Performance optimization may have unintended side effects",
-                "impact": "Could introduce new bugs or regressions",
-                "mitigation": "Benchmark before and after, comprehensive regression testing",
-                "time_adjustment": "+10-15 minutes",
-                "quality_adjustment": "-3-5 points if not tested"
-            })
+            risks.append(
+                {
+                    "category": "PERFORMANCE",
+                    "level": "MEDIUM",
+                    "description": "Performance optimization may have unintended side effects",
+                    "impact": "Could introduce new bugs or regressions",
+                    "mitigation": "Benchmark before and after, comprehensive regression testing",
+                    "time_adjustment": "+10-15 minutes",
+                    "quality_adjustment": "-3-5 points if not tested",
+                }
+            )
             risk_score += 20
             mitigations.append("Performance benchmarking and regression testing")
         elif task_type == "database":
-            risks.append({
-                "category": "DATA_INTEGRITY",
-                "level": "HIGH",
-                "description": "Database changes risk data corruption or loss",
-                "impact": "Potential data loss or corruption",
-                "mitigation": "Backup data, test on non-production environment first",
-                "time_adjustment": "+15-20 minutes",
-                "quality_adjustment": "Critical - must ensure data integrity"
-            })
+            risks.append(
+                {
+                    "category": "DATA_INTEGRITY",
+                    "level": "HIGH",
+                    "description": "Database changes risk data corruption or loss",
+                    "impact": "Potential data loss or corruption",
+                    "mitigation": "Backup data, test on non-production environment first",
+                    "time_adjustment": "+15-20 minutes",
+                    "quality_adjustment": "Critical - must ensure data integrity",
+                }
+            )
             risk_score += 35
             mitigations.append("Database backup and isolated testing environment")
 
         # 4. URGENCY RISKS
         if urgency == "urgent":
-            risks.append({
-                "category": "TIME_PRESSURE",
-                "level": "HIGH",
-                "description": "Urgent timeline increases risk of errors",
-                "impact": "Higher likelihood of mistakes or oversights",
-                "mitigation": "Prioritize critical testing, consider phased approach",
-                "time_adjustment": "Time pressure already accounted for",
-                "quality_adjustment": "-8-12 points"
-            })
+            risks.append(
+                {
+                    "category": "TIME_PRESSURE",
+                    "level": "HIGH",
+                    "description": "Urgent timeline increases risk of errors",
+                    "impact": "Higher likelihood of mistakes or oversights",
+                    "mitigation": "Prioritize critical testing, consider phased approach",
+                    "time_adjustment": "Time pressure already accounted for",
+                    "quality_adjustment": "-8-12 points",
+                }
+            )
             risk_score += 30
             mitigations.append("Focus on critical path testing only")
         elif urgency == "high":
-            risks.append({
-                "category": "TIME_PRESSURE",
-                "level": "MEDIUM",
-                "description": "High priority may require compromises",
-                "impact": "May need to skip some validation steps",
-                "mitigation": "Maintain essential quality gates",
-                "time_adjustment": "+5 minutes",
-                "quality_adjustment": "-4-6 points"
-            })
+            risks.append(
+                {
+                    "category": "TIME_PRESSURE",
+                    "level": "MEDIUM",
+                    "description": "High priority may require compromises",
+                    "impact": "May need to skip some validation steps",
+                    "mitigation": "Maintain essential quality gates",
+                    "time_adjustment": "+5 minutes",
+                    "quality_adjustment": "-4-6 points",
+                }
+            )
             risk_score += 15
             mitigations.append("Maintain minimum quality standards")
 
         # 5. SPECIFICITY RISKS
         if specificity < 0.3:
-            risks.append({
-                "category": "CLARITY",
-                "level": "HIGH",
-                "description": "Vague task description may lead to scope creep",
-                "impact": "Task may expand beyond initial scope",
-                "mitigation": "Clarify requirements before starting, define acceptance criteria",
-                "time_adjustment": "+8-12 minutes for clarification",
-                "quality_adjustment": "-5-7 points"
-            })
+            risks.append(
+                {
+                    "category": "CLARITY",
+                    "level": "HIGH",
+                    "description": "Vague task description may lead to scope creep",
+                    "impact": "Task may expand beyond initial scope",
+                    "mitigation": "Clarify requirements before starting, define acceptance criteria",
+                    "time_adjustment": "+8-12 minutes for clarification",
+                    "quality_adjustment": "-5-7 points",
+                }
+            )
             risk_score += 25
             mitigations.append("Requirements clarification before implementation")
         elif specificity < 0.6:
-            risks.append({
-                "category": "CLARITY",
-                "level": "MEDIUM",
-                "description": "Some ambiguity in task requirements",
-                "impact": "May need clarification during implementation",
-                "mitigation": "Define specific success criteria",
-                "time_adjustment": "+3-5 minutes",
-                "quality_adjustment": "-2-4 points"
-            })
+            risks.append(
+                {
+                    "category": "CLARITY",
+                    "level": "MEDIUM",
+                    "description": "Some ambiguity in task requirements",
+                    "impact": "May need clarification during implementation",
+                    "mitigation": "Define specific success criteria",
+                    "time_adjustment": "+3-5 minutes",
+                    "quality_adjustment": "-2-4 points",
+                }
+            )
             risk_score += 15
             mitigations.append("Define clear success criteria")
 
@@ -600,42 +636,46 @@ class RecommendationEngine:
                 "level": "HIGH",
                 "description": "Security domain requires extra validation",
                 "mitigation": "Security audit, penetration testing if critical",
-                "time_adjustment": "+10-15 minutes"
+                "time_adjustment": "+10-15 minutes",
             },
             "devops": {
                 "level": "MEDIUM",
                 "description": "DevOps changes affect production infrastructure",
                 "mitigation": "Staging environment testing, rollback plan",
-                "time_adjustment": "+8-12 minutes"
-            }
+                "time_adjustment": "+8-12 minutes",
+            },
         }
 
         if domain in domain_risks:
             domain_risk = domain_risks[domain]
-            risks.append({
-                "category": "DOMAIN",
-                "level": domain_risk["level"],
-                "description": domain_risk["description"],
-                "impact": "Domain-specific considerations required",
-                "mitigation": domain_risk["mitigation"],
-                "time_adjustment": domain_risk["time_adjustment"],
-                "quality_adjustment": "-3-5 points"
-            })
+            risks.append(
+                {
+                    "category": "DOMAIN",
+                    "level": domain_risk["level"],
+                    "description": domain_risk["description"],
+                    "impact": "Domain-specific considerations required",
+                    "mitigation": domain_risk["mitigation"],
+                    "time_adjustment": domain_risk["time_adjustment"],
+                    "quality_adjustment": "-3-5 points",
+                }
+            )
             risk_score += 20 if domain_risk["level"] == "HIGH" else 10
             mitigations.append(domain_risk["mitigation"])
 
         # 7. SKILL AVAILABILITY RISKS
         skill_summary = skill_recommendations.get("summary", {})
         if skill_summary.get("avg_confidence", 0) < 75:
-            risks.append({
-                "category": "RESOURCES",
-                "level": "MEDIUM",
-                "description": "Lower confidence in recommended skill effectiveness",
-                "impact": "Skills may not perform as expected",
-                "mitigation": "Monitor skill performance closely, have alternatives ready",
-                "time_adjustment": "+5-8 minutes",
-                "quality_adjustment": "-4-6 points"
-            })
+            risks.append(
+                {
+                    "category": "RESOURCES",
+                    "level": "MEDIUM",
+                    "description": "Lower confidence in recommended skill effectiveness",
+                    "impact": "Skills may not perform as expected",
+                    "mitigation": "Monitor skill performance closely, have alternatives ready",
+                    "time_adjustment": "+5-8 minutes",
+                    "quality_adjustment": "-4-6 points",
+                }
+            )
             risk_score += 15
             mitigations.append("Monitor skill effectiveness and adjust as needed")
 
@@ -654,8 +694,16 @@ class RecommendationEngine:
             color = "GREEN"
 
         # Calculate adjusted estimates
-        total_time_adjustment = sum(int(r.get("time_adjustment", "0").split("+")[-1].split("-")[0]) for r in risks if "+" in r.get("time_adjustment", ""))
-        quality_impact = sum(int(r.get("quality_adjustment", "0").split("-")[-1].split(" ")[0]) for r in risks if "-" in r.get("quality_adjustment", ""))
+        total_time_adjustment = sum(
+            int(r.get("time_adjustment", "0").split("+")[-1].split("-")[0])
+            for r in risks
+            if "+" in r.get("time_adjustment", "")
+        )
+        quality_impact = sum(
+            int(r.get("quality_adjustment", "0").split("-")[-1].split(" ")[0])
+            for r in risks
+            if "-" in r.get("quality_adjustment", "")
+        )
 
         return {
             "overall_level": risk_level,
@@ -663,16 +711,15 @@ class RecommendationEngine:
             "color_indicator": color,
             "total_risks": len(risks),
             "risks_by_category": {
-                category: [r for r in risks if r["category"] == category]
-                for category in set(r["category"] for r in risks)
+                category: [r for r in risks if r["category"] == category] for category in set(r["category"] for r in risks)
             },
             "detailed_risks": risks,
             "primary_mitigations": mitigations[:5],  # Top 5 mitigations
             "estimated_impact": {
                 "time_adjustment": f"+{total_time_adjustment} minutes",
-                "quality_adjustment": f"-{quality_impact} points" if quality_impact > 0 else "No impact"
+                "quality_adjustment": f"-{quality_impact} points" if quality_impact > 0 else "No impact",
             },
-            "risk_summary": f"{risk_level} risk ({risk_score}/100) with {len(risks)} identified risk factors"
+            "risk_summary": f"{risk_level} risk ({risk_score}/100) with {len(risks)} identified risk factors",
         }
 
     def generate_enhanced_recommendations(self, task_description: str = "") -> Dict[str, Any]:
@@ -713,29 +760,28 @@ class RecommendationEngine:
                 "skills": skill_recommendations["skills"][:5],  # Top 5 skills
                 "predictions": predictions,
                 "confidence": overall_confidence,
-                "reasoning": skill_recommendations.get("reasoning", "Based on task analysis")
+                "reasoning": skill_recommendations.get("reasoning", "Based on task analysis"),
             },
             "skill_recommendations": skill_recommendations,
             "risk_assessment": risk_assessment,
             "pattern_insights": {
                 "similar_patterns_found": len(pattern_recommendations),
                 "best_pattern_quality": max([p["quality_score"] for p in pattern_recommendations], default=0),
-                "avg_success_rate": round(sum([p["success_rate"] for p in pattern_recommendations]) / len(pattern_recommendations), 1) if pattern_recommendations else 0
+                "avg_success_rate": (
+                    round(sum([p["success_rate"] for p in pattern_recommendations]) / len(pattern_recommendations), 1)
+                    if pattern_recommendations
+                    else 0
+                ),
             },
             "alternatives": alternatives,
             "action_plan": self._generate_action_plan(task_analysis, skill_recommendations, risk_assessment),
-            "generated_at": datetime.now().isoformat()
+            "generated_at": datetime.now().isoformat(),
         }
 
     def _generate_predictions(self, recommendations: List[Dict[str, Any]], risks: Dict[str, Any]) -> Dict[str, Any]:
         """Generate quality and time predictions."""
         if not recommendations:
-            return {
-                "quality_score": 75,
-                "confidence": 50,
-                "estimated_time": "15-20 minutes",
-                "success_probability": 70
-            }
+            return {"quality_score": 75, "confidence": 50, "estimated_time": "15-20 minutes", "success_probability": 70}
 
         # Use top recommendation as baseline
         top_rec = recommendations[0]
@@ -762,10 +808,13 @@ class RecommendationEngine:
             "quality_score": round(adjusted_quality, 1),
             "confidence": round(confidence, 1),
             "estimated_time": f"{adjusted_time}-{int(adjusted_time * 1.2)} minutes",
-            "success_probability": round(adjusted_quality * 0.9, 1)
+            "success_probability": round(adjusted_quality * 0.9, 1),
         }
 
-    def _generate_enhanced_predictions(self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]) -> Dict[str, Any]:
+    def _generate_enhanced_predictions(
+        self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]
+    )-> Dict[str, Any]:
+        """ Generate Enhanced Predictions."""
         """Generate enhanced quality and time predictions."""
         complexity = task_analysis["complexity"]
         urgency = task_analysis["urgency"]
@@ -775,7 +824,7 @@ class RecommendationEngine:
             "high": {"quality": 85, "time": 30, "confidence": 75},
             "medium-high": {"quality": 82, "time": 22, "confidence": 78},
             "medium": {"quality": 80, "time": 18, "confidence": 82},
-            "low": {"quality": 88, "time": 12, "confidence": 85}
+            "low": {"quality": 88, "time": 12, "confidence": 85},
         }
 
         base = base_predictions.get(complexity, base_predictions["medium"])
@@ -788,8 +837,16 @@ class RecommendationEngine:
 
         # Adjust for risk
         risk_impact = risk_assessment.get("estimated_impact", {})
-        quality_adjustment = int(risk_impact.get("quality_adjustment", "0").replace(" points", "").replace("-", "")) if "points" in risk_impact.get("quality_adjustment", "") else 0
-        time_adjustment = int(risk_impact.get("time_adjustment", "0").replace(" minutes", "").replace("+", "")) if "minutes" in risk_impact.get("time_adjustment", "") else 0
+        quality_adjustment = (
+            int(risk_impact.get("quality_adjustment", "0").replace(" points", "").replace("-", ""))
+            if "points" in risk_impact.get("quality_adjustment", "")
+            else 0
+        )
+        time_adjustment = (
+            int(risk_impact.get("time_adjustment", "0").replace(" minutes", "").replace("+", ""))
+            if "minutes" in risk_impact.get("time_adjustment", "")
+            else 0
+        )
 
         # Adjust for urgency
         urgency_adjustment = {"urgent": -10, "high": -5, "normal": 0, "low": 5}
@@ -805,55 +862,67 @@ class RecommendationEngine:
             "estimated_time": f"{final_time}-{int(final_time * 1.3)} minutes",
             "confidence": round(final_confidence, 1),
             "success_probability": round(final_quality * 0.92, 1),
-            "risk_adjusted": True
+            "risk_adjusted": True,
         }
 
-    def _generate_actionable_alternatives(self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def _generate_actionable_alternatives(
+        self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]
+    )-> List[Dict[str, Any]]:
+        """ Generate Actionable Alternatives."""
         """Generate actionable alternative approaches."""
         alternatives = []
         risk_level = risk_assessment.get("overall_level", "MEDIUM")
 
         # Fast approach
-        alternatives.append({
-            "name": "Fast Track",
-            "description": "Quick implementation with essential skills only",
-            "skills": [s["skill"] for s in skill_recommendations["skills"][:2]],  # Top 2 only
-            "time_impact": "-40% time",
-            "quality_impact": "-8-12 points",
-            "best_for": "When time is more critical than quality",
-            "confidence": max(60, skill_recommendations["summary"]["avg_confidence"] - 15),
-            "risks": "Higher chance of missing edge cases"
-        })
+        alternatives.append(
+            {
+                "name": "Fast Track",
+                "description": "Quick implementation with essential skills only",
+                "skills": [s["skill"] for s in skill_recommendations["skills"][:2]],  # Top 2 only
+                "time_impact": "-40% time",
+                "quality_impact": "-8-12 points",
+                "best_for": "When time is more critical than quality",
+                "confidence": max(60, skill_recommendations["summary"]["avg_confidence"] - 15),
+                "risks": "Higher chance of missing edge cases",
+            }
+        )
 
         # Comprehensive approach
         all_skills = [s["skill"] for s in skill_recommendations["skills"]]
-        alternatives.append({
-            "name": "Comprehensive",
-            "description": "Thorough implementation with all recommended skills and extra validation",
-            "skills": all_skills + ["quality-standards", "testing-strategies"],
-            "time_impact": "+60% time",
-            "quality_impact": "+8-15 points",
-            "best_for": "Critical production features",
-            "confidence": min(95, skill_recommendations["summary"]["avg_confidence"] + 10),
-            "risks": "May be overkill for simple tasks"
-        })
+        alternatives.append(
+            {
+                "name": "Comprehensive",
+                "description": "Thorough implementation with all recommended skills and extra validation",
+                "skills": all_skills + ["quality-standards", "testing-strategies"],
+                "time_impact": "+60% time",
+                "quality_impact": "+8-15 points",
+                "best_for": "Critical production features",
+                "confidence": min(95, skill_recommendations["summary"]["avg_confidence"] + 10),
+                "risks": "May be overkill for simple tasks",
+            }
+        )
 
         # Risk-focused approach
         if risk_level in ["HIGH", "CRITICAL"]:
-            alternatives.append({
-                "name": "Risk-Mitigated",
-                "description": "Prioritize risk reduction over speed",
-                "skills": [s["skill"] for s in skill_recommendations["skills"] if s["priority"] in ["HIGH", "MEDIUM"]],
-                "time_impact": "+25% time",
-                "quality_impact": "+5-8 points",
-                "best_for": "High-risk or security-critical tasks",
-                "confidence": min(92, skill_recommendations["summary"]["avg_confidence"] + 8),
-                "risks": "Slower but safer implementation"
-            })
+            alternatives.append(
+                {
+                    "name": "Risk-Mitigated",
+                    "description": "Prioritize risk reduction over speed",
+                    "skills": [s["skill"] for s in skill_recommendations["skills"] if s["priority"] in ["HIGH", "MEDIUM"]],
+                    "time_impact": "+25% time",
+                    "quality_impact": "+5-8 points",
+                    "best_for": "High-risk or security-critical tasks",
+                    "confidence": min(92, skill_recommendations["summary"]["avg_confidence"] + 8),
+                    "risks": "Slower but safer implementation",
+                }
+            )
 
         return alternatives
 
-    def _calculate_overall_confidence(self, pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]) -> Dict[str, Any]:
+    def _calculate_overall_confidence(
+        self, pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]
+    )-> Dict[str, Any]:
+        """ Calculate Overall Confidence."""
         """Calculate overall confidence in recommendations."""
         pattern_confidence = min(90, len(pattern_recommendations) * 20)  # Up to 90% from patterns
         risk_penalty = risk_assessment.get("overall_score", 0) * 0.3  # Penalty for risk
@@ -879,68 +948,81 @@ class RecommendationEngine:
             "score": round(final_confidence, 1),
             "level": level,
             "recommendation": recommendation,
-            "based_on": f"{len(pattern_recommendations)} patterns, {risk_assessment['total_risks']} risk factors"
+            "based_on": f"{len(pattern_recommendations)} patterns, {risk_assessment['total_risks']} risk factors",
         }
 
-    def _generate_action_plan(self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]) -> Dict[str, Any]:
+    def _generate_action_plan(
+        self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]
+    )-> Dict[str, Any]:
+        """ Generate Action Plan."""
         """Generate actionable next steps."""
         steps = []
 
         # Step 1: Preparation
         if task_analysis["specificity_score"] < 0.6:
-            steps.append({
-                "step": 1,
-                "action": "Clarify requirements",
-                "description": "Define specific success criteria and acceptance tests",
-                "estimated_time": "5-10 minutes",
-                "priority": "HIGH"
-            })
+            steps.append(
+                {
+                    "step": 1,
+                    "action": "Clarify requirements",
+                    "description": "Define specific success criteria and acceptance tests",
+                    "estimated_time": "5-10 minutes",
+                    "priority": "HIGH",
+                }
+            )
 
         # Step 2: Skill loading
         skills = [s for s in skill_recommendations["skills"] if s["priority"] == "HIGH"]
-        steps.append({
-            "step": len(steps) + 1,
-            "action": "Load core skills",
-            "description": f"Load essential skills: {', '.join([s['skill'] for s in skills[:3]])}",
-            "estimated_time": "1-2 minutes",
-            "priority": "HIGH"
-        })
+        steps.append(
+            {
+                "step": len(steps) + 1,
+                "action": "Load core skills",
+                "description": f"Load essential skills: {', '.join([s['skill'] for s in skills[:3]])}",
+                "estimated_time": "1-2 minutes",
+                "priority": "HIGH",
+            }
+        )
 
         # Step 3: Risk mitigation
         primary_mitigations = risk_assessment.get("primary_mitigations", [])
         if primary_mitigations:
-            steps.append({
-                "step": len(steps) + 1,
-                "action": "Implement risk mitigations",
-                "description": f"Focus on: {', '.join(primary_mitigations[:2])}",
-                "estimated_time": "3-8 minutes",
-                "priority": "HIGH" if risk_assessment.get("overall_level") in ["HIGH", "CRITICAL"] else "MEDIUM"
-            })
+            steps.append(
+                {
+                    "step": len(steps) + 1,
+                    "action": "Implement risk mitigations",
+                    "description": f"Focus on: {', '.join(primary_mitigations[:2])}",
+                    "estimated_time": "3-8 minutes",
+                    "priority": "HIGH" if risk_assessment.get("overall_level") in ["HIGH", "CRITICAL"] else "MEDIUM",
+                }
+            )
 
         # Step 4: Execution
-        steps.append({
-            "step": len(steps) + 1,
-            "action": "Execute task implementation",
-            "description": "Proceed with main implementation using recommended skills",
-            "estimated_time": "Primary execution time",
-            "priority": "HIGH"
-        })
+        steps.append(
+            {
+                "step": len(steps) + 1,
+                "action": "Execute task implementation",
+                "description": "Proceed with main implementation using recommended skills",
+                "estimated_time": "Primary execution time",
+                "priority": "HIGH",
+            }
+        )
 
         # Step 5: Validation
         if risk_assessment.get("overall_level") in ["HIGH", "CRITICAL"]:
-            steps.append({
-                "step": len(steps) + 1,
-                "action": "Comprehensive validation",
-                "description": "Thorough testing and quality checks",
-                "estimated_time": "5-10 minutes",
-                "priority": "HIGH"
-            })
+            steps.append(
+                {
+                    "step": len(steps) + 1,
+                    "action": "Comprehensive validation",
+                    "description": "Thorough testing and quality checks",
+                    "estimated_time": "5-10 minutes",
+                    "priority": "HIGH",
+                }
+            )
 
         return {
             "total_steps": len(steps),
             "estimated_total_time": "15-45 minutes",
             "steps": steps,
-            "critical_path": [s for s in steps if s["priority"] == "HIGH"]
+            "critical_path": [s for s in steps if s["priority"] == "HIGH"],
         }
 
     def format_enhanced_recommendations(self, recommendations: Dict[str, Any]) -> str:
@@ -962,8 +1044,12 @@ class RecommendationEngine:
 
         # Task Analysis
         output.append(f"Task: {task}")
-        output.append(f"Classification: {task_analysis['type']} | Complexity: {task_analysis['complexity'].upper()} | Domain: {task_analysis['domain']}")
-        output.append(f"Urgency: {task_analysis['urgency'].upper()} | Specificity: {int(task_analysis['specificity_score'] * 100)}%")
+        output.append(
+            f"Classification: {task_analysis['type']} | Complexity: {task_analysis['complexity'].upper()} | Domain: {task_analysis['domain']}"
+        )
+        output.append(
+            f"Urgency: {task_analysis['urgency'].upper()} | Specificity: {int(task_analysis['specificity_score'] * 100)}%"
+        )
         output.append("")
 
         # Primary Recommendation
@@ -1003,7 +1089,9 @@ class RecommendationEngine:
             output.append(f"    -> Mitigation: {risk['mitigation']}")
 
         if risks["estimated_impact"]["time_adjustment"] != "No impact":
-            output.append(f"  Impact: {risks['estimated_impact']['time_adjustment']}, {risks['estimated_impact']['quality_adjustment']}")
+            output.append(
+                f"  Impact: {risks['estimated_impact']['time_adjustment']}, {risks['estimated_impact']['quality_adjustment']}"
+            )
         output.append("")
 
         # Action Plan
@@ -1034,6 +1122,7 @@ class RecommendationEngine:
         output.append("=" * 70)
 
         return "\n".join(output)
+
 
 def main():
     """Enhanced command line interface."""
@@ -1083,14 +1172,18 @@ def format_recommendations_text(recs: Dict[str, Any]) -> str:
         top = recs["recommendations"][0]
         output.append("+- [RECOMMENDED] APPROACH ({}% confidence) -------------+".format(int(predictions["confidence"])))
         output.append("|                                                         |")
-        output.append(f"| Expected Quality: {int(predictions['quality_score'])}/100 (+{int(predictions['quality_score'] - 75)} from baseline)          |")
+        output.append(
+            f"| Expected Quality: {int(predictions['quality_score'])}/100 (+{int(predictions['quality_score'] - 75)} from baseline)          |"
+        )
         output.append(f"| Estimated Time:   {predictions['estimated_time']}                        |")
         output.append("|                                                         |")
         output.append("| Recommended Skills:                                     |")
 
         for skill in recs["skills"][:3]:
             status = skill["recommendation"]
-            output.append(f"| {status}. [{status}] {skill['skill']} ({int(skill['success_rate'])}% success rate)".ljust(57) + " |")
+            output.append(
+                f"| {status}. [{status}] {skill['skill']} ({int(skill['success_rate'])}% success rate)".ljust(57) + " |"
+            )
 
         output.append("|                                                         |")
         output.append("| Based on: {} similar successful patterns                |".format(len(recs["recommendations"])))
@@ -1120,7 +1213,9 @@ def format_recommendations_text(recs: Dict[str, Any]) -> str:
         for i, rec in enumerate(recs["recommendations"][1:3], 2):
             quality = rec["quality_score"]
             time_est = f"{rec['execution_time']}-{int(rec['execution_time'] * 1.2)} min"
-            output.append(f"| {i}. Pattern-Based Approach ({int(rec['recommendation_score'] * 100)}% confidence)".ljust(57) + " |")
+            output.append(
+                f"| {i}. Pattern-Based Approach ({int(rec['recommendation_score'] * 100)}% confidence)".ljust(57) + " |"
+            )
             output.append(f"|    Quality: {int(quality)}/100 | Time: {time_est}".ljust(57) + " |")
             output.append(f"|    Skills: {', '.join(rec['skills_used'][:2])}".ljust(57) + " |")
             output.append("|                                                         |")

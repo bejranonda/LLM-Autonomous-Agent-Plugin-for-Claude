@@ -32,21 +32,26 @@ from typing import Dict, List, Optional, Any
 import platform
 
 # Platform-specific file locking
-if platform.system() == 'Windows':
+if platform.system() == "Windows":
     import msvcrt
 
     def lock_file(f):
+        """Lock File."""
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
 
     def unlock_file(f):
+        """Unlock File."""
         msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+
 else:
     import fcntl
 
     def lock_file(f):
+        """Lock File."""
         fcntl.flock(f.fileno(), fcntl.LOCK_EX)
 
     def unlock_file(f):
+        """Unlock File."""
         fcntl.flock(f.fileno(), fcntl.LOCK_UN)
 
 
@@ -54,6 +59,7 @@ class ProactiveSuggester:
     """Proactively suggests improvements based on project patterns and trends"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.data_dir = data_dir
         self.suggestions_file = os.path.join(data_dir, "proactive_suggestions.json")
         self._ensure_data_dir()
@@ -74,22 +80,22 @@ class ProactiveSuggester:
                     "accepted": 0,
                     "rejected": 0,
                     "ignored": 0,
-                    "acceptance_rate": 0.0
+                    "acceptance_rate": 0.0,
                 },
                 "effectiveness_by_type": {},
                 "user_preferences": {
                     "preferred_types": [],
                     "preferred_urgency": "medium",
-                    "preferred_effort": "low_to_medium"
+                    "preferred_effort": "low_to_medium",
                 },
-                "learning_insights": []
+                "learning_insights": [],
             }
             self._write_data(initial_data)
 
     def _read_data(self) -> Dict:
         """Thread-safe read of suggestions data"""
         try:
-            with open(self.suggestions_file, 'r', encoding='utf-8') as f:
+            with open(self.suggestions_file, "r", encoding="utf-8") as f:
                 lock_file(f)
                 try:
                     data = json.load(f)
@@ -103,7 +109,7 @@ class ProactiveSuggester:
     def _write_data(self, data: Dict):
         """Thread-safe write of suggestions data"""
         try:
-            with open(self.suggestions_file, 'w', encoding='utf-8') as f:
+            with open(self.suggestions_file, "w", encoding="utf-8") as f:
                 lock_file(f)
                 try:
                     json.dump(data, f, indent=2, ensure_ascii=False)
@@ -116,20 +122,10 @@ class ProactiveSuggester:
         """Get empty data structure"""
         return {
             "suggestions": [],
-            "acceptance_stats": {
-                "total_suggestions": 0,
-                "accepted": 0,
-                "rejected": 0,
-                "ignored": 0,
-                "acceptance_rate": 0.0
-            },
+            "acceptance_stats": {"total_suggestions": 0, "accepted": 0, "rejected": 0, "ignored": 0, "acceptance_rate": 0.0},
             "effectiveness_by_type": {},
-            "user_preferences": {
-                "preferred_types": [],
-                "preferred_urgency": "medium",
-                "preferred_effort": "low_to_medium"
-            },
-            "learning_insights": []
+            "user_preferences": {"preferred_types": [], "preferred_urgency": "medium", "preferred_effort": "low_to_medium"},
+            "learning_insights": [],
         }
 
     def create_suggestion(
@@ -143,8 +139,9 @@ class ProactiveSuggester:
         expected_impact: str,
         context: Optional[Dict] = None,
         related_files: Optional[List[str]] = None,
-        related_patterns: Optional[List[str]] = None
-    ) -> str:
+        related_patterns: Optional[List[str]] = None,
+    )-> str:
+        """Create Suggestion."""
         """
         Create a new proactive suggestion
 
@@ -172,10 +169,10 @@ class ProactiveSuggester:
         urgency_scores = {"high": 40, "medium": 25, "low": 10}
         impact_scores = {"high": 40, "medium": 25, "low": 10}
         effort_scores = {
-            (0, 2): 20,      # Quick wins
-            (2, 8): 15,      # Moderate effort
-            (8, 24): 10,     # Significant effort
-            (24, 999): 5     # Major undertaking
+            (0, 2): 20,  # Quick wins
+            (2, 8): 15,  # Moderate effort
+            (8, 24): 10,  # Significant effort
+            (24, 999): 5,  # Major undertaking
         }
 
         urgency_score = urgency_scores.get(urgency.lower(), 25)
@@ -219,7 +216,7 @@ class ProactiveSuggester:
             "acceptance_status": None,  # None, "accepted", "rejected", "ignored"
             "acceptance_timestamp": None,
             "implementation_outcome": None,  # Track if implemented successfully
-            "impact_measured": None  # Actual measured impact
+            "impact_measured": None,  # Actual measured impact
         }
 
         data["suggestions"].append(suggestion)
@@ -235,8 +232,9 @@ class ProactiveSuggester:
         urgency: Optional[str] = None,
         category: Optional[str] = None,
         min_priority_score: Optional[float] = None,
-        limit: int = 10
-    ) -> List[Dict]:
+        limit: int = 10,
+    )-> List[Dict]:
+        """Get Suggestions."""
         """
         Get suggestions with optional filtering
 
@@ -271,12 +269,7 @@ class ProactiveSuggester:
 
         return suggestions[:limit]
 
-    def record_acceptance(
-        self,
-        suggestion_id: str,
-        acceptance_status: str,
-        feedback: Optional[str] = None
-    ):
+    def record_acceptance(self, suggestion_id: str, acceptance_status: str, feedback: Optional[str] = None):
         """
         Record user's response to a suggestion
 
@@ -323,8 +316,9 @@ class ProactiveSuggester:
         impact_measured: str,
         actual_effort_hours: Optional[float] = None,
         quality_improvement: Optional[float] = None,
-        notes: Optional[str] = None
+        notes: Optional[str] = None,
     ):
+        """Record Implementation Outcome."""
         """
         Record the outcome of implementing a suggestion
 
@@ -365,7 +359,7 @@ class ProactiveSuggester:
                         "successful": 0,
                         "success_rate": 0.0,
                         "average_impact": 0.0,
-                        "average_effort_accuracy": 0.0
+                        "average_effort_accuracy": 0.0,
                     }
 
                 type_stats = data["effectiveness_by_type"][suggestion_type]
@@ -383,10 +377,7 @@ class ProactiveSuggester:
         data = self._read_data()
 
         # Analyze accepted suggestions to identify preferences
-        accepted_suggestions = [
-            s for s in data["suggestions"]
-            if s["acceptance_status"] == "accepted"
-        ]
+        accepted_suggestions = [s for s in data["suggestions"] if s["acceptance_status"] == "accepted"]
 
         if len(accepted_suggestions) < 3:
             return  # Not enough data yet
@@ -426,11 +417,7 @@ class ProactiveSuggester:
 
         self._write_data(data)
 
-    def get_top_suggestions(
-        self,
-        count: int = 5,
-        consider_preferences: bool = True
-    ) -> List[Dict]:
+    def get_top_suggestions(self, count: int = 5, consider_preferences: bool = True) -> List[Dict]:
         """
         Get top priority suggestions, optionally considering user preferences
 
@@ -471,10 +458,7 @@ class ProactiveSuggester:
 
         # Success rate of implemented suggestions
         implemented_suggestions = [s for s in data["suggestions"] if s["status"] == "implemented"]
-        successful_implementations = len([
-            s for s in implemented_suggestions
-            if s["implementation_outcome"] == "success"
-        ])
+        successful_implementations = len([s for s in implemented_suggestions if s["implementation_outcome"] == "success"])
 
         implementation_success_rate = 0.0
         if len(implemented_suggestions) > 0:
@@ -500,8 +484,8 @@ class ProactiveSuggester:
                 "critical_quick_wins": category_counts["critical_quick_win"],
                 "quick_wins": category_counts["quick_win"],
                 "strategic": category_counts["strategic_improvement"],
-                "nice_to_have": category_counts["nice_to_have"]
-            }
+                "nice_to_have": category_counts["nice_to_have"],
+            },
         }
 
     def analyze_project_and_suggest(
@@ -509,8 +493,9 @@ class ProactiveSuggester:
         project_context: Dict,
         patterns_data: Optional[Dict] = None,
         quality_data: Optional[Dict] = None,
-        performance_data: Optional[Dict] = None
-    ) -> List[str]:
+        performance_data: Optional[Dict] = None,
+    )-> List[str]:
+        """Analyze Project And Suggest."""
         """
         Analyze project state and generate suggestions automatically
 
@@ -553,7 +538,7 @@ class ProactiveSuggester:
                 urgency="high",
                 estimated_effort_hours=4.0,
                 expected_impact="high",
-                context={"quality_data": quality_data, "project_context": context}
+                context={"quality_data": quality_data, "project_context": context},
             )
             suggestion_ids.append(suggestion_id)
 
@@ -573,7 +558,7 @@ class ProactiveSuggester:
                 urgency="medium",
                 estimated_effort_hours=6.0,
                 expected_impact="medium",
-                context={"performance_data": performance_data, "project_context": context}
+                context={"performance_data": performance_data, "project_context": context},
             )
             suggestion_ids.append(suggestion_id)
 
@@ -586,7 +571,8 @@ class ProactiveSuggester:
         # Check for underutilized successful patterns
         patterns = patterns_data.get("patterns", [])
         successful_patterns = [
-            p for p in patterns
+            p
+            for p in patterns
             if p.get("outcome", {}).get("success", False)
             and p.get("outcome", {}).get("quality_score", 0) >= 85
             and p.get("reuse_count", 0) < 3
@@ -602,7 +588,7 @@ class ProactiveSuggester:
                 estimated_effort_hours=3.0,
                 expected_impact="medium",
                 context={"patterns": successful_patterns, "project_context": context},
-                related_patterns=[p.get("pattern_id") for p in successful_patterns]
+                related_patterns=[p.get("pattern_id") for p in successful_patterns],
             )
             suggestion_ids.append(suggestion_id)
 
@@ -610,23 +596,15 @@ class ProactiveSuggester:
 
     def format_suggestion_for_display(self, suggestion: Dict) -> str:
         """Format a suggestion for user display"""
-        urgency_icons = {
-            "high": "🔴",
-            "medium": "🟡",
-            "low": "🟢"
-        }
+        urgency_icons = {"high": "🔴", "medium": "🟡", "low": "🟢"}
 
-        impact_icons = {
-            "high": "[UP][UP][UP]",
-            "medium": "[UP][UP]",
-            "low": "[UP]"
-        }
+        impact_icons = {"high": "[UP][UP][UP]", "medium": "[UP][UP]", "low": "[UP]"}
 
         category_labels = {
             "critical_quick_win": "[TARGET] CRITICAL QUICK WIN",
             "quick_win": "[BOLT] QUICK WIN",
             "strategic_improvement": "[TREND] STRATEGIC",
-            "nice_to_have": "[INFO] NICE TO HAVE"
+            "nice_to_have": "[INFO] NICE TO HAVE",
         }
 
         output = []
@@ -635,16 +613,18 @@ class ProactiveSuggester:
         output.append(f"\n{urgency_icons.get(suggestion['urgency'], '⚪')} {suggestion['title']}")
         output.append(f"\nType: {suggestion['type'].replace('_', ' ').title()}")
         output.append(f"Urgency: {suggestion['urgency'].title()}")
-        output.append(f"Expected Impact: {impact_icons.get(suggestion['expected_impact'], '')} {suggestion['expected_impact'].title()}")
+        output.append(
+            f"Expected Impact: {impact_icons.get(suggestion['expected_impact'], '')} {suggestion['expected_impact'].title()}"
+        )
         output.append(f"Estimated Effort: {suggestion['estimated_effort_hours']} hours")
         output.append(f"\nDescription:")
-        output.append(suggestion['description'])
+        output.append(suggestion["description"])
         output.append(f"\nRationale:")
-        output.append(suggestion['rationale'])
+        output.append(suggestion["rationale"])
 
-        if suggestion.get('related_files'):
+        if suggestion.get("related_files"):
             output.append(f"\nRelated Files:")
-            for file in suggestion['related_files'][:3]:
+            for file in suggestion["related_files"][:3]:
                 output.append(f"  - {file}")
 
         output.append(f"\nSuggestion ID: {suggestion['suggestion_id']}")
@@ -714,37 +694,26 @@ if __name__ == "__main__":
             rationale=args.rationale,
             urgency=args.urgency,
             estimated_effort_hours=args.effort,
-            expected_impact=args.impact
+            expected_impact=args.impact,
         )
         print(f"Created suggestion: {suggestion_id}")
 
     elif args.command == "list":
         suggestions = suggester.get_suggestions(
-            status=args.status,
-            suggestion_type=args.type,
-            urgency=args.urgency,
-            category=args.category,
-            limit=args.limit
+            status=args.status, suggestion_type=args.type, urgency=args.urgency, category=args.category, limit=args.limit
         )
         print(f"\nFound {len(suggestions)} suggestions:\n")
         for suggestion in suggestions:
             print(suggester.format_suggestion_for_display(suggestion))
 
     elif args.command == "top":
-        suggestions = suggester.get_top_suggestions(
-            count=args.count,
-            consider_preferences=not args.no_preferences
-        )
+        suggestions = suggester.get_top_suggestions(count=args.count, consider_preferences=not args.no_preferences)
         print(f"\n[TARGET] Top {len(suggestions)} Priority Suggestions:\n")
         for suggestion in suggestions:
             print(suggester.format_suggestion_for_display(suggestion))
 
     elif args.command == "accept":
-        suggester.record_acceptance(
-            suggestion_id=args.id,
-            acceptance_status=args.status,
-            feedback=args.feedback
-        )
+        suggester.record_acceptance(suggestion_id=args.id, acceptance_status=args.status, feedback=args.feedback)
         print(f"Recorded acceptance: {args.status}")
 
     elif args.command == "implement":
@@ -753,7 +722,7 @@ if __name__ == "__main__":
             success=args.success,
             impact_measured=args.impact,
             actual_effort_hours=args.effort,
-            notes=args.notes
+            notes=args.notes,
         )
         print(f"Recorded implementation outcome")
 
@@ -767,11 +736,13 @@ if __name__ == "__main__":
         print(f"Acceptance Rate: {stats['acceptance_rate']:.1%}")
         print(f"Implementation Success Rate: {stats['implementation_success_rate']:.1%}")
         print(f"\nCategory Distribution:")
-        for category, count in stats['suggestions_per_category'].items():
+        for category, count in stats["suggestions_per_category"].items():
             print(f"  {category}: {count}")
         print(f"\nUser Preferences:")
-        prefs = stats['user_preferences']
-        print(f"  Preferred Types: {', '.join(prefs['preferred_types']) if prefs['preferred_types'] else 'Not yet determined'}")
+        prefs = stats["user_preferences"]
+        print(
+            f"  Preferred Types: {', '.join(prefs['preferred_types']) if prefs['preferred_types'] else 'Not yet determined'}"
+        )
         print(f"  Preferred Urgency: {prefs['preferred_urgency']}")
         print(f"  Preferred Effort: {prefs['preferred_effort']}")
 

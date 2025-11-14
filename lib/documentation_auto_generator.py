@@ -15,10 +15,12 @@ from pathlib import Path
 from collections import defaultdict
 import re
 
+
 class DocumentationAutoGenerator:
     """Advanced documentation generation from patterns"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns", project_root: str = "."):
+        """  Init  ."""
         self.patterns_dir = patterns_dir
         self.project_root = Path(project_root)
         self.patterns_file = os.path.join(patterns_dir, "patterns.json")
@@ -181,7 +183,7 @@ version: {version}
 ## License
 
 {license}
-"""
+""",
         }
 
     def _load_config(self) -> Dict:
@@ -202,13 +204,13 @@ version: {version}
                 "commands": True,
                 "api": True,
                 "examples": True,
-                "troubleshooting": True
-            }
+                "troubleshooting": True,
+            },
         }
 
         try:
             if os.path.exists(self.docs_config_file):
-                with open(self.docs_config_file, 'r', encoding='utf-8') as f:
+                with open(self.docs_config_file, "r", encoding="utf-8") as f:
                     loaded_config = json.load(f)
                 # Merge with defaults
                 for key, value in default_config.items():
@@ -223,13 +225,13 @@ version: {version}
     def _save_config(self):
         """Save current configuration"""
         os.makedirs(self.patterns_dir, exist_ok=True)
-        with open(self.docs_config_file, 'w', encoding='utf-8') as f:
+        with open(self.docs_config_file, "w", encoding="utf-8") as f:
             json.dump(self.config, f, indent=2, ensure_ascii=False)
 
     def load_patterns(self) -> Dict:
         """Load pattern data"""
         try:
-            with open(self.patterns_file, 'r', encoding='utf-8') as f:
+            with open(self.patterns_file, "r", encoding="utf-8") as f:
                 return json.load(f)
         except FileNotFoundError:
             return {"patterns": [], "skill_effectiveness": {}, "agent_effectiveness": {}}
@@ -241,7 +243,7 @@ version: {version}
             "skills": defaultdict(list),
             "commands": defaultdict(list),
             "workflows": defaultdict(list),
-            "quality_metrics": defaultdict(list)
+            "quality_metrics": defaultdict(list),
         }
 
         for pattern in patterns:
@@ -255,35 +257,41 @@ version: {version}
             # Extract agent patterns
             agents = pattern.get("execution", {}).get("agents_delegated", [])
             for agent in agents:
-                doc_patterns["agents"][agent].append({
-                    "task_type": pattern.get("task_type"),
-                    "quality_score": quality_score,
-                    "skills_used": pattern.get("execution", {}).get("skills_used", []),
-                    "duration": pattern.get("execution", {}).get("duration_seconds", 0),
-                    "complexity": pattern.get("task_complexity", "medium")
-                })
+                doc_patterns["agents"][agent].append(
+                    {
+                        "task_type": pattern.get("task_type"),
+                        "quality_score": quality_score,
+                        "skills_used": pattern.get("execution", {}).get("skills_used", []),
+                        "duration": pattern.get("execution", {}).get("duration_seconds", 0),
+                        "complexity": pattern.get("task_complexity", "medium"),
+                    }
+                )
 
             # Extract skill patterns
             skills = pattern.get("execution", {}).get("skills_used", [])
             for skill in skills:
-                doc_patterns["skills"][skill].append({
-                    "task_type": pattern.get("task_type"),
-                    "quality_score": quality_score,
-                    "agents_involved": agents,
-                    "success_rate": 1.0,  # Since we only keep successful patterns
-                    "context": pattern.get("context", {})
-                })
+                doc_patterns["skills"][skill].append(
+                    {
+                        "task_type": pattern.get("task_type"),
+                        "quality_score": quality_score,
+                        "agents_involved": agents,
+                        "success_rate": 1.0,  # Since we only keep successful patterns
+                        "context": pattern.get("context", {}),
+                    }
+                )
 
             # Extract command patterns
             if "command_name" in pattern.get("context", {}):
                 command = pattern["context"]["command_name"]
-                doc_patterns["commands"][command].append({
-                    "task_type": pattern.get("task_type"),
-                    "quality_score": quality_score,
-                    "duration": pattern.get("execution", {}).get("duration_seconds", 0),
-                    "success_rate": 1.0,
-                    "parameters": pattern.get("context", {})
-                })
+                doc_patterns["commands"][command].append(
+                    {
+                        "task_type": pattern.get("task_type"),
+                        "quality_score": quality_score,
+                        "duration": pattern.get("execution", {}).get("duration_seconds", 0),
+                        "success_rate": 1.0,
+                        "parameters": pattern.get("context", {}),
+                    }
+                )
 
         return doc_patterns
 
@@ -320,11 +328,13 @@ version: {version}
             approach=approach,
             quality_assurance=quality_assurance,
             handoff_protocol=handoff_protocol,
-            performance_metrics=performance_metrics
+            performance_metrics=performance_metrics,
         )
 
-    def _generate_agent_overview(self, agent_name: str, patterns: List[Dict],
-                                avg_quality: float, task_types: List[str]) -> str:
+    def _generate_agent_overview(
+        self, agent_name: str, patterns: List[Dict], avg_quality: float, task_types: List[str]
+    )-> str:
+        """ Generate Agent Overview."""
         """Generate agent overview section"""
         overview = f"""The **{agent_name}** agent is a specialized autonomous agent that excels in {', '.join(task_types[:3])}.
 
@@ -349,12 +359,11 @@ This agent operates with true autonomy, making intelligent decisions based on hi
             "analysis": ["analyze", "review", "examine", "audit"],
             "execution": ["execute", "implement", "create", "build"],
             "validation": ["validate", "check", "verify", "ensure"],
-            "optimization": ["optimize", "improve", "enhance", "refactor"]
+            "optimization": ["optimize", "improve", "enhance", "refactor"],
         }
 
         for category, keywords in resp_categories.items():
-            relevant_tasks = [desc for desc in task_descriptions
-                            if any(keyword in desc.lower() for keyword in keywords)]
+            relevant_tasks = [desc for desc in task_descriptions if any(keyword in desc.lower() for keyword in keywords)]
             if relevant_tasks:
                 responsibilities.append(f"**{category.title()}**: {len(relevant_tasks)} specialized tasks")
 
@@ -488,11 +497,13 @@ This agent operates with true autonomy, making intelligent decisions based on hi
             best_practices=best_practices,
             quality_standards=quality_standards,
             usage_examples=usage_examples,
-            performance_considerations=performance_considerations
+            performance_considerations=performance_considerations,
         )
 
-    def _generate_skill_overview(self, skill_name: str, patterns: List[Dict],
-                                avg_quality: float, task_types: List[str]) -> str:
+    def _generate_skill_overview(
+        self, skill_name: str, patterns: List[Dict], avg_quality: float, task_types: List[str]
+    )-> str:
+        """ Generate Skill Overview."""
         """Generate skill overview"""
         return f"""The **{skill_name}** skill provides specialized knowledge and proven methodologies for {', '.join(task_types[:3])}.
 
@@ -519,7 +530,7 @@ This skill has been validated through {len(patterns)} successful autonomous exec
                 "- **Pattern-Based Decision Making**: Leverage historical successful approaches",
                 "- **Quality-First Execution**: Ensure all outputs meet quality thresholds",
                 "- **Continuous Learning**: Improve from each execution",
-                "- **Autonomous Operation**: Function without human intervention"
+                "- **Autonomous Operation**: Function without human intervention",
             ]
 
         return "\n".join(principles)
@@ -570,7 +581,7 @@ This skill has been validated through {len(patterns)} successful autonomous exec
                 "- **Consistent Application**: Apply skill uniformly across similar tasks",
                 "- **Quality Validation**: Always verify outputs meet standards",
                 "- **Pattern Recognition**: Identify and leverage successful patterns",
-                "- **Continuous Improvement**: Learn from each execution"
+                "- **Continuous Improvement**: Learn from each execution",
             ]
 
         return "\n".join(practices[:5])
@@ -640,7 +651,9 @@ This skill has been validated through {len(patterns)} successful autonomous exec
             return f"# {command_name}\n\nNo documentation patterns available yet."
 
         # Analyze patterns
-        avg_duration = sum(p["duration"] for p in patterns if p["duration"] > 0) / max(len([p for p in patterns if p["duration"] > 0]), 1)
+        avg_duration = sum(p["duration"] for p in patterns if p["duration"] > 0) / max(
+            len([p for p in patterns if p["duration"] > 0]), 1
+        )
         avg_quality = sum(p["quality_score"] for p in patterns) / len(patterns)
 
         # Generate content
@@ -663,7 +676,7 @@ This skill has been validated through {len(patterns)} successful autonomous exec
             examples=examples,
             expected_outcomes=expected_outcomes,
             quality_checks=quality_checks,
-            related_commands=related_commands
+            related_commands=related_commands,
         )
 
     def _generate_command_description(self, command_name: str, patterns: List[Dict]) -> str:
@@ -713,7 +726,7 @@ This skill has been validated through {len(patterns)} successful autonomous exec
             "- Quality score meeting threshold requirements",
             "- Pattern learning integration",
             "- Comprehensive result documentation",
-            "- Performance metrics collection"
+            "- Performance metrics collection",
         ]
 
         # Add specific outcomes from patterns
@@ -758,6 +771,7 @@ This skill has been validated through {len(patterns)} successful autonomous exec
     def _get_most_common_items(self, items: List[str]) -> List[Tuple[str, int]]:
         """Get most common items from list"""
         from collections import Counter
+
         counter = Counter(items)
         return counter.most_common(10)
 
@@ -780,15 +794,12 @@ This skill has been validated through {len(patterns)} successful autonomous exec
                     filename = f"agent_{agent_name.replace('-', '_')}.md"
                     filepath = os.path.join(self.generated_docs_dir, filename)
 
-                    with open(filepath, 'w', encoding='utf-8') as f:
+                    with open(filepath, "w", encoding="utf-8") as f:
                         f.write(content)
 
-                    generated_files.append({
-                        "type": "agent",
-                        "name": agent_name,
-                        "file": filename,
-                        "patterns_used": len(agent_patterns)
-                    })
+                    generated_files.append(
+                        {"type": "agent", "name": agent_name, "file": filename, "patterns_used": len(agent_patterns)}
+                    )
 
         # Generate skill documentation
         if self.config["sections"]["skills"]:
@@ -799,15 +810,12 @@ This skill has been validated through {len(patterns)} successful autonomous exec
                     filename = f"skill_{skill_name.replace('-', '_')}.md"
                     filepath = os.path.join(self.generated_docs_dir, filename)
 
-                    with open(filepath, 'w', encoding='utf-8') as f:
+                    with open(filepath, "w", encoding="utf-8") as f:
                         f.write(content)
 
-                    generated_files.append({
-                        "type": "skill",
-                        "name": skill_name,
-                        "file": filename,
-                        "patterns_used": len(skill_patterns)
-                    })
+                    generated_files.append(
+                        {"type": "skill", "name": skill_name, "file": filename, "patterns_used": len(skill_patterns)}
+                    )
 
         # Generate command documentation
         if self.config["sections"]["commands"]:
@@ -818,20 +826,17 @@ This skill has been validated through {len(patterns)} successful autonomous exec
                     filename = f"command_{command_name.replace('/', '_')}.md"
                     filepath = os.path.join(self.generated_docs_dir, filename)
 
-                    with open(filepath, 'w', encoding='utf-8') as f:
+                    with open(filepath, "w", encoding="utf-8") as f:
                         f.write(content)
 
-                    generated_files.append({
-                        "type": "command",
-                        "name": command_name,
-                        "file": filename,
-                        "patterns_used": len(command_patterns)
-                    })
+                    generated_files.append(
+                        {"type": "command", "name": command_name, "file": filename, "patterns_used": len(command_patterns)}
+                    )
 
         # Generate documentation index
         index_content = self._generate_documentation_index(generated_files)
         index_file = os.path.join(self.generated_docs_dir, "README.md")
-        with open(index_file, 'w', encoding='utf-8') as f:
+        with open(index_file, "w", encoding="utf-8") as f:
             f.write(index_content)
 
         # Save generation metadata
@@ -841,11 +846,11 @@ This skill has been validated through {len(patterns)} successful autonomous exec
             "files_generated": len(generated_files),
             "min_pattern_threshold": self.config["min_pattern_count"],
             "quality_threshold": self.config["quality_threshold"],
-            "generated_files": generated_files
+            "generated_files": generated_files,
         }
 
         metadata_file = os.path.join(self.generated_docs_dir, "generation_metadata.json")
-        with open(metadata_file, 'w', encoding='utf-8') as f:
+        with open(metadata_file, "w", encoding="utf-8") as f:
             json.dump(metadata, f, indent=2, ensure_ascii=False)
 
         print(f"Documentation generation complete!")
@@ -859,7 +864,7 @@ This skill has been validated through {len(patterns)} successful autonomous exec
             "patterns_analyzed": len(patterns),
             "output_directory": self.generated_docs_dir,
             "generated_files": generated_files,
-            "metadata": metadata
+            "metadata": metadata,
         }
 
     def _generate_documentation_index(self, generated_files: List[Dict]) -> str:
@@ -881,7 +886,9 @@ Documentation is generated using advanced pattern analysis and machine learning 
 
 ## Generated Documentation
 
-""".format(self.config["quality_threshold"], self.config["min_pattern_count"], self.config["update_frequency"])
+""".format(
+            self.config["quality_threshold"], self.config["min_pattern_count"], self.config["update_frequency"]
+        )
 
         # Group by type
         by_type = {}
@@ -922,7 +929,7 @@ For more information about the documentation generation process, see the generat
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             len(generated_files),
             len([f for f in generated_files if f["patterns_used"] >= self.config["min_pattern_count"]]),
-            len(set(f["type"] for f in generated_files))
+            len(set(f["type"] for f in generated_files)),
         )
 
         return content
@@ -931,27 +938,18 @@ For more information about the documentation generation process, see the generat
         """Validate consistency across generated documentation"""
         print("Validating documentation consistency...")
 
-        validation_results = {
-            "status": "success",
-            "issues_found": [],
-            "files_validated": 0,
-            "consistency_score": 100
-        }
+        validation_results = {"status": "success", "issues_found": [], "files_validated": 0, "consistency_score": 100}
 
         # Check for required files
         required_files = ["README.md", "generation_metadata.json"]
         missing_files = [f for f in required_files if not os.path.exists(os.path.join(self.generated_docs_dir, f))]
 
         if missing_files:
-            validation_results["issues_found"].append({
-                "type": "missing_files",
-                "files": missing_files,
-                "severity": "high"
-            })
+            validation_results["issues_found"].append({"type": "missing_files", "files": missing_files, "severity": "high"})
             validation_results["consistency_score"] -= 20
 
         # Validate individual files
-        md_files = [f for f in os.listdir(self.generated_docs_dir) if f.endswith('.md')]
+        md_files = [f for f in os.listdir(self.generated_docs_dir) if f.endswith(".md")]
 
         for md_file in md_files:
             filepath = os.path.join(self.generated_docs_dir, md_file)
@@ -987,7 +985,7 @@ For more information about the documentation generation process, see the generat
         issues = []
 
         try:
-            with open(filepath, 'r', encoding='utf-8') as f:
+            with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read()
 
             # Check for required sections
@@ -995,51 +993,54 @@ For more information about the documentation generation process, see the generat
                 required_sections = ["Core Responsibilities", "Skills Integration", "Approach"]
                 for section in required_sections:
                     if section not in content:
-                        issues.append({
-                            "type": "missing_section",
-                            "file": os.path.basename(filepath),
-                            "section": section,
-                            "severity": "medium"
-                        })
+                        issues.append(
+                            {
+                                "type": "missing_section",
+                                "file": os.path.basename(filepath),
+                                "section": section,
+                                "severity": "medium",
+                            }
+                        )
 
             elif "skill_" in filepath:
                 required_sections = ["Overview", "Core Principles", "Implementation Guidelines"]
                 for section in required_sections:
                     if section not in content:
-                        issues.append({
-                            "type": "missing_section",
-                            "file": os.path.basename(filepath),
-                            "section": section,
-                            "severity": "medium"
-                        })
+                        issues.append(
+                            {
+                                "type": "missing_section",
+                                "file": os.path.basename(filepath),
+                                "section": section,
+                                "severity": "medium",
+                            }
+                        )
 
             elif "command_" in filepath:
                 required_sections = ["Description", "Usage", "Examples"]
                 for section in required_sections:
                     if section not in content:
-                        issues.append({
-                            "type": "missing_section",
-                            "file": os.path.basename(filepath),
-                            "section": section,
-                            "severity": "medium"
-                        })
+                        issues.append(
+                            {
+                                "type": "missing_section",
+                                "file": os.path.basename(filepath),
+                                "section": section,
+                                "severity": "medium",
+                            }
+                        )
 
             # Check for proper formatting
-            if not content.startswith('#'):
-                issues.append({
-                    "type": "formatting",
-                    "file": os.path.basename(filepath),
-                    "issue": "Missing main heading",
-                    "severity": "low"
-                })
+            if not content.startswith("#"):
+                issues.append(
+                    {
+                        "type": "formatting",
+                        "file": os.path.basename(filepath),
+                        "issue": "Missing main heading",
+                        "severity": "low",
+                    }
+                )
 
         except Exception as e:
-            issues.append({
-                "type": "file_error",
-                "file": os.path.basename(filepath),
-                "error": str(e),
-                "severity": "high"
-            })
+            issues.append({"type": "file_error", "file": os.path.basename(filepath), "error": str(e), "severity": "high"})
 
         return issues
 
@@ -1051,7 +1052,7 @@ For more information about the documentation generation process, see the generat
         name_patterns = {
             "agent_": r"^agent_[a-zA-Z0-9_-]+\.md$",
             "skill_": r"^skill_[a-zA-Z0-9_-]+\.md$",
-            "command_": r"^command_[a-zA-Z0-9_/-]+\.md$"
+            "command_": r"^command_[a-zA-Z0-9_/-]+\.md$",
         }
 
         for filename in md_files:
@@ -1059,21 +1060,19 @@ For more information about the documentation generation process, see the generat
             for prefix, pattern in name_patterns.items():
                 if filename.startswith(prefix):
                     if not re.match(pattern, filename):
-                        issues.append({
-                            "type": "naming_inconsistency",
-                            "file": filename,
-                            "expected_pattern": pattern,
-                            "severity": "medium"
-                        })
+                        issues.append(
+                            {
+                                "type": "naming_inconsistency",
+                                "file": filename,
+                                "expected_pattern": pattern,
+                                "severity": "medium",
+                            }
+                        )
                     matched = True
                     break
 
             if not matched and filename not in ["README.md", "generation_metadata.json"]:
-                issues.append({
-                    "type": "unknown_file_type",
-                    "file": filename,
-                    "severity": "low"
-                })
+                issues.append({"type": "unknown_file_type", "file": filename, "severity": "low"})
 
         return issues
 
@@ -1103,9 +1102,9 @@ def main():
         print(f"\nValidation Status: {result['status']}")
         print(f"Consistency Score: {result['consistency_score']}/100")
 
-        if result['issues_found']:
+        if result["issues_found"]:
             print(f"\nIssues Found ({len(result['issues_found'])}):")
-            for issue in result['issues_found'][:5]:  # Show first 5 issues
+            for issue in result["issues_found"][:5]:  # Show first 5 issues
                 print(f"  - {issue['type']}: {issue.get('file', 'N/A')}")
 
     elif args.config:

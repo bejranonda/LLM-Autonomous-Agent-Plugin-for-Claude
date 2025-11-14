@@ -34,15 +34,19 @@ import statistics
 import re
 from collections import defaultdict, deque
 
+
 class LoadingTier(Enum):
     """Content loading tiers with specific token limits."""
-    ESSENTIAL = "essential"          # 5K tokens - Core functionality only
-    STANDARD = "standard"            # 20K tokens - Normal operations
+
+    ESSENTIAL = "essential"  # 5K tokens - Core functionality only
+    STANDARD = "standard"  # 20K tokens - Normal operations
     COMPREHENSIVE = "comprehensive"  # 50K tokens - Detailed information
-    COMPLETE = "complete"            # 100K tokens - Full content
+    COMPLETE = "complete"  # 100K tokens - Full content
+
 
 class ContentType(Enum):
     """Content type categories for optimization strategies."""
+
     DOCUMENTATION = "documentation"
     CODE = "code"
     ANALYSIS = "analysis"
@@ -52,16 +56,20 @@ class ContentType(Enum):
     TUTORIAL = "tutorial"
     ERROR_REPORT = "error_report"
 
+
 class TaskComplexity(Enum):
     """Task complexity levels for intelligent tier selection."""
-    SIMPLE = "simple"          # Basic tasks need minimal content
-    MODERATE = "moderate"      # Standard tasks need balanced content
-    COMPLEX = "complex"        # Complex tasks need comprehensive content
-    CRITICAL = "critical"      # Critical tasks need complete content
+
+    SIMPLE = "simple"  # Basic tasks need minimal content
+    MODERATE = "moderate"  # Standard tasks need balanced content
+    COMPLEX = "complex"  # Complex tasks need comprehensive content
+    CRITICAL = "critical"  # Critical tasks need complete content
+
 
 @dataclass
 class ContentMetrics:
     """Metrics for content analysis and optimization."""
+
     original_tokens: int
     optimized_tokens: int
     compression_ratio: float
@@ -70,9 +78,11 @@ class ContentMetrics:
     user_satisfaction: float = 0.0
     effectiveness_score: float = 0.0
 
+
 @dataclass
 class UserPattern:
     """User behavior pattern for learning and optimization."""
+
     user_id: str
     preferred_tier: LoadingTier
     task_type_preferences: Dict[str, LoadingTier]
@@ -80,6 +90,7 @@ class UserPattern:
     content_consumption_rate: float
     last_updated: datetime
     success_rate: float = 0.0
+
 
 class EnhancedProgressiveLoader:
     """Enhanced progressive content loader with intelligent optimization."""
@@ -94,7 +105,7 @@ class EnhancedProgressiveLoader:
             LoadingTier.ESSENTIAL: 5000,
             LoadingTier.STANDARD: 20000,
             LoadingTier.COMPREHENSIVE: 50000,
-            LoadingTier.COMPLETE: 100000
+            LoadingTier.COMPLETE: 100000,
         }
 
         # User pattern storage
@@ -105,12 +116,12 @@ class EnhancedProgressiveLoader:
 
         # Content analysis patterns
         self.priority_patterns = {
-            'headers': re.compile(r'^(#{1,6})\s+(.+)$', re.MULTILINE),
-            'code_blocks': re.compile(r'```[\s\S]*?```'),
-            'lists': re.compile(r'^[\s]*[-*+]\s+(.+)$', re.MULTILINE),
-            'emphasis': re.compile(r'\*\*(.+?)\*\*|__(.+?)__|`(.+?)`'),
-            'links': re.compile(r'\[([^\]]+)\]\(([^)]+)\)'),
-            'tables': re.compile(r'^[\s]*\|.*\|$', re.MULTILINE)
+            "headers": re.compile(r"^(#{1,6})\s+(.+)$", re.MULTILINE),
+            "code_blocks": re.compile(r"```[\s\S]*?```"),
+            "lists": re.compile(r"^[\s]*[-*+]\s+(.+)$", re.MULTILINE),
+            "emphasis": re.compile(r"\*\*(.+?)\*\*|__(.+?)__|`(.+?)`"),
+            "links": re.compile(r"\[([^\]]+)\]\(([^)]+)\)"),
+            "tables": re.compile(r"^[\s]*\|.*\|$", re.MULTILINE),
         }
 
         # Initialize storage
@@ -120,11 +131,10 @@ class EnhancedProgressiveLoader:
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
 
-    def load_content(self,
-                    content: str,
-                    context: Dict[str, Any] = None,
-                    user_id: str = "default",
-                    task_type: str = "general") -> Tuple[str, ContentMetrics]:
+    def load_content(
+        self, content: str, context: Dict[str, Any] = None, user_id: str = "default", task_type: str = "general"
+    )-> Tuple[str, ContentMetrics]:
+        """Load Content."""
         """
         Load content with intelligent progressive optimization.
 
@@ -141,9 +151,7 @@ class EnhancedProgressiveLoader:
 
         # Analyze content and determine optimal tier
         original_tokens = self._estimate_tokens(content)
-        optimal_tier = self._determine_optimal_tier(
-            content, context, user_id, task_type, original_tokens
-        )
+        optimal_tier = self._determine_optimal_tier(content, context, user_id, task_type, original_tokens)
 
         # Apply progressive loading
         optimized_content = self._apply_progressive_loading(content, optimal_tier, context)
@@ -158,7 +166,7 @@ class EnhancedProgressiveLoader:
             optimized_tokens=optimized_tokens,
             compression_ratio=compression_ratio,
             loading_time_ms=loading_time,
-            tier_used=optimal_tier
+            tier_used=optimal_tier,
         )
 
         # Update learning systems
@@ -168,12 +176,10 @@ class EnhancedProgressiveLoader:
 
         return optimized_content, metrics
 
-    def _determine_optimal_tier(self,
-                               content: str,
-                               context: Dict[str, Any],
-                               user_id: str,
-                               task_type: str,
-                               original_tokens: int) -> LoadingTier:
+    def _determine_optimal_tier(
+        self, content: str, context: Dict[str, Any], user_id: str, task_type: str, original_tokens: int
+    )-> LoadingTier:
+        """ Determine Optimal Tier."""
         """Determine the optimal loading tier based on multiple factors."""
 
         # Base tier determination from task complexity
@@ -207,8 +213,8 @@ class EnhancedProgressiveLoader:
                 return base_tier
 
         # Budget constraints adjustment
-        if context and 'budget_limit' in context:
-            budget_limit = context['budget_limit']
+        if context and "budget_limit" in context:
+            budget_limit = context["budget_limit"]
             if budget_limit < self.token_limits[LoadingTier.ESSENTIAL]:
                 return LoadingTier.ESSENTIAL
             elif budget_limit < self.token_limits[LoadingTier.STANDARD]:
@@ -217,7 +223,7 @@ class EnhancedProgressiveLoader:
                 return LoadingTier.STANDARD
 
         # Performance constraints adjustment
-        if context and context.get('performance_priority', False):
+        if context and context.get("performance_priority", False):
             return LoadingTier.ESSENTIAL
 
         return base_tier
@@ -227,15 +233,15 @@ class EnhancedProgressiveLoader:
 
         # Task type complexity mapping
         complexity_mapping = {
-            'simple_query': TaskComplexity.SIMPLE,
-            'basic_analysis': TaskComplexity.SIMPLE,
-            'code_review': TaskComplexity.MODERATE,
-            'documentation': TaskComplexity.MODERATE,
-            'complex_analysis': TaskComplexity.COMPLEX,
-            'system_design': TaskComplexity.COMPLEX,
-            'security_audit': TaskComplexity.CRITICAL,
-            'performance_optimization': TaskComplexity.CRITICAL,
-            'error_resolution': TaskComplexity.CRITICAL
+            "simple_query": TaskComplexity.SIMPLE,
+            "basic_analysis": TaskComplexity.SIMPLE,
+            "code_review": TaskComplexity.MODERATE,
+            "documentation": TaskComplexity.MODERATE,
+            "complex_analysis": TaskComplexity.COMPLEX,
+            "system_design": TaskComplexity.COMPLEX,
+            "security_audit": TaskComplexity.CRITICAL,
+            "performance_optimization": TaskComplexity.CRITICAL,
+            "error_resolution": TaskComplexity.CRITICAL,
         }
 
         base_complexity = complexity_mapping.get(task_type, TaskComplexity.MODERATE)
@@ -243,34 +249,39 @@ class EnhancedProgressiveLoader:
         # Context-based adjustments
         if context:
             # Adjust based on user expertise
-            if context.get('user_expertise') == 'expert':
+            if context.get("user_expertise") == "expert":
                 # Experts can handle more complex information
-                complexity_levels = [TaskComplexity.SIMPLE, TaskComplexity.MODERATE,
-                                  TaskComplexity.COMPLEX, TaskComplexity.CRITICAL]
+                complexity_levels = [
+                    TaskComplexity.SIMPLE,
+                    TaskComplexity.MODERATE,
+                    TaskComplexity.COMPLEX,
+                    TaskComplexity.CRITICAL,
+                ]
                 current_index = complexity_levels.index(base_complexity)
                 if current_index < len(complexity_levels) - 1:
                     base_complexity = complexity_levels[current_index + 1]
 
             # Adjust based on time constraints
-            if context.get('time_constraint') == 'urgent':
+            if context.get("time_constraint") == "urgent":
                 base_complexity = TaskComplexity.SIMPLE
-            elif context.get('time_constraint') == 'flexible':
-                complexity_levels = [TaskComplexity.SIMPLE, TaskComplexity.MODERATE,
-                                  TaskComplexity.COMPLEX, TaskComplexity.CRITICAL]
+            elif context.get("time_constraint") == "flexible":
+                complexity_levels = [
+                    TaskComplexity.SIMPLE,
+                    TaskComplexity.MODERATE,
+                    TaskComplexity.COMPLEX,
+                    TaskComplexity.CRITICAL,
+                ]
                 current_index = complexity_levels.index(base_complexity)
                 if current_index < len(complexity_levels) - 1:
                     base_complexity = complexity_levels[current_index + 1]
 
             # Adjust based on error criticality
-            if context.get('error_criticality') == 'high':
+            if context.get("error_criticality") == "high":
                 base_complexity = TaskComplexity.CRITICAL
 
         return base_complexity
 
-    def _apply_progressive_loading(self,
-                                 content: str,
-                                 tier: LoadingTier,
-                                 context: Dict[str, Any]) -> str:
+    def _apply_progressive_loading(self, content: str, tier: LoadingTier, context: Dict[str, Any]) -> str:
         """Apply progressive loading based on the determined tier."""
 
         if tier == LoadingTier.COMPLETE:
@@ -293,34 +304,34 @@ class EnhancedProgressiveLoader:
     def _analyze_content_structure(self, content: str) -> List[Dict[str, Any]]:
         """Analyze content structure and identify sections."""
         sections = []
-        lines = content.split('\n')
-        current_section = {'type': 'content', 'lines': [], 'tokens': 0}
+        lines = content.split("\n")
+        current_section = {"type": "content", "lines": [], "tokens": 0}
 
         for line in lines:
             # Check for headers
-            header_match = self.priority_patterns['headers'].match(line)
+            header_match = self.priority_patterns["headers"].match(line)
             if header_match:
                 # Save previous section
-                if current_section['lines']:
+                if current_section["lines"]:
                     sections.append(current_section)
 
                 # Start new section
                 level = len(header_match.group(1))
                 current_section = {
-                    'type': 'header',
-                    'level': level,
-                    'title': header_match.group(2),
-                    'lines': [line],
-                    'tokens': self._estimate_tokens(line),
-                    'priority': self._calculate_header_priority(level)
+                    "type": "header",
+                    "level": level,
+                    "title": header_match.group(2),
+                    "lines": [line],
+                    "tokens": self._estimate_tokens(line),
+                    "priority": self._calculate_header_priority(level),
                 }
             else:
                 # Add to current section
-                current_section['lines'].append(line)
-                current_section['tokens'] += self._estimate_tokens(line)
+                current_section["lines"].append(line)
+                current_section["tokens"] += self._estimate_tokens(line)
 
         # Add last section
-        if current_section['lines']:
+        if current_section["lines"]:
             sections.append(current_section)
 
         return sections
@@ -335,44 +346,46 @@ class EnhancedProgressiveLoader:
         else:  # H5, H6
             return 0.6
 
-    def _prioritize_sections(self,
-                           sections: List[Dict[str, Any]],
-                           tier: LoadingTier,
-                           context: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def _prioritize_sections(
+        self, sections: List[Dict[str, Any]], tier: LoadingTier, context: Dict[str, Any]
+    )-> List[Dict[str, Any]]:
+        """ Prioritize Sections."""
         """Prioritize sections based on tier and context."""
 
         # Calculate priority scores
         for section in sections:
-            base_score = section.get('priority', 0.5)
+            base_score = section.get("priority", 0.5)
 
             # Content type adjustments
-            if any('```' in line for line in section['lines']):
+            if any("```" in line for line in section["lines"]):
                 # Code blocks are valuable
                 base_score += 0.2
 
-            if any(pattern.search(line) for line in section['lines']
-                   for pattern in [self.priority_patterns['lists'],
-                                  self.priority_patterns['emphasis']]):
+            if any(
+                pattern.search(line)
+                for line in section["lines"]
+                for pattern in [self.priority_patterns["lists"], self.priority_patterns["emphasis"]]
+            ):
                 # Structured content gets bonus
                 base_score += 0.1
 
             # Context-based adjustments
             if context:
-                if context.get('focus_code', False) and '```' in str(section['lines']):
+                if context.get("focus_code", False) and "```" in str(section["lines"]):
                     base_score += 0.3
 
-                if context.get('focus_documentation', False) and section['type'] == 'header':
+                if context.get("focus_documentation", False) and section["type"] == "header":
                     base_score += 0.2
 
-                if context.get('keywords'):
-                    for keyword in context['keywords']:
-                        if keyword.lower() in str(section['lines']).lower():
+                if context.get("keywords"):
+                    for keyword in context["keywords"]:
+                        if keyword.lower() in str(section["lines"]).lower():
                             base_score += 0.15
 
-            section['priority_score'] = min(1.0, base_score)
+            section["priority_score"] = min(1.0, base_score)
 
         # Sort by priority score
-        prioritized = sorted(sections, key=lambda x: x['priority_score'], reverse=True)
+        prioritized = sorted(sections, key=lambda x: x["priority_score"], reverse=True)
 
         # Filter based on tier token limits
         token_limit = self.token_limits[tier]
@@ -380,9 +393,9 @@ class EnhancedProgressiveLoader:
         current_tokens = 0
 
         for section in prioritized:
-            if current_tokens + section['tokens'] <= token_limit:
+            if current_tokens + section["tokens"] <= token_limit:
                 selected_sections.append(section)
-                current_tokens += section['tokens']
+                current_tokens += section["tokens"]
             elif not selected_sections:
                 # Ensure at least one section is included
                 selected_sections.append(section)
@@ -395,22 +408,22 @@ class EnhancedProgressiveLoader:
         content_lines = []
 
         for section in sections:
-            content_lines.extend(section['lines'])
+            content_lines.extend(section["lines"])
 
             # Add section separators for readability
-            if section['type'] == 'header' and len(content_lines) > 0:
-                content_lines.append('')  # Add spacing after headers
+            if section["type"] == "header" and len(content_lines) > 0:
+                content_lines.append("")  # Add spacing after headers
 
-        return '\n'.join(content_lines)
+        return "\n".join(content_lines)
 
     def _apply_final_optimizations(self, content: str, tier: LoadingTier) -> str:
         """Apply final optimizations to the content."""
 
         # Remove excessive blank lines
-        content = re.sub(r'\n\s*\n\s*\n', '\n\n', content)
+        content = re.sub(r"\n\s*\n\s*\n", "\n\n", content)
 
         # Remove trailing whitespace
-        content = '\n'.join(line.rstrip() for line in content.split('\n'))
+        content = "\n".join(line.rstrip() for line in content.split("\n"))
 
         # Tier-specific optimizations
         if tier == LoadingTier.ESSENTIAL:
@@ -424,7 +437,7 @@ class EnhancedProgressiveLoader:
 
     def _aggressive_optimization(self, content: str) -> str:
         """Apply aggressive optimization for essential tier."""
-        lines = content.split('\n')
+        lines = content.split("\n")
         optimized_lines = []
 
         for line in lines:
@@ -432,26 +445,27 @@ class EnhancedProgressiveLoader:
             stripped = line.strip()
 
             # Keep headers
-            if self.priority_patterns['headers'].match(stripped):
+            if self.priority_patterns["headers"].match(stripped):
                 optimized_lines.append(line)
             # Keep code blocks
-            elif stripped.startswith('```') or stripped.startswith('```'):
+            elif stripped.startswith("```") or stripped.startswith("```"):
                 optimized_lines.append(line)
             # Keep important list items
-            elif stripped.startswith('- ') or stripped.startswith('* '):
+            elif stripped.startswith("- ") or stripped.startswith("* "):
                 if len(stripped) > 10:  # Skip very short items
                     optimized_lines.append(line)
             # Keep lines with important content
-            elif len(stripped) > 20 and any(keyword in stripped.lower()
-                                           for keyword in ['error', 'warning', 'important', 'note', 'key']):
+            elif len(stripped) > 20 and any(
+                keyword in stripped.lower() for keyword in ["error", "warning", "important", "note", "key"]
+            ):
                 optimized_lines.append(line)
 
-        return '\n'.join(optimized_lines)
+        return "\n".join(optimized_lines)
 
     def _standard_optimization(self, content: str) -> str:
         """Apply standard optimization."""
         # Remove redundant information
-        lines = content.split('\n')
+        lines = content.split("\n")
         optimized_lines = []
 
         prev_line_type = None
@@ -459,13 +473,13 @@ class EnhancedProgressiveLoader:
             stripped = line.strip()
 
             # Skip consecutive empty lines
-            if not stripped and prev_line_type == 'empty':
+            if not stripped and prev_line_type == "empty":
                 continue
 
             optimized_lines.append(line)
-            prev_line_type = 'empty' if not stripped else 'content'
+            prev_line_type = "empty" if not stripped else "content"
 
-        return '\n'.join(optimized_lines)
+        return "\n".join(optimized_lines)
 
     def _estimate_tokens(self, text: str) -> int:
         """Estimate token count for text."""
@@ -482,11 +496,7 @@ class EnhancedProgressiveLoader:
 
         return max(1, estimated_tokens)  # Ensure at least 1 token for non-empty content
 
-    def _update_user_patterns(self,
-                            user_id: str,
-                            task_type: str,
-                            tier: LoadingTier,
-                            metrics: ContentMetrics) -> None:
+    def _update_user_patterns(self, user_id: str, task_type: str, tier: LoadingTier, metrics: ContentMetrics) -> None:
         """Update user patterns based on loading behavior."""
 
         if user_id not in self.user_patterns:
@@ -496,7 +506,7 @@ class EnhancedProgressiveLoader:
                 task_type_preferences={},
                 average_session_duration=0.0,
                 content_consumption_rate=metrics.compression_ratio,
-                last_updated=datetime.now()
+                last_updated=datetime.now(),
             )
 
         user_pattern = self.user_patterns[user_id]
@@ -507,14 +517,10 @@ class EnhancedProgressiveLoader:
         else:
             # Blend with existing preference
             existing_preference = user_pattern.task_type_preferences[task_type]
-            user_pattern.task_type_preferences[task_type] = self._blend_tiers(
-                existing_preference, tier, 0.2
-            )
+            user_pattern.task_type_preferences[task_type] = self._blend_tiers(existing_preference, tier, 0.2)
 
         # Update other metrics
-        user_pattern.content_consumption_rate = (
-            user_pattern.content_consumption_rate * 0.8 + metrics.compression_ratio * 0.2
-        )
+        user_pattern.content_consumption_rate = user_pattern.content_consumption_rate * 0.8 + metrics.compression_ratio * 0.2
         user_pattern.last_updated = datetime.now()
 
         # Calculate effectiveness score
@@ -525,8 +531,7 @@ class EnhancedProgressiveLoader:
 
     def _blend_tiers(self, tier1: LoadingTier, tier2: LoadingTier, weight: float) -> LoadingTier:
         """Blend two tiers with given weight."""
-        tier_order = [LoadingTier.ESSENTIAL, LoadingTier.STANDARD,
-                     LoadingTier.COMPREHENSIVE, LoadingTier.COMPLETE]
+        tier_order = [LoadingTier.ESSENTIAL, LoadingTier.STANDARD, LoadingTier.COMPREHENSIVE, LoadingTier.COMPLETE]
 
         index1 = tier_order.index(tier1)
         index2 = tier_order.index(tier2)
@@ -537,20 +542,16 @@ class EnhancedProgressiveLoader:
 
         return tier_order[blended_index]
 
-    def _cache_content(self,
-                      original: str,
-                      optimized: str,
-                      tier: LoadingTier,
-                      metrics: ContentMetrics) -> None:
+    def _cache_content(self, original: str, optimized: str, tier: LoadingTier, metrics: ContentMetrics) -> None:
         """Cache content for future use."""
         content_hash = hashlib.md5(original.encode()).hexdigest()
 
         self.content_cache[content_hash] = {
-            'original': original,
-            'optimized': optimized,
-            'tier': tier.value,
-            'metrics': asdict(metrics),
-            'timestamp': datetime.now().isoformat()
+            "original": original,
+            "optimized": optimized,
+            "tier": tier.value,
+            "metrics": asdict(metrics),
+            "timestamp": datetime.now().isoformat(),
         }
 
     def _record_performance(self, metrics: ContentMetrics) -> None:
@@ -580,38 +581,35 @@ class EnhancedProgressiveLoader:
         user_stats = {}
         for user_id, pattern in self.user_patterns.items():
             user_stats[user_id] = {
-                'preferred_tier': pattern.preferred_tier.value,
-                'success_rate': pattern.success_rate,
-                'task_types': len(pattern.task_type_preferences),
-                'last_updated': pattern.last_updated.isoformat()
+                "preferred_tier": pattern.preferred_tier.value,
+                "success_rate": pattern.success_rate,
+                "task_types": len(pattern.task_type_preferences),
+                "last_updated": pattern.last_updated.isoformat(),
             }
 
         return {
-            'generated_at': datetime.now().isoformat(),
-            'total_loads': len(self.performance_metrics),
-            'recent_loads': len(recent_metrics),
-            'compression_statistics': {
-                'average_ratio': statistics.mean(compression_ratios),
-                'median_ratio': statistics.median(compression_ratios),
-                'best_ratio': min(compression_ratios),
-                'worst_ratio': max(compression_ratios)
+            "generated_at": datetime.now().isoformat(),
+            "total_loads": len(self.performance_metrics),
+            "recent_loads": len(recent_metrics),
+            "compression_statistics": {
+                "average_ratio": statistics.mean(compression_ratios),
+                "median_ratio": statistics.median(compression_ratios),
+                "best_ratio": min(compression_ratios),
+                "worst_ratio": max(compression_ratios),
             },
-            'performance_statistics': {
-                'average_loading_time_ms': statistics.mean(loading_times),
-                'median_loading_time_ms': statistics.median(loading_times),
-                'fastest_load_ms': min(loading_times),
-                'slowest_load_ms': max(loading_times)
+            "performance_statistics": {
+                "average_loading_time_ms": statistics.mean(loading_times),
+                "median_loading_time_ms": statistics.median(loading_times),
+                "fastest_load_ms": min(loading_times),
+                "slowest_load_ms": max(loading_times),
             },
-            'tier_usage': dict(tier_counts),
-            'user_patterns': user_stats,
-            'cache_size': len(self.content_cache),
-            'tokens_saved_total': sum(m.original_tokens - m.optimized_tokens for m in recent_metrics)
+            "tier_usage": dict(tier_counts),
+            "user_patterns": user_stats,
+            "cache_size": len(self.content_cache),
+            "tokens_saved_total": sum(m.original_tokens - m.optimized_tokens for m in recent_metrics),
         }
 
-    def optimize_for_user(self,
-                         user_id: str,
-                         content: str,
-                         context: Dict[str, Any] = None) -> Tuple[str, ContentMetrics]:
+    def optimize_for_user(self, user_id: str, content: str, context: Dict[str, Any] = None) -> Tuple[str, ContentMetrics]:
         """Optimize content specifically for a user with learned preferences."""
 
         # Get user preferences
@@ -619,15 +617,15 @@ class EnhancedProgressiveLoader:
         if user_pattern:
             # Use learned preferences
             context = context or {}
-            context['preferred_tier'] = user_pattern.preferred_tier
+            context["preferred_tier"] = user_pattern.preferred_tier
 
             # Add successful task type preferences
-            if 'task_type' in context:
-                task_type = context['task_type']
+            if "task_type" in context:
+                task_type = context["task_type"]
                 if task_type in user_pattern.task_type_preferences:
-                    context['preferred_tier'] = user_pattern.task_type_preferences[task_type]
+                    context["preferred_tier"] = user_pattern.task_type_preferences[task_type]
 
-        return self.load_content(content, context, user_id, context.get('task_type', 'general'))
+        return self.load_content(content, context, user_id, context.get("task_type", "general"))
 
     def save_patterns(self) -> None:
         """Save user patterns and cache to disk."""
@@ -636,14 +634,12 @@ class EnhancedProgressiveLoader:
 
         try:
             # Save user patterns
-            patterns_data = {
-                user_id: asdict(pattern) for user_id, pattern in self.user_patterns.items()
-            }
-            with open(patterns_file, 'w') as f:
+            patterns_data = {user_id: asdict(pattern) for user_id, pattern in self.user_patterns.items()}
+            with open(patterns_file, "w") as f:
                 json.dump(patterns_data, f, indent=2, default=str)
 
             # Save content cache
-            with open(cache_file, 'w') as f:
+            with open(cache_file, "w") as f:
                 json.dump(self.content_cache, f, indent=2, default=str)
 
             self.logger.info("Progressive loader patterns and cache saved successfully")
@@ -657,7 +653,7 @@ class EnhancedProgressiveLoader:
 
         if patterns_file.exists():
             try:
-                with open(patterns_file, 'r') as f:
+                with open(patterns_file, "r") as f:
                     patterns_data = json.load(f)
 
                 for user_id, pattern_data in patterns_data.items():
@@ -674,7 +670,7 @@ class EnhancedProgressiveLoader:
 
         if cache_file.exists():
             try:
-                with open(cache_file, 'r') as f:
+                with open(cache_file, "r") as f:
                     self.content_cache = json.load(f)
 
                 self.logger.info(f"Loaded {len(self.content_cache)} cached content items")
@@ -691,7 +687,7 @@ class EnhancedProgressiveLoader:
         expired_keys = []
         for key, entry in self.content_cache.items():
             try:
-                timestamp = datetime.fromisoformat(entry['timestamp'])
+                timestamp = datetime.fromisoformat(entry["timestamp"])
                 if timestamp < cutoff_time:
                     expired_keys.append(key)
             except:
@@ -704,6 +700,7 @@ class EnhancedProgressiveLoader:
         self.logger.info(f"Cleared {cleared_count} expired cache entries")
         return cleared_count
 
+
 def main():
     """CLI interface for enhanced progressive loader."""
     import argparse
@@ -713,8 +710,9 @@ def main():
     parser.add_argument("--file", help="File containing content to optimize")
     parser.add_argument("--user-id", default="default", help="User ID for personalization")
     parser.add_argument("--task-type", default="general", help="Task type for context")
-    parser.add_argument("--tier", choices=["essential", "standard", "comprehensive", "complete"],
-                       help="Force specific loading tier")
+    parser.add_argument(
+        "--tier", choices=["essential", "standard", "comprehensive", "complete"], help="Force specific loading tier"
+    )
     parser.add_argument("--context", help="JSON context for optimization")
     parser.add_argument("--performance", action="store_true", help="Show performance summary")
     parser.add_argument("--save-patterns", action="store_true", help="Save learned patterns")
@@ -732,7 +730,7 @@ def main():
 
     # Get content
     if args.file:
-        with open(args.file, 'r', encoding='utf-8') as f:
+        with open(args.file, "r", encoding="utf-8") as f:
             content = f.read()
     elif args.content:
         content = args.content
@@ -751,12 +749,10 @@ def main():
 
     # Override tier if specified
     if args.tier:
-        context['forced_tier'] = LoadingTier(args.tier)
+        context["forced_tier"] = LoadingTier(args.tier)
 
     # Process content
-    optimized_content, metrics = loader.load_content(
-        content, context, args.user_id, args.task_type
-    )
+    optimized_content, metrics = loader.load_content(content, context, args.user_id, args.task_type)
 
     # Display results
     print("Progressive Loading Results:")
@@ -786,6 +782,7 @@ def main():
     else:
         print(f"\nOptimized Content:")
         print(optimized_content)
+
 
 if __name__ == "__main__":
     main()

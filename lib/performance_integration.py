@@ -31,6 +31,7 @@ class PerformanceIntegrator:
     """Simple performance recording integration for agents."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(exist_ok=True)
 
@@ -138,7 +139,8 @@ class PerformanceIntegrator:
         recommendations: List[str] = None,
         duration_seconds: int = None,
         model_used: str = None,
-    ) -> bool:
+    )-> bool:
+        """Complete Task."""
         """
         Complete a task and record its performance automatically.
 
@@ -240,13 +242,9 @@ class PerformanceIntegrator:
             "insights": {
                 "what_worked": ["Automatic performance recording"],
                 "what_failed": [] if success else ["Task completion issues"],
-                "bottlenecks": (
-                    [] if duration_seconds < 300 else ["Task took longer than expected"]
-                ),
+                "bottlenecks": ([] if duration_seconds < 300 else ["Task took longer than expected"]),
                 "optimization_opportunities": recommendations or [],
-                "lessons_learned": [
-                    f"Automatic recording successful for {task['type']} tasks"
-                ],
+                "lessons_learned": [f"Automatic recording successful for {task['type']} tasks"],
             },
             "reuse_count": 0,
             "last_reused": None,
@@ -304,15 +302,11 @@ class PerformanceIntegrator:
             summary["count"] += 1
 
             # Update average score
-            total_score = (
-                summary["avg_score"] * (summary["count"] - 1) + record["overall_score"]
-            )
+            total_score = summary["avg_score"] * (summary["count"] - 1) + record["overall_score"]
             summary["avg_score"] = total_score / summary["count"]
 
             # Update success rate
-            successes = summary["success_rate"] * (summary["count"] - 1) + (
-                1.0 if record["pass"] else 0.0
-            )
+            successes = summary["success_rate"] * (summary["count"] - 1) + (1.0 if record["pass"] else 0.0)
             summary["success_rate"] = successes / summary["count"]
 
             with open(self.performance_records_file, "w") as f:
@@ -372,6 +366,7 @@ def start_performance_recording(description: str, task_type: str = "unknown") ->
 
 
 def record_performance(
+    """Record Performance."""
     task_id: str,
     success: bool = True,
     quality_score: int = 85,

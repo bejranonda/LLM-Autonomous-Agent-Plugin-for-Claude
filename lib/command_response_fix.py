@@ -21,19 +21,19 @@ except ImportError:
 
         sanitized = []
         for msg in messages:
-            if isinstance(msg, dict) and 'content' in msg and isinstance(msg['content'], list):
+            if isinstance(msg, dict) and "content" in msg and isinstance(msg["content"], list):
                 clean_content = []
-                for block in msg['content']:
-                    if isinstance(block, dict) and block.get('type') == 'text':
-                        text = str(block.get('text', '')).strip()
+                for block in msg["content"]:
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        text = str(block.get("text", "")).strip()
                         if text:
-                            clean_content.append({'type': 'text', 'text': text})
+                            clean_content.append({"type": "text", "text": text})
                     else:
                         clean_content.append(block)
 
                 if not clean_content:
-                    clean_content = [{'type': 'text', 'text': 'Processing...'}]
-                msg['content'] = clean_content
+                    clean_content = [{"type": "text", "text": "Processing..."}]
+                msg["content"] = clean_content
             sanitized.append(msg)
         return sanitized
 
@@ -66,30 +66,21 @@ def safe_command_response(title, sections=None, sections_dict=None):
 
     # Add title if provided
     if title and str(title).strip():
-        content_blocks.append({
-            'type': 'text',
-            'text': str(title).strip()
-        })
+        content_blocks.append({"type": "text", "text": str(title).strip()})
 
     # Add sections
     if sections and isinstance(sections, dict):
         for section_title, section_content in sections.items():
             content = str(section_content).strip()
             if content:  # Only add non-empty sections
-                content_blocks.append({
-                    'type': 'text',
-                    'text': f"\n## {str(section_title).strip()}\n\n{content}"
-                })
+                content_blocks.append({"type": "text", "text": f"\n## {str(section_title).strip()}\n\n{content}"})
 
     # Ensure content exists
     if not content_blocks:
-        content_blocks = [{'type': 'text', 'text': title or 'Processing request...'}]
+        content_blocks = [{"type": "text", "text": title or "Processing request..."}]
 
     # Create message
-    message = {
-        'role': 'assistant',
-        'content': content_blocks
-    }
+    message = {"role": "assistant", "content": content_blocks}
 
     # Emergency sanitize before returning
     try:
@@ -97,10 +88,7 @@ def safe_command_response(title, sections=None, sections_dict=None):
         return sanitized_messages[0]
     except Exception as e:
         print(f"[EMERGENCY] Command response sanitization failed: {e}")
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': str(title) or 'Processing...'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": str(title) or "Processing..."}]}
 
 
 def safe_multi_section_response(titles, content_list):
@@ -133,29 +121,20 @@ def safe_multi_section_response(titles, content_list):
             block_text += f"\n\n{content}"
 
         if block_text.strip():
-            content_blocks.append({
-                'type': 'text',
-                'text': block_text
-            })
+            content_blocks.append({"type": "text", "text": block_text})
 
     # Ensure content exists
     if not content_blocks:
-        content_blocks = [{'type': 'text', 'text': 'Processing...'}]
+        content_blocks = [{"type": "text", "text": "Processing..."}]
 
-    message = {
-        'role': 'assistant',
-        'content': content_blocks
-    }
+    message = {"role": "assistant", "content": content_blocks}
 
     try:
         sanitized_messages = emergency_sanitize_messages([message])
         return sanitized_messages[0]
     except Exception as e:
         print(f"[EMERGENCY] Multi-section response sanitization failed: {e}")
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': 'Processing...'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": "Processing..."}]}
 
 
 def safe_table_response(title, headers, rows):
@@ -174,10 +153,7 @@ def safe_table_response(title, headers, rows):
 
     # Add title
     if title and str(title).strip():
-        content_blocks.append({
-            'type': 'text',
-            'text': str(title).strip()
-        })
+        content_blocks.append({"type": "text", "text": str(title).strip()})
 
     # Create table
     if headers and rows:
@@ -197,29 +173,20 @@ def safe_table_response(title, headers, rows):
                 table_lines.append(row_line)
 
         if table_lines:
-            content_blocks.append({
-                'type': 'text',
-                'text': '\n' + '\n'.join(table_lines)
-            })
+            content_blocks.append({"type": "text", "text": "\n" + "\n".join(table_lines)})
 
     # Ensure content exists
     if not content_blocks:
-        content_blocks = [{'type': 'text', 'text': title or 'No data available'}]
+        content_blocks = [{"type": "text", "text": title or "No data available"}]
 
-    message = {
-        'role': 'assistant',
-        'content': content_blocks
-    }
+    message = {"role": "assistant", "content": content_blocks}
 
     try:
         sanitized_messages = emergency_sanitize_messages([message])
         return sanitized_messages[0]
     except Exception as e:
         print(f"[EMERGENCY] Table response sanitization failed: {e}")
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': title or 'Table data unavailable'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": title or "Table data unavailable"}]}
 
 
 def safe_list_response(title, items, item_format="• {item}"):
@@ -238,39 +205,27 @@ def safe_list_response(title, items, item_format="• {item}"):
 
     # Add title
     if title and str(title).strip():
-        content_blocks.append({
-            'type': 'text',
-            'text': str(title).strip()
-        })
+        content_blocks.append({"type": "text", "text": str(title).strip()})
 
     # Add list items
     if items:
         valid_items = [str(item).strip() for item in items if str(item).strip()]
         if valid_items:
-            list_content = '\n'.join(item_format.format(item=item) for item in valid_items)
-            content_blocks.append({
-                'type': 'text',
-                'text': f"\n{list_content}"
-            })
+            list_content = "\n".join(item_format.format(item=item) for item in valid_items)
+            content_blocks.append({"type": "text", "text": f"\n{list_content}"})
 
     # Ensure content exists
     if not content_blocks:
-        content_blocks = [{'type': 'text', 'text': title or 'No items available'}]
+        content_blocks = [{"type": "text", "text": title or "No items available"}]
 
-    message = {
-        'role': 'assistant',
-        'content': content_blocks
-    }
+    message = {"role": "assistant", "content": content_blocks}
 
     try:
         sanitized_messages = emergency_sanitize_messages([message])
         return sanitized_messages[0]
     except Exception as e:
         print(f"[EMERGENCY] List response sanitization failed: {e}")
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': title or 'No items available'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": title or "No items available"}]}
 
 
 def safe_code_response(title, code_blocks, language="python"):
@@ -289,47 +244,35 @@ def safe_code_response(title, code_blocks, language="python"):
 
     # Add title
     if title and str(title).strip():
-        content_blocks.append({
-            'type': 'text',
-            'text': str(title).strip()
-        })
+        content_blocks.append({"type": "text", "text": str(title).strip()})
 
     # Add code blocks
     if code_blocks:
         for code in code_blocks:
             if code and str(code).strip():
-                content_blocks.append({
-                    'type': 'text',
-                    'text': f"\n```{language}\n{str(code)}\n```"
-                })
+                content_blocks.append({"type": "text", "text": f"\n```{language}\n{str(code)}\n```"})
 
     # Ensure content exists
     if not content_blocks:
-        content_blocks = [{'type': 'text', 'text': title or 'No code available'}]
+        content_blocks = [{"type": "text", "text": title or "No code available"}]
 
-    message = {
-        'role': 'assistant',
-        'content': content_blocks
-    }
+    message = {"role": "assistant", "content": content_blocks}
 
     try:
         sanitized_messages = emergency_sanitize_messages([message])
         return sanitized_messages[0]
     except Exception as e:
         print(f"[EMERGENCY] Code response sanitization failed: {e}")
-        return {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': title or 'Code unavailable'}]
-        }
+        return {"role": "assistant", "content": [{"type": "text", "text": title or "Code unavailable"}]}
 
 
 # Export functions for immediate integration
 __all__ = [
-    'safe_command_response',
-    'safe_multi_section_response',
-    'safe_table_response',
-    'safe_list_response',
-    'safe_code_response'
+    "safe_command_response",
+    "safe_multi_section_response",
+    "safe_table_response",
+    "safe_list_response",
+    "safe_code_response",
 ]
 
 # Test the command response fix
@@ -343,9 +286,9 @@ if __name__ == "__main__":
     print(f"Content blocks: {len(response['content'])}")
     print(f"Has content: {bool(response['content'])}")
 
-    for i, block in enumerate(response['content']):
-        if block.get('type') == 'text':
-            text = block.get('text', '')[:50]
+    for i, block in enumerate(response["content"]):
+        if block.get("type") == "text":
+            text = block.get("text", "")[:50]
             print(f"  Block {i}: {repr(text)}...")
 
     print("\n=== COMMAND RESPONSE FIX IS READY ===")

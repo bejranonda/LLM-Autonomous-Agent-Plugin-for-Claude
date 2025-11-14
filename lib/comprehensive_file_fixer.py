@@ -23,6 +23,7 @@ class AssessmentBackfill:
     """Backfills missing assessment data from recent command executions"""
 
     def __init__(self, pattern_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.pattern_dir = Path(pattern_dir)
         self.pattern_dir.mkdir(parents=True, exist_ok=True)
 
@@ -49,7 +50,6 @@ def main():
 if __name__ == "__main__":
     main()
 ''',
-
     "backup_manager.py": '''#!/usr/bin/env python3
 """
 Automated Backup System for Critical Plugin Components
@@ -67,6 +67,7 @@ class BackupManager:
     """Manages automated backups and restoration operations"""
 
     def __init__(self, backup_dir: str = ".claude/backups"):
+        """  Init  ."""
         self.backup_dir = Path(backup_dir)
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
@@ -122,7 +123,6 @@ def main():
 if __name__ == "__main__":
     main()
 ''',
-
     "trigger_learning.py": '''#!/usr/bin/env python3
 """
 Automatic Learning Trigger
@@ -138,6 +138,7 @@ class LearningTrigger:
     """Triggers automatic learning based on activity patterns"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
 
@@ -180,7 +181,6 @@ def main():
 if __name__ == "__main__":
     main()
 ''',
-
     "smart_agent_suggester.py": '''#!/usr/bin/env python3
 """
 Smart Agent Suggester
@@ -196,6 +196,7 @@ class SmartAgentSuggester:
     """Suggests optimal agents for specific tasks"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
 
@@ -257,7 +258,6 @@ def main():
 if __name__ == "__main__":
     main()
 ''',
-
     "simple_backfill.py": '''#!/usr/bin/env python3
 """
 Simple Backfill Utility
@@ -273,6 +273,7 @@ class SimpleBackfill:
     """Simple backfill utility for missing data"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -299,25 +300,28 @@ def main():
 
 if __name__ == "__main__":
     main()
-'''
+''',
 }
+
 
 def create_simple_file(filename: str, content: str) -> bool:
     """Create a simple file with basic functionality"""
     try:
         file_path = Path("lib") / filename
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             f.write(content)
 
         # Test if it compiles
         import ast
-        with open(file_path, 'r', encoding='utf-8') as f:
+
+        with open(file_path, "r", encoding="utf-8") as f:
             test_content = f.read()
         ast.parse(test_content)
         return True
     except Exception as e:
         print(f"Failed to create {filename}: {e}")
         return False
+
 
 def create_remaining_file(filename: str) -> bool:
     """Create a basic file for remaining problematic files"""
@@ -337,6 +341,7 @@ class {filename.replace('_', '').replace('.py', '').title()}:
     """Basic implementation for {filename}"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -364,6 +369,7 @@ if __name__ == "__main__":
     main()
 '''
     return create_simple_file(filename, template)
+
 
 def main():
     """Main execution function"""
@@ -395,12 +401,12 @@ def main():
         "validation_hooks.py",
         # Files with existing fixes
         "debug_evaluator.py",  # Already fixed
-        "fix_plugin.py",       # Already fixed
-        "git_operations.py",   # Already fixed
-        "trigger_learning.py", # Template exists
+        "fix_plugin.py",  # Already fixed
+        "git_operations.py",  # Already fixed
+        "trigger_learning.py",  # Template exists
         "smart_agent_suggester.py",  # Template exists
         "simple_backfill.py",  # Template exists
-        "validate_plugin.py"
+        "validate_plugin.py",
     ]
 
     print("COMPREHENSIVE FILE FIXER")
@@ -419,7 +425,8 @@ def main():
         if file_path.exists():
             try:
                 import ast
-                with open(file_path, 'r', encoding='utf-8') as f:
+
+                with open(file_path, "r", encoding="utf-8") as f:
                     content = f.read()
                 ast.parse(content)
                 print(f"  [OK] Already valid")

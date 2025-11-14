@@ -18,10 +18,12 @@ from collections import defaultdict
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class GroupSpecializationLearner:
@@ -34,7 +36,7 @@ class GroupSpecializationLearner:
         1: "Strategic Analysis & Intelligence",
         2: "Decision Making & Planning",
         3: "Execution & Implementation",
-        4: "Validation & Optimization"
+        4: "Validation & Optimization",
     }
 
     def __init__(self, storage_dir: str = ".claude-patterns"):
@@ -57,19 +59,15 @@ class GroupSpecializationLearner:
         initial_data = {
             "version": "1.0.0",
             "last_updated": datetime.now().isoformat(),
-            "metadata": {
-                "total_observations": 0,
-                "learning_confidence": 0,
-                "tracking_start_date": datetime.now().isoformat()
-            },
+            "metadata": {"total_observations": 0, "learning_confidence": 0, "tracking_start_date": datetime.now().isoformat()},
             "group_specializations": {
                 "1": self._create_empty_specialization_profile(),
                 "2": self._create_empty_specialization_profile(),
                 "3": self._create_empty_specialization_profile(),
-                "4": self._create_empty_specialization_profile()
+                "4": self._create_empty_specialization_profile(),
             },
             "task_routing_recommendations": {},
-            "learning_insights": []
+            "learning_insights": [],
         }
 
         self._write_data(initial_data)
@@ -84,19 +82,19 @@ class GroupSpecializationLearner:
             "top_specializations": [],
             "weaknesses": [],
             "optimal_conditions": [],
-            "performance_factors": {}
+            "performance_factors": {},
         }
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -107,7 +105,7 @@ class GroupSpecializationLearner:
     def _read_data(self) -> Dict[str, Any]:
         """Read specialization data with file locking."""
         try:
-            with open(self.spec_file, 'r', encoding='utf-8') as f:
+            with open(self.spec_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     data = json.load(f)
@@ -120,7 +118,7 @@ class GroupSpecializationLearner:
 
     def _write_data(self, data: Dict[str, Any]):
         """Write specialization data with file locking."""
-        with open(self.spec_file, 'w', encoding='utf-8') as f:
+        with open(self.spec_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -136,8 +134,9 @@ class GroupSpecializationLearner:
         context: Optional[Dict[str, Any]],
         quality_score: float,
         execution_time: float,
-        success: bool
+        success: bool,
     ):
+        """Record Observation."""
         """
         Record an observation of group performance.
 
@@ -167,7 +166,7 @@ class GroupSpecializationLearner:
                 "total_execution_time": 0,
                 "avg_quality_score": 0,
                 "avg_execution_time": 0,
-                "success_rate": 0
+                "success_rate": 0,
             }
 
         task_perf = group_profile["task_type_performance"][task_type]
@@ -184,32 +183,20 @@ class GroupSpecializationLearner:
 
         # Update complexity performance
         if complexity not in group_profile["complexity_performance"]:
-            group_profile["complexity_performance"][complexity] = {
-                "total_attempts": 0,
-                "avg_quality": 0,
-                "success_rate": 0
-            }
+            group_profile["complexity_performance"][complexity] = {"total_attempts": 0, "avg_quality": 0, "success_rate": 0}
 
         complexity_perf = group_profile["complexity_performance"][complexity]
         total = complexity_perf["total_attempts"]
-        complexity_perf["avg_quality"] = (
-            (complexity_perf["avg_quality"] * total + quality_score) / (total + 1)
-        )
+        complexity_perf["avg_quality"] = (complexity_perf["avg_quality"] * total + quality_score) / (total + 1)
         complexity_perf["total_attempts"] += 1
 
         # Update domain expertise
         if domain not in group_profile["domain_expertise"]:
-            group_profile["domain_expertise"][domain] = {
-                "total_attempts": 0,
-                "avg_quality": 0,
-                "expertise_level": "novice"
-            }
+            group_profile["domain_expertise"][domain] = {"total_attempts": 0, "avg_quality": 0, "expertise_level": "novice"}
 
         domain_exp = group_profile["domain_expertise"][domain]
         total = domain_exp["total_attempts"]
-        domain_exp["avg_quality"] = (
-            (domain_exp["avg_quality"] * total + quality_score) / (total + 1)
-        )
+        domain_exp["avg_quality"] = (domain_exp["avg_quality"] * total + quality_score) / (total + 1)
         domain_exp["total_attempts"] += 1
 
         # Determine expertise level
@@ -249,14 +236,16 @@ class GroupSpecializationLearner:
                 spec_score = (perf["avg_quality"] * 0.6) + (perf["success_rate"] * 100 * 0.4)
 
                 if spec_score >= 80:  # High performance threshold
-                    specializations.append({
-                        "task_type": task_type,
-                        "specialization_score": spec_score,
-                        "avg_quality": perf["avg_quality"],
-                        "success_rate": perf["success_rate"],
-                        "attempts": perf["total_attempts"],
-                        "expertise_level": self._determine_expertise_level(spec_score, perf["total_attempts"])
-                    })
+                    specializations.append(
+                        {
+                            "task_type": task_type,
+                            "specialization_score": spec_score,
+                            "avg_quality": perf["avg_quality"],
+                            "success_rate": perf["success_rate"],
+                            "attempts": perf["total_attempts"],
+                            "expertise_level": self._determine_expertise_level(spec_score, perf["total_attempts"]),
+                        }
+                    )
 
         # Sort by specialization score
         specializations.sort(key=lambda x: x["specialization_score"], reverse=True)
@@ -269,13 +258,15 @@ class GroupSpecializationLearner:
                 weakness_score = (perf["avg_quality"] * 0.6) + (perf["success_rate"] * 100 * 0.4)
 
                 if weakness_score < 70:  # Low performance threshold
-                    weaknesses.append({
-                        "task_type": task_type,
-                        "weakness_score": weakness_score,
-                        "avg_quality": perf["avg_quality"],
-                        "success_rate": perf["success_rate"],
-                        "attempts": perf["total_attempts"]
-                    })
+                    weaknesses.append(
+                        {
+                            "task_type": task_type,
+                            "weakness_score": weakness_score,
+                            "avg_quality": perf["avg_quality"],
+                            "success_rate": perf["success_rate"],
+                            "attempts": perf["total_attempts"],
+                        }
+                    )
 
         weaknesses.sort(key=lambda x: x["weakness_score"])
         group_profile["weaknesses"] = weaknesses[:3]
@@ -286,21 +277,21 @@ class GroupSpecializationLearner:
         # Check complexity performance
         for complexity, perf in group_profile["complexity_performance"].items():
             if perf["total_attempts"] >= 3 and perf["avg_quality"] >= 85:
-                optimal_conditions.append({
-                    "condition_type": "complexity",
-                    "value": complexity,
-                    "avg_quality": perf["avg_quality"]
-                })
+                optimal_conditions.append(
+                    {"condition_type": "complexity", "value": complexity, "avg_quality": perf["avg_quality"]}
+                )
 
         # Check domain expertise
         for domain, exp in group_profile["domain_expertise"].items():
             if exp["expertise_level"] in ["advanced", "expert"]:
-                optimal_conditions.append({
-                    "condition_type": "domain",
-                    "value": domain,
-                    "expertise_level": exp["expertise_level"],
-                    "avg_quality": exp["avg_quality"]
-                })
+                optimal_conditions.append(
+                    {
+                        "condition_type": "domain",
+                        "value": domain,
+                        "expertise_level": exp["expertise_level"],
+                        "avg_quality": exp["avg_quality"],
+                    }
+                )
 
         group_profile["optimal_conditions"] = optimal_conditions
 
@@ -342,12 +333,14 @@ class GroupSpecializationLearner:
                     perf = group_profile["task_type_performance"][task_type]
                     if perf["total_attempts"] >= 2:
                         score = (perf["avg_quality"] * 0.6) + (perf["success_rate"] * 100 * 0.4)
-                        group_scores.append({
-                            "group": group_num,
-                            "score": score,
-                            "quality": perf["avg_quality"],
-                            "success_rate": perf["success_rate"]
-                        })
+                        group_scores.append(
+                            {
+                                "group": group_num,
+                                "score": score,
+                                "quality": perf["avg_quality"],
+                                "success_rate": perf["success_rate"],
+                            }
+                        )
 
             if group_scores:
                 # Sort by score
@@ -356,10 +349,11 @@ class GroupSpecializationLearner:
                 routing_recommendations[task_type] = {
                     "primary_group": group_scores[0]["group"],
                     "primary_score": group_scores[0]["score"],
-                    "alternatives": [
-                        {"group": g["group"], "score": g["score"]}
-                        for g in group_scores[1:3]
-                    ] if len(group_scores) > 1 else []
+                    "alternatives": (
+                        [{"group": g["group"], "score": g["score"]} for g in group_scores[1:3]]
+                        if len(group_scores) > 1
+                        else []
+                    ),
                 }
 
         spec_data["task_routing_recommendations"] = routing_recommendations
@@ -377,15 +371,13 @@ class GroupSpecializationLearner:
             "group": group_num,
             "group_name": self.GROUPS[group_num],
             **spec_data["group_specializations"][group_key],
-            "learning_confidence": spec_data["metadata"]["learning_confidence"]
+            "learning_confidence": spec_data["metadata"]["learning_confidence"],
         }
 
     def get_recommended_group_for_task(
-        self,
-        task_type: str,
-        complexity: Optional[str] = None,
-        domain: Optional[str] = None
-    ) -> Tuple[int, float, str]:
+        self, task_type: str, complexity: Optional[str] = None, domain: Optional[str] = None
+    )-> Tuple[int, float, str]:
+        """Get Recommended Group For Task."""
         """
         Get recommended group for a task.
 
@@ -454,30 +446,35 @@ class GroupSpecializationLearner:
 
             if group_profile["top_specializations"]:
                 top_spec = group_profile["top_specializations"][0]
-                insights.append({
-                    "type": "specialization",
-                    "group": group_num,
-                    "group_name": self.GROUPS[group_num],
-                    "insight": f"Group {group_num} excels at {top_spec['task_type']}",
-                    "confidence": top_spec["specialization_score"] / 100,
-                    "evidence": f"Quality: {top_spec['avg_quality']:.1f}, Success: {top_spec['success_rate']*100:.1f}%"
-                })
+                insights.append(
+                    {
+                        "type": "specialization",
+                        "group": group_num,
+                        "group_name": self.GROUPS[group_num],
+                        "insight": f"Group {group_num} excels at {top_spec['task_type']}",
+                        "confidence": top_spec["specialization_score"] / 100,
+                        "evidence": f"Quality: {top_spec['avg_quality']:.1f}, Success: {top_spec['success_rate']*100:.1f}%",
+                    }
+                )
 
             # Identify domain expertise
             expert_domains = [
-                (domain, exp) for domain, exp in group_profile["domain_expertise"].items()
+                (domain, exp)
+                for domain, exp in group_profile["domain_expertise"].items()
                 if exp["expertise_level"] == "expert"
             ]
 
             for domain, exp in expert_domains:
-                insights.append({
-                    "type": "domain_expertise",
-                    "group": group_num,
-                    "group_name": self.GROUPS[group_num],
-                    "insight": f"Group {group_num} is an expert in {domain}",
-                    "confidence": 0.9,
-                    "evidence": f"Quality: {exp['avg_quality']:.1f} over {exp['total_attempts']} attempts"
-                })
+                insights.append(
+                    {
+                        "type": "domain_expertise",
+                        "group": group_num,
+                        "group_name": self.GROUPS[group_num],
+                        "insight": f"Group {group_num} is an expert in {domain}",
+                        "confidence": 0.9,
+                        "evidence": f"Quality: {exp['avg_quality']:.1f} over {exp['total_attempts']} attempts",
+                    }
+                )
 
         # Identify complementary groups (groups that work well together)
         # This would require cross-group analysis - placeholder for future enhancement
@@ -489,23 +486,22 @@ def main():
     """Command-line interface for testing the specialization learner."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Group Specialization Learner')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['record', 'profile', 'recommend', 'insights'],
-                       help='Action to perform')
-    parser.add_argument('--group', type=int, help='Group number (1-4)')
-    parser.add_argument('--task-type', help='Task type')
-    parser.add_argument('--complexity', help='Complexity (low/medium/high)')
-    parser.add_argument('--domain', help='Domain')
-    parser.add_argument('--quality', type=float, help='Quality score')
-    parser.add_argument('--time', type=float, default=60, help='Execution time')
-    parser.add_argument('--success', action='store_true', help='Task successful')
+    parser = argparse.ArgumentParser(description="Group Specialization Learner")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["record", "profile", "recommend", "insights"], help="Action to perform")
+    parser.add_argument("--group", type=int, help="Group number (1-4)")
+    parser.add_argument("--task-type", help="Task type")
+    parser.add_argument("--complexity", help="Complexity (low/medium/high)")
+    parser.add_argument("--domain", help="Domain")
+    parser.add_argument("--quality", type=float, help="Quality score")
+    parser.add_argument("--time", type=float, default=60, help="Execution time")
+    parser.add_argument("--success", action="store_true", help="Task successful")
 
     args = parser.parse_args()
 
     learner = GroupSpecializationLearner(args.storage_dir)
 
-    if args.action == 'record':
+    if args.action == "record":
         if not all([args.group, args.task_type, args.complexity, args.domain, args.quality is not None]):
             print("Error: --group, --task-type, --complexity, --domain, and --quality required")
             sys.exit(1)
@@ -518,11 +514,11 @@ def main():
             context={},
             quality_score=args.quality,
             execution_time=args.time,
-            success=args.success
+            success=args.success,
         )
         print(f"Observation recorded for Group {args.group}")
 
-    elif args.action == 'profile':
+    elif args.action == "profile":
         if not args.group:
             print("Error: --group required for profile")
             sys.exit(1)
@@ -531,24 +527,22 @@ def main():
         print(f"Group {profile['group']}: {profile['group_name']}")
         print(f"  Learning Confidence: {profile['learning_confidence']*100:.1f}%")
         print("\nTop Specializations:")
-        for spec in profile['top_specializations'][:3]:
+        for spec in profile["top_specializations"][:3]:
             print(f"  {spec['task_type']}: {spec['specialization_score']:.1f} ({spec['expertise_level']})")
 
-    elif args.action == 'recommend':
+    elif args.action == "recommend":
         if not args.task_type:
             print("Error: --task-type required for recommend")
             sys.exit(1)
 
         group, confidence, rationale = learner.get_recommended_group_for_task(
-            task_type=args.task_type,
-            complexity=args.complexity,
-            domain=args.domain
+            task_type=args.task_type, complexity=args.complexity, domain=args.domain
         )
         print(f"Recommended Group: {group}")
         print(f"Confidence: {confidence*100:.1f}%")
         print(f"Rationale: {rationale}")
 
-    elif args.action == 'insights':
+    elif args.action == "insights":
         insights = learner.get_learning_insights()
         print(f"Learning Insights ({len(insights)} total):")
         for insight in insights[:5]:
@@ -561,5 +555,5 @@ def main():
         print(f"Storage: {learner.spec_file}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

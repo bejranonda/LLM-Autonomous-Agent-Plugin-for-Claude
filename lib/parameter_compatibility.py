@@ -25,6 +25,7 @@ from unified_parameter_storage import UnifiedParameterStorage
 
 class DeprecationWarning(UserWarning):
     """Custom deprecation warning for legacy parameter storage APIs."""
+
     pass
 
 
@@ -35,15 +36,20 @@ def deprecated(use_instead: str = None):
     Args:
         use_instead: Suggested replacement function
     """
+
     def decorator(func):
+        """Decorator."""
         @wraps(func)
         def wrapper(*args, **kwargs):
+            """Wrapper."""
             msg = f"Call to deprecated function '{func.__name__}'"
             if use_instead:
                 msg += f". Use '{use_instead}' instead."
             warnings.warn(msg, DeprecationWarning, stacklevel=2)
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -83,10 +89,9 @@ class CompatibilityLayer:
                 if current_score == 0.0:
                     # No data in unified storage, attempt migration
                     from parameter_migration import MigrationManager
+
                     migration_manager = MigrationManager(self.unified_storage)
-                    migration_result = migration_manager.execute_gradual_migration(
-                        source_types=["quality"], dry_run=False
-                    )
+                    migration_result = migration_manager.execute_gradual_migration(source_types=["quality"], dry_run=False)
                     if migration_result["items_migrated"] > 0:
                         print(f"Migrated {migration_result['items_migrated']} items to unified storage")
             except Exception as e:
@@ -115,7 +120,7 @@ class QualityTrackerCompatibility:
         warnings.warn(
             "QualityTracker(tracker_dir) is deprecated. Use UnifiedParameterStorage() instead.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
 
         self._ensure_unified_data()
@@ -129,10 +134,9 @@ class QualityTrackerCompatibility:
                 if current_score == 0.0:
                     # No data in unified storage, attempt migration
                     from parameter_migration import MigrationManager
+
                     migration_manager = MigrationManager(self.unified_storage)
-                    migration_result = migration_manager.execute_gradual_migration(
-                        source_types=["quality"], dry_run=False
-                    )
+                    migration_result = migration_manager.execute_gradual_migration(source_types=["quality"], dry_run=False)
                     if migration_result["items_migrated"] > 0:
                         print(f"Migrated {migration_result['items_migrated']} items to unified storage")
             except Exception as e:
@@ -203,14 +207,14 @@ class QualityTrackerCompatibility:
 
             if not history:
                 return {
-                    'period_days': days,
-                    'metric': metric or 'quality_score',
-                    'data_points': 0,
-                    'trend': 'no_data',
-                    'current_average': 0.0,
-                    'previous_average': 0.0,
-                    'change_percentage': 0.0,
-                    'timeline': []
+                    "period_days": days,
+                    "metric": metric or "quality_score",
+                    "data_points": 0,
+                    "trend": "no_data",
+                    "current_average": 0.0,
+                    "previous_average": 0.0,
+                    "change_percentage": 0.0,
+                    "timeline": [],
                 }
 
             # Convert to legacy format
@@ -219,16 +223,12 @@ class QualityTrackerCompatibility:
             for entry in history:
                 value = entry.get("score", 0) / 100.0  # Convert to 0-1 scale
                 values.append(value)
-                timeline.append({
-                    'timestamp': entry.get("timestamp", ""),
-                    'task_id': entry.get("task_id", ""),
-                    'value': value
-                })
+                timeline.append({"timestamp": entry.get("timestamp", ""), "task_id": entry.get("task_id", ""), "value": value})
 
             # Calculate trends (simplified)
             if len(values) >= 2:
-                first_half = values[:len(values)//2]
-                second_half = values[len(values)//2:]
+                first_half = values[: len(values) // 2]
+                second_half = values[len(values) // 2 :]
 
                 first_avg = sum(first_half) / len(first_half)
                 second_avg = sum(second_half) / len(second_half)
@@ -239,39 +239,39 @@ class QualityTrackerCompatibility:
                     change_pct = 0.0
 
                 if change_pct > 5:
-                    trend = 'improving'
+                    trend = "improving"
                 elif change_pct < -5:
-                    trend = 'declining'
+                    trend = "declining"
                 else:
-                    trend = 'stable'
+                    trend = "stable"
             else:
-                trend = 'stable'
+                trend = "stable"
                 first_avg = values[0] if values else 0.0
                 second_avg = values[0] if values else 0.0
                 change_pct = 0.0
 
             return {
-                'period_days': days,
-                'metric': metric or 'quality_score',
-                'data_points': len(values),
-                'trend': trend,
-                'current_average': second_avg,
-                'previous_average': first_avg,
-                'change_percentage': change_pct,
-                'timeline': timeline
+                "period_days": days,
+                "metric": metric or "quality_score",
+                "data_points": len(values),
+                "trend": trend,
+                "current_average": second_avg,
+                "previous_average": first_avg,
+                "change_percentage": change_pct,
+                "timeline": timeline,
             }
 
         except Exception as e:
             print(f"Error getting quality trends: {e}", file=sys.stderr)
             return {
-                'period_days': days,
-                'metric': metric or 'quality_score',
-                'data_points': 0,
-                'trend': 'error',
-                'current_average': 0.0,
-                'previous_average': 0.0,
-                'change_percentage': 0.0,
-                'timeline': []
+                "period_days": days,
+                "metric": metric or "quality_score",
+                "data_points": 0,
+                "trend": "error",
+                "current_average": 0.0,
+                "previous_average": 0.0,
+                "change_percentage": 0.0,
+                "timeline": [],
             }
 
 
@@ -297,7 +297,7 @@ class ModelPerformanceManagerCompatibility:
         warnings.warn(
             "ModelPerformanceManager(patterns_dir) is deprecated. Use UnifiedParameterStorage() with model methods instead.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
 
         self._ensure_unified_data()
@@ -312,6 +312,7 @@ class ModelPerformanceManagerCompatibility:
                 if not model_data:
                     # No data in unified storage, attempt migration
                     from parameter_migration import MigrationManager
+
                     migration_manager = MigrationManager(self.unified_storage)
                     migration_result = migration_manager.execute_gradual_migration(
                         source_types=["model_performance"], dry_run=False
@@ -322,8 +323,7 @@ class ModelPerformanceManagerCompatibility:
                 warnings.warn(f"Failed to auto-migrate: {e}", DeprecationWarning)
 
     @deprecated("UnifiedParameterStorage.update_model_performance()")
-    def add_performance_score(self, model: str, score: float, task_type: str = "unknown",
-                            contribution: float = 0.0):
+    def add_performance_score(self, model: str, score: float, task_type: str = "unknown", contribution: float = 0.0):
         """
         Add performance score for model (legacy API).
 
@@ -384,8 +384,7 @@ class DashboardDataCollectorCompatibility:
             patterns_dir: Legacy patterns directory (ignored, uses unified storage)
         """
         self._show_deprecation_warning(
-            "DashboardDataCollector(patterns_dir)",
-            "UnifiedParameterStorage().get_dashboard_data()"
+            "DashboardDataCollector(patterns_dir)", "UnifiedParameterStorage().get_dashboard_data()"
         )
 
         # Use unified storage from .claude-unified directory
@@ -411,7 +410,7 @@ class DashboardDataCollectorCompatibility:
                 "quality": {"scores": {"current": 0.0}, "metrics": {}},
                 "models": {"active_model": "Claude", "performance": {}},
                 "dashboard": {"metrics": {}, "real_time": {}},
-                "learning": {"patterns": {}, "analytics": {}}
+                "learning": {"patterns": {}, "analytics": {}},
             }
 
     @deprecated("UnifiedParameterStorage.update_dashboard_metrics()")
@@ -482,9 +481,9 @@ def auto_patch_legacy_modules():
 
     # Create compatibility modules
     compatibility_modules = {
-        'quality_tracker': QualityTrackerCompatibility,
-        'model_performance': ModelPerformanceManagerCompatibility,
-        'dashboard': DashboardDataCollectorCompatibility
+        "quality_tracker": QualityTrackerCompatibility,
+        "model_performance": ModelPerformanceManagerCompatibility,
+        "dashboard": DashboardDataCollectorCompatibility,
     }
 
     # Store original modules
@@ -493,17 +492,17 @@ def auto_patch_legacy_modules():
     for module_name, compatibility_class in compatibility_modules.items():
         try:
             # Try to import the original module
-            original_module = __import__(f'lib.{module_name}', fromlist=[module_name])
+            original_module = __import__(f"lib.{module_name}", fromlist=[module_name])
             original_modules[module_name] = original_module
 
             # Replace with compatibility wrapper
             compatibility_instance = compatibility_class()
-            sys.modules[f'lib.{module_name}'] = compatibility_instance
+            sys.modules[f"lib.{module_name}"] = compatibility_instance
 
         except ImportError:
             # Module doesn't exist, create compatibility module from scratch
             compatibility_instance = compatibility_class()
-            sys.modules[f'lib.{module_name}'] = compatibility_instance
+            sys.modules[f"lib.{module_name}"] = compatibility_instance
 
     return original_modules
 
@@ -523,8 +522,8 @@ def monkey_patch_quality_functions():
         return tracker.get_average_quality()
 
     # Add to module's global namespace
-    globals()['record_quality'] = legacy_record_quality
-    globals()['get_quality_score'] = legacy_get_quality_score
+    globals()["record_quality"] = legacy_record_quality
+    globals()["get_quality_score"] = legacy_get_quality_score
 
 
 def monkey_patch_model_functions():
@@ -541,8 +540,8 @@ def monkey_patch_model_functions():
         return manager.get_model_summary(model)
 
     # Add to module's global namespace
-    globals()['add_model_score'] = legacy_add_model_score
-    globals()['get_model_summary'] = legacy_get_model_summary
+    globals()["add_model_score"] = legacy_add_model_score
+    globals()["get_model_summary"] = legacy_get_model_summary
 
 
 # Enable compatibility mode
@@ -564,7 +563,7 @@ def enable_compatibility_mode(auto_patch: bool = True, monkey_patch: bool = True
         print("Compatibility mode enabled: Common functions monkey-patched")
 
     # Configure warnings to show deprecation warnings
-    warnings.filterwarnings('default', category=DeprecationWarning)
+    warnings.filterwarnings("default", category=DeprecationWarning)
 
     print("Parameter compatibility layer is active")
     print("Legacy APIs will work but show deprecation warnings")
@@ -572,7 +571,7 @@ def enable_compatibility_mode(auto_patch: bool = True, monkey_patch: bool = True
 
 
 # Initialize compatibility mode if this module is imported directly
-if __name__ != '__main__' and 'parameter_compatibility' in sys.modules:
+if __name__ != "__main__" and "parameter_compatibility" in sys.modules:
     # Auto-enable compatibility mode when imported
     enable_compatibility_mode(auto_patch=False, monkey_patch=False)
 
@@ -581,10 +580,10 @@ def main():
     """Command-line interface for compatibility layer."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Parameter Compatibility Layer')
-    parser.add_argument('--enable', action='store_true', help='Enable compatibility mode')
-    parser.add_argument('--test', action='store_true', help='Test compatibility layer')
-    parser.add_argument('--storage-dir', default='.claude-unified', help='Unified storage directory')
+    parser = argparse.ArgumentParser(description="Parameter Compatibility Layer")
+    parser.add_argument("--enable", action="store_true", help="Enable compatibility mode")
+    parser.add_argument("--test", action="store_true", help="Test compatibility layer")
+    parser.add_argument("--storage-dir", default=".claude-unified", help="Unified storage directory")
 
     args = parser.parse_args()
 
@@ -617,5 +616,5 @@ def main():
         parser.print_help()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

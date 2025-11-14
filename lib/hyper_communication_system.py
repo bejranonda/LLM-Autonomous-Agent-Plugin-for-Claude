@@ -24,14 +24,17 @@ import uuid
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class MessagePriority(Enum):
     """Message priority levels."""
+
     CRITICAL = 1
     HIGH = 2
     MEDIUM = 3
@@ -41,6 +44,7 @@ class MessagePriority(Enum):
 
 class MessageType(Enum):
     """Message types for different communication patterns."""
+
     ANALYSIS_REQUEST = "analysis_request"
     ANALYSIS_RESPONSE = "analysis_response"
     EXECUTION_REQUEST = "execution_request"
@@ -55,6 +59,7 @@ class MessageType(Enum):
 @dataclass
 class HyperMessage:
     """Hyper-communication message structure."""
+
     message_id: str
     message_type: MessageType
     priority: MessagePriority
@@ -75,6 +80,7 @@ class HyperMessage:
     latency_requirement: float = 0.0
 
     def __post_init__(self):
+        """  Post Init  ."""
         if self.routing_path is None:
             self.routing_path = []
         if self.expires_at is None:
@@ -91,6 +97,7 @@ class HyperMessage:
 @dataclass
 class CommunicationMetrics:
     """Communication performance metrics."""
+
     total_messages: int = 0
     successful_deliveries: int = 0
     failed_deliveries: int = 0
@@ -163,7 +170,7 @@ class HyperCommunicationSystem:
                 "bandwidth_allocations": {},
                 "communication_patterns": {},
                 "quantum_entanglements": {},
-                "message_history": []
+                "message_history": [],
             }
             self._write_communication_data(initial_data)
 
@@ -173,7 +180,7 @@ class HyperCommunicationSystem:
                 "routing_table": {},
                 "predictive_routes": {},
                 "routing_performance": {},
-                "last_optimization": datetime.now().isoformat()
+                "last_optimization": datetime.now().isoformat(),
             }
             self._write_routing_data(routing_data)
 
@@ -183,7 +190,7 @@ class HyperCommunicationSystem:
                 "agent_metrics": {},
                 "global_metrics": asdict(CommunicationMetrics()),
                 "performance_history": [],
-                "efficiency_trends": {}
+                "efficiency_trends": {},
             }
             self._write_metrics_data(metrics_data)
 
@@ -237,14 +244,14 @@ class HyperCommunicationSystem:
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -255,7 +262,7 @@ class HyperCommunicationSystem:
     def _read_communication_data(self) -> Dict[str, Any]:
         """Read communication data with file locking."""
         try:
-            with open(self.communication_file, 'r', encoding='utf-8') as f:
+            with open(self.communication_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -267,7 +274,7 @@ class HyperCommunicationSystem:
 
     def _write_communication_data(self, data: Dict[str, Any]):
         """Write communication data with file locking."""
-        with open(self.communication_file, 'w', encoding='utf-8') as f:
+        with open(self.communication_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -277,7 +284,7 @@ class HyperCommunicationSystem:
     def _read_routing_data(self) -> Dict[str, Any]:
         """Read routing data with file locking."""
         try:
-            with open(self.routing_file, 'r', encoding='utf-8') as f:
+            with open(self.routing_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -288,7 +295,7 @@ class HyperCommunicationSystem:
 
     def _write_routing_data(self, data: Dict[str, Any]):
         """Write routing data with file locking."""
-        with open(self.routing_file, 'w', encoding='utf-8') as f:
+        with open(self.routing_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -298,7 +305,7 @@ class HyperCommunicationSystem:
     def _read_metrics_data(self) -> Dict[str, Any]:
         """Read metrics data with file locking."""
         try:
-            with open(self.metrics_file, 'r', encoding='utf-8') as f:
+            with open(self.metrics_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -309,7 +316,7 @@ class HyperCommunicationSystem:
 
     def _write_metrics_data(self, data: Dict[str, Any]):
         """Write metrics data with file locking."""
-        with open(self.metrics_file, 'w', encoding='utf-8') as f:
+        with open(self.metrics_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -317,14 +324,9 @@ class HyperCommunicationSystem:
                 self._unlock_file(f)
 
     def establish_connection(
-        self,
-        agent1: str,
-        agent2: str,
-        tier1: str,
-        tier2: str,
-        bandwidth: float = 10.0,
-        latency_requirement: float = 100.0
-    ) -> bool:
+        self, agent1: str, agent2: str, tier1: str, tier2: str, bandwidth: float = 10.0, latency_requirement: float = 100.0
+    )-> bool:
+        """Establish Connection."""
         """
         Establish a high-performance connection between two agents.
 
@@ -382,13 +384,7 @@ class HyperCommunicationSystem:
             print(f"Error establishing connection: {e}", file=sys.stderr)
             return False
 
-    def _calculate_entanglement_strength(
-        self,
-        tier1: str,
-        tier2: str,
-        bandwidth: float,
-        latency_requirement: float
-    ) -> float:
+    def _calculate_entanglement_strength(self, tier1: str, tier2: str, bandwidth: float, latency_requirement: float) -> float:
         """Calculate quantum entanglement strength between agents."""
         base_strength = 0.5
 
@@ -420,7 +416,7 @@ class HyperCommunicationSystem:
             "cost": 1.0,
             "bandwidth": self.bandwidth_allocations[agent1] + self.bandwidth_allocations[agent2],
             "latency": self.latency_requirements[agent1] + self.latency_requirements[agent2],
-            "tier": tier2
+            "tier": tier2,
         }
 
         self.routing_table[agent2][agent1] = {
@@ -428,7 +424,7 @@ class HyperCommunicationSystem:
             "cost": 1.0,
             "bandwidth": self.bandwidth_allocations[agent1] + self.bandwidth_allocations[agent2],
             "latency": self.latency_requirements[agent1] + self.latency_requirements[agent2],
-            "tier": tier1
+            "tier": tier1,
         }
 
         # Update indirect routes through this connection
@@ -450,12 +446,12 @@ class HyperCommunicationSystem:
                             "cost": new_cost,
                             "bandwidth": min(
                                 self.routing_table[connected_agent][new_agent1]["bandwidth"],
-                                self.routing_table[new_agent1][new_agent2]["bandwidth"]
+                                self.routing_table[new_agent1][new_agent2]["bandwidth"],
                             ),
                             "latency": (
-                                self.routing_table[connected_agent][new_agent1]["latency"] +
-                                self.routing_table[new_agent1][new_agent2]["latency"]
-                            )
+                                self.routing_table[connected_agent][new_agent1]["latency"]
+                                + self.routing_table[new_agent1][new_agent2]["latency"]
+                            ),
                         }
 
     def send_message(
@@ -470,8 +466,9 @@ class HyperCommunicationSystem:
         correlation_id: Optional[str] = None,
         reply_to: Optional[str] = None,
         bandwidth_allocation: float = 1.0,
-        latency_requirement: float = 0.0
-    ) -> str:
+        latency_requirement: float = 0.0,
+    )-> str:
+        """Send Message."""
         """
         Send a hyper-communication message.
 
@@ -508,7 +505,7 @@ class HyperCommunicationSystem:
             correlation_id=correlation_id,
             reply_to=reply_to,
             bandwidth_allocation=bandwidth_allocation,
-            latency_requirement=latency_requirement
+            latency_requirement=latency_requirement,
         )
 
         # Determine optimal routing
@@ -600,19 +597,12 @@ class HyperCommunicationSystem:
         return [target]  # Direct fallback
 
     def _record_communication_pattern(
-        self,
-        source_agent: str,
-        target_agent: str,
-        message_type: MessageType,
-        priority: MessagePriority
+        self, source_agent: str, target_agent: str, message_type: MessageType, priority: MessagePriority
     ):
+        """ Record Communication Pattern."""
         """Record communication pattern for learning."""
         pattern_key = f"{source_agent}_{target_agent}"
-        pattern = {
-            "timestamp": datetime.now().isoformat(),
-            "message_type": message_type.value,
-            "priority": priority.value
-        }
+        pattern = {"timestamp": datetime.now().isoformat(), "message_type": message_type.value, "priority": priority.value}
 
         self.communication_patterns[pattern_key].append(pattern)
 
@@ -621,11 +611,9 @@ class HyperCommunicationSystem:
             self.communication_patterns[pattern_key] = self.communication_patterns[pattern_key][-100:]
 
     def register_message_handler(
-        self,
-        agent_id: str,
-        message_types: List[MessageType],
-        handler: Callable[[HyperMessage], Any]
+        self, agent_id: str, message_types: List[MessageType], handler: Callable[[HyperMessage], Any]
     ):
+        """Register Message Handler."""
         """
         Register message handler for specific message types.
 
@@ -687,9 +675,11 @@ class HyperCommunicationSystem:
 
                     # Handle response if needed
                     if message.message_type in [MessageType.ANALYSIS_REQUEST, MessageType.EXECUTION_REQUEST]:
-                        response_type = (MessageType.ANALYSIS_RESPONSE
-                                       if message.message_type == MessageType.ANALYSIS_REQUEST
-                                       else MessageType.EXECUTION_RESPONSE)
+                        response_type = (
+                            MessageType.ANALYSIS_RESPONSE
+                            if message.message_type == MessageType.ANALYSIS_REQUEST
+                            else MessageType.EXECUTION_RESPONSE
+                        )
 
                         # Send response
                         self.send_message(
@@ -700,18 +690,16 @@ class HyperCommunicationSystem:
                             message_type=response_type,
                             payload={"result": result, "original_message_id": message.message_id},
                             correlation_id=message.correlation_id,
-                            reply_to=message.message_id
+                            reply_to=message.message_id,
                         )
 
                 except Exception as e:
                     print(f"Error in message handler for {agent_id}: {e}", file=sys.stderr)
 
                     # Record error
-                    self.error_history[agent_id].append({
-                        "timestamp": datetime.now().isoformat(),
-                        "error": str(e),
-                        "message_id": message.message_id
-                    })
+                    self.error_history[agent_id].append(
+                        {"timestamp": datetime.now().isoformat(), "error": str(e), "message_id": message.message_id}
+                    )
 
     def _bandwidth_manager_loop(self):
         """Background bandwidth management loop."""
@@ -724,8 +712,7 @@ class HyperCommunicationSystem:
                 # Update metrics
                 for agent_id in self.bandwidth_allocations:
                     self.metrics[agent_id].peak_bandwidth = max(
-                        self.metrics[agent_id].peak_bandwidth,
-                        self.bandwidth_allocations[agent_id]
+                        self.metrics[agent_id].peak_bandwidth, self.bandwidth_allocations[agent_id]
                     )
 
                 # Optimize bandwidth allocation if needed
@@ -751,7 +738,9 @@ class HyperCommunicationSystem:
         agent_priorities = []
         for agent_id, allocation in self.bandwidth_allocations.items():
             priority = self._calculate_agent_priority(agent_id)
-            recent_throughput = statistics.mean(list(self.throughput_history[agent_id])) if self.throughput_history[agent_id] else 0
+            recent_throughput = (
+                statistics.mean(list(self.throughput_history[agent_id])) if self.throughput_history[agent_id] else 0
+            )
             agent_priorities.append((priority, recent_throughput, agent_id, allocation))
 
         # Sort by priority (descending) and throughput (descending)
@@ -763,7 +752,7 @@ class HyperCommunicationSystem:
             # Calculate new allocation based on priority and throughput
             new_allocation = min(
                 current_allocation * 1.1 if priority > 0.7 else current_allocation * 0.9,
-                available_bandwidth * 0.3  # Max 30% per agent
+                available_bandwidth * 0.3,  # Max 30% per agent
             )
 
             self.bandwidth_allocations[agent_id] = new_allocation
@@ -775,8 +764,7 @@ class HyperCommunicationSystem:
 
         # Factor in message success rate
         if self.metrics[agent_id].total_messages > 0:
-            success_rate = (self.metrics[agent_id].successful_deliveries /
-                          self.metrics[agent_id].total_messages)
+            success_rate = self.metrics[agent_id].successful_deliveries / self.metrics[agent_id].total_messages
             base_priority += success_rate * 0.3
 
         # Factor in efficiency (throughput vs bandwidth)
@@ -814,7 +802,7 @@ class HyperCommunicationSystem:
             if len(patterns) < 10:
                 continue  # Not enough data
 
-            source_agent, target_agent = pattern_key.split('_', 1)
+            source_agent, target_agent = pattern_key.split("_", 1)
 
             # Calculate pattern metrics
             message_frequency = len(patterns) / 3600  # messages per hour (assuming 1 hour window)
@@ -844,7 +832,7 @@ class HyperCommunicationSystem:
                     self.predictive_router[predictive_key] = {
                         "path": route_info["path"],
                         "confidence": (pattern_strength + entanglement_strength) / 2,
-                        "last_updated": datetime.now().isoformat()
+                        "last_updated": datetime.now().isoformat(),
                     }
 
     def _optimize_quantum_entanglements(self):
@@ -856,10 +844,8 @@ class HyperCommunicationSystem:
 
                 # Calculate effectiveness based on communication success
                 if agent1 in self.metrics and agent2 in self.metrics:
-                    success_rate_1 = (self.metrics[agent1].successful_deliveries /
-                                   max(1, self.metrics[agent1].total_messages))
-                    success_rate_2 = (self.metrics[agent2].successful_deliveries /
-                                   max(1, self.metrics[agent2].total_messages))
+                    success_rate_1 = self.metrics[agent1].successful_deliveries / max(1, self.metrics[agent1].total_messages)
+                    success_rate_2 = self.metrics[agent2].successful_deliveries / max(1, self.metrics[agent2].total_messages)
                     avg_success_rate = (success_rate_1 + success_rate_2) / 2
 
                     # Adjust entanglement strength
@@ -886,11 +872,15 @@ class HyperCommunicationSystem:
                     total_messages=total_messages,
                     successful_deliveries=total_successful,
                     failed_deliveries=total_failed,
-                    average_latency=statistics.mean([m.average_latency for m in self.metrics.values() if m.average_latency > 0]) if self.metrics else 0,
+                    average_latency=(
+                        statistics.mean([m.average_latency for m in self.metrics.values() if m.average_latency > 0])
+                        if self.metrics
+                        else 0
+                    ),
                     peak_bandwidth=max(m.peak_bandwidth for m in self.metrics.values()) if self.metrics else 0,
                     error_rate=total_failed / max(1, total_messages),
                     throughput=sum(m.throughput for m in self.metrics.values()),
-                    efficiency=self._calculate_global_efficiency()
+                    efficiency=self._calculate_global_efficiency(),
                 )
 
                 # Update agent metrics
@@ -930,12 +920,7 @@ class HyperCommunicationSystem:
         throughput_score = min(1, metrics.throughput / 10)  # Normalize to 0-1 (10 msg/s = 1.0)
         bandwidth_score = min(1, metrics.peak_bandwidth / 100)  # Normalize to 0-1 (100 Mbps = 1.0)
 
-        efficiency = (
-            success_rate * 0.4 +
-            latency_score * 0.3 +
-            throughput_score * 0.2 +
-            bandwidth_score * 0.1
-        )
+        efficiency = success_rate * 0.4 + latency_score * 0.3 + throughput_score * 0.2 + bandwidth_score * 0.1
 
         return efficiency
 
@@ -947,7 +932,7 @@ class HyperCommunicationSystem:
             "active_connections": {k: list(v) for k, v in self.active_connections.items()},
             "bandwidth_allocations": dict(self.bandwidth_allocations),
             "communication_patterns": dict(self.communication_patterns),
-            "quantum_entanglements": dict(self.quantum_entanglements)
+            "quantum_entanglements": dict(self.quantum_entanglements),
         }
         self._write_communication_data(comm_data)
 
@@ -958,7 +943,7 @@ class HyperCommunicationSystem:
             "routing_table": self.routing_table,
             "predictive_routes": self.predictive_router,
             "routing_performance": {},
-            "last_optimization": datetime.now().isoformat()
+            "last_optimization": datetime.now().isoformat(),
         }
         self._write_routing_data(routing_data)
 
@@ -969,7 +954,7 @@ class HyperCommunicationSystem:
             "agent_metrics": {k: asdict(v) for k, v in self.metrics.items()},
             "global_metrics": asdict(global_metrics),
             "performance_history": [],  # Would store historical data here
-            "efficiency_trends": {}  # Would store trend data here
+            "efficiency_trends": {},  # Would store trend data here
         }
         self._write_metrics_data(metrics_data)
 
@@ -979,11 +964,16 @@ class HyperCommunicationSystem:
             total_messages=sum(m.total_messages for m in self.metrics.values()),
             successful_deliveries=sum(m.successful_deliveries for m in self.metrics.values()),
             failed_deliveries=sum(m.failed_deliveries for m in self.metrics.values()),
-            average_latency=statistics.mean([m.average_latency for m in self.metrics.values() if m.average_latency > 0]) if self.metrics else 0,
+            average_latency=(
+                statistics.mean([m.average_latency for m in self.metrics.values() if m.average_latency > 0])
+                if self.metrics
+                else 0
+            ),
             peak_bandwidth=sum(m.peak_bandwidth for m in self.metrics.values()) if self.metrics else 0,
-            error_rate=sum(m.failed_deliveries for m in self.metrics.values()) / max(1, sum(m.total_messages for m in self.metrics.values())),
+            error_rate=sum(m.failed_deliveries for m in self.metrics.values())
+            / max(1, sum(m.total_messages for m in self.metrics.values())),
             throughput=sum(m.throughput for m in self.metrics.values()),
-            efficiency=self._calculate_global_efficiency()
+            efficiency=self._calculate_global_efficiency(),
         )
 
         status = {
@@ -992,15 +982,14 @@ class HyperCommunicationSystem:
                 "active_connections": sum(len(connections) for connections in self.active_connections.values()) // 2,
                 "total_agents": len(self.active_connections),
                 "available_bandwidth": self.available_bandwidth,
-                "global_bandwidth": self.global_bandwidth
+                "global_bandwidth": self.global_bandwidth,
             },
             "global_metrics": asdict(global_metrics),
             "top_performers": self._get_top_performers(),
             "communication_heatmap": self._generate_communication_heatmap(),
             "quantum_entanglements": {
-                agent: dict(connections) for agent, connections in self.quantum_entanglements.items()
-                if connections
-            }
+                agent: dict(connections) for agent, connections in self.quantum_entanglements.items() if connections
+            },
         }
 
         return status
@@ -1011,13 +1000,15 @@ class HyperCommunicationSystem:
 
         for agent_id, metrics in self.metrics.items():
             if metrics.total_messages > 0:
-                performers.append({
-                    "agent_id": agent_id,
-                    "efficiency": metrics.efficiency,
-                    "success_rate": metrics.successful_deliveries / metrics.total_messages,
-                    "throughput": metrics.throughput,
-                    "average_latency": metrics.average_latency
-                })
+                performers.append(
+                    {
+                        "agent_id": agent_id,
+                        "efficiency": metrics.efficiency,
+                        "success_rate": metrics.successful_deliveries / metrics.total_messages,
+                        "throughput": metrics.throughput,
+                        "average_latency": metrics.average_latency,
+                    }
+                )
 
         # Sort by efficiency
         performers.sort(key=lambda x: x["efficiency"], reverse=True)
@@ -1031,7 +1022,7 @@ class HyperCommunicationSystem:
             if len(patterns) < 2:
                 continue
 
-            source_agent, target_agent = pattern_key.split('_', 1)
+            source_agent, target_agent = pattern_key.split("_", 1)
             frequency = len(patterns)
             avg_priority = statistics.mean([p["priority"] for p in patterns])
 
@@ -1063,46 +1054,41 @@ def main():
     """Command-line interface for testing the hyper-communication system."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Hyper-Communication System')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['connect', 'send', 'status', 'test'],
-                       help='Action to perform')
-    parser.add_argument('--agent1', help='First agent name')
-    parser.add_argument('--agent2', help='Second agent name')
-    parser.add_argument('--tier1', choices=['analysis', 'execution'], help='First agent tier')
-    parser.add_argument('--tier2', choices=['analysis', 'execution'], help='Second agent tier')
-    parser.add_argument('--bandwidth', type=float, default=10.0, help='Bandwidth in Mbps')
-    parser.add_argument('--message', help='Test message content')
-    parser.add_argument('--duration', type=int, default=10, help='Test duration in seconds')
+    parser = argparse.ArgumentParser(description="Hyper-Communication System")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["connect", "send", "status", "test"], help="Action to perform")
+    parser.add_argument("--agent1", help="First agent name")
+    parser.add_argument("--agent2", help="Second agent name")
+    parser.add_argument("--tier1", choices=["analysis", "execution"], help="First agent tier")
+    parser.add_argument("--tier2", choices=["analysis", "execution"], help="Second agent tier")
+    parser.add_argument("--bandwidth", type=float, default=10.0, help="Bandwidth in Mbps")
+    parser.add_argument("--message", help="Test message content")
+    parser.add_argument("--duration", type=int, default=10, help="Test duration in seconds")
 
     args = parser.parse_args()
 
     system = HyperCommunicationSystem(args.storage_dir)
 
-    if args.action == 'connect':
+    if args.action == "connect":
         if not all([args.agent1, args.agent2, args.tier1, args.tier2]):
             print("Error: --agent1, --agent2, --tier1, and --tier2 required for connect")
             sys.exit(1)
 
-        success = system.establish_connection(
-            args.agent1, args.agent2, args.tier1, args.tier2, args.bandwidth
-        )
+        success = system.establish_connection(args.agent1, args.agent2, args.tier1, args.tier2, args.bandwidth)
         print(f"Connection {'established' if success else 'failed'}")
 
-    elif args.action == 'send':
+    elif args.action == "send":
         if not all([args.agent1, args.agent2, args.tier1, args.tier2]):
             print("Error: --agent1, --agent2, --tier1, and --tier2 required for send")
             sys.exit(1)
 
         message_content = args.message or "Test message"
         message_id = system.send_message(
-            args.agent1, args.agent2, args.tier1, args.tier2,
-            MessageType.ANALYSIS_REQUEST,
-            {"content": message_content}
+            args.agent1, args.agent2, args.tier1, args.tier2, MessageType.ANALYSIS_REQUEST, {"content": message_content}
         )
         print(f"Message sent: {message_id}")
 
-    elif args.action == 'status':
+    elif args.action == "status":
         status = system.get_communication_status()
         print("Hyper-Communication System Status:")
         print(f"  Running: {status['system_status']['running']}")
@@ -1112,7 +1098,7 @@ def main():
         print(f"  Global Efficiency: {status['global_metrics']['efficiency']:.1%}")
         print(f"  Error Rate: {status['global_metrics']['error_rate']:.1%}")
 
-    elif args.action == 'test':
+    elif args.action == "test":
         print("Running hyper-communication test...")
 
         # Establish test connections
@@ -1122,9 +1108,12 @@ def main():
         # Send test messages
         for i in range(10):
             system.send_message(
-                "agent1", "agent2", "analysis", "execution",
+                "agent1",
+                "agent2",
+                "analysis",
+                "execution",
                 MessageType.ANALYSIS_REQUEST,
-                {"test_message": f"Test {i+1}", "timestamp": time.time()}
+                {"test_message": f"Test {i+1}", "timestamp": time.time()},
             )
             time.sleep(0.1)
 
@@ -1147,5 +1136,5 @@ def main():
         print(f"  Throughput: {status['global_metrics']['throughput']:.1f} msg/s")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

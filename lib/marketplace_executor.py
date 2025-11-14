@@ -18,6 +18,7 @@ import os
 import subprocess
 from pathlib import Path
 
+
 def main():
     """Main execution function - called when script is executed via exec()"""
 
@@ -42,22 +43,25 @@ def main():
 
         # Search for plugin installation
         home = Path.home()
-        plugin_name = 'LLM-Autonomous-Agent-Plugin-for-Claude'
+        plugin_name = "LLM-Autonomous-Agent-Plugin-for-Claude"
         search_paths = [
-            home / '.claude/plugins/marketplaces' / plugin_name,
-            home / '.config/claude/plugins/marketplaces' / plugin_name,
-            home / '.claude/plugins/autonomous-agent',
-            home / '.config/claude/plugins/autonomous-agent',
+            home / ".claude/plugins/marketplaces" / plugin_name,
+            home / ".config/claude/plugins/marketplaces" / plugin_name,
+            home / ".claude/plugins/autonomous-agent",
+            home / ".config/claude/plugins/autonomous-agent",
         ]
 
         plugin_path = None
         for path in search_paths:
-            if (path / '.claude-plugin/plugin.json').exists():
+            if (path / ".claude-plugin/plugin.json").exists():
                 plugin_path = path
                 break
 
         if not plugin_path:
-            print("ERROR: Cannot determine plugin path. Install plugin from marketplace or run from development directory.", file=sys.stderr)
+            print(
+                "ERROR: Cannot determine plugin path. Install plugin from marketplace or run from development directory.",
+                file=sys.stderr,
+            )
             sys.exit(1)
 
     # Construct script path
@@ -79,6 +83,7 @@ def main():
     except Exception as e:
         print(f"ERROR: Failed to execute script: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 # Make function available for direct execution
 if __name__ == "__main__":

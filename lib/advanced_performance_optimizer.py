@@ -22,15 +22,18 @@ import hashlib
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 @dataclass
 class PerformanceMetric:
     """Performance metric data structure."""
+
     timestamp: float
     cpu_usage: float
     memory_usage: float
@@ -44,6 +47,7 @@ class PerformanceMetric:
 @dataclass
 class OptimizationResult:
     """Optimization result data structure."""
+
     optimization_type: str
     before_metrics: Dict[str, float]
     after_metrics: Dict[str, float]
@@ -101,21 +105,12 @@ class AdvancedPerformanceOptimizer:
                 "performance_history": [],
                 "cache_statistics": {},
                 "agent_load_distribution": {},
-                "optimization_effectiveness": {
-                    "total_optimizations": 0,
-                    "average_improvement": 0.0,
-                    "success_rate": 0.0
-                }
+                "optimization_effectiveness": {"total_optimizations": 0, "average_improvement": 0.0, "success_rate": 0.0},
             }
             self._write_optimization_data(initial_data)
 
         if not self.metrics_file.exists():
-            metrics_data = {
-                "version": "1.0.0",
-                "metrics_history": [],
-                "performance_baselines": {},
-                "trend_data": {}
-            }
+            metrics_data = {"version": "1.0.0", "metrics_history": [], "performance_baselines": {}, "trend_data": {}}
             self._write_metrics_data(metrics_data)
 
         if not self.cache_file.exists():
@@ -124,7 +119,7 @@ class AdvancedPerformanceOptimizer:
                 "cache_entries": {},
                 "hit_rates": {},
                 "predictions": {},
-                "last_cleanup": datetime.now().isoformat()
+                "last_cleanup": datetime.now().isoformat(),
             }
             self._write_cache_data(cache_data)
 
@@ -133,7 +128,7 @@ class AdvancedPerformanceOptimizer:
         try:
             # Load existing models if available
             if self.optimization_file.exists():
-                with open(self.optimization_file, 'r', encoding='utf-8') as f:
+                with open(self.optimization_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     self.performance_models = data.get("performance_models", {})
                     self.caching_predictions = data.get("caching_predictions", {})
@@ -143,14 +138,14 @@ class AdvancedPerformanceOptimizer:
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -161,7 +156,7 @@ class AdvancedPerformanceOptimizer:
     def _read_optimization_data(self) -> Dict[str, Any]:
         """Read optimization data with file locking."""
         try:
-            with open(self.optimization_file, 'r', encoding='utf-8') as f:
+            with open(self.optimization_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -173,7 +168,7 @@ class AdvancedPerformanceOptimizer:
 
     def _write_optimization_data(self, data: Dict[str, Any]):
         """Write optimization data with file locking."""
-        with open(self.optimization_file, 'w', encoding='utf-8') as f:
+        with open(self.optimization_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -183,7 +178,7 @@ class AdvancedPerformanceOptimizer:
     def _read_metrics_data(self) -> Dict[str, Any]:
         """Read metrics data with file locking."""
         try:
-            with open(self.metrics_file, 'r', encoding='utf-8') as f:
+            with open(self.metrics_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -194,7 +189,7 @@ class AdvancedPerformanceOptimizer:
 
     def _write_metrics_data(self, data: Dict[str, Any]):
         """Write metrics data with file locking."""
-        with open(self.metrics_file, 'w', encoding='utf-8') as f:
+        with open(self.metrics_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -204,7 +199,7 @@ class AdvancedPerformanceOptimizer:
     def _read_cache_data(self) -> Dict[str, Any]:
         """Read cache data with file locking."""
         try:
-            with open(self.cache_file, 'r', encoding='utf-8') as f:
+            with open(self.cache_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     return json.load(f)
@@ -215,7 +210,7 @@ class AdvancedPerformanceOptimizer:
 
     def _write_cache_data(self, data: Dict[str, Any]):
         """Write cache data with file locking."""
-        with open(self.cache_file, 'w', encoding='utf-8') as f:
+        with open(self.cache_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -263,22 +258,16 @@ class AdvancedPerformanceOptimizer:
                 "avg_execution_time": metric.execution_time,
                 "avg_quality_score": metric.quality_score,
                 "success_rate": 1.0 if metric.success else 0.0,
-                "sample_count": 1
+                "sample_count": 1,
             }
         else:
             baseline = data["performance_baselines"][key]
             count = baseline["sample_count"]
 
             # Update averages
-            baseline["avg_execution_time"] = (
-                (baseline["avg_execution_time"] * count + metric.execution_time) / (count + 1)
-            )
-            baseline["avg_quality_score"] = (
-                (baseline["avg_quality_score"] * count + metric.quality_score) / (count + 1)
-            )
-            baseline["success_rate"] = (
-                (baseline["success_rate"] * count + (1.0 if metric.success else 0.0)) / (count + 1)
-            )
+            baseline["avg_execution_time"] = (baseline["avg_execution_time"] * count + metric.execution_time) / (count + 1)
+            baseline["avg_quality_score"] = (baseline["avg_quality_score"] * count + metric.quality_score) / (count + 1)
+            baseline["success_rate"] = (baseline["success_rate"] * count + (1.0 if metric.success else 0.0)) / (count + 1)
             baseline["sample_count"] = count + 1
 
     def _update_trend_data(self, data: Dict[str, Any], metric: PerformanceMetric):
@@ -288,11 +277,7 @@ class AdvancedPerformanceOptimizer:
 
         timestamp_key = int(metric.timestamp // 3600)  # Hourly buckets
         if timestamp_key not in data["trend_data"]:
-            data["trend_data"][timestamp_key] = {
-                "metrics": [],
-                "avg_quality": 0.0,
-                "avg_execution_time": 0.0
-            }
+            data["trend_data"][timestamp_key] = {"metrics": [], "avg_quality": 0.0, "avg_execution_time": 0.0}
 
         bucket = data["trend_data"][timestamp_key]
         bucket["metrics"].append(asdict(metric))
@@ -305,8 +290,7 @@ class AdvancedPerformanceOptimizer:
     def _should_trigger_optimization(self, metric: PerformanceMetric) -> bool:
         """Determine if optimization should be triggered based on performance."""
         # Get recent metrics for comparison
-        recent_metrics = [m for m in self.metrics_history
-                         if time.time() - m.timestamp < 3600]  # Last hour
+        recent_metrics = [m for m in self.metrics_history if time.time() - m.timestamp < 3600]  # Last hour
 
         if len(recent_metrics) < 10:
             return False
@@ -396,36 +380,42 @@ class AdvancedPerformanceOptimizer:
 
             # Check for underperforming agents
             if avg_quality < 80:  # Quality threshold
-                opportunities.append({
-                    "type": "agent_quality_improvement",
-                    "agent_name": agent_name,
-                    "current_quality": avg_quality,
-                    "target_quality": 85,
-                    "priority": "high" if avg_quality < 70 else "medium",
-                    "estimated_improvement": min(15, 85 - avg_quality)
-                })
+                opportunities.append(
+                    {
+                        "type": "agent_quality_improvement",
+                        "agent_name": agent_name,
+                        "current_quality": avg_quality,
+                        "target_quality": 85,
+                        "priority": "high" if avg_quality < 70 else "medium",
+                        "estimated_improvement": min(15, 85 - avg_quality),
+                    }
+                )
 
             # Check for slow agents
             if avg_time > 300:  # 5 minutes threshold
-                opportunities.append({
-                    "type": "agent_speed_optimization",
-                    "agent_name": agent_name,
-                    "current_time": avg_time,
-                    "target_time": 240,
-                    "priority": "high" if avg_time > 600 else "medium",
-                    "estimated_improvement": min(30, (avg_time - 240) / avg_time * 100)
-                })
+                opportunities.append(
+                    {
+                        "type": "agent_speed_optimization",
+                        "agent_name": agent_name,
+                        "current_time": avg_time,
+                        "target_time": 240,
+                        "priority": "high" if avg_time > 600 else "medium",
+                        "estimated_improvement": min(30, (avg_time - 240) / avg_time * 100),
+                    }
+                )
 
             # Check for low success rates
             if success_rate < 0.9:  # 90% success threshold
-                opportunities.append({
-                    "type": "agent_reliability_improvement",
-                    "agent_name": agent_name,
-                    "current_success_rate": success_rate,
-                    "target_success_rate": 0.95,
-                    "priority": "high" if success_rate < 0.8 else "medium",
-                    "estimated_improvement": min(10, (0.95 - success_rate) * 100)
-                })
+                opportunities.append(
+                    {
+                        "type": "agent_reliability_improvement",
+                        "agent_name": agent_name,
+                        "current_success_rate": success_rate,
+                        "target_success_rate": 0.95,
+                        "priority": "high" if success_rate < 0.8 else "medium",
+                        "estimated_improvement": min(10, (0.95 - success_rate) * 100),
+                    }
+                )
 
         return opportunities
 
@@ -441,27 +431,31 @@ class AdvancedPerformanceOptimizer:
                 recent_hit_rate = statistics.mean(rate_data[-10:])
 
                 if recent_hit_rate < 0.7:  # 70% hit rate threshold
-                    opportunities.append({
-                        "type": "cache_optimization",
-                        "cache_key": cache_key,
-                        "current_hit_rate": recent_hit_rate,
-                        "target_hit_rate": 0.85,
-                        "priority": "medium",
-                        "estimated_improvement": min(20, (0.85 - recent_hit_rate) * 100)
-                    })
+                    opportunities.append(
+                        {
+                            "type": "cache_optimization",
+                            "cache_key": cache_key,
+                            "current_hit_rate": recent_hit_rate,
+                            "target_hit_rate": 0.85,
+                            "priority": "medium",
+                            "estimated_improvement": min(20, (0.85 - recent_hit_rate) * 100),
+                        }
+                    )
 
         # Check for cache size issues
         cache_entries = cache_data.get("cache_entries", {})
         total_entries = len(cache_entries)
 
         if total_entries > 10000:  # Too many entries
-            opportunities.append({
-                "type": "cache_cleanup",
-                "current_size": total_entries,
-                "target_size": 5000,
-                "priority": "low",
-                "estimated_improvement": 10
-            })
+            opportunities.append(
+                {
+                    "type": "cache_cleanup",
+                    "current_size": total_entries,
+                    "target_size": 5000,
+                    "priority": "low",
+                    "estimated_improvement": 10,
+                }
+            )
 
         return opportunities
 
@@ -471,8 +465,7 @@ class AdvancedPerformanceOptimizer:
 
         # Group recent metrics by agent and task type
         agent_task_load = defaultdict(lambda: defaultdict(int))
-        recent_metrics = [m for m in self.metrics_history
-                         if time.time() - m.timestamp < 3600]  # Last hour
+        recent_metrics = [m for m in self.metrics_history if time.time() - m.timestamp < 3600]  # Last hour
 
         for metric in recent_metrics:
             agent_task_load[metric.agent_name][metric.task_type] += 1
@@ -486,19 +479,19 @@ class AdvancedPerformanceOptimizer:
 
             # Significant imbalance detected
             if max_load > min_load * 3:  # 3x difference
-                most_loaded = max(agent_task_load.keys(),
-                                key=lambda k: sum(agent_task_load[k].values()))
-                least_loaded = min(agent_task_load.keys(),
-                                 key=lambda k: sum(agent_task_load[k].values()))
+                most_loaded = max(agent_task_load.keys(), key=lambda k: sum(agent_task_load[k].values()))
+                least_loaded = min(agent_task_load.keys(), key=lambda k: sum(agent_task_load[k].values()))
 
-                opportunities.append({
-                    "type": "load_balancing",
-                    "most_loaded_agent": most_loaded,
-                    "least_loaded_agent": least_loaded,
-                    "load_ratio": max_load / min_load,
-                    "priority": "medium",
-                    "estimated_improvement": min(25, (max_load - avg_load) / avg_load * 100)
-                })
+                opportunities.append(
+                    {
+                        "type": "load_balancing",
+                        "most_loaded_agent": most_loaded,
+                        "least_loaded_agent": least_loaded,
+                        "load_ratio": max_load / min_load,
+                        "priority": "medium",
+                        "estimated_improvement": min(25, (max_load - avg_load) / avg_load * 100),
+                    }
+                )
 
         return opportunities
 
@@ -507,8 +500,7 @@ class AdvancedPerformanceOptimizer:
         opportunities = []
 
         # Get recent metrics
-        recent_metrics = [m for m in self.metrics_history
-                         if time.time() - m.timestamp < 1800]  # Last 30 minutes
+        recent_metrics = [m for m in self.metrics_history if time.time() - m.timestamp < 1800]  # Last 30 minutes
 
         if len(recent_metrics) < 10:
             return opportunities
@@ -524,39 +516,37 @@ class AdvancedPerformanceOptimizer:
 
         # Check for high resource utilization
         if avg_cpu > 80:  # High CPU usage
-            opportunities.append({
-                "type": "cpu_optimization",
-                "current_usage": avg_cpu,
-                "target_usage": 70,
-                "priority": "high" if avg_cpu > 90 else "medium",
-                "estimated_improvement": min(15, (avg_cpu - 70) / avg_cpu * 100)
-            })
+            opportunities.append(
+                {
+                    "type": "cpu_optimization",
+                    "current_usage": avg_cpu,
+                    "target_usage": 70,
+                    "priority": "high" if avg_cpu > 90 else "medium",
+                    "estimated_improvement": min(15, (avg_cpu - 70) / avg_cpu * 100),
+                }
+            )
 
         if avg_memory > 80:  # High memory usage
-            opportunities.append({
-                "type": "memory_optimization",
-                "current_usage": avg_memory,
-                "target_usage": 70,
-                "priority": "high" if avg_memory > 90 else "medium",
-                "estimated_improvement": min(15, (avg_memory - 70) / avg_memory * 100)
-            })
+            opportunities.append(
+                {
+                    "type": "memory_optimization",
+                    "current_usage": avg_memory,
+                    "target_usage": 70,
+                    "priority": "high" if avg_memory > 90 else "medium",
+                    "estimated_improvement": min(15, (avg_memory - 70) / avg_memory * 100),
+                }
+            )
 
         # Check for resource spikes
         if max_cpu > 95:  # CPU spikes
-            opportunities.append({
-                "type": "cpu_spike_smoothing",
-                "max_usage": max_cpu,
-                "priority": "medium",
-                "estimated_improvement": 10
-            })
+            opportunities.append(
+                {"type": "cpu_spike_smoothing", "max_usage": max_cpu, "priority": "medium", "estimated_improvement": 10}
+            )
 
         if max_memory > 95:  # Memory spikes
-            opportunities.append({
-                "type": "memory_spike_smoothing",
-                "max_usage": max_memory,
-                "priority": "medium",
-                "estimated_improvement": 10
-            })
+            opportunities.append(
+                {"type": "memory_spike_smoothing", "max_usage": max_memory, "priority": "medium", "estimated_improvement": 10}
+            )
 
         return opportunities
 
@@ -608,8 +598,7 @@ class AdvancedPerformanceOptimizer:
 
         # Get agent performance data
         metrics_data = self._read_metrics_data()
-        agent_metrics = [m for m in metrics_data.get("metrics_history", [])
-                        if m.get("agent_name") == agent_name]
+        agent_metrics = [m for m in metrics_data.get("metrics_history", []) if m.get("agent_name") == agent_name]
 
         if not agent_metrics:
             return False
@@ -622,7 +611,7 @@ class AdvancedPerformanceOptimizer:
             "Adjust quality thresholds",
             "Enhance error handling",
             "Improve input validation",
-            "Optimize execution parameters"
+            "Optimize execution parameters",
         ]
 
         # Record optimization application
@@ -632,7 +621,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"quality": target_quality},
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.8,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -648,7 +637,7 @@ class AdvancedPerformanceOptimizer:
             "Enable parallel processing",
             "Optimize algorithm complexity",
             "Implement result caching",
-            "Reduce I/O operations"
+            "Reduce I/O operations",
         ]
 
         # Record optimization application
@@ -658,7 +647,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"execution_time": target_time},
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.75,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -674,7 +663,7 @@ class AdvancedPerformanceOptimizer:
             "Implement retry mechanisms",
             "Add input validation",
             "Enhance error recovery",
-            "Improve timeout handling"
+            "Improve timeout handling",
         ]
 
         # Record optimization application
@@ -684,7 +673,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"success_rate": target_success_rate},
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.85,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -700,7 +689,7 @@ class AdvancedPerformanceOptimizer:
             "Increase cache size",
             "Optimize cache keys",
             "Implement smart eviction",
-            "Add prefetching logic"
+            "Add prefetching logic",
         ]
 
         # Update cache data
@@ -708,12 +697,14 @@ class AdvancedPerformanceOptimizer:
         if "optimizations" not in cache_data:
             cache_data["optimizations"] = []
 
-        cache_data["optimizations"].append({
-            "type": "hit_rate_improvement",
-            "cache_key": cache_key,
-            "applied_at": datetime.now().isoformat(),
-            "target_hit_rate": target_hit_rate
-        })
+        cache_data["optimizations"].append(
+            {
+                "type": "hit_rate_improvement",
+                "cache_key": cache_key,
+                "applied_at": datetime.now().isoformat(),
+                "target_hit_rate": target_hit_rate,
+            }
+        )
 
         self._write_cache_data(cache_data)
 
@@ -724,7 +715,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"hit_rate": target_hit_rate},
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.7,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -740,11 +731,7 @@ class AdvancedPerformanceOptimizer:
         cache_entries = cache_data.get("cache_entries", {})
 
         # Sort by last access time and keep most recent
-        sorted_entries = sorted(
-            cache_entries.items(),
-            key=lambda x: x[1].get("last_access", 0),
-            reverse=True
-        )
+        sorted_entries = sorted(cache_entries.items(), key=lambda x: x[1].get("last_access", 0), reverse=True)
 
         # Keep only target_size entries
         cleaned_entries = dict(sorted_entries[:target_size])
@@ -760,7 +747,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"cache_size": target_size},
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.9,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -776,7 +763,7 @@ class AdvancedPerformanceOptimizer:
             "Redistribute task assignments",
             "Adjust agent weights",
             "Implement dynamic routing",
-            "Add capacity scaling"
+            "Add capacity scaling",
         ]
 
         # Record optimization application
@@ -786,7 +773,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"load_ratio": 1.5},  # Target ratio
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.8,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -802,7 +789,7 @@ class AdvancedPerformanceOptimizer:
             "Implement CPU throttling",
             "Optimize algorithm complexity",
             "Reduce concurrent operations",
-            "Add CPU affinity settings"
+            "Add CPU affinity settings",
         ]
 
         # Record optimization application
@@ -812,7 +799,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"cpu_usage": target_usage},
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.75,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -828,7 +815,7 @@ class AdvancedPerformanceOptimizer:
             "Implement memory pooling",
             "Optimize data structures",
             "Add garbage collection tuning",
-            "Reduce memory footprint"
+            "Reduce memory footprint",
         ]
 
         # Record optimization application
@@ -838,7 +825,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"memory_usage": target_usage},
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.75,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -853,7 +840,7 @@ class AdvancedPerformanceOptimizer:
             "Implement request throttling",
             "Add CPU usage monitoring",
             "Implement adaptive scheduling",
-            "Add burst protection"
+            "Add burst protection",
         ]
 
         # Record optimization application
@@ -863,7 +850,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"max_cpu": 85},  # Target max CPU
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.7,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -878,7 +865,7 @@ class AdvancedPerformanceOptimizer:
             "Implement memory monitoring",
             "Add memory pressure handling",
             "Implement adaptive allocation",
-            "Add memory leak detection"
+            "Add memory leak detection",
         ]
 
         # Record optimization application
@@ -888,7 +875,7 @@ class AdvancedPerformanceOptimizer:
             after_metrics={"max_memory": 85},  # Target max memory
             improvement_percentage=opportunity["estimated_improvement"],
             confidence=0.7,
-            applied_at=datetime.now()
+            applied_at=datetime.now(),
         )
 
         self.optimization_history.append(result)
@@ -898,20 +885,16 @@ class AdvancedPerformanceOptimizer:
         """Record the result of an applied optimization."""
         optimization_data = self._read_optimization_data()
 
-        optimization_data["optimizations_applied"].append({
-            "timestamp": datetime.now().isoformat(),
-            "opportunity": opportunity,
-            "status": "applied"
-        })
+        optimization_data["optimizations_applied"].append(
+            {"timestamp": datetime.now().isoformat(), "opportunity": opportunity, "status": "applied"}
+        )
 
         # Update effectiveness metrics
         effectiveness = optimization_data["optimization_effectiveness"]
         effectiveness["total_optimizations"] += 1
 
         if len(self.optimization_history) > 0:
-            avg_improvement = statistics.mean(
-                opt.improvement_percentage for opt in self.optimization_history[-10:]
-            )
+            avg_improvement = statistics.mean(opt.improvement_percentage for opt in self.optimization_history[-10:])
             effectiveness["average_improvement"] = avg_improvement
 
         optimization_data["last_updated"] = datetime.now().isoformat()
@@ -938,7 +921,7 @@ class AdvancedPerformanceOptimizer:
                 "task_type": metric.task_type,
                 "agent_name": metric.agent_name,
                 "hour_of_day": datetime.fromtimestamp(metric.timestamp).hour,
-                "day_of_week": datetime.fromtimestamp(metric.timestamp).weekday()
+                "day_of_week": datetime.fromtimestamp(metric.timestamp).weekday(),
             }
             features.append(feature)
             targets.append(metric.execution_time)
@@ -949,7 +932,7 @@ class AdvancedPerformanceOptimizer:
             self.performance_models["execution_time"] = {
                 "features": features[:10],  # Keep last 10 for training
                 "targets": targets[:10],
-                "updated_at": datetime.now().isoformat()
+                "updated_at": datetime.now().isoformat(),
             }
 
     def _update_quality_prediction_model(self):
@@ -958,11 +941,7 @@ class AdvancedPerformanceOptimizer:
         targets = []
 
         for metric in list(self.metrics_history)[-100:]:
-            feature = {
-                "task_type": metric.task_type,
-                "agent_name": metric.agent_name,
-                "execution_time": metric.execution_time
-            }
+            feature = {"task_type": metric.task_type, "agent_name": metric.agent_name, "execution_time": metric.execution_time}
             features.append(feature)
             targets.append(metric.quality_score)
 
@@ -970,7 +949,7 @@ class AdvancedPerformanceOptimizer:
             self.performance_models["quality_prediction"] = {
                 "features": features[:10],
                 "targets": targets[:10],
-                "updated_at": datetime.now().isoformat()
+                "updated_at": datetime.now().isoformat(),
             }
 
     def _update_success_probability_model(self):
@@ -984,7 +963,7 @@ class AdvancedPerformanceOptimizer:
                 "agent_name": metric.agent_name,
                 "execution_time": metric.execution_time,
                 "cpu_usage": metric.cpu_usage,
-                "memory_usage": metric.memory_usage
+                "memory_usage": metric.memory_usage,
             }
             features.append(feature)
             targets.append(1.0 if metric.success else 0.0)
@@ -993,7 +972,7 @@ class AdvancedPerformanceOptimizer:
             self.performance_models["success_probability"] = {
                 "features": features[:10],
                 "targets": targets[:10],
-                "updated_at": datetime.now().isoformat()
+                "updated_at": datetime.now().isoformat(),
             }
 
     def _analyze_quality_factors(self, agent_metrics: List[Dict[str, Any]]) -> Dict[str, float]:
@@ -1005,19 +984,17 @@ class AdvancedPerformanceOptimizer:
         factors = {}
 
         # CPU usage correlation
-        cpu_qualities = [(m.get("cpu_usage", 0), m.get("quality_score", 0))
-                        for m in agent_metrics if "cpu_usage" in m]
+        cpu_qualities = [(m.get("cpu_usage", 0), m.get("quality_score", 0)) for m in agent_metrics if "cpu_usage" in m]
         if len(cpu_qualities) > 5:
-            cpu_corr = self._calculate_correlation([c for c, q in cpu_qualities],
-                                                 [q for c, q in cpu_qualities])
+            cpu_corr = self._calculate_correlation([c for c, q in cpu_qualities], [q for c, q in cpu_qualities])
             factors["cpu_quality_correlation"] = cpu_corr
 
         # Execution time correlation
-        time_qualities = [(m.get("execution_time", 0), m.get("quality_score", 0))
-                         for m in agent_metrics if "execution_time" in m]
+        time_qualities = [
+            (m.get("execution_time", 0), m.get("quality_score", 0)) for m in agent_metrics if "execution_time" in m
+        ]
         if len(time_qualities) > 5:
-            time_corr = self._calculate_correlation([t for t, q in time_qualities],
-                                                  [q for t, q in time_qualities])
+            time_corr = self._calculate_correlation([t for t, q in time_qualities], [q for t, q in time_qualities])
             factors["time_quality_correlation"] = time_corr
 
         return factors
@@ -1062,23 +1039,28 @@ class AdvancedPerformanceOptimizer:
         metrics_data = self._read_metrics_data()
 
         # Calculate recent performance trends
-        recent_metrics = [m for m in metrics_data.get("metrics_history", [])
-                         if m.get("timestamp", 0) > time.time() - 3600]  # Last hour
+        recent_metrics = [
+            m for m in metrics_data.get("metrics_history", []) if m.get("timestamp", 0) > time.time() - 3600
+        ]  # Last hour
 
         summary = {
             "optimization_status": {
                 "running": self.running,
                 "total_optimizations": len(self.optimization_history),
-                "last_optimization": self.optimization_history[-1].applied_at.isoformat()
-                                  if self.optimization_history else None
+                "last_optimization": (
+                    self.optimization_history[-1].applied_at.isoformat() if self.optimization_history else None
+                ),
             },
             "performance_trends": {
-                "recent_quality": statistics.mean([m.get("quality_score", 0)
-                                               for m in recent_metrics]) if recent_metrics else 0,
-                "recent_execution_time": statistics.mean([m.get("execution_time", 0)
-                                                      for m in recent_metrics]) if recent_metrics else 0,
-                "recent_success_rate": sum(1 for m in recent_metrics
-                                         if m.get("success", False)) / len(recent_metrics) if recent_metrics else 0
+                "recent_quality": (
+                    statistics.mean([m.get("quality_score", 0) for m in recent_metrics]) if recent_metrics else 0
+                ),
+                "recent_execution_time": (
+                    statistics.mean([m.get("execution_time", 0) for m in recent_metrics]) if recent_metrics else 0
+                ),
+                "recent_success_rate": (
+                    sum(1 for m in recent_metrics if m.get("success", False)) / len(recent_metrics) if recent_metrics else 0
+                ),
             },
             "optimization_effectiveness": optimization_data.get("optimization_effectiveness", {}),
             "active_optimizations": [
@@ -1086,10 +1068,10 @@ class AdvancedPerformanceOptimizer:
                     "type": opt.optimization_type,
                     "improvement": opt.improvement_percentage,
                     "confidence": opt.confidence,
-                    "applied_at": opt.applied_at.isoformat()
+                    "applied_at": opt.applied_at.isoformat(),
                 }
                 for opt in self.optimization_history[-10:]  # Last 10 optimizations
-            ]
+            ],
         }
 
         return summary
@@ -1105,17 +1087,11 @@ class AdvancedPerformanceOptimizer:
         Returns:
             Dictionary with predicted metrics
         """
-        predictions = {
-            "execution_time": 0.0,
-            "quality_score": 0.0,
-            "success_probability": 0.0,
-            "confidence": 0.0
-        }
+        predictions = {"execution_time": 0.0, "quality_score": 0.0, "success_probability": 0.0, "confidence": 0.0}
 
         try:
             # Use historical data for prediction
-            historical_metrics = [m for m in self.metrics_history
-                               if m.task_type == task_type and m.agent_name == agent_name]
+            historical_metrics = [m for m in self.metrics_history if m.task_type == task_type and m.agent_name == agent_name]
 
             if len(historical_metrics) >= 3:
                 predictions["execution_time"] = statistics.mean(m.execution_time for m in historical_metrics)
@@ -1141,24 +1117,23 @@ def main():
     """Command-line interface for testing the performance optimizer."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Advanced Performance Optimizer')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['start', 'stop', 'status', 'predict'],
-                       help='Action to perform')
-    parser.add_argument('--task-type', help='Task type for prediction')
-    parser.add_argument('--agent', help='Agent name for prediction')
+    parser = argparse.ArgumentParser(description="Advanced Performance Optimizer")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["start", "stop", "status", "predict"], help="Action to perform")
+    parser.add_argument("--task-type", help="Task type for prediction")
+    parser.add_argument("--agent", help="Agent name for prediction")
 
     args = parser.parse_args()
 
     optimizer = AdvancedPerformanceOptimizer(args.storage_dir)
 
-    if args.action == 'start':
+    if args.action == "start":
         optimizer.start_optimization()
 
-    elif args.action == 'stop':
+    elif args.action == "stop":
         optimizer.stop_optimization()
 
-    elif args.action == 'status':
+    elif args.action == "status":
         summary = optimizer.get_optimization_summary()
         print("Performance Optimization Status:")
         print(f"  Running: {summary['optimization_status']['running']}")
@@ -1167,7 +1142,7 @@ def main():
         print(f"  Recent Execution Time: {summary['performance_trends']['recent_execution_time']:.1f}s")
         print(f"  Recent Success Rate: {summary['performance_trends']['recent_success_rate']:.1%}")
 
-    elif args.action == 'predict':
+    elif args.action == "predict":
         if not args.task_type or not args.agent:
             print("Error: --task-type and --agent required for predict")
             sys.exit(1)
@@ -1192,5 +1167,5 @@ def main():
         optimizer._write_optimization_data(optimization_data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

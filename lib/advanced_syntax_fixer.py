@@ -10,8 +10,10 @@ import sys
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
 
+
 class AdvancedSyntaxFixer:
     def __init__(self, lib_dir: str = "lib"):
+        """  Init  ."""
         self.lib_dir = Path(lib_dir)
         self.fixes_applied = []
         self.errors_fixed = 0
@@ -26,25 +28,25 @@ class AdvancedSyntaxFixer:
 
     def fix_import_missing(self, content: str, file_path: str) -> str:
         """Add missing imports based on content analysis"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         imports_to_add = []
 
         # Check what imports are needed
-        if 'Path(' in content and 'from pathlib import Path' not in content and 'import pathlib' not in content:
-            imports_to_add.append('from pathlib import Path')
+        if "Path(" in content and "from pathlib import Path" not in content and "import pathlib" not in content:
+            imports_to_add.append("from pathlib import Path")
 
-        if 'json.loads' in content and 'import json' not in content:
-            imports_to_add.append('import json')
+        if "json.loads" in content and "import json" not in content:
+            imports_to_add.append("import json")
 
-        if 'datetime.datetime' in content and 'import datetime' not in content:
-            imports_to_add.append('import datetime')
+        if "datetime.datetime" in content and "import datetime" not in content:
+            imports_to_add.append("import datetime")
 
-        if 'time.time' in content and 'import time' not in content:
-            imports_to_add.append('import time')
+        if "time.time" in content and "import time" not in content:
+            imports_to_add.append("import time")
 
-        if 'typing.' in content and 'from typing import' not in content:
+        if "typing." in content and "from typing import" not in content:
             typing_imports = set()
-            for match in re.findall(r'typing\.(\w+)', content):
+            for match in re.findall(r"typing\.(\w+)", content):
                 typing_imports.add(match)
             if typing_imports:
                 imports_to_add.append(f'from typing import {", ".join(sorted(typing_imports))}')
@@ -67,10 +69,10 @@ class AdvancedSyntaxFixer:
                 elif docstring_ended and (line.strip().startswith('"""') or line.strip().startswith("'''")):
                     insert_line = i + 1
                     break
-                elif docstring_ended and line.strip() and not line.strip().startswith('#'):
+                elif docstring_ended and line.strip() and not line.strip().startswith("#"):
                     insert_line = i
                     break
-                elif not docstring_ended and line.strip() and not line.startswith('#!') and not line.startswith('# -*-'):
+                elif not docstring_ended and line.strip() and not line.startswith("#!") and not line.startswith("# -*-"):
                     insert_line = i
                     break
 
@@ -80,11 +82,11 @@ class AdvancedSyntaxFixer:
 
             self.fixes_applied.append(f"Added imports: {', '.join(imports_to_add)}")
 
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     def fix_unmatched_parentheses(self, content: str) -> str:
         """Fix unmatched parentheses in function definitions and method calls"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for line in lines:
@@ -105,17 +107,27 @@ class AdvancedSyntaxFixer:
                     self.fixes_applied.append(f"Fixed function definition: {original_line.strip()}")
 
             # Fix unmatched parentheses in print statements
-            if 'print(' in line and not line.rstrip().endswith(')') and not line.rstrip().endswith('"""') and not line.rstrip().endswith("'''"):
+            if (
+                "print(" in line
+                and not line.rstrip().endswith(")")
+                and not line.rstrip().endswith('"""')
+                and not line.rstrip().endswith("'''")
+            ):
                 # Count parentheses
-                open_count = line.count('(')
-                close_count = line.count(')')
+                open_count = line.count("(")
+                close_count = line.count(")")
                 if open_count > close_count:
-                    line = line + ')' * (open_count - close_count)
+                    line = line + ")" * (open_count - close_count)
                     if line != original_line:
                         self.fixes_applied.append(f"Fixed unmatched parentheses: {original_line.strip()}")
 
             # Fix malformed return statements
-            if line.strip().startswith('return') and '"' in line and not line.strip().endswith('"') and not line.strip().endswith("'"):
+            if (
+                line.strip().startswith("return")
+                and '"' in line
+                and not line.strip().endswith('"')
+                and not line.strip().endswith("'")
+            ):
                 # Check if it's a return statement with malformed string
                 return_match = re.match(r'(\s*return\s+)([^"\n]*"[^"\n]*)', line)
                 if return_match:
@@ -129,16 +141,16 @@ class AdvancedSyntaxFixer:
 
             fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_unterminated_strings(self, content: str) -> str:
         """Fix unterminated string literals"""
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for line in lines:
             # Check for unterminated string literals
-            if ('"' in line or "'" in line) and not line.strip().startswith('#'):
+            if ('"' in line or "'" in line) and not line.strip().startswith("#"):
                 # Count quote pairs
                 double_quotes = line.count('"')
                 single_quotes = line.count("'")
@@ -161,29 +173,29 @@ class AdvancedSyntaxFixer:
 
             fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_unicode_characters(self, content: str) -> str:
         """Remove or replace Unicode characters that cause encoding issues"""
         # Replace common Unicode emojis and symbols
         unicode_replacements = {
-            '\U0001f504': '[ROTATING]',
-            '\U0001f680': '[ROCKET]',
-            '\U00002705': '[CHECK]',
-            '\U0000274c': '[X]',
-            '\U000026a0': '[WARNING]',
-            '\U00002139': '[INFO]',
-            '\U0001f4ca': '[CHART]',
-            '\U0001f4c1': '[FOLDER]',
-            '\U0001f527': '[TOOL]',
-            '\U0001f389': '[PARTY]',
-            '\U0001f4a1': '[IDEA]',
-            '\U0001fe5f': '[HOSPITAL]',
-            '\U0001f4c8': '[UP_TREND]',
-            '\U0001f4c9': '[DOWN_TREND]'
+            "\U0001f504": "[ROTATING]",
+            "\U0001f680": "[ROCKET]",
+            "\U00002705": "[CHECK]",
+            "\U0000274c": "[X]",
+            "\U000026a0": "[WARNING]",
+            "\U00002139": "[INFO]",
+            "\U0001f4ca": "[CHART]",
+            "\U0001f4c1": "[FOLDER]",
+            "\U0001f527": "[TOOL]",
+            "\U0001f389": "[PARTY]",
+            "\U0001f4a1": "[IDEA]",
+            "\U0001fe5f": "[HOSPITAL]",
+            "\U0001f4c8": "[UP_TREND]",
+            "\U0001f4c9": "[DOWN_TREND]",
         }
 
-        lines = content.split('\n')
+        lines = content.split("\n")
         fixed_lines = []
 
         for line in lines:
@@ -192,39 +204,46 @@ class AdvancedSyntaxFixer:
                 line = line.replace(unicode_char, replacement)
 
             # Remove any remaining non-ASCII characters from print statements
-            if 'print(' in line:
+            if "print(" in line:
                 # Remove any non-ASCII characters
-                line = re.sub(r'[^\x00-\x7F]+', '', line)
+                line = re.sub(r"[^\x00-\x7F]+", "", line)
                 # Fix empty print statements
-                if 'print()' in line:
-                    line = line.replace('print()', 'print("Processing...")')
+                if "print()" in line:
+                    line = line.replace("print()", 'print("Processing...")')
 
             if line != original_line:
                 self.fixes_applied.append(f"Fixed Unicode characters: {original_line[:50]}...")
 
             fixed_lines.append(line)
 
-        return '\n'.join(fixed_lines)
+        return "\n".join(fixed_lines)
 
     def fix_invalid_line_start(self, content: str) -> str:
         """Fix files that start with invalid syntax on line 2"""
-        lines = content.split('\n')
+        lines = content.split("\n")
 
         if len(lines) >= 2:
             line2 = lines[1]
             # Check for common invalid patterns on line 2
-            if line2.strip() and not line2.startswith('#') and not line2.startswith('"""') and not line2.startswith("'''") and not line2.startswith('import') and not line2.startswith('from'):
+            if (
+                line2.strip()
+                and not line2.startswith("#")
+                and not line2.startswith('"""')
+                and not line2.startswith("'''")
+                and not line2.startswith("import")
+                and not line2.startswith("from")
+            ):
                 # If line 2 has invalid syntax, comment it out or fix it
                 if re.match(r'^[^"\'#]*[\(\[\{]', line2):
                     lines[1] = f"# {line2}"
                     self.fixes_applied.append(f"Commented out invalid line 2: {line2[:30]}...")
 
-        return '\n'.join(lines)
+        return "\n".join(lines)
 
     def fix_file(self, file_path: Path) -> bool:
         """Fix syntax errors in a single file with advanced techniques"""
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 original_content = f.read()
 
             content = original_content
@@ -242,7 +261,7 @@ class AdvancedSyntaxFixer:
                 ast.parse(content)
                 # If parsing succeeds, write the fixed content
                 if content != original_content:
-                    with open(file_path, 'w', encoding='utf-8') as f:
+                    with open(file_path, "w", encoding="utf-8") as f:
                         f.write(content)
                     print(f"FIXED: {file_path}")
                     self.errors_fixed += 1
@@ -253,7 +272,7 @@ class AdvancedSyntaxFixer:
             except SyntaxError as e:
                 print(f"ERROR: Still has syntax errors: {file_path} - {e}")
                 # Try to provide more specific error info
-                lines = content.split('\n')
+                lines = content.split("\n")
                 if e.lineno and e.lineno <= len(lines):
                     error_line = lines[e.lineno - 1]
                     print(f"       Error line {e.lineno}: {error_line.strip()}")
@@ -273,7 +292,7 @@ class AdvancedSyntaxFixer:
 
         for file_path in python_files:
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     content = f.read()
                 ast.parse(content)
             except SyntaxError:
@@ -291,7 +310,7 @@ class AdvancedSyntaxFixer:
         final_errors = []
         for file_path in python_files:
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     content = f.read()
                 ast.parse(content)
             except SyntaxError:
@@ -300,13 +319,14 @@ class AdvancedSyntaxFixer:
                 pass
 
         return {
-            'total_files': len(python_files),
-            'initial_errors': len(error_files),
-            'files_fixed': self.errors_fixed,
-            'remaining_errors': len(final_errors),
-            'error_files': final_errors,
-            'fixes_applied': self.fixes_applied
+            "total_files": len(python_files),
+            "initial_errors": len(error_files),
+            "files_fixed": self.errors_fixed,
+            "remaining_errors": len(final_errors),
+            "error_files": final_errors,
+            "fixes_applied": self.fixes_applied,
         }
+
 
 def main():
     """Main execution function"""
@@ -318,32 +338,33 @@ def main():
     fixer = AdvancedSyntaxFixer(lib_dir)
     result = fixer.fix_all_error_files()
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("ADVANCED SYNTAX FIX REPORT")
-    print("="*60)
+    print("=" * 60)
     print(f"Total Python files: {result['total_files']}")
     print(f"Initial syntax errors: {result['initial_errors']}")
     print(f"Files fixed: {result['files_fixed']}")
     print(f"Remaining errors: {result['remaining_errors']}")
     print(f"Total fixes applied: {len(result['fixes_applied'])}")
 
-    if result['remaining_errors'] > 0:
+    if result["remaining_errors"] > 0:
         print(f"\nRemaining files with errors:")
-        for error_file in result['error_files'][:10]:
+        for error_file in result["error_files"][:10]:
             print(f"  - {error_file}")
-        if len(result['error_files']) > 10:
+        if len(result["error_files"]) > 10:
             print(f"  ... and {len(result['error_files']) - 10} more")
     else:
         print("\nSUCCESS: All Python files now compile successfully!")
 
-    if result['fixes_applied']:
+    if result["fixes_applied"]:
         print(f"\nSample fixes applied:")
-        for fix in result['fixes_applied'][:15]:
+        for fix in result["fixes_applied"][:15]:
             print(f"  - {fix}")
-        if len(result['fixes_applied']) > 15:
+        if len(result["fixes_applied"]) > 15:
             print(f"  ... and {len(result['fixes_applied']) - 15} more fixes")
 
     return result
+
 
 if __name__ == "__main__":
     main()

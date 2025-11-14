@@ -21,6 +21,7 @@ from typing import Dict, Any, List, Optional
 # SAFE STRING OPERATION LIBRARY - Replace all unsafe operations in orchestrator
 # ============================================================================
 
+
 def safe_split(text: str, delimiter: str, maxsplit: int = -1) -> List[str]:
     """
     Safe string splitting that prevents empty parts and handles None values.
@@ -49,6 +50,7 @@ def safe_split(text: str, delimiter: str, maxsplit: int = -1) -> List[str]:
         return [part.strip() for part in parts if part.strip()]
     except (ValueError, TypeError, AttributeError):
         return []
+
 
 def safe_join(parts: List[str], separator: str = " ") -> str:
     """
@@ -79,6 +81,7 @@ def safe_join(parts: List[str], separator: str = " ") -> str:
     except (ValueError, TypeError):
         return ""
 
+
 def safe_get_part(text: str, delimiter: str, index: int, default: str = "") -> str:
     """
     Safe extraction of split operation parts with automatic fallback.
@@ -104,6 +107,7 @@ def safe_get_part(text: str, delimiter: str, index: int, default: str = "") -> s
     if 0 <= index < len(parts):
         return parts[index]
     return default
+
 
 def safe_extract_after(text: str, marker: str) -> str:
     """
@@ -136,6 +140,7 @@ def safe_extract_after(text: str, marker: str) -> str:
     except (ValueError, TypeError, AttributeError):
         return ""
 
+
 def safe_extract_between(text: str, start_marker: str, end_marker: str) -> str:
     """
     Safe extraction of content between two markers.
@@ -164,18 +169,15 @@ def safe_extract_between(text: str, start_marker: str, end_marker: str) -> str:
             return parts[0].strip()
     return after_start
 
+
 # ============================================================================
 # SAFE COMMAND PARSING FUNCTIONS - Replace unsafe versions in orchestrator
 # ============================================================================
 
+
 def safe_parse_dashboard_args(user_input: str) -> Dict[str, Any]:
     """Safe version of parse_dashboard_args - prevents empty text blocks."""
-    args = {
-        'host': 'localhost',
-        'port': 5000,
-        'patterns_dir': '.claude-patterns',
-        'auto_open_browser': True
-    }
+    args = {"host": "localhost", "port": 5000, "patterns_dir": ".claude-patterns", "auto_open_browser": True}
 
     if not user_input:
         return args
@@ -185,39 +187,35 @@ def safe_parse_dashboard_args(user_input: str) -> Dict[str, Any]:
         return args
 
     # Safe extraction with fallbacks - use proper extraction logic
-    if '--host' in cmd:
-        host_value = safe_extract_after(cmd, '--host')
+    if "--host" in cmd:
+        host_value = safe_extract_after(cmd, "--host")
         # Extract just the first word after --host
-        host_parts = safe_split(host_value, ' ', 1)
-        args['host'] = host_parts[0] if host_parts else 'localhost'
+        host_parts = safe_split(host_value, " ", 1)
+        args["host"] = host_parts[0] if host_parts else "localhost"
 
-    if '--port' in cmd:
-        port_value = safe_extract_after(cmd, '--port')
-        port_parts = safe_split(port_value, ' ', 1)
-        port_str = port_parts[0] if port_parts else '5000'
+    if "--port" in cmd:
+        port_value = safe_extract_after(cmd, "--port")
+        port_parts = safe_split(port_value, " ", 1)
+        port_str = port_parts[0] if port_parts else "5000"
         try:
-            args['port'] = int(port_str) if port_str.isdigit() else 5000
+            args["port"] = int(port_str) if port_str.isdigit() else 5000
         except (ValueError, TypeError):
-            args['port'] = 5000
+            args["port"] = 5000
 
-    if '--patterns-dir' in cmd:
-        patterns_value = safe_extract_after(cmd, '--patterns-dir')
-        patterns_parts = safe_split(patterns_value, ' ', 1)
-        args['patterns_dir'] = patterns_parts[0] if patterns_parts else '.claude-patterns'
+    if "--patterns-dir" in cmd:
+        patterns_value = safe_extract_after(cmd, "--patterns-dir")
+        patterns_parts = safe_split(patterns_value, " ", 1)
+        args["patterns_dir"] = patterns_parts[0] if patterns_parts else ".claude-patterns"
 
-    if '--no-browser' in cmd:
-        args['auto_open_browser'] = False
+    if "--no-browser" in cmd:
+        args["auto_open_browser"] = False
 
     return args
 
+
 def safe_parse_queue_add_args(user_input: str) -> Dict[str, Any]:
     """Safe version of queue add argument parsing."""
-    args = {
-        'name': '',
-        'description': '',
-        'command': '',
-        'priority': 'medium'
-    }
+    args = {"name": "", "description": "", "command": "", "priority": "medium"}
 
     if not user_input:
         return args
@@ -227,38 +225,34 @@ def safe_parse_queue_add_args(user_input: str) -> Dict[str, Any]:
         return args
 
     # Safe argument extraction with non-empty defaults
-    if '--name' in cmd:
-        name = safe_extract_between(cmd, '--name', '--description')
-        if not name and '--description' not in cmd:
-            name = safe_extract_after(cmd, '--name')
-        args['name'] = name or 'Untitled Task'
+    if "--name" in cmd:
+        name = safe_extract_between(cmd, "--name", "--description")
+        if not name and "--description" not in cmd:
+            name = safe_extract_after(cmd, "--name")
+        args["name"] = name or "Untitled Task"
 
-    if '--description' in cmd:
-        desc = safe_extract_between(cmd, '--description', '--command')
-        if not desc and '--command' not in cmd:
-            desc = safe_extract_after(cmd, '--description')
-        args['description'] = desc or 'No description provided'
+    if "--description" in cmd:
+        desc = safe_extract_between(cmd, "--description", "--command")
+        if not desc and "--command" not in cmd:
+            desc = safe_extract_after(cmd, "--description")
+        args["description"] = desc or "No description provided"
 
-    if '--command' in cmd:
-        cmd_part = safe_extract_between(cmd, '--command', '--priority')
-        if not cmd_part and '--priority' not in cmd:
-            cmd_part = safe_extract_after(cmd, '--command')
-        args['command'] = cmd_part or 'No command specified'
+    if "--command" in cmd:
+        cmd_part = safe_extract_between(cmd, "--command", "--priority")
+        if not cmd_part and "--priority" not in cmd:
+            cmd_part = safe_extract_after(cmd, "--command")
+        args["command"] = cmd_part or "No command specified"
 
-    if '--priority' in cmd:
-        priority = safe_get_part(cmd, '--priority', 1, 'medium')
-        args['priority'] = priority if priority in ['low', 'medium', 'high'] else 'medium'
+    if "--priority" in cmd:
+        priority = safe_get_part(cmd, "--priority", 1, "medium")
+        args["priority"] = priority if priority in ["low", "medium", "high"] else "medium"
 
     return args
 
+
 def safe_parse_preference_args(user_input: str) -> Dict[str, Any]:
     """Safe version of preference argument parsing."""
-    args = {
-        'key': '',
-        'value': '',
-        'export': False,
-        'list': False
-    }
+    args = {"key": "", "value": "", "export": False, "list": False}
 
     if not user_input:
         return args
@@ -268,22 +262,23 @@ def safe_parse_preference_args(user_input: str) -> Dict[str, Any]:
         return args
 
     # Safe extraction with defaults
-    if '--key' in cmd:
-        key = safe_extract_between(cmd, '--key', '--value')
-        if not key and '--value' not in cmd:
-            key = safe_extract_after(cmd, '--key')
-        args['key'] = key or 'unknown_preference'
+    if "--key" in cmd:
+        key = safe_extract_between(cmd, "--key", "--value")
+        if not key and "--value" not in cmd:
+            key = safe_extract_after(cmd, "--key")
+        args["key"] = key or "unknown_preference"
 
-    if '--value' in cmd:
-        args['value'] = safe_extract_after(cmd, '--value') or 'default_value'
+    if "--value" in cmd:
+        args["value"] = safe_extract_after(cmd, "--value") or "default_value"
 
-    if '--export' in cmd:
-        args['export'] = True
+    if "--export" in cmd:
+        args["export"] = True
 
-    if '--list' in cmd:
-        args['list'] = True
+    if "--list" in cmd:
+        args["list"] = True
 
     return args
+
 
 def safe_extract_remaining_args(text: str, start_index: int) -> str:
     """
@@ -308,17 +303,19 @@ def safe_extract_remaining_args(text: str, start_index: int) -> str:
         return ""
 
     try:
-        parts = safe_split(text, ' ')
+        parts = safe_split(text, " ")
         if start_index < len(parts):
             remaining_parts = parts[start_index:]
-            return safe_join(remaining_parts, ' ')
+            return safe_join(remaining_parts, " ")
         return ""
     except (ValueError, TypeError, IndexError):
         return ""
 
+
 # ============================================================================
 # CONTENT GENERATION SAFETY FUNCTIONS
 # ============================================================================
+
 
 def safe_content_section(title: str, content: Any) -> Optional[Dict[str, Any]]:
     """
@@ -346,10 +343,8 @@ def safe_content_section(title: str, content: Any) -> Optional[Dict[str, Any]]:
     if not content_str:
         return None
 
-    return {
-        'type': 'text',
-        'text': f"## {title.strip()}\n\n{content_str}"
-    }
+    return {"type": "text", "text": f"## {title.strip()}\n\n{content_str}"}
+
 
 def safe_multi_section_content(sections: List[tuple]) -> List[Dict[str, Any]]:
     """
@@ -376,16 +371,15 @@ def safe_multi_section_content(sections: List[tuple]) -> List[Dict[str, Any]]:
 
     # Ensure we never return empty content
     if not content_blocks:
-        content_blocks = [{
-            'type': 'text',
-            'text': 'Processing request...'
-        }]
+        content_blocks = [{"type": "text", "text": "Processing request..."}]
 
     return content_blocks
+
 
 # ============================================================================
 # ORCHESTRATOR INTEGRATION UTILITIES
 # ============================================================================
+
 
 def validate_orchestrator_response(response: Dict[str, Any]) -> List[str]:
     """
@@ -409,29 +403,30 @@ def validate_orchestrator_response(response: Dict[str, Any]) -> List[str]:
         issues.append("Response is not a dictionary")
         return issues
 
-    if 'content' not in response:
+    if "content" not in response:
         issues.append("Missing content field in response")
         return issues
 
-    if not isinstance(response['content'], list):
+    if not isinstance(response["content"], list):
         issues.append("Content is not a list")
         return issues
 
-    if not response['content']:
+    if not response["content"]:
         issues.append("Content array is empty")
         return issues
 
-    for i, block in enumerate(response['content']):
+    for i, block in enumerate(response["content"]):
         if not isinstance(block, dict):
             issues.append(f"Content block {i} is not a dictionary")
             continue
 
-        if block.get('type') == 'text':
-            text = block.get('text', '')
+        if block.get("type") == "text":
+            text = block.get("text", "")
             if not text or not str(text).strip():
                 issues.append(f"Content block {i} has empty or whitespace-only text")
 
     return issues
+
 
 def sanitize_orchestrator_response(response: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -454,36 +449,32 @@ def sanitize_orchestrator_response(response: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(response, dict):
         return response
 
-    if 'content' not in response or not isinstance(response['content'], list):
+    if "content" not in response or not isinstance(response["content"], list):
         return response
 
     # Filter out empty text blocks
     clean_content = []
-    for block in response['content']:
-        if isinstance(block, dict) and block.get('type') == 'text':
-            text = str(block.get('text', '')).strip()
+    for block in response["content"]:
+        if isinstance(block, dict) and block.get("type") == "text":
+            text = str(block.get("text", "")).strip()
             if text:
-                clean_content.append({
-                    'type': 'text',
-                    'text': text
-                })
+                clean_content.append({"type": "text", "text": text})
         else:
             # Keep non-text blocks
             clean_content.append(block)
 
     # Never return empty content
     if not clean_content:
-        clean_content = [{
-            'type': 'text',
-            'text': 'Processing request...'
-        }]
+        clean_content = [{"type": "text", "text": "Processing request..."}]
 
-    response['content'] = clean_content
+    response["content"] = clean_content
     return response
+
 
 # ============================================================================
 # INTEGRATION HELPERS
 # ============================================================================
+
 
 def get_orchestrator_replacement_patterns():
     """
@@ -494,23 +485,15 @@ def get_orchestrator_replacement_patterns():
     """
     return {
         # Unsafe split operations that need replacement
-        "parts = user_input.split('--host')[1].strip().split()":
-            "parts = safe_split(user_input, '--host', 1)",
-
-        "remaining = ' '.join(cmd.split()[idx + 1:])":
-            "remaining = safe_extract_remaining_args(cmd, idx + 1)",
-
+        "parts = user_input.split('--host')[1].strip().split()": "parts = safe_split(user_input, '--host', 1)",
+        "remaining = ' '.join(cmd.split()[idx + 1:])": "remaining = safe_extract_remaining_args(cmd, idx + 1)",
         # Unsafe argument assignments that need defaults
-        "args['host'] = parts[0]":
-            "args['host'] = safe_get_part(user_input, '--host', 1, 'localhost')",
-
-        "args['name'] = remaining":
-            "args['name'] = remaining or 'Unknown'",
-
+        "args['host'] = parts[0]": "args['host'] = safe_get_part(user_input, '--host', 1, 'localhost')",
+        "args['name'] = remaining": "args['name'] = remaining or 'Unknown'",
         # Unsafe content generation
-        "content_blocks.append({'type': 'text', 'text': f\"## {title}\\n\\n{content}\"})":
-            "block = safe_content_section(title, content); if block: content_blocks.append(block)",
+        "content_blocks.append({'type': 'text', 'text': f\"## {title}\\n\\n{content}\"})": "block = safe_content_section(title, content); if block: content_blocks.append(block)",
     }
+
 
 def create_orchestrator_integration_instructions():
     """
@@ -544,6 +527,7 @@ Replace these functions in agents/orchestrator.md:
 ### Replace parse_dashboard_args() (lines ~938-961):
 ```python
 def parse_dashboard_args(user_input):
+    """Parse Dashboard Args."""
     \"\"\"Safe dashboard argument parsing - prevents empty text blocks.\"\"\"
     return safe_parse_dashboard_args(user_input or "")
 ```
@@ -551,6 +535,7 @@ def parse_dashboard_args(user_input):
 ### Replace queue argument parsing (lines ~1201-1227):
 ```python
 def parse_queue_add_args(user_input):
+    """Parse Queue Add Args."""
     \"\"\"Safe queue add argument parsing - prevents empty text blocks.\"\"\"
     return safe_parse_queue_add_args(user_input or "")
 ```
@@ -575,13 +560,24 @@ Expected output:
 - All validation tests should pass
 """
 
+
 # Export key functions for immediate use
 __all__ = [
-    'safe_split', 'safe_join', 'safe_get_part', 'safe_extract_after', 'safe_extract_between',
-    'safe_parse_dashboard_args', 'safe_parse_queue_add_args', 'safe_parse_preference_args',
-    'safe_extract_remaining_args', 'safe_content_section', 'safe_multi_section_content',
-    'validate_orchestrator_response', 'sanitize_orchestrator_response',
-    'get_orchestrator_replacement_patterns', 'create_orchestrator_integration_instructions'
+    "safe_split",
+    "safe_join",
+    "safe_get_part",
+    "safe_extract_after",
+    "safe_extract_between",
+    "safe_parse_dashboard_args",
+    "safe_parse_queue_add_args",
+    "safe_parse_preference_args",
+    "safe_extract_remaining_args",
+    "safe_content_section",
+    "safe_multi_section_content",
+    "validate_orchestrator_response",
+    "sanitize_orchestrator_response",
+    "get_orchestrator_replacement_patterns",
+    "create_orchestrator_integration_instructions",
 ]
 
 # ============================================================================
@@ -596,7 +592,7 @@ if __name__ == "__main__":
 
     # Test safe_split
     result = safe_split("a|b||c", "|")
-    assert result == ['a', 'b', 'c'], f"Expected ['a', 'b', 'c'], got {result}"
+    assert result == ["a", "b", "c"], f"Expected ['a', 'b', 'c'], got {result}"
     print("   [OK] safe_split works correctly")
 
     # Test safe_get_part
@@ -611,18 +607,18 @@ if __name__ == "__main__":
     print("\n2. Testing safe argument parsing:")
 
     args = safe_parse_dashboard_args("--host example.com --port 8080")
-    assert args['host'] == 'example.com', f"Expected 'example.com', got {args['host']}"
-    assert args['port'] == 8080, f"Expected 8080, got {args['port']}"
+    assert args["host"] == "example.com", f"Expected 'example.com', got {args['host']}"
+    assert args["port"] == 8080, f"Expected 8080, got {args['port']}"
     print("   [OK] safe_parse_dashboard_args works correctly")
 
     args = safe_parse_dashboard_args("")  # Empty input
-    assert args['host'] == 'localhost', f"Expected 'localhost', got {args['host']}"
+    assert args["host"] == "localhost", f"Expected 'localhost', got {args['host']}"
     print("   [OK] safe_parse_dashboard_args handles empty input")
 
     # Test safe_parse_queue_add_args
     args = safe_parse_queue_add_args("--name Test --description A test task")
-    assert args['name'] == 'Test', f"Expected 'Test', got {args['name']}"
-    assert args['description'] == 'A test task', f"Expected 'A test task', got {args['description']}"
+    assert args["name"] == "Test", f"Expected 'Test', got {args['name']}"
+    assert args["description"] == "A test task", f"Expected 'A test task', got {args['description']}"
     print("   [OK] safe_parse_queue_add_args works correctly")
 
     # Test content generation
@@ -630,7 +626,7 @@ if __name__ == "__main__":
 
     block = safe_content_section("Title", "Content")
     assert block is not None, "Expected non-None block"
-    assert "Title" in block['text'], "Expected title in block text"
+    assert "Title" in block["text"], "Expected title in block text"
     print("   [OK] safe_content_section works correctly")
 
     block = safe_content_section("Empty", "")
@@ -641,19 +637,13 @@ if __name__ == "__main__":
     print("\n4. Testing response validation:")
 
     # Valid response
-    valid_response = {
-        'role': 'assistant',
-        'content': [{'type': 'text', 'text': 'Valid content'}]
-    }
+    valid_response = {"role": "assistant", "content": [{"type": "text", "text": "Valid content"}]}
     issues = validate_orchestrator_response(valid_response)
     assert len(issues) == 0, f"Expected no issues, got {len(issues)}"
     print("   [OK] Response validation works for valid responses")
 
     # Invalid response (empty text block)
-    invalid_response = {
-        'role': 'assistant',
-        'content': [{'type': 'text', 'text': ''}]
-    }
+    invalid_response = {"role": "assistant", "content": [{"type": "text", "text": ""}]}
     issues = validate_orchestrator_response(invalid_response)
     assert len(issues) > 0, "Expected issues for empty text block"
     print("   [OK] Response validation detects empty text blocks")
@@ -662,8 +652,10 @@ if __name__ == "__main__":
     print("\n5. Testing response sanitization:")
 
     sanitized = sanitize_orchestrator_response(invalid_response)
-    assert len(sanitized['content']) == 1, "Expected one content block"
-    assert sanitized['content'][0]['text'] == 'Processing request...', f"Expected default text, got {sanitized['content'][0]['text']}"
+    assert len(sanitized["content"]) == 1, "Expected one content block"
+    assert (
+        sanitized["content"][0]["text"] == "Processing request..."
+    ), f"Expected default text, got {sanitized['content'][0]['text']}"
     print("   [OK] Response sanitization fixes empty text blocks")
 
     print("\n=== ALL ORCHESTRATOR FIXES VALIDATED ===")
@@ -672,7 +664,7 @@ if __name__ == "__main__":
     print("[OK] Response sanitization prevents system-wide failure")
 
     # Show integration instructions
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("INTEGRATION INSTRUCTIONS:")
-    print("="*60)
+    print("=" * 60)
     print(create_orchestrator_integration_instructions())

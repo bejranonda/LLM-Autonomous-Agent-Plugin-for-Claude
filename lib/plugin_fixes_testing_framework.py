@@ -35,10 +35,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # ============================================================================
 
 try:
-    from emergency_message_sanitize import (
-        emergency_sanitize_messages, validate_no_empty_blocks,
-        EmergencyMessageSanitizer
-    )
+    from emergency_message_sanitize import emergency_sanitize_messages, validate_no_empty_blocks, EmergencyMessageSanitizer
+
     EMERGENCY_SANITIZER_AVAILABLE = True
 except ImportError as e:
     print(f"[WARN] Emergency message sanitizer not available: {e}")
@@ -47,9 +45,9 @@ except ImportError as e:
 try:
     # Import orchestrator fix with proper module handling
     import importlib.util
+
     orchestrator_spec = importlib.util.spec_from_file_location(
-        "orchestrator_emergency_fix",
-        os.path.join(os.path.dirname(__file__), "orchestrator_agent_emergency_fix.py")
+        "orchestrator_emergency_fix", os.path.join(os.path.dirname(__file__), "orchestrator_agent_emergency_fix.py")
     )
     orchestrator_module = importlib.util.module_from_spec(orchestrator_spec)
     orchestrator_spec.loader.exec_module(orchestrator_module)
@@ -69,10 +67,13 @@ except Exception as e:
 
 try:
     from slash_commands_emergency_fix import (
-        safe_format_command_response, safe_learn_init_response,
-        safe_validate_plugin_response, safe_box_drawing,
-        validate_command_response
+        safe_format_command_response,
+        safe_learn_init_response,
+        safe_validate_plugin_response,
+        safe_box_drawing,
+        validate_command_response,
     )
+
     SLASH_COMMANDS_FIX_AVAILABLE = True
 except ImportError as e:
     print(f"[WARN] Slash commands fix not available: {e}")
@@ -80,6 +81,7 @@ except ImportError as e:
 
 try:
     from command_response_fix import safe_command_response
+
     COMMAND_RESPONSE_FIX_AVAILABLE = True
 except ImportError as e:
     print(f"[WARN] Command response fix not available: {e}")
@@ -89,10 +91,12 @@ except ImportError as e:
 # TEST RESULTS TRACKING
 # ============================================================================
 
+
 class TestResults:
     """Track test results across all components."""
 
     def __init__(self):
+        """  Init  ."""
         self.tests_run = 0
         self.tests_passed = 0
         self.tests_failed = 0
@@ -123,9 +127,11 @@ class TestResults:
             for failure in self.failures:
                 print(f"  - {failure['test']}: {failure['error']}")
 
+
 # ============================================================================
 # EMERGENCY SANITIZER TESTS
 # ============================================================================
+
 
 def test_emergency_message_sanitizer(results: TestResults) -> bool:
     """Test emergency message sanitizer functionality."""
@@ -143,17 +149,16 @@ def test_emergency_message_sanitizer(results: TestResults) -> bool:
                 "content": [
                     {"type": "text", "text": ""},  # Should be removed
                     {"type": "text", "text": "Valid content"},  # Should be kept
-                ]
+                ],
             }
         ]
 
         sanitized = emergency_sanitize_messages(test_messages)
-        content_blocks = sanitized[0]['content']
+        content_blocks = sanitized[0]["content"]
 
         # Should only have the valid content block
-        passed = len(content_blocks) == 1 and content_blocks[0]['text'] == 'Valid content'
-        results.add_test("Basic empty block removal", passed,
-                        f"Expected 1 valid block, got {len(content_blocks)}")
+        passed = len(content_blocks) == 1 and content_blocks[0]["text"] == "Valid content"
+        results.add_test("Basic empty block removal", passed, f"Expected 1 valid block, got {len(content_blocks)}")
 
     except Exception as e:
         results.add_test("Basic empty block removal", False, str(e))
@@ -166,17 +171,18 @@ def test_emergency_message_sanitizer(results: TestResults) -> bool:
                 "content": [
                     {"type": "text", "text": ""},
                     {"type": "text", "text": "   "},
-                ]
+                ],
             }
         ]
 
         sanitized = emergency_sanitize_messages(empty_messages)
-        content_blocks = sanitized[0]['content']
+        content_blocks = sanitized[0]["content"]
 
         # Should have at least one fallback block
         passed = len(content_blocks) >= 1
-        results.add_test("Fallback content generation", passed,
-                        f"Expected at least 1 fallback block, got {len(content_blocks)}")
+        results.add_test(
+            "Fallback content generation", passed, f"Expected at least 1 fallback block, got {len(content_blocks)}"
+        )
 
     except Exception as e:
         results.add_test("Fallback content generation", False, str(e))
@@ -188,23 +194,24 @@ def test_emergency_message_sanitizer(results: TestResults) -> bool:
                 "role": "assistant",
                 "content": [
                     {"type": "text", "text": ""},  # Empty - should be detected
-                ]
+                ],
             }
         ]
 
         issues = validate_no_empty_blocks(test_messages)
         passed = len(issues) > 0
-        results.add_test("Empty block detection", passed,
-                        f"Expected issues to be detected, got {len(issues)}")
+        results.add_test("Empty block detection", passed, f"Expected issues to be detected, got {len(issues)}")
 
     except Exception as e:
         results.add_test("Empty block detection", False, str(e))
 
     return True
 
+
 # ============================================================================
 # ORCHESTRATOR FIX TESTS
 # ============================================================================
+
 
 def test_orchestrator_fixes(results: TestResults) -> bool:
     """Test orchestrator agent emergency fixes."""
@@ -218,15 +225,13 @@ def test_orchestrator_fixes(results: TestResults) -> bool:
     try:
         # Test safe_split
         result = safe_split("a|b||c", "|")
-        passed = result == ['a', 'b', 'c']
-        results.add_test("Safe split operation", passed,
-                        f"Expected ['a', 'b', 'c'], got {result}")
+        passed = result == ["a", "b", "c"]
+        results.add_test("Safe split operation", passed, f"Expected ['a', 'b', 'c'], got {result}")
 
         # Test safe_get_part
         result = safe_get_part("a|b|c", "|", 1, "default")
         passed = result == "b"
-        results.add_test("Safe get part operation", passed,
-                        f"Expected 'b', got '{result}'")
+        results.add_test("Safe get part operation", passed, f"Expected 'b', got '{result}'")
 
     except Exception as e:
         results.add_test("Safe string operations", False, str(e))
@@ -234,9 +239,12 @@ def test_orchestrator_fixes(results: TestResults) -> bool:
     # Test 2: Safe argument parsing
     try:
         args = safe_parse_dashboard_args("--host example.com --port 8080")
-        passed = args['host'] == 'example.com' and args['port'] == 8080
-        results.add_test("Safe dashboard args parsing", passed,
-                        f"Expected host='example.com', port=8080, got host='{args.get('host')}', port={args.get('port')}")
+        passed = args["host"] == "example.com" and args["port"] == 8080
+        results.add_test(
+            "Safe dashboard args parsing",
+            passed,
+            f"Expected host='example.com', port=8080, got host='{args.get('host')}', port={args.get('port')}",
+        )
 
     except Exception as e:
         results.add_test("Safe dashboard args parsing", False, str(e))
@@ -244,50 +252,40 @@ def test_orchestrator_fixes(results: TestResults) -> bool:
     # Test 3: Response validation
     try:
         # Valid response should pass
-        valid_response = {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': 'Valid content'}]
-        }
+        valid_response = {"role": "assistant", "content": [{"type": "text", "text": "Valid content"}]}
         issues = validate_orchestrator_response(valid_response)
         passed = len(issues) == 0
-        results.add_test("Valid response validation", passed,
-                        f"Expected no issues, got {len(issues)}")
+        results.add_test("Valid response validation", passed, f"Expected no issues, got {len(issues)}")
 
         # Invalid response should fail
-        invalid_response = {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': ''}]  # Empty text
-        }
+        invalid_response = {"role": "assistant", "content": [{"type": "text", "text": ""}]}  # Empty text
         issues = validate_orchestrator_response(invalid_response)
         passed = len(issues) > 0
-        results.add_test("Invalid response detection", passed,
-                        f"Expected issues detected, got {len(issues)}")
+        results.add_test("Invalid response detection", passed, f"Expected issues detected, got {len(issues)}")
 
     except Exception as e:
         results.add_test("Response validation", False, str(e))
 
     # Test 4: Response sanitization
     try:
-        invalid_response = {
-            'role': 'assistant',
-            'content': [{'type': 'text', 'text': ''}]
-        }
+        invalid_response = {"role": "assistant", "content": [{"type": "text", "text": ""}]}
         sanitized = sanitize_orchestrator_response(invalid_response)
-        content_blocks = sanitized['content']
+        content_blocks = sanitized["content"]
 
         # Should have at least one fallback block
-        passed = len(content_blocks) >= 1 and content_blocks[0]['text'] != ''
-        results.add_test("Response sanitization", passed,
-                        f"Expected sanitized response, got {len(content_blocks)} blocks")
+        passed = len(content_blocks) >= 1 and content_blocks[0]["text"] != ""
+        results.add_test("Response sanitization", passed, f"Expected sanitized response, got {len(content_blocks)} blocks")
 
     except Exception as e:
         results.add_test("Response sanitization", False, str(e))
 
     return True
 
+
 # ============================================================================
 # SLASH COMMANDS FIX TESTS
 # ============================================================================
+
 
 def test_slash_commands_fixes(results: TestResults) -> bool:
     """Test slash commands emergency fixes."""
@@ -301,70 +299,54 @@ def test_slash_commands_fixes(results: TestResults) -> bool:
     try:
         unicode_box = "╔═══════════════════════════════════════════════════════"
         safe_box = safe_box_drawing(unicode_box)
-        passed = '=' in safe_box and '╔' not in safe_box
-        results.add_test("Unicode box conversion", passed,
-                        f"Expected '=' conversion, got '{safe_box[:20]}'")
+        passed = "=" in safe_box and "╔" not in safe_box
+        results.add_test("Unicode box conversion", passed, f"Expected '=' conversion, got '{safe_box[:20]}'")
 
     except Exception as e:
         results.add_test("Unicode box conversion", False, str(e))
 
     # Test 2: Learn init response generation
     try:
-        project_data = {
-            'type': 'Python project',
-            'files': 127,
-            'frameworks': ['FastAPI'],
-            'structure': 'Backend API'
-        }
+        project_data = {"type": "Python project", "files": 127, "frameworks": ["FastAPI"], "structure": "Backend API"}
 
-        response = safe_learn_init_response(
-            project_data,
-            ['patterns.json'],
-            ['API pattern'],
-            ['pattern-learning']
-        )
+        response = safe_learn_init_response(project_data, ["patterns.json"], ["API pattern"], ["pattern-learning"])
 
         issues = validate_command_response(response)
         passed = len(issues) == 0
-        results.add_test("Learn init response generation", passed,
-                        f"Expected no issues, got {len(issues)}")
+        results.add_test("Learn init response generation", passed, f"Expected no issues, got {len(issues)}")
 
     except Exception as e:
         results.add_test("Learn init response generation", False, str(e))
 
     # Test 3: Validate plugin response generation
     try:
-        validation_data = {
-            'score': 100,
-            'issues': [],
-            'manifest_valid': True
-        }
+        validation_data = {"score": 100, "issues": [], "manifest_valid": True}
 
         response = safe_validate_plugin_response(validation_data)
         issues = validate_command_response(response)
         passed = len(issues) == 0
-        results.add_test("Validate plugin response generation", passed,
-                        f"Expected no issues, got {len(issues)}")
+        results.add_test("Validate plugin response generation", passed, f"Expected no issues, got {len(issues)}")
 
     except Exception as e:
         results.add_test("Validate plugin response generation", False, str(e))
 
     # Test 4: Command dispatch
     try:
-        response = safe_format_command_response('/learn:init', project_data)
+        response = safe_format_command_response("/learn:init", project_data)
         issues = validate_command_response(response)
         passed = len(issues) == 0
-        results.add_test("Command dispatch system", passed,
-                        f"Expected no issues, got {len(issues)}")
+        results.add_test("Command dispatch system", passed, f"Expected no issues, got {len(issues)}")
 
     except Exception as e:
         results.add_test("Command dispatch system", False, str(e))
 
     return True
 
+
 # ============================================================================
 # INTEGRATION TESTS
 # ============================================================================
+
 
 def test_integration_workflow(results: TestResults) -> bool:
     """Test complete integration workflow."""
@@ -378,11 +360,11 @@ def test_integration_workflow(results: TestResults) -> bool:
 
         # Create problematic message
         problematic_message = {
-            'role': 'assistant',
-            'content': [
-                {'type': 'text', 'text': ''},  # Empty block
-                {'type': 'text', 'text': 'Valid content'},
-            ]
+            "role": "assistant",
+            "content": [
+                {"type": "text", "text": ""},  # Empty block
+                {"type": "text", "text": "Valid content"},
+            ],
         }
 
         # Sanitize with emergency sanitizer
@@ -394,9 +376,8 @@ def test_integration_workflow(results: TestResults) -> bool:
         # Validate final result
         final_issues = validate_orchestrator_response(final_response)
 
-        passed = len(final_issues) == 0 and len(final_response['content']) >= 1
-        results.add_test("Multi-component sanitization", passed,
-                        f"Expected clean response, got {len(final_issues)} issues")
+        passed = len(final_issues) == 0 and len(final_response["content"]) >= 1
+        results.add_test("Multi-component sanitization", passed, f"Expected clean response, got {len(final_issues)} issues")
 
     except Exception as e:
         results.add_test("Multi-component sanitization", False, str(e))
@@ -408,14 +389,10 @@ def test_integration_workflow(results: TestResults) -> bool:
             return False
 
         # Simulate command execution results
-        command_results = {
-            'score': 95,
-            'issues': [],
-            'manifest_valid': True
-        }
+        command_results = {"score": 95, "issues": [], "manifest_valid": True}
 
         # Generate safe command response
-        response = safe_format_command_response('/validate:plugin', command_results)
+        response = safe_format_command_response("/validate:plugin", command_results)
 
         # Apply emergency sanitization
         sanitized = emergency_sanitize_messages([response])
@@ -424,8 +401,7 @@ def test_integration_workflow(results: TestResults) -> bool:
         final_issues = validate_no_empty_blocks(sanitized)
 
         passed = len(final_issues) == 0
-        results.add_test("Command processing pipeline", passed,
-                        f"Expected clean pipeline, got {len(final_issues)} issues")
+        results.add_test("Command processing pipeline", passed, f"Expected clean pipeline, got {len(final_issues)} issues")
 
     except Exception as e:
         results.add_test("Command processing pipeline", False, str(e))
@@ -433,11 +409,7 @@ def test_integration_workflow(results: TestResults) -> bool:
     # Test 3: Ubuntu compatibility test (simulated)
     try:
         # Test problematic patterns that caused Ubuntu failure
-        ubuntu_test_cases = [
-            "/learn:init command execution",
-            "Empty text block generation",
-            "Cache control error prevention"
-        ]
+        ubuntu_test_cases = ["/learn:init command execution", "Empty text block generation", "Cache control error prevention"]
 
         passed_tests = 0
 
@@ -445,10 +417,7 @@ def test_integration_workflow(results: TestResults) -> bool:
         if SLASH_COMMANDS_FIX_AVAILABLE:
             try:
                 response = safe_learn_init_response(
-                    {'type': 'Test', 'files': 10},
-                    ['patterns.json'],
-                    ['Test pattern'],
-                    ['pattern-learning']
+                    {"type": "Test", "files": 10}, ["patterns.json"], ["Test pattern"], ["pattern-learning"]
                 )
                 issues = validate_command_response(response)
                 if len(issues) == 0:
@@ -459,9 +428,9 @@ def test_integration_workflow(results: TestResults) -> bool:
         # Test case 2: Empty text block generation
         if EMERGENCY_SANITIZER_AVAILABLE:
             try:
-                test_msg = [{'role': 'assistant', 'content': [{'type': 'text', 'text': ''}]}]
+                test_msg = [{"role": "assistant", "content": [{"type": "text", "text": ""}]}]
                 sanitized = emergency_sanitize_messages(test_msg)
-                if len(sanitized[0]['content']) >= 1:
+                if len(sanitized[0]["content"]) >= 1:
                     passed_tests += 1
             except Exception:
                 pass  # Still counts as passed if we have the fix available
@@ -474,17 +443,20 @@ def test_integration_workflow(results: TestResults) -> bool:
             passed_tests += 1
 
         passed = passed_tests == len(ubuntu_test_cases)
-        results.add_test("Ubuntu compatibility simulation", passed,
-                        f"Passed {passed_tests}/{len(ubuntu_test_cases)} Ubuntu test cases")
+        results.add_test(
+            "Ubuntu compatibility simulation", passed, f"Passed {passed_tests}/{len(ubuntu_test_cases)} Ubuntu test cases"
+        )
 
     except Exception as e:
         results.add_test("Ubuntu compatibility simulation", False, str(e))
 
     return True
 
+
 # ============================================================================
 # CROSS-PLATFORM COMPATIBILITY TESTS
 # ============================================================================
+
 
 def test_cross_platform_compatibility(results: TestResults) -> bool:
     """Test cross-platform compatibility."""
@@ -496,7 +468,7 @@ def test_cross_platform_compatibility(results: TestResults) -> bool:
         test_paths = [
             r"C:\Users\Test\project\.claude-patterns",
             "/home/user/project/.claude-patterns",
-            "project/.claude-patterns"
+            "project/.claude-patterns",
         ]
 
         passed_tests = 0
@@ -504,7 +476,7 @@ def test_cross_platform_compatibility(results: TestResults) -> bool:
             try:
                 # Test that our string functions handle paths correctly
                 if ORCHESTRATOR_FIX_AVAILABLE:
-                    parts = safe_split(path, os.sep or '/')
+                    parts = safe_split(path, os.sep or "/")
                     if parts:  # Should get some parts
                         passed_tests += 1
                 else:
@@ -513,8 +485,7 @@ def test_cross_platform_compatibility(results: TestResults) -> bool:
                 pass
 
         passed = passed_tests == len(test_paths)
-        results.add_test("Cross-platform path handling", passed,
-                        f"Handled {passed_tests}/{len(test_paths)} path formats")
+        results.add_test("Cross-platform path handling", passed, f"Handled {passed_tests}/{len(test_paths)} path formats")
 
     except Exception as e:
         results.add_test("Cross-platform path handling", False, str(e))
@@ -527,9 +498,8 @@ def test_cross_platform_compatibility(results: TestResults) -> bool:
             safe_text = safe_box_drawing(unicode_text)
 
             # Should convert to safe ASCII
-            passed = '✓' not in safe_text and '✗' not in safe_text and '[OK]' in safe_text
-            results.add_test("Unicode character conversion", passed,
-                            f"Unicode conversion: '{unicode_text}' -> '{safe_text}'")
+            passed = "✓" not in safe_text and "✗" not in safe_text and "[OK]" in safe_text
+            results.add_test("Unicode character conversion", passed, f"Unicode conversion: '{unicode_text}' -> '{safe_text}'")
         else:
             results.add_test("Unicode character conversion", False, "Slash commands fix not available")
 
@@ -543,7 +513,7 @@ def test_cross_platform_compatibility(results: TestResults) -> bool:
             "Simple ASCII text",
             "Text with émojis",  # Mixed encoding
             "Русский текст",  # Cyrillic
-            "中文文本"  # Chinese
+            "中文文本",  # Chinese
         ]
 
         passed_tests = 0
@@ -565,16 +535,16 @@ def test_cross_platform_compatibility(results: TestResults) -> bool:
                 pass
 
         passed = passed_tests >= len(test_strings) // 2  # At least half should work
-        results.add_test("Encoding compatibility", passed,
-                        f"Handled {passed_tests}/{len(test_strings)} encoding tests")
+        results.add_test("Encoding compatibility", passed, f"Handled {passed_tests}/{len(test_strings)} encoding tests")
 
     except Exception as e:
         results.add_test("Encoding compatibility", False, str(e))
 
     return True
 
+
 # Test helper function for encoding compatibility
-def safe_string_operation(text, default='Unknown'):
+def safe_string_operation(text, default="Unknown"):
     """Fallback safe string operation."""
     if text is None:
         return default
@@ -584,9 +554,11 @@ def safe_string_operation(text, default='Unknown'):
     except (ValueError, TypeError, UnicodeEncodeError):
         return default
 
+
 # ============================================================================
 # MAIN TEST RUNNER
 # ============================================================================
+
 
 def run_all_tests():
     """Run all tests and generate comprehensive report."""
@@ -600,14 +572,26 @@ def run_all_tests():
 
     # Component availability check
     print("Component Availability:")
-    results.add_test("Emergency Message Sanitizer", EMERGENCY_SANITIZER_AVAILABLE,
-                    "Module import failed" if not EMERGENCY_SANITIZER_AVAILABLE else None)
-    results.add_test("Orchestrator Agent Fixes", ORCHESTRATOR_FIX_AVAILABLE,
-                    "Module import failed" if not ORCHESTRATOR_FIX_AVAILABLE else None)
-    results.add_test("Slash Commands Fixes", SLASH_COMMANDS_FIX_AVAILABLE,
-                    "Module import failed" if not SLASH_COMMANDS_FIX_AVAILABLE else None)
-    results.add_test("Command Response Fixes", COMMAND_RESPONSE_FIX_AVAILABLE,
-                    "Module import failed" if not COMMAND_RESPONSE_FIX_AVAILABLE else None)
+    results.add_test(
+        "Emergency Message Sanitizer",
+        EMERGENCY_SANITIZER_AVAILABLE,
+        "Module import failed" if not EMERGENCY_SANITIZER_AVAILABLE else None,
+    )
+    results.add_test(
+        "Orchestrator Agent Fixes",
+        ORCHESTRATOR_FIX_AVAILABLE,
+        "Module import failed" if not ORCHESTRATOR_FIX_AVAILABLE else None,
+    )
+    results.add_test(
+        "Slash Commands Fixes",
+        SLASH_COMMANDS_FIX_AVAILABLE,
+        "Module import failed" if not SLASH_COMMANDS_FIX_AVAILABLE else None,
+    )
+    results.add_test(
+        "Command Response Fixes",
+        COMMAND_RESPONSE_FIX_AVAILABLE,
+        "Module import failed" if not COMMAND_RESPONSE_FIX_AVAILABLE else None,
+    )
 
     # Run all test suites
     if EMERGENCY_SANITIZER_AVAILABLE:
@@ -660,27 +644,22 @@ def run_all_tests():
 
     return results.tests_failed == 0
 
+
 # ============================================================================
 # COMMAND LINE INTERFACE
 # ============================================================================
 
+
 def main():
     """Command line interface for the testing framework."""
-    parser = argparse.ArgumentParser(
-        description="Test emergency fixes for plugin system-wide failure"
-    )
+    parser = argparse.ArgumentParser(description="Test emergency fixes for plugin system-wide failure")
+    parser.add_argument("--all", action="store_true", help="Run all tests (default)")
     parser.add_argument(
-        '--all', action='store_true',
-        help='Run all tests (default)'
+        "--component",
+        choices=["sanitizer", "orchestrator", "slash-commands", "integration"],
+        help="Run tests for specific component",
     )
-    parser.add_argument(
-        '--component', choices=['sanitizer', 'orchestrator', 'slash-commands', 'integration'],
-        help='Run tests for specific component'
-    )
-    parser.add_argument(
-        '--quick', action='store_true',
-        help='Run quick validation only'
-    )
+    parser.add_argument("--quick", action="store_true", help="Run quick validation only")
 
     args = parser.parse_args()
 
@@ -703,13 +682,13 @@ def main():
         # Run specific component tests
         results = TestResults()
 
-        if args.component == 'sanitizer':
+        if args.component == "sanitizer":
             test_emergency_message_sanitizer(results)
-        elif args.component == 'orchestrator':
+        elif args.component == "orchestrator":
             test_orchestrator_fixes(results)
-        elif args.component == 'slash-commands':
+        elif args.component == "slash-commands":
             test_slash_commands_fixes(results)
-        elif args.component == 'integration':
+        elif args.component == "integration":
             test_integration_workflow(results)
 
         print(f"\nComponent tests: {results.summary()}")
@@ -721,6 +700,7 @@ def main():
         # Run all tests (default)
         success = run_all_tests()
         return 0 if success else 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

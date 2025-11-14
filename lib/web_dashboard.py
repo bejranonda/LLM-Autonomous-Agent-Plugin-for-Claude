@@ -32,6 +32,7 @@ except ImportError:
     print("Error: Token monitoring dashboard not found.")
     sys.exit(1)
 
+
 class WebDashboard:
     """Web interface for token monitoring dashboard."""
 
@@ -480,7 +481,7 @@ class WebDashboard:
             elif alert.level.value == "critical":
                 alert_class = "critical"
 
-            time_str = alert.timestamp.strftime('%H:%M:%S')
+            time_str = alert.timestamp.strftime("%H:%M:%S")
             alerts_html += f"""
             <div class="alert-item {alert_class}">
                 <div class="alert-message">{alert.message}</div>
@@ -501,12 +502,12 @@ class WebDashboard:
             class DashboardHandler(http.server.SimpleHTTPRequestHandler):
                 def __init__(self, *args, **kwargs):
                     super().__init__(*args, **kwargs)
-                    self.dashboard = kwargs.pop('dashboard', None)
+                    self.dashboard = kwargs.pop("dashboard", None)
 
                 def do_GET(self):
-                    if self.path == '/' or self.path == '/dashboard':
+                    if self.path == "/" or self.path == "/dashboard":
                         self.send_response(200)
-                        self.send_header('Content-type', 'text/html')
+                        self.send_header("Content-type", "text/html")
                         self.end_headers()
                         html_content = self.dashboard.generate_html_page()
                         self.wfile.write(html_content.encode())
@@ -514,7 +515,7 @@ class WebDashboard:
                         super().do_GET()
 
             # Create custom handler class with dashboard
-            handler_class = type('DashboardHandlerWithDashboard', (DashboardHandler,), {})
+            handler_class = type("DashboardHandlerWithDashboard", (DashboardHandler,), {})
             handler_class.dashboard = self
 
             # Start server
@@ -537,6 +538,7 @@ class WebDashboard:
             print("Error: http.server module not available")
             print("Please run this on Python 3.7+")
 
+
 def main():
     """Command line interface for web dashboard."""
     import argparse
@@ -553,13 +555,14 @@ def main():
         # Generate HTML file
         html_content = dashboard.generate_html_page()
         output_file = Path("token_dashboard.html")
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write(html_content)
         print(f"HTML dashboard saved to: {output_file.absolute()}")
         print(f"Open in browser to view the dashboard")
     else:
         # Start web server
         dashboard.start_server()
+
 
 if __name__ == "__main__":
     main()

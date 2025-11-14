@@ -18,10 +18,12 @@ from collections import defaultdict
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class GroupPerformanceTracker:
@@ -38,7 +40,7 @@ class GroupPerformanceTracker:
         1: "Strategic Analysis & Intelligence",
         2: "Decision Making & Planning",
         3: "Execution & Implementation",
-        4: "Validation & Optimization"
+        4: "Validation & Optimization",
     }
 
     # Agent to group mapping
@@ -49,13 +51,11 @@ class GroupPerformanceTracker:
         "performance-analytics": 1,
         "pr-reviewer": 1,
         "learning-engine": 1,
-
         # Group 2
         "strategic-planner": 2,
         "preference-coordinator": 2,
         "smart-recommender": 2,
         "orchestrator": 2,
-
         # Group 3
         "quality-controller": 3,
         "test-engineer": 3,
@@ -71,12 +71,11 @@ class GroupPerformanceTracker:
         "claude-plugin-validator": 3,
         "background-task-manager": 3,
         "report-management-organizer": 3,
-
         # Group 4
         "validation-controller": 4,
         "post-execution-validator": 4,
         "performance-optimizer": 4,
-        "continuous-improvement": 4
+        "continuous-improvement": 4,
     }
 
     def __init__(self, storage_dir: str = ".claude-patterns"):
@@ -99,16 +98,13 @@ class GroupPerformanceTracker:
         initial_data = {
             "version": "1.0.0",
             "last_updated": datetime.now().isoformat(),
-            "metadata": {
-                "total_tasks_tracked": 0,
-                "tracking_start_date": datetime.now().isoformat()
-            },
+            "metadata": {"total_tasks_tracked": 0, "tracking_start_date": datetime.now().isoformat()},
             "group_definitions": self.GROUPS,
             "group_metrics": {},
             "task_history_by_group": {},
             "group_specializations": {},
             "workflow_efficiency": {},
-            "collaboration_metrics": {}
+            "collaboration_metrics": {},
         }
 
         # Initialize group metrics
@@ -128,21 +124,21 @@ class GroupPerformanceTracker:
                 "task_types": {},
                 "specializations": [],
                 "performance_rating": "Insufficient Data",
-                "trend": "insufficient_data"
+                "trend": "insufficient_data",
             }
 
         self._write_data(initial_data)
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -153,7 +149,7 @@ class GroupPerformanceTracker:
     def _read_data(self) -> Dict[str, Any]:
         """Read performance data with file locking."""
         try:
-            with open(self.performance_file, 'r', encoding='utf-8') as f:
+            with open(self.performance_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     data = json.load(f)
@@ -166,7 +162,7 @@ class GroupPerformanceTracker:
 
     def _write_data(self, data: Dict[str, Any]):
         """Write performance data with file locking."""
-        with open(self.performance_file, 'w', encoding='utf-8') as f:
+        with open(self.performance_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -183,8 +179,9 @@ class GroupPerformanceTracker:
         execution_time_seconds: float,
         iterations: int = 1,
         agents_involved: Optional[List[str]] = None,
-        context: Optional[Dict[str, Any]] = None
+        context: Optional[Dict[str, Any]] = None,
     ):
+        """Record Group Task."""
         """
         Record a task execution for a group.
 
@@ -228,9 +225,14 @@ class GroupPerformanceTracker:
         group_metrics["success_rate"] = group_metrics["successful_tasks"] / group_metrics["total_tasks"]
 
         # Update first-time success rate
-        first_time_successes = sum(1 for t in perf_data.get("task_history_by_group", {}).get(group_key, [])
-                                   if t.get("iterations", 1) == 1 and t.get("success", False))
-        group_metrics["first_time_success_rate"] = first_time_successes / group_metrics["total_tasks"] if group_metrics["total_tasks"] > 0 else 0
+        first_time_successes = sum(
+            1
+            for t in perf_data.get("task_history_by_group", {}).get(group_key, [])
+            if t.get("iterations", 1) == 1 and t.get("success", False)
+        )
+        group_metrics["first_time_success_rate"] = (
+            first_time_successes / group_metrics["total_tasks"] if group_metrics["total_tasks"] > 0 else 0
+        )
 
         # Update average execution time
         group_metrics["average_execution_time"] = group_metrics["total_execution_time"] / group_metrics["total_tasks"]
@@ -263,7 +265,7 @@ class GroupPerformanceTracker:
             "iterations": iterations,
             "agents_involved": agents_involved or [],
             "timestamp": datetime.now().isoformat(),
-            "context": context or {}
+            "context": context or {},
         }
 
         perf_data["task_history_by_group"][group_key].append(task_record)
@@ -353,18 +355,18 @@ class GroupPerformanceTracker:
                     type_success_rate = sum(1 for t in type_tasks if t["success"]) / len(type_tasks)
                     avg_quality = sum(t["quality_score"] for t in type_tasks) / len(type_tasks)
 
-                    specializations.append({
-                        "task_type": task_type,
-                        "percentage": (count / total_tasks) * 100,
-                        "total_tasks": count,
-                        "success_rate": type_success_rate,
-                        "average_quality": avg_quality
-                    })
+                    specializations.append(
+                        {
+                            "task_type": task_type,
+                            "percentage": (count / total_tasks) * 100,
+                            "total_tasks": count,
+                            "success_rate": type_success_rate,
+                            "average_quality": avg_quality,
+                        }
+                    )
 
         group_metrics["specializations"] = sorted(
-            specializations,
-            key=lambda x: (x["success_rate"], x["average_quality"]),
-            reverse=True
+            specializations, key=lambda x: (x["success_rate"], x["average_quality"]), reverse=True
         )
 
         self._write_data(perf_data)
@@ -378,11 +380,7 @@ class GroupPerformanceTracker:
         group_key = str(group_num)
         group_metrics = perf_data["group_metrics"][group_key]
 
-        return {
-            "group_number": group_num,
-            "group_name": self.GROUPS[group_num],
-            **group_metrics
-        }
+        return {"group_number": group_num, "group_name": self.GROUPS[group_num], **group_metrics}
 
     def get_all_group_performances(self) -> Dict[int, Dict[str, Any]]:
         """Get performance metrics for all groups."""
@@ -421,12 +419,14 @@ class GroupPerformanceTracker:
             else:
                 score = 0
 
-            comparisons.append({
-                "group_number": group_num,
-                "group_name": self.GROUPS[group_num],
-                "score": score,
-                "total_tasks": perf["total_tasks"]
-            })
+            comparisons.append(
+                {
+                    "group_number": group_num,
+                    "group_name": self.GROUPS[group_num],
+                    "score": score,
+                    "total_tasks": perf["total_tasks"],
+                }
+            )
 
         return sorted(comparisons, key=lambda x: x["score"], reverse=True)
 
@@ -464,20 +464,19 @@ class GroupPerformanceTracker:
                 groups_involved = [t["group_num"] for t in workflow]
                 final_quality = workflow[-1]["quality_score"]
 
-                complete_workflows.append({
-                    "task_id": task_id,
-                    "groups_involved": groups_involved,
-                    "total_time": total_time,
-                    "total_iterations": total_iterations,
-                    "final_quality": final_quality,
-                    "workflow_pattern": " → ".join([f"G{g}" for g in groups_involved])
-                })
+                complete_workflows.append(
+                    {
+                        "task_id": task_id,
+                        "groups_involved": groups_involved,
+                        "total_time": total_time,
+                        "total_iterations": total_iterations,
+                        "final_quality": final_quality,
+                        "workflow_pattern": " → ".join([f"G{g}" for g in groups_involved]),
+                    }
+                )
 
         if not complete_workflows:
-            return {
-                "total_workflows": 0,
-                "message": "Insufficient workflow data"
-            }
+            return {"total_workflows": 0, "message": "Insufficient workflow data"}
 
         # Calculate efficiency metrics
         avg_time = sum(w["total_time"] for w in complete_workflows) / len(complete_workflows)
@@ -489,32 +488,18 @@ class GroupPerformanceTracker:
         for workflow in complete_workflows:
             pattern_frequency[workflow["workflow_pattern"]] += 1
 
-        most_common_patterns = sorted(
-            pattern_frequency.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )[:5]
+        most_common_patterns = sorted(pattern_frequency.items(), key=lambda x: x[1], reverse=True)[:5]
 
         return {
             "total_workflows": len(complete_workflows),
             "average_total_time": avg_time,
             "average_iterations": avg_iterations,
             "average_final_quality": avg_quality,
-            "most_common_patterns": [
-                {"pattern": pattern, "frequency": freq}
-                for pattern, freq in most_common_patterns
-            ],
-            "efficiency_rating": self._calculate_workflow_efficiency_rating(
-                avg_time, avg_iterations, avg_quality
-            )
+            "most_common_patterns": [{"pattern": pattern, "frequency": freq} for pattern, freq in most_common_patterns],
+            "efficiency_rating": self._calculate_workflow_efficiency_rating(avg_time, avg_iterations, avg_quality),
         }
 
-    def _calculate_workflow_efficiency_rating(
-        self,
-        avg_time: float,
-        avg_iterations: float,
-        avg_quality: float
-    ) -> str:
+    def _calculate_workflow_efficiency_rating(self, avg_time: float, avg_iterations: float, avg_quality: float) -> str:
         """Calculate workflow efficiency rating."""
         # Ideal: Low time, low iterations, high quality
         # Normalize to 0-100 scale
@@ -550,8 +535,16 @@ class GroupPerformanceTracker:
 
         # Calculate system-wide averages
         total_tasks = sum(p["total_tasks"] for p in all_performances.values())
-        avg_quality = sum(p["average_quality_score"] * p["total_tasks"] for p in all_performances.values()) / total_tasks if total_tasks > 0 else 0
-        avg_success_rate = sum(p["success_rate"] * p["total_tasks"] for p in all_performances.values()) / total_tasks if total_tasks > 0 else 0
+        avg_quality = (
+            sum(p["average_quality_score"] * p["total_tasks"] for p in all_performances.values()) / total_tasks
+            if total_tasks > 0
+            else 0
+        )
+        avg_success_rate = (
+            sum(p["success_rate"] * p["total_tasks"] for p in all_performances.values()) / total_tasks
+            if total_tasks > 0
+            else 0
+        )
 
         # Find top and weak performing groups
         quality_ranking = self.compare_groups("quality_score")
@@ -566,15 +559,15 @@ class GroupPerformanceTracker:
                 group_num: {
                     "rating": perf["performance_rating"],
                     "quality": perf["average_quality_score"],
-                    "success_rate": perf["success_rate"] * 100
+                    "success_rate": perf["success_rate"] * 100,
                 }
                 for group_num, perf in all_performances.items()
             },
             "workflow_efficiency": self.analyze_workflow_efficiency(),
             "tracking_period": {
                 "start": perf_data["metadata"]["tracking_start_date"],
-                "last_updated": perf_data["metadata"]["last_updated"]
-            }
+                "last_updated": perf_data["metadata"]["last_updated"],
+            },
         }
 
 
@@ -582,37 +575,29 @@ def main():
     """Command-line interface for testing the group performance tracker."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Group Performance Tracker')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['record', 'get', 'compare', 'workflow', 'summary'],
-                       help='Action to perform')
-    parser.add_argument('--group', type=int, help='Group number (1-4)')
-    parser.add_argument('--task-id', help='Task ID')
-    parser.add_argument('--task-type', help='Task type')
-    parser.add_argument('--quality', type=float, help='Quality score')
-    parser.add_argument('--success', action='store_true', help='Task successful')
-    parser.add_argument('--time', type=float, default=60, help='Execution time in seconds')
+    parser = argparse.ArgumentParser(description="Group Performance Tracker")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["record", "get", "compare", "workflow", "summary"], help="Action to perform")
+    parser.add_argument("--group", type=int, help="Group number (1-4)")
+    parser.add_argument("--task-id", help="Task ID")
+    parser.add_argument("--task-type", help="Task type")
+    parser.add_argument("--quality", type=float, help="Quality score")
+    parser.add_argument("--success", action="store_true", help="Task successful")
+    parser.add_argument("--time", type=float, default=60, help="Execution time in seconds")
 
     args = parser.parse_args()
 
     tracker = GroupPerformanceTracker(args.storage_dir)
 
-    if args.action == 'record':
+    if args.action == "record":
         if not all([args.group, args.task_id, args.task_type, args.quality is not None]):
             print("Error: --group, --task-id, --task-type, and --quality required for record")
             sys.exit(1)
 
-        tracker.record_group_task(
-            args.group,
-            args.task_id,
-            args.task_type,
-            args.success,
-            args.quality,
-            args.time
-        )
+        tracker.record_group_task(args.group, args.task_id, args.task_type, args.success, args.quality, args.time)
         print(f"Task recorded for Group {args.group}")
 
-    elif args.action == 'get':
+    elif args.action == "get":
         if not args.group:
             print("Error: --group required for get")
             sys.exit(1)
@@ -624,28 +609,28 @@ def main():
         print(f"  Avg Quality: {perf['average_quality_score']:.1f}")
         print(f"  Rating: {perf['performance_rating']}")
 
-    elif args.action == 'compare':
-        comparison = tracker.compare_groups('quality_score')
+    elif args.action == "compare":
+        comparison = tracker.compare_groups("quality_score")
         print("Group Performance Comparison (by quality):")
         for i, group in enumerate(comparison, 1):
             print(f"  {i}. Group {group['group_number']}: {group['score']:.1f}")
 
-    elif args.action == 'workflow':
+    elif args.action == "workflow":
         workflow = tracker.analyze_workflow_efficiency()
         print("Workflow Efficiency Analysis:")
         print(f"  Total Workflows: {workflow['total_workflows']}")
-        if workflow['total_workflows'] > 0:
+        if workflow["total_workflows"] > 0:
             print(f"  Avg Time: {workflow['average_total_time']:.1f}s")
             print(f"  Avg Quality: {workflow['average_final_quality']:.1f}")
             print(f"  Efficiency Rating: {workflow['efficiency_rating']}")
 
-    elif args.action == 'summary':
+    elif args.action == "summary":
         summary = tracker.get_performance_summary()
         print("Group Performance Summary:")
         print(f"  Total Tasks: {summary['total_tasks']}")
         print(f"  Avg Quality: {summary['average_quality_score']:.1f}")
         print(f"  Avg Success Rate: {summary['average_success_rate']:.1f}%")
-        if summary['top_performing_group']:
+        if summary["top_performing_group"]:
             print(f"  Top Group: {summary['top_performing_group']['group_name']}")
 
     else:
@@ -656,5 +641,5 @@ def main():
         print(f"Total Tasks: {summary['total_tasks']}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

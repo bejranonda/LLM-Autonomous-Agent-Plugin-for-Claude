@@ -19,7 +19,7 @@ import statistics
 import os
 
 # Handle Windows compatibility for file locking
-if platform.system() == 'Windows':
+if platform.system() == "Windows":
     import msvcrt
 
     def lock_file(f, exclusive=False):
@@ -32,6 +32,7 @@ if platform.system() == 'Windows':
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
         except:
             pass
+
 else:
     import fcntl
 
@@ -65,21 +66,19 @@ class EnhancedLearningEngine:
         """Create patterns directory if it doesn't exist."""
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
         if not self.patterns_file.exists():
-            self._write_patterns({
-                "project_context": {
-                    "detected_languages": [],
-                    "frameworks": [],
-                    "project_type": "unknown"
-                },
-                "patterns": [],
-                "skill_effectiveness": {},
-                "agent_effectiveness": {},
-                "learning_statistics": {
-                    "total_patterns": 0,
-                    "success_rate": 0.0,
-                    "last_updated": datetime.now().isoformat()
+            self._write_patterns(
+                {
+                    "project_context": {"detected_languages": [], "frameworks": [], "project_type": "unknown"},
+                    "patterns": [],
+                    "skill_effectiveness": {},
+                    "agent_effectiveness": {},
+                    "learning_statistics": {
+                        "total_patterns": 0,
+                        "success_rate": 0.0,
+                        "last_updated": datetime.now().isoformat(),
+                    },
                 }
-            })
+            )
 
     def _read_patterns(self) -> Dict[str, Any]:
         """
@@ -89,7 +88,7 @@ class EnhancedLearningEngine:
             Dictionary containing patterns data
         """
         try:
-            with open(self.patterns_file, 'r', encoding='utf-8') as f:
+            with open(self.patterns_file, "r", encoding="utf-8") as f:
                 lock_file(f, exclusive=False)
                 try:
                     content = f.read()
@@ -115,11 +114,11 @@ class EnhancedLearningEngine:
             patterns_data: Dictionary containing patterns data to write
         """
         try:
-            with open(self.patterns_file, 'w', encoding='utf-8') as f:
+            with open(self.patterns_file, "w", encoding="utf-8") as f:
                 lock_file(f, exclusive=True)
                 try:
                     json.dump(patterns_data, f, indent=2, ensure_ascii=False)
-                    self.last_update['patterns'] = datetime.now().timestamp()
+                    self.last_update["patterns"] = datetime.now().timestamp()
                 finally:
                     unlock_file(f)
         except Exception as e:
@@ -132,8 +131,9 @@ class EnhancedLearningEngine:
         context: Dict[str, Any],
         execution: Dict[str, Any],
         outcome: Dict[str, Any],
-        confidence: float = 1.0
-    ) -> bool:
+        confidence: float = 1.0,
+    )-> bool:
+        """Record Pattern."""
         """
         Record a new pattern for learning.
 
@@ -161,7 +161,7 @@ class EnhancedLearningEngine:
             "confidence": confidence,
             "timestamp": datetime.now().isoformat(),
             "reuse_count": 0,
-            "last_used": None
+            "last_used": None,
         }
 
         # Add to patterns
@@ -173,10 +173,11 @@ class EnhancedLearningEngine:
         patterns_data["learning_statistics"]["last_updated"] = datetime.now().isoformat()
 
         # Calculate success rate
-        successful_patterns = sum(1 for p in patterns_data["patterns"]
-                                if p.get("outcome", {}).get("success", False))
+        successful_patterns = sum(1 for p in patterns_data["patterns"] if p.get("outcome", {}).get("success", False))
         total_patterns = len(patterns_data["patterns"])
-        patterns_data["learning_statistics"]["success_rate"] = successful_patterns / total_patterns if total_patterns > 0 else 0.0
+        patterns_data["learning_statistics"]["success_rate"] = (
+            successful_patterns / total_patterns if total_patterns > 0 else 0.0
+        )
 
         self._write_patterns(patterns_data)
         return True
@@ -187,12 +188,9 @@ class EnhancedLearningEngine:
         return hashlib.md5(content.encode()).hexdigest()[:12]
 
     def find_similar_patterns(
-        self,
-        task_type: str,
-        context: Dict[str, Any],
-        limit: int = 5,
-        min_confidence: float = 0.5
-    ) -> List[Dict[str, Any]]:
+        self, task_type: str, context: Dict[str, Any], limit: int = 5, min_confidence: float = 0.5
+    )-> List[Dict[str, Any]]:
+        """Find Similar Patterns."""
         """
         Find patterns similar to the given task type and context.
 
@@ -210,8 +208,7 @@ class EnhancedLearningEngine:
 
         # Filter by task type and confidence
         matching_patterns = [
-            p for p in all_patterns
-            if p.get("task_type") == task_type and p.get("confidence", 0) >= min_confidence
+            p for p in all_patterns if p.get("task_type") == task_type and p.get("confidence", 0) >= min_confidence
         ]
 
         # Calculate relevance scores
@@ -327,7 +324,7 @@ class EnhancedLearningEngine:
                 "success_rate": success_rate,
                 "average_quality": avg_quality,
                 "usage_count": stats["total_count"],
-                "effectiveness_score": (success_rate * 0.6 + avg_quality * 0.4)
+                "effectiveness_score": (success_rate * 0.6 + avg_quality * 0.4),
             }
 
         return effectiveness
@@ -366,7 +363,7 @@ class EnhancedLearningEngine:
                 "success_rate": success_rate,
                 "average_quality": avg_quality,
                 "usage_count": stats["total_count"],
-                "effectiveness_score": (success_rate * 0.6 + avg_quality * 0.4)
+                "effectiveness_score": (success_rate * 0.6 + avg_quality * 0.4),
             }
 
         return effectiveness
@@ -413,7 +410,7 @@ class EnhancedLearningEngine:
             "highest_confidence_patterns": highest_confidence,
             "skill_effectiveness": self.get_skill_effectiveness(),
             "agent_effectiveness": self.get_agent_effectiveness(),
-            "last_updated": datetime.now().isoformat()
+            "last_updated": datetime.now().isoformat(),
         }
 
     def cleanup_old_patterns(self, days_threshold: int = 90):
@@ -436,9 +433,11 @@ class EnhancedLearningEngine:
                 last_used = pattern.get("last_used")
 
                 # Keep if recent or has been reused
-                if (created > cutoff_date or
-                    (last_used and datetime.fromisoformat(last_used.replace("Z", "+00:00")) > cutoff_date) or
-                    pattern.get("reuse_count", 0) > 0):
+                if (
+                    created > cutoff_date
+                    or (last_used and datetime.fromisoformat(last_used.replace("Z", "+00:00")) > cutoff_date)
+                    or pattern.get("reuse_count", 0) > 0
+                ):
                     filtered_patterns.append(pattern)
             except:
                 # Keep patterns with invalid dates
@@ -452,31 +451,31 @@ class EnhancedLearningEngine:
 
 def main():
     """Command-line interface for enhanced learning engine."""
-    parser = argparse.ArgumentParser(description='Enhanced Learning Engine')
-    parser.add_argument('--dir', default='.claude-patterns', help='Patterns directory path')
+    parser = argparse.ArgumentParser(description="Enhanced Learning Engine")
+    parser.add_argument("--dir", default=".claude-patterns", help="Patterns directory path")
 
-    subparsers = parser.add_subparsers(dest='action', help='Action to perform')
+    subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
     # Record action
-    record_parser = subparsers.add_parser('record', help='Record a pattern')
-    record_parser.add_argument('--task-type', required=True, help='Task type')
-    record_parser.add_argument('--context', required=True, help='Context JSON string')
-    record_parser.add_argument('--execution', required=True, help='Execution JSON string')
-    record_parser.add_argument('--outcome', required=True, help='Outcome JSON string')
-    record_parser.add_argument('--confidence', type=float, default=1.0, help='Confidence score')
+    record_parser = subparsers.add_parser("record", help="Record a pattern")
+    record_parser.add_argument("--task-type", required=True, help="Task type")
+    record_parser.add_argument("--context", required=True, help="Context JSON string")
+    record_parser.add_argument("--execution", required=True, help="Execution JSON string")
+    record_parser.add_argument("--outcome", required=True, help="Outcome JSON string")
+    record_parser.add_argument("--confidence", type=float, default=1.0, help="Confidence score")
 
     # Find action
-    find_parser = subparsers.add_parser('find', help='Find similar patterns')
-    find_parser.add_argument('--task-type', required=True, help='Task type')
-    find_parser.add_argument('--context', required=True, help='Context JSON string')
-    find_parser.add_argument('--limit', type=int, default=5, help='Maximum patterns to return')
+    find_parser = subparsers.add_parser("find", help="Find similar patterns")
+    find_parser.add_argument("--task-type", required=True, help="Task type")
+    find_parser.add_argument("--context", required=True, help="Context JSON string")
+    find_parser.add_argument("--limit", type=int, default=5, help="Maximum patterns to return")
 
     # Stats action
-    stats_parser = subparsers.add_parser('stats', help='Show learning statistics')
+    stats_parser = subparsers.add_parser("stats", help="Show learning statistics")
 
     # Cleanup action
-    cleanup_parser = subparsers.add_parser('cleanup', help='Clean up old patterns')
-    cleanup_parser.add_argument('--days', type=int, default=90, help='Age threshold in days')
+    cleanup_parser = subparsers.add_parser("cleanup", help="Clean up old patterns")
+    cleanup_parser.add_argument("--days", type=int, default=90, help="Age threshold in days")
 
     args = parser.parse_args()
 
@@ -487,33 +486,31 @@ def main():
     engine = EnhancedLearningEngine(args.dir)
 
     try:
-        if args.action == 'record':
+        if args.action == "record":
             context = json.loads(args.context)
             execution = json.loads(args.execution)
             outcome = json.loads(args.outcome)
 
-            success = engine.record_pattern(
-                args.task_type, context, execution, outcome, args.confidence
-            )
-            print(json.dumps({'success': success}, indent=2))
+            success = engine.record_pattern(args.task_type, context, execution, outcome, args.confidence)
+            print(json.dumps({"success": success}, indent=2))
 
-        elif args.action == 'find':
+        elif args.action == "find":
             context = json.loads(args.context)
             patterns = engine.find_similar_patterns(args.task_type, context, args.limit)
             print(json.dumps(patterns, indent=2))
 
-        elif args.action == 'stats':
+        elif args.action == "stats":
             stats = engine.get_learning_statistics()
             print(json.dumps(stats, indent=2))
 
-        elif args.action == 'cleanup':
+        elif args.action == "cleanup":
             engine.cleanup_old_patterns(args.days)
-            print(json.dumps({'success': True}, indent=2))
+            print(json.dumps({"success": True}, indent=2))
 
     except Exception as e:
-        print(json.dumps({'success': False, 'error': str(e)}, indent=2), file=sys.stderr)
+        print(json.dumps({"success": False, "error": str(e)}, indent=2), file=sys.stderr)
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

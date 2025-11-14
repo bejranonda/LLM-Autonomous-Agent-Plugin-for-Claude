@@ -22,6 +22,7 @@ try:
     from unified_parameter_storage import UnifiedParameterStorage
     from dashboard_unified_adapter import DashboardUnifiedAdapter
     from dashboard_learning_system import get_learning_system, auto_suggest_improvements
+
     UNIFIED_STORAGE_AVAILABLE = True
 except ImportError:
     UNIFIED_STORAGE_AVAILABLE = False
@@ -74,7 +75,7 @@ class ConsistencyDashboard:
                 "issues_found": [],
                 "recommendations": [],
                 "system_health": {},
-                "performance_trends": {}
+                "performance_trends": {},
             }
 
             # Run individual consistency checks
@@ -83,7 +84,7 @@ class ConsistencyDashboard:
                 self._check_timestamp_consistency(),
                 self._check_model_attribution_consistency(),
                 self._check_api_response_consistency(),
-                self._check_unified_storage_health()
+                self._check_unified_storage_health(),
             ]
 
             for check in checks:
@@ -107,12 +108,14 @@ class ConsistencyDashboard:
             results["auto_healing"] = self._generate_auto_healing_recommendations(results)
 
             # Store check in history
-            self.consistency_history.append({
-                "timestamp": check_start.isoformat(),
-                "score": results["consistency_score"],
-                "status": results["overall_status"],
-                "issues_count": len(results["issues_found"])
-            })
+            self.consistency_history.append(
+                {
+                    "timestamp": check_start.isoformat(),
+                    "score": results["consistency_score"],
+                    "status": results["overall_status"],
+                    "issues_count": len(results["issues_found"]),
+                }
+            )
 
             # Keep only last 50 checks
             if len(self.consistency_history) > 50:
@@ -130,17 +133,12 @@ class ConsistencyDashboard:
                 "error": str(e),
                 "checks_performed": [],
                 "issues_found": [{"type": "system_error", "description": str(e)}],
-                "recommendations": ["Fix system error and retry consistency check"]
+                "recommendations": ["Fix system error and retry consistency check"],
             }
 
     def _check_data_source_consistency(self) -> Dict[str, Any]:
         """Check if all APIs are using consistent data sources."""
-        check_result = {
-            "check_name": "Data Source Consistency",
-            "status": "unknown",
-            "issues": [],
-            "recommendations": []
-        }
+        check_result = {"check_name": "Data Source Consistency", "status": "unknown", "issues": [], "recommendations": []}
 
         try:
             if self.use_unified_storage and self.unified_adapter:
@@ -154,41 +152,36 @@ class ConsistencyDashboard:
                         "unified_storage_accessible": True,
                         "quality_data_available": bool(quality_data),
                         "model_data_available": bool(model_data),
-                        "data_source": "unified_storage"
+                        "data_source": "unified_storage",
                     }
                 else:
                     check_result["status"] = "warning"
-                    check_result["issues"].append({
-                        "type": "data_access_issue",
-                        "description": "Unified storage accessible but data incomplete"
-                    })
+                    check_result["issues"].append(
+                        {"type": "data_access_issue", "description": "Unified storage accessible but data incomplete"}
+                    )
                     check_result["recommendations"].append("Verify unified storage data integrity")
 
             else:
                 check_result["status"] = "fail"
-                check_result["issues"].append({
-                    "type": "unified_storage_unavailable",
-                    "description": "Unified storage not available for consistency checking"
-                })
+                check_result["issues"].append(
+                    {
+                        "type": "unified_storage_unavailable",
+                        "description": "Unified storage not available for consistency checking",
+                    }
+                )
                 check_result["recommendations"].append("Initialize unified storage for data consistency")
 
         except Exception as e:
             check_result["status"] = "error"
-            check_result["issues"].append({
-                "type": "check_error",
-                "description": f"Error checking data source consistency: {str(e)}"
-            })
+            check_result["issues"].append(
+                {"type": "check_error", "description": f"Error checking data source consistency: {str(e)}"}
+            )
 
         return check_result
 
     def _check_timestamp_consistency(self) -> Dict[str, Any]:
         """Check if data timestamps are consistent across sections."""
-        check_result = {
-            "check_name": "Timestamp Consistency",
-            "status": "unknown",
-            "issues": [],
-            "recommendations": []
-        }
+        check_result = {"check_name": "Timestamp Consistency", "status": "unknown", "issues": [], "recommendations": []}
 
         try:
             if self.use_unified_storage and self.unified_adapter:
@@ -202,7 +195,7 @@ class ConsistencyDashboard:
                     if timestamps:
                         # Check for stale data
                         latest_timestamp = max(timestamps)
-                        latest_date = datetime.fromisoformat(latest_timestamp.replace('Z', '+00:00'))
+                        latest_date = datetime.fromisoformat(latest_timestamp.replace("Z", "+00:00"))
                         now = datetime.now(latest_date.tzinfo)
 
                         age_hours = (now - latest_date).total_seconds() / 3600
@@ -212,36 +205,35 @@ class ConsistencyDashboard:
                             check_result["details"] = {
                                 "latest_timestamp": latest_timestamp,
                                 "data_age_hours": round(age_hours, 2),
-                                "data_freshness": "current"
+                                "data_freshness": "current",
                             }
                         elif age_hours < 24:
                             check_result["status"] = "warning"
-                            check_result["issues"].append({
-                                "type": "stale_data",
-                                "description": f"Data is {age_hours:.1f} hours old"
-                            })
+                            check_result["issues"].append(
+                                {"type": "stale_data", "description": f"Data is {age_hours:.1f} hours old"}
+                            )
                             check_result["recommendations"].append("Check data update processes")
                         else:
                             check_result["status"] = "fail"
-                            check_result["issues"].append({
-                                "type": "very_stale_data",
-                                "description": f"Data is {age_hours:.1f} hours old - potentially outdated"
-                            })
+                            check_result["issues"].append(
+                                {
+                                    "type": "very_stale_data",
+                                    "description": f"Data is {age_hours:.1f} hours old - potentially outdated",
+                                }
+                            )
                             check_result["recommendations"].append("Immediate data refresh required")
 
                 else:
                     check_result["status"] = "warning"
-                    check_result["issues"].append({
-                        "type": "no_timestamp_data",
-                        "description": "No timestamped data available for consistency check"
-                    })
+                    check_result["issues"].append(
+                        {"type": "no_timestamp_data", "description": "No timestamped data available for consistency check"}
+                    )
 
         except Exception as e:
             check_result["status"] = "error"
-            check_result["issues"].append({
-                "type": "check_error",
-                "description": f"Error checking timestamp consistency: {str(e)}"
-            })
+            check_result["issues"].append(
+                {"type": "check_error", "description": f"Error checking timestamp consistency: {str(e)}"}
+            )
 
         return check_result
 
@@ -251,7 +243,7 @@ class ConsistencyDashboard:
             "check_name": "Model Attribution Consistency",
             "status": "unknown",
             "issues": [],
-            "recommendations": []
+            "recommendations": [],
         }
 
         try:
@@ -275,39 +267,32 @@ class ConsistencyDashboard:
                         check_result["details"] = {
                             "models_detected": normalized_models,
                             "model_attribution": "consistent",
-                            "naming_standardized": True
+                            "naming_standardized": True,
                         }
                     else:
                         check_result["status"] = "pass"
                         check_result["details"] = {
                             "models_detected": normalized_models,
                             "model_attribution": "consistent",
-                            "single_model": True
+                            "single_model": True,
                         }
                 else:
                     check_result["status"] = "warning"
-                    check_result["issues"].append({
-                        "type": "no_model_data",
-                        "description": "No model attribution data available"
-                    })
+                    check_result["issues"].append(
+                        {"type": "no_model_data", "description": "No model attribution data available"}
+                    )
 
         except Exception as e:
             check_result["status"] = "error"
-            check_result["issues"].append({
-                "type": "check_error",
-                "description": f"Error checking model attribution consistency: {str(e)}"
-            })
+            check_result["issues"].append(
+                {"type": "check_error", "description": f"Error checking model attribution consistency: {str(e)}"}
+            )
 
         return check_result
 
     def _check_api_response_consistency(self) -> Dict[str, Any]:
         """Check if API response formats are consistent."""
-        check_result = {
-            "check_name": "API Response Consistency",
-            "status": "unknown",
-            "issues": [],
-            "recommendations": []
-        }
+        check_result = {"check_name": "API Response Consistency", "status": "unknown", "issues": [], "recommendations": []}
 
         try:
             # Since we can't easily test API responses from here,
@@ -316,14 +301,14 @@ class ConsistencyDashboard:
                 "/api/quality-timeline",
                 "/api/debugging-performance",
                 "/api/recent-activity",
-                "/api/recent-performance-records"
+                "/api/recent-performance-records",
             ]
 
             # Check if implementation files exist and are accessible
             implementation_files = [
                 "lib/debugging_performance_unified.py",
                 "lib/dashboard_unified_adapter.py",
-                "lib/dashboard_learning_system.py"
+                "lib/dashboard_learning_system.py",
             ]
 
             missing_files = []
@@ -336,33 +321,26 @@ class ConsistencyDashboard:
                 check_result["details"] = {
                     "expected_apis": expected_apis,
                     "implementation_files": "all_present",
-                    "api_structure": "consistent"
+                    "api_structure": "consistent",
                 }
             else:
                 check_result["status"] = "warning"
-                check_result["issues"].append({
-                    "type": "missing_implementations",
-                    "description": f"Missing implementation files: {missing_files}"
-                })
+                check_result["issues"].append(
+                    {"type": "missing_implementations", "description": f"Missing implementation files: {missing_files}"}
+                )
                 check_result["recommendations"].append("Complete API implementations for full consistency")
 
         except Exception as e:
             check_result["status"] = "error"
-            check_result["issues"].append({
-                "type": "check_error",
-                "description": f"Error checking API response consistency: {str(e)}"
-            })
+            check_result["issues"].append(
+                {"type": "check_error", "description": f"Error checking API response consistency: {str(e)}"}
+            )
 
         return check_result
 
     def _check_unified_storage_health(self) -> Dict[str, Any]:
         """Check unified storage system health."""
-        check_result = {
-            "check_name": "Unified Storage Health",
-            "status": "unknown",
-            "issues": [],
-            "recommendations": []
-        }
+        check_result = {"check_name": "Unified Storage Health", "status": "unknown", "issues": [], "recommendations": []}
 
         try:
             if self.use_unified_storage and self.unified_storage:
@@ -377,37 +355,33 @@ class ConsistencyDashboard:
                         "storage_available": True,
                         "data_integrity": validation.get("valid", False),
                         "total_records": storage_stats.get("total_records", 0),
-                        "storage_health": "healthy"
+                        "storage_health": "healthy",
                     }
 
                     if not validation.get("valid", False):
                         check_result["status"] = "warning"
-                        check_result["issues"].append({
-                            "type": "data_integrity_issue",
-                            "description": "Data integrity validation failed"
-                        })
+                        check_result["issues"].append(
+                            {"type": "data_integrity_issue", "description": "Data integrity validation failed"}
+                        )
                         check_result["recommendations"].append("Run data integrity repair")
                 else:
                     check_result["status"] = "warning"
-                    check_result["issues"].append({
-                        "type": "storage_stats_unavailable",
-                        "description": "Unable to retrieve storage statistics"
-                    })
+                    check_result["issues"].append(
+                        {"type": "storage_stats_unavailable", "description": "Unable to retrieve storage statistics"}
+                    )
 
             else:
                 check_result["status"] = "fail"
-                check_result["issues"].append({
-                    "type": "unified_storage_unavailable",
-                    "description": "Unified storage system not available"
-                })
+                check_result["issues"].append(
+                    {"type": "unified_storage_unavailable", "description": "Unified storage system not available"}
+                )
                 check_result["recommendations"].append("Initialize unified storage system")
 
         except Exception as e:
             check_result["status"] = "error"
-            check_result["issues"].append({
-                "type": "check_error",
-                "description": f"Error checking unified storage health: {str(e)}"
-            })
+            check_result["issues"].append(
+                {"type": "check_error", "description": f"Error checking unified storage health: {str(e)}"}
+            )
 
         return check_result
 
@@ -464,7 +438,7 @@ class ConsistencyDashboard:
                 "storage_status": "unknown",
                 "learning_active": False,
                 "recent_checks": len(self.consistency_history),
-                "last_check": self.last_check.isoformat() if self.last_check else None
+                "last_check": self.last_check.isoformat() if self.last_check else None,
             }
 
             # Check storage status
@@ -493,17 +467,14 @@ class ConsistencyDashboard:
                 "storage_status": "error",
                 "learning_active": False,
                 "recent_checks": 0,
-                "error": str(e)
+                "error": str(e),
             }
 
     def _get_performance_trends(self) -> Dict[str, Any]:
         """Get performance trends from consistency history."""
         try:
             if len(self.consistency_history) < 2:
-                return {
-                    "trend": "insufficient_data",
-                    "message": "Need at least 2 consistency checks for trend analysis"
-                }
+                return {"trend": "insufficient_data", "message": "Need at least 2 consistency checks for trend analysis"}
 
             recent_checks = self.consistency_history[-10:]  # Last 10 checks
 
@@ -529,14 +500,11 @@ class ConsistencyDashboard:
                 "highest_score": max(scores),
                 "lowest_score": min(scores),
                 "checks_analyzed": len(recent_checks),
-                "time_period": f"{len(recent_checks)} recent checks"
+                "time_period": f"{len(recent_checks)} recent checks",
             }
 
         except Exception as e:
-            return {
-                "trend": "error",
-                "error": str(e)
-            }
+            return {"trend": "error", "error": str(e)}
 
     def _generate_auto_healing_recommendations(self, results: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Generate automatic healing recommendations based on consistency check results."""
@@ -548,83 +516,93 @@ class ConsistencyDashboard:
                 issue_type = issue.get("type", "")
 
                 if issue_type == "unified_storage_unavailable":
-                    recommendations.append({
-                        "priority": "high",
-                        "type": "system_initialization",
-                        "title": "Initialize Unified Storage System",
-                        "description": "Unified storage is required for data consistency",
-                        "actions": [
-                            "Ensure unified_parameter_storage.py is available",
-                            "Check unified adapter initialization",
-                            "Verify storage permissions"
-                        ],
-                        "auto_fix_possible": True
-                    })
+                    recommendations.append(
+                        {
+                            "priority": "high",
+                            "type": "system_initialization",
+                            "title": "Initialize Unified Storage System",
+                            "description": "Unified storage is required for data consistency",
+                            "actions": [
+                                "Ensure unified_parameter_storage.py is available",
+                                "Check unified adapter initialization",
+                                "Verify storage permissions",
+                            ],
+                            "auto_fix_possible": True,
+                        }
+                    )
 
                 elif issue_type == "stale_data" or issue_type == "very_stale_data":
-                    recommendations.append({
-                        "priority": "medium",
-                        "type": "data_refresh",
-                        "title": "Refresh Dashboard Data",
-                        "description": "Update data sources to ensure current information",
-                        "actions": [
-                            "Check automated data collection processes",
-                            "Verify data pipeline functionality",
-                            "Manually trigger data updates if needed"
-                        ],
-                        "auto_fix_possible": True
-                    })
+                    recommendations.append(
+                        {
+                            "priority": "medium",
+                            "type": "data_refresh",
+                            "title": "Refresh Dashboard Data",
+                            "description": "Update data sources to ensure current information",
+                            "actions": [
+                                "Check automated data collection processes",
+                                "Verify data pipeline functionality",
+                                "Manually trigger data updates if needed",
+                            ],
+                            "auto_fix_possible": True,
+                        }
+                    )
 
                 elif issue_type == "data_integrity_issue":
-                    recommendations.append({
-                        "priority": "high",
-                        "type": "data_repair",
-                        "title": "Repair Data Integrity",
-                        "description": "Fix data integrity issues in unified storage",
-                        "actions": [
-                            "Run data integrity validation",
-                            "Repair corrupted data records",
-                            "Restore from backup if needed"
-                        ],
-                        "auto_fix_possible": True
-                    })
+                    recommendations.append(
+                        {
+                            "priority": "high",
+                            "type": "data_repair",
+                            "title": "Repair Data Integrity",
+                            "description": "Fix data integrity issues in unified storage",
+                            "actions": [
+                                "Run data integrity validation",
+                                "Repair corrupted data records",
+                                "Restore from backup if needed",
+                            ],
+                            "auto_fix_possible": True,
+                        }
+                    )
 
             # Add learning-based recommendations
             if self.learning_system:
                 try:
-                    learning_recommendations = auto_suggest_improvements({
-                        "problem_type": "dashboard_consistency",
-                        "current_score": results.get("consistency_score", 0)
-                    })
+                    learning_recommendations = auto_suggest_improvements(
+                        {"problem_type": "dashboard_consistency", "current_score": results.get("consistency_score", 0)}
+                    )
 
                     if learning_recommendations.get("suggestions"):
-                        recommendations.append({
-                            "priority": "medium",
-                            "type": "learning_based",
-                            "title": "Learning System Recommendations",
-                            "description": f"Based on {learning_recommendations.get('based_on_patterns', 0)} historical patterns",
-                            "actions": learning_recommendations.get("suggestions", []),
-                            "confidence": learning_recommendations.get("confidence", "low"),
-                            "auto_fix_possible": False
-                        })
+                        recommendations.append(
+                            {
+                                "priority": "medium",
+                                "type": "learning_based",
+                                "title": "Learning System Recommendations",
+                                "description": f"Based on {learning_recommendations.get('based_on_patterns', 0)} historical patterns",
+                                "actions": learning_recommendations.get("suggestions", []),
+                                "confidence": learning_recommendations.get("confidence", "low"),
+                                "auto_fix_possible": False,
+                            }
+                        )
                 except:
                     pass
 
         except Exception as e:
-            recommendations.append({
-                "priority": "low",
-                "type": "error",
-                "title": "Recommendation Generation Error",
-                "description": f"Error generating recommendations: {str(e)}",
-                "actions": ["Check system logs for details"],
-                "auto_fix_possible": False
-            })
+            recommendations.append(
+                {
+                    "priority": "low",
+                    "type": "error",
+                    "title": "Recommendation Generation Error",
+                    "description": f"Error generating recommendations: {str(e)}",
+                    "actions": ["Check system logs for details"],
+                    "auto_fix_possible": False,
+                }
+            )
 
         return recommendations
 
 
 # Global consistency dashboard instance
 _consistency_dashboard = None
+
 
 def get_consistency_dashboard() -> ConsistencyDashboard:
     """Get global consistency dashboard instance."""
@@ -633,10 +611,12 @@ def get_consistency_dashboard() -> ConsistencyDashboard:
         _consistency_dashboard = ConsistencyDashboard()
     return _consistency_dashboard
 
+
 def run_consistency_check() -> Dict[str, Any]:
     """Run comprehensive consistency check."""
     dashboard = get_consistency_dashboard()
     return dashboard.run_consistency_check()
+
 
 def get_system_health() -> Dict[str, Any]:
     """Get current system health status."""

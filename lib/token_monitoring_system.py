@@ -29,6 +29,7 @@ from agent_communication_optimizer import get_communication_optimizer
 
 class MetricType(Enum):
     """Types of metrics that can be tracked."""
+
     CONSUMPTION = "consumption"
     EFFICIENCY = "efficiency"
     PERFORMANCE = "performance"
@@ -39,6 +40,7 @@ class MetricType(Enum):
 
 class AlertLevel(Enum):
     """Alert levels for monitoring."""
+
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"
@@ -48,6 +50,7 @@ class AlertLevel(Enum):
 @dataclass
 class TokenMetric:
     """Single token measurement."""
+
     timestamp: float
     metric_type: MetricType
     value: float
@@ -58,12 +61,13 @@ class TokenMetric:
     @property
     def formatted_timestamp(self) -> str:
         """Get formatted timestamp."""
-        return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.timestamp))
+        return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self.timestamp))
 
 
 @dataclass
 class Alert:
     """System alert for token usage monitoring."""
+
     level: AlertLevel
     message: str
     metric_type: MetricType
@@ -77,6 +81,7 @@ class Alert:
 @dataclass
 class TokenBudget:
     """Token budget tracking."""
+
     budget_id: str
     total_budget: int
     used_tokens: int
@@ -107,20 +112,16 @@ class TokenMonitoringSystem:
         # Monitoring configuration
         self.alert_thresholds = {
             MetricType.CONSUMPTION: {
-                'warning': 50000,      # 50K tokens
-                'error': 80000,        # 80K tokens
-                'critical': 100000     # 100K tokens
+                "warning": 50000,  # 50K tokens
+                "error": 80000,  # 80K tokens
+                "critical": 100000,  # 100K tokens
             },
             MetricType.EFFICIENCY: {
-                'warning': 0.3,         # 30% efficiency
-                'error': 0.2,           # 20% efficiency
-                'critical': 0.1         # 10% efficiency
+                "warning": 0.3,  # 30% efficiency
+                "error": 0.2,  # 20% efficiency
+                "critical": 0.1,  # 10% efficiency
             },
-            MetricType.PERFORMANCE: {
-                'warning': 5.0,         # 5 seconds
-                'error': 10.0,          # 10 seconds
-                'critical': 15.0        # 15 seconds
-            }
+            MetricType.PERFORMANCE: {"warning": 5.0, "error": 10.0, "critical": 15.0},  # 5 seconds  # 10 seconds  # 15 seconds
         }
 
         # Active monitoring
@@ -155,7 +156,8 @@ class TokenMonitoringSystem:
     def _init_database(self) -> None:
         """Initialize SQLite database for metrics storage."""
         self.conn = sqlite3.connect(str(self.db_path))
-        self.conn.execute("""
+        self.conn.execute(
+            """
             CREATE TABLE IF NOT EXISTS token_metrics (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 timestamp REAL NOT NULL,
@@ -166,9 +168,11 @@ class TokenMonitoringSystem:
                 context TEXT,
                 created_at REAL DEFAULT (strftime('%s', 'now'))
             )
-        """)
+        """
+        )
 
-        self.conn.execute("""
+        self.conn.execute(
+            """
             CREATE TABLE IF NOT EXISTS token_budgets (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 budget_id TEXT UNIQUE NOT NULL,
@@ -181,9 +185,11 @@ class TokenMonitoringSystem:
                 efficiency_score REAL DEFAULT 0.0,
                 created_at REAL DEFAULT (strftime('%s', 'now'))
             )
-        """)
+        """
+        )
 
-        self.conn.execute("""
+        self.conn.execute(
+            """
             CREATE TABLE IF NOT EXISTS alerts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 level TEXT NOT NULL,
@@ -196,16 +202,22 @@ class TokenMonitoringSystem:
                 resolved BOOLEAN DEFAULT 0,
                 created_at REAL DEFAULT (strftime('%s', 'now'))
             )
-        """)
+        """
+        )
 
         # Create indexes for better performance
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_metrics_timestamp ON token_metrics(timestamp)")
         self.start_time = time.time()
         self.conn.commit()
 
-    def record_metric(self, metric_type: MetricType, value: float,
-                      source: str = "unknown", tags: Dict[str, str] = None,
-                      context: Dict[str, Any] = None) -> None:
+    def record_metric(
+        self,
+        metric_type: MetricType,
+        value: float,
+        source: str = "unknown",
+        tags: Dict[str, str] = None,
+        context: Dict[str, Any] = None,
+    ) -> None:
         """Record a token metric."""
         if tags is None:
             tags = {}
@@ -214,27 +226,25 @@ class TokenMonitoringSystem:
             context = {}
 
         metric = TokenMetric(
-            timestamp=time.time(),
-            metric_type=metric_type,
-            value=value,
-            tags=tags,
-            source=source,
-            context=context
+            timestamp=time.time(), metric_type=metric_type, value=value, tags=tags, source=source, context=context
         )
 
         # Store in database
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO token_metrics (timestamp, metric_type, value, tags, source, context)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            metric.timestamp,
-            metric.metric_type.value,
-            metric.value,
-            json.dumps(metric.tags),
-            metric.source,
-            json.dumps(metric.context)
-        ))
+        """,
+            (
+                metric.timestamp,
+                metric.metric_type.value,
+                metric.value,
+                json.dumps(metric.tags),
+                metric.source,
+                json.dumps(metric.context),
+            ),
+        )
         self.conn.commit()
 
         # Add to buffer
@@ -246,8 +256,7 @@ class TokenMonitoringSystem:
         # Update stats cache
         self._update_stats_cache(metric_type)
 
-    def create_budget(self, budget_id: str, total_budget: int,
-                     user_id: str = None, duration: int = None) -> str:
+    def create_budget(self, budget_id: str, total_budget: int, user_id: str = None, duration: int = None) -> str:
         """Create a new token budget."""
         budget = TokenBudget(
             budget_id=budget_id,
@@ -257,32 +266,34 @@ class TokenMonitoringSystem:
             start_time=time.time(),
             end_time=time.time() + duration if duration else None,
             alerts_triggered=[],
-            efficiency_score=0.0
+            efficiency_score=0.0,
         )
 
         self.active_budgets[budget_id] = budget
 
         # Store in database
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO token_budgets (budget_id, total_budget, used_tokens, remaining_tokens, start_time, end_time, alerts_triggered, efficiency_score)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            budget.budget_id,
-            budget.total_budget,
-            budget.used_tokens,
-            budget.remaining_tokens,
-            budget.start_time,
-            budget.end_time,
-            json.dumps(budget.alerts_triggered),
-            budget.efficiency_score
-        ))
+        """,
+            (
+                budget.budget_id,
+                budget.total_budget,
+                budget.used_tokens,
+                budget.remaining_tokens,
+                budget.start_time,
+                budget.end_time,
+                json.dumps(budget.alerts_triggered),
+                budget.efficiency_score,
+            ),
+        )
         self.conn.commit()
 
         return budget_id
 
-    def use_budget(self, budget_id: str, tokens: int,
-                   context: Dict[str, Any] = None) -> bool:
+    def use_budget(self, budget_id: str, tokens: int, context: Dict[str, Any] = None) -> bool:
         """Use tokens from a budget."""
         if budget_id not in self.active_budgets:
             return False
@@ -307,11 +318,14 @@ class TokenMonitoringSystem:
 
         # Store in database
         cursor = self.conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             UPDATE token_budgets
             SET used_tokens = ?, remaining_tokens = ?, efficiency_score = ?
             WHERE budget_id = ?
-        """, (budget.used_tokens, budget.remaining_tokens, budget.efficiency_score, budget.budget_id))
+        """,
+            (budget.used_tokens, budget.remaining_tokens, budget.efficiency_score, budget.budget_id),
+        )
         self.conn.commit()
 
         # Record metric
@@ -320,7 +334,7 @@ class TokenMonitoringSystem:
             tokens,
             f"budget_{budget_id}",
             {"budget_id": budget_id, "user_id": user_id or "default"},
-            context
+            context,
         )
 
         return True
@@ -347,11 +361,10 @@ class TokenMonitoringSystem:
             "time_remaining": time_remaining,
             "alerts_triggered": len(budget.alerts_triggered),
             "efficiency_score": budget.efficiency_score,
-            "status": "active"
+            "status": "active",
         }
 
-    def get_analytics(self, metric_type: MetricType = None,
-                     time_range: int = 3600, limit: int = 1000) -> Dict[str, Any]:
+    def get_analytics(self, metric_type: MetricType = None, time_range: int = 3600, limit: int = 1000) -> Dict[str, Any]:
         """Get analytics for token usage."""
         if metric_type is None:
             return self._get_overall_analytics(time_range, limit)
@@ -360,106 +373,104 @@ class TokenMonitoringSystem:
         cursor = self.conn.cursor()
         since_time = time.time() - time_range
 
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT timestamp, value, tags, source, context
             FROM token_metrics
             WHERE metric_type = ? AND timestamp > ?
             ORDER BY timestamp DESC
             LIMIT ?
-        """, (metric_type.value, since_time, limit))
+        """,
+            (metric_type.value, since_time, limit),
+        )
 
         rows = cursor.fetchall()
         metrics = []
         for row in rows:
-            metrics.append({
-                'timestamp': row[0],
-                'value': row[1],
-                'tags': json.loads(row[2]),
-                'source': row[3],
-                'context': json.loads(row[4])
-            })
+            metrics.append(
+                {
+                    "timestamp": row[0],
+                    "value": row[1],
+                    "tags": json.loads(row[2]),
+                    "source": row[3],
+                    "context": json.loads(row[4]),
+                }
+            )
 
         if not metrics:
             return {"message": "No data available"}
 
         # Calculate statistics
-        values = [m['value'] for m in metrics]
+        values = [m["value"] for m in metrics]
         return {
-            'metric_type': metric_type.value,
-            'count': len(metrics),
-            'time_range_hours': time_range / 3600,
-            'min_value': min(values),
-            'max_value': max(values),
-            'avg_value': statistics.mean(values),
-            'median_value': statistics.median(values),
-            'std_dev': statistics.stdev(values) if len(values) > 1 else 0,
-            'trend': self._calculate_trend(values),
-            'recent_values': values[:10],
-            'top_sources': self._get_top_sources(metrics)
+            "metric_type": metric_type.value,
+            "count": len(metrics),
+            "time_range_hours": time_range / 3600,
+            "min_value": min(values),
+            "max_value": max(values),
+            "avg_value": statistics.mean(values),
+            "median_value": statistics.median(values),
+            "std_dev": statistics.stdev(values) if len(values) > 1 else 0,
+            "trend": self._calculate_trend(values),
+            "recent_values": values[:10],
+            "top_sources": self._get_top_sources(metrics),
         }
 
     def _get_overall_analytics(self, time_range: int, limit: int) -> Dict[str, Any]:
         """Get overall analytics across all metric types."""
-        analytics = {
-            'overview': {},
-            'metrics_by_type': {},
-            'alerts_summary': {},
-            'budget_summary': {},
-            'recommendations': []
-        }
+        analytics = {"overview": {}, "metrics_by_type": {}, "alerts_summary": {}, "budget_summary": {}, "recommendations": []}
 
         # Overview statistics
         cursor = self.conn.cursor()
         since_time = time.time() - time_range
 
         for metric_type in MetricType:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT COUNT(*), AVG(value), MIN(value), MAX(value), SUM(value)
                 FROM token_metrics
                 WHERE metric_type = ? AND timestamp > ?
-            """, (metric_type.value, since_time))
+            """,
+                (metric_type.value, since_time),
+            )
 
             row = cursor.fetchone()
             if row and row[0] > 0:
-                analytics['metrics_by_type'][metric_type.value] = {
-                    'count': row[0],
-                    'avg_value': row[1],
-                    'min_value': row[2],
-                    'max_value': row[3],
-                    'total_value': row[4]
+                analytics["metrics_by_type"][metric_type.value] = {
+                    "count": row[0],
+                    "avg_value": row[1],
+                    "min_value": row[2],
+                    "max_value": row[3],
+                    "total_value": row[4],
                 }
 
         # Alerts summary
         active_alerts = [alert for alert in self.alerts if not alert.resolved]
-        analytics['alerts_summary'] = {
-            'total_alerts': len(self.alerts),
-            'active_alerts': len(active_alerts),
-            'by_level': {
-                level: len([a for a in self.alerts if a.level == level and not a.resolved])
-                for level in AlertLevel
-            }
+        analytics["alerts_summary"] = {
+            "total_alerts": len(self.alerts),
+            "active_alerts": len(active_alerts),
+            "by_level": {level: len([a for a in self.alerts if a.level == level and not a.resolved]) for level in AlertLevel},
         }
 
         # Budget summary
-        analytics['budget_summary'] = {
-            'active_budgets': len(self.active_budgets),
-            'total_budget': sum(b.total_budget for b in self.active_budgets.values()),
-            'total_used': sum(b.used_tokens for b in self.active_budgets.values()),
-            'total_remaining': sum(b.remaining_tokens for b in self.active_budgets.values()),
-            'average_efficiency': statistics.mean([
-                b.efficiency_score for b in self.active_budgets.values()
-            ]) if self.active_budgets else 0
+        analytics["budget_summary"] = {
+            "active_budgets": len(self.active_budgets),
+            "total_budget": sum(b.total_budget for b in self.active_budgets.values()),
+            "total_used": sum(b.used_tokens for b in self.active_budgets.values()),
+            "total_remaining": sum(b.remaining_tokens for b in self.active_budgets.values()),
+            "average_efficiency": (
+                statistics.mean([b.efficiency_score for b in self.active_budgets.values()]) if self.active_budgets else 0
+            ),
         }
 
         # Generate recommendations
-        analytics['recommendations'] = self._generate_recommendations()
+        analytics["recommendations"] = self._generate_recommendations()
 
         return analytics
 
-    def create_report(self, report_type: str = "daily",
-                      time_range: int = 86400) -> str:
+    def create_report(self, report_type: str = "daily", time_range: int = 86400) -> str:
         """Create monitoring report."""
-        timestamp = time.strftime('%Y%m%d_%H%M%S')
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
         report_id = f"token_report_{report_type}_{timestamp}"
         report_path = self.reports_dir / f"{report_id}.md"
 
@@ -485,7 +496,7 @@ class TokenMonitoringSystem:
 
 """
 
-        for metric_type, data in analytics['metrics_by_type'].items():
+        for metric_type, data in analytics["metrics_by_type"].items():
             report_content += f"""
 ### {metric_type.title()}
 - **Count**: {data['count']:,}
@@ -518,7 +529,7 @@ class TokenMonitoringSystem:
 
 """
 
-        for recommendation in analytics['recommendations']:
+        for recommendation in analytics["recommendations"]:
             report_content += f"- {recommendation}\n"
 
         report_content += f"""
@@ -532,7 +543,7 @@ class TokenMonitoringSystem:
 """
 
         # Write report to file
-        with open(report_path, 'w') as f:
+        with open(report_path, "w") as f:
             f.write(report_content)
 
         return str(report_path)
@@ -551,7 +562,7 @@ class TokenMonitoringSystem:
                     current_value=metric.value,
                     timestamp=metric.timestamp,
                     recommendations=self._generate_alert_recommendations(metric, alert_level),
-                    resolved=False
+                    resolved=False,
                 )
 
                 self.alerts.append(alert)
@@ -560,8 +571,7 @@ class TokenMonitoringSystem:
                 # Trigger alert handlers
                 self._trigger_alert_handlers(alert)
 
-    def _should_trigger_alert(self, metric: TokenMetric, threshold: float,
-                              alert_level: AlertLevel) -> bool:
+    def _should_trigger_alert(self, metric: TokenMetric, threshold: float, alert_level: AlertLevel) -> bool:
         """Determine if alert should be triggered."""
         if alert_level == AlertLevel.CRITICAL:
             return metric.value >= threshold
@@ -576,8 +586,7 @@ class TokenMonitoringSystem:
         """Generate alert message."""
         return f"{level.title()} Alert: {metric.metric_type.value()} - Current: {metric.value:.2f}"
 
-    def _generate_alert_recommendations(self, metric: TokenMetric,
-                                        level: AlertLevel) -> List[str]:
+    def _generate_alert_recommendations(self, metric: TokenMetric, level: AlertLevel) -> List[str]:
         """Generate recommendations for alert."""
         recommendations = []
 
@@ -587,10 +596,10 @@ class TokenMonitoringSystem:
                 recommendations.append("Review and optimize message compression")
                 recommendations.append("Enable progressive content loading")
         elif level == AlertLevel.WARNING:
-                recommendations.append("Monitor token usage trends")
-                recommendations.append("Consider optimizing recent operations")
+            recommendations.append("Monitor token usage trends")
+            recommendations.append("Consider optimizing recent operations")
         elif level == AlertLevel.INFO:
-                    recommendations.append("Continue monitoring token efficiency")
+            recommendations.append("Continue monitoring token efficiency")
 
         elif metric.metric_type == MetricType.EFFICIENCY:
             if level in [AlertLevel.ERROR, AlertLevel.CRITICAL]:
@@ -616,9 +625,9 @@ class TokenMonitoringSystem:
                 recommendations=[
                     "Reduce token usage in current operations",
                     "Increase budget allocation",
-                    "Use more efficient communication"
+                    "Use more efficient communication",
                 ],
-                resolved=False
+                resolved=False,
             )
 
             self.alerts.append(alert)
@@ -666,20 +675,22 @@ class TokenMonitoringSystem:
 
         analysis = "## Trend Analysis\n\n"
 
-        if 'trend' in consumption_analytics:
+        if "trend" in consumption_analytics:
             analysis += f"**Token Consumption**: {consumption_analytics['trend'].title()}\n"
         else:
             analysis += "**Token Consumption**: No trend data available\n"
 
-        if 'trend' in efficiency_analytics:
+        if "trend" in efficiency_analytics:
             analysis += f"**Efficiency**: {efficiency_analytics['trend'].title()}\n"
         else:
             analysis += "**Efficiency**: No trend data available\n"
 
         # Add recommendations based on trends
-        if consumption_analytics.get('trend') == 'increasing':
-            analysis += "\n[WARN] **Recommendation**: Token consumption is increasing. Consider enabling optimization features.\n"
-        elif consumption_analytics.get('trend') == 'decreasing':
+        if consumption_analytics.get("trend") == "increasing":
+            analysis += (
+                "\n[WARN] **Recommendation**: Token consumption is increasing. Consider enabling optimization features.\n"
+            )
+        elif consumption_analytics.get("trend") == "decreasing":
             analysis += "\n[OK] **Good**: Token consumption is decreasing. Current optimization strategy is effective.\n"
 
         return analysis
@@ -692,11 +703,11 @@ class TokenMonitoringSystem:
         """Get top sources by metric count."""
         source_counts = defaultdict(int)
         for metric in metrics:
-            source = metric['source']
+            source = metric["source"]
             source_counts[source] += 1
 
         top_sources = [
-            {'source': source, 'count': count}
+            {"source": source, "count": count}
             for source, count in sorted(source_counts.items(), key=lambda x: x[1], reverse=True)
         ]
 
@@ -723,7 +734,7 @@ class TokenMonitoringSystem:
 
         # Check cache efficiency
         cache_stats = self.cache.get_cache_statistics()
-        if cache_stats.get('hit_rate', 0) < 0.5:
+        if cache_stats.get("hit_rate", 0) < 0.5:
             recommendations.append("Low cache hit rate - consider adjusting cache policies")
 
         return recommendations
@@ -743,7 +754,7 @@ class TokenMonitoringSystem:
                 current_value=row[5],
                 timestamp=row[6],
                 recommendations=json.loads(row[7]),
-                resolved=bool(row[8])
+                resolved=bool(row[8]),
             )
             self.alerts.append(alert)
 
@@ -757,21 +768,24 @@ class TokenMonitoringSystem:
 
         # Save current alerts
         for alert in self.alerts:
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT OR REPLACE INTO alerts
                 (level, message, metric_type, threshold, current_value, timestamp, recommendations, resolved, id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                alert.level.value,
-                alert.message,
-                alert.metric_type.value,
-                alert.threshold,
-                alert.current_value,
-                alert.timestamp,
-                json.dumps(alert.recommendations),
-                int(alert.resolved),
-                int(time.time() * 1000)  # Use timestamp as unique ID
-            ))
+            """,
+                (
+                    alert.level.value,
+                    alert.message,
+                    alert.metric_type.value,
+                    alert.threshold,
+                    alert.current_value,
+                    alert.timestamp,
+                    json.dumps(alert.recommendations),
+                    int(alert.resolved),
+                    int(time.time() * 1000),  # Use timestamp as unique ID
+                ),
+            )
 
         self.conn.commit()
 
@@ -813,9 +827,9 @@ class TokenMonitoringSystem:
             optimizer_stats = self.token_optimizer.get_optimization_report()
             self.record_metric(
                 MetricType.EFFICIENCY,
-                optimizer_stats.get('overall_score', 0),
+                optimizer_stats.get("overall_score", 0),
                 "token_optimizer",
-                {"component": "token_optimizer"}
+                {"component": "token_optimizer"},
             )
         except Exception as e:
             print(f"Error collecting optimizer metrics: {e}")
@@ -823,12 +837,7 @@ class TokenMonitoringSystem:
         # Collect from cache
         try:
             cache_stats = self.cache.get_cache_statistics()
-            self.record_metric(
-                MetricType.CACHE,
-                cache_stats.get('hit_rate', 0),
-                "smart_cache",
-                {"component": "smart_cache"}
-            )
+            self.record_metric(MetricType.CACHE, cache_stats.get("hit_rate", 0), "smart_cache", {"component": "smart_cache"})
         except Exception as e:
             print(f"Error collecting cache metrics: {e}")
 
@@ -837,9 +846,9 @@ class TokenMonitoringSystem:
             comm_report = self.comm_optimizer.get_optimization_report()
             self.record_metric(
                 MetricType.COMMUNICATION,
-                comm_report.get('overall_efficiency', 0),
+                comm_report.get("overall_efficiency", 0),
                 "comm_optimizer",
-                {"component": "communication_optimizer"}
+                {"component": "communication_optimizer"},
             )
         except Exception as e:
             print(f"Error collecting communication metrics: {e}")
@@ -903,7 +912,7 @@ class TokenMonitoringSystem:
 
     def export_data(self, format_type: str = "json", time_range: int = 86400) -> str:
         """Export monitoring data."""
-        timestamp = time.strftime('%Y%m%d_%H%M%S')
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
         export_path = self.cache_dir / f"token_monitoring_export_{timestamp}.{format_type}"
 
         if format_type == "json":
@@ -913,10 +922,10 @@ class TokenMonitoringSystem:
                 "metrics": list(self.metrics_buffer),
                 "alerts": [asdict(alert) for alert in self.alerts],
                 "budgets": [asdict(budget) for budget in self.active_budgets.values()],
-                "stats": self.stats
+                "stats": self.stats,
             }
 
-            with open(export_path, 'w') as f:
+            with open(export_path, "w") as f:
                 json.dump(data, f, indent=2)
 
         return str(export_path)
@@ -930,12 +939,13 @@ class TokenMonitoringSystem:
             "metrics_buffer_size": len(self.metrics_buffer),
             "active_budgets": len(self.active_budgets),
             "cache_status": "healthy",
-            "last_cleanup": time.time()
+            "last_cleanup": time.time(),
         }
 
 
 # Global monitoring instance
 _token_monitor = None
+
 
 def get_token_monitoring() -> TokenMonitoringSystem:
     """Get or create global token monitoring system instance."""

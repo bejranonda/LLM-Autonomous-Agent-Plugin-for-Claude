@@ -31,7 +31,7 @@ from collections import defaultdict
 import platform
 
 # Handle Windows compatibility for file locking
-if platform.system() == 'Windows':
+if platform.system() == "Windows":
     import msvcrt
 
     def lock_file(f, exclusive=False):
@@ -44,6 +44,7 @@ if platform.system() == 'Windows':
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
         except:
             pass
+
 else:
     import fcntl
 
@@ -63,27 +64,18 @@ class ParameterSchema:
 
     SCHEMA = {
         "version": CURRENT_VERSION,
-        "metadata": {
-            "created_at": str,
-            "last_updated": str,
-            "migration_history": list
-        },
+        "metadata": {"created_at": str, "last_updated": str, "migration_history": list},
         "parameters": {
             "quality": {
-                "scores": {
-                    "current": float,
-                    "history": list,
-                    "trends": dict,
-                    "averages": dict
-                },
+                "scores": {"current": float, "history": list, "trends": dict, "averages": dict},
                 "metrics": {
                     "syntax_compliance": float,
                     "functionality": float,
                     "maintainability": float,
                     "documentation": float,
                     "pattern_adherence": float,
-                    "code_metrics": float
-                }
+                    "code_metrics": float,
+                },
             },
             "models": {
                 "active_model": str,
@@ -93,27 +85,19 @@ class ParameterSchema:
                         "success_rate": float,
                         "contribution": float,
                         "total_tasks": int,
-                        "last_updated": str
+                        "last_updated": str,
                     }
                 },
-                "usage_stats": {
-                    "total_queries": int,
-                    "model_switches": int,
-                    "preferred_models": list
-                }
+                "usage_stats": {"total_queries": int, "model_switches": int, "preferred_models": list},
             },
             "learning": {
                 "patterns": {
                     "skill_effectiveness": dict,
                     "agent_performance": dict,
                     "task_patterns": list,
-                    "success_rates": dict
+                    "success_rates": dict,
                 },
-                "analytics": {
-                    "learning_rate": float,
-                    "prediction_accuracy": float,
-                    "optimization_suggestions": list
-                }
+                "analytics": {"learning_rate": float, "prediction_accuracy": float, "optimization_suggestions": list},
             },
             "dashboard": {
                 "metrics": {
@@ -121,25 +105,16 @@ class ParameterSchema:
                     "completed_tasks": int,
                     "failed_tasks": int,
                     "average_response_time": float,
-                    "system_health": float
+                    "system_health": float,
                 },
-                "real_time": {
-                    "current_model": str,
-                    "last_activity": str,
-                    "active_agents": list,
-                    "resource_usage": dict
-                }
+                "real_time": {"current_model": str, "last_activity": str, "active_agents": list, "resource_usage": dict},
             },
-            "autofix": {
-                "patterns": dict,
-                "success_rates": dict,
-                "usage_statistics": dict
-            },
+            "autofix": {"patterns": dict, "success_rates": dict, "usage_statistics": dict},
             "agent_feedback": {
                 "exchanges": list,
                 "collaboration_matrix": dict,
                 "learning_insights": dict,
-                "effectiveness_metrics": dict
+                "effectiveness_metrics": dict,
             },
             "agent_performance": {
                 "individual_metrics": dict,
@@ -147,7 +122,7 @@ class ParameterSchema:
                 "specializations": dict,
                 "performance_trends": dict,
                 "top_performers": list,
-                "weak_performers": list
+                "weak_performers": list,
             },
             "user_preferences": {
                 "coding_style": dict,
@@ -156,9 +131,9 @@ class ParameterSchema:
                 "communication_style": dict,
                 "task_preferences": dict,
                 "interaction_history": list,
-                "learning_confidence": float
-            }
-        }
+                "learning_confidence": float,
+            },
+        },
     }
 
 
@@ -207,26 +182,51 @@ class UnifiedParameterStorage:
                 "metadata": {
                     "created_at": datetime.now().isoformat(),
                     "last_updated": datetime.now().isoformat(),
-                    "migration_history": []
+                    "migration_history": [],
                 },
                 "parameters": {
-                    "quality": {"scores": {"current": 0.0, "history": [], "trends": {}, "averages": {}},
-                               "metrics": {"syntax_compliance": 0.0, "functionality": 0.0,
-                                         "maintainability": 0.0, "documentation": 0.0,
-                                         "pattern_adherence": 0.0, "code_metrics": 0.0}},
-                    "models": {"active_model": "Claude", "performance": {}, "usage_stats":
-                              {"total_queries": 0, "model_switches": 0, "preferred_models": []}},
-                    "learning": {"patterns": {"skill_effectiveness": {}, "agent_performance": {},
-                                            "task_patterns": [], "success_rates": {}},
-                                "analytics": {"learning_rate": 0.0, "prediction_accuracy": 0.0,
-                                            "optimization_suggestions": []}},
-                    "dashboard": {"metrics": {"active_tasks": 0, "completed_tasks": 0,
-                                           "failed_tasks": 0, "average_response_time": 0.0,
-                                           "system_health": 100.0},
-                                "real_time": {"current_model": "Claude", "last_activity": "",
-                                            "active_agents": [], "resource_usage": {}}},
-                    "autofix": {"patterns": {}, "success_rates": {}, "usage_statistics": {}}
-                }
+                    "quality": {
+                        "scores": {"current": 0.0, "history": [], "trends": {}, "averages": {}},
+                        "metrics": {
+                            "syntax_compliance": 0.0,
+                            "functionality": 0.0,
+                            "maintainability": 0.0,
+                            "documentation": 0.0,
+                            "pattern_adherence": 0.0,
+                            "code_metrics": 0.0,
+                        },
+                    },
+                    "models": {
+                        "active_model": "Claude",
+                        "performance": {},
+                        "usage_stats": {"total_queries": 0, "model_switches": 0, "preferred_models": []},
+                    },
+                    "learning": {
+                        "patterns": {
+                            "skill_effectiveness": {},
+                            "agent_performance": {},
+                            "task_patterns": [],
+                            "success_rates": {},
+                        },
+                        "analytics": {"learning_rate": 0.0, "prediction_accuracy": 0.0, "optimization_suggestions": []},
+                    },
+                    "dashboard": {
+                        "metrics": {
+                            "active_tasks": 0,
+                            "completed_tasks": 0,
+                            "failed_tasks": 0,
+                            "average_response_time": 0.0,
+                            "system_health": 100.0,
+                        },
+                        "real_time": {
+                            "current_model": "Claude",
+                            "last_activity": "",
+                            "active_agents": [],
+                            "resource_usage": {},
+                        },
+                    },
+                    "autofix": {"patterns": {}, "success_rates": {}, "usage_statistics": {}},
+                },
             }
             self._write_data(default_data)
 
@@ -243,14 +243,12 @@ class UnifiedParameterStorage:
         current_time = time.time()
 
         # Check cache
-        if (use_cache and
-            self._cache and
-            current_time - self._cache_timestamp < self._cache_ttl):
+        if use_cache and self._cache and current_time - self._cache_timestamp < self._cache_ttl:
             return self._cache
 
         with self._lock:
             try:
-                with open(self.storage_file, 'r', encoding='utf-8') as f:
+                with open(self.storage_file, "r", encoding="utf-8") as f:
                     lock_file(f, exclusive=False)
                     try:
                         data = json.load(f)
@@ -289,7 +287,7 @@ class UnifiedParameterStorage:
                 # Update metadata
                 data["metadata"]["last_updated"] = datetime.now().isoformat()
 
-                with open(self.storage_file, 'w', encoding='utf-8') as f:
+                with open(self.storage_file, "w", encoding="utf-8") as f:
                     lock_file(f, exclusive=True)
                     try:
                         json.dump(data, f, indent=2, ensure_ascii=False)
@@ -355,15 +353,15 @@ class UnifiedParameterStorage:
             "metadata": {
                 "created_at": datetime.now().isoformat(),
                 "last_updated": datetime.now().isoformat(),
-                "migration_history": []
+                "migration_history": [],
             },
             "parameters": {
                 "quality": {"scores": {"current": 0.0}, "metrics": {}},
                 "models": {"active_model": "Claude", "performance": {}, "usage_stats": {}},
                 "learning": {"patterns": {}, "analytics": {}},
                 "dashboard": {"metrics": {}, "real_time": {}},
-                "autofix": {"patterns": {}, "success_rates": {}, "usage_statistics": {}}
-            }
+                "autofix": {"patterns": {}, "success_rates": {}, "usage_statistics": {}},
+            },
         }
 
     # Quality parameter methods
@@ -384,10 +382,7 @@ class UnifiedParameterStorage:
         data["parameters"]["quality"]["scores"]["current"] = float(score)
 
         # Add to history
-        history_entry = {
-            "score": float(score),
-            "timestamp": datetime.now().isoformat()
-        }
+        history_entry = {"score": float(score), "timestamp": datetime.now().isoformat()}
         if metrics:
             history_entry["metrics"] = metrics
 
@@ -395,8 +390,7 @@ class UnifiedParameterStorage:
 
         # Keep only last 1000 entries in history
         if len(data["parameters"]["quality"]["scores"]["history"]) > 1000:
-            data["parameters"]["quality"]["scores"]["history"] = \
-                data["parameters"]["quality"]["scores"]["history"][-1000:]
+            data["parameters"]["quality"]["scores"]["history"] = data["parameters"]["quality"]["scores"]["history"][-1000:]
 
         # Update metrics if provided
         if metrics:
@@ -480,17 +474,13 @@ class UnifiedParameterStorage:
                 "success_rate": 0.0,
                 "contribution": 0.0,
                 "total_tasks": 0,
-                "last_updated": datetime.now().isoformat()
+                "last_updated": datetime.now().isoformat(),
             }
 
         model_data = data["parameters"]["models"]["performance"][model]
 
         # Add new score
-        score_entry = {
-            "score": float(score),
-            "timestamp": datetime.now().isoformat(),
-            "task_type": task_type
-        }
+        score_entry = {"score": float(score), "timestamp": datetime.now().isoformat(), "task_type": task_type}
         model_data["scores"].append(score_entry)
 
         # Keep only last 100 scores per model
@@ -545,7 +535,7 @@ class UnifiedParameterStorage:
             "quality": data["parameters"]["quality"],
             "models": data["parameters"]["models"],
             "dashboard": data["parameters"]["dashboard"],
-            "learning": data["parameters"]["learning"]
+            "learning": data["parameters"]["learning"],
         }
 
     # Learning parameter methods
@@ -598,12 +588,7 @@ class UnifiedParameterStorage:
         if self._migration_completed and not force:
             return {"status": "already_completed", "migrated_items": 0}
 
-        migration_result = {
-            "status": "started",
-            "migrated_items": 0,
-            "errors": [],
-            "sources": {}
-        }
+        migration_result = {"status": "started", "migrated_items": 0, "errors": [], "sources": {}}
 
         data = self._read_data()
 
@@ -638,7 +623,7 @@ class UnifiedParameterStorage:
                 "timestamp": datetime.now().isoformat(),
                 "items_migrated": migration_result["migrated_items"],
                 "sources": list(migration_result["sources"].keys()),
-                "errors": migration_result["errors"]
+                "errors": migration_result["errors"],
             }
             data["metadata"]["migration_history"].append(migration_entry)
 
@@ -656,7 +641,7 @@ class UnifiedParameterStorage:
     def _migrate_quality_history(self, source_path: Path, data: Dict[str, Any], result: Dict[str, Any]):
         """Migrate quality history from legacy file."""
         try:
-            with open(source_path, 'r', encoding='utf-8') as f:
+            with open(source_path, "r", encoding="utf-8") as f:
                 legacy_data = json.load(f)
 
             if isinstance(legacy_data, list):
@@ -665,12 +650,10 @@ class UnifiedParameterStorage:
                         # Convert to new format
                         history_entry = {
                             "score": record["quality_score"] * 100,  # Convert to 0-100 scale
-                            "timestamp": record.get("timestamp", datetime.now().isoformat())
+                            "timestamp": record.get("timestamp", datetime.now().isoformat()),
                         }
                         if "metrics" in record:
-                            history_entry["metrics"] = {
-                                k: v * 100 for k, v in record["metrics"].items()
-                            }
+                            history_entry["metrics"] = {k: v * 100 for k, v in record["metrics"].items()}
 
                         data["parameters"]["quality"]["scores"]["history"].append(history_entry)
                         result["migrated_items"] += 1
@@ -683,7 +666,7 @@ class UnifiedParameterStorage:
     def _migrate_model_performance(self, source_path: Path, data: Dict[str, Any], result: Dict[str, Any]):
         """Migrate model performance from legacy file."""
         try:
-            with open(source_path, 'r', encoding='utf-8') as f:
+            with open(source_path, "r", encoding="utf-8") as f:
                 legacy_data = json.load(f)
 
             for model_name, model_data in legacy_data.items():
@@ -693,7 +676,7 @@ class UnifiedParameterStorage:
                         "success_rate": model_data.get("success_rate", 0.0),
                         "contribution": model_data.get("contribution_to_project", 0.0),
                         "total_tasks": model_data.get("total_tasks", 0),
-                        "last_updated": model_data.get("last_updated", datetime.now().isoformat())
+                        "last_updated": model_data.get("last_updated", datetime.now().isoformat()),
                     }
                     result["migrated_items"] += 1
 
@@ -705,7 +688,7 @@ class UnifiedParameterStorage:
     def _migrate_patterns(self, source_path: Path, data: Dict[str, Any], result: Dict[str, Any]):
         """Migrate learning patterns from legacy file."""
         try:
-            with open(source_path, 'r', encoding='utf-8') as f:
+            with open(source_path, "r", encoding="utf-8") as f:
                 legacy_data = json.load(f)
 
             if "patterns" in legacy_data:
@@ -713,8 +696,7 @@ class UnifiedParameterStorage:
                 result["migrated_items"] += len(legacy_data["patterns"])
 
             if "skill_effectiveness" in legacy_data:
-                data["parameters"]["learning"]["patterns"]["skill_effectiveness"] = \
-                    legacy_data["skill_effectiveness"]
+                data["parameters"]["learning"]["patterns"]["skill_effectiveness"] = legacy_data["skill_effectiveness"]
 
             result["sources"][str(source_path)] = "learning_patterns"
 
@@ -724,7 +706,7 @@ class UnifiedParameterStorage:
     def _migrate_autofix_patterns(self, source_path: Path, data: Dict[str, Any], result: Dict[str, Any]):
         """Migrate auto-fix patterns from legacy file."""
         try:
-            with open(source_path, 'r', encoding='utf-8') as f:
+            with open(source_path, "r", encoding="utf-8") as f:
                 legacy_data = json.load(f)
 
             data["parameters"]["autofix"]["patterns"].update(legacy_data)
@@ -747,7 +729,7 @@ class UnifiedParameterStorage:
             "migration_count": len(data["metadata"]["migration_history"]),
             "storage_size": self.storage_file.stat().st_size if self.storage_file.exists() else 0,
             "backup_count": len(list(self.backup_dir.glob("*.json"))),
-            "parameter_counts": {}
+            "parameter_counts": {},
         }
 
         # Count parameters in each category
@@ -761,11 +743,7 @@ class UnifiedParameterStorage:
         """Validate the integrity of stored data."""
         data = self._read_data()
 
-        validation_result = {
-            "valid": True,
-            "errors": [],
-            "warnings": []
-        }
+        validation_result = {"valid": True, "errors": [], "warnings": []}
 
         # Check version
         if data.get("version") != ParameterSchema.CURRENT_VERSION:
@@ -806,21 +784,18 @@ class UnifiedParameterStorage:
             export_file = Path(export_path)
 
             if format.lower() == "json":
-                with open(export_file, 'w', encoding='utf-8') as f:
+                with open(export_file, "w", encoding="utf-8") as f:
                     json.dump(data, f, indent=2, ensure_ascii=False)
             elif format.lower() == "csv":
                 # Export quality scores as CSV
                 import csv
-                with open(export_file, 'w', newline='', encoding='utf-8') as f:
+
+                with open(export_file, "w", newline="", encoding="utf-8") as f:
                     writer = csv.writer(f)
                     writer.writerow(["Timestamp", "Score", "Task ID"])
 
                     for entry in data["parameters"]["quality"]["scores"]["history"]:
-                        writer.writerow([
-                            entry.get("timestamp", ""),
-                            entry.get("score", ""),
-                            entry.get("task_id", "")
-                        ])
+                        writer.writerow([entry.get("timestamp", ""), entry.get("score", ""), entry.get("task_id", "")])
             else:
                 raise ValueError(f"Unsupported export format: {format}")
 
@@ -846,7 +821,7 @@ class UnifiedParameterStorage:
             if not import_file.exists():
                 raise FileNotFoundError(f"Import file not found: {import_path}")
 
-            with open(import_file, 'r', encoding='utf-8') as f:
+            with open(import_file, "r", encoding="utf-8") as f:
                 imported_data = json.load(f)
 
             if merge_strategy == "overwrite":
@@ -886,33 +861,33 @@ def main():
     """Command-line interface for unified parameter storage."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Unified Parameter Storage System')
-    parser.add_argument('--dir', default='.claude-unified', help='Storage directory path')
+    parser = argparse.ArgumentParser(description="Unified Parameter Storage System")
+    parser.add_argument("--dir", default=".claude-unified", help="Storage directory path")
 
-    subparsers = parser.add_subparsers(dest='action', help='Action to perform')
+    subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
     # Quality commands
-    quality_parser = subparsers.add_parser('set-quality', help='Set quality score')
-    quality_parser.add_argument('--score', type=float, required=True, help='Quality score (0-100)')
+    quality_parser = subparsers.add_parser("set-quality", help="Set quality score")
+    quality_parser.add_argument("--score", type=float, required=True, help="Quality score (0-100)")
 
     # Model commands
-    model_parser = subparsers.add_parser('set-model', help='Set active model')
-    model_parser.add_argument('--model', required=True, help='Model name')
+    model_parser = subparsers.add_parser("set-model", help="Set active model")
+    model_parser.add_argument("--model", required=True, help="Model name")
 
     # Migration commands
-    migrate_parser = subparsers.add_parser('migrate', help='Migrate from legacy storage')
-    migrate_parser.add_argument('--force', action='store_true', help='Force re-migration')
+    migrate_parser = subparsers.add_parser("migrate", help="Migrate from legacy storage")
+    migrate_parser.add_argument("--force", action="store_true", help="Force re-migration")
 
     # Stats commands
-    subparsers.add_parser('stats', help='Show storage statistics')
+    subparsers.add_parser("stats", help="Show storage statistics")
 
     # Validation commands
-    subparsers.add_parser('validate', help='Validate data integrity')
+    subparsers.add_parser("validate", help="Validate data integrity")
 
     # Export commands
-    export_parser = subparsers.add_parser('export', help='Export data')
-    export_parser.add_argument('--path', required=True, help='Export file path')
-    export_parser.add_argument('--format', default='json', choices=['json', 'csv'], help='Export format')
+    export_parser = subparsers.add_parser("export", help="Export data")
+    export_parser.add_argument("--path", required=True, help="Export file path")
+    export_parser.add_argument("--format", default="json", choices=["json", "csv"], help="Export format")
 
     args = parser.parse_args()
 
@@ -923,33 +898,33 @@ def main():
     storage = UnifiedParameterStorage(args.dir)
 
     try:
-        if args.action == 'set-quality':
+        if args.action == "set-quality":
             storage.set_quality_score(args.score)
             print(f"Quality score set to {args.score}")
 
-        elif args.action == 'set-model':
+        elif args.action == "set-model":
             storage.set_active_model(args.model)
             print(f"Active model set to {args.model}")
 
-        elif args.action == 'migrate':
+        elif args.action == "migrate":
             result = storage.migrate_from_legacy_storage(args.force)
             print(f"Migration {result['status']}: {result['migrated_items']} items migrated")
-            if result['errors']:
-                print("Errors:", result['errors'])
+            if result["errors"]:
+                print("Errors:", result["errors"])
 
-        elif args.action == 'stats':
+        elif args.action == "stats":
             stats = storage.get_storage_stats()
             print(json.dumps(stats, indent=2))
 
-        elif args.action == 'validate':
+        elif args.action == "validate":
             validation = storage.validate_data_integrity()
             print(f"Data integrity: {'Valid' if validation['valid'] else 'Invalid'}")
-            if validation['errors']:
-                print("Errors:", validation['errors'])
-            if validation['warnings']:
-                print("Warnings:", validation['warnings'])
+            if validation["errors"]:
+                print("Errors:", validation["errors"])
+            if validation["warnings"]:
+                print("Warnings:", validation["warnings"])
 
-        elif args.action == 'export':
+        elif args.action == "export":
             success = storage.export_data(args.path, args.format)
             print(f"Export {'successful' if success else 'failed'}")
 
@@ -958,5 +933,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

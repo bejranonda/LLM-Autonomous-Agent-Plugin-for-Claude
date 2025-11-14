@@ -15,6 +15,7 @@ from pathlib import Path
 # Add lib directory to path
 sys.path.insert(0, str(Path(__file__).parent / "lib"))
 
+
 def test_basic_storage():
     """Test basic storage functionality."""
     print("Testing basic storage functionality...")
@@ -30,11 +31,7 @@ def test_basic_storage():
             storage = UnifiedParameterStorage(test_dir)
 
             # Test quality score operations
-            storage.set_quality_score(85.5, {
-                "syntax_compliance": 90.0,
-                "functionality": 85.0,
-                "documentation": 80.0
-            })
+            storage.set_quality_score(85.5, {"syntax_compliance": 90.0, "functionality": 85.0, "documentation": 80.0})
 
             score = storage.get_quality_score()
             assert abs(score - 85.5) < 0.01, f"Expected 85.5, got {score}"
@@ -45,10 +42,7 @@ def test_basic_storage():
             assert "error" not in perf, f"Model performance error: {perf}"
 
             # Test dashboard operations
-            storage.update_dashboard_metrics({
-                "active_tasks": 5,
-                "system_health": 95.0
-            })
+            storage.update_dashboard_metrics({"active_tasks": 5, "system_health": 95.0})
 
             dashboard_data = storage.get_dashboard_data()
             assert "quality" in dashboard_data, "Dashboard data missing quality section"
@@ -66,24 +60,19 @@ def test_basic_storage():
         print(f"- Basic storage functionality failed: {e}")
         return False
 
+
 def test_compatibility_layer():
     """Test compatibility layer functionality."""
     print("Testing compatibility layer...")
 
     try:
-        from parameter_compatibility import (
-            get_legacy_quality_tracker,
-            get_legacy_model_performance_manager
-        )
+        from parameter_compatibility import get_legacy_quality_tracker, get_legacy_model_performance_manager
 
         # Test quality tracker compatibility
         tracker = get_legacy_quality_tracker()
 
         # Use legacy API (0-1 scale)
-        success = tracker.record_quality("test_task", 0.85, {
-            "syntax_compliance": 0.9,
-            "functionality": 0.8
-        })
+        success = tracker.record_quality("test_task", 0.85, {"syntax_compliance": 0.9, "functionality": 0.8})
         assert success, "Failed to record quality using legacy API"
 
         # Get average quality (should be in 0-1 scale)
@@ -104,6 +93,7 @@ def test_compatibility_layer():
         print(f"- Compatibility layer failed: {e}")
         return False
 
+
 def test_migration_system():
     """Test migration system functionality."""
     print("Testing migration system...")
@@ -121,13 +111,19 @@ def test_migration_system():
             # Create legacy data
             legacy_quality = legacy_dir / "quality_history.json"
             import json
-            with open(legacy_quality, 'w') as f:
-                json.dump([{
-                    "task_id": "test_task",
-                    "quality_score": 0.88,
-                    "timestamp": "2025-01-01T12:00:00Z",
-                    "metrics": {"syntax_compliance": 0.9}
-                }], f)
+
+            with open(legacy_quality, "w") as f:
+                json.dump(
+                    [
+                        {
+                            "task_id": "test_task",
+                            "quality_score": 0.88,
+                            "timestamp": "2025-01-01T12:00:00Z",
+                            "metrics": {"syntax_compliance": 0.9},
+                        }
+                    ],
+                    f,
+                )
 
             # Initialize unified storage
             storage = UnifiedParameterStorage(test_dir)
@@ -154,6 +150,7 @@ def test_migration_system():
     except Exception as e:
         print(f"- Migration system failed: {e}")
         return False
+
 
 def test_dashboard_integration():
     """Test dashboard integration."""
@@ -191,17 +188,13 @@ def test_dashboard_integration():
         print(f"- Dashboard integration failed: {e}")
         return False
 
+
 def main():
     """Run all basic functionality tests."""
     print("Running Basic Functionality Tests")
     print("=" * 40)
 
-    tests = [
-        test_basic_storage,
-        test_compatibility_layer,
-        test_migration_system,
-        test_dashboard_integration
-    ]
+    tests = [test_basic_storage, test_compatibility_layer, test_migration_system, test_dashboard_integration]
 
     passed = 0
     total = len(tests)
@@ -221,6 +214,7 @@ def main():
         print(f"!!! {total - passed} test(s) failed. Review issues before deployment.")
         return False
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     success = main()
     sys.exit(0 if success else 1)

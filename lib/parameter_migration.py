@@ -55,10 +55,7 @@ class LegacyStorageAdapter:
         sources = {}
 
         # Quality history sources
-        quality_sources = [
-            Path(".claude-quality/quality_history.json"),
-            Path(".claude-patterns/quality_history.json")
-        ]
+        quality_sources = [Path(".claude-quality/quality_history.json"), Path(".claude-patterns/quality_history.json")]
         for source in quality_sources:
             if source.exists():
                 sources[f"quality_history_{source.parent.name}"] = source
@@ -79,10 +76,7 @@ class LegacyStorageAdapter:
             sources["autofix_patterns"] = autofix_source
 
         # Additional assessment sources
-        assessment_sources = [
-            Path(".claude-quality/assessment_history.json"),
-            Path(".claude-quality/recent_assessments.json")
-        ]
+        assessment_sources = [Path(".claude-quality/assessment_history.json"), Path(".claude-quality/recent_assessments.json")]
         for source in assessment_sources:
             if source.exists():
                 sources[f"assessments_{source.name}"] = source
@@ -109,7 +103,7 @@ class LegacyStorageAdapter:
         for source_name, source_path in self.legacy_sources.items():
             if "quality_history" in source_name:
                 try:
-                    with open(source_path, 'r', encoding='utf-8') as f:
+                    with open(source_path, "r", encoding="utf-8") as f:
                         data = json.load(f)
                         if isinstance(data, list) and data:
                             # Get most recent quality score
@@ -142,7 +136,7 @@ class LegacyStorageAdapter:
         # Try legacy source
         if "model_performance" in self.legacy_sources:
             try:
-                with open(self.legacy_sources["model_performance"], 'r', encoding='utf-8') as f:
+                with open(self.legacy_sources["model_performance"], "r", encoding="utf-8") as f:
                     data = json.load(f)
                     if model in data:
                         return data[model]
@@ -151,8 +145,7 @@ class LegacyStorageAdapter:
 
         return {"error": f"No performance data for model '{model}'"}
 
-    def record_quality_legacy(self, score: float, metrics: Dict[str, float] = None,
-                            source: str = "unified"):
+    def record_quality_legacy(self, score: float, metrics: Dict[str, float] = None, source: str = "unified"):
         """
         Record quality score with optional legacy backup.
 
@@ -175,7 +168,7 @@ class LegacyStorageAdapter:
         record = {
             "task_id": f"legacy_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             "quality_score": score / 100,  # Convert to 0-1 scale for legacy
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
         if metrics:
             record["metrics"] = {k: v / 100 for k, v in metrics.items()}  # Convert scale
@@ -184,7 +177,7 @@ class LegacyStorageAdapter:
         for source_name, source_path in self.legacy_sources.items():
             if "quality_history" in source_name:
                 try:
-                    with open(source_path, 'r', encoding='utf-8') as f:
+                    with open(source_path, "r", encoding="utf-8") as f:
                         data = json.load(f)
 
                     if not isinstance(data, list):
@@ -196,7 +189,7 @@ class LegacyStorageAdapter:
                     if len(data) > 1000:
                         data = data[-1000:]
 
-                    with open(source_path, 'w', encoding='utf-8') as f:
+                    with open(source_path, "w", encoding="utf-8") as f:
                         json.dump(data, f, indent=2, ensure_ascii=False)
 
                 except Exception as e:
@@ -233,7 +226,7 @@ class MigrationManager:
             "source_types": {},
             "estimated_time_minutes": 0,
             "complexity_level": "low",
-            "recommendations": []
+            "recommendations": [],
         }
 
         # Categorize sources
@@ -268,8 +261,7 @@ class MigrationManager:
 
         return analysis
 
-    def execute_gradual_migration(self, source_types: List[str] = None,
-                                dry_run: bool = False) -> Dict[str, Any]:
+    def execute_gradual_migration(self, source_types: List[str] = None, dry_run: bool = False) -> Dict[str, Any]:
         """
         Execute gradual migration from legacy sources.
 
@@ -291,7 +283,7 @@ class MigrationManager:
             "items_migrated": 0,
             "errors": [],
             "warnings": [],
-            "source_results": {}
+            "source_results": {},
         }
 
         for source_name, source_path in adapter.legacy_sources.items():
@@ -303,7 +295,7 @@ class MigrationManager:
                 "size_bytes": source_path.stat().st_size,
                 "items_migrated": 0,
                 "errors": [],
-                "warnings": []
+                "warnings": [],
             }
 
             try:
@@ -362,7 +354,7 @@ class MigrationManager:
 
     def _migrate_quality_source(self, source_path: Path, dry_run: bool) -> int:
         """Migrate quality history from source file."""
-        with open(source_path, 'r', encoding='utf-8') as f:
+        with open(source_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         if not isinstance(data, list):
@@ -383,7 +375,7 @@ class MigrationManager:
 
     def _migrate_model_source(self, source_path: Path, dry_run: bool) -> int:
         """Migrate model performance from source file."""
-        with open(source_path, 'r', encoding='utf-8') as f:
+        with open(source_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         items_migrated = 0
@@ -401,7 +393,7 @@ class MigrationManager:
 
     def _migrate_pattern_source(self, source_path: Path, dry_run: bool) -> int:
         """Migrate learning patterns from source file."""
-        with open(source_path, 'r', encoding='utf-8') as f:
+        with open(source_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         items_migrated = 0
@@ -414,7 +406,7 @@ class MigrationManager:
 
     def _migrate_assessment_source(self, source_path: Path, dry_run: bool) -> int:
         """Migrate assessment data from source file."""
-        with open(source_path, 'r', encoding='utf-8') as f:
+        with open(source_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         items_migrated = 0
@@ -453,7 +445,7 @@ class MigrationManager:
             "data_integrity": {},
             "completeness": {},
             "issues": [],
-            "recommendations": []
+            "recommendations": [],
         }
 
         # Validate unified storage integrity
@@ -484,9 +476,11 @@ class MigrationManager:
             )
 
         # Overall status
-        if (storage_validation["valid"] and
-            validation_results["completeness"]["status"] == "complete" and
-            not validation_results["issues"]):
+        if (
+            storage_validation["valid"]
+            and validation_results["completeness"]["status"] == "complete"
+            and not validation_results["issues"]
+        ):
             validation_results["overall_status"] = "success"
         elif storage_validation["valid"] and not validation_results["issues"]:
             validation_results["overall_status"] = "acceptable"
@@ -495,14 +489,10 @@ class MigrationManager:
 
         # Generate recommendations
         if validation_results["completeness"]["status"] != "complete":
-            validation_results["recommendations"].append(
-                "Complete migration of remaining legacy sources"
-            )
+            validation_results["recommendations"].append("Complete migration of remaining legacy sources")
 
         if validation_results["issues"]:
-            validation_results["recommendations"].append(
-                "Address data consistency issues before retiring legacy storage"
-            )
+            validation_results["recommendations"].append("Address data consistency issues before retiring legacy storage")
 
         return validation_results
 
@@ -516,12 +506,7 @@ class MigrationManager:
         Returns:
             Rollback results
         """
-        rollback_results = {
-            "status": "started",
-            "sources_restored": 0,
-            "errors": [],
-            "warnings": []
-        }
+        rollback_results = {"status": "started", "sources_restored": 0, "errors": [], "warnings": []}
 
         backup_dir = Path(".claude-unified/migration_backups")
         if not backup_dir.exists():
@@ -550,7 +535,7 @@ class MigrationManager:
                 potential_paths = [
                     Path(f".claude-quality/{original_name}"),
                     Path(f".claude-patterns/{original_name}"),
-                    Path(f"patterns/{original_name}")
+                    Path(f"patterns/{original_name}"),
                 ]
 
                 for path in potential_paths:
@@ -580,25 +565,25 @@ def main():
     """Command-line interface for parameter migration."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Parameter Migration Utility')
-    parser.add_argument('--storage-dir', default='.claude-unified', help='Unified storage directory')
+    parser = argparse.ArgumentParser(description="Parameter Migration Utility")
+    parser.add_argument("--storage-dir", default=".claude-unified", help="Unified storage directory")
 
-    subparsers = parser.add_subparsers(dest='action', help='Action to perform')
+    subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
     # Analysis command
-    analyze_parser = subparsers.add_parser('analyze', help='Analyze migration complexity')
+    analyze_parser = subparsers.add_parser("analyze", help="Analyze migration complexity")
 
     # Migration commands
-    migrate_parser = subparsers.add_parser('migrate', help='Execute migration')
-    migrate_parser.add_argument('--sources', nargs='+', help='Source types to migrate')
-    migrate_parser.add_argument('--dry-run', action='store_true', help='Analyze without migrating')
+    migrate_parser = subparsers.add_parser("migrate", help="Execute migration")
+    migrate_parser.add_argument("--sources", nargs="+", help="Source types to migrate")
+    migrate_parser.add_argument("--dry-run", action="store_true", help="Analyze without migrating")
 
     # Validation command
-    subparsers.add_parser('validate', help='Validate migration results')
+    subparsers.add_parser("validate", help="Validate migration results")
 
     # Rollback command
-    rollback_parser = subparsers.add_parser('rollback', help='Rollback migration')
-    rollback_parser.add_argument('--sources', nargs='+', help='Source types to rollback')
+    rollback_parser = subparsers.add_parser("rollback", help="Rollback migration")
+    rollback_parser.add_argument("--sources", nargs="+", help="Source types to rollback")
 
     args = parser.parse_args()
 
@@ -610,22 +595,19 @@ def main():
     migration_manager = MigrationManager(unified_storage)
 
     try:
-        if args.action == 'analyze':
+        if args.action == "analyze":
             analysis = migration_manager.analyze_migration_complexity()
             print(json.dumps(analysis, indent=2))
 
-        elif args.action == 'migrate':
-            results = migration_manager.execute_gradual_migration(
-                source_types=args.sources,
-                dry_run=args.dry_run
-            )
+        elif args.action == "migrate":
+            results = migration_manager.execute_gradual_migration(source_types=args.sources, dry_run=args.dry_run)
             print(json.dumps(results, indent=2))
 
-        elif args.action == 'validate':
+        elif args.action == "validate":
             validation = migration_manager.validate_migration()
             print(json.dumps(validation, indent=2))
 
-        elif args.action == 'rollback':
+        elif args.action == "rollback":
             results = migration_manager.rollback_migration(args.sources)
             print(json.dumps(results, indent=2))
 
@@ -634,5 +616,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

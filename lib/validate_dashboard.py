@@ -59,9 +59,7 @@ def validate_data_consistency():
     print("\n2. Testing Quality Trends API...")
     trends_fields = ["trend_data", "overall_average", "days"]
     results.append(
-        test_api_endpoint(
-            f"{base_url}/quality-trends", trends_fields, "Quality Trends"
-        ),
+        test_api_endpoint(f"{base_url}/quality-trends", trends_fields, "Quality Trends"),
     )
 
     # Test 3: Quality Timeline API
@@ -73,9 +71,7 @@ def validate_data_consistency():
         "chart_type",
     ]
     results.append(
-        test_api_endpoint(
-            f"{base_url}/quality-timeline?days=30", timeline_fields, "Quality Timeline"
-        ),
+        test_api_endpoint(f"{base_url}/quality-timeline?days=30", timeline_fields, "Quality Timeline"),
     )
 
     # Test 4: Model Quality Scores API
@@ -103,18 +99,14 @@ def validate_data_consistency():
     print("\n7. Testing Task Distribution API...")
     task_dist_fields = ["distribution", "total_tasks"]
     results.append(
-        test_api_endpoint(
-            f"{base_url}/task-distribution", task_dist_fields, "Task Distribution"
-        ),
+        test_api_endpoint(f"{base_url}/task-distribution", task_dist_fields, "Task Distribution"),
     )
 
     # Test 8: Recent Activity API
     print("\n8. Testing Recent Activity API...")
     activity_fields = ["recent_activity"]
     results.append(
-        test_api_endpoint(
-            f"{base_url}/recent-activity", activity_fields, "Recent Activity"
-        ),
+        test_api_endpoint(f"{base_url}/recent-activity", activity_fields, "Recent Activity"),
     )
 
     # Test 9: System Health API
@@ -139,9 +131,7 @@ def validate_data_consistency():
         # Additional validation: Check multi-day data in timeline
         print("\n[INFO] VALIDATING MULTI-DAY DATA...")
         try:
-            timeline_response = requests.get(
-                f"{base_url}/quality-timeline?days=30", timeout=10
-            )
+            timeline_response = requests.get(f"{base_url}/quality-timeline?days=30", timeout=10)
             timeline_data = timeline_response.json()
 
             timeline_entries = timeline_data.get("timeline_data", [])

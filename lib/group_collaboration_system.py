@@ -21,10 +21,12 @@ from collections import defaultdict
 # Platform-specific imports for file locking
 try:
     import msvcrt  # Windows
-    PLATFORM = 'windows'
+
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
-    PLATFORM = 'unix'
+
+    PLATFORM = "unix"
 
 
 class GroupCollaborationSystem:
@@ -38,24 +40,13 @@ class GroupCollaborationSystem:
             "name": "Strategic Analysis & Intelligence",
             "alias": "The Brain",
             "role": "Analyze and suggest",
-            "agents": [
-                "code-analyzer",
-                "security-auditor",
-                "performance-analytics",
-                "pr-reviewer",
-                "learning-engine"
-            ]
+            "agents": ["code-analyzer", "security-auditor", "performance-analytics", "pr-reviewer", "learning-engine"],
         },
         2: {
             "name": "Decision Making & Planning",
             "alias": "The Council",
             "role": "Evaluate and decide",
-            "agents": [
-                "strategic-planner",
-                "preference-coordinator",
-                "smart-recommender",
-                "orchestrator"
-            ]
+            "agents": ["strategic-planner", "preference-coordinator", "smart-recommender", "orchestrator"],
         },
         3: {
             "name": "Execution & Implementation",
@@ -75,20 +66,15 @@ class GroupCollaborationSystem:
                 "workspace-organizer",
                 "claude-plugin-validator",
                 "background-task-manager",
-                "report-management-organizer"
-            ]
+                "report-management-organizer",
+            ],
         },
         4: {
             "name": "Validation & Optimization",
             "alias": "The Guardian",
             "role": "Validate and optimize",
-            "agents": [
-                "validation-controller",
-                "post-execution-validator",
-                "performance-optimizer",
-                "continuous-improvement"
-            ]
-        }
+            "agents": ["validation-controller", "post-execution-validator", "performance-optimizer", "continuous-improvement"],
+        },
     }
 
     # Typical communication flows
@@ -127,17 +113,14 @@ class GroupCollaborationSystem:
                 "total_communications": 0,
                 "successful_collaborations": 0,
                 "communication_by_flow": {},
-                "tracking_start_date": datetime.now().isoformat()
+                "tracking_start_date": datetime.now().isoformat(),
             },
             "group_definitions": self.GROUPS,
             "communication_history": [],
-            "collaboration_patterns": {
-                "successful": [],
-                "problematic": []
-            },
+            "collaboration_patterns": {"successful": [], "problematic": []},
             "group_interaction_matrix": self._initialize_interaction_matrix(),
             "communication_effectiveness": {},
-            "knowledge_shared": []
+            "knowledge_shared": [],
         }
 
         self._write_data(initial_data)
@@ -154,20 +137,20 @@ class GroupCollaborationSystem:
                         "successful": 0,
                         "feedback_provided": 0,
                         "issues_raised": 0,
-                        "knowledge_transferred": 0
+                        "knowledge_transferred": 0,
                     }
         return matrix
 
     def _lock_file(self, file_handle):
         """Platform-specific file locking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             msvcrt.locking(file_handle.fileno(), msvcrt.LK_LOCK, 1)
         else:
             fcntl.flock(file_handle.fileno(), fcntl.LOCK_EX)
 
     def _unlock_file(self, file_handle):
         """Platform-specific file unlocking."""
-        if PLATFORM == 'windows':
+        if PLATFORM == "windows":
             try:
                 msvcrt.locking(file_handle.fileno(), msvcrt.LK_UNLCK, 1)
             except (OSError, PermissionError):
@@ -178,7 +161,7 @@ class GroupCollaborationSystem:
     def _read_data(self) -> Dict[str, Any]:
         """Read collaboration data with file locking."""
         try:
-            with open(self.collab_file, 'r', encoding='utf-8') as f:
+            with open(self.collab_file, "r", encoding="utf-8") as f:
                 self._lock_file(f)
                 try:
                     data = json.load(f)
@@ -191,7 +174,7 @@ class GroupCollaborationSystem:
 
     def _write_data(self, data: Dict[str, Any]):
         """Write collaboration data with file locking."""
-        with open(self.collab_file, 'w', encoding='utf-8') as f:
+        with open(self.collab_file, "w", encoding="utf-8") as f:
             self._lock_file(f)
             try:
                 json.dump(data, f, indent=2, ensure_ascii=False)
@@ -221,8 +204,9 @@ class GroupCollaborationSystem:
         communication_type: str,
         message: str,
         data: Optional[Dict[str, Any]] = None,
-        outcome: Optional[str] = None
-    ) -> str:
+        outcome: Optional[str] = None,
+    )-> str:
+        """Record Communication."""
         """
         Record a communication between agents (potentially in different groups).
 
@@ -260,7 +244,7 @@ class GroupCollaborationSystem:
             "message": message,
             "data": data or {},
             "outcome": outcome or "pending",
-            "flow": f"G{from_group}->G{to_group}"
+            "flow": f"G{from_group}->G{to_group}",
         }
 
         collab_data["communication_history"].append(communication)
@@ -282,8 +266,9 @@ class GroupCollaborationSystem:
 
         # Track communication by flow
         flow_str = f"Group {from_group} → Group {to_group}"
-        collab_data["metadata"]["communication_by_flow"][flow_str] = \
+        collab_data["metadata"]["communication_by_flow"][flow_str] = (
             collab_data["metadata"]["communication_by_flow"].get(flow_str, 0) + 1
+        )
 
         # Keep last 5000 communications
         if len(collab_data["communication_history"]) > 5000:
@@ -293,12 +278,7 @@ class GroupCollaborationSystem:
 
         return comm_id
 
-    def update_communication_outcome(
-        self,
-        comm_id: str,
-        outcome: str,
-        impact: Optional[str] = None
-    ):
+    def update_communication_outcome(self, comm_id: str, outcome: str, impact: Optional[str] = None):
         """
         Update the outcome of a communication.
 
@@ -335,8 +315,9 @@ class GroupCollaborationSystem:
         knowledge_type: str,
         description: str,
         source_task: Optional[str] = None,
-        impact: Optional[str] = None
-    ) -> str:
+        impact: Optional[str] = None,
+    )-> str:
+        """Record Knowledge Transfer."""
         """
         Record knowledge transfer between groups.
 
@@ -364,7 +345,7 @@ class GroupCollaborationSystem:
             "description": description,
             "source_task": source_task,
             "impact": impact,
-            "flow": f"G{from_group}->G{to_group}"
+            "flow": f"G{from_group}->G{to_group}",
         }
 
         collab_data["knowledge_shared"].append(knowledge_transfer)
@@ -396,14 +377,12 @@ class GroupCollaborationSystem:
                     "total_communications": total,
                     "success_rate": success_rate,
                     "feedback_provided": stats["feedback_provided"],
-                    "knowledge_transferred": stats["knowledge_transferred"]
+                    "knowledge_transferred": stats["knowledge_transferred"],
                 }
 
         # Find most active flows
         most_active = sorted(
-            collab_data["group_interaction_matrix"].items(),
-            key=lambda x: x[1]["total_communications"],
-            reverse=True
+            collab_data["group_interaction_matrix"].items(), key=lambda x: x[1]["total_communications"], reverse=True
         )[:5]
 
         # Find most effective flows (high success rate with sufficient volume)
@@ -415,7 +394,7 @@ class GroupCollaborationSystem:
         most_effective = sorted(
             effective_flows,
             key=lambda x: x[1]["successful"] / x[1]["total_communications"] if x[1]["total_communications"] > 0 else 0,
-            reverse=True
+            reverse=True,
         )[:5]
 
         return {
@@ -424,22 +403,20 @@ class GroupCollaborationSystem:
             "communication_by_flow": collab_data["metadata"]["communication_by_flow"],
             "flow_effectiveness": flow_effectiveness,
             "most_active_flows": [
-                {
-                    "flow": flow,
-                    "total": stats["total_communications"],
-                    "successful": stats["successful"]
-                }
+                {"flow": flow, "total": stats["total_communications"], "successful": stats["successful"]}
                 for flow, stats in most_active
             ],
             "most_effective_flows": [
                 {
                     "flow": flow,
-                    "success_rate": stats["successful"] / stats["total_communications"] if stats["total_communications"] > 0 else 0,
-                    "total": stats["total_communications"]
+                    "success_rate": (
+                        stats["successful"] / stats["total_communications"] if stats["total_communications"] > 0 else 0
+                    ),
+                    "total": stats["total_communications"],
                 }
                 for flow, stats in most_effective
             ],
-            "knowledge_transfers": len(collab_data["knowledge_shared"])
+            "knowledge_transfers": len(collab_data["knowledge_shared"]),
         }
 
     def get_group_performance_summary(self, group_num: int) -> Dict[str, Any]:
@@ -460,37 +437,27 @@ class GroupCollaborationSystem:
         group_info = self.GROUPS[group_num]
 
         # Count communications from/to this group
-        from_count = sum(
-            1 for comm in collab_data["communication_history"]
-            if comm["from_group"] == group_num
-        )
+        from_count = sum(1 for comm in collab_data["communication_history"] if comm["from_group"] == group_num)
 
-        to_count = sum(
-            1 for comm in collab_data["communication_history"]
-            if comm["to_group"] == group_num
-        )
+        to_count = sum(1 for comm in collab_data["communication_history"] if comm["to_group"] == group_num)
 
         # Count successful communications
         successful_from = sum(
-            1 for comm in collab_data["communication_history"]
+            1
+            for comm in collab_data["communication_history"]
             if comm["from_group"] == group_num and comm["outcome"] == "success"
         )
 
         successful_to = sum(
-            1 for comm in collab_data["communication_history"]
+            1
+            for comm in collab_data["communication_history"]
             if comm["to_group"] == group_num and comm["outcome"] == "success"
         )
 
         # Knowledge transfers
-        knowledge_provided = sum(
-            1 for kt in collab_data["knowledge_shared"]
-            if kt["from_group"] == group_num
-        )
+        knowledge_provided = sum(1 for kt in collab_data["knowledge_shared"] if kt["from_group"] == group_num)
 
-        knowledge_received = sum(
-            1 for kt in collab_data["knowledge_shared"]
-            if kt["to_group"] == group_num
-        )
+        knowledge_received = sum(1 for kt in collab_data["knowledge_shared"] if kt["to_group"] == group_num)
 
         return {
             "group_number": group_num,
@@ -498,27 +465,19 @@ class GroupCollaborationSystem:
             "group_alias": group_info["alias"],
             "role": group_info["role"],
             "agents": group_info["agents"],
-            "communications": {
-                "sent": from_count,
-                "received": to_count,
-                "total": from_count + to_count
-            },
+            "communications": {"sent": from_count, "received": to_count, "total": from_count + to_count},
             "success_rates": {
                 "outgoing": successful_from / from_count if from_count > 0 else 0,
-                "incoming": successful_to / to_count if to_count > 0 else 0
+                "incoming": successful_to / to_count if to_count > 0 else 0,
             },
             "knowledge_transfers": {
                 "provided": knowledge_provided,
                 "received": knowledge_received,
-                "net": knowledge_provided - knowledge_received
-            }
+                "net": knowledge_provided - knowledge_received,
+            },
         }
 
-    def get_recent_communications(
-        self,
-        group_num: Optional[int] = None,
-        limit: int = 20
-    ) -> List[Dict[str, Any]]:
+    def get_recent_communications(self, group_num: Optional[int] = None, limit: int = 20) -> List[Dict[str, Any]]:
         """
         Get recent communications, optionally filtered by group.
 
@@ -534,10 +493,7 @@ class GroupCollaborationSystem:
         comms = collab_data["communication_history"]
 
         if group_num is not None:
-            comms = [
-                comm for comm in comms
-                if comm["from_group"] == group_num or comm["to_group"] == group_num
-            ]
+            comms = [comm for comm in comms if comm["from_group"] == group_num or comm["to_group"] == group_num]
 
         # Sort by timestamp (most recent first)
         comms.sort(key=lambda x: x["timestamp"], reverse=True)
@@ -579,7 +535,7 @@ class GroupCollaborationSystem:
                 "flow_pattern": flow_pattern,
                 "total_communications": total,
                 "success_rate": success_rate,
-                "communication_types": [c["communication_type"] for c in comms]
+                "communication_types": [c["communication_type"] for c in comms],
             }
 
             if success_rate >= 0.80:
@@ -592,44 +548,26 @@ class GroupCollaborationSystem:
         for pattern in successful_patterns:
             pattern_frequency[pattern["flow_pattern"]] += 1
 
-        common_successful = sorted(
-            pattern_frequency.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )[:5]
+        common_successful = sorted(pattern_frequency.items(), key=lambda x: x[1], reverse=True)[:5]
 
         return {
             "successful_patterns": successful_patterns[:10],
             "problematic_patterns": problematic_patterns[:10],
-            "common_successful_flows": [
-                {"flow": flow, "frequency": freq}
-                for flow, freq in common_successful
-            ],
-            "insights": self._generate_collaboration_insights(
-                successful_patterns,
-                problematic_patterns
-            )
+            "common_successful_flows": [{"flow": flow, "frequency": freq} for flow, freq in common_successful],
+            "insights": self._generate_collaboration_insights(successful_patterns, problematic_patterns),
         }
 
-    def _generate_collaboration_insights(
-        self,
-        successful: List[Dict],
-        problematic: List[Dict]
-    ) -> List[str]:
+    def _generate_collaboration_insights(self, successful: List[Dict], problematic: List[Dict]) -> List[str]:
         """Generate insights from collaboration patterns."""
         insights = []
 
         if successful:
             avg_success_rate = sum(p["success_rate"] for p in successful) / len(successful)
-            insights.append(
-                f"Successful collaborations achieve {avg_success_rate*100:.0f}% success rate on average"
-            )
+            insights.append(f"Successful collaborations achieve {avg_success_rate*100:.0f}% success rate on average")
 
         if problematic:
             avg_problem_rate = sum(p["success_rate"] for p in problematic) / len(problematic)
-            insights.append(
-                f"Problematic collaborations have {avg_problem_rate*100:.0f}% success rate - require attention"
-            )
+            insights.append(f"Problematic collaborations have {avg_problem_rate*100:.0f}% success rate - require attention")
 
         # Find most common flow patterns
         if successful:
@@ -645,46 +583,39 @@ def main():
     """Command-line interface for testing the collaboration system."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Group Collaboration System')
-    parser.add_argument('--storage-dir', default='.claude-patterns', help='Storage directory')
-    parser.add_argument('--action', choices=['record', 'stats', 'group', 'recent', 'analyze'],
-                       help='Action to perform')
-    parser.add_argument('--from-agent', help='Source agent')
-    parser.add_argument('--to-agent', help='Target agent')
-    parser.add_argument('--task-id', help='Task ID')
-    parser.add_argument('--message', help='Communication message')
-    parser.add_argument('--type', default='feedback', help='Communication type')
-    parser.add_argument('--group', type=int, help='Group number (1-4)')
+    parser = argparse.ArgumentParser(description="Group Collaboration System")
+    parser.add_argument("--storage-dir", default=".claude-patterns", help="Storage directory")
+    parser.add_argument("--action", choices=["record", "stats", "group", "recent", "analyze"], help="Action to perform")
+    parser.add_argument("--from-agent", help="Source agent")
+    parser.add_argument("--to-agent", help="Target agent")
+    parser.add_argument("--task-id", help="Task ID")
+    parser.add_argument("--message", help="Communication message")
+    parser.add_argument("--type", default="feedback", help="Communication type")
+    parser.add_argument("--group", type=int, help="Group number (1-4)")
 
     args = parser.parse_args()
 
     system = GroupCollaborationSystem(args.storage_dir)
 
-    if args.action == 'record':
+    if args.action == "record":
         if not all([args.from_agent, args.to_agent, args.message, args.task_id]):
             print("Error: --from-agent, --to-agent, --message, and --task-id required for record")
             sys.exit(1)
 
-        comm_id = system.record_communication(
-            args.from_agent,
-            args.to_agent,
-            args.task_id,
-            args.type,
-            args.message
-        )
+        comm_id = system.record_communication(args.from_agent, args.to_agent, args.task_id, args.type, args.message)
         print(f"Communication recorded: {comm_id}")
 
-    elif args.action == 'stats':
+    elif args.action == "stats":
         stats = system.get_group_collaboration_stats()
         print("Group Collaboration Statistics:")
         print(f"  Total Communications: {stats['total_communications']}")
         print(f"  Successful: {stats['successful_collaborations']}")
         print(f"  Knowledge Transfers: {stats['knowledge_transfers']}")
         print("\nMost Active Flows:")
-        for flow in stats['most_active_flows'][:3]:
+        for flow in stats["most_active_flows"][:3]:
             print(f"  {flow['flow']}: {flow['total']} communications")
 
-    elif args.action == 'group':
+    elif args.action == "group":
         if not args.group:
             print("Error: --group required for group action")
             sys.exit(1)
@@ -696,20 +627,20 @@ def main():
         print(f"  Communications: {summary['communications']['total']}")
         print(f"  Success Rate (outgoing): {summary['success_rates']['outgoing']*100:.1f}%")
 
-    elif args.action == 'recent':
+    elif args.action == "recent":
         comms = system.get_recent_communications(args.group, limit=10)
         print(f"Recent Communications ({len(comms)}):")
         for comm in comms:
             print(f"  [{comm['communication_type']}] {comm['from_agent']} → {comm['to_agent']}")
             print(f"    {comm['message'][:80]}...")
 
-    elif args.action == 'analyze':
+    elif args.action == "analyze":
         analysis = system.analyze_collaboration_patterns()
         print("Collaboration Pattern Analysis:")
         print(f"  Successful Patterns: {len(analysis['successful_patterns'])}")
         print(f"  Problematic Patterns: {len(analysis['problematic_patterns'])}")
         print("\nInsights:")
-        for insight in analysis['insights']:
+        for insight in analysis["insights"]:
             print(f"  - {insight}")
 
     else:
@@ -720,5 +651,5 @@ def main():
         print(f"Total Communications: {stats['total_communications']}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

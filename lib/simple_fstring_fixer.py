@@ -4,6 +4,7 @@ Simple f-string syntax fixer for specific patterns
 """
 import re
 
+
 def fix_fstring_patterns(content):
     """Fix f-string patterns with mismatched quotes"""
 
@@ -17,19 +18,20 @@ def fix_fstring_patterns(content):
     content = re.sub(r'f"([^"]*)\{([^}]*): "([^"]*)"}', r'f"\1{\2:\3}"', content)
 
     # Pattern 4: Fix specific format patterns
-    content = re.sub(r'\{([^}]*): "([^"]*)"}', r'{\1:\2}', content)
+    content = re.sub(r'\{([^}]*): "([^"]*)"}', r"{\1:\2}", content)
 
     return content
 
+
 # Read the file
-with open('lib/calculate_success_rate.py', 'r', encoding='utf-8') as f:
+with open("lib/calculate_success_rate.py", "r", encoding="utf-8") as f:
     content = f.read()
 
 # Apply fixes
 fixed_content = fix_fstring_patterns(content)
 
 # Write back
-with open('lib/calculate_success_rate.py', 'w', encoding='utf-8') as f:
+with open("lib/calculate_success_rate.py", "w", encoding="utf-8") as f:
     f.write(fixed_content)
 
 print("Fixed calculate_success_rate.py")

@@ -39,6 +39,7 @@ try:
     from selenium.webdriver.support.ui import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.common.exceptions import TimeoutException, WebDriverException
+
     SELENIUM_AVAILABLE = True
 except ImportError:
     SELENIUM_AVAILABLE = False
@@ -47,6 +48,7 @@ except ImportError:
 # Try to import playwright as alternative
 try:
     from playwright.sync_api import sync_playwright, Error as PlaywrightError
+
     PLAYWRIGHT_AVAILABLE = True
 except ImportError:
     PLAYWRIGHT_AVAILABLE = False
@@ -55,6 +57,7 @@ except ImportError:
 @dataclass
 class ConsoleLog:
     """Represents a browser console log entry"""
+
     level: str  # error, warning, info, log, debug
     message: str
     source: str
@@ -70,6 +73,7 @@ class ConsoleLog:
 @dataclass
 class ValidationResult:
     """Comprehensive validation result"""
+
     url: str
     success: bool
     load_time: float
@@ -88,20 +92,20 @@ class ValidationResult:
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for JSON serialization"""
         return {
-            'url': self.url,
-            'success': self.success,
-            'load_time': self.load_time,
-            'console_errors': [asdict(log) for log in self.console_errors],
-            'console_warnings': [asdict(log) for log in self.console_warnings],
-            'console_logs': [asdict(log) for log in self.console_logs],
-            'network_errors': self.network_errors,
-            'javascript_errors': self.javascript_errors,
-            'html_issues': self.html_issues,
-            'performance_metrics': self.performance_metrics,
-            'page_title': self.page_title,
-            'status_code': self.status_code,
-            'timestamp': self.timestamp,
-            'error_summary': self.error_summary
+            "url": self.url,
+            "success": self.success,
+            "load_time": self.load_time,
+            "console_errors": [asdict(log) for log in self.console_errors],
+            "console_warnings": [asdict(log) for log in self.console_warnings],
+            "console_logs": [asdict(log) for log in self.console_logs],
+            "network_errors": self.network_errors,
+            "javascript_errors": self.javascript_errors,
+            "html_issues": self.html_issues,
+            "performance_metrics": self.performance_metrics,
+            "page_title": self.page_title,
+            "status_code": self.status_code,
+            "timestamp": self.timestamp,
+            "error_summary": self.error_summary,
         }
 
 
@@ -129,18 +133,18 @@ class WebPageValidator:
         try:
             chrome_options = ChromeOptions()
             if self.headless:
-                chrome_options.add_argument('--headless=new')
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            chrome_options.add_argument('--disable-gpu')
-            chrome_options.add_argument('--window-size=1920,1080')
+                chrome_options.add_argument("--headless=new")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--window-size=1920,1080")
 
             # Enable console log capture
-            chrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+            chrome_options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
 
             self.driver = webdriver.Chrome(options=chrome_options)
             self.driver.set_page_load_timeout(self.timeout)
-            self.browser_type = 'selenium'
+            self.browser_type = "selenium"
             return True
 
         except Exception as e:
@@ -156,7 +160,7 @@ class WebPageValidator:
         try:
             playwright = sync_playwright().start()
             browser = playwright.chromium.launch(headless=self.headless)
-            self.browser_type = 'playwright'
+            self.browser_type = "playwright"
             return browser, playwright
         except Exception as e:
             print(f"[ERROR] Failed to initialize Playwright: {e}", file=sys.stderr)
@@ -204,62 +208,67 @@ class WebPageValidator:
             page_title = self.driver.title
 
             # Capture console logs
-            logs = self.driver.get_log('browser')
+            logs = self.driver.get_log("browser")
             for log in logs:
-                level = log.get('level', 'INFO').lower()
-                message = log.get('message', '')
-                source = log.get('source', 'unknown')
+                level = log.get("level", "INFO").lower()
+                message = log.get("message", "")
+                source = log.get("source", "unknown")
 
                 console_log = ConsoleLog(
                     level=level,
                     message=message,
                     source=source,
-                    timestamp=datetime.fromtimestamp(log.get('timestamp', 0) / 1000).isoformat()
+                    timestamp=datetime.fromtimestamp(log.get("timestamp", 0) / 1000).isoformat(),
                 )
 
-                if level == 'severe' or 'error' in level:
+                if level == "severe" or "error" in level:
                     console_errors.append(console_log)
-                    if 'SyntaxError' in message or 'Uncaught' in message:
+                    if "SyntaxError" in message or "Uncaught" in message:
                         javascript_errors.append(message)
-                elif level == 'warning':
+                elif level == "warning":
                     console_warnings.append(console_log)
                 else:
                     console_logs.append(console_log)
 
             # Check for JavaScript errors using window.onerror
-            js_errors = self.driver.execute_script("""
+            js_errors = self.driver.execute_script(
+                """
                 return window.__jsErrors || [];
-            """)
+            """
+            )
             javascript_errors.extend(js_errors)
 
             # Get performance metrics
-            performance = self.driver.execute_script("""
+            performance = self.driver.execute_script(
+                """
                 const perf = performance.timing;
                 return {
                     loadTime: perf.loadEventEnd - perf.navigationStart,
                     domReady: perf.domContentLoadedEventEnd - perf.navigationStart,
                     responseTime: perf.responseEnd - perf.requestStart
                 };
-            """)
+            """
+            )
 
             load_time = time.time() - start_time
 
             # Check for network errors using Resource Timing API
-            resources = self.driver.execute_script("""
+            resources = self.driver.execute_script(
+                """
                 return performance.getEntriesByType('resource').map(r => ({
                     name: r.name,
                     duration: r.duration,
                     transferSize: r.transferSize,
                     failed: r.transferSize === 0 && r.duration > 0
                 }));
-            """)
+            """
+            )
 
-            network_errors = [r for r in resources if r.get('failed')]
+            network_errors = [r for r in resources if r.get("failed")]
 
             # Build error summary
             error_summary = self._build_error_summary(
-                len(console_errors), len(console_warnings),
-                len(javascript_errors), len(network_errors)
+                len(console_errors), len(console_warnings), len(javascript_errors), len(network_errors)
             )
 
             return ValidationResult(
@@ -276,7 +285,7 @@ class WebPageValidator:
                 page_title=page_title,
                 status_code=200,
                 timestamp=datetime.now().isoformat(),
-                error_summary=error_summary
+                error_summary=error_summary,
             )
 
         except TimeoutException:
@@ -311,32 +320,28 @@ class WebPageValidator:
                 level = msg.type
                 message = msg.text
 
-                console_log = ConsoleLog(
-                    level=level,
-                    message=message,
-                    source='console'
-                )
+                console_log = ConsoleLog(level=level, message=message, source="console")
 
-                if level == 'error':
+                if level == "error":
                     console_errors.append(console_log)
-                    if 'SyntaxError' in message or 'Uncaught' in message:
+                    if "SyntaxError" in message or "Uncaught" in message:
                         javascript_errors.append(message)
-                elif level == 'warning':
+                elif level == "warning":
                     console_warnings.append(console_log)
                 else:
                     console_logs.append(console_log)
 
-            page.on('console', handle_console)
+            page.on("console", handle_console)
 
             # Capture page errors
             def handle_page_error(error):
                 javascript_errors.append(str(error))
 
-            page.on('pageerror', handle_page_error)
+            page.on("pageerror", handle_page_error)
 
             # Navigate and wait
             response = page.goto(url, timeout=self.timeout * 1000)
-            page.wait_for_load_state('networkidle')
+            page.wait_for_load_state("networkidle")
             time.sleep(wait_for_load)
 
             load_time = time.time() - start_time
@@ -344,18 +349,19 @@ class WebPageValidator:
             status_code = response.status if response else 0
 
             # Get performance metrics
-            performance = page.evaluate("""() => {
+            performance = page.evaluate(
+                """() => {
                 const perf = performance.timing;
                 return {
                     loadTime: perf.loadEventEnd - perf.navigationStart,
                     domReady: perf.domContentLoadedEventEnd - perf.navigationStart,
                     responseTime: perf.responseEnd - perf.requestStart
                 };
-            }""")
+            }"""
+            )
 
             error_summary = self._build_error_summary(
-                len(console_errors), len(console_warnings),
-                len(javascript_errors), len(network_errors)
+                len(console_errors), len(console_warnings), len(javascript_errors), len(network_errors)
             )
 
             return ValidationResult(
@@ -372,7 +378,7 @@ class WebPageValidator:
                 page_title=page_title,
                 status_code=status_code,
                 timestamp=datetime.now().isoformat(),
-                error_summary=error_summary
+                error_summary=error_summary,
             )
 
         except PlaywrightError as e:
@@ -388,9 +394,9 @@ class WebPageValidator:
         start_time = time.time()
 
         try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'WebPageValidator/1.0'})
+            req = urllib.request.Request(url, headers={"User-Agent": "WebPageValidator/1.0"})
             with urllib.request.urlopen(req, timeout=self.timeout) as response:
-                content = response.read().decode('utf-8')
+                content = response.read().decode("utf-8")
                 status_code = response.status
                 load_time = time.time() - start_time
 
@@ -399,14 +405,15 @@ class WebPageValidator:
                 html_issues = []
 
                 # Check for common JavaScript error patterns in HTML
-                if 'SyntaxError' in content:
+                if "SyntaxError" in content:
                     javascript_errors.append("Potential SyntaxError found in page content")
-                if 'Uncaught' in content:
+                if "Uncaught" in content:
                     javascript_errors.append("Potential Uncaught error found in page content")
 
                 # Extract title
                 import re
-                title_match = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE)
+
+                title_match = re.search(r"<title>(.*?)</title>", content, re.IGNORECASE)
                 page_title = title_match.group(1) if title_match else "No title"
 
                 return ValidationResult(
@@ -419,11 +426,11 @@ class WebPageValidator:
                     network_errors=[],
                     javascript_errors=javascript_errors,
                     html_issues=html_issues,
-                    performance_metrics={'loadTime': load_time * 1000},
+                    performance_metrics={"loadTime": load_time * 1000},
                     page_title=page_title,
                     status_code=status_code,
                     timestamp=datetime.now().isoformat(),
-                    error_summary=f"Basic validation only (browser automation unavailable)"
+                    error_summary=f"Basic validation only (browser automation unavailable)",
                 )
 
         except urllib.error.HTTPError as e:
@@ -433,8 +440,7 @@ class WebPageValidator:
         except Exception as e:
             return self._create_error_result(url, f"Request failed: {str(e)}")
 
-    def _build_error_summary(self, errors: int, warnings: int,
-                            js_errors: int, network_errors: int) -> str:
+    def _build_error_summary(self, errors: int, warnings: int, js_errors: int, network_errors: int) -> str:
         """Build human-readable error summary"""
         parts = []
         if errors > 0:
@@ -456,7 +462,7 @@ class WebPageValidator:
             url=url,
             success=False,
             load_time=0.0,
-            console_errors=[ConsoleLog(level='error', message=error_msg, source='validator')],
+            console_errors=[ConsoleLog(level="error", message=error_msg, source="validator")],
             console_warnings=[],
             console_logs=[],
             network_errors=[],
@@ -466,7 +472,7 @@ class WebPageValidator:
             page_title="",
             status_code=0,
             timestamp=datetime.now().isoformat(),
-            error_summary=error_msg
+            error_summary=error_msg,
         )
 
     def close(self):
@@ -514,7 +520,7 @@ def format_validation_report(result: ValidationResult, verbose: bool = False) ->
         lines.append("-" * 80)
         for i, error in enumerate(result.console_errors, 1):
             lines.append(f"{i}. [{error.level.upper()}] {error.message}")
-            if error.source and error.source != 'unknown':
+            if error.source and error.source != "unknown":
                 lines.append(f"   Source: {error.source}")
             if error.line:
                 lines.append(f"   Line: {error.line}, Column: {error.column}")
@@ -575,7 +581,7 @@ def format_validation_report(result: ValidationResult, verbose: bool = False) ->
 def main():
     """Main CLI interface"""
     parser = argparse.ArgumentParser(
-        description='Web Page Validator with JavaScript Error Detection',
+        description="Web Page Validator with JavaScript Error Detection",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -590,27 +596,24 @@ Examples:
 
   # Show browser window during validation
   python web_page_validator.py http://127.0.0.1:5000 --no-headless
-        """
+        """,
     )
 
-    parser.add_argument('url', help='URL to validate')
-    parser.add_argument('--verbose', '-v', action='store_true',
-                       help='Show detailed output including warnings')
-    parser.add_argument('--output', '-o', help='Save report to file')
-    parser.add_argument('--json', action='store_true',
-                       help='Output in JSON format')
-    parser.add_argument('--no-headless', action='store_true',
-                       help='Show browser window (for debugging)')
-    parser.add_argument('--timeout', type=int, default=30,
-                       help='Page load timeout in seconds (default: 30)')
-    parser.add_argument('--wait', type=int, default=3,
-                       help='Wait time after page load in seconds (default: 3)')
+    parser.add_argument("url", help="URL to validate")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Show detailed output including warnings")
+    parser.add_argument("--output", "-o", help="Save report to file")
+    parser.add_argument("--json", action="store_true", help="Output in JSON format")
+    parser.add_argument("--no-headless", action="store_true", help="Show browser window (for debugging)")
+    parser.add_argument("--timeout", type=int, default=30, help="Page load timeout in seconds (default: 30)")
+    parser.add_argument("--wait", type=int, default=3, help="Wait time after page load in seconds (default: 3)")
 
     args = parser.parse_args()
 
     # Run validation
     print(f"[INFO] Validating {args.url}...")
-    print(f"[INFO] Using {'Selenium' if SELENIUM_AVAILABLE else 'Playwright' if PLAYWRIGHT_AVAILABLE else 'basic HTTP'} validation")
+    print(
+        f"[INFO] Using {'Selenium' if SELENIUM_AVAILABLE else 'Playwright' if PLAYWRIGHT_AVAILABLE else 'basic HTTP'} validation"
+    )
     print()
 
     with WebPageValidator(headless=not args.no_headless, timeout=args.timeout) as validator:
@@ -623,7 +626,7 @@ Examples:
         output = format_validation_report(result, verbose=args.verbose)
 
     if args.output:
-        Path(args.output).write_text(output, encoding='utf-8')
+        Path(args.output).write_text(output, encoding="utf-8")
         print(f"[OK] Report saved to {args.output}")
     else:
         print(output)
@@ -632,5 +635,5 @@ Examples:
     sys.exit(0 if result.success else 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

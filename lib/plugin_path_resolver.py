@@ -67,15 +67,12 @@ def get_plugin_path() -> Optional[Path]:
         # Development/local installations
         home / ".config" / "claude" / "plugins" / "autonomous-agent",
         home / ".claude" / "plugins" / "autonomous-agent",
-
         # Marketplace installations (primary)
         home / ".claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
         home / ".config" / "claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-
         # Alternative marketplace paths
         home / ".claude" / "plugins" / "marketplace" / marketplace_plugin_name,
         home / ".config" / "claude" / "plugins" / "marketplace" / marketplace_plugin_name,
-
         # System-wide installations (Linux/Mac)
         Path("/usr/local/share/claude/plugins/autonomous-agent"),
         Path("/usr/local/share/claude/plugins/marketplaces") / marketplace_plugin_name,
@@ -90,22 +87,28 @@ def get_plugin_path() -> Optional[Path]:
         programfiles = Path(os.environ.get("PROGRAMFILES", ""))
 
         if appdata:
-            plugin_locations.extend([
-                appdata / "Claude" / "plugins" / "autonomous-agent",
-                appdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-            ])
+            plugin_locations.extend(
+                [
+                    appdata / "Claude" / "plugins" / "autonomous-agent",
+                    appdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+                ]
+            )
 
         if localappdata:
-            plugin_locations.extend([
-                localappdata / "Claude" / "plugins" / "autonomous-agent",
-                localappdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-            ])
+            plugin_locations.extend(
+                [
+                    localappdata / "Claude" / "plugins" / "autonomous-agent",
+                    localappdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+                ]
+            )
 
         if programfiles:
-            plugin_locations.extend([
-                programfiles / "Claude" / "plugins" / "autonomous-agent",
-                programfiles / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-            ])
+            plugin_locations.extend(
+                [
+                    programfiles / "Claude" / "plugins" / "autonomous-agent",
+                    programfiles / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
+                ]
+            )
 
     for location in plugin_locations:
         if location and (location / ".claude-plugin" / "plugin.json").exists():
@@ -168,7 +171,7 @@ def validate_plugin_installation() -> dict:
             "error": "Plugin installation not found",
             "plugin_path": None,
             "lib_path": None,
-            "plugin_json": None
+            "plugin_json": None,
         }
 
     plugin_json = plugin_path / ".claude-plugin" / "plugin.json"
@@ -187,7 +190,7 @@ def validate_plugin_installation() -> dict:
         "plugin_path": str(plugin_path),
         "lib_path": str(lib_path) if lib_path.exists() else None,
         "plugin_json": str(plugin_json) if plugin_json.exists() else None,
-        "checks": checks
+        "checks": checks,
     }
 
 
@@ -220,7 +223,7 @@ if __name__ == "__main__":
     # Validate installation
     validation = validate_plugin_installation()
     print(f"\nInstallation Valid: {validation['valid']}")
-    if not validation['valid']:
+    if not validation["valid"]:
         print(f"Error: {validation.get('error', 'Unknown error')}")
 
     print(f"\nPython Executable: {get_python_executable()}")

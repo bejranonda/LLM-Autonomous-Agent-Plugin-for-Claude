@@ -19,8 +19,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 try:
     from enhanced_progressive_loader import EnhancedProgressiveLoader, LoadingTier, TaskComplexity
 except ImportError:
-    print("Error: Enhanced progressive loader not found. Please ensure enhanced_progressive_loader.py is in the same directory.")
+    print(
+        "Error: Enhanced progressive loader not found. Please ensure enhanced_progressive_loader.py is in the same directory."
+    )
     sys.exit(1)
+
 
 class TokenOptimizer:
     """Simple interface for token optimization using progressive loading."""
@@ -28,17 +31,12 @@ class TokenOptimizer:
     def __init__(self, cache_dir: str = ".claude-patterns"):
         """Initialize the token optimizer."""
         self.loader = EnhancedProgressiveLoader(cache_dir)
-        self.optimization_stats = {
-            'total_processed': 0,
-            'total_tokens_saved': 0,
-            'average_compression': 0.0
-        }
+        self.optimization_stats = {"total_processed": 0, "total_tokens_saved": 0, "average_compression": 0.0}
 
-    def optimize_content(self,
-                        content: str,
-                        context: Dict[str, Any] = None,
-                        user_id: str = "default",
-                        task_type: str = "general") -> Tuple[str, Dict[str, Any]]:
+    def optimize_content(
+        self, content: str, context: Dict[str, Any] = None, user_id: str = "default", task_type: str = "general"
+    )-> Tuple[str, Dict[str, Any]]:
+        """Optimize Content."""
         """
         Optimize content for minimal token usage.
 
@@ -52,55 +50,44 @@ class TokenOptimizer:
             Tuple of (optimized_content, optimization_stats)
         """
         # Use the enhanced progressive loader
-        optimized_content, metrics = self.loader.load_content(
-            content, context, user_id, task_type
-        )
+        optimized_content, metrics = self.loader.load_content(content, context, user_id, task_type)
 
         # Update statistics
-        self.optimization_stats['total_processed'] += 1
+        self.optimization_stats["total_processed"] += 1
         tokens_saved = metrics.original_tokens - metrics.optimized_tokens
-        self.optimization_stats['total_tokens_saved'] += tokens_saved
+        self.optimization_stats["total_tokens_saved"] += tokens_saved
 
         # Update average compression
-        total_compression = self.optimization_stats['average_compression'] * (self.optimization_stats['total_processed'] - 1)
+        total_compression = self.optimization_stats["average_compression"] * (self.optimization_stats["total_processed"] - 1)
         total_compression += metrics.compression_ratio
-        self.optimization_stats['average_compression'] = total_compression / self.optimization_stats['total_processed']
+        self.optimization_stats["average_compression"] = total_compression / self.optimization_stats["total_processed"]
 
         # Return stats
         stats = {
-            'original_tokens': metrics.original_tokens,
-            'optimized_tokens': metrics.optimized_tokens,
-            'tokens_saved': tokens_saved,
-            'compression_ratio': metrics.compression_ratio,
-            'loading_time_ms': metrics.loading_time_ms,
-            'tier_used': metrics.tier_used.value,
-            'overall_stats': self.optimization_stats.copy()
+            "original_tokens": metrics.original_tokens,
+            "optimized_tokens": metrics.optimized_tokens,
+            "tokens_saved": tokens_saved,
+            "compression_ratio": metrics.compression_ratio,
+            "loading_time_ms": metrics.loading_time_ms,
+            "tier_used": metrics.tier_used.value,
+            "overall_stats": self.optimization_stats.copy(),
         }
 
         return optimized_content, stats
 
     def optimize_for_simple_task(self, content: str) -> Tuple[str, Dict[str, Any]]:
         """Quick optimization for simple tasks."""
-        context = {
-            'time_constraint': 'urgent',
-            'performance_priority': True
-        }
+        context = {"time_constraint": "urgent", "performance_priority": True}
         return self.optimize_content(content, context, "default", "simple_query")
 
     def optimize_for_analysis(self, content: str, user_id: str = "default") -> Tuple[str, Dict[str, Any]]:
         """Optimization for analysis tasks."""
-        context = {
-            'focus_code': True,
-            'time_constraint': 'flexible'
-        }
+        context = {"focus_code": True, "time_constraint": "flexible"}
         return self.optimize_content(content, context, user_id, "complex_analysis")
 
     def optimize_for_documentation(self, content: str, user_id: str = "default") -> Tuple[str, Dict[str, Any]]:
         """Optimization for documentation tasks."""
-        context = {
-            'focus_documentation': True,
-            'keywords': ['example', 'usage', 'api', 'reference']
-        }
+        context = {"focus_documentation": True, "keywords": ["example", "usage", "api", "reference"]}
         return self.optimize_content(content, context, user_id, "documentation")
 
     def get_performance_summary(self) -> Dict[str, Any]:
@@ -110,6 +97,7 @@ class TokenOptimizer:
     def save_patterns(self) -> None:
         """Save learned patterns."""
         self.loader.save_patterns()
+
 
 # Easy-to-use functions for quick integration
 def optimize_text(content: str, context: Dict[str, Any] = None) -> str:
@@ -127,11 +115,13 @@ def optimize_text(content: str, context: Dict[str, Any] = None) -> str:
     optimized, _ = optimizer.optimize_content(content, context)
     return optimized
 
+
 def optimize_simple(content: str) -> str:
     """Quick optimization for simple tasks."""
     optimizer = TokenOptimizer()
     optimized, _ = optimizer.optimize_for_simple_task(content)
     return optimized
+
 
 def optimize_analysis(content: str, user_id: str = "default") -> str:
     """Quick optimization for analysis tasks."""
@@ -139,11 +129,13 @@ def optimize_analysis(content: str, user_id: str = "default") -> str:
     optimized, _ = optimizer.optimize_for_analysis(content, user_id)
     return optimized
 
+
 def optimize_documentation(content: str, user_id: str = "default") -> str:
     """Quick optimization for documentation tasks."""
     optimizer = TokenOptimizer()
     optimized, _ = optimizer.optimize_for_documentation(content, user_id)
     return optimized
+
 
 # Command line interface
 def main():
@@ -153,8 +145,9 @@ def main():
     parser = argparse.ArgumentParser(description="Quick Token Optimization")
     parser.add_argument("content", nargs="?", help="Content to optimize")
     parser.add_argument("--file", help="File containing content to optimize")
-    parser.add_argument("--type", choices=["simple", "analysis", "documentation", "general"],
-                       default="general", help="Optimization type")
+    parser.add_argument(
+        "--type", choices=["simple", "analysis", "documentation", "general"], default="general", help="Optimization type"
+    )
     parser.add_argument("--user-id", default="default", help="User ID for personalization")
     parser.add_argument("--context", help="JSON context for optimization")
     parser.add_argument("--stats", action="store_true", help="Show detailed statistics")
@@ -163,7 +156,7 @@ def main():
 
     # Get content
     if args.file:
-        with open(args.file, 'r', encoding='utf-8') as f:
+        with open(args.file, "r", encoding="utf-8") as f:
             content = f.read()
     elif args.content:
         content = args.content
@@ -210,6 +203,7 @@ def main():
 
     # Output optimized content
     print(optimized)
+
 
 if __name__ == "__main__":
     main()

@@ -7,16 +7,17 @@ import os
 import re
 from pathlib import Path
 
+
 def fix_docstring_quotes(file_path):
     """Fix files with multiple docstring quotes at the beginning"""
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         original_content = content
 
         # Fix pattern: multiple """ at the beginning
-        lines = content.split('\n')
+        lines = content.split("\n")
         if len(lines) >= 10:
             # Check for the pattern of multiple docstring quotes
             quote_count = 0
@@ -49,7 +50,7 @@ def fix_docstring_quotes(file_path):
 
                 if content_start > 0 and docstring_end > content_start:
                     # Reconstruct the file with proper docstring
-                    new_lines = ['#!/usr/bin/env python3'] if lines[0].startswith('#!') else []
+                    new_lines = ["#!/usr/bin/env python3"] if lines[0].startswith("#!") else []
                     new_lines.append('"""')
 
                     # Add the actual docstring content
@@ -58,12 +59,12 @@ def fix_docstring_quotes(file_path):
                             new_lines.append(lines[i])
 
                     new_lines.append('"""')
-                    new_lines.extend(lines[docstring_end + 1:])
+                    new_lines.extend(lines[docstring_end + 1 :])
 
-                    content = '\n'.join(new_lines)
+                    content = "\n".join(new_lines)
 
         if content != original_content:
-            with open(file_path, 'w', encoding='utf-8') as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write(content)
             return True
         return False
@@ -71,6 +72,7 @@ def fix_docstring_quotes(file_path):
     except Exception as e:
         print(f"Error fixing {file_path}: {e}")
         return False
+
 
 def main():
     """Fix docstring issues in lib directory"""
@@ -83,6 +85,7 @@ def main():
             fixed_count += 1
 
     print(f"\nFixed {fixed_count} files with docstring issues")
+
 
 if __name__ == "__main__":
     main()

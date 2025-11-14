@@ -44,6 +44,7 @@ class DashboardLauncher:
         patterns_dir: str = ".claude-patterns",
         auto_restart: bool = True,
     ):
+        """  Init  ."""
         self.host = host
         self.port = port
         self.patterns_dir = patterns_dir
@@ -73,9 +74,7 @@ class DashboardLauncher:
             logger.warning(f"Port check failed for {port}: {e}")
             return False
 
-    def find_available_port(
-        self, start_port: int = 5000, max_attempts: int = 10
-    ) -> int:
+    def find_available_port(self, start_port: int = 5000, max_attempts: int = 10) -> int:
         """Find an available port starting from start_port."""
         for i in range(max_attempts):
             port = start_port + i
@@ -247,9 +246,7 @@ class DashboardLauncher:
             if self.auto_restart:
                 import threading
 
-                monitor_thread = threading.Thread(
-                    target=self.monitor_dashboard, daemon=True
-                )
+                monitor_thread = threading.Thread(target=self.monitor_dashboard, daemon=True)
                 monitor_thread.start()
                 logger.info("Dashboard monitoring started")
 

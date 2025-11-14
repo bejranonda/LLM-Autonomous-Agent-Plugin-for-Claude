@@ -23,15 +23,17 @@ from token_optimization_engine import get_token_optimizer, ContentType
 
 class LoadingTier(Enum):
     """Content loading tiers for progressive delivery."""
-    ESSENTIAL = "essential"      # Critical information only
-    STANDARD = "standard"        # Normal level of detail
+
+    ESSENTIAL = "essential"  # Critical information only
+    STANDARD = "standard"  # Normal level of detail
     COMPREHENSIVE = "comprehensive"  # Full content
-    COMPLETE = "complete"        # Everything including references
+    COMPLETE = "complete"  # Everything including references
 
 
 @dataclass
 class ContentSection:
     """Represents a section of content with loading metadata."""
+
     title: str
     content: str
     tokens: int
@@ -50,6 +52,7 @@ class ProgressiveContentLoader:
     """
 
     def __init__(self, cache_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.cache_dir = pathlib.Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
 
@@ -60,10 +63,10 @@ class ProgressiveContentLoader:
 
         # Loading configuration
         self.tier_token_limits = {
-            LoadingTier.ESSENTIAL: 5000,       # 5K tokens
-            LoadingTier.STANDARD: 20000,       # 20K tokens
+            LoadingTier.ESSENTIAL: 5000,  # 5K tokens
+            LoadingTier.STANDARD: 20000,  # 20K tokens
             LoadingTier.COMPREHENSIVE: 50000,  # 50K tokens
-            LoadingTier.COMPLETE: 100000       # 100K tokens
+            LoadingTier.COMPLETE: 100000,  # 100K tokens
         }
 
         # Cache files
@@ -81,7 +84,7 @@ class ProgressiveContentLoader:
         if not file_path.exists():
             return
 
-        content = file_path.read_text(encoding='utf-8')
+        content = file_path.read_text(encoding="utf-8")
         sections = self._parse_content_sections(content, str(file_path))
 
         self.sections[str(file_path)] = sections
@@ -97,8 +100,8 @@ class ProgressiveContentLoader:
         sections = []
 
         # Split by headers
-        header_pattern = r'^(#{1,6})\s+(.+)$'
-        lines = content.split('\n')
+        header_pattern = r"^(#{1,6})\s+(.+)$"
+        lines = content.split("\n")
 
         current_section = None
         current_content = []
@@ -110,7 +113,7 @@ class ProgressiveContentLoader:
             if header_match:
                 # Save previous section
                 if current_section:
-                    section_content = '\n'.join(current_content).strip()
+                    section_content = "\n".join(current_content).strip()
                     if section_content:
                         current_section.content = section_content
                         current_section.tokens = len(section_content) // 3
@@ -129,7 +132,7 @@ class ProgressiveContentLoader:
                     tags=self._extract_tags(title, line),
                     loading_tier=self._determine_loading_tier(title, level),
                     last_accessed=0,
-                    access_count=0
+                    access_count=0,
                 )
 
                 current_content = []
@@ -140,7 +143,7 @@ class ProgressiveContentLoader:
 
         # Handle last section
         if current_section and current_content:
-            section_content = '\n'.join(current_content).strip()
+            section_content = "\n".join(current_content).strip()
             if section_content:
                 current_section.content = section_content
                 current_section.tokens = len(section_content) // 3
@@ -155,21 +158,13 @@ class ProgressiveContentLoader:
         # Adjust based on title content
         title_lower = title.lower()
 
-        if any(keyword in title_lower for keyword in [
-            'overview', 'introduction', 'getting started', 'quick start'
-        ]):
+        if any(keyword in title_lower for keyword in ["overview", "introduction", "getting started", "quick start"]):
             base_priority -= 2
-        elif any(keyword in title_lower for keyword in [
-            'installation', 'setup', 'configuration'
-        ]):
+        elif any(keyword in title_lower for keyword in ["installation", "setup", "configuration"]):
             base_priority -= 1
-        elif any(keyword in title_lower for keyword in [
-            'advanced', 'details', 'reference', 'appendix'
-        ]):
+        elif any(keyword in title_lower for keyword in ["advanced", "details", "reference", "appendix"]):
             base_priority += 2
-        elif any(keyword in title_lower for keyword in [
-            'examples', 'code', 'implementation'
-        ]):
+        elif any(keyword in title_lower for keyword in ["examples", "code", "implementation"]):
             base_priority += 1
 
         return max(1, min(10, base_priority))
@@ -180,10 +175,10 @@ class ProgressiveContentLoader:
         title_lower = title.lower()
 
         # Common dependency patterns
-        if any(word in title_lower for word in ['prerequisites', 'requirements']):
-            dependencies.append('setup')
-        if any(word in title_lower for word in ['advanced', 'expert']):
-            dependencies.append('basics')
+        if any(word in title_lower for word in ["prerequisites", "requirements"]):
+            dependencies.append("setup")
+        if any(word in title_lower for word in ["advanced", "expert"]):
+            dependencies.append("basics")
 
         return dependencies
 
@@ -193,16 +188,16 @@ class ProgressiveContentLoader:
         title_lower = title.lower()
 
         # Category tags
-        if 'installation' in title_lower or 'setup' in title_lower:
-            tags.add('setup')
-        if 'configuration' in title_lower or 'config' in title_lower:
-            tags.add('configuration')
-        if 'example' in title_lower or 'demo' in title_lower:
-            tags.add('example')
-        if 'api' in title_lower:
-            tags.add('api')
-        if 'troubleshooting' in title_lower or 'debug' in title_lower:
-            tags.add('troubleshooting')
+        if "installation" in title_lower or "setup" in title_lower:
+            tags.add("setup")
+        if "configuration" in title_lower or "config" in title_lower:
+            tags.add("configuration")
+        if "example" in title_lower or "demo" in title_lower:
+            tags.add("example")
+        if "api" in title_lower:
+            tags.add("api")
+        if "troubleshooting" in title_lower or "debug" in title_lower:
+            tags.add("troubleshooting")
 
         return tags
 
@@ -211,33 +206,39 @@ class ProgressiveContentLoader:
         title_lower = title.lower()
 
         # Essential tier - critical information
-        if (level <= 2 or
-            any(keyword in title_lower for keyword in [
-                'overview', 'introduction', 'getting started', 'quick start',
-                'installation', 'basic usage', 'summary'
-            ])):
+        if level <= 2 or any(
+            keyword in title_lower
+            for keyword in [
+                "overview",
+                "introduction",
+                "getting started",
+                "quick start",
+                "installation",
+                "basic usage",
+                "summary",
+            ]
+        ):
             return LoadingTier.ESSENTIAL
 
         # Standard tier - commonly needed information
-        if (level <= 3 or
-            any(keyword in title_lower for keyword in [
-                'configuration', 'examples', 'usage', 'api', 'commands'
-            ])):
+        if level <= 3 or any(keyword in title_lower for keyword in ["configuration", "examples", "usage", "api", "commands"]):
             return LoadingTier.STANDARD
 
         # Comprehensive tier - detailed information
-        if (level <= 4 or
-            any(keyword in title_lower for keyword in [
-                'advanced', 'details', 'implementation', 'architecture'
-            ])):
+        if level <= 4 or any(keyword in title_lower for keyword in ["advanced", "details", "implementation", "architecture"]):
             return LoadingTier.COMPREHENSIVE
 
         # Complete tier - everything else
         return LoadingTier.COMPLETE
 
-    def load_content(self, file_path: str, user_request: str = "",
-                    available_tokens: int = 20000,
-                    preferred_tier: LoadingTier = LoadingTier.STANDARD) -> Dict[str, Any]:
+    def load_content(
+        self,
+        file_path: str,
+        user_request: str = "",
+        available_tokens: int = 20000,
+        preferred_tier: LoadingTier = LoadingTier.STANDARD,
+    )-> Dict[str, Any]:
+        """Load Content."""
         """Load content progressively based on user needs and token constraints."""
         file_path_str = str(file_path)
 
@@ -250,9 +251,7 @@ class ProgressiveContentLoader:
             return {"content": "", "sections_loaded": [], "tokens_used": 0}
 
         # Determine optimal loading strategy
-        loading_strategy = self._determine_loading_strategy(
-            user_request, available_tokens, preferred_tier, sections
-        )
+        loading_strategy = self._determine_loading_strategy(user_request, available_tokens, preferred_tier, sections)
 
         # Load sections according to strategy
         loaded_sections = []
@@ -274,46 +273,42 @@ class ProgressiveContentLoader:
                     section.access_count += 1
 
         # Assemble final content
-        final_content = '\n\n'.join(content_parts)
+        final_content = "\n\n".join(content_parts)
 
         return {
             "content": final_content,
             "sections_loaded": loaded_sections,
             "tokens_used": tokens_used,
             "loading_strategy": loading_strategy,
-            "file_path": file_path_str
+            "file_path": file_path_str,
         }
 
-    def _determine_loading_strategy(self, user_request: str, available_tokens: int,
-                                  preferred_tier: LoadingTier, sections: List[ContentSection]) -> Dict[str, Any]:
+    def _determine_loading_strategy(
+        self, user_request: str, available_tokens: int, preferred_tier: LoadingTier, sections: List[ContentSection]
+    )-> Dict[str, Any]:
+        """ Determine Loading Strategy."""
         """Determine optimal loading strategy based on context."""
         strategy = {
             "tier": preferred_tier,
             "max_tokens": available_tokens,
             "focus_tags": set(),
             "exclude_patterns": set(),
-            "adaptive": True
+            "adaptive": True,
         }
 
         # Analyze user request for keywords
         request_lower = user_request.lower()
 
         # Determine focus areas based on request
-        if any(keyword in request_lower for keyword in [
-            'install', 'setup', 'getting started', 'beginner'
-        ]):
-            strategy["focus_tags"].update(['setup', 'basic', 'essential'])
+        if any(keyword in request_lower for keyword in ["install", "setup", "getting started", "beginner"]):
+            strategy["focus_tags"].update(["setup", "basic", "essential"])
             strategy["tier"] = LoadingTier.ESSENTIAL
 
-        elif any(keyword in request_lower for keyword in [
-            'example', 'demo', 'how to', 'tutorial'
-        ]):
-            strategy["focus_tags"].update(['example', 'usage', 'tutorial'])
+        elif any(keyword in request_lower for keyword in ["example", "demo", "how to", "tutorial"]):
+            strategy["focus_tags"].update(["example", "usage", "tutorial"])
 
-        elif any(keyword in request_lower for keyword in [
-            'advanced', 'expert', 'detailed', 'comprehensive'
-        ]):
-            strategy["focus_tags"].update(['advanced', 'detailed'])
+        elif any(keyword in request_lower for keyword in ["advanced", "expert", "detailed", "comprehensive"]):
+            strategy["focus_tags"].update(["advanced", "detailed"])
             strategy["tier"] = LoadingTier.COMPREHENSIVE
 
         # Adjust based on available tokens
@@ -328,16 +323,17 @@ class ProgressiveContentLoader:
 
         return strategy
 
-    def _should_load_section(self, section: ContentSection, strategy: Dict[str, Any],
-                           tokens_used: int, max_tokens: int) -> bool:
+    def _should_load_section(
+        self, section: ContentSection, strategy: Dict[str, Any], tokens_used: int, max_tokens: int
+    )-> bool:
+        """ Should Load Section."""
         """Determine if a section should be loaded based on strategy."""
         # Check token budget
         if tokens_used + section.tokens > max_tokens:
             return False
 
         # Check tier compatibility
-        tier_order = [LoadingTier.ESSENTIAL, LoadingTier.STANDARD,
-                     LoadingTier.COMPREHENSIVE, LoadingTier.COMPLETE]
+        tier_order = [LoadingTier.ESSENTIAL, LoadingTier.STANDARD, LoadingTier.COMPREHENSIVE, LoadingTier.COMPLETE]
         strategy_tier_index = tier_order.index(strategy["tier"])
         section_tier_index = tier_order.index(section.loading_tier)
 
@@ -366,23 +362,23 @@ class ProgressiveContentLoader:
         # Apply tier-based formatting
         if strategy["tier"] == LoadingTier.ESSENTIAL:
             # Extract only essential information
-            lines = content.split('\n')
+            lines = content.split("\n")
             essential_lines = []
 
             for line in lines:
                 # Keep headers
-                if line.startswith('#'):
+                if line.startswith("#"):
                     essential_lines.append(line)
                 # Keep short, important lines
                 elif len(line.strip()) < 100 and line.strip():
                     essential_lines.append(line)
                 # Keep code blocks (but limit them)
-                elif line.startswith('```'):
+                elif line.startswith("```"):
                     essential_lines.append(line)
-                    essential_lines.append('# [Code block truncated for essential loading]')
-                    essential_lines.append('```')
+                    essential_lines.append("# [Code block truncated for essential loading]")
+                    essential_lines.append("```")
 
-            content = '\n'.join(essential_lines)
+            content = "\n".join(essential_lines)
 
         elif strategy["tier"] == LoadingTier.STANDARD:
             # Remove very long examples and references
@@ -395,7 +391,7 @@ class ProgressiveContentLoader:
 
     def _truncate_long_content(self, content: str, max_lines: int = 50) -> str:
         """Truncate long content while preserving structure."""
-        lines = content.split('\n')
+        lines = content.split("\n")
 
         if len(lines) <= max_lines:
             return content
@@ -407,10 +403,10 @@ class ProgressiveContentLoader:
 
         for line in lines[:max_lines]:
             # Always keep headers
-            if line.startswith('#'):
+            if line.startswith("#"):
                 important_lines.append(line)
             # Handle code blocks
-            elif line.startswith('```'):
+            elif line.startswith("```"):
                 code_block = not code_block
                 important_lines.append(line)
                 code_lines = 0
@@ -418,8 +414,8 @@ class ProgressiveContentLoader:
                 important_lines.append(line)
                 code_lines += 1
                 if code_lines > 20:  # Limit code block lines
-                    important_lines.append('# [Code block truncated]')
-                    important_lines.append('```')
+                    important_lines.append("# [Code block truncated]")
+                    important_lines.append("```")
                     code_block = False
             # Keep short lines
             elif len(line.strip()) < 150:
@@ -427,7 +423,7 @@ class ProgressiveContentLoader:
 
         important_lines.append(f"\n# [Content truncated to {max_lines} lines for standard loading]")
 
-        return '\n'.join(important_lines)
+        return "\n".join(important_lines)
 
     def _track_user_pattern(self, user_request: str, file_path: str) -> None:
         """Track user patterns for predictive loading."""
@@ -441,18 +437,15 @@ class ProgressiveContentLoader:
                 "requests": [],
                 "common_keywords": {},
                 "preferred_tiers": {},
-                "last_accessed": timestamp
+                "last_accessed": timestamp,
             }
 
         pattern = self.user_patterns[file_path]
-        pattern["requests"].append({
-            "request": user_request,
-            "timestamp": timestamp
-        })
+        pattern["requests"].append({"request": user_request, "timestamp": timestamp})
         pattern["last_accessed"] = timestamp
 
         # Extract keywords
-        words = re.findall(r'\b\w+\b', user_request.lower())
+        words = re.findall(r"\b\w+\b", user_request.lower())
         for word in words:
             if len(word) > 3:  # Only track meaningful words
                 pattern["common_keywords"][word] = pattern["common_keywords"].get(word, 0) + 1
@@ -474,17 +467,18 @@ class ProgressiveContentLoader:
 
             # Recommend based on common keywords
             if user_request:
-                request_words = set(re.findall(r'\b\w+\b', user_request.lower()))
-                common_keywords = {k: v for k, v in pattern["common_keywords"].items()
-                                 if v > 2 and len(k) > 3}
+                request_words = set(re.findall(r"\b\w+\b", user_request.lower()))
+                common_keywords = {k: v for k, v in pattern["common_keywords"].items() if v > 2 and len(k) > 3}
 
                 matching_keywords = request_words & set(common_keywords.keys())
                 if matching_keywords:
-                    recommendations.append({
-                        "type": "relevant_sections",
-                        "message": f"Based on your interests in {', '.join(matching_keywords)}",
-                        "keywords": list(matching_keywords)
-                    })
+                    recommendations.append(
+                        {
+                            "type": "relevant_sections",
+                            "message": f"Based on your interests in {', '.join(matching_keywords)}",
+                            "keywords": list(matching_keywords),
+                        }
+                    )
 
         # Recommend based on section popularity
         sections = self.sections.get(file_path_str, [])
@@ -492,11 +486,13 @@ class ProgressiveContentLoader:
 
         if popular_sections:
             popular_sections.sort(key=lambda x: x.access_count, reverse=True)
-            recommendations.append({
-                "type": "popular_sections",
-                "message": "Popular sections based on usage",
-                "sections": [s.title for s in popular_sections[:3]]
-            })
+            recommendations.append(
+                {
+                    "type": "popular_sections",
+                    "message": "Popular sections based on usage",
+                    "sections": [s.title for s in popular_sections[:3]],
+                }
+            )
 
         return recommendations
 
@@ -504,7 +500,7 @@ class ProgressiveContentLoader:
         """Load content sections from cache."""
         if self.sections_file.exists():
             try:
-                with open(self.sections_file, 'r') as f:
+                with open(self.sections_file, "r") as f:
                     data = json.load(f)
                     for file_path, sections_data in data.items():
                         sections = []
@@ -518,7 +514,7 @@ class ProgressiveContentLoader:
                                 tags=set(section_data["tags"]),
                                 loading_tier=LoadingTier(section_data["loading_tier"]),
                                 last_accessed=section_data.get("last_accessed", 0),
-                                access_count=section_data.get("access_count", 0)
+                                access_count=section_data.get("access_count", 0),
                             )
                             sections.append(section)
                         self.sections[file_path] = sections
@@ -541,11 +537,11 @@ class ProgressiveContentLoader:
                         "tags": list(section.tags),
                         "loading_tier": section.loading_tier.value,
                         "last_accessed": section.last_accessed,
-                        "access_count": section.access_count
+                        "access_count": section.access_count,
                     }
                     data[file_path].append(section_data)
 
-            with open(self.sections_file, 'w') as f:
+            with open(self.sections_file, "w") as f:
                 json.dump(data, f, indent=2)
         except Exception as e:
             print(f"Error saving sections: {e}")
@@ -554,7 +550,7 @@ class ProgressiveContentLoader:
         """Load user patterns from cache."""
         if self.patterns_file.exists():
             try:
-                with open(self.patterns_file, 'r') as f:
+                with open(self.patterns_file, "r") as f:
                     self.user_patterns = json.load(f)
             except Exception as e:
                 print(f"Error loading user patterns: {e}")
@@ -562,7 +558,7 @@ class ProgressiveContentLoader:
     def _save_user_patterns(self) -> None:
         """Save user patterns to cache."""
         try:
-            with open(self.patterns_file, 'w') as f:
+            with open(self.patterns_file, "w") as f:
                 json.dump(self.user_patterns, f, indent=2)
         except Exception as e:
             print(f"Error saving user patterns: {e}")
@@ -575,7 +571,7 @@ class ProgressiveContentLoader:
             "section_distribution": {},
             "most_accessed_sections": [],
             "user_patterns_summary": {},
-            "optimization_recommendations": []
+            "optimization_recommendations": [],
         }
 
         # Section distribution by tier
@@ -596,7 +592,7 @@ class ProgressiveContentLoader:
                 "title": s.title,
                 "access_count": s.access_count,
                 "tokens": s.tokens,
-                "efficiency": s.access_count / max(s.tokens / 1000, 1)
+                "efficiency": s.access_count / max(s.tokens / 1000, 1),
             }
             for s in all_sections[:10]
         ]
@@ -606,28 +602,30 @@ class ProgressiveContentLoader:
         report["user_patterns_summary"] = {
             "total_patterns": len(self.user_patterns),
             "total_requests": total_requests,
-            "avg_requests_per_file": total_requests / len(self.user_patterns) if self.user_patterns else 0
+            "avg_requests_per_file": total_requests / len(self.user_patterns) if self.user_patterns else 0,
         }
 
         # Optimization recommendations
         if total_requests > 0:
-            report["optimization_recommendations"].append({
-                "type": "caching",
-                "message": "User patterns detected. Consider implementing predictive caching."
-            })
+            report["optimization_recommendations"].append(
+                {"type": "caching", "message": "User patterns detected. Consider implementing predictive caching."}
+            )
 
         low_access_sections = [s for s in all_sections if s.access_count == 0]
         if len(low_access_sections) > len(all_sections) * 0.3:
-            report["optimization_recommendations"].append({
-                "type": "content_optimization",
-                "message": f"{len(low_access_sections)} sections have never been accessed. Consider removal or consolidation."
-            })
+            report["optimization_recommendations"].append(
+                {
+                    "type": "content_optimization",
+                    "message": f"{len(low_access_sections)} sections have never been accessed. Consider removal or consolidation.",
+                }
+            )
 
         return report
 
 
 # Global loader instance
 _progressive_loader = None
+
 
 def get_progressive_loader() -> ProgressiveContentLoader:
     """Get or create global progressive loader instance."""
@@ -642,11 +640,7 @@ def initialize_content_analysis():
     loader = get_progressive_loader()
 
     # Analyze main documentation
-    main_files = [
-        "CLAUDE.md",
-        "README.md",
-        "CHANGELOG.md"
-    ]
+    main_files = ["CLAUDE.md", "README.md", "CHANGELOG.md"]
 
     for file_path in main_files:
         if pathlib.Path(file_path).exists():
@@ -681,9 +675,9 @@ def initialize_content_analysis():
     print(f"Total Sections: {report['total_sections']}")
     print(f"Total User Requests: {report['user_patterns_summary']['total_requests']}")
 
-    if report['optimization_recommendations']:
+    if report["optimization_recommendations"]:
         print("\nRecommendations:")
-        for rec in report['optimization_recommendations']:
+        for rec in report["optimization_recommendations"]:
             print(f"  • {rec['message']}")
 
 

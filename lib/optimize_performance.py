@@ -12,10 +12,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import lru_cache
 import hashlib
 
+
 class PerformanceOptimizer:
     """Optimizes concurrent operations performance"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(exist_ok=True)
 
@@ -27,18 +29,13 @@ class PerformanceOptimizer:
         self.executor = ThreadPoolExecutor(max_workers=4)
 
         # Performance metrics
-        self.metrics = {
-            "api_calls": 0,
-            "cache_hits": 0,
-            "avg_response_time": 0.0,
-            "concurrent_requests": 0
-        }
+        self.metrics = {"api_calls": 0, "cache_hits": 0, "avg_response_time": 0.0, "concurrent_requests": 0}
 
     def _load_cache(self) -> Dict[str, Any]:
         """Load performance cache"""
         if self.cache_file.exists():
             try:
-                with open(self.cache_file, 'r') as f:
+                with open(self.cache_file, "r") as f:
                     return json.load(f)
             except:
                 return {}
@@ -47,7 +44,7 @@ class PerformanceOptimizer:
     def _save_cache(self):
         """Save performance cache"""
         try:
-            with open(self.cache_file, 'w') as f:
+            with open(self.cache_file, "w") as f:
                 json.dump(self.cache_data, f, indent=2)
         except Exception as e:
             print(f"Error saving cache: {e}")
@@ -73,15 +70,11 @@ class PerformanceOptimizer:
     def cache_data(self, endpoint: str, data: Any, params: str = ""):
         """Cache data for API endpoint"""
         cache_key = self._get_cache_key(endpoint, params)
-        self.cache_data[cache_key] = {
-            "data": data,
-            "timestamp": time.time()
-        }
+        self.cache_data[cache_key] = {"data": data, "timestamp": time.time()}
 
         # Limit cache size
         if len(self.cache_data) > 100:
-            oldest_key = min(self.cache_data.keys(),
-                           key=lambda k: self.cache_data[k]["timestamp"])
+            oldest_key = min(self.cache_data.keys(), key=lambda k: self.cache_data[k]["timestamp"])
             del self.cache_data[oldest_key]
 
         self._save_cache()
@@ -96,33 +89,21 @@ class PerformanceOptimizer:
         # Use ThreadPoolExecutor for concurrent execution
         with ThreadPoolExecutor(max_workers=4) as executor:
             # Submit all requests
-            future_to_request = {
-                executor.submit(self._execute_single_request, req): req
-                for req in requests
-            }
+            future_to_request = {executor.submit(self._execute_single_request, req): req for req in requests}
 
             # Collect results as they complete
             for future in as_completed(future_to_request):
                 request = future_to_request[future]
                 try:
                     result = future.result(timeout=10)  # 10 second timeout
-                    results.append({
-                        "request": request,
-                        "result": result,
-                        "success": True
-                    })
+                    results.append({"request": request, "result": result, "success": True})
                 except Exception as e:
-                    results.append({
-                        "request": request,
-                        "error": str(e),
-                        "success": False
-                    })
+                    results.append({"request": request, "error": str(e), "success": False})
 
         # Update metrics
         total_time = time.time() - start_time
-        self.metrics["avg_response_time"] = (
-            (self.metrics["avg_response_time"] * self.metrics["api_calls"] + total_time) /
-            (self.metrics["api_calls"] + len(requests))
+        self.metrics["avg_response_time"] = (self.metrics["avg_response_time"] * self.metrics["api_calls"] + total_time) / (
+            self.metrics["api_calls"] + len(requests)
         )
         self.metrics["api_calls"] += len(requests)
 
@@ -142,12 +123,7 @@ class PerformanceOptimizer:
         time.sleep(0.1)  # Simulate network latency
 
         # Mock data for demonstration
-        mock_data = {
-            "endpoint": endpoint,
-            "params": params,
-            "timestamp": time.time(),
-            "data": f"Mock data for {endpoint}"
-        }
+        mock_data = {"endpoint": endpoint, "params": params, "timestamp": time.time(), "data": f"Mock data for {endpoint}"}
 
         # Cache the result
         self.cache_data(endpoint, mock_data, params)
@@ -159,10 +135,8 @@ class PerformanceOptimizer:
         return {
             **self.metrics,
             "cache_size": len(self.cache_data),
-            "cache_hit_rate": (
-                self.metrics["cache_hits"] / max(self.metrics["api_calls"], 1) * 100
-            ),
-            "concurrent_capacity": "4 workers"
+            "cache_hit_rate": (self.metrics["cache_hits"] / max(self.metrics["api_calls"], 1) * 100),
+            "concurrent_capacity": "4 workers",
         }
 
     def optimize_dashboard_endpoints(self) -> Dict[str, Any]:
@@ -181,7 +155,7 @@ class PerformanceOptimizer:
             "/api/recent-performance-records",
             "/api/current-model",
             "/api/validation-results",
-            "/api/recent-activity"
+            "/api/recent-activity",
         ]
 
         # Create requests for concurrent execution
@@ -204,7 +178,7 @@ class PerformanceOptimizer:
             "avg_time_per_request": total_time / len(requests),
             "requests_per_second": len(requests) / total_time,
             "performance_grade": self._calculate_performance_grade(total_time, len(requests)),
-            "metrics": self.get_performance_metrics()
+            "metrics": self.get_performance_metrics(),
         }
 
     def _calculate_performance_grade(self, total_time: float, num_requests: int) -> str:
@@ -223,6 +197,7 @@ class PerformanceOptimizer:
             return "D (Poor)"
         else:
             return "F (Very Poor)"
+
 
 def main():
     """Run performance optimization analysis"""
@@ -246,7 +221,7 @@ def main():
     print()
 
     # Show detailed metrics
-    metrics = results['metrics']
+    metrics = results["metrics"]
     print("=== PERFORMANCE METRICS ===")
     print(f"Total API Calls: {metrics['api_calls']}")
     print(f"Cache Hits: {metrics['cache_hits']}")
@@ -258,7 +233,7 @@ def main():
     print()
 
     # Performance assessment
-    avg_time = results['avg_time_per_request']
+    avg_time = results["avg_time_per_request"]
     print("=== PERFORMANCE ASSESSMENT ===")
 
     if avg_time <= 2.0:
@@ -277,6 +252,7 @@ def main():
     print()
     print("Cache optimization will significantly improve subsequent requests.")
     print("First request populates cache, subsequent requests are much faster.")
+
 
 if __name__ == "__main__":
     main()

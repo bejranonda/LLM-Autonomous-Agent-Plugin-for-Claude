@@ -26,24 +26,25 @@ def calculate_quality_score():
     """Calculate comprehensive quality score (0-100)"""
 
     scores = {
-        'test_coverage': {'weight': 0.30, 'score': 0, 'details': ''},
-        'code_standards': {'weight': 0.25, 'score': 0, 'details': ''},
-        'documentation': {'weight': 0.20, 'score': 0, 'details': ''},
-        'pattern_adherence': {'weight': 0.15, 'score': 0, 'details': ''},
-        'code_metrics': {'weight': 0.10, 'score': 0, 'details': ''}
+        "test_coverage": {"weight": 0.30, "score": 0, "details": ""},
+        "code_standards": {"weight": 0.25, "score": 0, "details": ""},
+        "documentation": {"weight": 0.20, "score": 0, "details": ""},
+        "pattern_adherence": {"weight": 0.15, "score": 0, "details": ""},
+        "code_metrics": {"weight": 0.10, "score": 0, "details": ""},
     }
 
     # 1. Test Coverage (30 points)
-    success, output, stderr = run_command('python -m pytest tests/ -q --tb=no')
+    success, output, stderr = run_command("python -m pytest tests/ -q --tb=no")
 
     # Parse results regardless of success status (pytest returns non-zero on failures)
     # Check both stdout and stderr for results
     combined_output = output + stderr
 
-    if 'passed' in combined_output and 'failed' in combined_output:
+    if "passed" in combined_output and "failed" in combined_output:
         import re
-        passed_match = re.search(r'(\d+)\s+passed', combined_output)
-        failed_match = re.search(r'(\d+)\s+failed', combined_output)
+
+        passed_match = re.search(r"(\d+)\s+passed", combined_output)
+        failed_match = re.search(r"(\d+)\s+failed", combined_output)
 
         if passed_match and failed_match:
             passed = int(passed_match.group(1))
@@ -52,26 +53,26 @@ def calculate_quality_score():
             pass_rate = (passed / total) * 100 if total > 0 else 0
 
             if pass_rate >= 90:
-                scores['test_coverage']['score'] = 30
+                scores["test_coverage"]["score"] = 30
             elif pass_rate >= 80:
-                scores['test_coverage']['score'] = 25
+                scores["test_coverage"]["score"] = 25
             elif pass_rate >= 70:
-                scores['test_coverage']['score'] = 20
+                scores["test_coverage"]["score"] = 20
             elif pass_rate >= 60:
-                scores['test_coverage']['score'] = 15
+                scores["test_coverage"]["score"] = 15
             else:
-                scores['test_coverage']['score'] = 10
+                scores["test_coverage"]["score"] = 10
 
-            scores['test_coverage']['details'] = f'Pass rate: {pass_rate:.1f}% ({passed}/{total})'
+            scores["test_coverage"]["details"] = f"Pass rate: {pass_rate:.1f}% ({passed}/{total})"
         else:
-            scores['test_coverage']['score'] = 5
-            scores['test_coverage']['details'] = 'Tests run but parsing failed'
+            scores["test_coverage"]["score"] = 5
+            scores["test_coverage"]["details"] = "Tests run but parsing failed"
     else:
-        scores['test_coverage']['score'] = 0
-        scores['test_coverage']['details'] = 'Test execution failed or no results'
+        scores["test_coverage"]["score"] = 0
+        scores["test_coverage"]["details"] = "Test execution failed or no results"
 
     # 2. Code Standards (25 points)
-    lib_files = list(Path('lib').glob('**/*.py'))
+    lib_files = list(Path("lib").glob("**/*.py"))
     total_files = len(lib_files)
 
     if total_files > 0:
@@ -80,8 +81,8 @@ def calculate_quality_score():
         compiled = 0
         for file_path in sample_files:
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    compile(f.read(), str(file_path), 'exec')
+                with open(file_path, "r", encoding="utf-8") as f:
+                    compile(f.read(), str(file_path), "exec")
                 compiled += 1
             except:
                 pass
@@ -89,93 +90,98 @@ def calculate_quality_score():
         compilation_rate = (compiled / len(sample_files)) * 100
 
         if compilation_rate >= 90:
-            scores['code_standards']['score'] = 25
+            scores["code_standards"]["score"] = 25
         elif compilation_rate >= 80:
-            scores['code_standards']['score'] = 20
+            scores["code_standards"]["score"] = 20
         elif compilation_rate >= 70:
-            scores['code_standards']['score'] = 15
+            scores["code_standards"]["score"] = 15
         elif compilation_rate >= 60:
-            scores['code_standards']['score'] = 10
+            scores["code_standards"]["score"] = 10
         else:
-            scores['code_standards']['score'] = 5
+            scores["code_standards"]["score"] = 5
 
-        scores['code_standards']['details'] = f'Compilation: {compilation_rate:.1f}% ({compiled}/{len(sample_files)} tested)'
+        scores["code_standards"]["details"] = f"Compilation: {compilation_rate:.1f}% ({compiled}/{len(sample_files)} tested)"
     else:
-        scores['code_standards']['score'] = 0
-        scores['code_standards']['details'] = 'No Python files found'
+        scores["code_standards"]["score"] = 0
+        scores["code_standards"]["details"] = "No Python files found"
 
     # 3. Documentation (20 points)
-    doc_files = ['README.md', 'CLAUDE.md', 'STRUCTURE.md', 'CHANGELOG.md']
+    doc_files = ["README.md", "CLAUDE.md", "STRUCTURE.md", "CHANGELOG.md"]
     existing_docs = sum(1 for doc in doc_files if Path(doc).exists())
 
     # Check plugin.json
-    plugin_json = Path('.claude-plugin/plugin.json')
+    plugin_json = Path(".claude-plugin/plugin.json")
     has_plugin = plugin_json.exists()
 
     if existing_docs >= 4 and has_plugin:
-        scores['documentation']['score'] = 20
-        scores['documentation']['details'] = 'Complete documentation (4+ files + plugin.json)'
+        scores["documentation"]["score"] = 20
+        scores["documentation"]["details"] = "Complete documentation (4+ files + plugin.json)"
     elif existing_docs >= 3 and has_plugin:
-        scores['documentation']['score'] = 17
-        scores['documentation']['details'] = 'Good documentation (3+ files + plugin.json)'
+        scores["documentation"]["score"] = 17
+        scores["documentation"]["details"] = "Good documentation (3+ files + plugin.json)"
     elif existing_docs >= 2:
-        scores['documentation']['score'] = 12
-        scores['documentation']['details'] = 'Basic documentation (2+ files)'
+        scores["documentation"]["score"] = 12
+        scores["documentation"]["details"] = "Basic documentation (2+ files)"
     else:
-        scores['documentation']['score'] = 5
-        scores['documentation']['details'] = 'Minimal documentation'
+        scores["documentation"]["score"] = 5
+        scores["documentation"]["details"] = "Minimal documentation"
 
     # 4. Pattern Adherence (15 points)
-    agents = list(Path('agents').glob('*.md'))
-    skills = list(Path('skills').glob('*/SKILL.md'))
-    commands = list(Path('commands').glob('*.md'))
+    agents = list(Path("agents").glob("*.md"))
+    skills = list(Path("skills").glob("*/SKILL.md"))
+    commands = list(Path("commands").glob("*.md"))
 
     if len(agents) >= 20 and len(skills) >= 15 and len(commands) >= 35:
-        scores['pattern_adherence']['score'] = 15
-        scores['pattern_adherence']['details'] = f'Excellent structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)'
+        scores["pattern_adherence"]["score"] = 15
+        scores["pattern_adherence"][
+            "details"
+        ] = f"Excellent structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)"
     elif len(agents) >= 15 and len(skills) >= 10 and len(commands) >= 25:
-        scores['pattern_adherence']['score'] = 12
-        scores['pattern_adherence']['details'] = f'Good structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)'
+        scores["pattern_adherence"]["score"] = 12
+        scores["pattern_adherence"][
+            "details"
+        ] = f"Good structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)"
     elif len(agents) >= 10 and len(skills) >= 5 and len(commands) >= 15:
-        scores['pattern_adherence']['score'] = 8
-        scores['pattern_adherence']['details'] = f'Adequate structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)'
+        scores["pattern_adherence"]["score"] = 8
+        scores["pattern_adherence"][
+            "details"
+        ] = f"Adequate structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)"
     else:
-        scores['pattern_adherence']['score'] = 4
-        scores['pattern_adherence']['details'] = f'Limited structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)'
+        scores["pattern_adherence"]["score"] = 4
+        scores["pattern_adherence"][
+            "details"
+        ] = f"Limited structure ({len(agents)} agents, {len(skills)} skills, {len(commands)} commands)"
 
     # 5. Code Metrics (10 points)
     # Check if core utilities are functional
-    core_utilities = ['assessment_storage.py', 'quality_tracker.py', 'task_queue.py']
+    core_utilities = ["assessment_storage.py", "quality_tracker.py", "task_queue.py"]
     working_utils = 0
 
     for util in core_utilities:
-        util_path = Path('lib') / util
+        util_path = Path("lib") / util
         if util_path.exists():
             try:
-                with open(util_path, 'r', encoding='utf-8') as f:
-                    compile(f.read(), str(util_path), 'exec')
+                with open(util_path, "r", encoding="utf-8") as f:
+                    compile(f.read(), str(util_path), "exec")
                 working_utils += 1
             except:
                 pass
 
     if working_utils >= 3:
-        scores['code_metrics']['score'] = 10
-        scores['code_metrics']['details'] = f'All core utilities working ({working_utils}/3)'
+        scores["code_metrics"]["score"] = 10
+        scores["code_metrics"]["details"] = f"All core utilities working ({working_utils}/3)"
     elif working_utils >= 2:
-        scores['code_metrics']['score'] = 7
-        scores['code_metrics']['details'] = f'Most core utilities working ({working_utils}/3)'
+        scores["code_metrics"]["score"] = 7
+        scores["code_metrics"]["details"] = f"Most core utilities working ({working_utils}/3)"
     elif working_utils >= 1:
-        scores['code_metrics']['score'] = 4
-        scores['code_metrics']['details'] = f'Some core utilities working ({working_utils}/3)'
+        scores["code_metrics"]["score"] = 4
+        scores["code_metrics"]["details"] = f"Some core utilities working ({working_utils}/3)"
     else:
-        scores['code_metrics']['score'] = 0
-        scores['code_metrics']['details'] = 'No working core utilities'
+        scores["code_metrics"]["score"] = 0
+        scores["code_metrics"]["details"] = "No working core utilities"
 
     # Calculate total weighted score
-    total_score = sum(
-        category['score'] * category['weight']
-        for category in scores.values()
-    )
+    total_score = sum(category["score"] * category["weight"] for category in scores.values())
 
     return total_score, scores
 
@@ -215,8 +221,8 @@ def main():
     print("=" * 40)
 
     for category, data in category_scores.items():
-        category_name = category.replace('_', ' ').title()
-        max_score = int(data['weight'] * 100)
+        category_name = category.replace("_", " ").title()
+        max_score = int(data["weight"] * 100)
         print(f"\n{category_name} ({data['weight']*100:.0f}% weight)")
         print(f"   Score: {data['score']}/{max_score}")
         print(f"   Details: {data['details']}")
@@ -250,11 +256,11 @@ def main():
 
     if total_score < 70:
         print("Priority Actions:")
-        if category_scores['test_coverage']['score'] < 20:
+        if category_scores["test_coverage"]["score"] < 20:
             print("• Fix failing tests to improve test coverage")
-        if category_scores['code_standards']['score'] < 20:
+        if category_scores["code_standards"]["score"] < 20:
             print("• Resolve compilation errors in Python files")
-        if category_scores['documentation']['score'] < 15:
+        if category_scores["documentation"]["score"] < 15:
             print("• Complete missing documentation files")
     else:
         print("Recommended Actions:")
@@ -270,29 +276,29 @@ def main():
 
     # Save detailed report
     report_data = {
-        'timestamp': datetime.now().isoformat(),
-        'overall_score': total_score,
-        'status': status,
-        'baseline_score': baseline_score,
-        'improvement': improvement,
-        'categories': {
+        "timestamp": datetime.now().isoformat(),
+        "overall_score": total_score,
+        "status": status,
+        "baseline_score": baseline_score,
+        "improvement": improvement,
+        "categories": {
             name: {
-                'score': data['score'],
-                'max_score': int(data['weight'] * 100),
-                'weight_percentage': data['weight'] * 100,
-                'details': data['details']
+                "score": data["score"],
+                "max_score": int(data["weight"] * 100),
+                "weight_percentage": data["weight"] * 100,
+                "details": data["details"],
             }
             for name, data in category_scores.items()
-        }
+        },
     }
 
     # Create reports directory if needed
-    reports_dir = Path('.claude/reports')
+    reports_dir = Path(".claude/reports")
     reports_dir.mkdir(parents=True, exist_ok=True)
 
     # Save report
     report_file = reports_dir / f"FINAL_QUALITY_ASSESSMENT_{datetime.now().strftime('%Y-%m-%d')}.json"
-    with open(report_file, 'w') as f:
+    with open(report_file, "w") as f:
         json.dump(report_data, f, indent=2)
 
     print(f"\nDetailed report saved to: {report_file}")

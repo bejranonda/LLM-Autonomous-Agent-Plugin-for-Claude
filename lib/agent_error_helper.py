@@ -17,118 +17,118 @@ AVAILABLE_AGENTS = {
     "orchestrator": {
         "description": "Main autonomous decision maker that delegates to specialized agents",
         "category": "core",
-        "usage": "General tasks, project coordination, multi-agent workflows"
+        "usage": "General tasks, project coordination, multi-agent workflows",
     },
     "code-analyzer": {
         "description": "Code structure and pattern analysis specialist",
         "category": "analysis",
-        "usage": "Code review, architecture analysis, pattern detection"
+        "usage": "Code review, architecture analysis, pattern detection",
     },
     "quality-controller": {
         "description": "Quality assurance and auto-fix specialist",
         "category": "quality",
-        "usage": "Code quality issues, standards compliance, auto-fix"
+        "usage": "Code quality issues, standards compliance, auto-fix",
     },
     "validation-controller": {
         "description": "Proactive validation and error prevention specialist",
         "category": "validation",
-        "usage": "Error prevention, consistency checks, pre-flight validation"
+        "usage": "Error prevention, consistency checks, pre-flight validation",
     },
     "learning-engine": {
         "description": "Pattern learning and continuous improvement specialist",
         "category": "learning",
-        "usage": "Pattern learning, performance optimization, continuous improvement"
+        "usage": "Pattern learning, performance optimization, continuous improvement",
     },
     "test-engineer": {
         "description": "Test generation and database management specialist",
         "category": "testing",
-        "usage": "Test generation, database isolation, test coverage"
+        "usage": "Test generation, database isolation, test coverage",
     },
     "security-auditor": {
         "description": "Security vulnerability scanning and prevention specialist",
         "category": "security",
-        "usage": "Security scanning, vulnerability assessment, OWASP compliance"
+        "usage": "Security scanning, vulnerability assessment, OWASP compliance",
     },
     "documentation-generator": {
         "description": "Documentation maintenance and generation specialist",
         "category": "documentation",
-        "usage": "Documentation generation, API docs, technical guides"
+        "usage": "Documentation generation, API docs, technical guides",
     },
     "frontend-analyzer": {
         "description": "Frontend-specific validation and analysis specialist",
         "category": "frontend",
-        "usage": "TypeScript validation, React issues, build validation"
+        "usage": "TypeScript validation, React issues, build validation",
     },
     "performance-analytics": {
         "description": "Performance analysis and insights specialist",
         "category": "analytics",
-        "usage": "Performance analysis, metrics tracking, optimization"
+        "usage": "Performance analysis, metrics tracking, optimization",
     },
     "gui-validator": {
         "description": "Comprehensive GUI validation and debugging specialist",
         "category": "validation",
-        "usage": "GUI testing, interface validation, user experience analysis"
+        "usage": "GUI testing, interface validation, user experience analysis",
     },
     "background-task-manager": {
         "description": "Parallel background task execution specialist",
         "category": "coordination",
-        "usage": "Parallel processing, non-blocking tasks, result coordination"
+        "usage": "Parallel processing, non-blocking tasks, result coordination",
     },
     "git-repository-manager": {
         "description": "Advanced Git workflow automation specialist",
         "category": "git",
-        "usage": "Git operations, branching strategies, release automation"
+        "usage": "Git operations, branching strategies, release automation",
     },
     "version-release-manager": {
         "description": "Release automation and management specialist",
         "category": "release",
-        "usage": "Semantic versioning, release notes, version management"
+        "usage": "Semantic versioning, release notes, version management",
     },
     "workspace-organizer": {
         "description": "Workspace and report management specialist",
         "category": "organization",
-        "usage": "File organization, report consolidation, cleanup automation"
+        "usage": "File organization, report consolidation, cleanup automation",
     },
     "report-management-organizer": {
         "description": "Report generation and organization specialist",
         "category": "organization",
-        "usage": "Report creation, categorization, search optimization"
+        "usage": "Report creation, categorization, search optimization",
     },
     "smart-recommender": {
         "description": "Intelligent workflow recommendations specialist",
         "category": "analytics",
-        "usage": "Task-agent optimization, pattern-based suggestions"
+        "usage": "Task-agent optimization, pattern-based suggestions",
     },
     "pr-reviewer": {
         "description": "Pull request review automation specialist",
         "category": "review",
-        "usage": "Automated code review, change summarization, security scanning"
+        "usage": "Automated code review, change summarization, security scanning",
     },
     "dev-orchestrator": {
         "description": "Development workflow automation specialist",
         "category": "development",
-        "usage": "Milestone planning, incremental implementation, auto-debugging"
+        "usage": "Milestone planning, incremental implementation, auto-debugging",
     },
     "claude-plugin-validator": {
         "description": "Plugin compliance validation specialist",
         "category": "validation",
-        "usage": "Plugin guideline validation, structure verification"
+        "usage": "Plugin guideline validation, structure verification",
     },
     "build-validator": {
         "description": "Build tool configuration validation specialist",
         "category": "build",
-        "usage": "Build validation, environment variable tracking, module conflicts"
+        "usage": "Build validation, environment variable tracking, module conflicts",
     },
     "api-contract-validator": {
         "description": "API synchronization and type generation specialist",
         "category": "api",
-        "usage": "API schema extraction, frontend-backend synchronization"
+        "usage": "API schema extraction, frontend-backend synchronization",
     },
     "integrity-validation": {
         "description": "Pre/post-operation validation specialist",
         "category": "validation",
-        "usage": "Tool usage validation, consistency checks, compliance"
-    }
+        "usage": "Tool usage validation, consistency checks, compliance",
+    },
 }
 
 # Common mistakes and their corrections
@@ -152,8 +152,9 @@ COMMON_MISTAKES = {
     "git": "git-repository-manager",
     "release": "version-release-manager",
     "workspace": "workspace-organizer",
-    "report": "report-management-organizer"
+    "report": "report-management-organizer",
 }
+
 
 def find_closest_agents(user_input, limit=5):
     """Find the closest matching agent names using fuzzy matching."""
@@ -173,12 +174,13 @@ def find_closest_agents(user_input, limit=5):
     close_matches = get_close_matches(user_input, all_agents, n=limit, cutoff=0.6)
 
     # Also try matching parts of the input
-    user_parts = user_input.split('-')
+    user_parts = user_input.split("-")
     for part in user_parts:
         if part in all_agents and part not in close_matches:
             close_matches.insert(0, part)
 
     return close_matches
+
 
 def generate_helpful_error(user_input):
     """Generate a helpful error message with suggestions."""
@@ -228,6 +230,7 @@ def generate_helpful_error(user_input):
 
     return error_msg
 
+
 def suggest_agents_for_task(task_description):
     """Suggest the best agents for a given task description."""
     task_lower = task_description.lower()
@@ -275,6 +278,7 @@ def suggest_agents_for_task(task_description):
 
     return sorted_agents[:3]
 
+
 def list_all_agents():
     """List all available agents with their information."""
     result = f"[INFO] Available Agents ({len(AVAILABLE_AGENTS)} total):\n\n"
@@ -301,6 +305,7 @@ def list_all_agents():
     result += f"[RECOMMENDATION] **Recommendation**: For most tasks, use 'orchestrator' - it automatically selects the best specialized agents.\n"
 
     return result
+
 
 def main():
     """Main CLI interface."""
@@ -337,6 +342,7 @@ def main():
             print(f"   Best for: {info.get('usage', 'N/A')}")
         else:
             print(generate_helpful_error(command))
+
 
 if __name__ == "__main__":
     main()

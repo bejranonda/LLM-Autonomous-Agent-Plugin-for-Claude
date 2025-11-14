@@ -16,6 +16,7 @@ import argparse
 import requests
 from typing import Dict, List, Optional
 
+
 class GitHubAboutUpdater:
     """Handles GitHub repository About section updates with SEO optimization."""
 
@@ -26,7 +27,7 @@ class GitHubAboutUpdater:
         Args:
             token: GitHub personal access token (can be set via GITHUB_TOKEN env var)
         """
-        self.token = token or os.getenv('GITHUB_TOKEN')
+        self.token = token or os.getenv("GITHUB_TOKEN")
         if not self.token:
             print("WARNING: No GitHub token provided. Use --token or set GITHUB_TOKEN env var.")
 
@@ -35,10 +36,7 @@ class GitHubAboutUpdater:
         self.repo = "LLM-Autonomous-Agent-Plugin-for-Claude"
 
         self.api_base = "https://api.github.com"
-        self.headers = {
-            "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "Autonomous-Agent-About-Updater"
-        }
+        self.headers = {"Accept": "application/vnd.github.v3+json", "User-Agent": "Autonomous-Agent-About-Updater"}
 
         if self.token:
             self.headers["Authorization"] = f"token {self.token}"
@@ -70,7 +68,7 @@ class GitHubAboutUpdater:
                 "stars": repo_data.get("stargazers_count", 0),
                 "forks": repo_data.get("forks_count", 0),
                 "language": repo_data.get("language", ""),
-                "project_info": project_info
+                "project_info": project_info,
             }
 
         except Exception as e:
@@ -83,7 +81,7 @@ class GitHubAboutUpdater:
             # Read plugin.json for metadata
             plugin_file = os.path.join(os.path.dirname(__file__), "..", ".claude-plugin", "plugin.json")
             if os.path.exists(plugin_file):
-                with open(plugin_file, 'r', encoding='utf-8') as f:
+                with open(plugin_file, "r", encoding="utf-8") as f:
                     plugin_data = json.load(f)
             else:
                 plugin_data = {}
@@ -92,7 +90,7 @@ class GitHubAboutUpdater:
             readme_file = os.path.join(os.path.dirname(__file__), "..", "README.md")
             features = []
             if os.path.exists(readme_file):
-                with open(readme_file, 'r', encoding='utf-8') as f:
+                with open(readme_file, "r", encoding="utf-8") as f:
                     readme_content = f.read()
                     # Extract key features from README
                     if "Four-Tier Architecture" in readme_content:
@@ -108,7 +106,7 @@ class GitHubAboutUpdater:
                 "version": plugin_data.get("version", "7.1.0"),
                 "keywords": plugin_data.get("keywords", [])[:20],  # Limit to top 20
                 "features": features,
-                "description": plugin_data.get("description", "")
+                "description": plugin_data.get("description", ""),
             }
 
         except Exception as e:
@@ -132,7 +130,7 @@ class GitHubAboutUpdater:
             "Four-tier architecture with learning systems",
             "Full-stack validation with 89% auto-fix success",
             "95%+ prediction accuracy",
-            "Enterprise-ready autonomous agents"
+            "Enterprise-ready autonomous agents",
         ]
 
         # Generate concise description (max 350 chars)
@@ -141,16 +139,14 @@ class GitHubAboutUpdater:
             f"Revolutionary autonomous agent plugin for Claude Code with 51.6% performance optimization, "
             f"four-tier architecture, and 95%+ prediction accuracy. "
             f"Full-stack validation, pattern learning, and enterprise-ready automation.",
-
             # Option 2: Feature-focused
             f"Autonomous AI agents for Claude Code with revolutionary four-tier architecture. "
             f"Features 51.6% performance optimization, intelligent learning systems, full-stack validation, "
             f"and enterprise-grade automation. Free forever, privacy-first.",
-
             # Option 3: Benefits-focused
             f"Transform your development with autonomous AI agents that learn and improve. "
             f"Experience 51.6% performance gains, four-tier intelligence, and 95%+ prediction accuracy. "
-            f"Complete automation, validation, and learning systems included."
+            f"Complete automation, validation, and learning systems included.",
         ]
 
         # Select the best description (under 350 chars)
@@ -166,15 +162,26 @@ class GitHubAboutUpdater:
 
         # Generate optimized topics based on current state and keywords
         base_topics = [
-            "claude-code", "autonomous-agents", "artificial-intelligence",
-            "automation", "code-analysis", "pattern-learning", "quality-control",
-            "machine-learning", "performance-optimization", "fullstack-validation"
+            "claude-code",
+            "autonomous-agents",
+            "artificial-intelligence",
+            "automation",
+            "code-analysis",
+            "pattern-learning",
+            "quality-control",
+            "machine-learning",
+            "performance-optimization",
+            "fullstack-validation",
         ]
 
         # Add v7.1.0 specific topics
         v7_1_topics = [
-            "four-tier-architecture", "enterprise-ready", "predictive-analytics",
-            "auto-fix", "security-scanning", "documentation-generation"
+            "four-tier-architecture",
+            "enterprise-ready",
+            "predictive-analytics",
+            "auto-fix",
+            "security-scanning",
+            "documentation-generation",
         ]
 
         # Add language-specific topics
@@ -188,10 +195,18 @@ class GitHubAboutUpdater:
 
         # Sort by relevance (put most important first)
         priority_topics = [
-            "claude-code", "autonomous-agents", "artificial-intelligence",
-            "automation", "pattern-learning", "four-tier-architecture",
-            "performance-optimization", "fullstack-validation", "code-analysis",
-            "machine-learning", "enterprise-ready", "predictive-analytics"
+            "claude-code",
+            "autonomous-agents",
+            "artificial-intelligence",
+            "automation",
+            "pattern-learning",
+            "four-tier-architecture",
+            "performance-optimization",
+            "fullstack-validation",
+            "code-analysis",
+            "machine-learning",
+            "enterprise-ready",
+            "predictive-analytics",
         ]
 
         # Sort topics by priority
@@ -212,7 +227,7 @@ class GitHubAboutUpdater:
             "topics": final_topics,
             "homepage": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
             "achievements_highlighted": achievements,
-            "seo_score": self._calculate_seo_score(optimized_description, final_topics)
+            "seo_score": self._calculate_seo_score(optimized_description, final_topics),
         }
 
     def _calculate_seo_score(self, description: str, topics: List[str]) -> Dict:
@@ -243,8 +258,8 @@ class GitHubAboutUpdater:
             score += 10
 
         # Topic quality (mix of general and specific)
-        general_topics = sum(1 for topic in topics if len(topic.split('-')) == 1)
-        specific_topics = sum(1 for topic in topics if len(topic.split('-')) > 1)
+        general_topics = sum(1 for topic in topics if len(topic.split("-")) == 1)
+        specific_topics = sum(1 for topic in topics if len(topic.split("-")) > 1)
 
         if general_topics >= 3 and specific_topics >= 5:
             score += 20
@@ -263,7 +278,7 @@ class GitHubAboutUpdater:
             "description_length": desc_len,
             "keywords_in_description": keywords_found,
             "topics_count": len(topics),
-            "v7_1_keywords": v7_1_found
+            "v7_1_keywords": v7_1_found,
         }
 
     def update_repository(self, optimized_content: Dict, dry_run: bool = False) -> bool:
@@ -288,7 +303,7 @@ class GitHubAboutUpdater:
             update_data = {
                 "description": optimized_content["description"],
                 "homepage": optimized_content["homepage"],
-                "topics": optimized_content["topics"]
+                "topics": optimized_content["topics"],
             }
 
             if dry_run:
@@ -321,7 +336,7 @@ class GitHubAboutUpdater:
         report.append("CURRENT STATE:")
         report.append(f"  Description: \"{current_state.get('current_description', 'N/A')}\"")
         report.append(f"  Topics: {len(current_state.get('current_topics', []))} topics")
-        if current_state.get('current_topics'):
+        if current_state.get("current_topics"):
             report.append(f"  Current topics: {', '.join(current_state['current_topics'][:10])}")
         report.append(f"  Stars: {current_state.get('stars', 0)}")
         report.append(f"  Forks: {current_state.get('forks', 0)}")
@@ -337,20 +352,20 @@ class GitHubAboutUpdater:
 
         # v7.1.0 achievements highlighted
         report.append("v7.1.0 ACHIEVEMENTS HIGHLIGHTED:")
-        for achievement in optimized_content['achievements_highlighted']:
+        for achievement in optimized_content["achievements_highlighted"]:
             report.append(f"  - {achievement}")
         report.append("")
 
         # SEO score
-        seo_score = optimized_content['seo_score']
+        seo_score = optimized_content["seo_score"]
         report.append("SEO OPTIMIZATION SCORE:")
         report.append(f"  Overall Score: {seo_score['score']}/100")
 
-        if seo_score['score'] >= 90:
+        if seo_score["score"] >= 90:
             rating = "EXCELLENT"
-        elif seo_score['score'] >= 80:
+        elif seo_score["score"] >= 80:
             rating = "GOOD"
-        elif seo_score['score'] >= 70:
+        elif seo_score["score"] >= 70:
             rating = "FAIR"
         else:
             rating = "NEEDS IMPROVEMENT"
@@ -373,6 +388,7 @@ class GitHubAboutUpdater:
         report.append("=" * 60)
 
         return "\n".join(report)
+
 
 def main():
     """Main function to handle command line execution."""
@@ -411,7 +427,7 @@ def main():
 
     # Save report if requested
     if args.output:
-        with open(args.output, 'w', encoding='utf-8') as f:
+        with open(args.output, "w", encoding="utf-8") as f:
             f.write(report)
         print(f"Report saved to: {args.output}")
         print()
@@ -437,6 +453,7 @@ def main():
     else:
         print("DRY RUN COMPLETE - No changes made.")
         print("Run without --dry-run to apply changes.")
+
 
 if __name__ == "__main__":
     main()

@@ -17,6 +17,7 @@ import re
 import json
 from pathlib import Path
 
+
 def migrate_dashboard_to_unified_storage():
     """
     Migrate dashboard.py to use unified storage exclusively.
@@ -31,18 +32,19 @@ def migrate_dashboard_to_unified_storage():
         return False
 
     # Read the current dashboard file
-    with open(dashboard_file, 'r', encoding='utf-8') as f:
+    with open(dashboard_file, "r", encoding="utf-8") as f:
         content = f.read()
 
     # Create the new unified-only content
     new_content = create_unified_storage_content()
 
     # Write the updated content
-    with open(dashboard_file, 'w', encoding='utf-8') as f:
+    with open(dashboard_file, "w", encoding="utf-8") as f:
         f.write(new_content)
 
     print(f"Successfully migrated {dashboard_file} to unified storage only")
     return True
+
 
 def create_unified_storage_content():
     """
@@ -448,6 +450,7 @@ class DashboardDataCollector:
 if __name__ == "__main__":
     migrate_dashboard_to_unified_storage()
 '''
+
 
 if __name__ == "__main__":
     migrate_dashboard_to_unified_storage()

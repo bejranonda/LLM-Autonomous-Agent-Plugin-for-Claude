@@ -17,10 +17,12 @@ from pathlib import Path
 from dataclasses import dataclass, asdict
 from enum import Enum
 
+
 class ReleaseType(Enum):
     PATCH = "patch"
     MINOR = "minor"
     MAJOR = "major"
+
 
 class ReleaseStatus(Enum):
     PLANNED = "planned"
@@ -31,9 +33,11 @@ class ReleaseStatus(Enum):
     RELEASED = "released"
     FAILED = "failed"
 
+
 @dataclass
 class ReleaseCriteria:
     """Release qualification criteria"""
+
     min_quality_score: float = 95.0
     min_pattern_count: int = 5
     max_critical_issues: int = 0
@@ -42,9 +46,11 @@ class ReleaseCriteria:
     documentation_complete: bool = True
     performance_regression: bool = False
 
+
 @dataclass
 class ReleasePlan:
     """Release plan with automated components"""
+
     release_id: str
     version: str
     release_type: ReleaseType
@@ -59,6 +65,7 @@ class ReleasePlan:
     build_results: Optional[Dict] = None
     test_results: Optional[Dict] = None
     release_results: Optional[Dict] = None
+
 
 class StrategicReleaseAutomation:
     """Advanced strategic release automation system"""
@@ -100,23 +107,15 @@ class StrategicReleaseAutomation:
             "approval_workflows": {
                 "auto_approve_threshold": 98.0,
                 "manual_review_required": False,
-                "peer_review_enabled": True
+                "peer_review_enabled": True,
             },
-            "notifications": {
-                "slack_enabled": False,
-                "email_enabled": False,
-                "dashboard_update": True
-            },
-            "risk_assessment": {
-                "max_complexity_score": 8,
-                "min_confidence_level": 0.85,
-                "pattern_reuse_required": True
-            }
+            "notifications": {"slack_enabled": False, "email_enabled": False, "dashboard_update": True},
+            "risk_assessment": {"max_complexity_score": 8, "min_confidence_level": 0.85, "pattern_reuse_required": True},
         }
 
         try:
             if os.path.exists(self.release_config_file):
-                with open(self.release_config_file, 'r', encoding='utf-8') as f:
+                with open(self.release_config_file, "r", encoding="utf-8") as f:
                     loaded_config = json.load(f)
                 # Merge with defaults
                 for key, value in default_config.items():
@@ -131,53 +130,29 @@ class StrategicReleaseAutomation:
     def _save_release_config(self):
         """Save release configuration"""
         os.makedirs(self.patterns_dir, exist_ok=True)
-        with open(self.release_config_file, 'w', encoding='utf-8') as f:
+        with open(self.release_config_file, "w", encoding="utf-8") as f:
             json.dump(self.config, f, indent=2, ensure_ascii=False)
 
     def _initialize_quality_gates(self) -> Dict:
         """Initialize quality gates for releases"""
         return {
-            "pattern_qualification": {
-                "enabled": True,
-                "min_patterns": 5,
-                "min_success_rate": 0.9,
-                "quality_threshold": 90.0
-            },
-            "code_quality": {
-                "enabled": True,
-                "min_score": 85.0,
-                "max_critical_issues": 0,
-                "max_major_issues": 2
-            },
-            "test_coverage": {
-                "enabled": True,
-                "min_coverage": 80.0,
-                "all_critical_tests": True
-            },
+            "pattern_qualification": {"enabled": True, "min_patterns": 5, "min_success_rate": 0.9, "quality_threshold": 90.0},
+            "code_quality": {"enabled": True, "min_score": 85.0, "max_critical_issues": 0, "max_major_issues": 2},
+            "test_coverage": {"enabled": True, "min_coverage": 80.0, "all_critical_tests": True},
             "documentation": {
                 "enabled": True,
                 "completeness_required": True,
                 "consistency_check": True,
-                "api_docs_current": True
+                "api_docs_current": True,
             },
-            "performance": {
-                "enabled": True,
-                "regression_check": True,
-                "benchmark_tests": True,
-                "memory_leaks_check": True
-            },
-            "security": {
-                "enabled": True,
-                "vulnerability_scan": True,
-                "dependency_check": True,
-                "security_audit": True
-            }
+            "performance": {"enabled": True, "regression_check": True, "benchmark_tests": True, "memory_leaks_check": True},
+            "security": {"enabled": True, "vulnerability_scan": True, "dependency_check": True, "security_audit": True},
         }
 
     def load_patterns(self) -> Dict:
         """Load pattern data for qualification"""
         try:
-            with open(self.patterns_file, 'r', encoding='utf-8') as f:
+            with open(self.patterns_file, "r", encoding="utf-8") as f:
                 return json.load(f)
         except FileNotFoundError:
             return {"patterns": [], "skill_effectiveness": {}, "agent_effectiveness": {}}
@@ -208,25 +183,29 @@ class StrategicReleaseAutomation:
         security_analysis = self._analyze_security()
 
         # Calculate overall readiness score
-        readiness_score = self._calculate_readiness_score({
-            "patterns": pattern_analysis,
-            "quality": quality_analysis,
-            "tests": test_analysis,
-            "documentation": doc_analysis,
-            "performance": perf_analysis,
-            "security": security_analysis
-        })
+        readiness_score = self._calculate_readiness_score(
+            {
+                "patterns": pattern_analysis,
+                "quality": quality_analysis,
+                "tests": test_analysis,
+                "documentation": doc_analysis,
+                "performance": perf_analysis,
+                "security": security_analysis,
+            }
+        )
 
         # Generate recommendations
-        recommendations = self._generate_release_recommendations({
-            "readiness_score": readiness_score,
-            "pattern_analysis": pattern_analysis,
-            "quality_analysis": quality_analysis,
-            "test_analysis": test_analysis,
-            "doc_analysis": doc_analysis,
-            "perf_analysis": perf_analysis,
-            "security_analysis": security_analysis
-        })
+        recommendations = self._generate_release_recommendations(
+            {
+                "readiness_score": readiness_score,
+                "pattern_analysis": pattern_analysis,
+                "quality_analysis": quality_analysis,
+                "test_analysis": test_analysis,
+                "doc_analysis": doc_analysis,
+                "perf_analysis": perf_analysis,
+                "security_analysis": security_analysis,
+            }
+        )
 
         analysis_result = {
             "timestamp": datetime.now().isoformat(),
@@ -239,7 +218,7 @@ class StrategicReleaseAutomation:
             "perf_analysis": perf_analysis,
             "security_analysis": security_analysis,
             "recommendations": recommendations,
-            "next_steps": self._determine_next_steps(readiness_score)
+            "next_steps": self._determine_next_steps(readiness_score),
         }
 
         print(f"Release readiness analysis complete:")
@@ -252,12 +231,7 @@ class StrategicReleaseAutomation:
     def _analyze_patterns_for_release(self, patterns: List[Dict]) -> Dict:
         """Analyze patterns for release qualification"""
         if not patterns:
-            return {
-                "qualified": False,
-                "reason": "No patterns available for analysis",
-                "score": 0,
-                "recent_patterns": 0
-            }
+            return {"qualified": False, "reason": "No patterns available for analysis", "score": 0, "recent_patterns": 0}
 
         # Filter recent successful patterns
         recent_patterns = []
@@ -266,7 +240,7 @@ class StrategicReleaseAutomation:
         for pattern in patterns:
             try:
                 pattern_date = datetime.fromisoformat(
-                    pattern.get("timestamp", "").replace('Z', '+00:00').replace('+00:00', '')
+                    pattern.get("timestamp", "").replace("Z", "+00:00").replace("+00:00", "")
                 )
                 if pattern_date > cutoff_date and pattern.get("outcome", {}).get("success", False):
                     recent_patterns.append(pattern)
@@ -278,7 +252,7 @@ class StrategicReleaseAutomation:
                 "qualified": False,
                 "reason": f"Insufficient recent successful patterns: {len(recent_patterns)} < {self.config.get('min_pattern_count', 5)}",
                 "score": len(recent_patterns) * 15,  # 15 points per pattern
-                "recent_patterns": len(recent_patterns)
+                "recent_patterns": len(recent_patterns),
             }
 
         # Calculate pattern quality metrics
@@ -346,7 +320,7 @@ class StrategicReleaseAutomation:
             "quality_variance": quality_variance,
             "task_type_diversity": len(task_types),
             "learning_patterns": len(learning_patterns),
-            "reasons": reasons if reasons else ["All criteria met"]
+            "reasons": reasons if reasons else ["All criteria met"],
         }
 
     def _assess_code_quality(self) -> Dict:
@@ -357,18 +331,9 @@ class StrategicReleaseAutomation:
         return {
             "qualified": True,
             "score": 88,
-            "issues": {
-                "critical": 0,
-                "major": 1,
-                "minor": 3,
-                "info": 12
-            },
-            "complexity_metrics": {
-                "cyclomatic_complexity": 8.5,
-                "maintainability_index": 85,
-                "technical_debt": "2 days"
-            },
-            "reasons": ["One major issue should be addressed"]
+            "issues": {"critical": 0, "major": 1, "minor": 3, "info": 12},
+            "complexity_metrics": {"cyclomatic_complexity": 8.5, "maintainability_index": 85, "technical_debt": "2 days"},
+            "reasons": ["One major issue should be addressed"],
         }
 
     def _analyze_test_coverage(self) -> Dict:
@@ -377,20 +342,10 @@ class StrategicReleaseAutomation:
         return {
             "qualified": True,
             "score": 82,
-            "coverage": {
-                "lines": 85.2,
-                "branches": 78.5,
-                "functions": 90.1,
-                "statements": 84.7
-            },
+            "coverage": {"lines": 85.2, "branches": 78.5, "functions": 90.1, "statements": 84.7},
             "critical_tests_passed": True,
-            "test_types": {
-                "unit": 156,
-                "integration": 45,
-                "e2e": 12,
-                "performance": 8
-            },
-            "reasons": ["Branch coverage slightly below target"]
+            "test_types": {"unit": 156, "integration": 45, "e2e": 12, "performance": 8},
+            "reasons": ["Branch coverage slightly below target"],
         }
 
     def _analyze_documentation(self) -> Dict:
@@ -399,15 +354,10 @@ class StrategicReleaseAutomation:
         return {
             "qualified": True,
             "score": 92,
-            "completeness": {
-                "api_docs": 95,
-                "user_guide": 88,
-                "developer_docs": 92,
-                "examples": 85
-            },
+            "completeness": {"api_docs": 95, "user_guide": 88, "developer_docs": 92, "examples": 85},
             "consistency": 90,
             "auto_generated": True,
-            "reasons": ["Documentation is comprehensive and current"]
+            "reasons": ["Documentation is comprehensive and current"],
         }
 
     def _analyze_performance(self) -> Dict:
@@ -416,15 +366,10 @@ class StrategicReleaseAutomation:
         return {
             "qualified": True,
             "score": 89,
-            "metrics": {
-                "response_time": "120ms",
-                "throughput": "1000 req/s",
-                "memory_usage": "256MB",
-                "cpu_usage": "15%"
-            },
+            "metrics": {"response_time": "120ms", "throughput": "1000 req/s", "memory_usage": "256MB", "cpu_usage": "15%"},
             "regression_detected": False,
             "benchmarks_passed": True,
-            "reasons": ["Performance within acceptable ranges"]
+            "reasons": ["Performance within acceptable ranges"],
         }
 
     def _analyze_security(self) -> Dict:
@@ -433,15 +378,10 @@ class StrategicReleaseAutomation:
         return {
             "qualified": True,
             "score": 94,
-            "vulnerabilities": {
-                "critical": 0,
-                "high": 0,
-                "medium": 1,
-                "low": 3
-            },
+            "vulnerabilities": {"critical": 0, "high": 0, "medium": 1, "low": 3},
             "dependency_scan": "Clean",
             "security_audit": "Passed",
-            "reasons": ["One medium vulnerability should be patched"]
+            "reasons": ["One medium vulnerability should be patched"],
         }
 
     def _calculate_readiness_score(self, analyses: Dict) -> float:
@@ -452,7 +392,7 @@ class StrategicReleaseAutomation:
             "tests": 0.20,
             "documentation": 0.15,
             "performance": 0.10,
-            "security": 0.05
+            "security": 0.05,
         }
 
         total_score = 0
@@ -470,33 +410,41 @@ class StrategicReleaseAutomation:
         readiness_score = analysis_data["readiness_score"]
 
         if readiness_score >= 95:
-            recommendations.append({
-                "priority": "high",
-                "action": "Proceed with auto-release",
-                "reason": "Excellent readiness score",
-                "confidence": 0.95
-            })
+            recommendations.append(
+                {
+                    "priority": "high",
+                    "action": "Proceed with auto-release",
+                    "reason": "Excellent readiness score",
+                    "confidence": 0.95,
+                }
+            )
         elif readiness_score >= 90:
-            recommendations.append({
-                "priority": "medium",
-                "action": "Address minor issues before release",
-                "reason": "Good readiness with minor improvements needed",
-                "confidence": 0.85
-            })
+            recommendations.append(
+                {
+                    "priority": "medium",
+                    "action": "Address minor issues before release",
+                    "reason": "Good readiness with minor improvements needed",
+                    "confidence": 0.85,
+                }
+            )
         elif readiness_score >= 80:
-            recommendations.append({
-                "priority": "medium",
-                "action": "Significant improvements needed before release",
-                "reason": "Moderate readiness score",
-                "confidence": 0.70
-            })
+            recommendations.append(
+                {
+                    "priority": "medium",
+                    "action": "Significant improvements needed before release",
+                    "reason": "Moderate readiness score",
+                    "confidence": 0.70,
+                }
+            )
         else:
-            recommendations.append({
-                "priority": "high",
-                "action": "Do not release - major issues",
-                "reason": "Insufficient readiness for release",
-                "confidence": 0.95
-            })
+            recommendations.append(
+                {
+                    "priority": "high",
+                    "action": "Do not release - major issues",
+                    "reason": "Insufficient readiness for release",
+                    "confidence": 0.95,
+                }
+            )
 
         # Add specific recommendations based on analysis
         for component, analysis in [
@@ -505,17 +453,19 @@ class StrategicReleaseAutomation:
             ("test_analysis", "tests"),
             ("doc_analysis", "documentation"),
             ("perf_analysis", "performance"),
-            ("security_analysis", "security")
+            ("security_analysis", "security"),
         ]:
             if component in analysis_data:
                 comp_analysis = analysis_data[component]
                 if not comp_analysis.get("qualified", True):
-                    recommendations.append({
-                        "priority": "medium",
-                        "action": f"Fix {analysis} issues",
-                        "reason": "; ".join(comp_analysis.get("reasons", [])),
-                        "confidence": 0.80
-                    })
+                    recommendations.append(
+                        {
+                            "priority": "medium",
+                            "action": f"Fix {analysis} issues",
+                            "reason": "; ".join(comp_analysis.get("reasons", [])),
+                            "confidence": 0.80,
+                        }
+                    )
 
         return recommendations
 
@@ -526,28 +476,18 @@ class StrategicReleaseAutomation:
                 "Run final quality validation",
                 "Execute automated release process",
                 "Update release documentation",
-                "Notify stakeholders"
+                "Notify stakeholders",
             ]
         elif readiness_score >= 90:
             return [
                 "Address identified minor issues",
                 "Re-run qualification analysis",
-                "Proceed with release if issues resolved"
+                "Proceed with release if issues resolved",
             ]
         elif readiness_score >= 80:
-            return [
-                "Address major issues",
-                "Improve test coverage",
-                "Update documentation",
-                "Re-assess readiness"
-            ]
+            return ["Address major issues", "Improve test coverage", "Update documentation", "Re-assess readiness"]
         else:
-            return [
-                "Address critical issues",
-                "Improve code quality",
-                "Enhance testing",
-                "Schedule readiness review"
-            ]
+            return ["Address critical issues", "Improve code quality", "Enhance testing", "Schedule readiness review"]
 
     def create_release_plan(self, release_type: ReleaseType = ReleaseType.PATCH) -> ReleasePlan:
         """Create automated release plan"""
@@ -568,7 +508,7 @@ class StrategicReleaseAutomation:
             min_test_coverage=80.0,
             max_bugs_open=2,
             documentation_complete=True,
-            performance_regression=False
+            performance_regression=False,
         )
 
         # Generate changelog from recent patterns
@@ -590,7 +530,7 @@ class StrategicReleaseAutomation:
             changelog=changelog,
             release_notes=release_notes,
             status=ReleaseStatus.PLANNED,
-            qualification_results=readiness_analysis
+            qualification_results=readiness_analysis,
         )
 
         self.current_release = release_plan
@@ -609,7 +549,7 @@ class StrategicReleaseAutomation:
         plugin_file = self.project_root / ".claude-plugin" / "plugin.json"
         if plugin_file.exists():
             try:
-                with open(plugin_file, 'r', encoding='utf-8') as f:
+                with open(plugin_file, "r", encoding="utf-8") as f:
                     plugin_data = json.load(f)
                     return plugin_data.get("version", "1.0.0")
             except Exception:
@@ -621,7 +561,7 @@ class StrategicReleaseAutomation:
             if file_path.exists():
                 # Simple version extraction
                 try:
-                    content = file_path.read_text(encoding='utf-8')
+                    content = file_path.read_text(encoding="utf-8")
                     version_match = re.search(r'version["\']?\s*[:=]\s*["\']?(\d+\.\d+\.\d+)', content)
                     if version_match:
                         return version_match.group(1)
@@ -633,7 +573,7 @@ class StrategicReleaseAutomation:
     def _increment_version(self, current_version: str, release_type: ReleaseType) -> str:
         """Increment version based on release type"""
         try:
-            parts = current_version.split('.')
+            parts = current_version.split(".")
             major, minor, patch = int(parts[0]), int(parts[1]), int(parts[2])
 
             if release_type == ReleaseType.MAJOR:
@@ -662,11 +602,13 @@ class StrategicReleaseAutomation:
         for pattern in patterns:
             try:
                 pattern_date = datetime.fromisoformat(
-                    pattern.get("timestamp", "").replace('Z', '+00:00').replace('+00:00', '')
+                    pattern.get("timestamp", "").replace("Z", "+00:00").replace("+00:00", "")
                 )
-                if (pattern_date > cutoff_date and
-                    pattern.get("outcome", {}).get("success", False) and
-                    pattern.get("outcome", {}).get("quality_score", 0) >= 85):
+                if (
+                    pattern_date > cutoff_date
+                    and pattern.get("outcome", {}).get("success", False)
+                    and pattern.get("outcome", {}).get("quality_score", 0) >= 85
+                ):
                     recent_patterns.append(pattern)
             except Exception:
                 continue
@@ -753,11 +695,7 @@ Generated by Strategic Release Automation System
 
     def _estimate_release_duration(self, release_type: ReleaseType) -> int:
         """Estimate release duration in minutes"""
-        base_durations = {
-            ReleaseType.PATCH: 5,
-            ReleaseType.MINOR: 15,
-            ReleaseType.MAJOR: 45
-        }
+        base_durations = {ReleaseType.PATCH: 5, ReleaseType.MINOR: 15, ReleaseType.MAJOR: 45}
         return base_durations.get(release_type, 15)
 
     def _identify_release_components(self) -> List[str]:
@@ -768,7 +706,7 @@ Generated by Strategic Release Automation System
             "Quality validation framework",
             "Documentation generation",
             "Background task optimization",
-            "Predictive analytics"
+            "Predictive analytics",
         ]
 
         # Add specific components based on project structure
@@ -798,7 +736,7 @@ Generated by Strategic Release Automation System
             ("Running tests", 60),
             ("Validating quality", 30),
             ("Creating release artifacts", 45),
-            ("Deploying to release channel", 30)
+            ("Deploying to release channel", 30),
         ]
 
         results = {}
@@ -808,6 +746,7 @@ Generated by Strategic Release Automation System
             print(f"  {step_name}...")
             # Simulate step execution
             import time
+
             time.sleep(1)  # Brief pause for demonstration
             results[step_name] = {"status": "success", "duration": duration}
             total_duration += duration
@@ -832,7 +771,7 @@ Generated by Strategic Release Automation System
             "commit_created": commit_created,
             "tag_created": tag_created,
             "github_release": github_release,
-            "completed_at": datetime.now().isoformat()
+            "completed_at": datetime.now().isoformat(),
         }
 
         # Store in release history
@@ -847,7 +786,7 @@ Generated by Strategic Release Automation System
             "status": "success",
             "version": release_plan.version,
             "duration": total_duration,
-            "release_id": release_plan.release_id
+            "release_id": release_plan.release_id,
         }
 
     def _update_version_files(self, version: str) -> bool:
@@ -856,10 +795,10 @@ Generated by Strategic Release Automation System
             # Update plugin.json
             plugin_file = self.project_root / ".claude-plugin" / "plugin.json"
             if plugin_file.exists():
-                with open(plugin_file, 'r', encoding='utf-8') as f:
+                with open(plugin_file, "r", encoding="utf-8") as f:
                     plugin_data = json.load(f)
                 plugin_data["version"] = version
-                with open(plugin_file, 'w', encoding='utf-8') as f:
+                with open(plugin_file, "w", encoding="utf-8") as f:
                     json.dump(plugin_data, f, indent=2, ensure_ascii=False)
 
             return True
@@ -898,7 +837,7 @@ Generated by Strategic Release Automation System
 
         try:
             if os.path.exists(history_file):
-                with open(history_file, 'r', encoding='utf-8') as f:
+                with open(history_file, "r", encoding="utf-8") as f:
                     history = json.load(f)
         except Exception:
             pass
@@ -917,7 +856,7 @@ Generated by Strategic Release Automation System
             history = history[-50:]
 
         os.makedirs(self.patterns_dir, exist_ok=True)
-        with open(history_file, 'w', encoding='utf-8') as f:
+        with open(history_file, "w", encoding="utf-8") as f:
             json.dump(history, f, indent=2, ensure_ascii=False)
 
     def get_release_status(self) -> Dict:
@@ -930,9 +869,17 @@ Generated by Strategic Release Automation System
             "version": self.current_release.version,
             "type": self.current_release.release_type.value,
             "status": self.current_release.status.value,
-            "readiness_score": self.current_release.qualification_results.get("readiness_score", 0) if self.current_release.qualification_results else 0,
-            "auto_release_eligible": self.current_release.qualification_results.get("auto_release_eligible", False) if self.current_release.qualification_results else False,
-            "created_at": self.current_release.created_at.isoformat()
+            "readiness_score": (
+                self.current_release.qualification_results.get("readiness_score", 0)
+                if self.current_release.qualification_results
+                else 0
+            ),
+            "auto_release_eligible": (
+                self.current_release.qualification_results.get("auto_release_eligible", False)
+                if self.current_release.qualification_results
+                else False
+            ),
+            "created_at": self.current_release.created_at.isoformat(),
         }
 
     def run_strategic_release_analysis(self) -> Dict:
@@ -962,18 +909,14 @@ Generated by Strategic Release Automation System
                 "action": strategy,
                 "confidence": confidence,
                 "readiness_score": readiness["readiness_score"],
-                "estimated_success": readiness["readiness_score"] / 100
+                "estimated_success": readiness["readiness_score"] / 100,
             }
         ]
 
         # Add specific improvement actions if needed
         if readiness["readiness_score"] < 95:
             for rec in readiness["recommendations"][:3]:
-                final_recommendations.append({
-                    "action": rec["action"],
-                    "priority": rec["priority"],
-                    "reason": rec["reason"]
-                })
+                final_recommendations.append({"action": rec["action"], "priority": rec["priority"], "reason": rec["reason"]})
 
         results = {
             "analysis_timestamp": datetime.now().isoformat(),
@@ -982,7 +925,7 @@ Generated by Strategic Release Automation System
                 "version": release_plan.version,
                 "type": release_plan.release_type.value,
                 "estimated_duration": release_plan.estimated_duration,
-                "components_count": len(release_plan.components)
+                "components_count": len(release_plan.components),
             },
             "strategic_recommendations": final_recommendations,
             "auto_release_ready": readiness["auto_release_eligible"],
@@ -990,8 +933,8 @@ Generated by Strategic Release Automation System
             "system_status": {
                 "auto_release_enabled": self.auto_release_enabled,
                 "quality_threshold": self.auto_release_threshold,
-                "pattern_qualification": self.config["pattern_based_qualification"]
-            }
+                "pattern_qualification": self.config["pattern_based_qualification"],
+            },
         }
 
         print(f"Strategic Release Analysis Complete:")
@@ -1041,7 +984,7 @@ def main():
 
         result = release_system.execute_auto_release(release_system.current_release)
         print(f"\nRelease Status: {result['status']}")
-        if result['status'] == 'success':
+        if result["status"] == "success":
             print(f"Version Released: {result['version']}")
 
     elif args.status:
