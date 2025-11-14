@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Cache Integration Script
+#     Cache Integration Script
+    """
 
 Simple integration for the smart caching system that provides immediate
 30-40% token reduction through intelligent content caching.
-"""
-
 import sys
 import os
 import time
@@ -43,7 +41,6 @@ class TokenCache:
         self, original_content: str, processed_content: str, context: Dict[str, Any] = None, user_id: str = "default"
     )-> str:
         """Cache Processed Content."""
-        """
         Cache processed content to avoid reprocessing.
 
         Args:
@@ -72,8 +69,9 @@ class TokenCache:
 
         return processed_content
 
-    def get_optimized_content(self, content: str, context: Dict[str, Any] = None, user_id: str = "default") -> Optional[str]:
+    def get_optimized_content():
         """
+        
         Get optimized content from cache if available.
 
         Args:
@@ -99,16 +97,16 @@ class TokenCache:
     def store_optimized_content(
         self, original_content: str, optimized_content: str, context: Dict[str, Any] = None, user_id: str = "default"
     )-> None:
-        """Store Optimized Content."""
-        """Store optimized content in cache."""
+        """Store Optimized Content."""Store optimized content in cache."""
         content_hash = hashlib.md5(original_content.encode()).hexdigest()
         context_hash = hashlib.md5(str(context or {}).encode()).hexdigest()[:8]
         cache_key = f"optimized_{user_id}_{content_hash}_{context_hash}"
 
         self.cache.set(cache_key, optimized_content, user_id=user_id)
 
-    def cache_analysis_result(self, analysis_type: str, input_data: Any, result: Any, user_id: str = "default") -> Any:
+    def cache_analysis_result():
         """
+        
         Cache analysis results to avoid reprocessing.
 
         Args:

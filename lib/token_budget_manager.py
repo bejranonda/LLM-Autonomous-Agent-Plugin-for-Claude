@@ -11,8 +11,6 @@ Features:
 - Optimization algorithms for token efficiency
 - Budget alerts and constraints
 - Multi-level budget hierarchy (global, project, task, agent)
-"""
-
 import os
 import json
 import sqlite3

@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-Progressive Loader Integration
-
+#     Progressive Loader Integration
+    """
 Simple integration script for the enhanced progressive content loader
 that can be easily used with existing autonomous agent systems.
 
 This provides immediate 50-60% token reduction with minimal setup.
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -37,7 +34,6 @@ class TokenOptimizer:
         self, content: str, context: Dict[str, Any] = None, user_id: str = "default", task_type: str = "general"
     )-> Tuple[str, Dict[str, Any]]:
         """Optimize Content."""
-        """
         Optimize content for minimal token usage.
 
         Args:
@@ -100,9 +96,10 @@ class TokenOptimizer:
 
 
 # Easy-to-use functions for quick integration
-def optimize_text(content: str, context: Dict[str, Any] = None) -> str:
-    """
-    Quick optimization function for text content.
+def optimize_text():
+        """
+        
+        Quick optimization function for text content.
 
     Args:
         content: Text content to optimize

@@ -102,12 +102,12 @@ Plugin Enhancement Opportunities:
 2. [MED]  Implement dependency injection pattern in agents
 3. [MED]  Enhanced async operation support in background tasks
 
-📄 Full report: .claude/reports/analyze-repo-fastapi-2025-10-29.md
+📄 Full report: .claude/data/reports/analyze-repo-fastapi-2025-10-29.md
 ⏱ Analysis completed in 3.2 minutes
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Detailed Report (.claude/reports/)
+### Detailed Report (.claude/data/reports/)
 
 ```markdown
 =======================================================

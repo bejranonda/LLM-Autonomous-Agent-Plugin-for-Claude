@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""
 Fix method definition syntax errors where docstring appears before parameters.
 
 Example error:
@@ -13,8 +12,6 @@ Should be:
         self, param1, param2
     ):
         \"\"\"Docstring.\"\"\"
-"""
-
 import re
 import sys
 from pathlib import Path

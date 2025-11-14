@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Parameter Compatibility Layer for Autonomous Agent Plugin
-
+#     Parameter Compatibility Layer for Autonomous Agent Plugin
+    """
 Provides backward compatibility for existing code that uses the old scattered
 parameter storage systems. Automatically redirects calls to the unified storage
 system while maintaining the same API.
@@ -10,8 +9,6 @@ This allows for gradual migration without breaking existing functionality.
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
-"""
-
 import json
 import sys
 import warnings
@@ -56,6 +53,7 @@ def deprecated(use_instead: str = None):
 class CompatibilityLayer:
     """
     Provides backward compatibility for legacy parameter storage APIs.
+    """
 
     Automatically intercepts calls to old storage systems and redirects them
     to the unified storage system while maintaining the same interface.
@@ -103,6 +101,7 @@ class QualityTrackerCompatibility:
     """
     Compatibility layer for legacy QualityTracker API.
     """
+    """
 
     def __init__(self, tracker_dir: str = ".claude-patterns"):
         """
@@ -143,8 +142,9 @@ class QualityTrackerCompatibility:
                 warnings.warn(f"Failed to auto-migrate: {e}", DeprecationWarning)
 
     @deprecated("UnifiedParameterStorage.set_quality_score()")
-    def record_quality(self, task_id: str, quality_score: float, metrics: Dict[str, float]) -> bool:
+    def record_quality():
         """
+        
         Record quality assessment (legacy API).
 
         Args:
@@ -169,8 +169,9 @@ class QualityTrackerCompatibility:
             return False
 
     @deprecated("UnifiedParameterStorage.get_quality_score()")
-    def get_average_quality(self, days: Optional[int] = None) -> float:
+    def get_average_quality():
         """
+        
         Get average quality score (legacy API).
 
         Args:
@@ -189,8 +190,9 @@ class QualityTrackerCompatibility:
             return 0.0
 
     @deprecated("UnifiedParameterStorage.get_quality_history()")
-    def get_quality_trends(self, days: int = 30, metric: Optional[str] = None) -> Dict[str, Any]:
+    def get_quality_trends():
         """
+        
         Get quality trends (legacy API).
 
         Args:
@@ -280,6 +282,7 @@ class ModelPerformanceManagerCompatibility:
     """
     Compatibility layer for legacy ModelPerformanceManager API.
     """
+    """
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
         """
@@ -341,8 +344,9 @@ class ModelPerformanceManagerCompatibility:
             print(f"Error adding performance score: {e}", file=sys.stderr)
 
     @deprecated("UnifiedParameterStorage.get_model_performance()")
-    def get_model_summary(self, model: str) -> Dict[str, Any]:
+    def get_model_summary():
         """
+        
         Get performance summary for model (legacy API).
 
         Args:
@@ -375,6 +379,7 @@ class DashboardDataCollectorCompatibility:
     """
     Compatibility layer for legacy DashboardDataCollector API.
     """
+    """
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
         """
@@ -393,8 +398,9 @@ class DashboardDataCollectorCompatibility:
         self.compatibility = CompatibilityLayer(self.unified_storage)
 
     @deprecated("UnifiedParameterStorage.get_dashboard_data()")
-    def collect_all_data(self) -> Dict[str, Any]:
+    def collect_all_data():
         """
+        
         Collect all dashboard data (legacy API).
 
         Returns:
@@ -430,9 +436,10 @@ class DashboardDataCollectorCompatibility:
 
 
 # Module-level compatibility functions
-def get_legacy_quality_tracker(tracker_dir: str = ".claude-patterns") -> QualityTrackerCompatibility:
-    """
-    Get legacy QualityTracker with compatibility layer.
+def get_legacy_quality_tracker():
+        """
+        
+        Get legacy QualityTracker with compatibility layer.
 
     Args:
         tracker_dir: Legacy tracker directory
@@ -443,9 +450,10 @@ def get_legacy_quality_tracker(tracker_dir: str = ".claude-patterns") -> Quality
     return QualityTrackerCompatibility(tracker_dir)
 
 
-def get_legacy_model_performance_manager(patterns_dir: str = ".claude-patterns") -> ModelPerformanceManagerCompatibility:
-    """
-    Get legacy ModelPerformanceManager with compatibility layer.
+def get_legacy_model_performance_manager():
+        """
+        
+        Get legacy ModelPerformanceManager with compatibility layer.
 
     Args:
         patterns_dir: Legacy patterns directory
@@ -456,9 +464,10 @@ def get_legacy_model_performance_manager(patterns_dir: str = ".claude-patterns")
     return ModelPerformanceManagerCompatibility(patterns_dir)
 
 
-def get_legacy_dashboard_collector(patterns_dir: str = ".claude-patterns") -> DashboardDataCollectorCompatibility:
-    """
-    Get legacy DashboardDataCollector with compatibility layer.
+def get_legacy_dashboard_collector():
+        """
+        
+        Get legacy DashboardDataCollector with compatibility layer.
 
     Args:
         patterns_dir: Legacy patterns directory

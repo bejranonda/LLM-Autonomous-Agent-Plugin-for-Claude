@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Performance optimization for concurrent operations
-"""
-
+#     Performance optimization for concurrent operations
+    """
 import time
 import json
 import threading
@@ -17,7 +15,7 @@ class PerformanceOptimizer:
     """Optimizes concurrent operations performance"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(exist_ok=True)
 

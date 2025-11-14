@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""
-Performance Integration Module v1.0
+# Performance Integration Module v1.0
 
-Integration layer for automatic performance recording in agents.
+# Integration layer for automatic performance recording in agents.
 
-This module provides a simple interface that all agents can import and use
+#     This module provides a simple interface that all agents can import and use
+    """
+
 to automatically record their performance without any manual intervention.
 
 Usage in any agent:
@@ -15,8 +16,6 @@ Usage in any agent:
 
     # At the end of task execution
     record_performance(task_id, success=True, quality_score=95, ...)
-"""
-
 import json
 import time
 import uuid
@@ -31,7 +30,7 @@ class PerformanceIntegrator:
     """Simple performance recording integration for agents."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(exist_ok=True)
 
@@ -98,9 +97,10 @@ class PerformanceIntegrator:
         with open(self.patterns_file, "w") as f:
             json.dump(initial_data, f, indent=2)
 
-    def start_task(self, description: str, task_type: str = "unknown") -> str:
+    def start_task():
         """
-                Start tracking a task for performance recording.
+        
+        Start tracking a task for performance recording.
 
                 Args:
                     description: Task description
@@ -141,7 +141,6 @@ class PerformanceIntegrator:
         model_used: str = None,
     )-> bool:
         """Complete Task."""
-        """
         Complete a task and record its performance automatically.
 
         Args:
@@ -348,9 +347,10 @@ def get_performance_integrator() -> PerformanceIntegrator:
 
 
 # Simple functions for agents to use
-def start_performance_recording(description: str, task_type: str = "unknown") -> str:
-    """
-    Start recording performance for a task.
+def start_performance_recording():
+        """
+        
+        Start recording performance for a task.
 
     Simple function for agents to call at the start of task execution.
 
@@ -365,22 +365,10 @@ def start_performance_recording(description: str, task_type: str = "unknown") ->
     return integrator.start_task(description, task_type)
 
 
-def record_performance(
-    """Record Performance."""
-    task_id: str,
-    success: bool = True,
-    quality_score: int = 85,
-    files_modified: int = 0,
-    lines_changed: int = 0,
-    skills_used: List[str] = None,
-    agents_used: List[str] = None,
-    issues_found: List[str] = None,
-    recommendations: List[str] = None,
-    duration_seconds: int = None,
-    model_used: str = None,
-) -> bool:
-    """
-    Record task performance automatically.
+def record_performance():
+        """
+        
+        Record task performance automatically.
 
     Simple function for agents to call at the end of task execution.
 

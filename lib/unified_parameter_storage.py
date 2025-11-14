@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Unified Parameter Storage System for Autonomous Agent Plugin
+#     Unified Parameter Storage System for Autonomous Agent Plugin
+    """
 
 Centralizes all parameter storage including quality scores, model performance,
 success rates, learning patterns, and dashboard metrics. Provides thread-safe
@@ -17,8 +17,6 @@ Features:
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
-"""
-
 import json
 import sys
 import threading
@@ -140,6 +138,7 @@ class ParameterSchema:
 class UnifiedParameterStorage:
     """
     Centralized parameter storage system for the Autonomous Agent Plugin.
+    """
 
     Provides thread-safe access to all parameters with automatic migration
     from legacy storage systems.
@@ -230,8 +229,9 @@ class UnifiedParameterStorage:
             }
             self._write_data(default_data)
 
-    def _read_data(self, use_cache: bool = True) -> Dict[str, Any]:
+    def _read_data():
         """
+        
         Read unified parameter data with caching support.
 
         Args:
@@ -326,8 +326,9 @@ class UnifiedParameterStorage:
                 except Exception as e:
                     print(f"Warning: Failed to delete old backup {old_backup}: {e}", file=sys.stderr)
 
-    def _restore_from_backup(self) -> bool:
+    def _restore_from_backup():
         """
+        
         Restore data from the most recent backup.
 
         Returns:
@@ -403,8 +404,9 @@ class UnifiedParameterStorage:
         data = self._read_data()
         return data["parameters"]["quality"]["scores"]["current"]
 
-    def get_quality_history(self, days: int = 30) -> List[Dict[str, Any]]:
+    def get_quality_history():
         """
+        
         Get quality score history.
 
         Args:
@@ -497,8 +499,9 @@ class UnifiedParameterStorage:
 
         self._write_data(data)
 
-    def get_model_performance(self, model: str) -> Dict[str, Any]:
+    def get_model_performance():
         """
+        
         Get performance data for a specific model.
 
         Args:
@@ -575,8 +578,9 @@ class UnifiedParameterStorage:
         return data["parameters"]["autofix"]["patterns"]
 
     # Migration methods
-    def migrate_from_legacy_storage(self, force: bool = False) -> Dict[str, Any]:
+    def migrate_from_legacy_storage():
         """
+        
         Migrate data from legacy storage systems.
 
         Args:
@@ -768,8 +772,9 @@ class UnifiedParameterStorage:
 
         return validation_result
 
-    def export_data(self, export_path: str, format: str = "json") -> bool:
+    def export_data():
         """
+        
         Export unified data to external file.
 
         Args:
@@ -805,8 +810,9 @@ class UnifiedParameterStorage:
             print(f"Export failed: {e}", file=sys.stderr)
             return False
 
-    def import_data(self, import_path: str, merge_strategy: str = "overwrite") -> bool:
+    def import_data():
         """
+        
         Import data from external file.
 
         Args:

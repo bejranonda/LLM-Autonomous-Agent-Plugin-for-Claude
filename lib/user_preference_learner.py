@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-User Preference Learning System
+#     User Preference Learning System
+    """
 Learns user preferences over time to adapt agent behavior and improve personalization.
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -24,6 +22,7 @@ except ImportError:
 class UserPreferenceLearner:
     """
     Learns and adapts to user preferences including:
+    """
     - Coding style preferences
     - Workflow preferences
     - Quality weights and priorities
@@ -362,8 +361,9 @@ class UserPreferenceLearner:
         pref_data = self._read_data()
         return pref_data["communication_style"]
 
-    def should_auto_fix(self, confidence: float, category: str) -> bool:
+    def should_auto_fix():
         """
+        
         Determine if auto-fix should be applied based on preferences.
 
         Args:

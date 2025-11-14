@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Quality Control Check
+#     Comprehensive Quality Control Check
+    """
 Analyzes project quality across multiple dimensions without external dependencies
-"""
-
 import ast
 import json
 import os
@@ -18,7 +16,7 @@ class QualityController:
     """Comprehensive quality assessment tool"""
 
     def __init__(self, project_root: str):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.project_root = Path(project_root)
         self.results = {
             "overall_score": 0,
@@ -450,7 +448,7 @@ class QualityController:
         """Save detailed report to file"""
         if output_file is None:
             timestamp = datetime.now().strftime("%Y-%m-%d")
-            output_file = self.project_root / f".claude/reports/quality-control-{timestamp}.md"
+            output_file = self.project_root / f".claude/data/data/data/reports/quality-control-{timestamp}.md"
 
         # Ensure directory exists
         output_file.parent.mkdir(parents=True, exist_ok=True)

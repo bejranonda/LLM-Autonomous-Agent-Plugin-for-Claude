@@ -1,6 +1,6 @@
 """
-Advanced Token Optimization Algorithms
-
+    Advanced Token Optimization Algorithms
+    """
 Provides sophisticated optimization algorithms that work with the Token Budget Manager
 to maximize token efficiency while maintaining functionality.
 
@@ -12,8 +12,6 @@ Features:
 - Bayesian optimization for hyperparameter tuning
 - Ensemble optimization methods
 - Real-time adaptation and learning
-"""
-
 import os
 import json
 import numpy as np
@@ -121,7 +119,7 @@ class GeneticOptimizer:
     """Genetic algorithm for token optimization."""
 
     def __init__(self, parameters: OptimizationParameters):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.params = parameters
         self.population = []
         self.fitness_scores = []
@@ -253,7 +251,7 @@ class ReinforcementLearningOptimizer:
     """Q-learning based optimization."""
 
     def __init__(self, parameters: OptimizationParameters):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.params = parameters
         self.q_table = defaultdict(lambda: defaultdict(float))
         self.learning_rate = parameters.learning_rate
@@ -395,7 +393,7 @@ class BayesianOptimizer:
     """Bayesian optimization for token parameters."""
 
     def __init__(self, parameters: OptimizationParameters):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.params = parameters
         self.X_history = []
         self.y_history = []
@@ -520,7 +518,7 @@ class SimpleSurrogateModel:
     """Simple surrogate model for fallback when scikit-learn not available."""
 
     def __init__(self, X: np.ndarray, y: np.ndarray):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.X = X
         self.y = y
         self.coefficients = None
@@ -548,7 +546,7 @@ class EnsembleOptimizer:
     """Ensemble of multiple optimization algorithms."""
 
     def __init__(self, parameters: OptimizationParameters):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.params = parameters
         self.algorithms = [
             GeneticOptimizer(parameters),
@@ -648,8 +646,7 @@ class AdvancedTokenOptimizer:
         constraints: Dict[str, Tuple[float, float]],
         objective: OptimizationObjective = OptimizationObjective.BALANCE_COST_QUALITY,
     )-> OptimizationResult:
-        """Optimize Task Parameters."""
-        """Optimize parameters for a specific task type."""
+        """Optimize Task Parameters."""Optimize parameters for a specific task type."""
 
         # Define optimization parameters
         opt_params = OptimizationParameters(

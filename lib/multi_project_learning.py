@@ -11,7 +11,7 @@ import hashlib
 
 class MultiProjectLearningSystem:
     def __init__(self, base_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
         self.shared_knowledge_file = self.base_dir / "shared_knowledge.json"

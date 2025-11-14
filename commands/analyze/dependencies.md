@@ -165,7 +165,7 @@ Risk Score: 100/100 (EXTREME)
       Server-side request forgery
       Fix: Upgrade to 1.6.0+
 
-📄 Detailed Report: .reports/dependency-scan-2025-01-15.md
+📄 Detailed Report: .data/reports/dependency-scan-2025-01-15.md
 
 ⏱️  Scan completed in 8.2s
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -173,7 +173,7 @@ Risk Score: 100/100 (EXTREME)
 
 ### File Report (Tier 2: Comprehensive)
 
-Saved to `.reports/dependency-scan-{DATE}.md`:
+Saved to `.data/reports/dependency-scan-{DATE}.md`:
 
 ```markdown
 # Dependency Vulnerability Scan Report

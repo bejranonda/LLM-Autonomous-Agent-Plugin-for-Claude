@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Generate final comprehensive quality report in the required format
-"""
-
+#     Generate final comprehensive quality report in the required format
+    """
 import sys
 from pathlib import Path
 import json
@@ -247,12 +245,12 @@ Analysis Type: Full Quality Control with Autonomous Fixing
   END OF QUALITY CONTROL REPORT
 ═══════════════════════════════════════════════════════
 
-This report was generated autonomously by the quality control
+    This report was generated autonomously by the quality control
+    """
+
 system with comprehensive analysis and auto-fix capabilities.
 
-For detailed technical analysis, see: .claude/reports/QUALITY_REPORT_2025-10-30.md
-"""
-
+For detailed technical analysis, see: .claude/data/data/reports/QUALITY_REPORT_2025-10-30.md
     return report_content
 
 
@@ -263,7 +261,7 @@ def main():
     report_content = generate_final_report()
 
     # Save to report directory
-    report_file = Path(".claude/reports/QUALITY_CONTROL_REPORT_2025-10-30.md")
+    report_file = Path(".claude/data/data/data/reports/QUALITY_CONTROL_REPORT_2025-10-30.md")
     report_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(report_file, "w", encoding="utf-8") as f:

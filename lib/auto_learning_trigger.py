@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-Automatic Learning Engine Trigger v1.0
+# Automatic Learning Engine Trigger v1.0
 
-This script automatically triggers the learning-engine agent after task completion
-to ensure consistent performance recording and pattern capture.
+# This script automatically triggers the learning-engine agent after task completion
+# to ensure consistent performance recording and pattern capture.
 
-Fixes the gap where tasks complete but don't automatically record performance.
-"""
-
+# Fixes the gap where tasks complete but don't automatically record performance.
 import json
 import time
 import uuid
@@ -21,7 +18,7 @@ class AutomaticLearningTrigger:
     """Automatically triggers learning engine and performance recording after tasks."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(exist_ok=True)
 
@@ -156,7 +153,6 @@ class AutomaticLearningTrigger:
         recommendations: List[str] = None,
     )-> Dict[str, Any]:
         """Complete Task With Recording."""
-        """
         Complete the current task and automatically trigger performance recording.
 
         This is the CRITICAL function that fixes the automatic recording gap.

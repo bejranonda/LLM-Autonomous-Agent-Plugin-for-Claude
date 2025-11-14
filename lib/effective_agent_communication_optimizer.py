@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-Effective Agent Communication Optimizer
+#     Effective Agent Communication Optimizer
+    """
 
 Production-ready agent communication optimizer that achieves 25-35% token reduction
 in inter-agent communication while maintaining message integrity.
 
 Version: 1.0.0 - Production Ready
 Author: Autonomous Agent Plugin
-"""
-
 import json
 import time
 import re
@@ -578,7 +576,6 @@ class EffectiveAgentCommunicationOptimizer:
         self, message: Dict[str, Any], level: OptimizationLevel = OptimizationLevel.STANDARD
     )-> OptimizationResult:
         """Optimize Message."""
-        """
         Optimize a message for token efficiency.
 
         Args:
@@ -633,7 +630,6 @@ class EffectiveAgentCommunicationOptimizer:
         self, conversation: List[Dict[str, Any]], level: OptimizationLevel = OptimizationLevel.STANDARD
     )-> Dict[str, Any]:
         """Optimize Conversation."""
-        """
         Optimize an entire conversation.
 
         Args:
@@ -772,9 +768,10 @@ class EffectiveAgentCommunicationOptimizer:
 
 
 # Convenience function for easy usage
-def optimize_agent_message(message: Dict[str, Any], level: str = "standard") -> Dict[str, Any]:
-    """
-    Convenience function to optimize a single agent message.
+def optimize_agent_message():
+        """
+        
+        Convenience function to optimize a single agent message.
 
     Args:
         message: The message to optimize

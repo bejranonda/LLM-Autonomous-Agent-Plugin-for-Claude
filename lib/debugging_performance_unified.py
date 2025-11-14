@@ -1,10 +1,8 @@
 """
-Debugging Performance Data Provider using Unified Storage
-
+    Debugging Performance Data Provider using Unified Storage
+    """
 This module provides debugging performance metrics using the unified parameter storage
 system to ensure data consistency across all dashboard sections.
-"""
-
 import json
 import os
 import sys
@@ -26,6 +24,7 @@ class DebuggingPerformanceProvider:
     """
     Provides debugging performance data from unified storage for consistent dashboard metrics.
     """
+    """
 
     def __init__(self):
         """Initialize debugging performance provider."""
@@ -46,8 +45,9 @@ class DebuggingPerformanceProvider:
         else:
             print("Warning: Unified storage not available for debugging performance")
 
-    def get_debugging_performance_data(self, days: int = 1) -> Dict[str, Any]:
+    def get_debugging_performance_data():
         """
+        
         Get debugging performance data from UNIFIED STORAGE for consistent data.
 
         Args:
@@ -204,8 +204,9 @@ class DebuggingPerformanceProvider:
         else:
             return f"Last {days} Days"
 
-    def _calculate_debugging_performance_metrics(self, debugging_tasks: List[Dict], current_model: str) -> Dict[str, Any]:
+    def _calculate_debugging_performance_metrics():
         """
+        
         Calculate debugging performance metrics using the comprehensive framework.
 
         Args:
@@ -323,8 +324,9 @@ class DebuggingPerformanceProvider:
             "timestamp": task.get("timestamp", datetime.now().isoformat()),
         }
 
-    def store_debugging_pattern(self, task_data: Dict, performance_metrics: Dict) -> None:
+    def store_debugging_pattern():
         """
+        
         Store debugging pattern for future learning.
 
         Args:

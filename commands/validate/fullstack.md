@@ -94,7 +94,7 @@ v
 
 Results:
   - Terminal: Concise summary (15-20 lines)
-  - File: Detailed report saved to .claude/reports/
+  - File: Detailed report saved to .claude/data/reports/
   - Pattern Storage: Store results for future learning
 ```
 
@@ -122,12 +122,12 @@ Results:
 
 🎯 Overall Score: 87/100 (Production Ready)
 
-📄 Detailed report: .claude/reports/validate-fullstack-2025-10-22.md
+📄 Detailed report: .claude/data/reports/validate-fullstack-2025-10-22.md
 ```
 
 ### Detailed Report (File)
 
-Saved to `.claude/reports/validate-fullstack-YYYY-MM-DD.md`:
+Saved to `.claude/data/reports/validate-fullstack-YYYY-MM-DD.md`:
 
 - Complete project structure analysis
 - All validation results with metrics
@@ -232,7 +232,7 @@ Validation is considered successful when:
 - Skip non-critical components
 
 **Auto-fix failures**:
-- Review `.claude/reports/` for detailed error messages
+- Review `.claude/data/reports/` for detailed error messages
 - Check autofix-patterns.json for pattern success rates
 - Manual fixes may be required for complex issues
 

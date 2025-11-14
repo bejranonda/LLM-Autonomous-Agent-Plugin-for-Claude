@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-Targeted Python Syntax Error Fixer
+#     Targeted Python Syntax Error Fixer
+    """
 Fixes specific patterns identified in the error analysis
-"""
 import ast
 import os
 import re

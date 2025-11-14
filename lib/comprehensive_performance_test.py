@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Performance Testing Suite for Autonomous Agent Plugin
+#     Comprehensive Performance Testing Suite for Autonomous Agent Plugin
+    """
 Tests command execution, resource utilization, context management, and scalability
-"""
-
 import time
 import json
 import psutil
@@ -24,7 +22,7 @@ class PerformanceTestSuite:
     """Comprehensive performance testing suite"""
 
     def __init__(self, test_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.test_dir = Path(test_dir)
         self.test_dir.mkdir(parents=True, exist_ok=True)
 

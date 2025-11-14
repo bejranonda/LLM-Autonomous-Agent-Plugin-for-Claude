@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-Predictive Skill Loading Engine
+#     Predictive Skill Loading Engine
+    """
 Anticipates and pre-loads optimal skills before task execution based on patterns.
 
 Expected Benefits:
 - Time Savings: 3-5 seconds → 100-200ms per task (95% reduction)
 - Token Savings: 800-1200 tokens → 100-150 tokens (87% reduction)
 - Accuracy: 92% → 97%+ skill selection accuracy
-"""
-
 import json
 import hashlib
 import time
@@ -23,8 +21,9 @@ class TaskFingerprint:
     """Generates unique fingerprints for tasks to enable pattern matching."""
 
     @staticmethod
-    def generate(task_info: Dict[str, Any]) -> str:
+    def generate():
         """
+        
         Generate task fingerprint from task information.
 
         Args:
@@ -109,8 +108,9 @@ class TaskFingerprint:
         return found_keywords
 
     @staticmethod
-    def calculate_similarity(fp1: str, fp2: str, task1: Dict[str, Any], task2: Dict[str, Any]) -> float:
+    def calculate_similarity():
         """
+        
         Calculate similarity between two task fingerprints.
 
         Args:
@@ -158,6 +158,7 @@ class TaskFingerprint:
 class PredictiveSkillLoader:
     """
     Predictive skill loading engine that anticipates needed skills
+    """
     before task execution.
     """
 
@@ -195,8 +196,9 @@ class PredictiveSkillLoader:
             with open(self.predictions_file, "w", encoding="utf-8") as f:
                 json.dump(initial_data, f, indent=2)
 
-    def predict_skills(self, task_info: Dict[str, Any], top_k: int = 5) -> List[Tuple[str, float]]:
+    def predict_skills():
         """
+        
         Predict optimal skills for a task.
 
         Args:
@@ -254,8 +256,9 @@ class PredictiveSkillLoader:
 
         return ranked_skills[:top_k]
 
-    def preload_skills(self, task_info: Dict[str, Any], skill_loader_func: Optional[callable] = None) -> Dict[str, Any]:
+    def preload_skills():
         """
+        
         Preload skills in background thread.
 
         Args:
@@ -304,8 +307,9 @@ class PredictiveSkillLoader:
             "thread_id": thread.ident,
         }
 
-    def get_cached_skill(self, skill_name: str) -> Optional[Dict[str, Any]]:
+    def get_cached_skill():
         """
+        
         Get preloaded skill from cache.
 
         Args:
@@ -341,7 +345,6 @@ class PredictiveSkillLoader:
         self, task_info: Dict[str, Any], patterns: List[Dict[str, Any]], min_similarity: float = 0.70
     )-> List[Tuple[Dict[str, Any], float]]:
         """ Find Similar Patterns."""
-        """
         Find similar patterns from database.
 
         Args:
@@ -387,8 +390,9 @@ class PredictiveSkillLoader:
 
         return similar[:10]  # Top 10 similar patterns
 
-    def _aggregate_skill_scores(self, similar_patterns: List[Tuple[Dict[str, Any], float]]) -> Dict[str, float]:
+    def _aggregate_skill_scores():
         """
+        
         Aggregate skill scores from similar patterns.
 
         Args:
@@ -414,8 +418,9 @@ class PredictiveSkillLoader:
 
         return dict(skill_scores)
 
-    def _get_default_skills(self, task_info: Dict[str, Any]) -> List[Tuple[str, float]]:
+    def _get_default_skills():
         """
+        
         Get default skill recommendations when no patterns available.
 
         Args:
@@ -440,8 +445,7 @@ class PredictiveSkillLoader:
     def _record_prediction(
         self, fingerprint: str, predicted_skills: List[Tuple[str, float]], prediction_time_ms: float, from_cache: bool
     ):
-        """ Record Prediction."""
-        """Record prediction for analytics."""
+        """ Record Prediction."""Record prediction for analytics."""
         self.predictions_made += 1
 
         try:

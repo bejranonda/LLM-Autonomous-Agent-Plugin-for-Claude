@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-Machine Learning Optimization Engine
-
+#     Machine Learning Optimization Engine
+    """
 Advanced ML algorithms for intelligent token optimization through
 pattern recognition, predictive analysis, and adaptive learning.
 
 Target: 15-25% additional optimization through ML-based intelligence
-"""
-
 import json
 import time
 import threading
@@ -83,7 +80,7 @@ class SimpleMLModel:
     """Simplified ML model implementation."""
 
     def __init__(self, model_type: MLModelType, name: str):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.model_type = model_type
         self.name = name
         self.is_trained = False
@@ -259,7 +256,7 @@ class MLOptimizationEngine:
     """Main ML optimization engine."""
 
     def __init__(self, db_path: str = "data/databases/ml_optimization.db"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.db_path = db_path
         self.models: Dict[str, SimpleMLModel] = {}
         self.prediction_history: List[OptimizationPrediction] = []
@@ -463,8 +460,7 @@ class MLOptimizationEngine:
     def predict_optimization(
         self, target: OptimizationTarget, features: List[float], model_name: Optional[str] = None
     )-> OptimizationPrediction:
-        """Predict Optimization."""
-        """Make optimization prediction using ML models."""
+        """Predict Optimization."""Make optimization prediction using ML models."""
         with self._lock:
             # Select best model for the target
             if model_name is None:

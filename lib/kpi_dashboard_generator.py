@@ -1,8 +1,7 @@
 """
-KPI Dashboard Generator for Token Optimization Framework
+    KPI Dashboard Generator for Token Optimization Framework
+    """
 Creates interactive HTML dashboards with comprehensive KPI visualization
-"""
-
 import json
 import logging
 from datetime import datetime, timedelta
@@ -17,15 +16,14 @@ class KPIDashboardGenerator:
     """Generates interactive HTML KPI dashboards"""
 
     def __init__(self, aggregator: UnifiedMetricsAggregator = None):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.aggregator = aggregator or UnifiedMetricsAggregator()
         self.logger = logging.getLogger(__name__)
 
     def generate_kpi_dashboard(
         self, output_file: str = "kpi_dashboard.html", period: MetricPeriod = MetricPeriod.DAILY
     )-> str:
-        """Generate Kpi Dashboard."""
-        """Generate comprehensive KPI dashboard"""
+        """Generate Kpi Dashboard."""Generate comprehensive KPI dashboard"""
 
         # Get dashboard data
         dashboard_data = self.aggregator.get_kpi_dashboard_data(period)

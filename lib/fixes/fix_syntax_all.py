@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Advanced Syntax Fixer for All Python Files
+    Advanced Syntax Fixer for All Python Files
+    """
 Fixes complex syntax errors with regex patterns
-"""
-
 import re
 import ast
 from pathlib import Path

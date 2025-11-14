@@ -462,7 +462,7 @@ def main():
     parser.add_argument('--auto-fix', action='store_true',
                        help='Attempt to automatically fix detected issues')
     parser.add_argument('--report', action='store_true',
-                       help='Save detailed report to .claude/reports/')
+                       help='Save detailed report to .claude/data/reports/')
     parser.add_argument('--timeout', type=int, default=30,
                        help='Page load timeout in seconds')
     parser.add_argument('--wait', type=int, default=3,
@@ -668,7 +668,7 @@ if __name__ == '__main__':
 - **Network Monitoring**: Detects failed HTTP requests and resource loading issues
 - **Performance Metrics**: Measures page load time and resource usage
 - **Auto-Fix Suggestions**: Provides guidance on fixing detected issues
-- **Detailed Reports**: Saves comprehensive validation reports to `.claude/reports/`
+- **Detailed Reports**: Saves comprehensive validation reports to `.claude/data/reports/`
 - **🆕 Subpage Crawling**: Automatically discovers and validates all subpages on a website
 - **🆕 Comprehensive Coverage**: Crawl with configurable depth limits (default: 3 levels)
 - **🆕 Smart Filtering**: Include/exclude specific paths with pattern matching

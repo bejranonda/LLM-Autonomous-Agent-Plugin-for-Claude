@@ -190,7 +190,7 @@ This command leverages:
 
 ✅ Auto-fixable Issues: {COUNT}/{TOTAL}
 
-📄 Detailed Report: .reports/pr-review/pr-{NUMBER}-{DATE}.md
+📄 Detailed Report: .data/reports/pr-review/pr-{NUMBER}-{DATE}.md
 
 ⏱️  Review completed in {DURATION}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -198,7 +198,7 @@ This command leverages:
 
 ### Detailed Report (Tier 2: Comprehensive File)
 
-Saved to: `.reports/pr-review/pr-{NUMBER}-{YYYY-MM-DD}.md`
+Saved to: `.data/reports/pr-review/pr-{NUMBER}-{YYYY-MM-DD}.md`
 
 **Full Report Structure**:
 

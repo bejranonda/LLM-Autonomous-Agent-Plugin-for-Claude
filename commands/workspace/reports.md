@@ -68,7 +68,7 @@ Automated report organization and management system that categorizes, archives, 
 
 ### Target Directory Structure
 ```
-.reports/
+.data/reports/
 +-- current/                    # Active reports (last 30 days)
 |   +-- validation/            # Plugin validation reports
 |   |   +-- plugin-validation-2024-01-15.md
@@ -288,12 +288,12 @@ ORGANIZATION EXECUTION
 ============================================================
 
 📂 Directory Structure Created:
-+- .reports/current/validation/ [PASS]
-+- .reports/current/quality/ [PASS]
-+- .reports/current/performance/ [PASS]
-+- .reports/recent/2024-01/ [PASS]
-+- .reports/archive/2023/Q4/ [PASS]
-+- .reports/metrics/ [PASS]
++- .data/reports/current/validation/ [PASS]
++- .data/reports/current/quality/ [PASS]
++- .data/reports/current/performance/ [PASS]
++- .data/reports/recent/2024-01/ [PASS]
++- .data/reports/archive/2023/Q4/ [PASS]
++- .data/reports/metrics/ [PASS]
 
 📁 Files Organized:
 +- Current Reports: 8 files moved
@@ -496,9 +496,9 @@ retention_policies:
 **Insufficient Permissions**:
 ```bash
 # Check permissions
-ls -la .reports/
+ls -la .data/reports/
 # Fix permissions
-chmod -R 755 .reports/
+chmod -R 755 .data/reports/
 ```
 
 **Storage Space Issues**:
@@ -527,7 +527,7 @@ find . -name "*validation*" -type f
 **Damaged Index**:
 ```bash
 # Remove corrupted index
-rm -f .reports/index/*.json
+rm -f .data/reports/index/*.json
 # Rebuild from scratch
 /organize-reports --rebuild-index --deep
 ```

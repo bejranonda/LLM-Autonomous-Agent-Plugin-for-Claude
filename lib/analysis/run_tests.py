@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Test Runner for Autonomous Agent Plugin
+    Test Runner for Autonomous Agent Plugin
+    """
 
 Comprehensive test runner with cross-platform support and detailed reporting.
 Provides multiple test execution modes and comprehensive output formatting.
@@ -13,8 +13,6 @@ Usage:
     python run_tests.py --platform         # Run cross-platform tests
     python run_tests.py --report           # Generate HTML coverage report
     python run_tests.py --performance      # Run performance benchmarks
-"""
-
 import argparse
 import subprocess
 import sys
@@ -191,7 +189,7 @@ def generate_coverage_report():
             'python', '-m', 'coverage',
             'json',
             '--show-contexts',
-            '-o', 'data/reports/coverage.json'
+            '-o', 'data/data/data/reports/coverage.json'
         ]
         run_command(json_cmd, "Generating JSON Coverage Report")
 
@@ -234,7 +232,7 @@ def generate_test_report(results, total_time):
     }
 
     # Add coverage info if available
-    coverage_file = Path('data/reports/coverage.json')
+    coverage_file = Path('data/data/data/reports/coverage.json')
     if coverage_file.exists():
         try:
             with open(coverage_file, 'r') as f:

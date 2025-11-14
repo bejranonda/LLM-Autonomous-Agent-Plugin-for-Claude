@@ -1,6 +1,6 @@
 """
-Token Optimization Integration System
-
+    Token Optimization Integration System
+    """
 Integrates all token optimization components into a unified system for
 maximum token efficiency across the autonomous agent platform.
 
@@ -13,8 +13,6 @@ Components Integrated:
 - Token Monitoring System
 - Token Budget Manager
 - Advanced Token Optimizer
-"""
-
 import os
 import json
 import asyncio

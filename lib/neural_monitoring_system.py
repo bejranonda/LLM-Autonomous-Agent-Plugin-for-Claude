@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""
-Neural Monitoring System
+#     Neural Monitoring System
+    """
 Advanced AI-powered monitoring and analytics system with neural networks,
 predictive analytics, anomaly detection, and real-time visualization.
-"""
-
 import json
 import sys
 import time
@@ -79,6 +77,7 @@ class PredictiveInsight:
 class NeuralMonitoringSystem:
     """
     Advanced AI-powered monitoring system with neural networks,
+    """
     predictive analytics, and real-time anomaly detection.
     """
 
@@ -348,7 +347,6 @@ class NeuralMonitoringSystem:
         self, metric_name: str, value: float, agent_id: str, tier: str, context: Optional[Dict[str, Any]] = None
     ):
         """Record Metric."""
-        """
         Record a monitoring metric.
 
         Args:

@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-Production Agent Communication Optimizer
+#     Production Agent Communication Optimizer
+    """
 
 Optimizes inter-agent communication to reduce token usage by 25-35%
 while maintaining message integrity and enabling effective collaboration.
 
 Version: 1.0.0 - Production Ready
 Author: Autonomous Agent Plugin
-"""
-
 import json
 import time
 import hashlib
@@ -125,7 +123,6 @@ class ProductionAgentCommunicationOptimizer:
         priority: MessagePriority = MessagePriority.NORMAL,
     )-> OptimizedMessage:
         """Optimize Message."""
-        """
         Optimize a message for token efficiency.
 
         Args:
@@ -193,8 +190,9 @@ class ProductionAgentCommunicationOptimizer:
 
         return optimized_msg
 
-    def decompress_message(self, optimized_message: OptimizedMessage) -> Dict[str, Any]:
+    def decompress_message():
         """
+        
         Decompress an optimized message back to original form.
 
         Args:
@@ -214,8 +212,9 @@ class ProductionAgentCommunicationOptimizer:
 
         return self._apply_decompression(optimized_message.compressed_content, optimized_message.compression_level)
 
-    def optimize_conversation(self, conversation: List[Dict[str, Any]], participants: List[str]) -> Dict[str, Any]:
+    def optimize_conversation():
         """
+        
         Optimize an entire conversation between agents.
 
         Args:
@@ -468,8 +467,7 @@ class ProductionAgentCommunicationOptimizer:
     def _determine_conversation_compression_level(
         self, index: int, total_messages: int, patterns: Dict[str, Any], sender: str, receiver: str
     )-> CompressionLevel:
-        """ Determine Conversation Compression Level."""
-        """Determine optimal compression level based on conversation context."""
+        """ Determine Conversation Compression Level."""Determine optimal compression level based on conversation context."""
         # Early messages in conversation use lighter compression
         if index < 3:
             return CompressionLevel.LIGHT
@@ -564,17 +562,10 @@ def get_communication_optimizer(cache_dir: str = ".claude-patterns") -> Producti
     return ProductionAgentCommunicationOptimizer(cache_dir)
 
 
-def optimize_agent_message(
-    """Optimize Agent Message."""
-    sender: str,
-    receiver: str,
-    message: Dict[str, Any],
-    compression_level: str = "medium",
-    priority: str = "normal",
-    cache_dir: str = ".claude-patterns",
-) -> Dict[str, Any]:
-    """
-    Convenience function to optimize a single message.
+def optimize_agent_message():
+        """
+        
+        Convenience function to optimize a single message.
 
     Args:
         sender: Sending agent

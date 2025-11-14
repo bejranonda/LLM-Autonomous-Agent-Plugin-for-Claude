@@ -102,7 +102,7 @@ Validation Summary:
 +- Cross-Platform Compatibility: [OK] Ready for all platforms
 
 Quality Score: 100/100 (Perfect)
-Detailed report: .claude/reports/validate-claude-plugin-2025-10-23.md
+Detailed report: .claude/data/reports/validate-claude-plugin-2025-10-23.md
 Completed in 1.2 minutes
 
 [+] Assessment stored in pattern database for dashboard monitoring
@@ -160,7 +160,7 @@ VALIDATE CLAUDE PLUGIN RESULTS
 4. [MED] Add missing YAML frontmatter to agents
 5. [LOW] Reduce file path lengths
 
-📄 Detailed report: .claude/reports/validate-claude-plugin-2025-10-23.md
+📄 Detailed report: .claude/data/reports/validate-claude-plugin-2025-10-23.md
 ⏱ Completed in 1.5 minutes
 
 ❌ Plugin needs fixes before release
@@ -172,7 +172,7 @@ VALIDATE CLAUDE PLUGIN RESULTS
 The validation command creates detailed reports in:
 
 1. **Console Output**: Concise summary with key findings
-2. **Detailed Report**: `.claude/reports/validate-claude-plugin-YYYY-MM-DD.md`
+2. **Detailed Report**: `.claude/data/reports/validate-claude-plugin-YYYY-MM-DD.md`
 3. **JSON Report**: Machine-readable validation results
 
 ## Integration with Development Workflow

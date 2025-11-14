@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""
-Group Performance Tracking System
+#     Group Performance Tracking System
+    """
 Tracks performance metrics at the group level to enable group-level
 learning, optimization, and continuous improvement.
 
 This complements agent_performance_tracker.py by aggregating metrics
 at the group level for strategic analysis.
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -29,6 +27,7 @@ except ImportError:
 class GroupPerformanceTracker:
     """
     Tracks performance metrics for agent groups to enable:
+    """
     - Group-level performance trends
     - Cross-group comparisons
     - Group specialization identification
@@ -182,7 +181,6 @@ class GroupPerformanceTracker:
         context: Optional[Dict[str, Any]] = None,
     ):
         """Record Group Task."""
-        """
         Record a task execution for a group.
 
         Args:
@@ -389,8 +387,9 @@ class GroupPerformanceTracker:
             performances[group_num] = self.get_group_performance(group_num)
         return performances
 
-    def compare_groups(self, metric: str = "quality_score") -> List[Dict[str, Any]]:
+    def compare_groups():
         """
+        
         Compare groups by a specific metric.
 
         Args:
@@ -430,8 +429,9 @@ class GroupPerformanceTracker:
 
         return sorted(comparisons, key=lambda x: x["score"], reverse=True)
 
-    def analyze_workflow_efficiency(self) -> Dict[str, Any]:
+    def analyze_workflow_efficiency():
         """
+        
         Analyze workflow efficiency across groups.
 
         Returns:

@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""
-Agent Performance Tracking System
+#     Agent Performance Tracking System
+    """
 Tracks individual agent performance metrics for continuous improvement
 and specialization identification.
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -26,6 +24,7 @@ except ImportError:
 class AgentPerformanceTracker:
     """
     Tracks performance metrics for individual agents to enable:
+    """
     - Performance trend analysis
     - Specialization identification
     - Weak agent detection
@@ -116,7 +115,6 @@ class AgentPerformanceTracker:
         context: Optional[Dict[str, Any]] = None,
     ):
         """Record Task Execution."""
-        """
         Record a task execution for performance tracking.
 
         Args:
@@ -256,8 +254,9 @@ class AgentPerformanceTracker:
 
         return all_performances
 
-    def get_top_performers(self, metric: str = "quality_score", limit: int = 5) -> List[Dict[str, Any]]:
+    def get_top_performers():
         """
+        
         Get top performing agents by metric.
 
         Args:
@@ -288,8 +287,9 @@ class AgentPerformanceTracker:
 
         return sorted(performers, key=lambda x: x["score"], reverse=True)[:limit]
 
-    def get_weak_performers(self, threshold: float = 70.0) -> List[Dict[str, Any]]:
+    def get_weak_performers():
         """
+        
         Identify agents performing below threshold.
 
         Args:

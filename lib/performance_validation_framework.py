@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-Performance Testing and Validation Framework
-
+#     Performance Testing and Validation Framework
+    """
 Comprehensive testing suite for validating the complete token optimization
 framework including stress testing, regression testing, and performance benchmarks.
 
 Target: Validate all optimization components and ensure system reliability
-"""
-
 import json
 import time
 import threading
@@ -123,7 +120,7 @@ class PerformanceTestSuite:
     """Individual performance test suite."""
 
     def __init__(self, name: str, test_type: TestType):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.name = name
         self.test_type = test_type
         self.tests: List[Callable] = []
@@ -225,7 +222,7 @@ class PerformanceValidationFramework:
     """Main performance validation framework."""
 
     def __init__(self, db_path: str = "performance_validation.db"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.db_path = db_path
         self.test_suites: Dict[str, PerformanceTestSuite] = {}
         self.validation_history: List[PerformanceMetrics] = []
@@ -853,8 +850,7 @@ class PerformanceValidationFramework:
     def run_validation(
         self, validation_level: ValidationLevel = ValidationLevel.STANDARD, suites: Optional[List[str]] = None
     )-> PerformanceMetrics:
-        """Run Validation."""
-        """Run performance validation for specified test suites."""
+        """Run Validation."""Run performance validation for specified test suites."""
 
         if suites is None:
             suites = list(self.test_suites.keys())

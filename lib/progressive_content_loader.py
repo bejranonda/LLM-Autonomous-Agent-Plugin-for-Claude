@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""
-Progressive Content Loader
-
+#     Progressive Content Loader
+    """
 Intelligent content loading system that provides tiered access to documentation
 and commands based on user needs and available token budget.
 
 Version: 1.0.0
 Author: Autonomous Agent Plugin
-"""
-
 import json
 import os
 import pathlib
@@ -48,11 +45,12 @@ class ContentSection:
 class ProgressiveContentLoader:
     """
     Progressive content loader that intelligently manages content delivery
+    """
     based on user needs and token constraints.
     """
 
     def __init__(self, cache_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.cache_dir = pathlib.Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
 
@@ -238,8 +236,7 @@ class ProgressiveContentLoader:
         available_tokens: int = 20000,
         preferred_tier: LoadingTier = LoadingTier.STANDARD,
     )-> Dict[str, Any]:
-        """Load Content."""
-        """Load content progressively based on user needs and token constraints."""
+        """Load Content."""Load content progressively based on user needs and token constraints."""
         file_path_str = str(file_path)
 
         # Track user pattern
@@ -286,8 +283,7 @@ class ProgressiveContentLoader:
     def _determine_loading_strategy(
         self, user_request: str, available_tokens: int, preferred_tier: LoadingTier, sections: List[ContentSection]
     )-> Dict[str, Any]:
-        """ Determine Loading Strategy."""
-        """Determine optimal loading strategy based on context."""
+        """ Determine Loading Strategy."""Determine optimal loading strategy based on context."""
         strategy = {
             "tier": preferred_tier,
             "max_tokens": available_tokens,
@@ -326,8 +322,7 @@ class ProgressiveContentLoader:
     def _should_load_section(
         self, section: ContentSection, strategy: Dict[str, Any], tokens_used: int, max_tokens: int
     )-> bool:
-        """ Should Load Section."""
-        """Determine if a section should be loaded based on strategy."""
+        """ Should Load Section."""Determine if a section should be loaded based on strategy."""
         # Check token budget
         if tokens_used + section.tokens > max_tokens:
             return False

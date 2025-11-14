@@ -27,7 +27,7 @@ The orchestrator will make all decisions autonomously without requiring confirma
 
 **IMPORTANT**: When delegating this command to the orchestrator agent, the agent MUST:
 1. Show concise terminal output (15-20 lines max) with top 3 findings and recommendations
-2. Save detailed report to `.claude/reports/auto-analyze-YYYY-MM-DD.md` with ALL findings
+2. Save detailed report to `.claude/data/reports/auto-analyze-YYYY-MM-DD.md` with ALL findings
 3. Include file path in terminal output
 4. Never complete silently, never show 50+ lines in terminal
 
@@ -56,13 +56,13 @@ Top Recommendations:
 2. [MED]  Add docstrings to public APIs
 3. [MED]  Refactor high-complexity functions
 
-📄 Full report: .claude/reports/analyze-project-2025-10-21.md
+📄 Full report: .claude/data/reports/analyze-project-2025-10-21.md
 ⏱ Completed in 2.3 minutes
 ```
 
 ### File Report (Detailed)
 
-Saved to `.claude/reports/analyze-project-2025-10-21.md`:
+Saved to `.claude/data/reports/analyze-project-2025-10-21.md`:
 
 ```
 =======================================================

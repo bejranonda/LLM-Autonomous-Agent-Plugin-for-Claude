@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-Surgical Python Syntax Error Fixer
+#     Surgical Python Syntax Error Fixer
+    """
 Targets specific syntax error patterns identified in the analysis
-"""
 import ast
 import os
 import re
@@ -65,7 +64,7 @@ class SurgicalSyntaxFixer:
                 self.fixes_applied.append(f"Fixed docstring start: {original_line.strip()}")
 
             # Fix pattern: """text"""" (extra quote at end)
-            if line.endswith('""""') and not line.endswith('""""""'):
+            if line.endswith('""""') and not line.endswith('"""'):
                 line = line[:-1]  # Remove last quote
                 self.fixes_applied.append(f"Fixed docstring end: {original_line.strip()}")
 

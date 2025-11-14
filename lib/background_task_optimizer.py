@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Background Task Optimization and Scaling System
+#     Background Task Optimization and Scaling System
+    """
 
 Intelligent task scheduling, resource optimization, and parallel execution
 for maximum autonomous agent system efficiency.
-"""
-
 import json
 import os
 import sys
@@ -58,7 +56,7 @@ class BackgroundTaskOptimizer:
     """Advanced background task optimization system"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = patterns_dir
         self.config_file = os.path.join(patterns_dir, "task_optimizer_config.json")
         self.metrics_file = os.path.join(patterns_dir, "task_metrics.json")
@@ -246,8 +244,7 @@ class BackgroundTaskOptimizer:
         skills_required: List[str] = None,
         agents_involved: List[str] = None,
     )-> str:
-        """Add Task."""
-        """Add a new background task"""
+        """Add Task."""Add a new background task"""
         task_id = f"task_{int(time.time())}_{len(self.task_queue.queue)}"
 
         # Estimate duration

@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Enhanced Pattern Prediction System for Autonomous Claude Agent Plugin
+#     Enhanced Pattern Prediction System for Autonomous Claude Agent Plugin
+    """
 
 Advanced prediction system with 70% accuracy target for skill and agent selection
 based on historical patterns, context similarity, and performance metrics.
-"""
-
 import json
 import argparse
 import sys
@@ -576,8 +574,7 @@ class EnhancedPatternPredictor:
         actual_agents: List[str],
         success: bool,
     ):
-        """Record Prediction Result."""
-        """Record prediction results for accuracy tracking."""
+        """Record Prediction Result."""Record prediction results for accuracy tracking."""
         predictions = self._read_json(self.predictions_file)
 
         # Calculate accuracy

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-Final Comprehensive Python Syntax Fixer
+#     Final Comprehensive Python Syntax Fixer
+    """
 Addresses all remaining syntax error patterns with specific fixes
-"""
 import ast
 import os
 import re
@@ -13,7 +12,7 @@ from typing import List, Tuple, Dict, Optional
 
 class FinalComprehensiveFixer:
     def __init__(self, lib_dir: str = "lib"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.lib_dir = Path(lib_dir)
         self.fixes_applied = []
         self.errors_fixed = 0
@@ -82,7 +81,7 @@ class FinalComprehensiveFixer:
                 self.fixes_applied.append(f"Fixed quadruple quotes: {original_line.strip()}")
 
             # Fix pattern: """text"""" (extra quote at end)
-            if line.endswith('""""') and not line.endswith('""""""'):
+            if line.endswith('""""') and not line.endswith('"""'):
                 line = line[:-1]
                 self.fixes_applied.append(f"Fixed extra quote: {original_line.strip()}")
 

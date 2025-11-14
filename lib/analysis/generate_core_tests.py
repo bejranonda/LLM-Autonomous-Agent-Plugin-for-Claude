@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-"""
 Generate comprehensive test suite for core lib files.
 Focus on high-impact files that will boost coverage quickly.
-"""
-
 import json
 from pathlib import Path
 from typing import List, Dict
@@ -24,11 +21,8 @@ CORE_FILES = [
 def generate_basic_test_template(module_name: str, class_name: str) -> str:
     """Generate a basic test template for a module."""
     test_content = f'''#!/usr/bin/env python3
-"""
 Unit tests for {module_name}
 Auto-generated comprehensive test suite.
-"""
-
 import pytest
 import json
 import tempfile
@@ -114,7 +108,7 @@ def main():
     test_dir.mkdir(parents=True, exist_ok=True)
 
     # Read coverage data to find files with 0% coverage
-    with open('data/reports/coverage.json') as f:
+    with open('data/data/data/reports/coverage.json') as f:
         coverage_data = json.load(f)
 
     generated_count = 0

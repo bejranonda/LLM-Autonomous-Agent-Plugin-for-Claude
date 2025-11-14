@@ -1,7 +1,5 @@
 #!/usr/bin/env python3,"""
 # Simple Claude Plugin validation
-"""
-
 import json
 import yaml
 import re

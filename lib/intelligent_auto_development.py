@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
-"""
-Intelligent Auto-Development Workflow System
+# Intelligent Auto-Development Workflow System
 
-Advanced autonomous development system with pattern-based decision making,
-elevated quality standards (90+ threshold), continuous quality monitoring,
-and intelligent release automation.
-"""
-
+# Advanced autonomous development system with pattern-based decision making,
+# elevated quality standards (90+ threshold), continuous quality monitoring,
+# and intelligent release automation.
 import json
 import os
 import sys
@@ -21,7 +18,7 @@ class IntelligentAutoDeveloper:
     """Advanced autonomous development with intelligent decision making"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = patterns_dir
         self.patterns_file = os.path.join(patterns_dir, "patterns.json")
         self.predictions_file = os.path.join(patterns_dir, "quality_predictions.json")
@@ -432,8 +429,7 @@ class IntelligentAutoDeveloper:
     def _store_execution_results(
         self, task_description: str, analysis: Dict, execution_result: Dict, final_quality: int, duration: float
     ):
-        """ Store Execution Results."""
-        """Store execution results in pattern database"""
+        """ Store Execution Results."""Store execution results in pattern database"""
         patterns_data = self.load_system_state()["patterns"]
 
         new_pattern = {

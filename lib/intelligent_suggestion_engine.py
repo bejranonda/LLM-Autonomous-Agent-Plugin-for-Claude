@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Intelligent Suggestion Engine for Autonomous Agent Plugin
+#     Intelligent Suggestion Engine for Autonomous Agent Plugin
+    """
 
 Provides context-aware suggestions based on user preferences, learned patterns,
 system environment, and historical behavior. Integrates with the user preference
@@ -17,8 +17,6 @@ Features:
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
-"""
-
 import json
 import sys
 import threading
@@ -42,7 +40,7 @@ class SuggestionContext:
     """Represents the context for generating suggestions."""
 
     def __init__(self):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.current_task = None
         self.recent_commands = []
         self.system_environment = {}
@@ -89,7 +87,7 @@ class SuggestionTemplate:
         conditions: Dict[str, Any],
         weights: Dict[str, float],
     ):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.template_id = template_id
         self.category = category
         self.priority = priority
@@ -263,6 +261,7 @@ class SuggestionTemplate:
 class IntelligentSuggestionEngine:
     """
     Intelligent suggestion engine that provides context-aware recommendations
+    """
     based on user preferences, learned patterns, and system state.
     """
 
@@ -468,7 +467,6 @@ class IntelligentSuggestionEngine:
         self, context: SuggestionContext, max_suggestions: int = 5, include_learning: bool = True
     )-> List[Dict[str, Any]]:
         """Generate Suggestions."""
-        """
         Generate intelligent suggestions based on context.
 
         Args:
@@ -602,8 +600,7 @@ class IntelligentSuggestionEngine:
     def _score_and_rank_suggestions(
         self, suggestions: List[Dict[str, Any]], context: SuggestionContext
     )-> List[Tuple[Dict[str, Any], float]]:
-        """ Score And Rank Suggestions."""
-        """Score and rank suggestions using multi-factor algorithm."""
+        """ Score And Rank Suggestions."""Score and rank suggestions using multi-factor algorithm."""
         scored_suggestions = []
 
         for suggestion in suggestions:
@@ -653,8 +650,7 @@ class IntelligentSuggestionEngine:
     def _filter_suggestions(
         self, scored_suggestions: List[Tuple[Dict[str, Any], float]], context: SuggestionContext
     )-> List[Dict[str, Any]]:
-        """ Filter Suggestions."""
-        """Filter suggestions based on various criteria."""
+        """ Filter Suggestions."""Filter suggestions based on various criteria."""
         filtered = []
 
         for suggestion, score in scored_suggestions:
@@ -776,8 +772,7 @@ class IntelligentSuggestionEngine:
         conditions: Dict[str, Any],
         weights: Dict[str, Any],
     )-> bool:
-        """Create Custom Template."""
-        """Create a custom suggestion template."""
+        """Create Custom Template."""Create a custom suggestion template."""
         # Check if template already exists
         for template in self.templates:
             if template.template_id == template_id:

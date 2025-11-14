@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-"""
-EMERGENCY: Plugin Message Sanitizer
+# EMERGENCY: Plugin Message Sanitizer
 
-CRITICAL: This plugin is causing system-wide Claude failure by generating
-empty text blocks that break Claude's entire functionality.
+# CRITICAL: This plugin is causing system-wide Claude failure by generating
+# empty text blocks that break Claude's entire functionality.
 
-This emergency wrapper sanitizes ALL messages before they reach Claude's API
-to prevent complete system failure.
+# This emergency wrapper sanitizes ALL messages before they reach Claude's API
+# to prevent complete system failure.
 
-STATUS: EMERGENCY FIX REQUIRED
-"""
-
+# STATUS: EMERGENCY FIX REQUIRED
 import re
 from typing import List, Dict, Any, Optional
 
@@ -19,8 +16,9 @@ class EmergencyMessageSanitizer:
     """Emergency message sanitizer to prevent Claude system failure."""
 
     @staticmethod
-    def sanitize_message_text(text: Any) -> Optional[str]:
+    def sanitize_message_text():
         """
+        
         Emergency sanitization - only keep non-empty, meaningful text.
 
         Args:
@@ -50,8 +48,9 @@ class EmergencyMessageSanitizer:
         return text
 
     @staticmethod
-    def sanitize_content_block(block: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def sanitize_content_block():
         """
+        
         Emergency content block sanitization.
 
         Args:
@@ -80,8 +79,9 @@ class EmergencyMessageSanitizer:
         return block
 
     @staticmethod
-    def sanitize_message(message: Dict[str, Any]) -> Dict[str, Any]:
+    def sanitize_message():
         """
+        
         Emergency message sanitization.
 
         Args:
@@ -117,8 +117,9 @@ class EmergencyMessageSanitizer:
         return message
 
     @staticmethod
-    def sanitize_messages(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def sanitize_messages():
         """
+        
         Emergency message sanitization for all messages.
 
         Args:
@@ -164,7 +165,7 @@ class EmergencyAPICallWrapper:
     """Emergency wrapper to sanitize all Claude API calls."""
 
     def __init__(self, original_api_function):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.original_function = original_api_function
 
     def __call__(self, *args, **kwargs):

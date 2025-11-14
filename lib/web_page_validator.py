@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Web Page Validator with JavaScript Error Detection
+#     Web Page Validator with JavaScript Error Detection
+    """
 
 Automatically validates web pages (like dashboard.py) and detects:
 - JavaScript syntax errors
@@ -10,13 +10,13 @@ Automatically validates web pages (like dashboard.py) and detects:
 - Page load performance
 - Broken links and resources
 
-Uses Selenium WebDriver for headless browser automation to capture
+    Uses Selenium WebDriver for headless browser automation to capture
+    """
+
 real browser console output without manual inspection.
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
-"""
-
 import sys
 import json
 import time
@@ -166,8 +166,9 @@ class WebPageValidator:
             print(f"[ERROR] Failed to initialize Playwright: {e}", file=sys.stderr)
             return None
 
-    def validate_url(self, url: str, wait_for_load: int = 3) -> ValidationResult:
+    def validate_url():
         """
+        
         Validate a web page URL
 
         Args:

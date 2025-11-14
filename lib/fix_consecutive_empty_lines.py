@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""
-FIX ALL CONSECUTIVE EMPTY LINES - IMMEDIATE SOLUTION
+# FIX ALL CONSECUTIVE EMPTY LINES - IMMEDIATE SOLUTION
 
-This script removes ALL consecutive empty lines from markdown files
+#     This script removes ALL consecutive empty lines from markdown files
+    """
+
 to fix the cache_control cannot be set for empty text blocks error.
-"""
-
 import os
 import re
 

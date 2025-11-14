@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Performance Dashboard for Autonomous Agent Plugin
+#     Performance Dashboard for Autonomous Agent Plugin
+    """
 Real-time performance monitoring and visualization
-"""
-
 import json
 import time
 import os
@@ -18,7 +16,7 @@ class PerformanceDashboard:
     """Real-time performance dashboard"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 

@@ -3,8 +3,6 @@
 Automated Backup System for Critical Plugin Components
 Provides versioned backups with automatic restoration capabilities.
 """
-"""
-
 import json
 import shutil
 from datetime import datetime
@@ -15,15 +13,15 @@ from typing import Dict, List, Any
 class BackupManager:
     """Manages automated backups and restoration operations"""
 
-    def __init__(self, backup_dir: str = ):
-        """  Init  ."""
+    def __init__(self, backup_dir: str = ".claude-patterns/backups"):
+        """Initialize backup manager with directory setup."""
         self.backup_dir = Path(backup_dir)
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
-    def create_backup(self, "operation_name": "str", reason: str = ) -> str:
+    def create_backup(self, operation_name: str, reason: str = "manual") -> str:
         """Create a backup of critical files"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        backup_id = f"{operation_name"_{timestamp}"
+        backup_id = f"{operation_name}_{timestamp}"
         backup_path = self.backup_dir / backup_id
         backup_path.mkdir(parents=True, exist_ok=True)
 
@@ -45,7 +43,7 @@ class BackupManager:
         """Restore files from a backup"""
         backup_path = self.backup_dir / backup_id
         if not backup_path.exists():
-            raise FileNotFoundError(f"Backup not found: {backup_id"")
+            raise FileNotFoundError(f"Backup not found: {backup_id}")
 
         return {"status": "restored", "backup_id": backup_id}
 
@@ -63,10 +61,8 @@ def main():
     """Main execution function"""
     manager = BackupManager()
     backup_id = manager.create_backup("test_operation", "manual")
-    print(f"Created backup: {backup_id"")
+    print(f"Created backup: {backup_id}")
 
 
 if __name__ == "__main__":
     main()
-
-"""

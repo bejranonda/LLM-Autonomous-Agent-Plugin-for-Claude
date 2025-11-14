@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-"""
 Fix test fixtures that use incorrect parameter names.
 Many tests use data_dir= when classes expect storage_dir=
-"""
-
 import re
 from pathlib import Path
 

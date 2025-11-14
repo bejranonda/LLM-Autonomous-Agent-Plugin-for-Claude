@@ -93,7 +93,7 @@ Implementation Strategy:
 3. Implement token generation/validation
 4. Add authentication middleware
 
-📄 Full analysis: .claude/reports/learn-clone-jwt-auth-2025-10-29.md
+📄 Full analysis: .claude/data/reports/learn-clone-jwt-auth-2025-10-29.md
 ⏱ Analysis completed in 2.8 minutes
 
 Next: Review analysis, then use /dev:auto to implement

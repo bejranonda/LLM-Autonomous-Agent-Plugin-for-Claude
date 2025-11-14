@@ -1,10 +1,8 @@
 """
-Validate Dashboard Data Consistency
-
+    Validate Dashboard Data Consistency
+    """
 This script verifies that the Recent Activity and Recent Performance Records
 sections in the dashboard show consistent data from the same sources.
-"""
-
 import requests
 from datetime import datetime
 

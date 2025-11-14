@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""
-Decision Explainer System
+#     Decision Explainer System
+    """
 Provides detailed explanations for all decisions made by the four-tier system,
 building transparency and trust through clear reasoning.
 
 This implements the v7.1 enhancement for Decision Explainability.
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -27,6 +25,7 @@ except ImportError:
 class DecisionExplainer:
     """
     Explains decisions made by the strategic-planner and other Group 2 agents.
+    """
     """
 
     def __init__(self, storage_dir: str = ".claude-patterns"):
@@ -105,7 +104,6 @@ class DecisionExplainer:
         context: Optional[Dict[str, Any]] = None,
     )-> Dict[str, Any]:
         """Create Explanation."""
-        """
         Create a comprehensive explanation for a decision.
 
         Args:
@@ -151,8 +149,7 @@ class DecisionExplainer:
         user_preferences: Dict[str, Any],
         historical_data: Optional[Dict[str, Any]],
     )-> Dict[str, Any]:
-        """ Explain Why Chosen."""
-        """Explain why this decision was chosen."""
+        """ Explain Why Chosen."""Explain why this decision was chosen."""
         # Find the recommendation that matches the decision
         chosen_recommendation = None
         for rec in recommendations:
@@ -198,8 +195,7 @@ class DecisionExplainer:
     def _identify_primary_reason(
         self, recommendation: Dict[str, Any], user_preferences: Dict[str, Any], historical_data: Optional[Dict[str, Any]]
     )-> str:
-        """ Identify Primary Reason."""
-        """Identify the primary reason for choosing this decision."""
+        """ Identify Primary Reason."""Identify the primary reason for choosing this decision."""
         # Calculate scores for different reasons
         preference_score = 0
         historical_score = 0
@@ -234,8 +230,7 @@ class DecisionExplainer:
     def _explain_why_not_alternatives(
         self, decision: str, recommendations: List[Dict[str, Any]], user_preferences: Dict[str, Any]
     )-> Dict[str, Dict[str, str]]:
-        """ Explain Why Not Alternatives."""
-        """Explain why alternative recommendations were not chosen."""
+        """ Explain Why Not Alternatives."""Explain why alternative recommendations were not chosen."""
         alternatives_explanation = {}
 
         for rec in recommendations:
@@ -304,8 +299,7 @@ class DecisionExplainer:
     def _explain_trade_offs(
         self, decision: str, recommendations: List[Dict[str, Any]], context: Optional[Dict[str, Any]]
     )-> Dict[str, str]:
-        """ Explain Trade Offs."""
-        """Explain trade-offs considered in the decision."""
+        """ Explain Trade Offs."""Explain trade-offs considered in the decision."""
         trade_offs = {}
 
         # Time vs Quality
@@ -336,8 +330,7 @@ class DecisionExplainer:
     def _explain_confidence(
         self, recommendations: List[Dict[str, Any]], historical_data: Optional[Dict[str, Any]]
     )-> Dict[str, List[str]]:
-        """ Explain Confidence."""
-        """Explain factors affecting confidence in the decision."""
+        """ Explain Confidence."""Explain factors affecting confidence in the decision."""
         high_confidence_factors = []
         uncertainty_factors = []
 

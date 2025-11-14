@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""
-Multi-Agent Communication Protocol for Autonomous Claude Agent Plugin
+# Multi-Agent Communication Protocol for Autonomous Claude Agent Plugin
 
-Standardized communication and coordination system for multi-agent workflows
+# Standardized communication and coordination system for multi-agent workflows
 with 95% success rate target through reliable message passing and state management.
-"""
-
 import json
 import argparse
 import sys
@@ -293,8 +290,7 @@ class MultiAgentProtocol:
         requires_response: bool = False,
         expires_in: Optional[int] = None,
     )-> str:
-        """Send Message."""
-        """Send a message to another agent."""
+        """Send Message."""Send a message to another agent."""
         message_id = str(uuid.uuid4())
 
         expires_at = None
@@ -323,8 +319,7 @@ class MultiAgentProtocol:
     def send_task_request(
         self, requester: str, target_agent: str, task_data: Dict[str, Any], priority: Priority = Priority.NORMAL
     )-> str:
-        """Send Task Request."""
-        """Send a task request to a specific agent."""
+        """Send Task Request."""Send a task request to a specific agent."""
         return self.send_message(
             sender=requester,
             recipient=target_agent,
@@ -368,8 +363,7 @@ class MultiAgentProtocol:
     def update_agent_status(
         self, agent_id: str, status: AgentStatus, current_task: Optional[str] = None, error_message: Optional[str] = None
     ):
-        """Update Agent Status."""
-        """Update an agent's status."""
+        """Update Agent Status."""Update an agent's status."""
         if agent_id not in self.agents:
             return False
 

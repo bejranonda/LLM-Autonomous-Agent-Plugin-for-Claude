@@ -9,8 +9,6 @@ Key Innovation: Automatic Learning
 - Learns from successes and failures
 - Continuously improves performance without manual intervention
 - Stores patterns for future optimization
-"""
-
 import json
 import os
 from datetime import datetime, timedelta
@@ -29,6 +27,7 @@ except ImportError:
 class DashboardLearningSystem:
     """
     Automatic learning system for dashboard debugging and improvements.
+    """
     Captures patterns from every task to continuously enhance performance.
     """
 
@@ -56,8 +55,9 @@ class DashboardLearningSystem:
         else:
             print("Learning system using legacy storage")
 
-    def capture_debugging_pattern(self, task_data: Dict, performance_metrics: Dict, context: Dict = None) -> None:
+    def capture_debugging_pattern():
         """
+        
         Capture debugging task pattern for future learning.
 
         Args:
@@ -311,8 +311,9 @@ class DashboardLearningSystem:
         except Exception as e:
             print(f"Error updating success metrics: {e}")
 
-    def get_learning_insights(self) -> Dict[str, Any]:
+    def get_learning_insights():
         """
+        
         Get learning insights from accumulated patterns.
 
         Returns:
@@ -397,8 +398,9 @@ class DashboardLearningSystem:
             "learning_patterns": [],
         }
 
-    def auto_improve_approaches(self, task_context: Dict) -> Dict[str, Any]:
+    def auto_improve_approaches():
         """
+        
         Automatically suggest improvements based on learned patterns.
 
         Args:

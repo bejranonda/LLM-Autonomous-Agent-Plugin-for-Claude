@@ -82,7 +82,7 @@ Pattern Learning Validation Complete ✅
 +- Issues Found: 0 critical, 2 minor
 +- Duration: 1m 45s
 
-📊 Full analytics: .claude/reports/validate-patterns-2025-01-15.md
+📊 Full analytics: .claude/data/reports/validate-patterns-2025-01-15.md
 ```
 
 ### Detailed Report (file)

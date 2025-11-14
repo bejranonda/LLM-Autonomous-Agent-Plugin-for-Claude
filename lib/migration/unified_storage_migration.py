@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Unified Storage Migration Script
+    Unified Storage Migration Script
+    """
 
 This script systematically replaces all legacy JSON file reading in dashboard.py
 with unified storage calls only. This aligns with the automatic learning innovation
@@ -11,8 +11,6 @@ Key Principles:
 2. Systematic Data Access: No more legacy file reading
 3. Automatic Learning Integration: Direct access to learning system data
 4. Error-Free Operation: Eliminates file-not-found and parsing errors
-"""
-
 import re
 import json
 from pathlib import Path
@@ -59,7 +57,7 @@ def create_unified_storage_content():
 class DashboardDataCollector:
     """Collects and aggregates data from unified storage only."""
 
-    def __init__(self, patterns_dir: str = ): ):
+    def __init__(self, patterns_dir: str = ".claude-patterns"): ):
         """
         Initialize with unified storage only.
 
@@ -116,8 +114,9 @@ class DashboardDataCollector:
             self.unified_storage = None
             self.use_unified_storage = False
 
-    def _load_unified_data(self) -> dict:
+    def _load_unified_data():
         """
+        
         Load data from unified parameter storage ONLY.
         This is the ONLY data source for all dashboard APIs.
         """

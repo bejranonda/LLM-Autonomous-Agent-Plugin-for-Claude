@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
-"""
-Simple f-string syntax fixer for specific patterns
-"""
-import re
-
+#!
+# /*/usr/bin/env python3
+# //Simple f-string syntax fixer for specific patterns
+# */
+# //import re
+# //
 
 def fix_fstring_patterns(content):
     """Fix f-string patterns with mismatched quotes"""

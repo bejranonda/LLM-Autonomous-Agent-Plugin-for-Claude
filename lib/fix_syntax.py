@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script to systematically fix syntax errors in Python files.
-"""
-
+# Script to systematically fix syntax errors in Python files.
 import os
 import re
 import subprocess

@@ -1,6 +1,6 @@
 """
-Comprehensive Test Suite for Token Optimization Framework
-
+    Comprehensive Test Suite for Token Optimization Framework
+    """
 Tests all components of the token optimization system to ensure
 proper integration, functionality, and performance.
 
@@ -10,8 +10,6 @@ Test Categories:
 - Performance tests for optimization effectiveness
 - Load tests for system scalability
 - End-to-end workflow tests
-"""
-
 import os
 import json
 import unittest

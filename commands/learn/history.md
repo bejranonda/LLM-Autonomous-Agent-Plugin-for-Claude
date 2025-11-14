@@ -93,7 +93,7 @@ Top Patterns to Apply:
 2. Use conventional commit messages for automation
 3. Add integration tests before refactoring
 
-📄 Full report: .claude/reports/learn-history-fastapi-2025-10-29.md
+📄 Full report: .claude/data/reports/learn-history-fastapi-2025-10-29.md
 ⏱ Analysis completed in 4.5 minutes
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

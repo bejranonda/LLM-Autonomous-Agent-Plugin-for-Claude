@@ -1,8 +1,7 @@
 """
-Unified Metrics Aggregator for Token Optimization Framework
+    Unified Metrics Aggregator for Token Optimization Framework
+    """
 Centralizes metrics from all optimization systems and provides KPI tracking
-"""
-
 import sqlite3
 import json
 import time
@@ -1008,8 +1007,6 @@ class UnifiedMetricsAggregator:
 
 ## KPI Performance Analysis
 
-"""
-
         individual_kpis = dashboard_data["current_scores"]["individual_kpis"]
 
         for kpi_name, kpi_data in individual_kpis.items():
@@ -1026,8 +1023,6 @@ class UnifiedMetricsAggregator:
 - **Achievement Rate**: {kpi_data['achievement_rate']:.1f}%
 - **Status**: {kpi_data.get('status', 'unknown').title()}
 - **Trend**: {kpi_data.get('trend', 'unknown').title()}
-
-"""
 
         # Add recommendations
         recommendations = dashboard_data["system_snapshot"]["recommendations"]
@@ -1047,8 +1042,6 @@ class UnifiedMetricsAggregator:
 - **Expected Impact**: {action['expected_impact']}
 - **Effort**: {action['effort'].title()}
 - **Timeline**: {action['timeline']}
-
-"""
 
         return report
 

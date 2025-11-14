@@ -1,30 +1,27 @@
 #!/usr/bin/env python3
-"""
-Proactive Suggester for Four-Tier Agent Architecture
-====================================================
+# Proactive Suggester for Four-Tier Agent Architecture
+# ====================================================
 
-Purpose: Proactively suggests improvements without being asked
+# Purpose: Proactively suggests improvements without being asked
 
-Key Features:
-- Analyzes project patterns and identifies improvement opportunities
-- Generates suggestions based on code quality trends, security gaps, technical debt
-- Prioritizes by urgency (high/medium/low) with effort/impact estimates
-- Tracks suggestion acceptance and effectiveness
-- Learns from user preferences and suggestion outcomes
-- Integrates with inter-group knowledge transfer system
+# Key Features:
+# - Analyzes project patterns and identifies improvement opportunities
+# - Generates suggestions based on code quality trends, security gaps, technical debt
+# - Prioritizes by urgency (high/medium/low) with effort/impact estimates
+# - Tracks suggestion acceptance and effectiveness
+# - Learns from user preferences and suggestion outcomes
+# - Integrates with inter-group knowledge transfer system
 
-Suggestion Types:
-- Security: Vulnerabilities, outdated dependencies, missing security measures
-- Performance: Bottlenecks, optimization opportunities, resource inefficiencies
-- Quality: Code smells, standards violations, technical debt
-- Documentation: Missing docs, outdated guides, unclear APIs
-- Testing: Coverage gaps, flaky tests, missing edge cases
-- Technical Debt: Old TODOs, deprecated code, refactoring opportunities
+# Suggestion Types:
+# - Security: Vulnerabilities, outdated dependencies, missing security measures
+# - Performance: Bottlenecks, optimization opportunities, resource inefficiencies
+# - Quality: Code smells, standards violations, technical debt
+# - Documentation: Missing docs, outdated guides, unclear APIs
+# - Testing: Coverage gaps, flaky tests, missing edge cases
+# - Technical Debt: Old TODOs, deprecated code, refactoring opportunities
 
-Enhancement: v7.1 - High Impact, Low Complexity
-Target: 30+ proactive suggestions per 100 tasks
-"""
-
+# Enhancement: v7.1 - High Impact, Low Complexity
+# Target: 30+ proactive suggestions per 100 tasks
 import json
 import os
 from datetime import datetime
@@ -59,7 +56,7 @@ class ProactiveSuggester:
     """Proactively suggests improvements based on project patterns and trends"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.data_dir = data_dir
         self.suggestions_file = os.path.join(data_dir, "proactive_suggestions.json")
         self._ensure_data_dir()
@@ -142,7 +139,6 @@ class ProactiveSuggester:
         related_patterns: Optional[List[str]] = None,
     )-> str:
         """Create Suggestion."""
-        """
         Create a new proactive suggestion
 
         Args:
@@ -235,7 +231,6 @@ class ProactiveSuggester:
         limit: int = 10,
     )-> List[Dict]:
         """Get Suggestions."""
-        """
         Get suggestions with optional filtering
 
         Args:
@@ -319,7 +314,6 @@ class ProactiveSuggester:
         notes: Optional[str] = None,
     ):
         """Record Implementation Outcome."""
-        """
         Record the outcome of implementing a suggestion
 
         Args:
@@ -417,8 +411,9 @@ class ProactiveSuggester:
 
         self._write_data(data)
 
-    def get_top_suggestions(self, count: int = 5, consider_preferences: bool = True) -> List[Dict]:
+    def get_top_suggestions():
         """
+        
         Get top priority suggestions, optionally considering user preferences
 
         Args:
@@ -496,7 +491,6 @@ class ProactiveSuggester:
         performance_data: Optional[Dict] = None,
     )-> List[str]:
         """Analyze Project And Suggest."""
-        """
         Analyze project state and generate suggestions automatically
 
         Args:

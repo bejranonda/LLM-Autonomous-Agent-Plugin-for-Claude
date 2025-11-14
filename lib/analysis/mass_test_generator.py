@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-"""
 Mass test generator - creates basic tests for all lib modules.
 Focuses on achieving quick coverage boost with simple but effective tests.
-"""
-
 import ast
 import json
 from pathlib import Path
@@ -147,10 +144,10 @@ def main():
 
     # Read coverage to find 0% files
     try:
-        with open('data/reports/coverage.json') as f:
+        with open('data/data/data/reports/coverage.json') as f:
             coverage_data = json.load(f)
     except:
-        print("[ERROR] Could not read data/reports/coverage.json")
+        print("[ERROR] Could not read data/data/data/reports/coverage.json")
         return
 
     generated = 0

@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-Cache Control Error Diagnostic Tool
+#     Cache Control Error Diagnostic Tool
+    """
 
 This script helps identify the source of "cache_control cannot be set for empty text blocks" errors
 by analyzing all JavaScript code blocks in the plugin and simulating their execution.
 
 Usage:
     python lib/cache_control_diagnostics.py [--directory PATH] [--verbose]
-"""
-
 import argparse
 import json
 import os

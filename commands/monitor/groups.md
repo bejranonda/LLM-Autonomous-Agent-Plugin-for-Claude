@@ -391,7 +391,7 @@ From G4    {n}    {n}    {n}     --
 
 ---
 
-Report Path: .claude/reports/group-monitoring-{date}.md
+Report Path: .claude/data/reports/group-monitoring-{date}.md
 ```
 
 ## Result Presentation
@@ -420,11 +420,11 @@ TOP PERFORMERS:
 
 TRENDS: Quality {trend_icon} {direction} | Iterations {trend_icon} {direction}
 
-📄 Detailed Report: .claude/reports/group-monitoring-{date}.md
+📄 Detailed Report: .claude/data/reports/group-monitoring-{date}.md
 ⏱️  Execution Time: {time}s
 ```
 
-**File Report**: Save complete detailed report to `.claude/reports/group-monitoring-YYYY-MM-DD.md`
+**File Report**: Save complete detailed report to `.claude/data/reports/group-monitoring-YYYY-MM-DD.md`
 
 ## Notes
 

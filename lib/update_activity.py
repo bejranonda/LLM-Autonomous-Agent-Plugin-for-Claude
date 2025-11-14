@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-"""
-Utility to update dashboard activity data with current timestamps.
-This generates sample activity data to demonstrate the dashboard functionality.
-"""
-
+# Utility to update dashboard activity data with current timestamps.
+# This generates sample activity data to demonstrate the dashboard functionality.
 import json
 from datetime import datetime, timedelta
 from pathlib import Path

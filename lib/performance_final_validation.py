@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Final Performance Validation Test
+#     Final Performance Validation Test
+    """
 Windows-compatible version without emojis
-"""
-
 import time
 import json
 from datetime import datetime

@@ -126,7 +126,7 @@ Current Capabilities:
 * Problem Solving: [breakthrough_rate] breakthroughs/day
 
 Next Evolution: [next_evolution_step]
-Report: .claude-patterns/reports/transcendent-evolution-YYYY-MM-DD.md
+Report: .claude-patterns/data/reports/transcendent-evolution-YYYY-MM-DD.md
 ```
 
 ### Detailed Report (Comprehensive Analysis)

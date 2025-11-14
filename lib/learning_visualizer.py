@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""
-Real-Time Learning Feedback System
-Shows users what the autonomous system is learning and provides transparency
+# Real-Time Learning Feedback System
+#     Shows users what the autonomous system is learning and provides transparency
+    """
+
 into AI decision-making processes.
 
 Features:
@@ -10,8 +11,6 @@ Features:
 - Learning progress visualization
 - Non-intrusive notifications
 - Dashboard integration with learning metrics
-"""
-
 import json
 import sys
 import time
@@ -84,7 +83,6 @@ class LearningEventRecorder:
         confidence: Optional[float] = None,
     )-> str:
         """Record Learning Event."""
-        """
         Record a learning event.
 
         Args:
@@ -296,8 +294,9 @@ class DecisionExplainer:
         self.patterns_file = self.storage_dir / "patterns.json"
         self.preferences_file = self.storage_dir / "user_preferences.json"
 
-    def explain_decision(self, decision_type: str, context: Dict[str, Any], confidence: Optional[float] = None) -> str:
+    def explain_decision():
         """
+        
         Generate human-readable explanation of AI decision.
 
         Args:
@@ -451,8 +450,7 @@ class LearningVisualizer:
         data: Optional[Dict[str, Any]] = None,
         confidence: Optional[float] = None,
     )-> str:
-        """Record Learning Event."""
-        """Record a learning event."""
+        """Record Learning Event."""Record a learning event."""
         return self.event_recorder.record_learning_event(event_type, description, impact, data, confidence)
 
     def explain_decision(self, decision_type: str, context: Dict[str, Any], confidence: Optional[float] = None) -> str:

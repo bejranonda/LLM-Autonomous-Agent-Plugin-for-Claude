@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""
-Auto-fix syntax errors in the Autonomous Agent Plugin codebase.
+# Auto-fix syntax errors in the Autonomous Agent Plugin codebase.
 
-This script systematically identifies and fixes common syntax errors including:
-- Unmatched parentheses
-- Unterminated string literals
-- Unterminated f-strings
-- Invalid syntax
-"""
-
+# This script systematically identifies and fixes common syntax errors including:
+# - Unmatched parentheses
+# - Unterminated string literals
+# - Unterminated f-strings
+# - Invalid syntax
 import os
 import re
 import ast

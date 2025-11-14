@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-Advanced Python Syntax Error Fixer
+#     Advanced Python Syntax Error Fixer
+    """
 Handles complex syntax error patterns with specific fixes
-"""
 import ast
 import os
 import re
@@ -13,7 +12,7 @@ from typing import List, Tuple, Dict, Optional
 
 class AdvancedSyntaxFixer:
     def __init__(self, lib_dir: str = "lib"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.lib_dir = Path(lib_dir)
         self.fixes_applied = []
         self.errors_fixed = 0

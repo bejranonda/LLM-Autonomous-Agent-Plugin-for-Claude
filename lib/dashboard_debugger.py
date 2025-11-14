@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Dashboard Debugger
+#     Comprehensive Dashboard Debugger
+    """
 Implements iterative debugging loop that continues until data is shown or no failures
-"""
-
 import sys
 import os
 import time
@@ -30,7 +28,7 @@ class DashboardDebugger:
     """Iterative debugger that continues until issues are resolved"""
 
     def __init__(self, dashboard_url="http://127.0.0.1:5001"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.dashboard_url = dashboard_url
         self.debug_log = []
         self.fix_attempts = 0
@@ -334,8 +332,6 @@ Debug Attempts: {self.fix_attempts}
 {chr(10).join(self.debug_log)}
 
 ## RECOMMENDATIONS
-"""
-
         if self.fix_attempts >= self.max_attempts:
             report += """
 ### CRITICAL ISSUES FOUND
@@ -347,8 +343,6 @@ Debug Attempts: {self.fix_attempts}
 2. Verify API endpoints are returning data
 3. Check dashboard logs for server-side errors
 4. Review JavaScript code for syntax issues
-"""
-
         return report
 
 

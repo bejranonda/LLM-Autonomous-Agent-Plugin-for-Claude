@@ -10,8 +10,6 @@ Features:
 - System health metrics
 - Performance trend analysis
 - Auto-healing recommendations
-"""
-
 import json
 import os
 from datetime import datetime, timedelta
@@ -31,6 +29,7 @@ except ImportError:
 class ConsistencyDashboard:
     """
     Real-time consistency validation and monitoring system.
+    """
     """
 
     def __init__(self):
@@ -56,8 +55,9 @@ class ConsistencyDashboard:
         self.consistency_history = []
         self.last_check = None
 
-    def run_consistency_check(self) -> Dict[str, Any]:
+    def run_consistency_check():
         """
+        
         Run comprehensive consistency check across all dashboard sections.
 
         Returns:

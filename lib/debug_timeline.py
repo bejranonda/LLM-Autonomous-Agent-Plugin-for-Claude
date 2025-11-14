@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Debug script for quality timeline function
-"""
+#     Debug script for quality timeline function
+    """
 from lib.dashboard import DashboardDataCollector
 import sys
 

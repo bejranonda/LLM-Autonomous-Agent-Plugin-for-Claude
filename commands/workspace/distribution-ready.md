@@ -82,11 +82,11 @@ Essential Files (Kept in repository):
 .claude-preferences/
 .claude-quality/
 .claude-test/
-.claude-reports/
-.claudereports/
+data/reports/
+.claudedata/reports/
 
 # User-specific reports and data
-.reports/
+.data/reports/
 .reportscurrent/
 .reportscurrentvalidation/
 
@@ -128,8 +128,8 @@ local_settings.json
 settings.local.json
 
 # Generated reports (keep structure, clean content)
-docs/reports/generated/*
-!docs/reports/generated/.gitkeep
+data/reports/generated/*
+!data/reports/generated/.gitkeep
 
 # Python cache and environment
 *.egg-info/
@@ -243,7 +243,7 @@ Ready for: Marketplace distribution and GitHub release
 ### **Detailed Report File**
 
 ```
-📄 Detailed report: .claude/reports/distribution-ready-2025-10-30.md
+📄 Detailed report: .claude/data/reports/distribution-ready-2025-10-30.md
 ```
 
 ## File Classification Details
@@ -258,7 +258,7 @@ Ready for: Marketplace distribution and GitHub release
 ### **Computer-Specific Files (Removed from Tracking)**
 - **Local Patterns**: .claude-patterns/ (all JSON files)
 - **Performance Data**: quality history, metrics, debugging data
-- **Local Reports**: .reports/, validation reports
+- **Local Reports**: .data/reports/, validation reports
 - **Development Files**: improvements/, patterns/, test files
 - **Generated Content**: Release notes, changelogs, generated docs
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""
-Claude Plugin Validator - Official Guidelines Compliance Checker
+# Claude Plugin Validator - Official Guidelines Compliance Checker
 
-Comprehensive validation for Claude Code plugins to prevent installation failures
+#     Comprehensive validation for Claude Code plugins to prevent installation failures
+    """
+
 and ensure compliance with official plugin development guidelines.
-"""
-
 import json
 import yaml
 import re
@@ -18,7 +17,7 @@ class ClaudePluginValidator:
     """Validates Claude Code plugins against official guidelines."""
 
     def __init__(self, plugin_dir: str = "."):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.plugin_dir = Path(plugin_dir)
         self.issues = []
         self.warnings = []

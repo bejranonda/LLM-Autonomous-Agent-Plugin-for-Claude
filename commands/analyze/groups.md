@@ -626,7 +626,7 @@ Analysis Period: Last {n} tasks
 
 ---
 
-Report Path: .claude/reports/group-analysis-{date}.md
+Report Path: .claude/data/reports/group-analysis-{date}.md
 ```
 
 ## Result Presentation
@@ -657,11 +657,11 @@ TOP RECOMMENDATIONS:
   1. [{priority}] {recommendation_1}
   2. [{priority}] {recommendation_2}
 
-📄 Detailed Analysis: .claude/reports/group-analysis-{date}.md
+📄 Detailed Analysis: .claude/data/reports/group-analysis-{date}.md
 ⏱️  Execution Time: {time}s
 ```
 
-**File Report**: Save complete analysis to `.claude/reports/group-analysis-YYYY-MM-DD.md`
+**File Report**: Save complete analysis to `.claude/data/reports/group-analysis-YYYY-MM-DD.md`
 
 ## Notes
 

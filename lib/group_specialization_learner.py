@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""
-Group Specialization Learning System
+#     Group Specialization Learning System
+    """
 Automatically identifies what each group excels at and optimizes task delegation
 based on learned specializations.
 
-This system tracks group performance across different task types and contexts to
-build specialization profiles that inform intelligent task routing.
-"""
+    This system tracks group performance across different task types and contexts to
+    """
 
+build specialization profiles that inform intelligent task routing.
 import json
 import sys
 from pathlib import Path
@@ -29,6 +29,7 @@ except ImportError:
 class GroupSpecializationLearner:
     """
     Learns and tracks group specializations for optimal task delegation.
+    """
     """
 
     # Group definitions
@@ -137,7 +138,6 @@ class GroupSpecializationLearner:
         success: bool,
     ):
         """Record Observation."""
-        """
         Record an observation of group performance.
 
         Args:
@@ -378,7 +378,6 @@ class GroupSpecializationLearner:
         self, task_type: str, complexity: Optional[str] = None, domain: Optional[str] = None
     )-> Tuple[int, float, str]:
         """Get Recommended Group For Task."""
-        """
         Get recommended group for a task.
 
         Args:

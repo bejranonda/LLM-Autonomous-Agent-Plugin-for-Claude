@@ -137,13 +137,13 @@ The command produces a comprehensive terminal dashboard with:
 ### Export as JSON
 ```bash
 # Auto-detects plugin path
-python <plugin_path>/lib/learning_analytics.py export-json --output reports/analytics.json --dir .claude-patterns
+python <plugin_path>/lib/learning_analytics.py export-json --output data/reports/analytics.json --dir .claude-patterns
 ```
 
 ### Export as Markdown
 ```bash
 # Auto-detects plugin path
-python <plugin_path>/lib/learning_analytics.py export-md --output reports/analytics.md --dir .claude-patterns
+python <plugin_path>/lib/learning_analytics.py export-md --output data/reports/analytics.md --dir .claude-patterns
 ```
 
 ## Usage Scenarios

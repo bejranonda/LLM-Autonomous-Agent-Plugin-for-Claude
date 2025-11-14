@@ -159,12 +159,12 @@ Target: dashboard data inconsistency
 [PASS] Quality improvement: +11 points
 [PASS] Time to resolution: 4.2 minutes
 
-📄 Full report: .claude/reports/debug-eval-dashboard-2025-10-24.md
+📄 Full report: .claude/data/reports/debug-eval-dashboard-2025-10-24.md
 ⏱ Completed in 4.2 minutes
 ```
 
 ### Detailed Report
-Located at: `.claude/reports/debug-eval-<target>-YYYY-MM-DD.md`
+Located at: `.claude/data/reports/debug-eval-<target>-YYYY-MM-DD.md`
 
 Comprehensive analysis including:
 - Issue identification and root cause analysis

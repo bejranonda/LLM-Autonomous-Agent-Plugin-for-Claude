@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-"""
-Context-Aware Skill Recommendations
-Enhances skill selection with contextual factors like time of day, recent outcomes,
-user preferences, and project phase for 245% ROI improvement.
+# Context-Aware Skill Recommendations
+# Enhances skill selection with contextual factors like time of day, recent outcomes,
+# user preferences, and project phase for 245% ROI improvement.
 
-Context Signals:
-- Time of day (morning: quality focus, evening: speed focus)
-- Recent task outcomes (recent failures: extra validation)
-- User feedback (preferences for certain tools/approaches)
-- Project phase (early dev: speed, pre-release: quality)
-- Team preferences (from user_preference_learner.py)
-"""
-
+# Context Signals:
+# - Time of day (morning: quality focus, evening: speed focus)
+# - Recent task outcomes (recent failures: extra validation)
+# - User feedback (preferences for certain tools/approaches)
+# - Project phase (early dev: speed, pre-release: quality)
+# - Team preferences (from user_preference_learner.py)
 import json
 import sys
 from pathlib import Path
@@ -44,6 +41,7 @@ class ProjectPhase(Enum):
 class ContextAwareSkillRecommender:
     """
     Context-aware skill recommendation system that adjusts skill selection
+    """
     based on contextual factors beyond just task type.
     """
 
@@ -88,7 +86,6 @@ class ContextAwareSkillRecommender:
         context: Optional[Dict[str, Any]] = None,
     )-> List[Tuple[str, float]]:
         """Recommend Skills With Context."""
-        """
         Adjust skill recommendations based on context.
 
         Args:
@@ -122,8 +119,9 @@ class ContextAwareSkillRecommender:
 
         return sorted_recommendations
 
-    def _adjust_for_time_of_day(self, recommendations: Dict[str, float], context: Dict[str, Any]) -> Dict[str, float]:
+    def _adjust_for_time_of_day():
         """
+        
         Adjust recommendations based on time of day.
 
         Context-based strategy:
@@ -191,8 +189,9 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
-    def _adjust_for_recent_outcomes(self, recommendations: Dict[str, float], context: Dict[str, Any]) -> Dict[str, float]:
+    def _adjust_for_recent_outcomes():
         """
+        
         Adjust recommendations based on recent task outcomes.
 
         If recent failures detected, increase validation and testing.
@@ -227,7 +226,6 @@ class ContextAwareSkillRecommender:
         self, recommendations: Dict[str, float], task_info: Dict[str, Any], context: Dict[str, Any]
     )-> Dict[str, float]:
         """ Adjust For User Preferences."""
-        """
         Adjust recommendations based on learned user preferences.
         """
         if not self.preference_learner:
@@ -283,8 +281,9 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
-    def _adjust_for_project_phase(self, recommendations: Dict[str, float], context: Dict[str, Any]) -> Dict[str, float]:
+    def _adjust_for_project_phase():
         """
+        
         Adjust recommendations based on project phase.
         """
         project_phase = context.get("project_phase", "development")
@@ -365,8 +364,7 @@ class ContextAwareSkillRecommender:
         task_info: Dict[str, Any],
         context: Dict[str, Any],
     ):
-        """ Record Recommendation."""
-        """Record recommendation for learning and analysis."""
+        """ Record Recommendation."""Record recommendation for learning and analysis."""
         try:
             with open(self.context_file, "r", encoding="utf-8") as f:
                 data = json.load(f)

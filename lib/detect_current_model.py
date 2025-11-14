@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Automatic Model Detection for Claude Code Dashboard
+#     Automatic Model Detection for Claude Code Dashboard
+    """
 
 Detects the current model being used by analyzing:
 1. Environment variables set by Claude Code
@@ -9,8 +9,6 @@ Detects the current model being used by analyzing:
 4. Fallback to asking the AI directly via a marker file
 
 This ensures the dashboard always shows the correct current model.
-"""
-
 import json
 import os
 import sys
@@ -18,9 +16,10 @@ from pathlib import Path
 from datetime import datetime
 
 
-def detect_model_from_env() -> tuple[str, str]:
-    """
-    Detect model from environment variables.
+def detect_model_from_env():
+        """
+        
+        Detect model from environment variables.
 
     Returns:
         Tuple of (model_name, detection_method)
@@ -41,9 +40,10 @@ def detect_model_from_env() -> tuple[str, str]:
     return (None, None)
 
 
-def detect_model_from_process() -> tuple[str, str]:
-    """
-    Detect model from process information.
+def detect_model_from_process():
+        """
+        
+        Detect model from process information.
 
     Returns:
         Tuple of (model_name, detection_method)
@@ -82,9 +82,10 @@ def detect_model_from_process() -> tuple[str, str]:
     return (None, None)
 
 
-def detect_model_from_marker() -> tuple[str, str]:
-    """
-    Detect model from marker file that can be manually updated.
+def detect_model_from_marker():
+        """
+        
+        Detect model from marker file that can be manually updated.
 
     Returns:
         Tuple of (model_name, detection_method)
@@ -115,9 +116,10 @@ def get_default_model() -> str:
     return "Claude Sonnet 4.5"
 
 
-def detect_current_model() -> dict:
-    """
-    Detect the current model using multiple methods.
+def detect_current_model():
+        """
+        
+        Detect the current model using multiple methods.
 
     Returns:
         Dict with model information

@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""
-Automatic Activity Recorder
-
+#     Automatic Activity Recorder
+    """
 Integrates with the learning engine to automatically capture all activities
 and ensure comprehensive performance tracking.
-"""
-
 import json
 import os
 import time
@@ -16,7 +13,7 @@ from typing import Dict, List, Any, Optional
 
 class AutoActivityRecorder:
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = patterns_dir
         self.performance_records_file = os.path.join(patterns_dir, "performance_records.json")
         self.auto_trigger_log = os.path.join(patterns_dir, "auto_trigger_log.json")

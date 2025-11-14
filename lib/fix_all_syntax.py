@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Python Syntax Fixer
+#     Comprehensive Python Syntax Fixer
+    """
 Fixes all common syntax errors in the Autonomous Agent Plugin project
-"""
-
 import os
 import re
 from pathlib import Path

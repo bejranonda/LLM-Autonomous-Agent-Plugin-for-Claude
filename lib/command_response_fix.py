@@ -1,14 +1,11 @@
 #!/usr/bin/python3
-"""
-Emergency Fix for Command Response Generation
+# Emergency Fix for Command Response Generation
 
-CRITICAL: Prevents cache_control errors in command responses
-Integration: Replace all command response formatting functions
+# CRITICAL: Prevents cache_control errors in command responses
+# Integration: Replace all command response formatting functions
 
-Status: EMERGENCY DEPLOYMENT REQUIRED
-Version: 1.0.0
-"""
-
+# Status: EMERGENCY DEPLOYMENT REQUIRED
+# Version: 1.0.0
 # Import emergency fix
 try:
     from lib.orchestrator_emergency_fix import emergency_sanitize_messages

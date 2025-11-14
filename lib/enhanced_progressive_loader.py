@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Enhanced Progressive Content Loader
+#     Enhanced Progressive Content Loader
+    """
 
 Advanced progressive content loading system with intelligent tier selection,
 user pattern learning, and real-time optimization. This system provides
@@ -18,8 +18,6 @@ Features:
 
 Version: 2.0.0 - Production Ready
 Author: Autonomous Agent Development Team
-"""
-
 import os
 import json
 import time
@@ -135,7 +133,6 @@ class EnhancedProgressiveLoader:
         self, content: str, context: Dict[str, Any] = None, user_id: str = "default", task_type: str = "general"
     )-> Tuple[str, ContentMetrics]:
         """Load Content."""
-        """
         Load content with intelligent progressive optimization.
 
         Args:
@@ -179,8 +176,7 @@ class EnhancedProgressiveLoader:
     def _determine_optimal_tier(
         self, content: str, context: Dict[str, Any], user_id: str, task_type: str, original_tokens: int
     )-> LoadingTier:
-        """ Determine Optimal Tier."""
-        """Determine the optimal loading tier based on multiple factors."""
+        """ Determine Optimal Tier."""Determine the optimal loading tier based on multiple factors."""
 
         # Base tier determination from task complexity
         task_complexity = self._assess_task_complexity(context, task_type)
@@ -349,8 +345,7 @@ class EnhancedProgressiveLoader:
     def _prioritize_sections(
         self, sections: List[Dict[str, Any]], tier: LoadingTier, context: Dict[str, Any]
     )-> List[Dict[str, Any]]:
-        """ Prioritize Sections."""
-        """Prioritize sections based on tier and context."""
+        """ Prioritize Sections."""Prioritize sections based on tier and context."""
 
         # Calculate priority scores
         for section in sections:

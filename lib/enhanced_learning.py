@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Enhanced Learning Engine for Autonomous Claude Agent Plugin
+#     Enhanced Learning Engine for Autonomous Claude Agent Plugin
+    """
 
 Advanced pattern learning system with contextual understanding, confidence scoring,
 skill effectiveness tracking, and cross-project pattern transfer capabilities.
-"""
-
 import json
 import argparse
 import sys
@@ -80,8 +78,9 @@ class EnhancedLearningEngine:
                 }
             )
 
-    def _read_patterns(self) -> Dict[str, Any]:
+    def _read_patterns():
         """
+        
         Read patterns from JSON file with file locking.
 
         Returns:
@@ -134,7 +133,6 @@ class EnhancedLearningEngine:
         confidence: float = 1.0,
     )-> bool:
         """Record Pattern."""
-        """
         Record a new pattern for learning.
 
         Args:
@@ -191,7 +189,6 @@ class EnhancedLearningEngine:
         self, task_type: str, context: Dict[str, Any], limit: int = 5, min_confidence: float = 0.5
     )-> List[Dict[str, Any]]:
         """Find Similar Patterns."""
-        """
         Find patterns similar to the given task type and context.
 
         Args:
@@ -290,8 +287,9 @@ class EnhancedLearningEngine:
 
         self._write_patterns(patterns_data)
 
-    def get_skill_effectiveness(self) -> Dict[str, Dict[str, float]]:
+    def get_skill_effectiveness():
         """
+        
         Calculate effectiveness scores for all skills.
 
         Returns:
@@ -329,8 +327,9 @@ class EnhancedLearningEngine:
 
         return effectiveness
 
-    def get_agent_effectiveness(self) -> Dict[str, Dict[str, float]]:
+    def get_agent_effectiveness():
         """
+        
         Calculate effectiveness scores for all agents.
 
         Returns:
@@ -368,8 +367,9 @@ class EnhancedLearningEngine:
 
         return effectiveness
 
-    def get_learning_statistics(self) -> Dict[str, Any]:
+    def get_learning_statistics():
         """
+        
         Get comprehensive learning statistics.
 
         Returns:

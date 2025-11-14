@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 # Read coverage data
-with open('data/reports/coverage.json') as f:
+with open('data/data/data/reports/coverage.json') as f:
     data = json.load(f)
 
 print("[COVERAGE ANALYSIS]")

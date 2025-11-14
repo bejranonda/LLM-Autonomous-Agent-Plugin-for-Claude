@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""
-Basic functionality test for unified parameter storage system.
+# Basic functionality test for unified parameter storage system.
 
-This test verifies the core functionality and backward compatibility
+#     This test verifies the core functionality and backward compatibility
+    """
+
 without requiring the full test suite.
-"""
-
 import sys
 import os
 import tempfile

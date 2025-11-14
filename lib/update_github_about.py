@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""
-GitHub About Section Updater
-
+#     GitHub About Section Updater
+    """
 Updates GitHub repository About section with optimized description and topics
 for the Autonomous Agent v7.1.0 release.
 
 Usage:
     python update_github_about.py [--dry-run] [--token TOKEN]
-"""
-
 import json
 import os
 import sys
@@ -113,8 +110,9 @@ class GitHubAboutUpdater:
             print(f"WARNING: Could not analyze project locally: {e}")
             return {}
 
-    def generate_optimized_content(self, current_state: Dict) -> Dict:
+    def generate_optimized_content():
         """
+        
         Generate optimized description and topics for v7.1.0.
 
         Args:
@@ -281,8 +279,9 @@ class GitHubAboutUpdater:
             "v7_1_keywords": v7_1_found,
         }
 
-    def update_repository(self, optimized_content: Dict, dry_run: bool = False) -> bool:
+    def update_repository():
         """
+        
         Update the GitHub repository with optimized content.
 
         Args:

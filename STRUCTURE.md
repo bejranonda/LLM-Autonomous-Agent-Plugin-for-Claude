@@ -76,6 +76,7 @@ D:\Git\Werapol\AutonomousAgent\
 ├── lib/                                      # 110+ Python utilities
 │   ├── exec_plugin_script.py                # Cross-platform executor (v5.6+)
 │   ├── plugin_path_resolver.py              # Dynamic path discovery (v5.6+)
+│   ├── analysis/                            # Testing and analysis utilities
 │   ├── assessments/                         # Assessment scripts
 │   ├── fixes/                               # Auto-fix utilities
 │   ├── migration/                           # Migration tools
@@ -85,10 +86,12 @@ D:\Git\Werapol\AutonomousAgent\
 ├── patterns/                                 # Auto-fix patterns (v2.0)
 │   └── autofix-patterns.json                # 24 patterns, 89% success rate
 │
-├── .claude-reports/                          # Consolidated reports
-│   ├── current/                             # Current reports
-│   ├── validation/                          # Validation reports
-│   └── archive/                             # Historical reports
+├── data/                                     # Centralized data storage
+│   ├── databases/                           # Database files and storage
+│   └── reports/                             # Consolidated reports
+│       ├── current/                         # Current reports
+│       ├── validation/                      # Validation reports
+│       └── archive/                         # Historical reports
 │
 ├── docs/                                     # 296 documentation files
 │   ├── guidelines/                          # Development guidelines

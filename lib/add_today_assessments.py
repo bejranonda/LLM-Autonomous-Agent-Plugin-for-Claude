@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Add today's work assessments to unified storage retroactively.
-"""
-
+# Add today's work assessments to unified storage retroactively.
 import json
 from pathlib import Path
 from datetime import datetime

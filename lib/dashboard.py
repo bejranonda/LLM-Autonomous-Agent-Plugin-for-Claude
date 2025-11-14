@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-"""
-Real-time Monitoring Dashboard for Autonomous Agent
+# Real-time Monitoring Dashboard for Autonomous Agent
 
-Provides a web-based interface for visualizing:
-- Learning progress and pattern effectiveness
-- Quality metrics and trends over time
-- Agent and skill performance analytics
-- Real-time task execution monitoring
-- System health and resource usage
+# Provides a web-based interface for visualizing:
+# - Learning progress and pattern effectiveness
+# - Quality metrics and trends over time
+# - Agent and skill performance analytics
+# - Real-time task execution monitoring
+# - System health and resource usage
 
-Built with Flask for simplicity and ease of deployment.
+# Built with Flask for simplicity and ease of deployment.
 
-Version: 1.0.0
-Author: Autonomous Agent Development Team
-"""
-
+# Version: 1.0.0
+# Author: Autonomous Agent Development Team
 from flask import Flask, render_template_string, jsonify, request
 from flask_cors import CORS
 import json
@@ -38,21 +35,21 @@ try:
     import sys
     from pathlib import Path
 
-    lib_dir = Path(__file__).parent
+#     lib_dir = Path(__file__).parent
     if str(lib_dir) not in sys.path:
         sys.path.insert(0, str(lib_dir))
 
     from unified_parameter_storage import UnifiedParameterStorage
     from parameter_compatibility import enable_compatibility_mode
 
-    UNIFIED_STORAGE_AVAILABLE = True
+#     UNIFIED_STORAGE_AVAILABLE = True
 except ImportError:
-    UNIFIED_STORAGE_AVAILABLE = False
+#     UNIFIED_STORAGE_AVAILABLE = False
     print("Warning: Unified parameter storage not available, using legacy system", file=sys.stderr)
 
 
-app = Flask(__name__)
-CORS(app)  # Enable CORS for API access
+# app = Flask(__name__)
+# CORS(app)  # Enable CORS for API access
 
 
 # Unified Dashboard Architecture - Modular Sections
@@ -60,7 +57,7 @@ class UnifiedDashboardSection:
     """Base class for dashboard sections"""
 
     def __init__(self, data_collector):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.data_collector = data_collector
         self.section_name = self.__class__.__name__.lower().replace("section", "")
 
@@ -508,8 +505,9 @@ class DashboardDataCollector:
         print(f"Created new patterns directory: {best_dir}")
         return best_dir
 
-    def _validate_storage_has_data(self, storage_dir: Path) -> bool:
+    def _validate_storage_has_data():
         """
+        
         Validate that a storage directory contains actual data.
 
         Checks for:
@@ -648,8 +646,9 @@ class DashboardDataCollector:
 
         return model_data if model_data else None
 
-    def _normalize_timestamp(self, timestamp: str) -> str:
+    def _normalize_timestamp():
         """
+        
         Normalize timestamp to ISO format for consistency.
         """
         if not timestamp:
@@ -670,8 +669,9 @@ class DashboardDataCollector:
             # If parsing fails, return current time
             return datetime.now().astimezone().isoformat()
 
-    def _get_model_sort_key(self, model_name: str) -> tuple:
+    def _get_model_sort_key():
         """
+        
         Get sort key for consistent model ordering across all charts.
         Order: Claude models first, then GLM models, then others alphabetically.
 
@@ -699,8 +699,9 @@ class DashboardDataCollector:
         else:
             return (2, 0, model_name)
 
-    def _load_unified_data(self) -> dict:
+    def _load_unified_data():
         """
+        
         Load data from unified storage (unified_data.json).
         This is the PRIMARY data source for all dashboard APIs.
         """
@@ -759,8 +760,9 @@ class DashboardDataCollector:
             print(f"Error loading unified data: {e}", file=sys.stderr)
             return {"quality": {"assessments": {"history": [], "current": {}}}, "patterns": {}}
 
-    def _get_unified_assessments(self, days: int = 30, task_types: list = None) -> list:
+    def _get_unified_assessments():
         """
+        
         Get assessments from unified storage with optional filtering.
         """
         from collections import defaultdict
@@ -814,8 +816,9 @@ class DashboardDataCollector:
 
         return filtered_assessments
 
-    def get_debugging_performance_data(self, days: int = 1) -> dict:
+    def get_debugging_performance_data():
         """
+        
         Get debugging performance data from UNIFIED STORAGE only.
         Calculates actual performance metrics from real debugging tasks.
         """
@@ -908,8 +911,9 @@ class DashboardDataCollector:
             "data_source": "unified_storage",
         }
 
-    def get_recent_performance_records(self, limit: int = 50) -> dict:
+    def get_recent_performance_records():
         """
+        
         Get recent performance records from UNIFIED STORAGE only.
         Ensures consistency with other APIs.
         """
@@ -1730,8 +1734,9 @@ class DashboardDataCollector:
         # Default fallback
         return record.get("success", record.get("pass", record.get("overall_score", 0) >= 70))
 
-    def get_recent_activity(self, limit: int = 20) -> Dict[str, Any]:
+    def get_recent_activity():
         """
+        
         Get recent task activity from UNIFIED STORAGE only.
         Shows all tasks regardless of score for complete history tracking.
         """
@@ -1983,8 +1988,9 @@ class DashboardDataCollector:
 
         return summary
 
-    def detect_current_model(self) -> str:
+    def detect_current_model():
         """
+        
         Detect the current model being used by analyzing the system.
 
         Returns:
@@ -2391,8 +2397,9 @@ class DashboardDataCollector:
             "days": days,
         }
 
-    def get_quality_timeline_with_model_events(self, days: int = 1) -> Dict[str, Any]:
+    def get_quality_timeline_with_model_events():
         """
+        
         Get quality timeline using UNIFIED STORAGE data only.
         Shows actual quality scores from real tasks performed during the project.
         """
@@ -6129,9 +6136,6 @@ DASHBOARD_HTML = """
     </script>
 </body>
 </html>
-"""
-
-
 # API Routes
 @app.route("/")
 def index():
@@ -6231,16 +6235,16 @@ def api_validation_results():
     from pathlib import Path
 
     try:
-        # Look for validation reports in both .claude/reports/ and .claude-patterns/reports/
+        # Look for validation reports in both .claude/data/reports/ and .claude-patterns/data/reports/
         validation_files = []
 
-        # Check .claude/reports/ (validation controller saves here)
+        # Check .claude/data/data/reports/ (validation controller saves here)
         claude_reports = Path(".claude/reports")
         if claude_reports.exists():
             validation_files.extend(list(claude_reports.glob("validation-*.md")))
             validation_files.extend(list(claude_reports.glob("comprehensive-validation-*.md")))
 
-        # Check .claude-patterns/reports/ (dashboard patterns dir)
+        # Check .claude-patterns/data/data/data/reports/ (dashboard patterns dir)
         patterns_reports = Path(data_collector.patterns_dir) / "reports"
         if patterns_reports.exists():
             validation_files.extend(list(patterns_reports.glob("validation-*.md")))
@@ -6447,9 +6451,10 @@ def get_timeframe_label(days):
         return f"Last {days} Days"
 
 
-def find_available_port(start_port: int = 5000, max_attempts: int = 10) -> int:
-    """
-    Find an available port starting from start_port.
+def find_available_port():
+        """
+        
+        Find an available port starting from start_port.
 
     Args:
         start_port: Port to start checking from
@@ -6483,9 +6488,10 @@ def find_available_port(start_port: int = 5000, max_attempts: int = 10) -> int:
     raise RuntimeError(f"Could not find an available port after {max_attempts + 5} attempts")
 
 
-def validate_server_startup(url: str, timeout: int = 5) -> bool:
-    """
-    Validate that the server has started successfully and is responding.
+def validate_server_startup():
+        """
+        
+        Validate that the server has started successfully and is responding.
 
     Args:
         url: Server URL to check
@@ -6704,9 +6710,10 @@ def api_section_data(section_name):
         return jsonify({"error": str(e)}), 500
 
 
-def check_existing_dashboard(host: str, port_start: int = 5000, port_end: int = 5010) -> tuple:
-    """
-    Check if dashboard is already running on any port in the range.
+def check_existing_dashboard():
+        """
+        
+        Check if dashboard is already running on any port in the range.
 
     Returns:
         tuple: (is_running, found_port, found_url)

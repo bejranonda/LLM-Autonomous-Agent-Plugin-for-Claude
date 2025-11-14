@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Missing Performance Records Detector - Simplified Version
-"""
-
+# Missing Performance Records Detector - Simplified Version
 import json
 import os
 import subprocess

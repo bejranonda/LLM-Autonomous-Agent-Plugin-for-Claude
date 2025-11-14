@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""
-Fix hardcoded Python script paths in documentation.
+# Fix hardcoded Python script paths in documentation.
 
-Replaces all instances of 'python lib/' with 'python <plugin_path>/lib/'
-in markdown files to ensure the plugin works when installed from marketplace.
-"""
-
+# Replaces all instances of 'python lib/' with 'python <plugin_path>/lib/'
+# in markdown files to ensure the plugin works when installed from marketplace.
 import os
 import sys
 from pathlib import Path

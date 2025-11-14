@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Dashboard Unified Adapter
+#     Dashboard Unified Adapter
+    """
 Integrates the dashboard with the unified parameter storage system
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -22,6 +20,7 @@ except ImportError:
 class DashboardUnifiedAdapter:
     """
     Adapter layer that provides dashboard-specific data access
+    """
     to the unified parameter storage system.
     """
 
@@ -49,8 +48,9 @@ class DashboardUnifiedAdapter:
         self.cache[key] = data
         self.cache_timestamp = datetime.now().timestamp()
 
-    def get_quality_timeline_data(self, days: int = 30) -> List[Dict[str, Any]]:
+    def get_quality_timeline_data():
         """
+        
         Get quality timeline data for charts.
 
         Args:
@@ -119,8 +119,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting quality timeline: {e}", file=sys.stderr)
             return []
 
-    def get_model_performance_data(self) -> Dict[str, Any]:
+    def get_model_performance_data():
         """
+        
         Get model performance data for dashboard.
 
         Returns:
@@ -174,8 +175,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting model performance: {e}", file=sys.stderr)
             return {"active_model": "Unknown", "models": {}, "usage_stats": {}, "total_models": 0}
 
-    def get_quality_metrics(self) -> Dict[str, Any]:
+    def get_quality_metrics():
         """
+        
         Get current quality metrics for dashboard.
 
         Returns:
@@ -220,8 +222,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting quality metrics: {e}", file=sys.stderr)
             return {"current_score": 0, "total_assessments": 0, "average_score": 0, "pass_rate": 0}
 
-    def get_learning_analytics(self) -> Dict[str, Any]:
+    def get_learning_analytics():
         """
+        
         Get learning analytics for dashboard.
 
         Returns:
@@ -266,8 +269,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting learning analytics: {e}", file=sys.stderr)
             return {"total_patterns": 0, "skill_effectiveness": {}, "agent_performance": {}}
 
-    def get_validation_status(self) -> Dict[str, Any]:
+    def get_validation_status():
         """
+        
         Get validation status for dashboard.
 
         Returns:
@@ -312,8 +316,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting validation status: {e}", file=sys.stderr)
             return {"validation_score": 0, "total_validations": 0, "plugin_ready": False}
 
-    def get_agent_feedback_metrics(self) -> Dict[str, Any]:
+    def get_agent_feedback_metrics():
         """
+        
         Get agent feedback and collaboration metrics.
 
         Returns:
@@ -343,8 +348,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting agent feedback metrics: {e}", file=sys.stderr)
             return {"total_feedbacks": 0}
 
-    def get_agent_performance_metrics(self) -> Dict[str, Any]:
+    def get_agent_performance_metrics():
         """
+        
         Get agent performance metrics and trends.
 
         Returns:
@@ -375,8 +381,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting agent performance metrics: {e}", file=sys.stderr)
             return {"individual_metrics": {}}
 
-    def get_user_preference_summary(self) -> Dict[str, Any]:
+    def get_user_preference_summary():
         """
+        
         Get user preference learning summary.
 
         Returns:
@@ -408,8 +415,9 @@ class DashboardUnifiedAdapter:
             print(f"Error getting user preference summary: {e}", file=sys.stderr)
             return {"learning_confidence": 0.0}
 
-    def get_dashboard_summary(self) -> Dict[str, Any]:
+    def get_dashboard_summary():
         """
+        
         Get comprehensive dashboard summary.
 
         Returns:
@@ -512,8 +520,9 @@ class DashboardUnifiedAdapter:
 
         return sorted(skills, key=lambda x: x["effectiveness"], reverse=True)[:5]
 
-    def _calculate_trend(self, values: List[float], min_data_points: int = 3) -> str:
+    def _calculate_trend():
         """
+        
         Calculate trend direction based on historical values.
 
         Args:

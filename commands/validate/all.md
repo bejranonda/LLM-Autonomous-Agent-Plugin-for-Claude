@@ -53,13 +53,13 @@ Top Recommendations:
 2. [MED]  Add Read before Write to plugin.json -> Follow tool requirements
 3. [LOW]  Consider adding path validation utility
 
-📄 Full report: .claude/reports/validation-2025-10-21.md
+📄 Full report: .claude/data/reports/validation-2025-10-21.md
 ⏱ Completed in 1.2 minutes
 ```
 
 ### File Report (Comprehensive)
 
-Located at: `.claude/reports/validation-YYYY-MM-DD.md`
+Located at: `.claude/data/reports/validation-YYYY-MM-DD.md`
 
 ```markdown
 # Comprehensive Validation Report

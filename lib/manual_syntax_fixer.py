@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Manual Syntax Fixer - Systematic file-by-file fixing approach
-"""
-
+# Manual Syntax Fixer - Systematic file-by-file fixing approach
 import ast
 import os
 import re

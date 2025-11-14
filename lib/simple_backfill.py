@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-Simple Backfill Utility
+#     Simple Backfill Utility
+    """
 Simple utility for backfilling missing data.
-"""
-
 import json
 from datetime import datetime
 from pathlib import Path
@@ -11,8 +10,8 @@ from pathlib import Path
 class SimpleBackfill:
     """Simple backfill utility for missing data"""
 
-    def __init__(self, data_dir: str = ):
-        """  Init  ."""
+    def __init__(self, data_dir: str = ".claude-patterns"):
+        """Initialize the processor with default configuration."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -34,5 +33,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-"""

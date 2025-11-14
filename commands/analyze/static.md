@@ -216,7 +216,7 @@ Score: 100 - 110 = 0 (capped at 0)
 
 ✅ Auto-fixable: 45/116 issues
 
-📄 Detailed Report: .reports/static-analysis-2025-01-15.md
+📄 Detailed Report: .data/reports/static-analysis-2025-01-15.md
 
 ⏱️  Analysis completed in 12.4s
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -224,7 +224,7 @@ Score: 100 - 110 = 0 (capped at 0)
 
 ### File Report (Tier 2: Comprehensive)
 
-Saved to `.reports/static-analysis-{DATE}.md`:
+Saved to `.data/reports/static-analysis-{DATE}.md`:
 
 ```markdown
 # Static Analysis Report

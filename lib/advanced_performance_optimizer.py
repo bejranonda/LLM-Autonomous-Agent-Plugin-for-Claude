@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Advanced Performance Optimization Engine
+#     Advanced Performance Optimization Engine
+    """
 Implements cutting-edge performance optimization algorithms including
 machine learning-based resource allocation, predictive caching,
 and intelligent workload distribution.
-"""
-
 import json
 import sys
 import time
@@ -59,6 +57,7 @@ class OptimizationResult:
 class AdvancedPerformanceOptimizer:
     """
     Advanced performance optimizer with ML-based resource allocation,
+    """
     predictive caching, and intelligent workload distribution.
     """
 
@@ -550,8 +549,9 @@ class AdvancedPerformanceOptimizer:
 
         return opportunities
 
-    def _apply_optimization(self, opportunity: Dict[str, Any]) -> bool:
+    def _apply_optimization():
         """
+        
         Apply an optimization based on the opportunity analysis.
 
         Args:
@@ -1076,8 +1076,9 @@ class AdvancedPerformanceOptimizer:
 
         return summary
 
-    def predict_performance(self, task_type: str, agent_name: str) -> Dict[str, float]:
+    def predict_performance():
         """
+        
         Predict performance metrics for a given task and agent.
 
         Args:

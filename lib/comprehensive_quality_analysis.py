@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Quality Analysis for Autonomous Agent Plugin
-"""
-
+#     Comprehensive Quality Analysis for Autonomous Agent Plugin
+    """
 import json
 import yaml
 import sys
@@ -14,7 +12,7 @@ import subprocess
 
 class QualityAnalyzer:
     def __init__(self):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.issues = []
         self.fixes_applied = []
         self.metrics = {}
@@ -344,10 +342,7 @@ class QualityAnalyzer:
         if task_queue_broken.exists() and not task_queue_working.exists():
             # Create a minimal working task_queue.py
             minimal_task_queue = '''#!/usr/bin/env python3
-"""
 Task Queue System for Autonomous Claude Agent Plugin (Minimal Working Version)
-"""
-
 import json
 import argparse
 import sys
@@ -369,7 +364,7 @@ class TaskQueue:
     STATUS_COMPLETED = 'completed'
     STATUS_FAILED = 'failed'
 
-    def __init__(self, queue_dir: str = ): ):
+    def __init__(self, queue_dir: str = ".claude-patterns"): ):
         """Initialize task queue."""
         self.queue_dir = Path(queue_dir)
         self.queue_file = self.queue_dir / "task_queue.json"
@@ -485,7 +480,7 @@ def main():
             print(f"  - [{rec['priority']}] {rec['action']}: {rec['details']}")
 
     # Save detailed report
-    report_file = Path(".claude/reports/QUALITY_REPORT_2025-10-30.md")
+    report_file = Path(".claude/data/data/data/reports/QUALITY_REPORT_2025-10-30.md")
     report_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(report_file, "w", encoding="utf-8") as f:

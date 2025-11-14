@@ -527,7 +527,7 @@ Manual Intervention Required:
 This appears to be a complex integration issue that requires
 human analysis. The following information has been collected:
 
-Detailed Error Report: .claude/reports/debug-failure-2025-01-24.md
+Detailed Error Report: .claude/data/reports/debug-failure-2025-01-24.md
 Code Changes Applied: 5 incremental commits
 Test Logs: .claude/logs/test-failures.log
 

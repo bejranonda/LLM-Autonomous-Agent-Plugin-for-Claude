@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-ENFORCED: Pattern Loading Safety Validator
+# ENFORCED: Pattern Loading Safety Validator
 
-CRITICAL: This script prevents cache_control errors by validating patterns
-exist before ANY attempt to load them with cache_control.
+# CRITICAL: This script prevents cache_control errors by validating patterns
+# exist before ANY attempt to load them with cache_control.
 
-This MUST be called by the orchestrator agent before ANY pattern loading.
-"""
-
+# This MUST be called by the orchestrator agent before ANY pattern loading.
 import json
 import sys
 from pathlib import Path

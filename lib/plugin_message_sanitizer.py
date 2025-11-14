@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""
-PLUGIN MESSAGE SANITIZER - Entry Point for Emergency Fixes
+# PLUGIN MESSAGE SANITIZER - Entry Point for Emergency Fixes
 
-This module provides the main entry point for integrating emergency fixes
+#     This module provides the main entry point for integrating emergency fixes
+    """
+
 into the plugin system. It applies sanitization to all message generation
 to prevent system-wide Claude failure.
 
@@ -14,8 +15,6 @@ Usage:
 
 Status: READY FOR DEPLOYMENT
 Version: 1.0.0
-"""
-
 import sys
 import os
 from typing import Dict, Any, List, Optional
@@ -36,9 +35,10 @@ except ImportError as e:
     EMERGENCY_FIXES_AVAILABLE = False
 
 
-def sanitize_plugin_message(message: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Main entry point for sanitizing plugin messages.
+def sanitize_plugin_message():
+        """
+        
+        Main entry point for sanitizing plugin messages.
 
     This function should be called before ANY message is sent to Claude's API
     to prevent empty text blocks that cause system-wide failure.
@@ -74,9 +74,10 @@ def sanitize_plugin_message(message: Dict[str, Any]) -> Dict[str, Any]:
         return message
 
 
-def sanitize_plugin_messages(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """
-    Sanitize multiple plugin messages.
+def sanitize_plugin_messages():
+        """
+        
+        Sanitize multiple plugin messages.
 
     Args:
         messages: List of message dictionaries to sanitize
@@ -94,9 +95,10 @@ def sanitize_plugin_messages(messages: List[Dict[str, Any]]) -> List[Dict[str, A
         return messages
 
 
-def create_safe_command_response(command_name: str, results: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Create safe command response using emergency fixes.
+def create_safe_command_response():
+        """
+        
+        Create safe command response using emergency fixes.
 
     Args:
         command_name: Name of the command (e.g., '/learn:init')
@@ -116,9 +118,10 @@ def create_safe_command_response(command_name: str, results: Dict[str, Any]) -> 
         return {"role": "assistant", "content": [{"type": "text", "text": f"{command_name} completed with warnings"}]}
 
 
-def validate_message_safety(message: Dict[str, Any]) -> List[str]:
-    """
-    Validate that a message is safe for Claude API.
+def validate_message_safety():
+        """
+        
+        Validate that a message is safe for Claude API.
 
     Args:
         message: Message dictionary to validate

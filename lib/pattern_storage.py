@@ -4,7 +4,7 @@ Pattern Storage System for Autonomous Claude Agent Plugin
 
 Manages pattern learning data using JSON files. Stores successful task patterns,
 retrieves similar patterns for context-aware recommendations, and
-    tracks usage statistics.
+tracks usage statistics.
 """
 
 import json
@@ -64,8 +64,9 @@ class PatternStorage:
         if not self.patterns_file.exists():
             self._write_patterns([])
 
-    def _read_patterns(self) -> List[Dict[str, Any]]:
+    def _read_patterns():
         """
+        
         Read patterns from JSON file with file locking.
 
         Returns:
@@ -145,9 +146,10 @@ class PatternStorage:
             print(f"Error writing patterns: {e}", file=sys.stderr)
             raise
 
-    def store_pattern(self, pattern: Dict[str, Any]) -> str:
+    def store_pattern():
         """
-                Store a new pattern.
+        
+        Store a new pattern.
 
                 Args:
                     pattern: Pattern dictionary containing task information
@@ -222,7 +224,6 @@ class PatternStorage:
         self, context: str, task_type: Optional[str] = None, min_quality: float = 0.8, limit: int = 5
     )-> List[Dict[str, Any]]:
         """Retrieve Patterns."""
-        """
         Retrieve patterns matching search criteria.
 
         Args:
@@ -274,8 +275,7 @@ class PatternStorage:
     def get_similar_patterns(
         self, task_type: str = None, context: Dict[str, Any] = None, min_quality: float = 0.8, limit: int = 5
     )-> List[Dict[str, Any]]:
-        """Get Similar Patterns."""
-        """Alias for retrieve_patterns method for backward compatibility."""
+        """Get Similar Patterns."""Alias for retrieve_patterns method for backward compatibility."""
         context_str = str(context) if context else ""
         return self.retrieve_patterns(context_str, task_type, min_quality, limit)
 
@@ -306,8 +306,9 @@ class PatternStorage:
             "avg_quality": total_quality / skill_usage,
         }
 
-    def update_usage(self, pattern_id: str, success: bool = True) -> bool:
+    def update_usage():
         """
+        
         Update usage statistics for a pattern.
 
         Args:
@@ -344,8 +345,9 @@ class PatternStorage:
         print(f"Error: Pattern '{pattern_id}' not found", file=sys.stderr)
         return False
 
-    def get_statistics(self) -> Dict[str, Any]:
+    def get_statistics():
         """
+        
         Get overall pattern statistics.
 
         Returns:
@@ -382,8 +384,9 @@ class PatternStorage:
             ),
         }
 
-    def _load_unified_data(self) -> Dict[str, Any]:
+    def _load_unified_data():
         """
+        
         Load unified data from unified_data.json file.
 
         Returns:
@@ -417,8 +420,9 @@ class PatternStorage:
             print(f"Warning: Could not load unified data: {e}", file=sys.stderr)
             return self._load_unified_data()  # Return default structure
 
-    def _save_unified_data(self, unified_data: Dict[str, Any]) -> bool:
+    def _save_unified_data():
         """
+        
         Save unified data to unified_data.json file.
 
         Args:
@@ -444,8 +448,9 @@ class PatternStorage:
             print(f"Error saving unified data: {e}", file=sys.stderr)
             return False
 
-    def store_to_unified(self, data_type: str, data: Dict[str, Any]) -> bool:
+    def store_to_unified():
         """
+        
         Store data directly to unified structure.
 
         Args:
@@ -501,8 +506,9 @@ class PatternStorage:
             print(f"Error storing to unified data: {e}", file=sys.stderr)
             return False
 
-    def consolidate_all_data(self) -> bool:
+    def consolidate_all_data():
         """
+        
         Consolidate all scattered data files into unified_data.json.
 
         Returns:
@@ -599,8 +605,9 @@ class PatternStorage:
             print(f"Error consolidating data: {e}", file=sys.stderr)
             return False
 
-    def store_pattern_enhanced(self, pattern: Dict[str, Any]) -> str:
+    def store_pattern_enhanced():
         """
+        
         Enhanced pattern storage that also updates unified data.
 
         Args:

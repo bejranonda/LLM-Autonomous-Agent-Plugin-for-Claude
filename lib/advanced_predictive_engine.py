@@ -11,7 +11,7 @@ import math
 
 class AdvancedPredictiveEngine:
     def __init__(self, data_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.predictions_file = self.data_dir / "predictions.json"

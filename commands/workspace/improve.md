@@ -282,7 +282,7 @@ Pattern Utilization: +5%/week
 
 ### Detailed Report File
 
-**Location**: `.claude/reports/plugin-improvement-YYYY-MM-DD.md`
+**Location**: `.claude/data/reports/plugin-improvement-YYYY-MM-DD.md`
 
 **Contents**:
 - Complete analysis methodology

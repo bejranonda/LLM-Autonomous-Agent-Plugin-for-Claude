@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Missing Performance Records Detector
+#     Missing Performance Records Detector
+    """
 
 Analyzes git history, file changes, and current activities to identify
 tasks that should be recorded in performance records but are missing.
-"""
-
 import json
 import os
 import subprocess
@@ -17,7 +15,7 @@ import uuid
 
 class MissingActivityDetector:
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = patterns_dir
         self.performance_records_file = os.path.join(patterns_dir, "performance_records.json")
         self.quality_history_file = os.path.join(patterns_dir, "quality_history.json")

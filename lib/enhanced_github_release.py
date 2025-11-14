@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-Enhanced GitHub Release Manager for Autonomous Agent
+#     Enhanced GitHub Release Manager for Autonomous Agent
+    """
 
 Fixes common GitHub release publishing issues:
 - Authentication failures
 - API rate limiting
 - Release creation failures
 - Asset upload problems
-"""
-
 import argparse
 import subprocess
 import sys
@@ -58,8 +56,7 @@ class EnhancedGitHubReleaseManager:
     def _create_release_with_gh_cli(
         self, tag: str, title: str, notes: str, prerelease: bool = False, draft: bool = False
     )-> bool:
-        """ Create Release With Gh Cli."""
-        """Create release using GitHub CLI (most reliable method)."""
+        """ Create Release With Gh Cli."""Create release using GitHub CLI (most reliable method)."""
         try:
             cmd = ["gh", "release", "create", tag, "--title", title, "--notes", notes, "--repo", self.repo_url]
 
@@ -79,8 +76,7 @@ class EnhancedGitHubReleaseManager:
     def _create_release_with_curl(
         self, tag: str, title: str, notes: str, prerelease: bool = False, draft: bool = False
     )-> bool:
-        """ Create Release With Curl."""
-        """Create release using curl and GitHub API (fallback method)."""
+        """ Create Release With Curl."""Create release using curl and GitHub API (fallback method)."""
         if not self.token:
             print("[ERROR] GITHUB_TOKEN environment variable required for API method")
             return False
@@ -135,7 +131,6 @@ class EnhancedGitHubReleaseManager:
         self, tag: str, title: str, notes: str, prerelease: bool = False, draft: bool = False, verify: bool = True
     )-> bool:
         """Create Release."""
-        """
         Create a GitHub release with multiple fallback methods.
 
         Args:

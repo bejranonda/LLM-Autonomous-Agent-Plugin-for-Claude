@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Intelligent Agent Routing System
+#     Intelligent Agent Routing System
+    """
 Optimizes agent selection based on performance metrics, specialization, and collaboration patterns.
 
 Expected ROI: 380%
@@ -8,8 +8,6 @@ Expected ROI: 380%
 - Time Reduction: 15-20% faster (right agent for the job)
 - Success Rate: 98% → 99.2%+ (better matching)
 - Learning Velocity: 25% faster pattern acquisition (smart routing)
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -150,8 +148,9 @@ class AgentSpecializationTracker:
         # Default collaboration effectiveness
         return 0.85
 
-    def calculate_specialization_score(self, agent_name: str, task_type: str, context: Dict[str, Any]) -> float:
+    def calculate_specialization_score():
         """
+        
         Calculate how well an agent is specialized for a specific task.
         """
         performance = self.get_agent_performance(agent_name)
@@ -254,8 +253,9 @@ class AgentSpecializationTracker:
 
         return 1.0  # Default to balanced
 
-    def get_optimal_collaboration_path(self, primary_agent: str, task_info: Dict[str, Any]) -> List[str]:
+    def get_optimal_collaboration_path():
         """
+        
         Get optimal collaboration path starting with primary agent.
         """
         # Determine task type
@@ -289,6 +289,7 @@ class AgentSpecializationTracker:
 class IntelligentAgentRouter:
     """
     Intelligent agent routing system that optimizes agent selection
+    """
     based on performance metrics, specialization, and collaboration patterns.
     """
 
@@ -322,8 +323,9 @@ class IntelligentAgentRouter:
             with open(self.history_file, "w", encoding="utf-8") as f:
                 json.dump(initial_data, f, indent=2)
 
-    def route_task(self, task_info: Dict[str, Any], tier: str = "analysis") -> Dict[str, Any]:
+    def route_task():
         """
+        
         Route task to optimal agent(s).
 
         Args:
@@ -395,8 +397,9 @@ class IntelligentAgentRouter:
 
         return qualified if qualified else list(candidates)
 
-    def _calculate_routing_score(self, agent_name: str, task_info: Dict[str, Any]) -> float:
+    def _calculate_routing_score():
         """
+        
         Calculate routing score for an agent.
 
         Scoring factors:
@@ -465,8 +468,7 @@ class IntelligentAgentRouter:
     def _create_routing_decision(
         self, scored_candidates: List[Dict[str, Any]], task_info: Dict[str, Any], tier: str
     )-> Dict[str, Any]:
-        """ Create Routing Decision."""
-        """Create routing decision from scored candidates."""
+        """ Create Routing Decision."""Create routing decision from scored candidates."""
         if not scored_candidates:
             return self._create_default_routing(task_info, tier)
 

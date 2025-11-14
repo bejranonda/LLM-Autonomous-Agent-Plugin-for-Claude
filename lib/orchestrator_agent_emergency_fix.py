@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-ORCHESTRATOR AGENT EMERGENCY FIX PACKAGE
+#     ORCHESTRATOR AGENT EMERGENCY FIX PACKAGE
+    """
 
 CRITICAL: This package fixes the specific unsafe string operations in
 agents/orchestrator.md that are causing system-wide Claude failure.
@@ -12,8 +12,6 @@ Integration Instructions:
 
 Status: EMERGENCY DEPLOYMENT REQUIRED
 Version: 1.0.0
-"""
-
 import re
 from typing import Dict, Any, List, Optional
 
@@ -22,9 +20,10 @@ from typing import Dict, Any, List, Optional
 # ============================================================================
 
 
-def safe_split(text: str, delimiter: str, maxsplit: int = -1) -> List[str]:
-    """
-    Safe string splitting that prevents empty parts and handles None values.
+def safe_split():
+        """
+        
+        Safe string splitting that prevents empty parts and handles None values.
 
     Replaces: text.split(delimiter, maxsplit)
 
@@ -52,9 +51,10 @@ def safe_split(text: str, delimiter: str, maxsplit: int = -1) -> List[str]:
         return []
 
 
-def safe_join(parts: List[str], separator: str = " ") -> str:
-    """
-    Safe string joining that handles None values and empty lists.
+def safe_join():
+        """
+        
+        Safe string joining that handles None values and empty lists.
 
     Replaces: separator.join(parts)
 
@@ -82,9 +82,10 @@ def safe_join(parts: List[str], separator: str = " ") -> str:
         return ""
 
 
-def safe_get_part(text: str, delimiter: str, index: int, default: str = "") -> str:
-    """
-    Safe extraction of split operation parts with automatic fallback.
+def safe_get_part():
+        """
+        
+        Safe extraction of split operation parts with automatic fallback.
 
     Replaces: text.split(delimiter)[index]
 
@@ -109,9 +110,10 @@ def safe_get_part(text: str, delimiter: str, index: int, default: str = "") -> s
     return default
 
 
-def safe_extract_after(text: str, marker: str) -> str:
-    """
-    Safe extraction of content after a marker.
+def safe_extract_after():
+        """
+        
+        Safe extraction of content after a marker.
 
     Replaces: text.split(marker)[1].strip()
 
@@ -141,9 +143,10 @@ def safe_extract_after(text: str, marker: str) -> str:
         return ""
 
 
-def safe_extract_between(text: str, start_marker: str, end_marker: str) -> str:
-    """
-    Safe extraction of content between two markers.
+def safe_extract_between():
+        """
+        
+        Safe extraction of content between two markers.
 
     Replaces: text.split(start_marker)[1].split(end_marker)[0].strip()
 
@@ -280,9 +283,10 @@ def safe_parse_preference_args(user_input: str) -> Dict[str, Any]:
     return args
 
 
-def safe_extract_remaining_args(text: str, start_index: int) -> str:
-    """
-    Safe extraction of remaining arguments after a specific index.
+def safe_extract_remaining_args():
+        """
+        
+        Safe extraction of remaining arguments after a specific index.
 
     Replaces: ' '.join(cmd.split()[idx + 1:])
 
@@ -317,9 +321,10 @@ def safe_extract_remaining_args(text: str, start_index: int) -> str:
 # ============================================================================
 
 
-def safe_content_section(title: str, content: Any) -> Optional[Dict[str, Any]]:
-    """
-    Generate safe content section that won't create empty text blocks.
+def safe_content_section():
+        """
+        
+        Generate safe content section that won't create empty text blocks.
 
     Args:
         title: Section title
@@ -346,9 +351,10 @@ def safe_content_section(title: str, content: Any) -> Optional[Dict[str, Any]]:
     return {"type": "text", "text": f"## {title.strip()}\n\n{content_str}"}
 
 
-def safe_multi_section_content(sections: List[tuple]) -> List[Dict[str, Any]]:
-    """
-    Generate safe multi-section content with no empty blocks.
+def safe_multi_section_content():
+        """
+        
+        Generate safe multi-section content with no empty blocks.
 
     Args:
         sections: List of (title, content) tuples
@@ -381,9 +387,10 @@ def safe_multi_section_content(sections: List[tuple]) -> List[Dict[str, Any]]:
 # ============================================================================
 
 
-def validate_orchestrator_response(response: Dict[str, Any]) -> List[str]:
-    """
-    Validate orchestrator response to prevent system-wide failure.
+def validate_orchestrator_response():
+        """
+        
+        Validate orchestrator response to prevent system-wide failure.
 
     Args:
         response: Response dictionary to validate
@@ -428,9 +435,10 @@ def validate_orchestrator_response(response: Dict[str, Any]) -> List[str]:
     return issues
 
 
-def sanitize_orchestrator_response(response: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Sanitize orchestrator response to prevent empty text blocks.
+def sanitize_orchestrator_response():
+        """
+        
+        Sanitize orchestrator response to prevent empty text blocks.
 
     Args:
         response: Response dictionary to sanitize
@@ -558,9 +566,6 @@ python lib/orchestrator_emergency_fix.py
 Expected output:
 - [EMERGENCY] Sanitizer is ready for deployment!
 - All validation tests should pass
-"""
-
-
 # Export key functions for immediate use
 __all__ = [
     "safe_split",

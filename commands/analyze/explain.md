@@ -101,7 +101,7 @@ Recommended Approach:
 2. Implement token generation/validation
 3. Add authentication middleware
 
-📄 Full analysis: .claude/reports/explain-auth-jwt-2025-10-29.md
+📄 Full analysis: .claude/data/reports/explain-auth-jwt-2025-10-29.md
 ⏱ Analysis completed in 45 seconds
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -111,7 +111,7 @@ Next Steps:
 * Use /analyze:quality to validate after implementation
 ```
 
-### Detailed Report (.claude/reports/)
+### Detailed Report (.claude/data/reports/)
 
 ```markdown
 =======================================================

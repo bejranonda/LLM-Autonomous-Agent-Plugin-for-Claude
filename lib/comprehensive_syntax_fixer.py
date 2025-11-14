@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Python Syntax Error Fixer
+#     Comprehensive Python Syntax Error Fixer
+    """
 Autonomously identifies and fixes syntax errors in Python files
-"""
 import ast
 import os
 import re
@@ -13,7 +12,7 @@ from typing import List, Tuple, Dict, Optional
 
 class PythonSyntaxFixer:
     def __init__(self, lib_dir: str = "lib"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.lib_dir = Path(lib_dir)
         self.fixes_applied = []
         self.errors_found = []

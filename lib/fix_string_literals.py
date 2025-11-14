@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Fix missing quotes around string literals in Python files
-"""
-
+#     Fix missing quotes around string literals in Python files
+    """
 import re
 from pathlib import Path
 

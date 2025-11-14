@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Group Collaboration System
+#     Group Collaboration System
+    """
 Manages communication and feedback between the four agent groups
 for continuous improvement and knowledge sharing.
 
@@ -9,8 +9,6 @@ Groups:
 - Group 2: Decision Making & Planning (The "Council")
 - Group 3: Execution & Implementation (The "Hand")
 - Group 4: Validation & Optimization (The "Guardian")
-"""
-
 import json
 import sys
 from pathlib import Path
@@ -32,6 +30,7 @@ except ImportError:
 class GroupCollaborationSystem:
     """
     Manages inter-group communication, feedback, and collaboration tracking.
+    """
     """
 
     # Group definitions with agent members
@@ -181,8 +180,9 @@ class GroupCollaborationSystem:
             finally:
                 self._unlock_file(f)
 
-    def get_agent_group(self, agent_name: str) -> Optional[int]:
+    def get_agent_group():
         """
+        
         Get the group number for an agent.
 
         Args:
@@ -207,7 +207,6 @@ class GroupCollaborationSystem:
         outcome: Optional[str] = None,
     )-> str:
         """Record Communication."""
-        """
         Record a communication between agents (potentially in different groups).
 
         Args:
@@ -318,7 +317,6 @@ class GroupCollaborationSystem:
         impact: Optional[str] = None,
     )-> str:
         """Record Knowledge Transfer."""
-        """
         Record knowledge transfer between groups.
 
         Args:
@@ -419,8 +417,9 @@ class GroupCollaborationSystem:
             "knowledge_transfers": len(collab_data["knowledge_shared"]),
         }
 
-    def get_group_performance_summary(self, group_num: int) -> Dict[str, Any]:
+    def get_group_performance_summary():
         """
+        
         Get performance summary for a specific group.
 
         Args:
@@ -477,8 +476,9 @@ class GroupCollaborationSystem:
             },
         }
 
-    def get_recent_communications(self, group_num: Optional[int] = None, limit: int = 20) -> List[Dict[str, Any]]:
+    def get_recent_communications():
         """
+        
         Get recent communications, optionally filtered by group.
 
         Args:
@@ -500,8 +500,9 @@ class GroupCollaborationSystem:
 
         return comms[:limit]
 
-    def analyze_collaboration_patterns(self) -> Dict[str, Any]:
+    def analyze_collaboration_patterns():
         """
+        
         Analyze collaboration patterns to identify successful and problematic patterns.
 
         Returns:

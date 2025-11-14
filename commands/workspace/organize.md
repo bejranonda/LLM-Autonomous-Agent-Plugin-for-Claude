@@ -19,10 +19,10 @@ Automatically organizes your workspace by moving files to appropriate directorie
 ## What It Does
 
 ### 1. **Report File Organization** (15-30 seconds)
-- Move `*.md` reports from root -> `docs/reports/generated/`
+- Move `*.md` reports from root -> `data/reports/generated/`
 - Consolidate `.reports*` directories into single location
-- Archive reports older than 30 days to `docs/reports/archive/`
-- Create/update `docs/reports/README.md` index
+- Archive reports older than 30 days to `data/reports/archive/`
+- Create/update `data/reports/README.md` index
 
 ### 2. **Python Utility Organization** (10-20 seconds)
 - Move standalone Python scripts from root to `lib/`
@@ -44,7 +44,7 @@ Automatically organizes your workspace by moving files to appropriate directorie
 
 ### 5. **Gitignore Management** (5-10 seconds)
 - Check for `.gitignore` entries for organized directories
-- Add entries for `.claude/`, `.claude-patterns/`, `docs/reports/generated/`
+- Add entries for `.claude/`, `.claude-patterns/`, `data/reports/generated/`
 - Prompt if major changes should be gitignored
 
 ### 6. **Workspace Health Report** (5-10 seconds)
@@ -79,7 +79,7 @@ Workspace Organization Complete
 +- Reports Archived: 2 files
 +- Duration: 1m 23s
 
-📄 Detailed report: .claude/reports/organize-workspace-2025-01-15.md
+📄 Detailed report: .claude/data/reports/organize-workspace-2025-01-15.md
 ```
 
 ### Detailed Report (file)
@@ -94,7 +94,7 @@ Workspace Organization Complete
 ```
 project/
 +-- docs/
-|   +-- reports/
+|   +-- data/reports/
 |       +-- README.md           # Report index
 |       +-- generated/          # Auto-generated reports
 |       +-- archive/            # Old reports (>30 days)
@@ -126,7 +126,7 @@ The `/organize-workspace` command integrates with:
 ```bash
 User: /organize-workspace
 
-System: Moved 3 reports to docs/reports/generated/
+System: Moved 3 reports to data/reports/generated/
         Fixed 2 broken links in README.md
         Health score improved: 65/100 -> 85/100
 ```
@@ -137,7 +137,7 @@ User: /organize-workspace --cleanup
 
 System: Archived 5 old reports (>90 days)
         Consolidated 2 .reports directories
-        Created docs/reports/README.md index
+        Created data/reports/README.md index
 ```
 
 ## When to Use

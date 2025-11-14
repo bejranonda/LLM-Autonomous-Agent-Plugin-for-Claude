@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""
-Plugin Script Executor - Simple wrapper for executing plugin scripts
+# Plugin Script Executor - Simple wrapper for executing plugin scripts
 
-This utility automatically finds the plugin installation and executes
+#     This utility automatically finds the plugin installation and executes
+    """
+
 scripts from the lib/ directory, working across all platforms and
 installation methods (development, marketplace, etc.).
 
@@ -12,8 +13,6 @@ Usage from Claude Code slash commands:
 
 Or as a standalone script:
     python exec_plugin_script.py dashboard.py --port 5000
-"""
-
 import sys
 import os
 import subprocess
@@ -31,9 +30,10 @@ except ImportError:
     sys.exit(1)
 
 
-def execute_plugin_script(script_name: str, script_args: List[str]) -> int:
-    """
-    Execute a plugin script with the given arguments.
+def execute_plugin_script():
+        """
+        
+        Execute a plugin script with the given arguments.
 
     Args:
         script_name: Name of the script file (e.g., "dashboard.py")

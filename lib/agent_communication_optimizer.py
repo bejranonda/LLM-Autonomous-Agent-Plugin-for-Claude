@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""
-Agent Communication Optimizer
-
+#     Agent Communication Optimizer
+    """
 Advanced communication protocol optimizer for autonomous agents that minimizes token usage
 while maintaining effective inter-agent collaboration and information exchange.
 
 Version: 1.0.0
 Author: Autonomous Agent Plugin
-"""
-
 import json
 import os
 import time
@@ -86,11 +83,12 @@ class CommunicationProtocol:
 class AgentCommunicationOptimizer:
     """
     Advanced optimizer for agent-to-agent communication that minimizes token usage
+    """
     while maintaining effective collaboration.
     """
 
     def __init__(self, cache_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.cache_dir = pathlib.Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
 
@@ -137,7 +135,6 @@ class AgentCommunicationOptimizer:
         self, sender: str, receiver: str, message: Dict[str, Any], protocol_id: str = None
     )-> OptimizedMessage:
         """Optimize Message."""
-        """
         Optimize a single message for token efficiency.
 
         Args:
@@ -183,8 +180,9 @@ class AgentCommunicationOptimizer:
 
         return optimized
 
-    def decompress_message(self, optimized_message: OptimizedMessage) -> Dict[str, Any]:
+    def decompress_message():
         """
+        
         Decompress an optimized message back to original form.
 
         Args:
@@ -208,8 +206,9 @@ class AgentCommunicationOptimizer:
         # Fallback
         return json.loads(optimized_message.compressed_content)
 
-    def optimize_conversation(self, conversation: List[Dict[str, Any]], participants: List[str]) -> Dict[str, Any]:
+    def optimize_conversation():
         """
+        
         Optimize an entire conversation for token efficiency.
 
         Args:
@@ -259,7 +258,6 @@ class AgentCommunicationOptimizer:
         self, protocol_id: str, agent_group: str, message_format: str, optimization_rules: Dict[str, Any]
     )-> bool:
         """Create Communication Protocol."""
-        """
         Create a new communication protocol for agent interactions.
 
         Args:
@@ -301,8 +299,9 @@ class AgentCommunicationOptimizer:
 
         return True
 
-    def get_agent_efficiency_report(self, agent_id: str = None) -> Dict[str, Any]:
+    def get_agent_efficiency_report():
         """
+        
         Get efficiency report for agents or all agents.
 
         Args:
@@ -526,8 +525,7 @@ class AgentCommunicationOptimizer:
         protocol: CommunicationProtocol,
         compressed_content: str = None,
     )-> OptimizedMessage:
-        """ Create Optimized Message."""
-        """Create optimized message with metadata."""
+        """ Create Optimized Message."""Create optimized message with metadata."""
         original_tokens = self._estimate_tokens(message)
 
         if compressed_content is None:
@@ -572,8 +570,7 @@ class AgentCommunicationOptimizer:
     def _group_messages_by_participants(
         self, conversation: List[Dict[str, Any]], participants: List[str]
     )-> Dict[Tuple[str, str], List[Dict[str, Any]]]:
-        """ Group Messages By Participants."""
-        """Group messages by sender-receiver pairs."""
+        """ Group Messages By Participants."""Group messages by sender-receiver pairs."""
         groups = {}
 
         for message in conversation:

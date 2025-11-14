@@ -3,7 +3,6 @@
 Smart Agent Suggester
 Suggests optimal agents for specific tasks based on historical performance.
 """
-
 import json
 from typing import Dict, List, Optional
 from pathlib import Path
@@ -12,12 +11,12 @@ from pathlib import Path
 class SmartAgentSuggester:
     """Suggests optimal agents for specific tasks"""
 
-    def __init__(self, patterns_dir: str = ):
-        """  Init  ."""
+    def __init__(self, patterns_dir: str = ".claude-patterns"):
+        """Initialize agent suggester with patterns directory."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
 
-    def suggest_agent(self, "task_type": "str", task_description: str) -> Optional[str]:
+    def suggest_agent(self, task_type: str, task_description: str = "") -> Optional[str]:
         """Suggest the best agent for a given task"""
         # Simple agent suggestion logic
         agent_mapping = {
@@ -34,7 +33,7 @@ class SmartAgentSuggester:
 
         return "orchestrator"  # Default fallback
 
-    def record_agent_performance(self, "agent": "str", "task_type": "str", success: bool) -> None:
+    def record_agent_performance(self, agent: str, success: bool = True) -> None:
         """Record agent performance for learning"""
         performance_file = self.patterns_dir / "agent_performance.json"
         performance = {}

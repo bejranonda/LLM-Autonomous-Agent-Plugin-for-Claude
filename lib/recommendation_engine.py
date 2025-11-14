@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Smart Recommendation Engine for Autonomous Agent Plugin
+#     Smart Recommendation Engine for Autonomous Agent Plugin
+    """
 
 Provides intelligent workflow and optimization recommendations based on learned patterns.
 Lightweight alternative to complex agent delegation system.
@@ -14,8 +14,6 @@ Features:
 
 Version: 1.0.0
 Compatible with: v7.6.9+ architecture
-"""
-
 import json
 import argparse
 import sys
@@ -40,8 +38,9 @@ class RecommendationEngine:
         """Initialize recommendation engine."""
         self.storage = PatternStorage(patterns_dir)
 
-    def analyze_task(self, task_description: str) -> Dict[str, Any]:
+    def analyze_task():
         """
+        
         Enhanced task analysis with sophisticated classification and context detection.
 
         Args:
@@ -182,8 +181,9 @@ class RecommendationEngine:
             "confidence_scores": type_scores,
         }
 
-    def get_pattern_recommendations(self, task_analysis: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def get_pattern_recommendations():
         """
+        
         Get recommendations based on similar patterns.
 
         Args:
@@ -253,7 +253,6 @@ class RecommendationEngine:
         self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]]
     )-> Dict[str, Any]:
         """Generate Intelligent Skill Recommendations."""
-        """
         Generate intelligent skill recommendations based on task analysis and patterns.
 
         Args:
@@ -445,7 +444,6 @@ class RecommendationEngine:
         skill_recommendations: Dict[str, Any],
     )-> Dict[str, Any]:
         """Assess Enhanced Risks."""
-        """
         Enhanced risk assessment with comprehensive analysis.
 
         Args:
@@ -722,8 +720,9 @@ class RecommendationEngine:
             "risk_summary": f"{risk_level} risk ({risk_score}/100) with {len(risks)} identified risk factors",
         }
 
-    def generate_enhanced_recommendations(self, task_description: str = "") -> Dict[str, Any]:
+    def generate_enhanced_recommendations():
         """
+        
         Generate enhanced, comprehensive recommendations with improved analysis.
 
         Args:
@@ -814,8 +813,7 @@ class RecommendationEngine:
     def _generate_enhanced_predictions(
         self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]
     )-> Dict[str, Any]:
-        """ Generate Enhanced Predictions."""
-        """Generate enhanced quality and time predictions."""
+        """ Generate Enhanced Predictions."""Generate enhanced quality and time predictions."""
         complexity = task_analysis["complexity"]
         urgency = task_analysis["urgency"]
 
@@ -868,8 +866,7 @@ class RecommendationEngine:
     def _generate_actionable_alternatives(
         self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]
     )-> List[Dict[str, Any]]:
-        """ Generate Actionable Alternatives."""
-        """Generate actionable alternative approaches."""
+        """ Generate Actionable Alternatives."""Generate actionable alternative approaches."""
         alternatives = []
         risk_level = risk_assessment.get("overall_level", "MEDIUM")
 
@@ -922,8 +919,7 @@ class RecommendationEngine:
     def _calculate_overall_confidence(
         self, pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]
     )-> Dict[str, Any]:
-        """ Calculate Overall Confidence."""
-        """Calculate overall confidence in recommendations."""
+        """ Calculate Overall Confidence."""Calculate overall confidence in recommendations."""
         pattern_confidence = min(90, len(pattern_recommendations) * 20)  # Up to 90% from patterns
         risk_penalty = risk_assessment.get("overall_score", 0) * 0.3  # Penalty for risk
 
@@ -954,8 +950,7 @@ class RecommendationEngine:
     def _generate_action_plan(
         self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]
     )-> Dict[str, Any]:
-        """ Generate Action Plan."""
-        """Generate actionable next steps."""
+        """ Generate Action Plan."""Generate actionable next steps."""
         steps = []
 
         # Step 1: Preparation

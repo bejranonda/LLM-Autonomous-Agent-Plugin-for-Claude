@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Performance Monitoring Utility for Autonomous Agent Plugin
+#     Performance Monitoring Utility for Autonomous Agent Plugin
+    """
 Provides real-time monitoring, alerting, and analysis of plugin performance
-"""
-
 import time
 import json
 import psutil
@@ -40,7 +38,7 @@ class PerformanceMonitor:
     """Real-time performance monitoring system"""
 
     def __init__(self, data_dir: str = ".claude-patterns", max_history: int = 1000):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 

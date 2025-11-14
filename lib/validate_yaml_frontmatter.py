@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Validate YAML frontmatter in agents and skills
-"""
-
+#     Validate YAML frontmatter in agents and skills
+    """
 import yaml
 from pathlib import Path
 

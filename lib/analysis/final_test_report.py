@@ -7,10 +7,10 @@ from datetime import datetime
 
 # Read coverage data
 try:
-    with open('data/reports/coverage.json') as f:
+    with open('data/data/data/reports/coverage.json') as f:
         coverage_data = json.load(f)
 except:
-    print("[ERROR] No data/reports/coverage.json found")
+    print("[ERROR] No data/data/data/reports/coverage.json found")
     exit(1)
 
 total_coverage = coverage_data['totals']['percent_covered']

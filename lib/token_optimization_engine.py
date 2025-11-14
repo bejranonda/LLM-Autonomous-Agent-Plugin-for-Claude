@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-Token Optimization Engine
+#     Token Optimization Engine
+    """
 
 Advanced token management system for minimizing token consumption while maximizing functionality.
 Implements progressive loading, smart caching, and context-aware content delivery.
 
 Version: 1.0.0
 Author: Autonomous Agent Plugin
-"""
-
 import json
 import os
 import time
@@ -50,6 +48,7 @@ class ContentItem:
 class TokenOptimizer:
     """
     Advanced token optimization engine with progressive loading and smart caching.
+    """
     """
 
     def __init__(self, cache_dir: str = ".claude-patterns"):

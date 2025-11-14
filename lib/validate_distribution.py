@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Distribution Validator for Autonomous Agent Plugin
+#     Distribution Validator for Autonomous Agent Plugin
+    """
 
 Validates that the plugin is ready for public distribution by checking:
 - Path resolution works correctly
@@ -10,8 +10,6 @@ Validates that the plugin is ready for public distribution by checking:
 
 Usage:
     python validate_distribution.py [--verbose]
-"""
-
 import sys
 import os
 import json
@@ -164,7 +162,7 @@ class DistributionValidator:
                 ".claude/",
                 ".claude-patterns/",
                 ".claude-unified/",
-                "docs/reports/generated/",
+                "data/data/data/reports/generated/",
                 "*.tmp",
                 "*.log",
             ]

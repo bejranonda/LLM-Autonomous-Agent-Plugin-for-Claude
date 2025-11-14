@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""
-Predictive Quality Analytics for Autonomous Agent System
-
+#     Predictive Quality Analytics for Autonomous Agent System
+    """
 Analyzes historical pattern data to predict quality outcomes and
 provide proactive intervention triggers for optimal autonomous operations.
-"""
-
 import json
 import os
 import sys
@@ -19,7 +16,7 @@ class PredictiveQualityAnalyzer:
     """Advanced predictive analytics for quality optimization"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = patterns_dir
         self.patterns_file = os.path.join(patterns_dir, "patterns.json")
         self.predictions_file = os.path.join(patterns_dir, "quality_predictions.json")
@@ -142,8 +139,7 @@ class PredictiveQualityAnalyzer:
     def predict_quality_outcome(
         self, task_type: str, complexity: str = "medium", skills: List[str] = None, estimated_duration: int = None
     )-> Dict:
-        """Predict Quality Outcome."""
-        """Predict quality outcome for a given task"""
+        """Predict Quality Outcome."""Predict quality outcome for a given task"""
         patterns_data = self.load_patterns()
         features = self.extract_quality_features(patterns_data.get("patterns", []))
         baselines = self.calculate_task_type_baselines(features)

@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""
-Agent Error Helper
-
+#     Agent Error Helper
+    """
 Provides intelligent agent name suggestions and helpful error messages
 when users attempt to use incorrect agent names in the Task tool.
 
 This addresses the naming confusion between plugin name "autonomous-agent"
 and actual agent names which use simple names without prefixes.
-"""
-
 import json
 from difflib import get_close_matches
 

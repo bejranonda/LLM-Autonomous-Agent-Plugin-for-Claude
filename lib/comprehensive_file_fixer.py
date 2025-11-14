@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
-"""
-Comprehensive File Fixer
+#     Comprehensive File Fixer
+    """
 Creates clean, working versions of all 31 problematic Python files.
-"""
-
 import os
 from pathlib import Path
 
 # Simple file templates for each problematic file
 FILE_TEMPLATES = {
     "backfill_assessments.py": '''#!/usr/bin/env python3
-"""
 Backfill Missing Assessment Data
 Restores all missing assessment results from recent command executions.
-"""
-
 from typing import List, Dict, Any
 from pathlib import Path
 
@@ -22,8 +17,8 @@ from pathlib import Path
 class AssessmentBackfill:
     """Backfills missing assessment data from recent command executions"""
 
-    def __init__(self, pattern_dir: str = ): ):
-        """  Init  ."""
+    def __init__(self, pattern_dir: str = ".claude-patterns"): ):
+        """Initialize the processor with default configuration."""
         self.pattern_dir = Path(pattern_dir)
         self.pattern_dir.mkdir(parents=True, exist_ok=True)
 
@@ -51,11 +46,8 @@ if __name__ == "__main__":
     main()
 ''',
     "backup_manager.py": '''#!/usr/bin/env python3
-"""
 Automated Backup System for Critical Plugin Components
 Provides versioned backups with automatic restoration capabilities.
-"""
-
 import json
 import shutil
 from datetime import datetime
@@ -66,8 +58,8 @@ from typing import Dict, List, Any
 class BackupManager:
     """Manages automated backups and restoration operations"""
 
-    def __init__(self, backup_dir: str = ): ):
-        """  Init  ."""
+    def __init__(self, backup_dir: str = ".claude-patterns"): ):
+        """Initialize the processor with default configuration."""
         self.backup_dir = Path(backup_dir)
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
@@ -124,11 +116,8 @@ if __name__ == "__main__":
     main()
 ''',
     "trigger_learning.py": '''#!/usr/bin/env python3
-"""
 Automatic Learning Trigger
 Triggers learning processes based on recent activity patterns.
-"""
-
 import json
 from datetime import datetime
 from pathlib import Path
@@ -137,8 +126,8 @@ from pathlib import Path
 class LearningTrigger:
     """Triggers automatic learning based on activity patterns"""
 
-    def __init__(self, patterns_dir: str = ): ):
-        """  Init  ."""
+    def __init__(self, patterns_dir: str = ".claude-patterns"): ):
+        """Initialize the processor with default configuration."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
 
@@ -182,11 +171,8 @@ if __name__ == "__main__":
     main()
 ''',
     "smart_agent_suggester.py": '''#!/usr/bin/env python3
-"""
 Smart Agent Suggester
 Suggests optimal agents for specific tasks based on historical performance.
-"""
-
 import json
 from typing import Dict, List, Optional
 from pathlib import Path
@@ -195,8 +181,8 @@ from pathlib import Path
 class SmartAgentSuggester:
     """Suggests optimal agents for specific tasks"""
 
-    def __init__(self, patterns_dir: str = ): ):
-        """  Init  ."""
+    def __init__(self, patterns_dir: str = ".claude-patterns"): ):
+        """Initialize the processor with default configuration."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
 
@@ -259,11 +245,8 @@ if __name__ == "__main__":
     main()
 ''',
     "simple_backfill.py": '''#!/usr/bin/env python3
-"""
 Simple Backfill Utility
 Simple utility for backfilling missing data.
-"""
-
 import json
 from datetime import datetime
 from pathlib import Path
@@ -272,8 +255,8 @@ from pathlib import Path
 class SimpleBackfill:
     """Simple backfill utility for missing data"""
 
-    def __init__(self, data_dir: str = ): ):
-        """  Init  ."""
+    def __init__(self, data_dir: str = ".claude-patterns"): ):
+        """Initialize the processor with default configuration."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -326,11 +309,8 @@ def create_simple_file(filename: str, content: str) -> bool:
 def create_remaining_file(filename: str) -> bool:
     """Create a basic file for remaining problematic files"""
     template = f'''#!/usr/bin/env python3
-"""
 {filename.replace('_', ' ').replace('.py', '').title()}
 Basic implementation for {filename}.
-"""
-
 import json
 from datetime import datetime
 from pathlib import Path
@@ -340,8 +320,8 @@ from typing import Dict, Any, List
 class {filename.replace('_', '').replace('.py', '').title()}:
     """Basic implementation for {filename}"""
 
-    def __init__(self, data_dir: str = ): ):
-        """  Init  ."""
+    def __init__(self, data_dir: str = ".claude-patterns"): ):
+        """Initialize the processor with default configuration."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 

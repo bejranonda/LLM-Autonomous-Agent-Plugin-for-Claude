@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Token Monitoring Dashboard
+#     Token Monitoring Dashboard
+    """
 
 Real-time monitoring and analytics dashboard for token optimization systems.
 Provides comprehensive insights into optimization performance, cost savings,
@@ -18,8 +18,6 @@ Features:
 
 Version: 1.0.0 - Production Ready
 Author: Autonomous Agent Development Team
-"""
-
 import os
 import json
 import time

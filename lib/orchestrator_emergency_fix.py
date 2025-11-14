@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Emergency Fix for Orchestrator Agent Message Generation
+#     Emergency Fix for Orchestrator Agent Message Generation
+    """
 
 CRITICAL: This file prevents system-wide Claude failure by sanitizing
 all message content before sending to Claude's API.
@@ -10,8 +10,6 @@ in all orchestrator response generation functions.
 
 Status: EMERGENCY DEPLOYMENT REQUIRED
 Version: 1.0.0
-"""
-
 # Import emergency sanitizer - will be available once plugin is properly installed
 # from lib.emergency_message_sanitize import emergency_sanitize_messages
 

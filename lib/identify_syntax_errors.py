@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Identify Python files with syntax errors
-"""
-
+#     Identify Python files with syntax errors
+    """
 import py_compile
 import sys
 from pathlib import Path

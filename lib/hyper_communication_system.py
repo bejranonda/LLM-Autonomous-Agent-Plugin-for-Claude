@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
-"""
-Hyper-Communication System
-Advanced cross-tier communication optimization with quantum entanglement-inspired
-message passing, predictive routing, and intelligent bandwidth allocation.
-"""
-
+# Hyper-Communication System
+# Advanced cross-tier communication optimization with quantum entanglement-inspired
+# message passing, predictive routing, and intelligent bandwidth allocation.
 import json
 import sys
 import time
@@ -25,11 +22,11 @@ import uuid
 try:
     import msvcrt  # Windows
 
-    PLATFORM = "windows"
+#     PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
 
-    PLATFORM = "unix"
+#     PLATFORM = "unix"
 
 
 class MessagePriority(Enum):
@@ -112,6 +109,7 @@ class CommunicationMetrics:
 class HyperCommunicationSystem:
     """
     Advanced cross-tier communication system with quantum-inspired
+    """
     message passing, predictive routing, and intelligent bandwidth allocation.
     """
 
@@ -327,7 +325,6 @@ class HyperCommunicationSystem:
         self, agent1: str, agent2: str, tier1: str, tier2: str, bandwidth: float = 10.0, latency_requirement: float = 100.0
     )-> bool:
         """Establish Connection."""
-        """
         Establish a high-performance connection between two agents.
 
         Args:
@@ -469,7 +466,6 @@ class HyperCommunicationSystem:
         latency_requirement: float = 0.0,
     )-> str:
         """Send Message."""
-        """
         Send a hyper-communication message.
 
         Args:
@@ -599,8 +595,7 @@ class HyperCommunicationSystem:
     def _record_communication_pattern(
         self, source_agent: str, target_agent: str, message_type: MessageType, priority: MessagePriority
     ):
-        """ Record Communication Pattern."""
-        """Record communication pattern for learning."""
+        """ Record Communication Pattern."""Record communication pattern for learning."""
         pattern_key = f"{source_agent}_{target_agent}"
         pattern = {"timestamp": datetime.now().isoformat(), "message_type": message_type.value, "priority": priority.value}
 
@@ -614,7 +609,6 @@ class HyperCommunicationSystem:
         self, agent_id: str, message_types: List[MessageType], handler: Callable[[HyperMessage], Any]
     ):
         """Register Message Handler."""
-        """
         Register message handler for specific message types.
 
         Args:

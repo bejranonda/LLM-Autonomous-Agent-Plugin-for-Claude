@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Script Runner for Autonomous Agent Plugin
-
+#     Script Runner for Autonomous Agent Plugin
+    """
 This wrapper script ensures that Python scripts are executed from the correct
 plugin installation directory, whether running in development mode or
 installed from marketplace.
@@ -9,8 +8,6 @@ installed from marketplace.
 Usage:
     python run_script.py dashboard.py [args]
     python run_script.py learning_analytics.py show --dir .claude-patterns
-"""
-
 import sys
 import os
 from pathlib import Path

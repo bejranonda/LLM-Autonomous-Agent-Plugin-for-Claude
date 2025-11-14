@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
-"""
-Marketplace Plugin Executor - Template-based execution
+# Marketplace Plugin Executor - Template-based execution
 
-This script provides a template-based approach for marketplace installations.
-Claude Code replaces the {PLUGIN_PATH} placeholder during installation
+# This script provides a template-based approach for marketplace installations.
+# Claude Code replaces the {PLUGIN_PATH} placeholder during installation
 with the actual plugin installation path.
 
-Usage in slash commands (template):
-    python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" dashboard.py --port 5000
+# Usage in slash commands (template):
+#     python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" dashboard.py --port 5000
 
-After marketplace installation (filled in):
-    python -c "exec(open(r'C:\\Users\\{user}\\.claude\\plugins\\marketplaces\\LLM-Autonomous-Agent-Plugin-for-Claude\\lib\\marketplace_executor.py').read())" dashboard.py --port 5000
-"""
-
+# After marketplace installation (filled in):
+#     python -c "exec(open(r'C:\\Users\\{user}\\.claude\\plugins\\marketplaces\\LLM-Autonomous-Agent-Plugin-for-Claude\\lib\\marketplace_executor.py').read())" dashboard.py --port 5000
 import sys
 import os
 import subprocess

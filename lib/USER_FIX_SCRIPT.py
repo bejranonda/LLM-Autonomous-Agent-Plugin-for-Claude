@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-USER PLUGIN FIX SCRIPT
+#     USER PLUGIN FIX SCRIPT
+    """
 
 Run this script in your LLM-Autonomous-Agent-Plugin-for-Claude installation directory
 to fix ALL consecutive empty lines that cause cache_control errors.
@@ -13,8 +13,6 @@ USAGE:
    python3 USER_FIX_SCRIPT.py
 
 This will fix all 41+ files with consecutive empty lines and resolve the cache_control error.
-"""
-
 import os
 import re
 

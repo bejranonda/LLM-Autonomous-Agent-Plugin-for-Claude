@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-Performance Recorder
-Basic implementation for performance_recorder.py.
-"""
-"""
+"""Core functionality for the autonomous agent system."""
 
 import json
 from datetime import datetime
@@ -14,8 +10,8 @@ from typing import Dict, Any, List
 class PerformanceRecorder:
     """Basic implementation for performance_recorder.py"""
 
-    def __init__(self, data_dir: str = ):
-        """  Init  ."""
+    def __init__(self, data_dir: str = ".claude-patterns"):
+        """Initialize the processor with default configuration."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -68,10 +64,8 @@ def main():
     """Main execution function"""
     processor = Performancerecorder()
     result = processor.process()
-    print(f"Processed {result['file']": {result['status']}")
+    print(f"Processed {result['file']}: {result['status']}")
 
 
 if __name__ == "__main__":
     main()
-
-"""

@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""
-Robust Dashboard Launcher for Autonomous Agent
+#     Robust Dashboard Launcher for Autonomous Agent
+    """
 
 Handles dashboard startup with automatic port detection,
 health monitoring, and automatic restart capabilities.
 Prevents dashboard connectivity issues through proactive monitoring.
-"""
-
 import subprocess
 import sys
 import time
@@ -44,7 +42,7 @@ class DashboardLauncher:
         patterns_dir: str = ".claude-patterns",
         auto_restart: bool = True,
     ):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.host = host
         self.port = port
         self.patterns_dir = patterns_dir
@@ -268,8 +266,6 @@ API Access:
 - Overview: {dashboard_url}/api/overview
 - System Health: {dashboard_url}/api/system-health
 - Quality Trends: {dashboard_url}/api/quality-trends
-"""
-
             print(success_message)
             logger.info(f"Dashboard running at {dashboard_url}")
 

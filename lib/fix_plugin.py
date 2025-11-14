@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-Auto-fix script for autonomous-agent plugin critical issues
-"""
-
+# Auto-fix script for autonomous-agent plugin critical issues
 import re
 from pathlib import Path
 
@@ -26,7 +24,6 @@ description: Validate Claude Code plugin against official guidelines
 delegates-to: autonomous-agent:orchestrator
 ---
 
-"""
         content = new_frontmatter + content[5:]  # Remove the broken ---\n\n
 
     with open(file_path, "w", encoding="utf-8") as f:
@@ -114,7 +111,6 @@ description: Command for {cmd_name.replace('-', ' ')}
 delegates-to: {delegates_to}
 ---
 
-"""
             content = new_frontmatter + content
 
         with open(cmd_file, "w", encoding="utf-8") as f:
@@ -183,5 +179,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-"""

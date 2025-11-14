@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Web Dashboard for Token Monitoring
-
+#     Web Dashboard for Token Monitoring
+    """
 Simple web interface for the token monitoring dashboard that provides
 real-time visualization of optimization performance and metrics.
 
@@ -15,8 +14,6 @@ Features:
 
 Version: 1.0.0 - Production Ready
 Author: Autonomous Agent Development Team
-"""
-
 import json
 import time
 from datetime import datetime, timedelta

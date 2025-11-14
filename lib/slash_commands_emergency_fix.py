@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-SLASH COMMANDS EMERGENCY FIX PACKAGE
+#     SLASH COMMANDS EMERGENCY FIX PACKAGE
+    """
 
 CRITICAL: This package fixes the problematic slash commands that are
 generating empty text blocks and causing system-wide Claude failure.
@@ -18,8 +18,6 @@ Integration Instructions:
 
 Status: EMERGENCY DEPLOYMENT REQUIRED
 Version: 1.0.0
-"""
-
 import re
 from typing import Dict, Any, List, Optional, Union
 
@@ -95,9 +93,10 @@ SAFE_BOX_CHARS = {
 }
 
 
-def safe_box_drawing(text: str) -> str:
-    """
-    Convert Unicode box drawing characters to safe ASCII equivalents.
+def safe_box_drawing():
+        """
+        
+        Convert Unicode box drawing characters to safe ASCII equivalents.
 
     Args:
         text: Text containing Unicode box characters
@@ -120,9 +119,10 @@ def safe_box_drawing(text: str) -> str:
     return result
 
 
-def safe_border_box(title: str, content: List[str], width: int = 50) -> str:
-    """
-    Create safe ASCII border box instead of Unicode box.
+def safe_border_box():
+        """
+        
+        Create safe ASCII border box instead of Unicode box.
 
     Args:
         title: Box title
@@ -166,12 +166,10 @@ def safe_border_box(title: str, content: List[str], width: int = 50) -> str:
 # ============================================================================
 
 
-def safe_learn_init_response(
-    """Safe Learn Init Response."""
-    project_analysis: Dict[str, Any], patterns_created: List[str], initial_patterns: List[str], skills_loaded: List[str]
-) -> Dict[str, Any]:
-    """
-    Generate safe response for /learn:init command.
+def safe_learn_init_response():
+        """
+        
+        Generate safe response for /learn:init command.
 
     Args:
         project_analysis: Project analysis results
@@ -229,9 +227,10 @@ Status: Ready for pattern capture
 # ============================================================================
 
 
-def safe_validate_plugin_response(validation_results: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Generate safe response for /validate:plugin command.
+def safe_validate_plugin_response():
+        """
+        
+        Generate safe response for /validate:plugin command.
 
     Args:
         validation_results: Validation results dictionary
@@ -309,9 +308,10 @@ def safe_validate_plugin_response(validation_results: Dict[str, Any]) -> Dict[st
 # ============================================================================
 
 
-def safe_analyze_dependencies_response(analysis_results: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Generate safe response for /analyze:dependencies command.
+def safe_analyze_dependencies_response():
+        """
+        
+        Generate safe response for /analyze:dependencies command.
 
     Args:
         analysis_results: Dependencies analysis results
@@ -369,9 +369,10 @@ def safe_analyze_dependencies_response(analysis_results: Dict[str, Any]) -> Dict
 # ============================================================================
 
 
-def safe_monitor_dashboard_response(dashboard_info: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Generate safe response for /monitor:dashboard command.
+def safe_monitor_dashboard_response():
+        """
+        
+        Generate safe response for /monitor:dashboard command.
 
     Args:
         dashboard_info: Dashboard status information
@@ -442,9 +443,10 @@ def get_safe_command_formatter(command_name: str):
     return COMMAND_FIXES.get(command_name)
 
 
-def safe_format_command_response(command_name: str, results: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Format command response safely using appropriate formatter.
+def safe_format_command_response():
+        """
+        
+        Format command response safely using appropriate formatter.
 
     Args:
         command_name: Name of the command
@@ -478,9 +480,10 @@ def safe_format_command_response(command_name: str, results: Dict[str, Any]) -> 
 # ============================================================================
 
 
-def safe_multi_command_response(commands_data: List[tuple]) -> Dict[str, Any]:
-    """
-    Generate safe response for multiple commands or sections.
+def safe_multi_command_response():
+        """
+        
+        Generate safe response for multiple commands or sections.
 
     Args:
         commands_data: List of (command_name, results) tuples
@@ -533,9 +536,10 @@ def safe_multi_command_response(commands_data: List[tuple]) -> Dict[str, Any]:
 # ============================================================================
 
 
-def validate_command_response(response: Dict[str, Any]) -> List[str]:
-    """
-    Validate command response to prevent empty text blocks.
+def validate_command_response():
+        """
+        
+        Validate command response to prevent empty text blocks.
 
     Args:
         response: Response dictionary to validate

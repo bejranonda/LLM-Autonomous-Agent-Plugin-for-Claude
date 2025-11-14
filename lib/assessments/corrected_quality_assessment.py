@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Corrected Final Quality Assessment for Autonomous Agent Plugin
+    Corrected Final Quality Assessment for Autonomous Agent Plugin
+    """
 Comprehensive evaluation after syntax error fixes
-"""
-
 import json
 import subprocess
 import sys

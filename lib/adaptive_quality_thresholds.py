@@ -37,8 +37,7 @@ class ProjectPhase(Enum):
 
 
 class AdaptiveQualityThresholds:
-    """
-    Manages adaptive quality thresholds based on task context.
+    """Manages adaptive quality thresholds based on task context.
 
     Provides dynamic quality standards that adjust based on:
     - Task type (security vs exploratory)
@@ -108,9 +107,7 @@ class AdaptiveQualityThresholds:
         is_user_facing: bool = False,
         context: Optional[Dict[str, Any]] = None,
     )-> int:
-        """Get Threshold."""
-        """
-        Get adaptive quality threshold for a task.
+        """Get adaptive quality threshold for a task.
 
         Args:
             task_type: Type of task (security, testing, exploratory, etc.)
@@ -181,7 +178,6 @@ class AdaptiveQualityThresholds:
         context: Optional[Dict[str, Any]] = None,
     )-> Dict[str, Any]:
         """Get Threshold With Explanation."""
-        """
         Get threshold with detailed explanation of how it was calculated.
 
         Returns:

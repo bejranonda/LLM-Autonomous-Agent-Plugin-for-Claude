@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-"""
-Inter-Group Knowledge Transfer System
-Automatically propagates knowledge, patterns, and insights between the four agent groups
+# Inter-Group Knowledge Transfer System
+# Automatically propagates knowledge, patterns, and insights between the four agent groups
 for accelerated learning and continuous improvement.
 
-Groups:
-- Group 1: Strategic Analysis & Intelligence
-- Group 2: Decision Making & Planning
-- Group 3: Execution & Implementation
-- Group 4: Validation & Optimization
-"""
-
+# Groups:
+# - Group 1: Strategic Analysis & Intelligence
+# - Group 2: Decision Making & Planning
+# - Group 3: Execution & Implementation
+# - Group 4: Validation & Optimization
 import json
 import sys
 from pathlib import Path
@@ -22,16 +19,17 @@ from collections import defaultdict
 try:
     import msvcrt  # Windows
 
-    PLATFORM = "windows"
+#     PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
 
-    PLATFORM = "unix"
+#     PLATFORM = "unix"
 
 
 class InterGroupKnowledgeTransfer:
     """
     Manages automatic knowledge propagation between agent groups.
+    """
     """
 
     # Group definitions
@@ -159,7 +157,6 @@ class InterGroupKnowledgeTransfer:
         applicable_to_groups: Optional[List[int]] = None,
     )-> str:
         """Add Knowledge."""
-        """
         Add new knowledge to the system.
 
         Args:
@@ -279,7 +276,6 @@ class InterGroupKnowledgeTransfer:
         notes: Optional[str] = None,
     ):
         """Record Knowledge Application."""
-        """
         Record that knowledge was applied by a group.
 
         Args:
@@ -337,7 +333,6 @@ class InterGroupKnowledgeTransfer:
         self, for_group: int, knowledge_type: Optional[str] = None, min_confidence: float = 0.7, limit: int = 10
     )-> List[Dict[str, Any]]:
         """Query Knowledge."""
-        """
         Query knowledge relevant to a specific group.
 
         Args:
@@ -464,7 +459,6 @@ class InterGroupKnowledgeTransfer:
         self, for_group: int, task_type: str, task_context: Optional[Dict[str, Any]] = None
     )-> List[Dict[str, Any]]:
         """Suggest Knowledge For Task."""
-        """
         Suggest relevant knowledge for a specific task.
 
         Args:

@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Fix line length violations in Python files
-"""
-
+#     Fix line length violations in Python files
+    """
 import re
 import textwrap
 from pathlib import Path

@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Fix multiple docstring quote issues in Python files
-"""
-
+#     Fix multiple docstring quote issues in Python files
+    """
 import os
 import re
 from pathlib import Path

@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Dashboard Migration Tool
+#     Dashboard Migration Tool
+    """
 
 This tool helps migrate data from existing dashboards to the new unified dashboard system.
 It ensures backward compatibility and smooth transition for users.
-"""
-
 import json
 import os
 import shutil
@@ -19,7 +17,7 @@ class DashboardMigrationTool:
     """Tool for migrating dashboard data to unified system"""
 
     def __init__(self, project_root: str = "."):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.project_root = Path(project_root)
         self.legacy_patterns_dir = self.project_root / ".claude-patterns"
         self.backup_dir = self.project_root / ".dashboard-migration-backup"
@@ -289,7 +287,7 @@ class BackwardCompatibilityManager:
     """Manages backward compatibility for dashboard transitions"""
 
     def __init__(self, project_root: str = "."):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.project_root = Path(project_root)
         self.patterns_dir = self.project_root / ".claude-patterns"
 
@@ -319,13 +317,10 @@ class BackwardCompatibilityManager:
         shim_script = self.patterns_dir / "token_dashboard_shim.py"
 
         shim_content = '''#!/usr/bin/env python3
-"""
 Token Dashboard Compatibility Shim
 
 This shim provides backward compatibility for the old token dashboard.
 It redirects to the unified dashboard system.
-"""
-
 import sys
 import json
 from pathlib import Path
@@ -365,13 +360,10 @@ if __name__ == "__main__":
         shim_script = self.patterns_dir / "kpi_dashboard_shim.py"
 
         shim_content = '''#!/usr/bin/env python3
-"""
 KPI Dashboard Compatibility Shim
 
 This shim provides backward compatibility for the old KPI dashboard.
 It redirects to the unified dashboard system.
-"""
-
 import sys
 import json
 from pathlib import Path
@@ -410,13 +402,10 @@ if __name__ == "__main__":
         shim_script = self.patterns_dir / "system_health_shim.py"
 
         shim_content = '''#!/usr/bin/env python3
-"""
 System Health Compatibility Shim
 
 This shim provides backward compatibility for the old system health dashboard.
 It redirects to the unified dashboard system.
-"""
-
 import sys
 import json
 from pathlib import Path
@@ -490,7 +479,6 @@ The individual dashboard systems have been consolidated into a single, unified d
 Generated: """
             + datetime.now().isoformat()
             + """
-"""
         )
 
         warning_file = warnings_dir / "README.md"

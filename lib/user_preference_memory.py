@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-User Preference Memory System for Autonomous Agent Plugin
+#     User Preference Memory System for Autonomous Agent Plugin
+    """
 
 Captures, stores, and learns from user preferences and system environments
 to provide personalized development guidance and intelligent suggestions.
@@ -15,8 +15,6 @@ Features:
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
-"""
-
 import json
 import sys
 import threading
@@ -65,8 +63,9 @@ class SystemProfiler:
         self.profile_cache = {}
         self.cache_ttl = 3600  # 1 hour cache
 
-    def get_system_fingerprint(self) -> Dict[str, Any]:
+    def get_system_fingerprint():
         """
+        
         Generate comprehensive system fingerprint for environment identification.
 
         Returns:
@@ -325,6 +324,7 @@ class SystemProfiler:
 class UserPreferenceMemory:
     """
     User Preference Memory System for storing and learning from user behavior.
+    """
 
     Maintains user preferences, system environment data, and generates
     intelligent suggestions based on patterns and historical data.
@@ -614,8 +614,9 @@ class UserPreferenceMemory:
 
     # Public API methods
 
-    def update_system_profile(self, force: bool = False) -> Dict[str, Any]:
+    def update_system_profile():
         """
+        
         Update system environment profile.
 
         Args:
@@ -664,8 +665,9 @@ class UserPreferenceMemory:
         preferences["preferences"][category][key] = value
         self._write_preferences(preferences)
 
-    def get_preference(self, category: str, key: str, default: Any = None) -> Any:
+    def get_preference():
         """
+        
         Get a user preference.
 
         Args:
@@ -801,8 +803,9 @@ class UserPreferenceMemory:
         self._write_preferences(preferences)
         self._write_suggestions(suggestions_data)
 
-    def get_user_profile(self) -> Dict[str, Any]:
+    def get_user_profile():
         """
+        
         Get comprehensive user profile.
 
         Returns:
@@ -826,8 +829,9 @@ class UserPreferenceMemory:
             },
         }
 
-    def export_preferences(self, export_path: str, include_sensitive: bool = False) -> bool:
+    def export_preferences():
         """
+        
         Export user preferences to file.
 
         Args:
@@ -853,8 +857,9 @@ class UserPreferenceMemory:
             print(f"Export failed: {e}", file=sys.stderr)
             return False
 
-    def import_preferences(self, import_path: str, merge_strategy: str = "merge") -> bool:
+    def import_preferences():
         """
+        
         Import user preferences from file.
 
         Args:

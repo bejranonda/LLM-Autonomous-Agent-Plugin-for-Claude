@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Parameter Migration Utility for Autonomous Agent Plugin
-
+#     Parameter Migration Utility for Autonomous Agent Plugin
+    """
 Provides backward compatibility and gradual migration from scattered parameter
 storage systems to the unified parameter storage system.
 
@@ -14,8 +13,6 @@ Features:
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
-"""
-
 import json
 import sys
 import shutil
@@ -30,6 +27,7 @@ from unified_parameter_storage import UnifiedParameterStorage
 class LegacyStorageAdapter:
     """
     Adapter class to provide backward compatibility with legacy storage systems.
+    """
 
     Allows existing code to continue working while gradually migrating to the
     unified storage system.
@@ -45,8 +43,9 @@ class LegacyStorageAdapter:
         self.unified_storage = unified_storage
         self.legacy_sources = self._detect_legacy_sources()
 
-    def _detect_legacy_sources(self) -> Dict[str, Path]:
+    def _detect_legacy_sources():
         """
+        
         Detect available legacy storage sources.
 
         Returns:
@@ -83,8 +82,9 @@ class LegacyStorageAdapter:
 
         return sources
 
-    def get_quality_score_legacy(self, source: str = "unified") -> float:
+    def get_quality_score_legacy():
         """
+        
         Get quality score with fallback to legacy sources.
 
         Args:
@@ -115,8 +115,9 @@ class LegacyStorageAdapter:
 
         return 0.0  # Default if no source available
 
-    def get_model_performance_legacy(self, model: str) -> Dict[str, Any]:
+    def get_model_performance_legacy():
         """
+        
         Get model performance with fallback to legacy sources.
 
         Args:
@@ -200,6 +201,7 @@ class MigrationManager:
     """
     Manages the migration process from legacy to unified storage.
     """
+    """
 
     def __init__(self, unified_storage: UnifiedParameterStorage):
         """
@@ -212,8 +214,9 @@ class MigrationManager:
         self.migration_log = []
         self.rollback_data = {}
 
-    def analyze_migration_complexity(self) -> Dict[str, Any]:
+    def analyze_migration_complexity():
         """
+        
         Analyze the complexity of migration based on detected sources.
 
         Returns:
@@ -261,8 +264,9 @@ class MigrationManager:
 
         return analysis
 
-    def execute_gradual_migration(self, source_types: List[str] = None, dry_run: bool = False) -> Dict[str, Any]:
+    def execute_gradual_migration():
         """
+        
         Execute gradual migration from legacy sources.
 
         Args:
@@ -433,8 +437,9 @@ class MigrationManager:
         except Exception as e:
             self.migration_log.append(f"Warning: Failed to archive {source_path}: {e}")
 
-    def validate_migration(self) -> Dict[str, Any]:
+    def validate_migration():
         """
+        
         Validate migration results and data integrity.
 
         Returns:
@@ -496,8 +501,9 @@ class MigrationManager:
 
         return validation_results
 
-    def rollback_migration(self, source_types: List[str] = None) -> Dict[str, Any]:
+    def rollback_migration():
         """
+        
         Rollback migration by restoring from backups.
 
         Args:

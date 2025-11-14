@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-"""
-Documentation Auto-Generation System
+# Documentation Auto-Generation System
 
-Automatically generates documentation from successful patterns,
-maintains consistency, and validates documentation integrity.
-"""
-
+# Automatically generates documentation from successful patterns,
+# maintains consistency, and validates documentation integrity.
 import json
 import os
 import sys
@@ -20,7 +17,7 @@ class DocumentationAutoGenerator:
     """Advanced documentation generation from patterns"""
 
     def __init__(self, patterns_dir: str = ".claude-patterns", project_root: str = "."):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.patterns_dir = patterns_dir
         self.project_root = Path(project_root)
         self.patterns_file = os.path.join(patterns_dir, "patterns.json")
@@ -334,8 +331,7 @@ version: {version}
     def _generate_agent_overview(
         self, agent_name: str, patterns: List[Dict], avg_quality: float, task_types: List[str]
     )-> str:
-        """ Generate Agent Overview."""
-        """Generate agent overview section"""
+        """ Generate Agent Overview."""Generate agent overview section"""
         overview = f"""The **{agent_name}** agent is a specialized autonomous agent that excels in {', '.join(task_types[:3])}.
 
 **Performance Metrics:**
@@ -503,8 +499,7 @@ This agent operates with true autonomy, making intelligent decisions based on hi
     def _generate_skill_overview(
         self, skill_name: str, patterns: List[Dict], avg_quality: float, task_types: List[str]
     )-> str:
-        """ Generate Skill Overview."""
-        """Generate skill overview"""
+        """ Generate Skill Overview."""Generate skill overview"""
         return f"""The **{skill_name}** skill provides specialized knowledge and proven methodologies for {', '.join(task_types[:3])}.
 
 **Performance Characteristics:**

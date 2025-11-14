@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""
-Claude Plugin Validator - Quick validation against official guidelines
-"""
-
+# Claude Plugin Validator - Quick validation against official guidelines
 import json
 import yaml
 import re

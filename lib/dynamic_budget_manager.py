@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-Dynamic Budget Management System
-
+#     Dynamic Budget Management System
+    """
 Intelligently manages token budgets across optimization components with
 real-time allocation adjustments based on performance metrics and needs.
 
 Target: 15-20% additional cost reduction through intelligent budget allocation
-"""
-
 import json
 import time
 import threading
@@ -101,7 +98,7 @@ class DynamicBudgetManager:
     """Intelligent budget management system."""
 
     def __init__(self, total_budget: int = 100000, db_path: str = "data/databases/budget_metrics.db"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.total_budget = total_budget
         self.db_path = db_path
         self.components: Dict[str, ComponentBudget] = {}
@@ -196,8 +193,7 @@ class DynamicBudgetManager:
         priority: PriorityLevel = PriorityLevel.MEDIUM,
         initial_allocation: Optional[int] = None,
     )-> None:
-        """Register Component."""
-        """Register a new component for budget management."""
+        """Register Component."""Register a new component for budget management."""
         with self._lock:
             if component_id in self.components:
                 logger.warning(f"Component {component_id} already registered")

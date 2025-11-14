@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
-"""
-Smart Caching System - Simple Implementation
+# Smart Caching System - Simple Implementation
 
-A simplified but powerful caching system that provides 30-40% token reduction
-through intelligent content caching, predictive loading, and user pattern learning.
+# A simplified but powerful caching system that provides 30-40% token reduction
+# through intelligent content caching, predictive loading, and user pattern learning.
 
-Features:
-- Multi-tier caching with LRU, LFU, and TTL policies
-- Predictive content pre-loading
-- User behavior pattern learning
-- Memory-efficient storage
-- Real-time cache statistics
-- Easy integration with existing systems
+# Features:
+# - Multi-tier caching with LRU, LFU, and TTL policies
+# - Predictive content pre-loading
+# - User behavior pattern learning
+# - Memory-efficient storage
+# - Real-time cache statistics
+# - Easy integration with existing systems
 
-Version: 1.0.0 - Production Ready
-Author: Autonomous Agent Development Team
-"""
-
+# Version: 1.0.0 - Production Ready
+# Author: Autonomous Agent Development Team
 import os
 import json
 import time
@@ -119,8 +116,7 @@ class SimpleSmartCache:
         default_policy: CachePolicy = CachePolicy.LRU,
         enable_predictions: bool = True,
     ):
-        """  Init  ."""
-        """
+        """Initialize the processor with default configuration."""
         Initialize the smart cache system.
 
         Args:
@@ -160,8 +156,9 @@ class SimpleSmartCache:
         self._load_cache()
         self._load_patterns()
 
-    def get(self, key: str, user_id: str = None) -> Optional[Any]:
+    def get():
         """
+        
         Get content from cache.
 
         Args:
@@ -215,7 +212,6 @@ class SimpleSmartCache:
         metadata: Dict[str, Any] = None,
     )-> bool:
         """Set."""
-        """
         Store content in cache.
 
         Args:
@@ -408,8 +404,9 @@ class SimpleSmartCache:
         # Return unique predictions, most recent first
         return list(dict.fromkeys(reversed(predictions)))
 
-    def clear(self, pattern: str = None) -> int:
+    def clear():
         """
+        
         Clear cache entries.
 
         Args:
@@ -558,8 +555,9 @@ class SimpleSmartCache:
             except Exception as e:
                 self.logger.error(f"Failed to load content predictions: {e}")
 
-    def cleanup(self, max_age_hours: int = 24) -> int:
+    def cleanup():
         """
+        
         Clean up old entries.
 
         Args:

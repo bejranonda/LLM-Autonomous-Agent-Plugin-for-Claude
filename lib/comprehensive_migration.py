@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""
-Comprehensive Data Migration Script
+#     Comprehensive Data Migration Script
+    """
 Migrates all scattered data from multiple sources into unified parameter storage
-"""
-
 import json
 import os
 import sys

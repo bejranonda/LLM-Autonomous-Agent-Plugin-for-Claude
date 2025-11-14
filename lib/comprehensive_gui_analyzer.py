@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""
-Comprehensive GUI Analysis Tool for Autonomous Agent Dashboard
+#     Comprehensive GUI Analysis Tool for Autonomous Agent Dashboard
+    """
 
 Performs complete GUI validation including:
 - Interface functionality testing
@@ -11,8 +11,6 @@ Performs complete GUI validation including:
 - Error detection and resolution
 
 Version: 1.0.0
-"""
-
 import requests
 import json
 import time
@@ -41,7 +39,7 @@ class GUIAnalyzer:
     """Comprehensive GUI analysis tool"""
 
     def __init__(self, base_url: str = "http://127.0.0.1:5000"):
-        """  Init  ."""
+        """Initialize the processor with default configuration."""
         self.base_url = base_url
         self.results = {
             "web_interface": {},

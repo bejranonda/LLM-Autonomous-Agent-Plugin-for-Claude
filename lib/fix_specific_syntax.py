@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""
-Fix specific syntax issues in utility scripts
-"""
-
+#     Fix specific syntax issues in utility scripts
+    """
 import re
 from pathlib import Path
 
