@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.14.1] - 2025-11-14
+
+### Changed
+- Synchronized version numbers across all documentation files
+- Updated plugin manifest to v7.14.1 for consistency
+- Ensured dual repository release compatibility
+
+### Infrastructure
+- Dual repository synchronization between GitLab (mirror) and GitHub (third)
+- Release infrastructure validation and consistency checks
+- Cross-platform compatibility maintenance
+
+### Documentation
+- Updated README.md version references to v7.14.1
+- Updated CLAUDE.md version information
+- Created comprehensive RELEASE_NOTES_v7.14.1.md
+
 ## [7.14.0] - 2025-11-14
 
 ### Added
