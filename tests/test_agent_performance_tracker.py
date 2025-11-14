@@ -255,7 +255,7 @@ class TestAgentPerformanceTracker:
         performance_tracker.record_task_execution(**sample_performance_data)
 
         # Create new instance with same data directory
-        new_tracker = AgentPerformanceTracker(data_dir=performance_tracker.data_dir)
+        new_tracker = AgentPerformanceTracker(storage_dir=performance_tracker.data_dir)
 
         # Check data is available
         performance = new_tracker.get_agent_performance(
@@ -266,7 +266,7 @@ class TestAgentPerformanceTracker:
 
     def test_file_creation_and_format(self, temp_directory, sample_performance_data):
         """Test that performance file is created correctly"""
-        tracker = AgentPerformanceTracker(data_dir=temp_directory)
+        tracker = AgentPerformanceTracker(storage_dir=temp_directory)
 
         # Record performance
         tracker.record_task_execution(**sample_performance_data)

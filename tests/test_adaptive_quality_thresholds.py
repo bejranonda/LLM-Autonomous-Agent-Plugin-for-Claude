@@ -252,7 +252,7 @@ class TestAdaptiveQualityThresholds:
         initial_threshold = quality_thresholds.get_threshold(**sample_task_info)
 
         # Create new instance with same data directory
-        new_thresholds = AdaptiveQualityThresholds(data_dir=quality_thresholds.data_dir)
+        new_thresholds = AdaptiveQualityThresholds(storage_dir=quality_thresholds.data_dir)
 
         # Should get similar threshold
         new_threshold = new_thresholds.get_threshold(**sample_task_info)
@@ -261,7 +261,7 @@ class TestAdaptiveQualityThresholds:
 
     def test_file_creation_and_format(self, temp_directory, sample_task_info):
         """Test that thresholds file is created correctly"""
-        thresholds = AdaptiveQualityThresholds(data_dir=temp_directory)
+        thresholds = AdaptiveQualityThresholds(storage_dir=temp_directory)
 
         # Get threshold to trigger file creation
         thresholds.get_threshold(**sample_task_info)

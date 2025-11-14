@@ -28,7 +28,7 @@ class TestContextAwareSkillRecommendations:
     @pytest.fixture
     def recommendation_system(self, temp_directory):
         """Create a ContextAwareSkillRecommendations instance for testing"""
-        return ContextAwareSkillRecommendations(data_dir=temp_directory)
+        return ContextAwareSkillRecommendations(storage_dir=temp_directory)
 
     @pytest.fixture
     def base_recommendations(self):
@@ -378,7 +378,7 @@ class TestContextAwareSkillRecommendations:
             recommendation_system.record_recommendation_effectiveness(effectiveness_data)
 
         # Create new instance with same data directory
-        new_system = ContextAwareSkillRecommendations(data_dir=recommendation_system.data_dir)
+        new_system = ContextAwareSkillRecommendations(storage_dir=recommendation_system.data_dir)
 
         # Should be able to retrieve recommendation history
         effectiveness = new_system.get_recommendation_effectiveness("persistence_test")
@@ -386,7 +386,7 @@ class TestContextAwareSkillRecommendations:
 
     def test_file_creation_and_format(self, temp_directory, base_recommendations, sample_task_info, sample_context):
         """Test that recommendations file is created correctly"""
-        system = ContextAwareSkillRecommendations(data_dir=temp_directory)
+        system = ContextAwareSkillRecommendations(storage_dir=temp_directory)
 
         # Make recommendations to trigger file creation
         system.recommend_skills_with_context(base_recommendations, sample_task_info, sample_context)

@@ -1,8 +1,11 @@
 """
-Test configuration and fixtures for Autonomous Agent Plugin v6.0.0
+Test configuration and fixtures for Autonomous Agent Plugin v7.7.0
 
 This module provides common test utilities, fixtures, and configuration
-for testing all 8 Phase 1 learning systems.
+for testing the autonomous agent plugin with four-tier architecture.
+
+Cross-platform compatibility: Windows, Linux, macOS
+Testing categories: Unit, Integration, Performance, Security
 """
 
 import pytest
@@ -108,8 +111,8 @@ def mock_plugin_path(temp_directory):
     # Create plugin.json
     plugin_json = {
         "name": "Autonomous Agent",
-        "version": "6.0.0",
-        "description": "Revolutionary Two-Tier Architecture with Learning Systems"
+        "version": "7.7.0",
+        "description": "Four-Tier Architecture with Enhanced Smart Recommendations"
     }
 
     with open(os.path.join(plugin_dir, 'plugin.json'), 'w') as f:
@@ -208,3 +211,222 @@ def assert_file_content(file_path, expected_content):
         assert actual_data == expected_content
     else:
         assert actual_content == expected_content
+
+
+@pytest.fixture
+def cross_platform_temp_dir():
+    """
+    Create a cross-platform temporary directory that handles path separators correctly.
+    This fixture is essential for testing file operations on Windows vs Unix systems.
+    """
+    import platform
+    temp_dir = tempfile.mkdtemp()
+
+    # Store platform info for tests
+    platform_info = {
+        'system': platform.system(),
+        'release': platform.release(),
+        'version': platform.version(),
+        'path_separator': os.sep,
+        'temp_dir': temp_dir
+    }
+
+    yield temp_dir, platform_info
+    shutil.rmtree(temp_dir)
+
+
+@pytest.fixture
+def mock_file_lock():
+    """
+    Mock file locking mechanisms for cross-platform testing.
+    Windows uses msvcrt, Unix uses fcntl.
+    """
+    import platform
+
+    if platform.system() == 'Windows':
+        with patch('msvcrt.locking') as mock_lock:
+            yield {
+                'lock': mock_lock,
+                'unlock': mock_lock,  # Same function used for both lock and unlock
+                'platform': 'Windows'
+            }
+    else:
+        with patch('fcntl.flock') as mock_lock, \
+             patch('os.O_LOCK') as mock_lock_flag:
+            yield {
+                'lock': mock_lock,
+                'platform': 'Unix'
+            }
+
+
+@pytest.fixture(params=['Windows', 'Linux', 'Darwin'])
+def mock_platform(request):
+    """
+    Parametrized fixture to test behavior on different platforms.
+    Tests will run three times, once for each platform.
+    """
+    with patch('platform.system', return_value=request.param), \
+         patch('sys.platform', return_value=request.param.lower()):
+        yield request.param
+
+
+@pytest.fixture
+def sample_pattern_data():
+    """Sample pattern data for testing pattern storage"""
+    return {
+        'task_type': 'feature_implementation',
+        'context': 'Add user authentication system',
+        'skills_used': ['code-analysis', 'security-audit', 'testing'],
+        'approach': 'Implemented JWT-based authentication with proper validation',
+        'quality_score': 0.87,
+        'timestamp': '2025-01-12T10:30:00Z',
+        'usage_count': 0,
+        'success_rate': 1.0
+    }
+
+
+@pytest.fixture
+def sample_quality_metrics():
+    """Sample quality metrics for testing"""
+    return {
+        'task_id': 'task_001',
+        'quality_score': 0.88,
+        'metrics': {
+            'code_quality': 0.90,
+            'test_quality': 0.85,
+            'documentation': 0.80,
+            'patterns': 0.95,
+            'performance': 0.87
+        }
+    }
+
+
+@pytest.fixture
+def mock_agent_groups():
+    """Mock four-tier agent group structure"""
+    return {
+        'Group1_Analysis': [
+            'code-analyzer', 'smart-recommender', 'security-auditor',
+            'performance-analytics', 'pr-reviewer', 'learning-engine',
+            'validation-controller'
+        ],
+        'Group2_Decision': [
+            'strategic-planner', 'resource-allocator'
+        ],
+        'Group3_Execution': [
+            'quality-controller', 'test-engineer', 'frontend-analyzer',
+            'documentation-generator', 'build-validator', 'git-repository-manager',
+            'api-contract-validator', 'gui-validator', 'dev-orchestrator',
+            'version-release-manager', 'workspace-organizer', 'report-management-organizer',
+            'background-task-manager', 'claude-plugin-validator'
+        ],
+        'Group4_Validation': [
+            'post-execution-validator', 'quality-assurance-validator',
+            'performance-validator', 'integration-validator'
+        ]
+    }
+
+
+@pytest.fixture
+def optimizer():
+    """Mock agent communication optimizer fixture for testing"""
+    from unittest.mock import Mock
+
+    mock_optimizer = Mock()
+    mock_optimizer.optimize_communication.return_value = {
+        'success': True,
+        'optimizations': [
+            {'component': 'cache', 'improvement': 25},
+            {'component': 'compression', 'improvement': 15}
+        ],
+        'efficiency_gain': 0.30
+    }
+    mock_optimizer.get_metrics.return_value = {
+        'total_messages': 100,
+        'optimized_messages': 85,
+        'efficiency_rate': 0.85
+    }
+    return mock_optimizer
+
+
+@pytest.fixture
+def budget_manager():
+    """Mock dynamic budget manager fixture for testing"""
+    from unittest.mock import Mock
+
+    mock_budget_manager = Mock()
+    mock_budget_manager.total_budget = 1000.0
+    mock_budget_manager.allocate_budget.return_value = True
+    mock_budget_manager.get_allocation.return_value = {
+        'component': 'test_agent',
+        'allocated': 250.0,
+        'used': 180.5,
+        'remaining': 69.5
+    }
+    mock_budget_manager.update_performance_metrics.return_value = None
+    mock_budget_manager.get_efficiency.return_value = 0.87
+    return mock_budget_manager
+
+
+@pytest.fixture
+def preference_learner(temp_directory):
+    """Real UserPreferenceLearner fixture for testing"""
+    import sys
+    import os
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
+
+    from user_preference_learner import UserPreferenceLearner
+
+    # Use the temp directory for preference storage
+    learner = UserPreferenceLearner(storage_dir=temp_directory)
+    return learner
+
+
+@pytest.fixture
+def intelligent_agent_router(temp_directory):
+    """Mock IntelligentAgentRouter fixture for testing"""
+    from unittest.mock import Mock
+
+    mock_router = Mock()
+    mock_router.route_task.return_value = {
+        'success': True,
+        'agent': 'test-agent',
+        'confidence': 0.92,
+        'reason': 'Task complexity and type match'
+    }
+    mock_router.get_routing_stats.return_value = {
+        'total_tasks': 50,
+        'successful_routes': 48,
+        'average_confidence': 0.89
+    }
+    return mock_router
+
+
+@pytest.fixture
+def learning_visualizer(temp_directory):
+    """Mock LearningVisualizer fixture for testing"""
+    from unittest.mock import Mock
+
+    mock_visualizer = Mock()
+    mock_visualizer.record_learning_event.return_value = True
+    mock_visualizer.generate_learning_insights.return_value = {
+        'insights': ['Pattern A improved by 15%', 'Success rate: 94%'],
+        'trends': {'improving': True, 'rate': 0.23}
+    }
+    mock_visualizer.get_learning_events.return_value = []
+    return mock_visualizer
+
+
+@pytest.fixture
+def predictive_skill_loader(temp_directory):
+    """Mock PredictiveSkillLoader fixture for testing"""
+    from unittest.mock import Mock
+
+    mock_loader = Mock()
+    mock_loader.predict_skills.return_value = [
+        {'skill': 'code-analysis', 'confidence': 0.94, 'reason': 'High relevance'},
+        {'skill': 'quality-standards', 'confidence': 0.87, 'reason': 'Type match'}
+    ]
+    mock_loader.update_skill_effectiveness.return_value = None
+    mock_loader.get_prediction_accuracy.return_value = 0.91
+    return mock_loader

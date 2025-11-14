@@ -28,7 +28,7 @@ class TestUserPreferenceLearner:
     @pytest.fixture
     def preference_learner(self, temp_directory):
         """Create a UserPreferenceLearner instance for testing"""
-        return UserPreferenceLearner(data_dir=temp_directory)
+        return UserPreferenceLearner(storage_dir=temp_directory)
 
     @pytest.fixture
     def sample_interaction(self):
@@ -46,8 +46,8 @@ class TestUserPreferenceLearner:
     def test_initialization(self, preference_learner):
         """Test system initialization"""
         assert preference_learner is not None
-        assert hasattr(preference_learner, 'data_dir')
-        assert hasattr(preference_learner, 'preferences_file')
+        assert hasattr(preference_learner, 'storage_dir')
+        assert hasattr(preference_learner, 'preference_file')
 
     def test_record_interaction(self, preference_learner, sample_interaction):
         """Test recording user interaction"""
@@ -273,7 +273,7 @@ class TestUserPreferenceLearner:
         preference_learner.record_interaction(**sample_interaction)
 
         # Create new instance with same data directory
-        new_learner = UserPreferenceLearner(data_dir=preference_learner.data_dir)
+        new_learner = UserPreferenceLearner(storage_dir=str(preference_learner.storage_dir))
 
         # Check preferences are available
         prefs = new_learner.get_learned_preferences("coding_style")
@@ -282,7 +282,7 @@ class TestUserPreferenceLearner:
 
     def test_file_creation_and_format(self, temp_directory, sample_interaction):
         """Test that preferences file is created correctly"""
-        learner = UserPreferenceLearner(data_dir=temp_directory)
+        learner = UserPreferenceLearner(storage_dir=temp_directory)
 
         # Record interaction
         learner.record_interaction(**sample_interaction)
@@ -440,7 +440,7 @@ class TestUserPreferenceLearner:
         assert os.path.exists(export_file)
 
         # Create new learner and import
-        new_learner = UserPreferenceLearner(data_dir=temp_directory)
+        new_learner = UserPreferenceLearner(storage_dir=temp_directory)
         new_learner.import_preferences(export_file)
 
         # Verify preferences were imported

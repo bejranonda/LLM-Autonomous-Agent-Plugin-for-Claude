@@ -28,7 +28,7 @@ class TestPredictiveSkillLoader:
     @pytest.fixture
     def skill_loader(self, temp_directory):
         """Create a PredictiveSkillLoader instance for testing"""
-        return PredictiveSkillLoader(data_dir=temp_directory)
+        return PredictiveSkillLoader(storage_dir=temp_directory)
 
     @pytest.fixture
     def sample_task_info(self):
@@ -293,7 +293,7 @@ class TestPredictiveSkillLoader:
         )
 
         # Create new instance with same data directory
-        new_loader = PredictiveSkillLoader(data_dir=skill_loader.data_dir)
+        new_loader = PredictiveSkillLoader(storage_dir=skill_loader.data_dir)
 
         # Check effectiveness is available
         effectiveness = new_loader.get_skill_effectiveness(skill_name)
@@ -301,7 +301,7 @@ class TestPredictiveSkillLoader:
 
     def test_file_creation_and_format(self, temp_directory, sample_task_info):
         """Test that skills file is created correctly"""
-        loader = PredictiveSkillLoader(data_dir=temp_directory)
+        loader = PredictiveSkillLoader(storage_dir=temp_directory)
 
         # Predict skills to trigger file creation
         loader.predict_skills(sample_task_info, top_k=3)

@@ -28,7 +28,7 @@ class TestLearningVisualizer:
     @pytest.fixture
     def learning_visualizer(self, temp_directory):
         """Create a LearningVisualizer instance for testing"""
-        return LearningVisualizer(data_dir=temp_directory)
+        return LearningVisualizer(storage_dir=temp_directory)
 
     @pytest.fixture
     def sample_learning_event(self):
@@ -325,7 +325,7 @@ class TestLearningVisualizer:
         learning_visualizer.record_learning_event(**sample_learning_event)
 
         # Create new instance with same data directory
-        new_visualizer = LearningVisualizer(data_dir=learning_visualizer.data_dir)
+        new_visualizer = LearningVisualizer(storage_dir=learning_visualizer.data_dir)
 
         # Check events are available
         events = new_visualizer.get_learning_events(days=7)
@@ -335,7 +335,7 @@ class TestLearningVisualizer:
 
     def test_file_creation_and_format(self, temp_directory, sample_learning_event):
         """Test that events file is created correctly"""
-        visualizer = LearningVisualizer(data_dir=temp_directory)
+        visualizer = LearningVisualizer(storage_dir=temp_directory)
 
         # Record event to trigger file creation
         visualizer.record_learning_event(**sample_learning_event)

@@ -28,7 +28,7 @@ class TestIntelligentAgentRouter:
     @pytest.fixture
     def agent_router(self, temp_directory):
         """Create an IntelligentAgentRouter instance for testing"""
-        return IntelligentAgentRouter(data_dir=temp_directory)
+        return IntelligentAgentRouter(storage_dir=temp_directory)
 
     @pytest.fixture
     def sample_task_info(self):
@@ -395,7 +395,7 @@ class TestIntelligentAgentRouter:
         agent_router.record_routing_outcome(outcome_data)
 
         # Create new instance with same data directory
-        new_router = IntelligentAgentRouter(data_dir=agent_router.data_dir)
+        new_router = IntelligentAgentRouter(storage_dir=agent_router.data_dir)
 
         # Should be able to retrieve routing history
         performance = new_router.get_routing_performance(days=7)
@@ -403,7 +403,7 @@ class TestIntelligentAgentRouter:
 
     def test_file_creation_and_format(self, temp_directory, sample_task_info):
         """Test that routing file is created correctly"""
-        router = IntelligentAgentRouter(data_dir=temp_directory)
+        router = IntelligentAgentRouter(storage_dir=temp_directory)
 
         # Route task to trigger file creation
         router.route_task(sample_task_info, tier="execution")
