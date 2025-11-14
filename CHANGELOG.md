@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.14.0] - 2025-11-14
+
+### Added
+- Comprehensive report path migration system for better organization
+- Enhanced workspace cleanup and report consolidation features
+- Improved documentation structure and organization
+
+### Changed
+- Migrated report paths to unified structure for better maintainability
+- Consolidated workspace organization tools
+- Updated command documentation for better clarity
+
+### Improved
+- Workspace cleanup automation with better categorization
+- Report archival system with hierarchical organization
+- Documentation consistency across all files
+
+### Documentation
+- Complete migration guide for report paths
+- Updated workspace organization procedures
+- Enhanced command documentation with current features
+
 ## [7.11.0] - 2025-01-14
 
 ### 🎯 QUALITY TRANSFORMATION RELEASE
