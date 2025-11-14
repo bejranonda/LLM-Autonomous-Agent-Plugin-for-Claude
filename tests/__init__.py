@@ -1,5 +1,5 @@
 """
-Test package for Autonomous Agent Plugin v7.7.0
+Test package for Autonomous Agent Plugin v7.9.0
 
 This package contains comprehensive tests for the autonomous agent plugin,
 including unit tests, integration tests, and fixtures for:

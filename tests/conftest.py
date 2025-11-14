@@ -1,5 +1,5 @@
 """
-Test configuration and fixtures for Autonomous Agent Plugin v7.7.0
+Test configuration and fixtures for Autonomous Agent Plugin v7.9.0
 
 This module provides common test utilities, fixtures, and configuration
 for testing the autonomous agent plugin with four-tier architecture.
