@@ -5,7 +5,6 @@ Pattern Storage System for Autonomous Claude Agent Plugin
 Manages pattern learning data using JSON files. Stores successful task patterns,
 retrieves similar patterns for context-aware recommendations, and
 tracks usage statistics.
-"""
 
 import json
 import argparse
@@ -47,26 +46,23 @@ class PatternStorage:
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
         """
-                Initialize pattern storage.
+        Initialize pattern storage.
 
-                Args:
-                    patterns_dir: Directory path for storing patterns (
-            default: .claude-patterns,
-        )
+        Args:
+            patterns_dir: Directory path for storing patterns (default: .claude-patterns)
         """
         self.patterns_dir = Path(patterns_dir)
         self.patterns_file = self.patterns_dir / "patterns.json"
         self._ensure_directory()
 
     def _ensure_directory(self):
-        """Create patterns directory if it doesn't exist."""
+        """Create patterns directory if it does not exist."""
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
         if not self.patterns_file.exists():
             self._write_patterns([])
 
-    def _read_patterns():
+    def _read_patterns(self):
         """
-        
         Read patterns from JSON file with file locking.
 
         Returns:
@@ -103,13 +99,14 @@ class PatternStorage:
             print(f"Error reading patterns: {e}", file=sys.stderr)
             return []
 
+"""
     def _write_patterns(self, patterns: List[Dict[str, Any]]):
-        """
+"""
         Write patterns to JSON file with file locking.
 
         Args:
             patterns: List of pattern dictionaries to write
-        """
+"""
         try:
             # Check if file exists and has existing structure
             existing_structure = None
@@ -146,8 +143,8 @@ class PatternStorage:
             print(f"Error writing patterns: {e}", file=sys.stderr)
             raise
 
+"""
     def store_pattern():
-        """
         
         Store a new pattern.
 
@@ -168,7 +165,7 @@ class PatternStorage:
                     - skills_used: List of skills used
                     - approach: Detailed description of approach taken
                     - quality_score: Quality score (0.0 to 1.0)
-        """
+"""
         # Validate required fields
         required_fields = ["task_type", "context", "skills_used", "approach", "quality_score"]
         missing_fields = [field for field in required_fields if field not in pattern]
@@ -220,10 +217,11 @@ class PatternStorage:
 
         return pattern["pattern_id"]
 
+"""
     def retrieve_patterns(
         self, context: str, task_type: Optional[str] = None, min_quality: float = 0.8, limit: int = 5
     )-> List[Dict[str, Any]]:
-        """Retrieve Patterns."""
+"""
         Retrieve patterns matching search criteria.
 
         Args:
@@ -234,7 +232,7 @@ class PatternStorage:
 
         Returns:
             List of matching patterns, sorted by relevance and quality
-        """
+"""
         patterns = self._read_patterns()
 
         # Convert context to lowercase for case-insensitive matching
@@ -268,6 +266,7 @@ class PatternStorage:
         return [match["pattern"] for match in matches[:limit]]
 
     # Alias for backward compatibility with tests
+"""
     def get_patterns(self) -> List[Dict[str, Any]]:
         """Alias to get all patterns for backward compatibility."""
         return self._read_patterns()
@@ -275,7 +274,7 @@ class PatternStorage:
     def get_similar_patterns(
         self, task_type: str = None, context: Dict[str, Any] = None, min_quality: float = 0.8, limit: int = 5
     )-> List[Dict[str, Any]]:
-        """Get Similar Patterns."""Alias for retrieve_patterns method for backward compatibility."""
+        """Get Similar Patterns. Alias for retrieve_patterns method for backward compatibility."""
         context_str = str(context) if context else ""
         return self.retrieve_patterns(context_str, task_type, min_quality, limit)
 
@@ -307,7 +306,6 @@ class PatternStorage:
         }
 
     def update_usage():
-        """
         
         Update usage statistics for a pattern.
 
@@ -317,7 +315,7 @@ class PatternStorage:
 
         Returns:
             True if pattern was found and updated, False otherwise
-        """
+"""
         patterns = self._read_patterns()
 
         for pattern in patterns:
@@ -345,14 +343,14 @@ class PatternStorage:
         print(f"Error: Pattern '{pattern_id}' not found", file=sys.stderr)
         return False
 
+"""
     def get_statistics():
-        """
         
         Get overall pattern statistics.
 
         Returns:
             Dictionary with statistics about stored patterns
-        """
+"""
         patterns = self._read_patterns()
 
         if not patterns:
@@ -384,14 +382,14 @@ class PatternStorage:
             ),
         }
 
+"""
     def _load_unified_data():
-        """
         
         Load unified data from unified_data.json file.
 
         Returns:
             Unified data dictionary with default structure
-        """
+"""
         unified_file = self.patterns_dir / "unified_data.json"
 
         if not unified_file.exists():
@@ -420,8 +418,8 @@ class PatternStorage:
             print(f"Warning: Could not load unified data: {e}", file=sys.stderr)
             return self._load_unified_data()  # Return default structure
 
+"""
     def _save_unified_data():
-        """
         
         Save unified data to unified_data.json file.
 
@@ -430,7 +428,7 @@ class PatternStorage:
 
         Returns:
             True if successful, False otherwise
-        """
+"""
         unified_file = self.patterns_dir / "unified_data.json"
 
         # Update timestamp
@@ -448,8 +446,8 @@ class PatternStorage:
             print(f"Error saving unified data: {e}", file=sys.stderr)
             return False
 
+"""
     def store_to_unified():
-        """
         
         Store data directly to unified structure.
 
@@ -459,7 +457,7 @@ class PatternStorage:
 
         Returns:
             True if successful, False otherwise
-        """
+"""
         unified = self._load_unified_data()
 
         try:
@@ -506,14 +504,14 @@ class PatternStorage:
             print(f"Error storing to unified data: {e}", file=sys.stderr)
             return False
 
+"""
     def consolidate_all_data():
-        """
         
         Consolidate all scattered data files into unified_data.json.
 
         Returns:
             True if successful, False otherwise
-        """
+"""
         try:
             # Start with empty unified structure
             unified = self._load_unified_data()
@@ -605,8 +603,8 @@ class PatternStorage:
             print(f"Error consolidating data: {e}", file=sys.stderr)
             return False
 
+"""
     def store_pattern_enhanced():
-        """
         
         Enhanced pattern storage that also updates unified data.
 
@@ -615,7 +613,7 @@ class PatternStorage:
 
         Returns:
             pattern_id of stored pattern
-        """
+"""
         # Store pattern using existing method
         pattern_id = self.store_pattern(pattern)
 
@@ -662,6 +660,7 @@ class PatternStorage:
         return pattern_id
 
 
+"""
 def main():
     """Command-line interface for pattern storage."""
     parser = argparse.ArgumentParser(description="Pattern Storage System")

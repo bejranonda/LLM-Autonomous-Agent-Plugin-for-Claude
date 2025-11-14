@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Advanced Python Syntax Error Fixer
-    """
+"""
 Handles complex syntax error patterns with specific fixes
+"""
 import ast
 import os
 import re

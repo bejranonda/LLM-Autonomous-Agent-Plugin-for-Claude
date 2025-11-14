@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Enhanced GitHub Release Manager for Autonomous Agent
-    """
+"""
 
 Fixes common GitHub release publishing issues:
+"""
 - Authentication failures
 - API rate limiting
 - Release creation failures
@@ -143,7 +144,7 @@ class EnhancedGitHubReleaseManager:
 
         Returns:
             True if successful, False otherwise
-        """
+"""
         print(f"[START] Creating GitHub release: {tag}")
         print(f"   Repository: {self.repo_url}")
         print(f"   Title: {title}")
@@ -182,6 +183,7 @@ class EnhancedGitHubReleaseManager:
         print("[ERROR] All release methods failed")
         return False
 
+"""
     def auto_detect_version_and_changes(self) -> Dict[str, str]:
         """Auto-detect version and generate release notes from commits."""
         try:
@@ -263,6 +265,7 @@ def main():
 
     args = parser.parse_args()
 
+"""
     # Initialize release manager
     release_manager = EnhancedGitHubReleaseManager()
 

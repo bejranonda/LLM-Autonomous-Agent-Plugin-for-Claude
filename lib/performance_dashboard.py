@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 #     Performance Dashboard for Autonomous Agent Plugin
-    """
-Real-time performance monitoring and visualization
 import json
 import time
 import os

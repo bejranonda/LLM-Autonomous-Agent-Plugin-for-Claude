@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Fix missing quotes around dictionary keys in Python files
-    """
+"""
+"""
 import re
 from pathlib import Path
 

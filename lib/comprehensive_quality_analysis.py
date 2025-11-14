@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Comprehensive Quality Analysis for Autonomous Agent Plugin
-    """
+"""
+"""
 import json
 import yaml
 import sys

@@ -44,7 +44,7 @@ class AdaptiveQualityThresholds:
     - Project phase (pre-release vs exploration)
     - Task criticality (user-facing vs internal)
     - Historical context (recent failures increase standards)
-    """
+"""
 
     # Base threshold matrix by task type
     BASE_THRESHOLDS = {
@@ -78,13 +78,14 @@ class AdaptiveQualityThresholds:
         "trivial": 0.85,  # -15% for trivial tasks
     }
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize adaptive quality threshold system.
 
         Args:
             storage_dir: Directory for storing threshold history
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.history_file = self.storage_dir / "quality_thresholds_history.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -92,6 +93,7 @@ class AdaptiveQualityThresholds:
         if not self.history_file.exists():
             self._initialize_history()
 
+"""
     def _initialize_history(self):
         """Initialize threshold history file."""
         initial_data = {"version": "1.0.0", "threshold_history": [], "recent_failures": [], "adjustments_applied": 0}
@@ -118,7 +120,7 @@ class AdaptiveQualityThresholds:
 
         Returns:
             Calculated quality threshold (60-100)
-        """
+"""
         # Convert string to enum
         try:
             task_enum = TaskType(task_type.lower())
@@ -169,6 +171,7 @@ class AdaptiveQualityThresholds:
 
         return threshold
 
+"""
     def get_threshold_with_explanation(
         self,
         task_type: str,
@@ -182,7 +185,7 @@ class AdaptiveQualityThresholds:
 
         Returns:
             Dictionary with threshold and explanation
-        """
+"""
         threshold = self.get_threshold(task_type, project_phase, criticality, is_user_facing, context)
 
         try:
@@ -220,6 +223,7 @@ class AdaptiveQualityThresholds:
             "rationale": self._get_rationale(threshold, task_type),
         }
 
+"""
     def _get_rationale(self, threshold: int, task_type: str) -> str:
         """Get human-readable rationale for threshold."""
         if threshold >= 90:
@@ -319,6 +323,7 @@ class AdaptiveQualityThresholds:
 
 def main():
     """Command-line interface for testing adaptive quality thresholds."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Adaptive Quality Thresholds")

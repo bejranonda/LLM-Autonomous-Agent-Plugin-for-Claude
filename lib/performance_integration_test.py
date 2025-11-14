@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 #     Performance Integration Test
-    """
-Tests real-time monitoring capabilities during plugin operations
 import time
 import json
 import threading

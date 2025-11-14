@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     Token Usage Monitoring and Analytics System
-    """
+"""
 Comprehensive monitoring and analytics system for tracking token consumption
 across all autonomous agent operations with real-time insights and optimization recommendations.
 
 Version: 1.0.0
 Author: Autonomous Agent Plugin
+"""
 import json
 import os
 import time
@@ -90,11 +91,12 @@ class TokenBudget:
 
 
 class TokenMonitoringSystem:
-    """
+"""
     Comprehensive token usage monitoring and analytics system.
-    """
-    """
+"""
+"""
 
+"""
     def __init__(self, db_path: str = None, cache_dir: str = ".claude-patterns"):
         self.cache_dir = pathlib.Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
@@ -155,7 +157,7 @@ class TokenMonitoringSystem:
         """Initialize SQLite database for metrics storage."""
         self.conn = sqlite3.connect(str(self.db_path))
         self.conn.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS token_metrics (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 timestamp REAL NOT NULL,
@@ -166,11 +168,11 @@ class TokenMonitoringSystem:
                 context TEXT,
                 created_at REAL DEFAULT (strftime('%s', 'now'))
             )
-        """
+"""
         )
 
         self.conn.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS token_budgets (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 budget_id TEXT UNIQUE NOT NULL,
@@ -183,11 +185,11 @@ class TokenMonitoringSystem:
                 efficiency_score REAL DEFAULT 0.0,
                 created_at REAL DEFAULT (strftime('%s', 'now'))
             )
-        """
+"""
         )
 
         self.conn.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS alerts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 level TEXT NOT NULL,
@@ -200,7 +202,7 @@ class TokenMonitoringSystem:
                 resolved BOOLEAN DEFAULT 0,
                 created_at REAL DEFAULT (strftime('%s', 'now'))
             )
-        """
+"""
         )
 
         # Create indexes for better performance
@@ -208,6 +210,7 @@ class TokenMonitoringSystem:
         self.start_time = time.time()
         self.conn.commit()
 
+"""
     def record_metric(
         self,
         metric_type: MetricType,
@@ -230,7 +233,7 @@ class TokenMonitoringSystem:
         # Store in database
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             INSERT INTO token_metrics (timestamp, metric_type, value, tags, source, context)
             VALUES (?, ?, ?, ?, ?, ?)
         """,
@@ -272,7 +275,7 @@ class TokenMonitoringSystem:
         # Store in database
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             INSERT INTO token_budgets (budget_id, total_budget, used_tokens, remaining_tokens, start_time, end_time, alerts_triggered, efficiency_score)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """,
@@ -317,7 +320,7 @@ class TokenMonitoringSystem:
         # Store in database
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             UPDATE token_budgets
             SET used_tokens = ?, remaining_tokens = ?, efficiency_score = ?
             WHERE budget_id = ?
@@ -372,7 +375,7 @@ class TokenMonitoringSystem:
         since_time = time.time() - time_range
 
         cursor.execute(
-            """
+"""
             SELECT timestamp, value, tags, source, context
             FROM token_metrics
             WHERE metric_type = ? AND timestamp > ?
@@ -424,7 +427,7 @@ class TokenMonitoringSystem:
 
         for metric_type in MetricType:
             cursor.execute(
-                """
+"""
                 SELECT COUNT(*), AVG(value), MIN(value), MAX(value), SUM(value)
                 FROM token_metrics
                 WHERE metric_type = ? AND timestamp > ?
@@ -759,7 +762,7 @@ class TokenMonitoringSystem:
         # Save current alerts
         for alert in self.alerts:
             cursor.execute(
-                """
+"""
                 INSERT OR REPLACE INTO alerts
                 (level, message, metric_type, threshold, current_value, timestamp, recommendations, resolved, id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -948,6 +951,7 @@ def get_token_monitoring() -> TokenMonitoringSystem:
 if __name__ == "__main__":
     monitor = get_token_monitoring()
 
+"""
     # Test basic functionality
     monitor.record_metric(MetricType.CONSUMPTION, 1500, "test", {"test": True})
     monitor.record_metric(MetricType.EFFICIENCY, 0.7, "test", {"test": True})

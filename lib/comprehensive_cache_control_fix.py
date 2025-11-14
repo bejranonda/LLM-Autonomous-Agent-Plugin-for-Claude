@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     Comprehensive Cache Control Fix
-    """
+"""
 This script provides a complete fix for all sources of empty content blocks
 that could cause cache_control errors in the autonomous agent plugin.
 
 Usage:
-    python lib/comprehensive_cache_control_fix.py [--apply-fixes]
+python lib/comprehensive_cache_control_fix.py [--apply-fixes]
+"""
 import argparse
 import os
 import re

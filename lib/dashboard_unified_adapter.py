@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Dashboard Unified Adapter
-    """
+"""
 Integrates the dashboard with the unified parameter storage system
+"""
 import json
 import sys
 from pathlib import Path
@@ -18,24 +19,26 @@ except ImportError:
 
 
 class DashboardUnifiedAdapter:
-    """
+"""
     Adapter layer that provides dashboard-specific data access
-    """
+"""
     to the unified parameter storage system.
-    """
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-unified"):
-        """
+"""
         Initialize the dashboard unified adapter.
 
         Args:
             storage_dir: Directory containing unified parameter storage
-        """
+"""
         self.storage = UnifiedParameterStorage(storage_dir)
         self.cache = {}
         self.cache_timestamp = 0
         self.cache_ttl = 10  # 10 seconds cache for dashboard
 
+"""
     def _get_cached_data(self, key: str) -> Any:
         """Get cached data if available and fresh."""
         current_time = datetime.now().timestamp()
@@ -49,7 +52,7 @@ class DashboardUnifiedAdapter:
         self.cache_timestamp = datetime.now().timestamp()
 
     def get_quality_timeline_data():
-        """
+"""
         
         Get quality timeline data for charts.
 
@@ -58,7 +61,7 @@ class DashboardUnifiedAdapter:
 
         Returns:
             List of timeline entries with score, model, and timestamp
-        """
+"""
         cache_key = f"quality_timeline_{days}"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -119,14 +122,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting quality timeline: {e}", file=sys.stderr)
             return []
 
+"""
     def get_model_performance_data():
-        """
+"""
         
         Get model performance data for dashboard.
 
         Returns:
             Dictionary with model performance metrics
-        """
+"""
         cache_key = "model_performance"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -175,14 +179,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting model performance: {e}", file=sys.stderr)
             return {"active_model": "Unknown", "models": {}, "usage_stats": {}, "total_models": 0}
 
+"""
     def get_quality_metrics():
-        """
+"""
         
         Get current quality metrics for dashboard.
 
         Returns:
             Dictionary with current quality metrics
-        """
+"""
         cache_key = "quality_metrics"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -222,14 +227,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting quality metrics: {e}", file=sys.stderr)
             return {"current_score": 0, "total_assessments": 0, "average_score": 0, "pass_rate": 0}
 
+"""
     def get_learning_analytics():
-        """
+"""
         
         Get learning analytics for dashboard.
 
         Returns:
             Dictionary with learning analytics data
-        """
+"""
         cache_key = "learning_analytics"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -269,14 +275,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting learning analytics: {e}", file=sys.stderr)
             return {"total_patterns": 0, "skill_effectiveness": {}, "agent_performance": {}}
 
+"""
     def get_validation_status():
-        """
+"""
         
         Get validation status for dashboard.
 
         Returns:
             Dictionary with validation status information
-        """
+"""
         cache_key = "validation_status"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -316,14 +323,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting validation status: {e}", file=sys.stderr)
             return {"validation_score": 0, "total_validations": 0, "plugin_ready": False}
 
+"""
     def get_agent_feedback_metrics():
-        """
+"""
         
         Get agent feedback and collaboration metrics.
 
         Returns:
             Dictionary with feedback metrics
-        """
+"""
         cache_key = "agent_feedback_metrics"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -348,14 +356,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting agent feedback metrics: {e}", file=sys.stderr)
             return {"total_feedbacks": 0}
 
+"""
     def get_agent_performance_metrics():
-        """
+"""
         
         Get agent performance metrics and trends.
 
         Returns:
             Dictionary with agent performance data
-        """
+"""
         cache_key = "agent_performance_metrics"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -381,14 +390,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting agent performance metrics: {e}", file=sys.stderr)
             return {"individual_metrics": {}}
 
+"""
     def get_user_preference_summary():
-        """
+"""
         
         Get user preference learning summary.
 
         Returns:
             Dictionary with user preferences
-        """
+"""
         cache_key = "user_preference_summary"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -415,14 +425,15 @@ class DashboardUnifiedAdapter:
             print(f"Error getting user preference summary: {e}", file=sys.stderr)
             return {"learning_confidence": 0.0}
 
+"""
     def get_dashboard_summary():
-        """
+"""
         
         Get comprehensive dashboard summary.
 
         Returns:
             Dictionary with all dashboard data
-        """
+"""
         cache_key = "dashboard_summary"
         cached = self._get_cached_data(cache_key)
         if cached:
@@ -451,6 +462,7 @@ class DashboardUnifiedAdapter:
             print(f"Error getting dashboard summary: {e}", file=sys.stderr)
             return {"error": str(e), "timestamp": datetime.now().isoformat()}
 
+"""
     def _calculate_score_distribution(self, scores: List[float]) -> Dict[str, int]:
         """Calculate score distribution across ranges."""
         if not scores:
@@ -521,7 +533,7 @@ class DashboardUnifiedAdapter:
         return sorted(skills, key=lambda x: x["effectiveness"], reverse=True)[:5]
 
     def _calculate_trend():
-        """
+"""
         
         Calculate trend direction based on historical values.
 
@@ -531,7 +543,7 @@ class DashboardUnifiedAdapter:
 
         Returns:
             Trend direction: "improving", "declining", "stable", or "no_data"
-        """
+"""
         if not values or len(values) < min_data_points:
             return "no_data"
 
@@ -560,6 +572,7 @@ class DashboardUnifiedAdapter:
         else:
             return "stable"
 
+"""
     def _calculate_system_health(self) -> Dict[str, Any]:
         """Calculate overall system health metrics."""
         try:
@@ -596,6 +609,7 @@ class DashboardUnifiedAdapter:
 
 def main():
     """Command-line interface for testing the adapter."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Dashboard Unified Adapter Test")

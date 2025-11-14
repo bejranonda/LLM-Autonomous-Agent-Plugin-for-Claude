@@ -1,30 +1,25 @@
 #!/usr/bin/env python3
 #     Script Runner for Autonomous Agent Plugin
-    """
+"""
 This wrapper script ensures that Python scripts are executed from the correct
 plugin installation directory, whether running in development mode or
 installed from marketplace.
 
 Usage:
-    python run_script.py dashboard.py [args]
-    python run_script.py learning_analytics.py show --dir .claude-patterns
-import sys
-import os
-from pathlib import Path
-
-# Add current directory to Python path to import plugin_path_resolver
-sys.path.insert(0, str(Path(__file__).parent))
-
-try:
-    from plugin_path_resolver import get_script_path, get_plugin_path
-except ImportError as e:
-    print(f"Error: Could not import plugin_path_resolver: {e}", file=sys.stderr)
-    print("Please ensure plugin_path_resolver.py is in the same directory.", file=sys.stderr)
-    sys.exit(1)
-
-
-def main():
-    """Main."""
+python run_script.py dashboard.py [args]
+python run_script.py learning_analytics.py show --dir .claude-patterns
+# import sys
+# import os
+# from pathlib import Path
+# # Add current directory to Python path to import plugin_path_resolver
+# sys.path.insert(0, str(Path(__file__).parent))
+# try:
+# from plugin_path_resolver import get_script_path, get_plugin_path
+# except ImportError as e:
+# print(f"Error: Could not import plugin_path_resolver: {e}", file=sys.stderr)
+# print("Please ensure plugin_path_resolver.py is in the same directory.", file=sys.stderr)
+# sys.exit(1)
+# def main():
     if len(sys.argv) < 2:
         print("Usage: python run_script.py <script_name> [args...]", file=sys.stderr)
         print("Example: python run_script.py dashboard.py --port 8080", file=sys.stderr)

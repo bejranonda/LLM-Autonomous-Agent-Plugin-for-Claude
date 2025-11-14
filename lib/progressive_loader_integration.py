@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 #     Progressive Loader Integration
-    """
+"""
 Simple integration script for the enhanced progressive content loader
 that can be easily used with existing autonomous agent systems.
 
 This provides immediate 50-60% token reduction with minimal setup.
+"""
 import json
 import sys
 from pathlib import Path
@@ -44,7 +45,7 @@ class TokenOptimizer:
 
         Returns:
             Tuple of (optimized_content, optimization_stats)
-        """
+"""
         # Use the enhanced progressive loader
         optimized_content, metrics = self.loader.load_content(content, context, user_id, task_type)
 
@@ -71,6 +72,7 @@ class TokenOptimizer:
 
         return optimized_content, stats
 
+"""
     def optimize_for_simple_task(self, content: str) -> Tuple[str, Dict[str, Any]]:
         """Quick optimization for simple tasks."""
         context = {"time_constraint": "urgent", "performance_priority": True}
@@ -97,7 +99,7 @@ class TokenOptimizer:
 
 # Easy-to-use functions for quick integration
 def optimize_text():
-        """
+"""
         
         Quick optimization function for text content.
 
@@ -107,12 +109,13 @@ def optimize_text():
 
     Returns:
         Optimized content with reduced token usage
-    """
+"""
     optimizer = TokenOptimizer()
     optimized, _ = optimizer.optimize_content(content, context)
     return optimized
 
 
+"""
 def optimize_simple(content: str) -> str:
     """Quick optimization for simple tasks."""
     optimizer = TokenOptimizer()
@@ -137,6 +140,7 @@ def optimize_documentation(content: str, user_id: str = "default") -> str:
 # Command line interface
 def main():
     """Command line interface for quick testing."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Quick Token Optimization")

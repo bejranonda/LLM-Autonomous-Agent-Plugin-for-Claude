@@ -155,7 +155,7 @@ class ProactiveSuggester:
 
         Returns:
             Suggestion ID
-        """
+"""
         data = self._read_data()
 
         # Generate suggestion ID
@@ -221,6 +221,7 @@ class ProactiveSuggester:
         self._write_data(data)
         return suggestion_id
 
+"""
     def get_suggestions(
         self,
         status: Optional[str] = None,
@@ -243,7 +244,7 @@ class ProactiveSuggester:
 
         Returns:
             List of suggestions sorted by priority score (descending)
-        """
+"""
         data = self._read_data()
         suggestions = data["suggestions"]
 
@@ -264,15 +265,16 @@ class ProactiveSuggester:
 
         return suggestions[:limit]
 
+"""
     def record_acceptance(self, suggestion_id: str, acceptance_status: str, feedback: Optional[str] = None):
-        """
+"""
         Record user's response to a suggestion
 
         Args:
             suggestion_id: ID of the suggestion
             acceptance_status: User response (accepted, rejected, ignored)
             feedback: Optional user feedback
-        """
+"""
         data = self._read_data()
 
         for suggestion in data["suggestions"]:
@@ -304,6 +306,7 @@ class ProactiveSuggester:
         self._write_data(data)
         self._update_user_preferences()
 
+"""
     def record_implementation_outcome(
         self,
         suggestion_id: str,
@@ -323,7 +326,7 @@ class ProactiveSuggester:
             actual_effort_hours: Actual hours spent (vs estimated)
             quality_improvement: Quality score improvement (if applicable)
             notes: Additional notes about implementation
-        """
+"""
         data = self._read_data()
 
         for suggestion in data["suggestions"]:
@@ -366,6 +369,7 @@ class ProactiveSuggester:
 
         self._write_data(data)
 
+"""
     def _update_user_preferences(self):
         """Update user preferences based on acceptance patterns"""
         data = self._read_data()
@@ -412,7 +416,7 @@ class ProactiveSuggester:
         self._write_data(data)
 
     def get_top_suggestions():
-        """
+"""
         
         Get top priority suggestions, optionally considering user preferences
 
@@ -422,7 +426,7 @@ class ProactiveSuggester:
 
         Returns:
             List of top suggestions
-        """
+"""
         data = self._read_data()
         suggestions = [s for s in data["suggestions"] if s["status"] == "pending"]
 
@@ -442,6 +446,7 @@ class ProactiveSuggester:
 
         return suggestions[:count]
 
+"""
     def get_statistics(self) -> Dict:
         """Get comprehensive statistics about suggestions"""
         data = self._read_data()
@@ -501,7 +506,7 @@ class ProactiveSuggester:
 
         Returns:
             List of suggestion IDs created
-        """
+"""
         suggestion_ids = []
 
         # Analyze code quality trends
@@ -518,6 +523,7 @@ class ProactiveSuggester:
 
         return suggestion_ids
 
+"""
     def _analyze_quality_trends(self, quality_data: Dict, context: Dict) -> List[str]:
         """Analyze quality trends and generate suggestions"""
         suggestion_ids = []

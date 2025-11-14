@@ -212,7 +212,7 @@ class TokenBudgetManager:
 
         # Budget constraints table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS budget_constraints (
                 id TEXT PRIMARY KEY,
                 level TEXT NOT NULL,
@@ -225,12 +225,12 @@ class TokenBudgetManager:
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 updated_at TEXT DEFAULT CURRENT_TIMESTAMP
             )
-        """
+"""
         )
 
         # Budget allocations table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS budget_allocations (
                 constraint_id TEXT,
                 allocated INTEGER NOT NULL,
@@ -241,12 +241,12 @@ class TokenBudgetManager:
                 last_updated TEXT,
                 PRIMARY KEY (constraint_id)
             )
-        """
+"""
         )
 
         # Usage history table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS usage_history (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 constraint_id TEXT,
@@ -257,12 +257,12 @@ class TokenBudgetManager:
                 efficiency_score REAL,
                 context TEXT
             )
-        """
+"""
         )
 
         # Optimization recommendations table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS optimization_recommendations (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 constraint_id TEXT,
@@ -276,12 +276,12 @@ class TokenBudgetManager:
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 applied BOOLEAN DEFAULT FALSE
             )
-        """
+"""
         )
 
         # Budget alerts table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS budget_alerts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 level TEXT NOT NULL,
@@ -291,11 +291,12 @@ class TokenBudgetManager:
                 cooldown_minutes INTEGER DEFAULT 60,
                 last_triggered TEXT
             )
-        """
+"""
         )
 
         self.conn.commit()
 
+"""
     def _setup_default_alerts(self) -> None:
         """Setup default budget alerts."""
         default_alerts = [
@@ -332,7 +333,7 @@ class TokenBudgetManager:
         # Save to database
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             INSERT OR REPLACE INTO budget_constraints
             (id, level, scope, token_limit, period_start, period_end, tags)
             VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -373,7 +374,7 @@ class TokenBudgetManager:
         # Save to database
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             INSERT OR REPLACE INTO budget_allocations
             (constraint_id, allocated, used, available, status, last_updated)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -460,7 +461,7 @@ class TokenBudgetManager:
         """Record token usage in history."""
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             INSERT INTO usage_history
             (constraint_id, timestamp, tokens_used, task_type, agent_name, context)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -485,7 +486,7 @@ class TokenBudgetManager:
         """Update allocation in database."""
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             UPDATE budget_allocations
             SET used = ?, available = ?, status = ?, last_updated = ?
             WHERE constraint_id = ?
@@ -597,7 +598,7 @@ class TokenBudgetManager:
         """Get recent usage history for constraint."""
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             SELECT * FROM usage_history
             WHERE constraint_id = ?
             ORDER BY timestamp DESC
@@ -614,7 +615,7 @@ class TokenBudgetManager:
 
         for rec in recommendations:
             cursor.execute(
-                """
+"""
                 INSERT INTO optimization_recommendations
                 (constraint_id, strategy, description, potential_savings,
                  confidence, implementation_cost, priority, impact_areas)
@@ -929,6 +930,7 @@ class TokenBudgetManager:
 
 def main():
     """CLI interface for token budget manager."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Token Budget Management System")

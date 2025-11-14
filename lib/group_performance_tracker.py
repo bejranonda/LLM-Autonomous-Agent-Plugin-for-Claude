@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     Group Performance Tracking System
-    """
+"""
 Tracks performance metrics at the group level to enable group-level
 learning, optimization, and continuous improvement.
 
 This complements agent_performance_tracker.py by aggregating metrics
 at the group level for strategic analysis.
+"""
 import json
 import sys
 from pathlib import Path
@@ -25,14 +26,14 @@ except ImportError:
 
 
 class GroupPerformanceTracker:
-    """
+"""
     Tracks performance metrics for agent groups to enable:
-    """
+"""
     - Group-level performance trends
     - Cross-group comparisons
     - Group specialization identification
     - Optimal workflow identification
-    """
+"""
 
     # Group definitions
     GROUPS = {
@@ -77,13 +78,14 @@ class GroupPerformanceTracker:
         "continuous-improvement": 4,
     }
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize the group performance tracker.
 
         Args:
             storage_dir: Directory for storing performance data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.performance_file = self.storage_dir / "group_performance.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -92,6 +94,7 @@ class GroupPerformanceTracker:
         if not self.performance_file.exists():
             self._initialize_performance_storage()
 
+"""
     def _initialize_performance_storage(self):
         """Initialize the performance storage with default structure."""
         initial_data = {
@@ -193,7 +196,7 @@ class GroupPerformanceTracker:
             iterations: Number of iterations required
             agents_involved: List of agents from this group involved
             context: Additional context data
-        """
+"""
         if group_num not in self.GROUPS:
             raise ValueError(f"Invalid group number: {group_num}")
 
@@ -281,6 +284,7 @@ class GroupPerformanceTracker:
         # Update specializations
         self._update_group_specializations(group_num)
 
+"""
     def _calculate_group_rating(self, metrics: Dict[str, Any]) -> str:
         """Calculate overall performance rating for a group."""
         if metrics["total_tasks"] < 5:
@@ -388,7 +392,7 @@ class GroupPerformanceTracker:
         return performances
 
     def compare_groups():
-        """
+"""
         
         Compare groups by a specific metric.
 
@@ -397,7 +401,7 @@ class GroupPerformanceTracker:
 
         Returns:
             List of groups ranked by metric
-        """
+"""
         all_performances = self.get_all_group_performances()
 
         comparisons = []
@@ -429,14 +433,15 @@ class GroupPerformanceTracker:
 
         return sorted(comparisons, key=lambda x: x["score"], reverse=True)
 
+"""
     def analyze_workflow_efficiency():
-        """
+"""
         
         Analyze workflow efficiency across groups.
 
         Returns:
             Workflow efficiency analysis
-        """
+"""
         perf_data = self._read_data()
 
         # Typical workflow: G1 → G2 → G3 → G4
@@ -499,6 +504,7 @@ class GroupPerformanceTracker:
             "efficiency_rating": self._calculate_workflow_efficiency_rating(avg_time, avg_iterations, avg_quality),
         }
 
+"""
     def _calculate_workflow_efficiency_rating(self, avg_time: float, avg_iterations: float, avg_quality: float) -> str:
         """Calculate workflow efficiency rating."""
         # Ideal: Low time, low iterations, high quality

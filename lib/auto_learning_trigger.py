@@ -156,7 +156,7 @@ class AutomaticLearningTrigger:
         Complete the current task and automatically trigger performance recording.
 
         This is the CRITICAL function that fixes the automatic recording gap.
-        """
+"""
         if not self.current_task:
             print("WARNING: No task currently being tracked")
             return {}
@@ -385,6 +385,7 @@ def complete_task(**kwargs):
     return _auto_trigger.complete_task_with_recording(**kwargs)
 
 
+"""
 # Example usage for testing
 if __name__ == "__main__":
     # Test the automatic recording system

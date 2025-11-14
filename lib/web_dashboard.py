@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 #     Web Dashboard for Token Monitoring
-    """
+"""
 Simple web interface for the token monitoring dashboard that provides
 real-time visualization of optimization performance and metrics.
 
 Features:
+"""
 - Real-time statistics display
 - Interactive charts and graphs
 - Alert management
@@ -462,9 +463,10 @@ class WebDashboard:
     </script>
 </body>
 </html>
-        """
+"""
         return html_content
 
+"""
     def _generate_alerts_html(self, alerts) -> str:
         """Generate HTML for alerts section."""
         if not alerts:
@@ -484,10 +486,11 @@ class WebDashboard:
                 <div class="alert-message">{alert.message}</div>
                 <div class="alert-time">{time_str}</div>
             </div>
-            """
+"""
 
         return alerts_html
 
+"""
     def start_server(self):
         """Start the web server."""
         try:

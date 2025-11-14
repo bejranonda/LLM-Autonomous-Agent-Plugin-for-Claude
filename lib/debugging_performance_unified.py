@@ -1,8 +1,9 @@
 """
-    Debugging Performance Data Provider using Unified Storage
-    """
+#    Debugging Performance Data Provider using Unified Storage
+"""
 This module provides debugging performance metrics using the unified parameter storage
 system to ensure data consistency across all dashboard sections.
+"""
 import json
 import os
 import sys
@@ -21,11 +22,12 @@ except ImportError:
 
 
 class DebuggingPerformanceProvider:
-    """
+"""
     Provides debugging performance data from unified storage for consistent dashboard metrics.
-    """
-    """
+"""
+"""
 
+"""
     def __init__(self):
         """Initialize debugging performance provider."""
         self.use_unified_storage = False
@@ -46,7 +48,7 @@ class DebuggingPerformanceProvider:
             print("Warning: Unified storage not available for debugging performance")
 
     def get_debugging_performance_data():
-        """
+"""
         
         Get debugging performance data from UNIFIED STORAGE for consistent data.
 
@@ -55,7 +57,7 @@ class DebuggingPerformanceProvider:
 
         Returns:
             Debugging performance metrics using the comprehensive framework
-        """
+"""
         # Use unified storage for consistent data
         if self.use_unified_storage and self.unified_adapter:
             try:
@@ -205,7 +207,7 @@ class DebuggingPerformanceProvider:
             return f"Last {days} Days"
 
     def _calculate_debugging_performance_metrics():
-        """
+"""
         
         Calculate debugging performance metrics using the comprehensive framework.
 
@@ -215,7 +217,7 @@ class DebuggingPerformanceProvider:
 
         Returns:
             Performance metrics dictionary
-        """
+"""
         if not debugging_tasks:
             return {}
 
@@ -283,6 +285,7 @@ class DebuggingPerformanceProvider:
             "time_span_hours": round(time_span_hours, 2),
         }
 
+"""
     def _format_debugging_assessment(self, task: Dict) -> Dict[str, Any]:
         """Format debugging assessment for API response."""
         return {
@@ -325,14 +328,14 @@ class DebuggingPerformanceProvider:
         }
 
     def store_debugging_pattern():
-        """
+"""
         
         Store debugging pattern for future learning.
 
         Args:
             task_data: Original debugging task data
             performance_metrics: Calculated performance metrics
-        """
+"""
         if self.use_unified_storage and self.unified_storage:
             try:
                 # Store pattern for learning system
@@ -375,6 +378,7 @@ class DebuggingPerformanceProvider:
 _debugging_provider = None
 
 
+"""
 def get_debugging_performance_provider() -> DebuggingPerformanceProvider:
     """Get global debugging performance provider instance."""
     global _debugging_provider

@@ -25,15 +25,15 @@ except ImportError:
 
 
 class AgentFeedbackSystem:
-    """
+"""
     Manages feedback exchange between agent groups for continuous improvement.
-    """
+"""
 
     Group 1 (Analysis): code-analyzer, smart-recommender, security-auditor,
                performance-analytics, pr-reviewer
     Group 2 (Execution): quality-controller, test-engineer, frontend-analyzer,
                 documentation-generator, build-validator, git-repository-manager
-    """
+"""
 
     # Agent group classifications
     ANALYSIS_AGENTS = {
@@ -63,6 +63,7 @@ class AgentFeedbackSystem:
 "claude-plugin-validator",
     }
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
 """
 
@@ -369,6 +370,7 @@ return sorted(all_insights, key=lambda x: x["timestamp"], reverse=True)
 
 def main():
     """Command-line interface for testing the feedback system."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Agent Feedback System")

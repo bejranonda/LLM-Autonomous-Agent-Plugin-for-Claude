@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Predictive Quality Analytics for Autonomous Agent System
-    """
+"""
 Analyzes historical pattern data to predict quality outcomes and
 provide proactive intervention triggers for optimal autonomous operations.
+"""
 import json
 import os
 import sys
@@ -389,6 +390,7 @@ class PredictiveQualityAnalyzer:
 
 def main():
     """CLI interface for predictive quality analytics"""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Predictive Quality Analytics")

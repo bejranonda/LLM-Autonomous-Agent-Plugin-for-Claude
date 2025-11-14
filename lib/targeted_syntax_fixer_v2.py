@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Targeted Syntax Fixer v2
-    """
+"""
 Fixes specific syntax errors identified in the 31 files with pattern-based fixes.
+"""
 import ast
 import os
 import re

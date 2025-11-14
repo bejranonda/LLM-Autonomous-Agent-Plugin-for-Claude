@@ -4,7 +4,7 @@
 # */
 # //
 # //    This script provides efficient file operations and data management
-    """
+"""
 
 for the learning-engine agent. The agent handles AI reasoning while
 this script handles file I/O, JSON operations, and data management.
@@ -16,6 +16,7 @@ U
     python learning_engine.py init --project-context '{"type": "python", "frameworks": ["fastapi"]}'
     python learning_engine.py capture --pattern '{"type": "function", "name": "auth"}'
     python learning_engine.py status --dir .claude-patterns
+"""
 import json
 import argparse
 from datetime import datetime
@@ -27,13 +28,13 @@ class LearningEngine:
     """Efficient learning engine for file operations and data management"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
-"""Initialize learning engine with data directory and create required files."""
-self.data_dir = Path(data_dir)
-self.data_dir.mkdir(parents=True, exist_ok=True)
+        """Initialize learning engine with data directory and create required files."""
+        self.data_dir = Path(data_dir)
+        self.data_dir.mkdir(parents=True, exist_ok=True)
 
-# Data files
-self.patterns_file = self.data_dir / "patterns.json"
-self.quality_history_file = self.data_dir / "quality_history.json"
+        # Data files
+        self.patterns_file = self.data_dir / "patterns.json"
+        self.quality_history_file = self.data_dir / "quality_history.json"
 self.task_queue_file = self.data_dir / "task_queue.json"
 self.config_file = self.data_dir / "config.json"
 
@@ -309,41 +310,41 @@ def main():
     engine = LearningEngine(args.data_dir)
 
     try:
-if args.command == "init":
-    if not args.project_context:
-        # Default context if not provided
-        project_context = {"type": "unknown", "frameworks": [], "detected_at": datetime.now().isoformat()}
-    else:
-        project_context = json.loads(args.project_context)
+        if args.command == "init":
+            if not args.project_context:
+                # Default context if not provided
+                project_context = {"type": "unknown", "frameworks": [], "detected_at": datetime.now().isoformat()}
+            else:
+                project_context = json.loads(args.project_context)
 
-    result = engine.initialize_learning_system(project_context)
-    print(json.dumps(result, indent=2))
+            result = engine.initialize_learning_system(project_context)
+            print(json.dumps(result, indent=2))
 
-elif args.command == "capture":
-    if not args.pattern:
-        result = {"status": "error", "message": "Pattern data required"}
-    else:
-        pattern_data = json.loads(args.pattern)
-        result = engine.capture_pattern(pattern_data)
-    print(json.dumps(result, indent=2))
+        elif args.command == "capture":
+            if not args.pattern:
+                result = {"status": "error", "message": "Pattern data required"}
+            else:
+                pattern_data = json.loads(args.pattern)
+                result = engine.capture_pattern(pattern_data)
+            print(json.dumps(result, indent=2))
 
-elif args.command == "status":
-    result = engine.get_status()
-    print(json.dumps(result, indent=2))
+        elif args.command == "status":
+            result = engine.get_status()
+            print(json.dumps(result, indent=2))
 
-elif args.command == "add-quality":
-    if not args.quality_data:
-        result = {"status": "error", "message": "Quality data required"}
-    else:
-        quality_data = json.loads(args.quality_data)
-        result = engine.add_quality_assessment(quality_data)
-    print(json.dumps(result, indent=2))
+        elif args.command == "add-quality":
+            if not args.quality_data:
+                result = {"status": "error", "message": "Quality data required"}
+            else:
+                quality_data = json.loads(args.quality_data)
+                result = engine.add_quality_assessment(quality_data)
+            print(json.dumps(result, indent=2))
 
     except Exception as e:
-error_result = {"status": "error", "error": str(e), "command": args.command, "timestamp": datetime.now().isoformat()}
-print(json.dumps(error_result, indent=2))
-import sys
-sys.exit(1)
+        error_result = {"status": "error", "error": str(e), "command": args.command, "timestamp": datetime.now().isoformat()}
+        print(json.dumps(error_result, indent=2))
+        import sys
+        sys.exit(1)
 
 
 if __name__ == "__main__":

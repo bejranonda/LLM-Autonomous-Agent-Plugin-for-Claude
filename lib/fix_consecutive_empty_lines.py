@@ -2,15 +2,10 @@
 # FIX ALL CONSECUTIVE EMPTY LINES - IMMEDIATE SOLUTION
 
 #     This script removes ALL consecutive empty lines from markdown files
-    """
-
-to fix the cache_control cannot be set for empty text blocks error.
-import os
-import re
-
-
-def fix_consecutive_empty_lines(filepath):
-    """Fix consecutive empty lines in a file."""
+# to fix the cache_control cannot be set for empty text blocks error.
+# import os
+# import re
+# def fix_consecutive_empty_lines(filepath):
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             content = f.read()
@@ -46,6 +41,7 @@ def main():
     total_files_fixed = 0
     total_consecutive_removed = 0
 
+"""
     # Process ALL markdown files
     for root, dirs, files in os.walk("."):
         # Skip .git and .claude directories

@@ -107,19 +107,20 @@ class CommunicationMetrics:
 
 
 class HyperCommunicationSystem:
-    """
+"""
     Advanced cross-tier communication system with quantum-inspired
-    """
+"""
     message passing, predictive routing, and intelligent bandwidth allocation.
-    """
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize the hyper-communication system.
 
         Args:
             storage_dir: Directory for storing communication data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.communication_file = self.storage_dir / "hyper_communication.json"
         self.routing_file = self.storage_dir / "communication_routing.json"
@@ -158,6 +159,7 @@ class HyperCommunicationSystem:
         # Start background services
         self._start_background_services()
 
+"""
     def _initialize_communication_storage(self):
         """Initialize communication storage files."""
         if not self.communication_file.exists():
@@ -337,7 +339,7 @@ class HyperCommunicationSystem:
 
         Returns:
             True if connection established successfully
-        """
+"""
         try:
             # Check bandwidth availability
             if self.available_bandwidth < bandwidth:
@@ -381,6 +383,7 @@ class HyperCommunicationSystem:
             print(f"Error establishing connection: {e}", file=sys.stderr)
             return False
 
+"""
     def _calculate_entanglement_strength(self, tier1: str, tier2: str, bandwidth: float, latency_requirement: float) -> float:
         """Calculate quantum entanglement strength between agents."""
         base_strength = 0.5
@@ -483,7 +486,7 @@ class HyperCommunicationSystem:
 
         Returns:
             Message ID
-        """
+"""
         # Generate message ID
         message_id = str(uuid.uuid4())
 
@@ -524,6 +527,7 @@ class HyperCommunicationSystem:
 
         return message_id
 
+"""
     def _determine_optimal_routing(self, message: HyperMessage) -> List[str]:
         """Determine optimal routing path for message."""
         source = message.source_agent
@@ -615,10 +619,11 @@ class HyperCommunicationSystem:
             agent_id: Agent ID to register handler for
             message_types: List of message types to handle
             handler: Handler function
-        """
+"""
         for message_type in message_types:
             self.message_handlers[agent_id].append((message_type, handler))
 
+"""
     def _message_processor_loop(self):
         """Background message processing loop."""
         while self.running:
@@ -1046,6 +1051,7 @@ class HyperCommunicationSystem:
 
 def main():
     """Command-line interface for testing the hyper-communication system."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Hyper-Communication System")

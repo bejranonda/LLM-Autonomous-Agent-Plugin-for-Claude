@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     Smart Caching and Predictive Loading System
-    """
+"""
 Advanced caching system with predictive loading capabilities that anticipates user needs
 and optimizes token consumption through intelligent content management.
 
 Version: 1.0.0
 Author: Autonomous Agent Plugin
+"""
 import json
 import os
 import time
@@ -79,11 +80,12 @@ class UserPattern:
 
 
 class SmartCache:
-    """
+"""
     Intelligent caching system with predictive loading capabilities.
-    """
-    """
+"""
+"""
 
+"""
     def __init__(self, cache_dir: str = ".claude-patterns", max_size_mb: int = 100):
         """Initialize the processor with default configuration."""
         self.cache_dir = pathlib.Path(cache_dir)
@@ -507,11 +509,12 @@ class SmartCache:
 
 
 class PredictiveLoader:
-    """
+"""
     Predictive content loader that anticipates user needs.
-    """
-    """
+"""
+"""
 
+"""
     def __init__(self, cache: SmartCache):
         """Initialize the processor with default configuration."""
         self.cache = cache

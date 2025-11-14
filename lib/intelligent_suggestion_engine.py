@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 #     Intelligent Suggestion Engine for Autonomous Agent Plugin
-    """
+"""
 
 Provides context-aware suggestions based on user preferences, learned patterns,
 system environment, and historical behavior. Integrates with the user preference
 memory system and task queue to provide intelligent next-step recommendations.
 
 Features:
+"""
 - Context-aware suggestion generation
 - Learning from user behavior and preferences
 - Integration with system environment and capabilities
@@ -259,19 +260,20 @@ class SuggestionTemplate:
 
 
 class IntelligentSuggestionEngine:
-    """
+"""
     Intelligent suggestion engine that provides context-aware recommendations
-    """
+"""
     based on user preferences, learned patterns, and system state.
-    """
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-preferences"):
-        """
+"""
         Initialize suggestion engine.
 
         Args:
             storage_dir: Directory for storing suggestion data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.suggestions_file = self.storage_dir / "suggestions_database.json"
         self.templates_file = self.storage_dir / "suggestion_templates.json"
@@ -306,6 +308,7 @@ class IntelligentSuggestionEngine:
         self._ensure_directories()
         self._load_analytics()
 
+"""
     def _ensure_directories(self):
         """Create necessary directories."""
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -476,7 +479,7 @@ class IntelligentSuggestionEngine:
 
         Returns:
             List of ranked suggestions
-        """
+"""
         with self._lock:
             suggestions = []
 
@@ -508,6 +511,7 @@ class IntelligentSuggestionEngine:
 
             return final_suggestions
 
+"""
     def _generate_learned_suggestions(self, context: SuggestionContext) -> List[Dict[str, Any]]:
         """Generate suggestions based on learned patterns."""
         suggestions = []
@@ -809,6 +813,7 @@ class IntelligentSuggestionEngine:
 
 def main():
     """Command-line interface for intelligent suggestion engine."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Intelligent Suggestion Engine")

@@ -2,12 +2,13 @@
 # PLUGIN MESSAGE SANITIZER - Entry Point for Emergency Fixes
 
 #     This module provides the main entry point for integrating emergency fixes
-    """
+"""
 
 into the plugin system. It applies sanitization to all message generation
 to prevent system-wide Claude failure.
 
 Usage:
+"""
     from lib.plugin_message_sanitizer import sanitize_plugin_message
 
     # Apply to any message before sending to Claude API
@@ -36,7 +37,7 @@ except ImportError as e:
 
 
 def sanitize_plugin_message():
-        """
+"""
         
         Main entry point for sanitizing plugin messages.
 
@@ -56,7 +57,7 @@ def sanitize_plugin_message():
         True
         >>> safe_message["content"][0]["text"] != ""
         True
-    """
+"""
     if not EMERGENCY_FIXES_AVAILABLE:
         # Fallback - return message unchanged if fixes not available
         return message
@@ -74,8 +75,9 @@ def sanitize_plugin_message():
         return message
 
 
+"""
 def sanitize_plugin_messages():
-        """
+"""
         
         Sanitize multiple plugin messages.
 
@@ -84,7 +86,7 @@ def sanitize_plugin_messages():
 
     Returns:
         List of sanitized message dictionaries
-    """
+"""
     if not EMERGENCY_FIXES_AVAILABLE:
         return messages
 
@@ -95,8 +97,9 @@ def sanitize_plugin_messages():
         return messages
 
 
+"""
 def create_safe_command_response():
-        """
+"""
         
         Create safe command response using emergency fixes.
 
@@ -106,7 +109,7 @@ def create_safe_command_response():
 
     Returns:
         Safe Claude message dictionary
-    """
+"""
     if not EMERGENCY_FIXES_AVAILABLE:
         # Fallback response
         return {"role": "assistant", "content": [{"type": "text", "text": f"{command_name} completed"}]}
@@ -118,8 +121,9 @@ def create_safe_command_response():
         return {"role": "assistant", "content": [{"type": "text", "text": f"{command_name} completed with warnings"}]}
 
 
+"""
 def validate_message_safety():
-        """
+"""
         
         Validate that a message is safe for Claude API.
 
@@ -128,7 +132,7 @@ def validate_message_safety():
 
     Returns:
         List of safety issues (empty if safe)
-    """
+"""
     issues = []
 
     if not isinstance(message, dict):
@@ -214,3 +218,5 @@ if __name__ == "__main__":
 
     print(f"\nEmergency fixes available: {EMERGENCY_FIXES_AVAILABLE}")
     print("\n=== PLUGIN MESSAGE SANITIZER READY ===")
+
+"""

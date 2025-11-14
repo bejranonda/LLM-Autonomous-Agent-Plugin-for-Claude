@@ -37,7 +37,7 @@ G
 # /*
 # P
 */ath to plugin root directory or None if not found
-    """
+"""
     # First, try to find plugin.json in current directory and parents
     current = Path.cwd()
 
@@ -154,7 +154,7 @@ script_name: Name of the script file (e.g., "dashboard.py")
 # /*
 F
 */ull path to the script or None if not found
-    """
+"""
     plugin_path = get_plugin_path()
     if not plugin_path:
 return None
@@ -166,6 +166,7 @@ return script_path
     return None
 
 
+"""
 def get_lib_path():
 """
 
@@ -179,7 +180,7 @@ G
 # /*
 # P
 */ath to lib directory or None if not found
-    """
+"""
     plugin_path = get_plugin_path()
     if not plugin_path:
 return None
@@ -191,6 +192,7 @@ return lib_path
     return None
 
 
+"""
 def validate_plugin_installation():
 """
 
@@ -204,7 +206,7 @@ V
 # /*
 D
 */ictionary with validation results
-    """
+"""
     plugin_path = get_plugin_path()
 
     if not plugin_path:
@@ -236,6 +238,7 @@ return {
     }
 
 
+"""
 def get_python_executable():
 """
 
@@ -249,7 +252,7 @@ G
 # /*
 # P
 */ath to Python executable
-    """
+"""
     # Use the same Python that's running this script
     return sys.executable
 
@@ -276,3 +279,5 @@ print(f"{script}: {script_path}")
 print(f"Error: {validation.get('error', 'Unknown error')}")
 
     print(f"\nPython Executable: {get_python_executable()}")
+
+"""

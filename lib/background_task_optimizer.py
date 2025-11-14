@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 #     Background Task Optimization and Scaling System
-    """
+"""
 
 Intelligent task scheduling, resource optimization, and parallel execution
 for maximum autonomous agent system efficiency.
+"""
 import json
 import os
 import sys
@@ -675,6 +676,7 @@ class BackgroundTaskOptimizer:
 
 def main():
     """CLI interface for background task optimizer"""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Background Task Optimization System")

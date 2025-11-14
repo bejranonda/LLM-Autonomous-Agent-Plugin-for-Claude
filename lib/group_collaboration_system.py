@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 #     Group Collaboration System
-    """
+"""
 Manages communication and feedback between the four agent groups
 for continuous improvement and knowledge sharing.
 
 Groups:
+"""
 - Group 1: Strategic Analysis & Intelligence (The "Brain")
 - Group 2: Decision Making & Planning (The "Council")
 - Group 3: Execution & Implementation (The "Hand")
@@ -28,10 +29,10 @@ except ImportError:
 
 
 class GroupCollaborationSystem:
-    """
+"""
     Manages inter-group communication, feedback, and collaboration tracking.
-    """
-    """
+"""
+"""
 
     # Group definitions with agent members
     GROUPS = {
@@ -88,13 +89,14 @@ class GroupCollaborationSystem:
         (4, 1),  # Group 4 → Group 1: Validation to Analysis (feedback)
     ]
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize the group collaboration system.
 
         Args:
             storage_dir: Directory for storing collaboration data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.collab_file = self.storage_dir / "group_collaboration.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -103,6 +105,7 @@ class GroupCollaborationSystem:
         if not self.collab_file.exists():
             self._initialize_collaboration_storage()
 
+"""
     def _initialize_collaboration_storage(self):
         """Initialize the collaboration storage with default structure."""
         initial_data = {
@@ -181,7 +184,7 @@ class GroupCollaborationSystem:
                 self._unlock_file(f)
 
     def get_agent_group():
-        """
+"""
         
         Get the group number for an agent.
 
@@ -190,12 +193,13 @@ class GroupCollaborationSystem:
 
         Returns:
             Group number (1-4) or None if not found
-        """
+"""
         for group_num, group_data in self.GROUPS.items():
             if agent_name in group_data["agents"]:
                 return group_num
         return None
 
+"""
     def record_communication(
         self,
         from_agent: str,
@@ -220,7 +224,7 @@ class GroupCollaborationSystem:
 
         Returns:
             Communication ID
-        """
+"""
         collab_data = self._read_data()
 
         from_group = self.get_agent_group(from_agent)
@@ -277,15 +281,16 @@ class GroupCollaborationSystem:
 
         return comm_id
 
+"""
     def update_communication_outcome(self, comm_id: str, outcome: str, impact: Optional[str] = None):
-        """
+"""
         Update the outcome of a communication.
 
         Args:
             comm_id: Communication ID
             outcome: Outcome (success, failure, partial, etc.)
             impact: Impact description
-        """
+"""
         collab_data = self._read_data()
 
         for comm in collab_data["communication_history"]:
@@ -307,6 +312,7 @@ class GroupCollaborationSystem:
 
         self._write_data(collab_data)
 
+"""
     def record_knowledge_transfer(
         self,
         from_group: int,
@@ -329,7 +335,7 @@ class GroupCollaborationSystem:
 
         Returns:
             Knowledge transfer ID
-        """
+"""
         collab_data = self._read_data()
 
         kt_id = f"kt_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -361,6 +367,7 @@ class GroupCollaborationSystem:
 
         return kt_id
 
+"""
     def get_group_collaboration_stats(self) -> Dict[str, Any]:
         """Get collaboration statistics for all groups."""
         collab_data = self._read_data()
@@ -418,7 +425,7 @@ class GroupCollaborationSystem:
         }
 
     def get_group_performance_summary():
-        """
+"""
         
         Get performance summary for a specific group.
 
@@ -427,7 +434,7 @@ class GroupCollaborationSystem:
 
         Returns:
             Performance summary
-        """
+"""
         collab_data = self._read_data()
 
         if group_num not in self.GROUPS:
@@ -476,8 +483,9 @@ class GroupCollaborationSystem:
             },
         }
 
+"""
     def get_recent_communications():
-        """
+"""
         
         Get recent communications, optionally filtered by group.
 
@@ -487,7 +495,7 @@ class GroupCollaborationSystem:
 
         Returns:
             List of recent communications
-        """
+"""
         collab_data = self._read_data()
 
         comms = collab_data["communication_history"]
@@ -500,14 +508,15 @@ class GroupCollaborationSystem:
 
         return comms[:limit]
 
+"""
     def analyze_collaboration_patterns():
-        """
+"""
         
         Analyze collaboration patterns to identify successful and problematic patterns.
 
         Returns:
             Analysis of collaboration patterns
-        """
+"""
         collab_data = self._read_data()
 
         # Group communications by task
@@ -558,6 +567,7 @@ class GroupCollaborationSystem:
             "insights": self._generate_collaboration_insights(successful_patterns, problematic_patterns),
         }
 
+"""
     def _generate_collaboration_insights(self, successful: List[Dict], problematic: List[Dict]) -> List[str]:
         """Generate insights from collaboration patterns."""
         insights = []
@@ -582,6 +592,7 @@ class GroupCollaborationSystem:
 
 def main():
     """Command-line interface for testing the collaboration system."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Group Collaboration System")

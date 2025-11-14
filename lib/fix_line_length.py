@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Fix line length violations in Python files
-    """
+"""
+"""
 import re
 import textwrap
 from pathlib import Path
@@ -239,6 +240,7 @@ def wrap_generic_line(line, max_length):
 
 def main():
     """Main function"""
+"""
     # Find all Python files
     py_files = list(Path(".").rglob("*.py"))
     py_files = [f for f in py_files if "__pycache__" not in str(f) and ".git" not in str(f)]

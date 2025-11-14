@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     Progressive Content Loader
-    """
+"""
 Intelligent content loading system that provides tiered access to documentation
 and commands based on user needs and available token budget.
 
 Version: 1.0.0
 Author: Autonomous Agent Plugin
+"""
 import json
 import os
 import pathlib
@@ -43,12 +44,13 @@ class ContentSection:
 
 
 class ProgressiveContentLoader:
-    """
+"""
     Progressive content loader that intelligently manages content delivery
-    """
+"""
     based on user needs and token constraints.
-    """
+"""
 
+"""
     def __init__(self, cache_dir: str = ".claude-patterns"):
         """Initialize the processor with default configuration."""
         self.cache_dir = pathlib.Path(cache_dir)

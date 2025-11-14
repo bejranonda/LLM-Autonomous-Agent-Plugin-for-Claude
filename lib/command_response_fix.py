@@ -36,7 +36,7 @@ except ImportError:
 
 
 def safe_command_response(title, sections=None, sections_dict=None):
-    """
+"""
     Generate safe command response that prevents Claude API failure.
 
     Args:
@@ -54,7 +54,7 @@ def safe_command_response(title, sections=None, sections_dict=None):
         >>> len(response['content']) == 1
         >>> 'text' in response['content'][0]
         True
-    """
+"""
     # Handle both parameter formats
     if sections_dict is not None:
         sections = sections_dict
@@ -88,8 +88,9 @@ def safe_command_response(title, sections=None, sections_dict=None):
         return {"role": "assistant", "content": [{"type": "text", "text": str(title) or "Processing..."}]}
 
 
+"""
 def safe_multi_section_response(titles, content_list):
-    """
+"""
     Generate safe multi-section response with multiple titles and content.
 
     Args:
@@ -102,7 +103,7 @@ def safe_multi_section_response(titles, content_list):
     Example:
         >>> response = safe_multi_section_response(["A", "B"], ["Content A", "Content B"])
         >>> len(response['content']) == 2
-    """
+"""
     if not titles or not content_list:
         return safe_command_response("Processing...")
 
@@ -134,8 +135,9 @@ def safe_multi_section_response(titles, content_list):
         return {"role": "assistant", "content": [{"type": "text", "text": "Processing..."}]}
 
 
+"""
 def safe_table_response(title, headers, rows):
-    """
+"""
     Generate safe table response that prevents Claude API failure.
 
     Args:
@@ -145,7 +147,7 @@ def safe_table_response(title, headers, rows):
 
     Returns:
         Sanitized Claude message dictionary
-    """
+"""
     content_blocks = []
 
     # Add title
@@ -186,8 +188,9 @@ def safe_table_response(title, headers, rows):
         return {"role": "assistant", "content": [{"type": "text", "text": title or "Table data unavailable"}]}
 
 
+"""
 def safe_list_response(title, items, item_format="• {item}"):
-    """
+"""
     Generate safe list/bullet point response.
 
     Args:
@@ -197,7 +200,7 @@ def safe_list_response(title, items, item_format="• {item}"):
 
     Returns:
         Sanitized Claude message dictionary
-    """
+"""
     content_blocks = []
 
     # Add title
@@ -225,8 +228,9 @@ def safe_list_response(title, items, item_format="• {item}"):
         return {"role": "assistant", "content": [{"type": "text", "text": title or "No items available"}]}
 
 
+"""
 def safe_code_response(title, code_blocks, language="python"):
-    """
+"""
     Generate safe code block response.
 
     Args:
@@ -236,7 +240,7 @@ def safe_code_response(title, code_blocks, language="python"):
 
     Returns:
         Sanitized Claude message dictionary
-    """
+"""
     content_blocks = []
 
     # Add title

@@ -220,6 +220,7 @@ def main():
     else:
         print(f'\nOverall Status: {"NEEDS FIXES" if issues else "MINOR ISSUES"}')
 
+"""
     # Calculate quality score
     quality_score = 100
     quality_score -= len(issues) * 10

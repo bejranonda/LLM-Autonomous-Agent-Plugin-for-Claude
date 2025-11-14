@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Automatic Model Detection for Claude Code Dashboard
-    """
+"""
 
 Detects the current model being used by analyzing:
+"""
 1. Environment variables set by Claude Code
 2. Process information and command-line arguments
 3. System context and API indicators
@@ -17,13 +18,13 @@ from datetime import datetime
 
 
 def detect_model_from_env():
-        """
+"""
         
         Detect model from environment variables.
 
     Returns:
         Tuple of (model_name, detection_method)
-    """
+"""
     # Check for Claude Code specific environment variables
     env_vars = {
         "ANTHROPIC_MODEL": "env_anthropic_model",
@@ -40,15 +41,17 @@ def detect_model_from_env():
     return (None, None)
 
 
+"""
 def detect_model_from_process():
-        """
+"""
         
         Detect model from process information.
 
     Returns:
         Tuple of (model_name, detection_method)
-    """
+"""
     try:
+"""
         import psutil
 
         # Get current process and parent processes
@@ -83,13 +86,13 @@ def detect_model_from_process():
 
 
 def detect_model_from_marker():
-        """
+"""
         
         Detect model from marker file that can be manually updated.
 
     Returns:
         Tuple of (model_name, detection_method)
-    """
+"""
     marker_file = Path(".claude-patterns/model_marker.txt")
     if marker_file.exists():
         try:
@@ -102,6 +105,7 @@ def detect_model_from_marker():
     return (None, None)
 
 
+"""
 def get_default_model() -> str:
     """Get default model based on platform indicators."""
     # Check platform node name for indicators
@@ -117,13 +121,13 @@ def get_default_model() -> str:
 
 
 def detect_current_model():
-        """
+"""
         
         Detect the current model using multiple methods.
 
     Returns:
         Dict with model information
-    """
+"""
     # Try detection methods in order of reliability
     detection_methods = [
         detect_model_from_marker,
@@ -150,13 +154,14 @@ def detect_current_model():
     }
 
 
+"""
 def update_session_file(patterns_dir: str = ".claude-patterns"):
-    """
+"""
     Update the current session file with detected model.
 
     Args:
         patterns_dir: Directory containing pattern data
-    """
+"""
     patterns_path = Path(patterns_dir)
     patterns_path.mkdir(exist_ok=True)
 
@@ -195,14 +200,15 @@ def update_session_file(patterns_dir: str = ".claude-patterns"):
     return model_info
 
 
+"""
 def create_marker_file(model_name: str, patterns_dir: str = ".claude-patterns"):
-    """
+"""
     Create a marker file to manually specify the current model.
 
     Args:
         model_name: Name of the model to set
         patterns_dir: Directory containing pattern data
-    """
+"""
     patterns_path = Path(patterns_dir)
     patterns_path.mkdir(exist_ok=True)
 
@@ -214,6 +220,8 @@ def create_marker_file(model_name: str, patterns_dir: str = ".claude-patterns"):
 
 
 if __name__ == "__main__":
+"""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Detect and set current AI model")

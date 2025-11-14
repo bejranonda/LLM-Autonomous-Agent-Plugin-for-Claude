@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 #     Validation Hooks
-    """
-Basic implementation for validation_hooks.py.
 import json
 from datetime import datetime
 from pathlib import Path

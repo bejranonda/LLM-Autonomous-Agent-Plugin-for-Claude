@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Generate final comprehensive quality report in the required format
-    """
+"""
+"""
 import sys
 from pathlib import Path
 import json
@@ -246,7 +247,7 @@ Analysis Type: Full Quality Control with Autonomous Fixing
 ═══════════════════════════════════════════════════════
 
     This report was generated autonomously by the quality control
-    """
+"""
 
 system with comprehensive analysis and auto-fix capabilities.
 
@@ -254,6 +255,7 @@ For detailed technical analysis, see: .claude/data/data/reports/QUALITY_REPORT_2
     return report_content
 
 
+"""
 def main():
     """Generate and save the final quality report"""
     print("Generating final comprehensive quality report...")

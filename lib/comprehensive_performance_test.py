@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Comprehensive Performance Testing Suite for Autonomous Agent Plugin
-    """
+"""
 Tests command execution, resource utilization, context management, and scalability
+"""
 import time
 import json
 import psutil

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 #     Token Monitoring Dashboard
-    """
+"""
 
 Real-time monitoring and analytics dashboard for token optimization systems.
 Provides comprehensive insights into optimization performance, cost savings,
 and system efficiency.
 
 Features:
+"""
 - Real-time token usage monitoring
 - Optimization effectiveness tracking
 - Cost savings analytics
@@ -159,7 +160,7 @@ class TokenMonitoringDashboard:
 
         # Metrics table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS metrics (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 timestamp TEXT NOT NULL,
@@ -169,12 +170,12 @@ class TokenMonitoringDashboard:
                 tags TEXT,
                 metadata TEXT
             )
-        """
+"""
         )
 
         # Alerts table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS alerts (
                 id TEXT PRIMARY KEY,
                 level TEXT NOT NULL,
@@ -187,12 +188,12 @@ class TokenMonitoringDashboard:
                 resolved BOOLEAN DEFAULT FALSE,
                 resolution_time TEXT
             )
-        """
+"""
         )
 
         # Daily summaries table
         cursor.execute(
-            """
+"""
             CREATE TABLE IF NOT EXISTS daily_summaries (
                 date TEXT PRIMARY KEY,
                 total_tokens_used INTEGER DEFAULT 0,
@@ -205,7 +206,7 @@ class TokenMonitoringDashboard:
                 system_health_score REAL DEFAULT 0.0,
                 alerts_count INTEGER DEFAULT 0
             )
-        """
+"""
         )
 
         # Indexes for performance
@@ -215,6 +216,7 @@ class TokenMonitoringDashboard:
 
         self.conn.commit()
 
+"""
     def record_metric(
         self,
         metric_type: MetricType,
@@ -236,7 +238,7 @@ class TokenMonitoringDashboard:
         )
 
         cursor.execute(
-            """
+"""
             INSERT INTO metrics
             (timestamp, metric_type, value, source, tags, metadata)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -299,7 +301,7 @@ class TokenMonitoringDashboard:
         cursor = self.conn.cursor()
 
         cursor.execute(
-            """
+"""
             INSERT OR REPLACE INTO alerts
             (id, level, message, timestamp, source, metric_type, threshold, current_value, resolved)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -333,7 +335,7 @@ class TokenMonitoringDashboard:
 
         if metric_type:
             cursor.execute(
-                """
+"""
                 SELECT * FROM metrics
                 WHERE timestamp > ? AND metric_type = ?
                 ORDER BY timestamp DESC
@@ -342,7 +344,7 @@ class TokenMonitoringDashboard:
             )
         else:
             cursor.execute(
-                """
+"""
                 SELECT * FROM metrics
                 WHERE timestamp > ?
                 ORDER BY timestamp DESC
@@ -389,7 +391,7 @@ class TokenMonitoringDashboard:
         # Get recent alerts
         cursor = self.conn.cursor()
         cursor.execute(
-            """
+"""
             SELECT COUNT(*) as count FROM alerts
             WHERE timestamp > ? AND resolved = FALSE
         """,
@@ -421,7 +423,7 @@ class TokenMonitoringDashboard:
         cutoff_time = datetime.now() - timedelta(hours=hours)
 
         cursor.execute(
-            """
+"""
             SELECT
                 strftime('%Y-%m-%d %H:00:00', timestamp) as hour,
                 metric_type,
@@ -451,7 +453,7 @@ class TokenMonitoringDashboard:
         cutoff_time = datetime.now() - timedelta(hours=hours)
 
         cursor.execute(
-            """
+"""
             SELECT
                 source,
                 SUM(value) as total_tokens,
@@ -617,7 +619,7 @@ class TokenMonitoringDashboard:
 
         # Count alerts
         cursor.execute(
-            """
+"""
             SELECT COUNT(*) as count FROM alerts
             WHERE timestamp >= ? AND timestamp <= ?
         """,
@@ -627,7 +629,7 @@ class TokenMonitoringDashboard:
 
         # Store daily summary
         cursor.execute(
-            """
+"""
             INSERT INTO daily_summaries
             (date, total_tokens_used, total_tokens_saved, total_cost_savings,
              average_compression_ratio, average_response_time, cache_hit_rate,
@@ -655,7 +657,7 @@ class TokenMonitoringDashboard:
         cursor = self.conn.cursor()
 
         cursor.execute(
-            """
+"""
             SELECT * FROM metrics
             WHERE timestamp >= ? AND timestamp <= ?
             ORDER BY timestamp

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Automatic Activity Recorder
-    """
+"""
 Integrates with the learning engine to automatically capture all activities
 and ensure comprehensive performance tracking.
+"""
 import json
 import os
 import time

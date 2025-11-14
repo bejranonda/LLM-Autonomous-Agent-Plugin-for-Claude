@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Comprehensive Dashboard Validation Script
-    """
+"""
 Validates that dashboard API endpoints return data consistent with source records
+"""
 import requests
 import sys
 from datetime import datetime

@@ -624,6 +624,7 @@ def main():
         print(f"Success Rate: {stats['stats']['success_rate']:.1%}")
 
     elif args.action == "simulate":
+"""
         # Test workflow simulation
         workflow = [
             {"type": "single_agent", "agent": "code-analyzer", "task_data": {"task": "analyze_code", "file": "example.py"}},

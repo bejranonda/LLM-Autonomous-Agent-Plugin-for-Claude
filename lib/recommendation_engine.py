@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     Smart Recommendation Engine for Autonomous Agent Plugin
-    """
+"""
 
 Provides intelligent workflow and optimization recommendations based on learned patterns.
 Lightweight alternative to complex agent delegation system.
 
 Features:
+"""
 - Pattern-based skill recommendations
 - Success rate calculations
 - Quality predictions
@@ -39,7 +40,7 @@ class RecommendationEngine:
         self.storage = PatternStorage(patterns_dir)
 
     def analyze_task():
-        """
+"""
         
         Enhanced task analysis with sophisticated classification and context detection.
 
@@ -48,7 +49,7 @@ class RecommendationEngine:
 
         Returns:
             Enhanced task analysis dictionary
-        """
+"""
         if not task_description:
             return {
                 "type": "general",
@@ -182,7 +183,7 @@ class RecommendationEngine:
         }
 
     def get_pattern_recommendations():
-        """
+"""
         
         Get recommendations based on similar patterns.
 
@@ -191,7 +192,7 @@ class RecommendationEngine:
 
         Returns:
             List of pattern-based recommendations
-        """
+"""
         # Search for similar patterns
         patterns = self.storage.get_similar_patterns(
             task_type=task_analysis["type"], context={"keywords": task_analysis["keywords"]}, limit=5
@@ -219,6 +220,7 @@ class RecommendationEngine:
         recommendations.sort(key=lambda x: x["recommendation_score"], reverse=True)
         return recommendations
 
+"""
     def _calculate_recommendation_score(self, pattern: Dict[str, Any], task_analysis: Dict[str, Any]) -> float:
         """Calculate recommendation score for a pattern."""
         score = 0.0
@@ -261,7 +263,7 @@ class RecommendationEngine:
 
         Returns:
             Comprehensive skill recommendations with reasoning
-        """
+"""
         task_type = task_analysis["type"]
         complexity = task_analysis["complexity"]
         domain = task_analysis["domain"]
@@ -453,7 +455,7 @@ class RecommendationEngine:
 
         Returns:
             Comprehensive risk assessment with actionable mitigations
-        """
+"""
         risks = []
         risk_score = 0
         mitigations = []
@@ -721,7 +723,7 @@ class RecommendationEngine:
         }
 
     def generate_enhanced_recommendations():
-        """
+"""
         
         Generate enhanced, comprehensive recommendations with improved analysis.
 
@@ -730,7 +732,7 @@ class RecommendationEngine:
 
         Returns:
             Complete enhanced recommendation report
-        """
+"""
         # Enhanced task analysis
         task_analysis = self.analyze_task(task_description)
 
@@ -777,6 +779,7 @@ class RecommendationEngine:
             "generated_at": datetime.now().isoformat(),
         }
 
+"""
     def _generate_predictions(self, recommendations: List[Dict[str, Any]], risks: Dict[str, Any]) -> Dict[str, Any]:
         """Generate quality and time predictions."""
         if not recommendations:

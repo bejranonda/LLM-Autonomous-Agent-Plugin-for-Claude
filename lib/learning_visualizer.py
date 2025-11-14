@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Real-Time Learning Feedback System
 #     Shows users what the autonomous system is learning and provides transparency
-    """
+"""
 
 into AI decision-making processes.
 
@@ -11,6 +11,7 @@ Features:
 - Learning progress visualization
 - Non-intrusive notifications
 - Dashboard integration with learning metrics
+"""
 import json
 import sys
 import time
@@ -94,7 +95,7 @@ class LearningEventRecorder:
 
         Returns:
             Event ID
-        """
+"""
         event_id = f"event_{int(time.time() * 1000)}_{random.randint(1000, 9999)}"
 
         event = {
@@ -118,6 +119,7 @@ class LearningEventRecorder:
 
         return event_id
 
+"""
     def _save_event(self, event: Dict[str, Any]):
         """Save event to persistent storage."""
         try:
@@ -295,7 +297,7 @@ class DecisionExplainer:
         self.preferences_file = self.storage_dir / "user_preferences.json"
 
     def explain_decision():
-        """
+"""
         
         Generate human-readable explanation of AI decision.
 
@@ -306,7 +308,7 @@ class DecisionExplainer:
 
         Returns:
             Human-readable explanation
-        """
+"""
         if decision_type == "skill_selection":
             return self._explain_skill_selection(context, confidence)
         elif decision_type == "agent_routing":
@@ -316,6 +318,7 @@ class DecisionExplainer:
         else:
             return f"Decision based on learned patterns for {decision_type}"
 
+"""
     def _explain_skill_selection(self, context: Dict[str, Any], confidence: Optional[float]) -> str:
         """Explain skill selection decision."""
         task_type = context.get("task_type", "unknown")
@@ -501,6 +504,7 @@ class LearningVisualizer:
 
 def main():
     """Command-line interface for testing learning visualizer."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Learning Visualizer")

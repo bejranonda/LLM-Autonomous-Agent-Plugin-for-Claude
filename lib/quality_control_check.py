@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Comprehensive Quality Control Check
-    """
+"""
 Analyzes project quality across multiple dimensions without external dependencies
+"""
 import ast
 import json
 import os

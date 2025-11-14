@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Simple Backfill Utility
-    """
+"""
 Simple utility for backfilling missing data.
+"""
 import json
 from datetime import datetime
 from pathlib import Path

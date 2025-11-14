@@ -1,21 +1,18 @@
 """
-    Unified Metrics Aggregator for Token Optimization Framework
-    """
+#    Unified Metrics Aggregator for Token Optimization Framework
+"""
 Centralizes metrics from all optimization systems and provides KPI tracking
-import sqlite3
-import json
-import time
-import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass, asdict
-from enum import Enum
-import threading
-from pathlib import Path
-
-
-class MetricPeriod(Enum):
-    """Period types for aggregation"""
+# import sqlite3
+# import json
+# import time
+# import logging
+# from datetime import datetime, timedelta
+# from typing import Dict, List, Any, Optional, Tuple
+# from dataclasses import dataclass, asdict
+# from enum import Enum
+# import threading
+# from pathlib import Path
+# class MetricPeriod(Enum):
 
     HOURLY = "hourly"
     DAILY = "daily"
@@ -95,7 +92,7 @@ class UnifiedMetricsAggregator:
 
             # Aggregated metrics table
             cursor.execute(
-                """
+"""
                 CREATE TABLE IF NOT EXISTS aggregated_metrics (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -108,12 +105,12 @@ class UnifiedMetricsAggregator:
                     metadata TEXT,
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP
                 )
-            """
+"""
             )
 
             # KPI results table
             cursor.execute(
-                """
+"""
                 CREATE TABLE IF NOT EXISTS kpi_results (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -126,12 +123,12 @@ class UnifiedMetricsAggregator:
                     period TEXT NOT NULL,
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP
                 )
-            """
+"""
             )
 
             # System snapshots table
             cursor.execute(
-                """
+"""
                 CREATE TABLE IF NOT EXISTS system_snapshots (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     timestamp TEXT NOT NULL,
@@ -145,7 +142,7 @@ class UnifiedMetricsAggregator:
                     metadata TEXT,
                     created_at TEXT DEFAULT CURRENT_TIMESTAMP
                 )
-            """
+"""
             )
 
             # Create indexes
@@ -156,6 +153,7 @@ class UnifiedMetricsAggregator:
 
             conn.commit()
 
+"""
     def _init_kpi_definitions(self):
         """Initialize KPI definitions with targets"""
         self.kpi_definitions = {
@@ -480,7 +478,7 @@ class UnifiedMetricsAggregator:
                         category = self._categorize_metric(metric_name)
 
                         cursor.execute(
-                            """
+"""
                             INSERT INTO aggregated_metrics
                             (timestamp, metric_name, category, period, value, unit, source_system, metadata)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -609,7 +607,7 @@ class UnifiedMetricsAggregator:
                 time_threshold -= timedelta(days=365)
 
             cursor.execute(
-                """
+"""
                 SELECT * FROM aggregated_metrics
                 WHERE timestamp >= ?
                 ORDER BY timestamp DESC
@@ -706,7 +704,7 @@ class UnifiedMetricsAggregator:
                 time_threshold -= timedelta(days=90)  # Last 3 months
 
             cursor.execute(
-                """
+"""
                 SELECT value FROM kpi_results
                 WHERE kpi_name = ? AND timestamp >= ?
                 ORDER BY timestamp ASC
@@ -760,7 +758,7 @@ class UnifiedMetricsAggregator:
             cursor = conn.cursor()
 
             cursor.execute(
-                """
+"""
                 INSERT INTO kpi_results
                 (timestamp, kpi_name, category, value, target_value, achievement_rate, trend, period)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -822,7 +820,7 @@ class UnifiedMetricsAggregator:
             kpi_scores = snapshot.get("kpi_scores", {})
 
             cursor.execute(
-                """
+"""
                 INSERT INTO system_snapshots
                 (timestamp, total_tokens_saved, total_cost_savings, overall_effectiveness,
                  cache_hit_rate, compression_ratio, user_satisfaction, system_health_score, metadata)
@@ -961,7 +959,7 @@ class UnifiedMetricsAggregator:
             time_threshold = datetime.now() - timedelta(days=days)
 
             cursor.execute(
-                """
+"""
                 SELECT kpi_name, timestamp, value, achievement_rate, trend
                 FROM kpi_results
                 WHERE timestamp >= ? AND period = ?

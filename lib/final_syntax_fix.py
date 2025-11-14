@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Final comprehensive syntax fix for all remaining issues
-    """
+"""
+"""
 import re
 from pathlib import Path
 

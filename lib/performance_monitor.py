@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 #     Performance Monitoring Utility for Autonomous Agent Plugin
-    """
-Provides real-time monitoring, alerting, and analysis of plugin performance
 import time
 import json
 import psutil

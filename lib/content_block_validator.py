@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Content Block Validator
-    """
+"""
 
 Simulates message construction to identify which content block becomes empty.
+"""
 def analyze_orchestrator_response():
     """Analyze how the orchestrator constructs responses and identify empty blocks."""
 

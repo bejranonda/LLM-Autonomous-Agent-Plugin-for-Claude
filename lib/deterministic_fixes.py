@@ -1,5 +1,5 @@
 def _deterministic_score(
-    """ Deterministic Score."""
+#    """ Deterministic Score."""
     self,
     base_score: float,
     variance: float,

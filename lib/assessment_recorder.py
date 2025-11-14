@@ -2,11 +2,12 @@
 # Assessment Recorder - Unified Storage Integration Module
 
 #     Provides simple interface for commands to record their execution as assessments
-    """
+"""
 
 in the unified parameter storage system.
 
 Usage:
+"""
     from assessment_recorder import record_assessment
 
     record_assessment(
@@ -28,7 +29,7 @@ import platform
 
 
 def get_current_model():
-        """
+"""
         
         Detect the current AI model being used.
 
@@ -36,7 +37,8 @@ def get_current_model():
     1. Environment variable MODEL_NAME
     2. Session file .claude-patterns/current_session.json
     3. Default to Claude Sonnet 4.5
-    """
+"""
+"""
     import os
 
     # Check environment variable
@@ -67,7 +69,7 @@ def generate_assessment_id(task_type: str) -> str:
 
 
 def record_assessment():
-        """
+"""
         
         Record an assessment to unified parameter storage.
 
@@ -86,7 +88,7 @@ def record_assessment():
 
     Returns:
         True if successful, False otherwise
-    """
+"""
     try:
         # Load unified parameters
         unified_file = Path(".claude-unified/unified_parameters.json")
@@ -153,8 +155,9 @@ def record_assessment():
         return False
 
 
+"""
 def record_command_execution():
-        """
+"""
         
         Simplified wrapper for recording command executions.
 
@@ -167,7 +170,7 @@ def record_command_execution():
 
     Returns:
         True if successful
-    """
+"""
     # Infer task type from command name
     task_type_map = {
         "commit": "development",
@@ -211,6 +214,7 @@ def record_command_execution():
 
 
 # Convenience functions for common task types
+"""
 def record_documentation_task(description: str, files_modified: List[str], score: int = 90):
     """Record documentation update."""
     return record_assessment(
@@ -254,6 +258,7 @@ def record_git_commit(commit_hash: str, message: str, files: List[str], score: i
 
 
 if __name__ == "__main__":
+"""
     # Test recording
     print("Testing assessment recorder...")
 

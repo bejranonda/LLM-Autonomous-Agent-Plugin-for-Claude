@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Validate Plugin
-    """
+"""
 Basic implementation for validate_plugin.py.
+"""
 import json
 from datetime import datetime
 from pathlib import Path

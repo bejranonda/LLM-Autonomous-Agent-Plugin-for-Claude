@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     Agent Communication Optimizer
-    """
+"""
 Advanced communication protocol optimizer for autonomous agents that minimizes token usage
 while maintaining effective inter-agent collaboration and information exchange.
 
 Version: 1.0.0
 Author: Autonomous Agent Plugin
+"""
 import json
 import os
 import time
@@ -81,12 +82,13 @@ class CommunicationProtocol:
 
 
 class AgentCommunicationOptimizer:
-    """
+"""
     Advanced optimizer for agent-to-agent communication that minimizes token usage
-    """
+"""
     while maintaining effective collaboration.
-    """
+"""
 
+"""
     def __init__(self, cache_dir: str = ".claude-patterns"):
         """Initialize the processor with default configuration."""
         self.cache_dir = pathlib.Path(cache_dir)
@@ -145,7 +147,7 @@ class AgentCommunicationOptimizer:
 
         Returns:
             Optimized message with metadata
-        """
+"""
         # Determine protocol
         if protocol_id is None:
             protocol_id = self._determine_protocol(sender, receiver)
@@ -180,8 +182,9 @@ class AgentCommunicationOptimizer:
 
         return optimized
 
+"""
     def decompress_message():
-        """
+"""
         
         Decompress an optimized message back to original form.
 
@@ -190,7 +193,7 @@ class AgentCommunicationOptimizer:
 
         Returns:
             Decompressed original message
-        """
+"""
         if optimized_message.compression_type == CompressionType.NONE:
             # Original content stored directly
             return json.loads(optimized_message.compressed_content)
@@ -206,8 +209,9 @@ class AgentCommunicationOptimizer:
         # Fallback
         return json.loads(optimized_message.compressed_content)
 
+"""
     def optimize_conversation():
-        """
+"""
         
         Optimize an entire conversation for token efficiency.
 
@@ -217,7 +221,7 @@ class AgentCommunicationOptimizer:
 
         Returns:
             Optimization results with metrics
-        """
+"""
         optimized_messages = []
         total_original_tokens = 0
         total_optimized_tokens = 0
@@ -254,6 +258,7 @@ class AgentCommunicationOptimizer:
             "message_count": len(conversation),
         }
 
+"""
     def create_communication_protocol(
         self, protocol_id: str, agent_group: str, message_format: str, optimization_rules: Dict[str, Any]
     )-> bool:
@@ -268,7 +273,7 @@ class AgentCommunicationOptimizer:
 
         Returns:
             True if protocol created successfully
-        """
+"""
         protocol = CommunicationProtocol(
             protocol_id=protocol_id,
             agent_group=agent_group,
@@ -299,8 +304,9 @@ class AgentCommunicationOptimizer:
 
         return True
 
+"""
     def get_agent_efficiency_report():
-        """
+"""
         
         Get efficiency report for agents or all agents.
 
@@ -309,7 +315,7 @@ class AgentCommunicationOptimizer:
 
         Returns:
             Efficiency report with metrics
-        """
+"""
         if agent_id:
             # Single agent report
             agent_stats = self.stats["agent_efficiency"].get(agent_id, {})
@@ -331,6 +337,7 @@ class AgentCommunicationOptimizer:
                 "top_performers": self._get_top_performers(),
             }
 
+"""
     def _determine_protocol(self, sender: str, receiver: str) -> str:
         """Determine the appropriate protocol for agent communication."""
         # Check if agents are in the same group

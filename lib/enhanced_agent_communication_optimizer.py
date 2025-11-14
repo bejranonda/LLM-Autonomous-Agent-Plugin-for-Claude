@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 #     Enhanced Agent Communication Optimizer
-    """
+"""
 
 High-performance agent communication optimizer that achieves 25-35% token reduction
 through advanced compression techniques while maintaining message integrity.
 
 Version: 1.0.0 - Production Ready
 Author: Autonomous Agent Plugin
+"""
 import json
 import time
 import re
@@ -1163,7 +1164,7 @@ class EnhancedAgentCommunicationOptimizer:
 
         Returns:
             Optimization result with metrics
-        """
+"""
         start_time = time.time()
 
         # Generate cache key
@@ -1229,6 +1230,7 @@ class EnhancedAgentCommunicationOptimizer:
 
         return result
 
+"""
     def optimize_conversation(
         self, conversation: List[Dict[str, Any]], level: OptimizationLevel = OptimizationLevel.STANDARD
     )-> Dict[str, Any]:
@@ -1241,7 +1243,7 @@ class EnhancedAgentCommunicationOptimizer:
 
         Returns:
             Conversation optimization results
-        """
+"""
         total_original_tokens = 0
         total_optimized_tokens = 0
         total_tokens_saved = 0
@@ -1276,6 +1278,7 @@ class EnhancedAgentCommunicationOptimizer:
             "conversation_context": conversation_context,
         }
 
+"""
     def get_statistics(self) -> Dict[str, Any]:
         """Get comprehensive optimization statistics."""
         if self.stats["total_optimizations"] > 0:
@@ -1522,7 +1525,7 @@ class EnhancedAgentCommunicationOptimizer:
 
 # Convenience functions for easy usage
 def optimize_agent_message():
-        """
+"""
         
         Convenience function to optimize a single agent message.
 
@@ -1532,7 +1535,7 @@ def optimize_agent_message():
 
     Returns:
         Optimization result with guaranteed 25-35% reduction
-    """
+"""
     optimizer = EnhancedAgentCommunicationOptimizer()
 
     # Convert string level to enum
@@ -1557,12 +1560,14 @@ def optimize_agent_message():
     }
 
 
+"""
 def main():
     """Demonstrate the enhanced agent communication optimizer."""
     print("Enhanced Agent Communication Optimizer Demo")
     print("=" * 60)
     print("Target: 25-35% token reduction in inter-agent communication")
 
+"""
     # Initialize optimizer
     optimizer = EnhancedAgentCommunicationOptimizer()
 

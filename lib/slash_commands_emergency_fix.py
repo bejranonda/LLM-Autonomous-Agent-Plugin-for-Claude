@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     SLASH COMMANDS EMERGENCY FIX PACKAGE
-    """
+"""
 
 CRITICAL: This package fixes the problematic slash commands that are
 generating empty text blocks and causing system-wide Claude failure.
 
 Priority Commands Fixed:
+"""
 - /learn:init (reported failure on Ubuntu)
 - /validate:plugin (complex validation output)
 - All commands with box drawing characters
@@ -94,7 +95,7 @@ SAFE_BOX_CHARS = {
 
 
 def safe_box_drawing():
-        """
+"""
         
         Convert Unicode box drawing characters to safe ASCII equivalents.
 
@@ -107,7 +108,7 @@ def safe_box_drawing():
     Example:
         >>> safe_box_drawing("╔══════╗")
         '+======+'
-    """
+"""
     if not text:
         return ""
 
@@ -119,8 +120,9 @@ def safe_box_drawing():
     return result
 
 
+"""
 def safe_border_box():
-        """
+"""
         
         Create safe ASCII border box instead of Unicode box.
 
@@ -136,7 +138,7 @@ def safe_border_box():
         >>> box = safe_border_box("Title", ["Line 1", "Line 2"])
         >>> "Title" in box
         True
-    """
+"""
     if not content:
         return f"{title}: (empty)"
 
@@ -166,8 +168,9 @@ def safe_border_box():
 # ============================================================================
 
 
+"""
 def safe_learn_init_response():
-        """
+"""
         
         Generate safe response for /learn:init command.
 
@@ -189,7 +192,7 @@ def safe_learn_init_response():
         ... )
         >>> 'content' in response
         True
-    """
+"""
     # Safe project analysis section
     project_section = f"""
 Type: {project_analysis.get('type', 'Unknown project')}
@@ -228,7 +231,7 @@ Status: Ready for pattern capture
 
 
 def safe_validate_plugin_response():
-        """
+"""
         
         Generate safe response for /validate:plugin command.
 
@@ -243,7 +246,7 @@ def safe_validate_plugin_response():
         >>> response = safe_validate_plugin_response(results)
         >>> 'content' in response
         True
-    """
+"""
     score = validation_results.get("score", 0)
     issues = validation_results.get("issues", [])
     manifest_valid = validation_results.get("manifest_valid", False)
@@ -308,8 +311,9 @@ def safe_validate_plugin_response():
 # ============================================================================
 
 
+"""
 def safe_analyze_dependencies_response():
-        """
+"""
         
         Generate safe response for /analyze:dependencies command.
 
@@ -318,7 +322,7 @@ def safe_analyze_dependencies_response():
 
     Returns:
         Safe Claude message dictionary
-    """
+"""
     total_deps = analysis_results.get("total_dependencies", 0)
     vulnerabilities = analysis_results.get("vulnerabilities", [])
     outdated = analysis_results.get("outdated", [])
@@ -369,8 +373,9 @@ def safe_analyze_dependencies_response():
 # ============================================================================
 
 
+"""
 def safe_monitor_dashboard_response():
-        """
+"""
         
         Generate safe response for /monitor:dashboard command.
 
@@ -379,7 +384,7 @@ def safe_monitor_dashboard_response():
 
     Returns:
         Safe Claude message dictionary
-    """
+"""
     status = dashboard_info.get("status", "unknown")
     url = dashboard_info.get("url", "http://localhost:5000")
     port = dashboard_info.get("port", 5000)
@@ -425,8 +430,9 @@ COMMAND_FIXES = {
 }
 
 
+"""
 def get_safe_command_formatter(command_name: str):
-    """
+"""
     Get the safe formatter for a specific command.
 
     Args:
@@ -439,12 +445,13 @@ def get_safe_command_formatter(command_name: str):
         >>> formatter = get_safe_command_formatter('/learn:init')
         >>> formatter is not None
         True
-    """
+"""
     return COMMAND_FIXES.get(command_name)
 
 
+"""
 def safe_format_command_response():
-        """
+"""
         
         Format command response safely using appropriate formatter.
 
@@ -459,7 +466,7 @@ def safe_format_command_response():
         >>> response = safe_format_command_response('/validate:plugin', {"score": 100})
         >>> 'content' in response
         True
-    """
+"""
     formatter = get_safe_command_formatter(command_name)
 
     if formatter:
@@ -480,8 +487,9 @@ def safe_format_command_response():
 # ============================================================================
 
 
+"""
 def safe_multi_command_response():
-        """
+"""
         
         Generate safe response for multiple commands or sections.
 
@@ -496,7 +504,7 @@ def safe_multi_command_response():
         >>> response = safe_multi_command_response(data)
         >>> 'content' in response
         True
-    """
+"""
     sections = {}
 
     for command_name, results in commands_data:
@@ -536,8 +544,9 @@ def safe_multi_command_response():
 # ============================================================================
 
 
+"""
 def validate_command_response():
-        """
+"""
         
         Validate command response to prevent empty text blocks.
 
@@ -546,7 +555,7 @@ def validate_command_response():
 
     Returns:
         List of validation issues (empty if valid)
-    """
+"""
     issues = []
 
     if not isinstance(response, dict):
@@ -705,3 +714,5 @@ if __name__ == "__main__":
     print("1. Import: from lib.slash_commands_emergency_fix import safe_format_command_response")
     print("2. Replace command response generation with safe_format_command_response()")
     print("3. Test with: python lib/slash_commands_emergency_fix.py")
+
+"""

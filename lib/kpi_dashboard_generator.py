@@ -1,7 +1,8 @@
 """
-    KPI Dashboard Generator for Token Optimization Framework
-    """
+#    KPI Dashboard Generator for Token Optimization Framework
+"""
 Creates interactive HTML dashboards with comprehensive KPI visualization
+"""
 import json
 import logging
 from datetime import datetime, timedelta
@@ -713,11 +714,12 @@ class KPIDashboardGenerator:
                     </div>
                 </div>
             </div>
-            """
+"""
 
         html += "</div>"
         return html
 
+"""
     def _generate_trends_section(self, historical_trends: Dict[str, List[Dict[str, Any]]]) -> str:
         """Generate trends section with charts"""
         html = '<div class="trend-charts">'
@@ -731,13 +733,14 @@ class KPIDashboardGenerator:
                         <canvas id="chart-{kpi_name}"></canvas>
                     </div>
                 </div>
-                """
+"""
 
         if not html:
             html = "<p>No historical data available for trend analysis.</p>"
 
         return html
 
+"""
     def _generate_recommendations_section(self, recommendations: List[str]) -> str:
         """Generate recommendations section"""
         if not recommendations:
@@ -772,18 +775,19 @@ class KPIDashboardGenerator:
                     </div>
                 </div>
             </li>
-            """
+"""
         html += "</ul>"
 
         return html
 
+"""
     def _generate_system_health_section(self, system_health: Dict[str, Any]) -> str:
         """Generate system health section"""
         html = """
         <div class="section">
             <h2>System Health Overview</h2>
             <div class="system-health-grid">
-        """
+"""
 
         health_metrics = [
             ("Overall Score", system_health.get("overall_score", 0), "score"),
@@ -802,11 +806,12 @@ class KPIDashboardGenerator:
                 <div class="value" style="color: {color}">{value}</div>
                 <div class="label">{label}</div>
             </div>
-            """
+"""
 
         html += "</div></div>"
         return html
 
+"""
     def generate_executive_summary_report(self, output_file: str = "executive_summary.html") -> str:
         """Generate executive summary report"""
         dashboard_data = self.aggregator.get_kpi_dashboard_data()

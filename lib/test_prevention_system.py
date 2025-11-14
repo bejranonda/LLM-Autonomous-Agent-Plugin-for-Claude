@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Test script for the comprehensive prevention system
-    """
+"""
+"""
 import sys
 from pathlib import Path
 

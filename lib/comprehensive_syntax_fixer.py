@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Comprehensive Python Syntax Error Fixer
-    """
+"""
 Autonomously identifies and fixes syntax errors in Python files
+"""
 import ast
 import os
 import re

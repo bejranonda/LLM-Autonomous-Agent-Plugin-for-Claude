@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     ORCHESTRATOR AGENT EMERGENCY FIX PACKAGE
-    """
+"""
 
 CRITICAL: This package fixes the specific unsafe string operations in
 agents/orchestrator.md that are causing system-wide Claude failure.
 
 Integration Instructions:
+"""
 1. Apply the safe_string_operations.py fixes to agents/orchestrator.md
 2. Replace all unsafe parse_* functions with safe versions
 3. Test with validate_orchestrator_fix.py
@@ -21,7 +22,7 @@ from typing import Dict, Any, List, Optional
 
 
 def safe_split():
-        """
+"""
         
         Safe string splitting that prevents empty parts and handles None values.
 
@@ -40,7 +41,7 @@ def safe_split():
         ['a', 'b', 'c']
         >>> safe_split("", "|")
         []
-    """
+"""
     if not text:
         return []
 
@@ -51,8 +52,9 @@ def safe_split():
         return []
 
 
+"""
 def safe_join():
-        """
+"""
         
         Safe string joining that handles None values and empty lists.
 
@@ -70,7 +72,7 @@ def safe_join():
         'a b c'
         >>> safe_join([])
         ''
-    """
+"""
     if not parts:
         return ""
 
@@ -82,8 +84,9 @@ def safe_join():
         return ""
 
 
+"""
 def safe_get_part():
-        """
+"""
         
         Safe extraction of split operation parts with automatic fallback.
 
@@ -103,15 +106,16 @@ def safe_get_part():
         'b'
         >>> safe_get_part("a|", "|", 1, "default")
         'default'
-    """
+"""
     parts = safe_split(text, delimiter)
     if 0 <= index < len(parts):
         return parts[index]
     return default
 
 
+"""
 def safe_extract_after():
-        """
+"""
         
         Safe extraction of content after a marker.
 
@@ -129,7 +133,7 @@ def safe_extract_after():
         'value'
         >>> safe_extract_after("command --arg", "--arg")
         ''
-    """
+"""
     if not text or marker not in text:
         return ""
 
@@ -143,8 +147,9 @@ def safe_extract_after():
         return ""
 
 
+"""
 def safe_extract_between():
-        """
+"""
         
         Safe extraction of content between two markers.
 
@@ -161,7 +166,7 @@ def safe_extract_between():
     Example:
         >>> safe_extract_between("a --start content --end b", "--start", "--end")
         'content'
-    """
+"""
     if not text or start_marker not in text or end_marker not in text:
         return ""
 
@@ -178,6 +183,7 @@ def safe_extract_between():
 # ============================================================================
 
 
+"""
 def safe_parse_dashboard_args(user_input: str) -> Dict[str, Any]:
     """Safe version of parse_dashboard_args - prevents empty text blocks."""
     args = {"host": "localhost", "port": 5000, "patterns_dir": ".claude-patterns", "auto_open_browser": True}
@@ -284,7 +290,7 @@ def safe_parse_preference_args(user_input: str) -> Dict[str, Any]:
 
 
 def safe_extract_remaining_args():
-        """
+"""
         
         Safe extraction of remaining arguments after a specific index.
 
@@ -302,7 +308,7 @@ def safe_extract_remaining_args():
         'arg1 arg2 arg3'
         >>> safe_extract_remaining_args("cmd", 1)
         ''
-    """
+"""
     if not text:
         return ""
 
@@ -321,8 +327,9 @@ def safe_extract_remaining_args():
 # ============================================================================
 
 
+"""
 def safe_content_section():
-        """
+"""
         
         Generate safe content section that won't create empty text blocks.
 
@@ -339,7 +346,7 @@ def safe_content_section():
         '## Title\\n\\nContent'
         >>> safe_content_section("Empty", "")
         None
-    """
+"""
     if not title:
         return None
 
@@ -351,8 +358,9 @@ def safe_content_section():
     return {"type": "text", "text": f"## {title.strip()}\n\n{content_str}"}
 
 
+"""
 def safe_multi_section_content():
-        """
+"""
         
         Generate safe multi-section content with no empty blocks.
 
@@ -367,7 +375,7 @@ def safe_multi_section_content():
         >>> blocks = safe_multi_section_content(sections)
         >>> len(blocks)
         1
-    """
+"""
     content_blocks = []
 
     for title, content in sections:
@@ -387,8 +395,9 @@ def safe_multi_section_content():
 # ============================================================================
 
 
+"""
 def validate_orchestrator_response():
-        """
+"""
         
         Validate orchestrator response to prevent system-wide failure.
 
@@ -403,7 +412,7 @@ def validate_orchestrator_response():
         >>> issues = validate_orchestrator_response(response)
         >>> len(issues) > 0
         True
-    """
+"""
     issues = []
 
     if not isinstance(response, dict):
@@ -435,8 +444,9 @@ def validate_orchestrator_response():
     return issues
 
 
+"""
 def sanitize_orchestrator_response():
-        """
+"""
         
         Sanitize orchestrator response to prevent empty text blocks.
 
@@ -453,7 +463,7 @@ def sanitize_orchestrator_response():
         1
         >>> sanitized['content'][0]['text']
         'Processing request...'
-    """
+"""
     if not isinstance(response, dict):
         return response
 
@@ -484,13 +494,14 @@ def sanitize_orchestrator_response():
 # ============================================================================
 
 
+"""
 def get_orchestrator_replacement_patterns():
-    """
+"""
     Get the specific patterns that need to be replaced in agents/orchestrator.md
 
     Returns:
         Dictionary of unsafe patterns and their safe replacements
-    """
+"""
     return {
         # Unsafe split operations that need replacement
         "parts = user_input.split('--host')[1].strip().split()": "parts = safe_split(user_input, '--host', 1)",
@@ -503,13 +514,14 @@ def get_orchestrator_replacement_patterns():
     }
 
 
+"""
 def create_orchestrator_integration_instructions():
-    """
+"""
     Create step-by-step instructions for integrating fixes into agents/orchestrator.md
 
     Returns:
         String containing integration instructions
-    """
+"""
     return """
 # ORCHESTRATOR AGENT EMERGENCY INTEGRATION INSTRUCTIONS
 
@@ -548,6 +560,7 @@ def parse_queue_add_args(user_input):
     return safe_parse_queue_add_args(user_input or "")
 ```
 
+"""
 ## Step 3: Update Response Generation
 Add this before any function that returns message content:
 

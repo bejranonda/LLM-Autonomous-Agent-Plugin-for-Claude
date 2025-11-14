@@ -17,16 +17,11 @@ class EmergencyMessageSanitizer:
 
     @staticmethod
     def sanitize_message_text():
-        """
-        
-        Emergency sanitization - only keep non-empty, meaningful text.
-
-        Args:
-            text: Text to sanitize
-
-        Returns:
-            Sanitized text or None if content is invalid
-        """
+# Emergency sanitization - only keep non-empty, meaningful text.
+# Args:
+# text: Text to sanitize
+# Returns:
+# Sanitized text or None if content is invalid
         if text is None:
             return None
 
@@ -47,9 +42,10 @@ class EmergencyMessageSanitizer:
 
         return text
 
+"""
     @staticmethod
     def sanitize_content_block():
-        """
+"""
         
         Emergency content block sanitization.
 
@@ -58,7 +54,7 @@ class EmergencyMessageSanitizer:
 
         Returns:
             Sanitized block or None if block should be removed
-        """
+"""
         if not isinstance(block, dict):
             return None
 
@@ -78,9 +74,10 @@ class EmergencyMessageSanitizer:
         # Unknown block type - keep if it has content
         return block
 
+"""
     @staticmethod
     def sanitize_message():
-        """
+"""
         
         Emergency message sanitization.
 
@@ -89,7 +86,7 @@ class EmergencyMessageSanitizer:
 
         Returns:
             Sanitized message
-        """
+"""
         if not isinstance(message, dict):
             return message
 
@@ -116,9 +113,10 @@ class EmergencyMessageSanitizer:
 
         return message
 
+"""
     @staticmethod
     def sanitize_messages():
-        """
+"""
         
         Emergency message sanitization for all messages.
 
@@ -127,7 +125,7 @@ class EmergencyMessageSanitizer:
 
         Returns:
             Sanitized messages
-        """
+"""
         if not isinstance(messages, list):
             return messages
 
@@ -141,6 +139,7 @@ class EmergencyMessageSanitizer:
 
 
 # Emergency global functions for immediate integration
+"""
 def emergency_sanitize_messages(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Emergency sanitization function - call this before ANY Claude API call."""
     return EmergencyMessageSanitizer.sanitize_messages(messages)
@@ -185,12 +184,13 @@ class EmergencyAPICallWrapper:
 
 # Emergency installation
 def install_emergency_wrapper():
-    """
+"""
     Install emergency wrapper globally.
 
     This function should be called during plugin initialization
     to prevent all future message issues.
-    """
+"""
+"""
     import sys
     import importlib
 

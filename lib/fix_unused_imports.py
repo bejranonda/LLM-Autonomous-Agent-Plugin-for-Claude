@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Fix unused imports in Python files
-    """
+"""
+"""
 import ast
 from pathlib import Path
 

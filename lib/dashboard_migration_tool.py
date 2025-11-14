@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
 #     Dashboard Migration Tool
-    """
+"""
 
 This tool helps migrate data from existing dashboards to the new unified dashboard system.
 It ensures backward compatibility and smooth transition for users.
-import json
-import os
-import shutil
-import sys
-from datetime import datetime
-from pathlib import Path
-from typing import Dict, List, Optional, Any
-
-
-class DashboardMigrationTool:
-    """Tool for migrating dashboard data to unified system"""
+# import json
+# import os
+# import shutil
+# import sys
+# from datetime import datetime
+# from pathlib import Path
+# from typing import Dict, List, Optional, Any
+# class DashboardMigrationTool:
 
     def __init__(self, project_root: str = "."):
         """Initialize the processor with default configuration."""
@@ -488,6 +485,7 @@ Generated: """
 
 def main():
     """Main migration function"""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Dashboard Migration Tool")

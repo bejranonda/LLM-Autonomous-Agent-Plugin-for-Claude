@@ -1,10 +1,11 @@
 """
-    Comprehensive Test Suite for Token Optimization Framework
-    """
+#    Comprehensive Test Suite for Token Optimization Framework
+"""
 Tests all components of the token optimization system to ensure
 proper integration, functionality, and performance.
 
 Test Categories:
+"""
 - Unit tests for individual components
 - Integration tests for component interaction
 - Performance tests for optimization effectiveness
@@ -737,6 +738,7 @@ def main():
     print("Token Optimization Framework Test Suite")
     print("=" * 60)
 
+"""
     # Create test suite
     test_suite = unittest.TestSuite()
 

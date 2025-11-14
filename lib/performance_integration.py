@@ -4,30 +4,21 @@
 # Integration layer for automatic performance recording in agents.
 
 #     This module provides a simple interface that all agents can import and use
-    """
-
-to automatically record their performance without any manual intervention.
-
-Usage in any agent:
-    from lib.performance_integration import record_performance
-
-    # At the start of task execution
-    task_id = start_performance_recording("Task description", "task_type")
-
-    # At the end of task execution
-    record_performance(task_id, success=True, quality_score=95, ...)
-import json
-import time
-import uuid
-from pathlib import Path
-from datetime import datetime, timezone
-
-# Global performance tracking
-_performance_tracker = None
-
-
-class PerformanceIntegrator:
-    """Simple performance recording integration for agents."""
+# to automatically record their performance without any manual intervention.
+# Usage in any agent:
+# from lib.performance_integration import record_performance
+# # At the start of task execution
+# task_id = start_performance_recording("Task description", "task_type")
+# # At the end of task execution
+# record_performance(task_id, success=True, quality_score=95, ...)
+# import json
+# import time
+# import uuid
+# from pathlib import Path
+# from datetime import datetime, timezone
+# # Global performance tracking
+# _performance_tracker = None
+# class PerformanceIntegrator:
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
         """Initialize the processor with default configuration."""
@@ -98,7 +89,7 @@ class PerformanceIntegrator:
             json.dump(initial_data, f, indent=2)
 
     def start_task():
-        """
+"""
         
         Start tracking a task for performance recording.
 
@@ -113,7 +104,7 @@ class PerformanceIntegrator:
 
                 Returns:
                     str: Task ID for later completion
-        """
+"""
         task_id = str(uuid.uuid4())
 
         self.active_tasks[task_id] = {
@@ -126,6 +117,7 @@ class PerformanceIntegrator:
 
         return task_id
 
+"""
     def complete_task(
         self,
         task_id: str,
@@ -158,7 +150,7 @@ class PerformanceIntegrator:
 
         Returns:
             bool: True if recording was successful
-        """
+"""
         if task_id not in self.active_tasks:
             return False
 
@@ -348,7 +340,7 @@ def get_performance_integrator() -> PerformanceIntegrator:
 
 # Simple functions for agents to use
 def start_performance_recording():
-        """
+"""
         
         Start recording performance for a task.
 
@@ -360,13 +352,14 @@ def start_performance_recording():
 
     Returns:
         str: Task ID to use when completing the task
-    """
+"""
     integrator = get_performance_integrator()
     return integrator.start_task(description, task_type)
 
 
+"""
 def record_performance():
-        """
+"""
         
         Record task performance automatically.
 
@@ -387,7 +380,7 @@ def record_performance():
 
     Returns:
         bool: True if recording was successful
-    """
+"""
     integrator = get_performance_integrator()
     return integrator.complete_task(
         task_id=task_id,

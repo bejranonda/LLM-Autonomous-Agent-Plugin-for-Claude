@@ -152,9 +152,10 @@ class TokenOptimizationSection(UnifiedDashboardSection):
                 </div>
             </div>
         </div>
-        """
+"""
 
 
+"""
 class KPISection(UnifiedDashboardSection):
     """KPI and executive metrics section"""
 
@@ -248,9 +249,10 @@ class KPISection(UnifiedDashboardSection):
                 </div>
             </div>
         </div>
-        """
+"""
 
 
+"""
 class SystemHealthSection(UnifiedDashboardSection):
     """System health and consistency validation section"""
 
@@ -342,19 +344,20 @@ class SystemHealthSection(UnifiedDashboardSection):
                 </div>
             </div>
         </div>
-        """
+"""
 
 
+"""
 class DashboardDataCollector:
     """Collects and aggregates data for dashboard visualization."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize data collector.
 
         Args:
             patterns_dir: Directory containing pattern data (legacy parameter)
-        """
+"""
         current_dir = Path(__file__).parent
         self.cache = {}
         self.cache_ttl = 60  # Cache for 60 seconds
@@ -444,6 +447,7 @@ class DashboardDataCollector:
         }
         print(f"  Initialized {len(self.dashboard_sections)} dashboard sections")
 
+"""
     def _discover_project_root(self) -> Path:
         """Discover the project root directory when running from plugin."""
         current_dir = Path(__file__).parent
@@ -506,7 +510,7 @@ class DashboardDataCollector:
         return best_dir
 
     def _validate_storage_has_data():
-        """
+"""
         
         Validate that a storage directory contains actual data.
 
@@ -516,7 +520,7 @@ class DashboardDataCollector:
         3. patterns.json with patterns
 
         Returns True if any meaningful data is found.
-        """
+"""
         # Check for unified_data.json (new format)
         unified_file = storage_dir / "unified_data.json"
         if unified_file.exists():
@@ -578,6 +582,7 @@ class DashboardDataCollector:
 
         return False
 
+"""
     def _deterministic_score(self, base_score: float, variance: float, seed_data: str) -> float:
         """Generate deterministic scores based on seed data."""
         hash_obj = hashlib.md5(seed_data.encode())
@@ -647,10 +652,10 @@ class DashboardDataCollector:
         return model_data if model_data else None
 
     def _normalize_timestamp():
-        """
+"""
         
         Normalize timestamp to ISO format for consistency.
-        """
+"""
         if not timestamp:
             return datetime.now().astimezone().isoformat()
 
@@ -669,15 +674,16 @@ class DashboardDataCollector:
             # If parsing fails, return current time
             return datetime.now().astimezone().isoformat()
 
+"""
     def _get_model_sort_key():
-        """
+"""
         
         Get sort key for consistent model ordering across all charts.
         Order: Claude models first, then GLM models, then others alphabetically.
 
         Returns:
             Tuple of (priority, name) for sorting
-        """
+"""
         model_lower = model_name.lower()
 
         # Priority 0: Claude models (sorted by version)
@@ -699,12 +705,13 @@ class DashboardDataCollector:
         else:
             return (2, 0, model_name)
 
+"""
     def _load_unified_data():
-        """
+"""
         
         Load data from unified storage (unified_data.json).
         This is the PRIMARY data source for all dashboard APIs.
-        """
+"""
         if not self.use_unified_storage or not self.unified_storage:
             print("Error: Unified storage not available", file=sys.stderr)
             return {"quality": {"assessments": {"history": [], "current": {}}}, "patterns": {}}
@@ -760,11 +767,13 @@ class DashboardDataCollector:
             print(f"Error loading unified data: {e}", file=sys.stderr)
             return {"quality": {"assessments": {"history": [], "current": {}}}, "patterns": {}}
 
+"""
     def _get_unified_assessments():
-        """
+"""
         
         Get assessments from unified storage with optional filtering.
-        """
+"""
+"""
         from collections import defaultdict
 
         unified_data = self._load_unified_data()
@@ -817,11 +826,12 @@ class DashboardDataCollector:
         return filtered_assessments
 
     def get_debugging_performance_data():
-        """
+"""
         
         Get debugging performance data from UNIFIED STORAGE only.
         Calculates actual performance metrics from real debugging tasks.
-        """
+"""
+"""
         from collections import defaultdict
 
         # Get debugging-related assessments from unified storage
@@ -912,11 +922,11 @@ class DashboardDataCollector:
         }
 
     def get_recent_performance_records():
-        """
+"""
         
         Get recent performance records from UNIFIED STORAGE only.
         Ensures consistency with other APIs.
-        """
+"""
         # Get recent assessments from unified storage (last 30 days)
         assessments = self._get_unified_assessments(days=30)
 
@@ -1004,6 +1014,7 @@ class DashboardDataCollector:
             },
         }
 
+"""
     def _get_git_activity_history(self, limit: int = 100) -> List[Dict[str, Any]]:
         """Load recent git commit history for activities not captured in pattern system."""
         git_activities = []
@@ -1735,11 +1746,12 @@ class DashboardDataCollector:
         return record.get("success", record.get("pass", record.get("overall_score", 0) >= 70))
 
     def get_recent_activity():
-        """
+"""
         
         Get recent task activity from UNIFIED STORAGE only.
         Shows all tasks regardless of score for complete history tracking.
-        """
+"""
+"""
         from collections import defaultdict
 
         # Get recent assessments from unified storage (last 30 days)
@@ -1989,13 +2001,14 @@ class DashboardDataCollector:
         return summary
 
     def detect_current_model():
-        """
+"""
         
         Detect the current model being used by analyzing the system.
 
         Returns:
             String representing the current model
-        """
+"""
+"""
         import os
         import platform
 
@@ -2398,11 +2411,12 @@ class DashboardDataCollector:
         }
 
     def get_quality_timeline_with_model_events():
-        """
+"""
         
         Get quality timeline using UNIFIED STORAGE data only.
         Shows actual quality scores from real tasks performed during the project.
-        """
+"""
+"""
         from collections import defaultdict
 
         # Use unified storage as PRIMARY data source
@@ -6452,7 +6466,7 @@ def get_timeframe_label(days):
 
 
 def find_available_port():
-        """
+"""
         
         Find an available port starting from start_port.
 
@@ -6462,7 +6476,8 @@ def find_available_port():
 
     Returns:
         Available port number
-    """
+"""
+"""
     import socket
 
     for port in range(start_port, start_port + max_attempts):
@@ -6489,7 +6504,7 @@ def find_available_port():
 
 
 def validate_server_startup():
-        """
+"""
         
         Validate that the server has started successfully and is responding.
 
@@ -6499,7 +6514,8 @@ def validate_server_startup():
 
     Returns:
         True if server is responding, False otherwise
-    """
+"""
+"""
     import requests
     import time
 
@@ -6711,13 +6727,14 @@ def api_section_data(section_name):
 
 
 def check_existing_dashboard():
-        """
+"""
         
         Check if dashboard is already running on any port in the range.
 
     Returns:
         tuple: (is_running, found_port, found_url)
-    """
+"""
+"""
     import requests
 
     for port in range(port_start, port_end + 1):
@@ -6735,7 +6752,7 @@ def run_dashboard(
     """Run Dashboard."""
     host: str = "127.0.0.1", port: int = 5000, patterns_dir: str = ".claude-patterns", auto_open_browser: bool = True
 ):
-    """
+"""
     Run the dashboard server with simple browser opening.
 
     Args:
@@ -6743,7 +6760,8 @@ def run_dashboard(
         port: Preferred port to bind to (will find alternative if occupied)
         patterns_dir: Directory containing pattern data
         auto_open_browser: Whether to automatically open browser
-    """
+"""
+"""
     import sys
     import webbrowser
     import threading
@@ -6836,6 +6854,7 @@ def run_dashboard(
 
 def main():
     """CLI interface."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Autonomous Agent Dashboard")

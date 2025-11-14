@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Surgical Python Syntax Error Fixer
-    """
+"""
 Targets specific syntax error patterns identified in the analysis
+"""
 import ast
 import os
 import re

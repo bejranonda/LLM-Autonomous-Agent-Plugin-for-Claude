@@ -2,9 +2,10 @@
 # Claude Plugin Validator - Official Guidelines Compliance Checker
 
 #     Comprehensive validation for Claude Code plugins to prevent installation failures
-    """
+"""
 
 and ensure compliance with official plugin development guidelines.
+"""
 import json
 import yaml
 import re
@@ -489,6 +490,7 @@ def main():
         print(results["summary"])
         print("=" * 60)
 
+"""
         # Exit code based on results
         if args.strict and results["warnings"]:
             print("\n[ERROR] Validation failed (strict mode - warnings treated as errors)")

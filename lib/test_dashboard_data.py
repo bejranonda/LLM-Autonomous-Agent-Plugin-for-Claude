@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Test script to check dashboard data access
-    """
+"""
+"""
 import sys
 import os
 import json

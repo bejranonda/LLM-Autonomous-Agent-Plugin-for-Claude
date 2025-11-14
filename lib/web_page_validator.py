@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Web Page Validator with JavaScript Error Detection
-    """
+"""
 
 Automatically validates web pages (like dashboard.py) and detects:
+"""
 - JavaScript syntax errors
 - Console errors, warnings, and logs
 - Network request failures
@@ -10,13 +11,14 @@ Automatically validates web pages (like dashboard.py) and detects:
 - Page load performance
 - Broken links and resources
 
-    Uses Selenium WebDriver for headless browser automation to capture
-    """
+Uses Selenium WebDriver for headless browser automation to capture
+"""
 
 real browser console output without manual inspection.
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
+"""
 import sys
 import json
 import time
@@ -113,18 +115,19 @@ class WebPageValidator:
     """Validates web pages and captures JavaScript errors"""
 
     def __init__(self, headless: bool = True, timeout: int = 30):
-        """
+"""
         Initialize validator
 
         Args:
             headless: Run browser in headless mode
             timeout: Page load timeout in seconds
-        """
+"""
         self.headless = headless
         self.timeout = timeout
         self.driver = None
         self.browser_type = None
 
+"""
     def _init_selenium_driver(self) -> bool:
         """Initialize Selenium WebDriver"""
         if not SELENIUM_AVAILABLE:
@@ -167,7 +170,7 @@ class WebPageValidator:
             return None
 
     def validate_url():
-        """
+"""
         
         Validate a web page URL
 
@@ -177,7 +180,7 @@ class WebPageValidator:
 
         Returns:
             ValidationResult with all detected issues
-        """
+"""
         if SELENIUM_AVAILABLE:
             return self._validate_with_selenium(url, wait_for_load)
         elif PLAYWRIGHT_AVAILABLE:
@@ -185,6 +188,7 @@ class WebPageValidator:
         else:
             return self._validate_basic(url)
 
+"""
     def _validate_with_selenium(self, url: str, wait_for_load: int) -> ValidationResult:
         """Validate using Selenium WebDriver"""
         console_errors = []
@@ -233,36 +237,36 @@ class WebPageValidator:
 
             # Check for JavaScript errors using window.onerror
             js_errors = self.driver.execute_script(
-                """
+"""
                 return window.__jsErrors || [];
-            """
+"""
             )
             javascript_errors.extend(js_errors)
 
             # Get performance metrics
             performance = self.driver.execute_script(
-                """
+"""
                 const perf = performance.timing;
                 return {
                     loadTime: perf.loadEventEnd - perf.navigationStart,
                     domReady: perf.domContentLoadedEventEnd - perf.navigationStart,
                     responseTime: perf.responseEnd - perf.requestStart
                 };
-            """
+"""
             )
 
             load_time = time.time() - start_time
 
             # Check for network errors using Resource Timing API
             resources = self.driver.execute_script(
-                """
+"""
                 return performance.getEntriesByType('resource').map(r => ({
                     name: r.name,
                     duration: r.duration,
                     transferSize: r.transferSize,
                     failed: r.transferSize === 0 && r.duration > 0
                 }));
-            """
+"""
             )
 
             network_errors = [r for r in resources if r.get("failed")]
@@ -296,6 +300,7 @@ class WebPageValidator:
         except Exception as e:
             return self._create_error_result(url, f"Validation error: {str(e)}")
 
+"""
     def _validate_with_playwright(self, url: str, wait_for_load: int) -> ValidationResult:
         """Validate using Playwright"""
         console_errors = []
@@ -610,6 +615,7 @@ Examples:
 
     args = parser.parse_args()
 
+"""
     # Run validation
     print(f"[INFO] Validating {args.url}...")
     print(

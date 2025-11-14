@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 #     Group Specialization Learning System
-    """
+"""
 Automatically identifies what each group excels at and optimizes task delegation
 based on learned specializations.
 
-    This system tracks group performance across different task types and contexts to
-    """
+This system tracks group performance across different task types and contexts to
+"""
 
 build specialization profiles that inform intelligent task routing.
 import json
@@ -27,10 +27,10 @@ except ImportError:
 
 
 class GroupSpecializationLearner:
-    """
+"""
     Learns and tracks group specializations for optimal task delegation.
-    """
-    """
+"""
+"""
 
     # Group definitions
     GROUPS = {
@@ -40,13 +40,14 @@ class GroupSpecializationLearner:
         4: "Validation & Optimization",
     }
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize the specialization learning system.
 
         Args:
             storage_dir: Directory for storing specialization data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.spec_file = self.storage_dir / "group_specializations.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -55,6 +56,7 @@ class GroupSpecializationLearner:
         if not self.spec_file.exists():
             self._initialize_storage()
 
+"""
     def _initialize_storage(self):
         """Initialize the storage with default structure."""
         initial_data = {
@@ -149,7 +151,7 @@ class GroupSpecializationLearner:
             quality_score: Quality score achieved (0-100)
             execution_time: Time taken in seconds
             success: Whether task was successful
-        """
+"""
         if group_num not in self.GROUPS:
             raise ValueError(f"Invalid group number: {group_num}")
 
@@ -222,6 +224,7 @@ class GroupSpecializationLearner:
         # Update specializations after each observation
         self._update_specializations(group_num)
 
+"""
     def _update_specializations(self, group_num: int):
         """Update specialization analysis for a group."""
         spec_data = self._read_data()
@@ -387,7 +390,7 @@ class GroupSpecializationLearner:
 
         Returns:
             Tuple of (group_number, confidence, rationale)
-        """
+"""
         spec_data = self._read_data()
 
         # Check routing recommendations
@@ -432,6 +435,7 @@ class GroupSpecializationLearner:
             # Default to standard four-tier workflow
             return (1, 0.5, "No specific specialization data - use standard workflow")
 
+"""
     def get_learning_insights(self) -> List[Dict[str, Any]]:
         """Get insights about what the system has learned."""
         spec_data = self._read_data()
@@ -483,6 +487,7 @@ class GroupSpecializationLearner:
 
 def main():
     """Command-line interface for testing the specialization learner."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Group Specialization Learner")

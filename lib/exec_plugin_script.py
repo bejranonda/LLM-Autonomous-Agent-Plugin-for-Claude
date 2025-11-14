@@ -2,7 +2,7 @@
 # Plugin Script Executor - Simple wrapper for executing plugin scripts
 
 #     This utility automatically finds the plugin installation and executes
-    """
+"""
 
 scripts from the lib/ directory, working across all platforms and
 installation methods (development, marketplace, etc.).
@@ -13,25 +13,20 @@ Usage from Claude Code slash commands:
 
 Or as a standalone script:
     python exec_plugin_script.py dashboard.py --port 5000
-import sys
-import os
-import subprocess
-from pathlib import Path
-from typing import List
-
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent))
-
-try:
-    from plugin_path_resolver import get_script_path, get_plugin_path, get_python_executable
-except ImportError:
-    print("ERROR: Cannot import plugin_path_resolver", file=sys.stderr)
-    print("Plugin installation may be corrupted", file=sys.stderr)
-    sys.exit(1)
-
-
-def execute_plugin_script():
-        """
+# import sys
+# import os
+# import subprocess
+# from pathlib import Path
+# from typing import List
+# # Add parent directory to path for imports
+# sys.path.insert(0, str(Path(__file__).parent))
+# try:
+# from plugin_path_resolver import get_script_path, get_plugin_path, get_python_executable
+# except ImportError:
+# print("ERROR: Cannot import plugin_path_resolver", file=sys.stderr)
+# print("Plugin installation may be corrupted", file=sys.stderr)
+# sys.exit(1)
+# def execute_plugin_script():
         
         Execute a plugin script with the given arguments.
 
@@ -41,7 +36,7 @@ def execute_plugin_script():
 
     Returns:
         Exit code from the script
-    """
+"""
     # Find the script
     script_path = get_script_path(script_name)
 
@@ -83,6 +78,7 @@ def execute_plugin_script():
         return 1
 
 
+"""
 def print_plugin_info():
     """Print plugin installation information for debugging."""
     plugin_path = get_plugin_path()
@@ -140,6 +136,7 @@ def main():
         print("=" * 50, file=sys.stderr)
         sys.exit(1)
 
+"""
     # Handle special commands
     if sys.argv[1] == "--info":
         print_plugin_info()

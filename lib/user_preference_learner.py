@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     User Preference Learning System
-    """
+"""
 Learns user preferences over time to adapt agent behavior and improve personalization.
+"""
 import json
 import sys
 from pathlib import Path
@@ -20,23 +21,24 @@ except ImportError:
 
 
 class UserPreferenceLearner:
-    """
+"""
     Learns and adapts to user preferences including:
-    """
+"""
     - Coding style preferences
     - Workflow preferences
     - Quality weights and priorities
     - Communication style
     - Auto-fix confidence thresholds
-    """
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize the user preference learner.
 
         Args:
             storage_dir: Directory for storing preference data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.preference_file = self.storage_dir / "user_preferences.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -45,6 +47,7 @@ class UserPreferenceLearner:
         if not self.preference_file.exists():
             self._initialize_preference_storage()
 
+"""
     def _initialize_preference_storage(self):
         """Initialize the preference storage with default structure."""
         initial_data = {
@@ -141,7 +144,7 @@ class UserPreferenceLearner:
     def record_interaction(
         self, interaction_type: str, task_id: str, user_feedback: str, context: Optional[Dict[str, Any]] = None
     ):
-        """
+"""
         Record a user interaction for learning.
 
         Args:
@@ -149,7 +152,7 @@ class UserPreferenceLearner:
             task_id: Associated task ID
             user_feedback: User's feedback or action
             context: Additional context (code style, quality concerns, etc.)
-        """
+"""
         pref_data = self._read_data()
 
         interaction = {
@@ -189,6 +192,7 @@ class UserPreferenceLearner:
         # Analyze and update preferences
         self._analyze_and_update_preferences(interaction, context)
 
+"""
     def _analyze_and_update_preferences(self, interaction: Dict[str, Any], context: Optional[Dict[str, Any]]):
         """Analyze interaction and update preferences accordingly."""
         if not context:
@@ -362,7 +366,7 @@ class UserPreferenceLearner:
         return pref_data["communication_style"]
 
     def should_auto_fix():
-        """
+"""
         
         Determine if auto-fix should be applied based on preferences.
 
@@ -372,7 +376,7 @@ class UserPreferenceLearner:
 
         Returns:
             True if auto-fix should be applied
-        """
+"""
         pref_data = self._read_data()
         workflow = pref_data["workflow_preferences"]
 
@@ -387,6 +391,7 @@ class UserPreferenceLearner:
         # Check confidence threshold
         return confidence >= workflow["auto_fix_confidence_threshold"]
 
+"""
     def get_preference_summary(self) -> Dict[str, Any]:
         """Get summary of learned preferences."""
         pref_data = self._read_data()
@@ -419,6 +424,7 @@ class UserPreferenceLearner:
 
 def main():
     """Command-line interface for testing the preference learner."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="User Preference Learner")

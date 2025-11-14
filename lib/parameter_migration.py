@@ -1,56 +1,53 @@
 #!/usr/bin/env python3
 #     Parameter Migration Utility for Autonomous Agent Plugin
-    """
+"""
 Provides backward compatibility and gradual migration from scattered parameter
 storage systems to the unified parameter storage system.
 
 Features:
-- Automatic detection of legacy storage locations
-- Gradual migration with fallback to original sources
-- Compatibility layer for existing code
-- Validation and verification of migrated data
-- Rollback capabilities
-
-Version: 1.0.0
-Author: Autonomous Agent Development Team
-import json
-import sys
-import shutil
-from pathlib import Path
-from datetime import datetime
-from typing import Dict, List, Any, Optional, Tuple
-from collections import defaultdict
-
-from unified_parameter_storage import UnifiedParameterStorage
-
-
-class LegacyStorageAdapter:
-    """
+# - Automatic detection of legacy storage locations
+# - Gradual migration with fallback to original sources
+# - Compatibility layer for existing code
+# - Validation and verification of migrated data
+# - Rollback capabilities
+# Version: 1.0.0
+# Author: Autonomous Agent Development Team
+# import json
+# import sys
+# import shutil
+# from pathlib import Path
+# from datetime import datetime
+# from typing import Dict, List, Any, Optional, Tuple
+# from collections import defaultdict
+# from unified_parameter_storage import UnifiedParameterStorage
+# class LegacyStorageAdapter:
     Adapter class to provide backward compatibility with legacy storage systems.
-    """
+"""
 
     Allows existing code to continue working while gradually migrating to the
     unified storage system.
-    """
+"""
 
+"""
     def __init__(self, unified_storage: UnifiedParameterStorage):
-        """
+"""
         Initialize legacy storage adapter.
 
         Args:
             unified_storage: Instance of unified parameter storage
-        """
+"""
         self.unified_storage = unified_storage
         self.legacy_sources = self._detect_legacy_sources()
 
+"""
     def _detect_legacy_sources():
-        """
+"""
         
         Detect available legacy storage sources.
 
         Returns:
             Dictionary mapping source types to file paths
-        """
+"""
         sources = {}
 
         # Quality history sources
@@ -82,8 +79,9 @@ class LegacyStorageAdapter:
 
         return sources
 
+"""
     def get_quality_score_legacy():
-        """
+"""
         
         Get quality score with fallback to legacy sources.
 
@@ -92,7 +90,7 @@ class LegacyStorageAdapter:
 
         Returns:
             Current quality score
-        """
+"""
         if source == "unified":
             try:
                 return self.unified_storage.get_quality_score()
@@ -115,8 +113,9 @@ class LegacyStorageAdapter:
 
         return 0.0  # Default if no source available
 
+"""
     def get_model_performance_legacy():
-        """
+"""
         
         Get model performance with fallback to legacy sources.
 
@@ -125,7 +124,7 @@ class LegacyStorageAdapter:
 
         Returns:
             Model performance data
-        """
+"""
         # Try unified storage first
         try:
             perf_data = self.unified_storage.get_model_performance(model)
@@ -146,15 +145,16 @@ class LegacyStorageAdapter:
 
         return {"error": f"No performance data for model '{model}'"}
 
+"""
     def record_quality_legacy(self, score: float, metrics: Dict[str, float] = None, source: str = "unified"):
-        """
+"""
         Record quality score with optional legacy backup.
 
         Args:
             score: Quality score (0-100)
             metrics: Optional detailed metrics
             source: Target storage ("unified", "legacy", or "both")
-        """
+"""
         if source in ["unified", "both"]:
             try:
                 self.unified_storage.set_quality_score(score, metrics)
@@ -164,6 +164,7 @@ class LegacyStorageAdapter:
         if source in ["legacy", "both"]:
             self._record_quality_to_legacy(score, metrics)
 
+"""
     def _record_quality_to_legacy(self, score: float, metrics: Dict[str, float] = None):
         """Record quality score to legacy storage locations."""
         record = {
@@ -198,30 +199,32 @@ class LegacyStorageAdapter:
 
 
 class MigrationManager:
-    """
+"""
     Manages the migration process from legacy to unified storage.
-    """
-    """
+"""
+"""
 
+"""
     def __init__(self, unified_storage: UnifiedParameterStorage):
-        """
+"""
         Initialize migration manager.
 
         Args:
             unified_storage: Instance of unified parameter storage
-        """
+"""
         self.unified_storage = unified_storage
         self.migration_log = []
         self.rollback_data = {}
 
+"""
     def analyze_migration_complexity():
-        """
+"""
         
         Analyze the complexity of migration based on detected sources.
 
         Returns:
             Migration complexity analysis
-        """
+"""
         adapter = LegacyStorageAdapter(self.unified_storage)
 
         analysis = {
@@ -264,8 +267,9 @@ class MigrationManager:
 
         return analysis
 
+"""
     def execute_gradual_migration():
-        """
+"""
         
         Execute gradual migration from legacy sources.
 
@@ -275,7 +279,7 @@ class MigrationManager:
 
         Returns:
             Migration results
-        """
+"""
         adapter = LegacyStorageAdapter(self.unified_storage)
 
         if source_types is None:
@@ -342,6 +346,7 @@ class MigrationManager:
 
         return results
 
+"""
     def _create_source_backup(self, source_path: Path):
         """Create backup of source file before migration."""
         backup_dir = Path(".claude-unified/migration_backups")
@@ -438,13 +443,13 @@ class MigrationManager:
             self.migration_log.append(f"Warning: Failed to archive {source_path}: {e}")
 
     def validate_migration():
-        """
+"""
         
         Validate migration results and data integrity.
 
         Returns:
             Validation results
-        """
+"""
         validation_results = {
             "overall_status": "unknown",
             "data_integrity": {},
@@ -501,8 +506,9 @@ class MigrationManager:
 
         return validation_results
 
+"""
     def rollback_migration():
-        """
+"""
         
         Rollback migration by restoring from backups.
 
@@ -511,7 +517,7 @@ class MigrationManager:
 
         Returns:
             Rollback results
-        """
+"""
         rollback_results = {"status": "started", "sources_restored": 0, "errors": [], "warnings": []}
 
         backup_dir = Path(".claude-unified/migration_backups")
@@ -567,6 +573,7 @@ class MigrationManager:
         return rollback_results
 
 
+"""
 def main():
     """Command-line interface for parameter migration."""
     import argparse

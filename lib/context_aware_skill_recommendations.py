@@ -39,25 +39,27 @@ class ProjectPhase(Enum):
 
 
 class ContextAwareSkillRecommender:
-    """
+"""
     Context-aware skill recommendation system that adjusts skill selection
-    """
+"""
     based on contextual factors beyond just task type.
-    """
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize context-aware skill recommender.
 
         Args:
             storage_dir: Directory for storing context data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.context_file = self.storage_dir / "skill_context_history.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
 
         # Load user preference learner
         try:
+"""
             from user_preference_learner import UserPreferenceLearner
 
             self.preference_learner = UserPreferenceLearner(storage_dir)
@@ -95,7 +97,7 @@ class ContextAwareSkillRecommender:
 
         Returns:
             Adjusted skill recommendations with context applied
-        """
+"""
         if context is None:
             context = {}
 
@@ -119,8 +121,9 @@ class ContextAwareSkillRecommender:
 
         return sorted_recommendations
 
+"""
     def _adjust_for_time_of_day():
-        """
+"""
         
         Adjust recommendations based on time of day.
 
@@ -129,7 +132,7 @@ class ContextAwareSkillRecommender:
         - Afternoon (12-18): Balanced approach
         - Evening (18-22): Focus on speed and efficiency
         - Night (22-6): Minimal cognitive load
-        """
+"""
         hour = datetime.now().hour
         time_category = self._get_time_category(hour)
 
@@ -189,14 +192,15 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
+"""
     def _adjust_for_recent_outcomes():
-        """
+"""
         
         Adjust recommendations based on recent task outcomes.
 
         If recent failures detected, increase validation and testing.
         If recent successes with certain skills, boost their confidence.
-        """
+"""
         recent_tasks = context.get("recent_tasks", [])
         recent_failures = context.get("recent_failures", [])
         recent_successes = context.get("recent_successes", [])
@@ -222,12 +226,13 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
+"""
     def _adjust_for_user_preferences(
         self, recommendations: Dict[str, float], task_info: Dict[str, Any], context: Dict[str, Any]
     )-> Dict[str, float]:
         """ Adjust For User Preferences."""
         Adjust recommendations based on learned user preferences.
-        """
+"""
         if not self.preference_learner:
             return recommendations
 
@@ -281,11 +286,12 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
+"""
     def _adjust_for_project_phase():
-        """
+"""
         
         Adjust recommendations based on project phase.
-        """
+"""
         project_phase = context.get("project_phase", "development")
 
         phase_adjustments = {
@@ -345,6 +351,7 @@ class ContextAwareSkillRecommender:
 
         return recommendations
 
+"""
     def _get_time_category(self, hour: int) -> str:
         """Get time category from hour."""
         for category, (start, end) in {

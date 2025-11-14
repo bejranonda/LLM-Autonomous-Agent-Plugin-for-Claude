@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 #     Intelligent Agent Routing System
-    """
+"""
 Optimizes agent selection based on performance metrics, specialization, and collaboration patterns.
 
 Expected ROI: 380%
+"""
 - Quality Improvement: +3-4 points (optimal agent selection)
 - Time Reduction: 15-20% faster (right agent for the job)
 - Success Rate: 98% → 99.2%+ (better matching)
@@ -149,10 +150,10 @@ class AgentSpecializationTracker:
         return 0.85
 
     def calculate_specialization_score():
-        """
+"""
         
         Calculate how well an agent is specialized for a specific task.
-        """
+"""
         performance = self.get_agent_performance(agent_name)
         capabilities = self.AGENT_CAPABILITIES.get(agent_name, {})
 
@@ -182,6 +183,7 @@ class AgentSpecializationTracker:
 
         return max(0.0, min(1.0, specialization_score))
 
+"""
     def _is_secondary_task(self, agent_name: str, task_type: str) -> bool:
         """Check if task type is a secondary capability for agent."""
         agent = self.AGENT_CAPABILITIES.get(agent_name, {})
@@ -254,10 +256,10 @@ class AgentSpecializationTracker:
         return 1.0  # Default to balanced
 
     def get_optimal_collaboration_path():
-        """
+"""
         
         Get optimal collaboration path starting with primary agent.
-        """
+"""
         # Determine task type
         task_type = task_info.get("type", "unknown")
 
@@ -286,20 +288,22 @@ class AgentSpecializationTracker:
         return enhanced_path
 
 
+"""
 class IntelligentAgentRouter:
-    """
+"""
     Intelligent agent routing system that optimizes agent selection
-    """
+"""
     based on performance metrics, specialization, and collaboration patterns.
-    """
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize intelligent agent router.
 
         Args:
             storage_dir: Directory containing performance and feedback data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.history_file = self.storage_dir / "agent_routing_history.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -312,6 +316,7 @@ class IntelligentAgentRouter:
 
         self._initialize_history()
 
+"""
     def _initialize_history(self):
         """Initialize routing history file."""
         if not self.history_file.exists():
@@ -324,7 +329,7 @@ class IntelligentAgentRouter:
                 json.dump(initial_data, f, indent=2)
 
     def route_task():
-        """
+"""
         
         Route task to optimal agent(s).
 
@@ -334,7 +339,7 @@ class IntelligentAgentRouter:
 
         Returns:
             Routing decision with confidence and reasoning
-        """
+"""
         task_type = task_info.get("type", "unknown")
         cache_key = f"{tier}_{task_type}_{hash(str(task_info)) % 1000}"
 
@@ -379,6 +384,7 @@ class IntelligentAgentRouter:
 
         return routing_decision
 
+"""
     def _get_candidate_agents(self, task_type: str, tier: str) -> List[str]:
         """Get candidate agents for task type and tier."""
         if tier == "analysis":
@@ -398,7 +404,7 @@ class IntelligentAgentRouter:
         return qualified if qualified else list(candidates)
 
     def _calculate_routing_score():
-        """
+"""
         
         Calculate routing score for an agent.
 
@@ -407,7 +413,7 @@ class IntelligentAgentRouter:
         - Historical success rate (30%)
         - Quality output (20%)
         - Execution speed (15%)
-        """
+"""
         task_type = task_info.get("type", "unknown")
 
         # Specialization score
@@ -436,6 +442,7 @@ class IntelligentAgentRouter:
 
         return max(0.0, min(1.0, total_score))
 
+"""
     def _estimate_execution_time(self, agent_name: str, task_info: Dict[str, Any]) -> int:
         """Estimate execution time in seconds."""
         performance = self.specialization_tracker.get_agent_performance(agent_name)

@@ -124,7 +124,7 @@ class SimpleSmartCache:
             max_size_mb: Maximum cache size in megabytes
             default_policy: Default cache eviction policy
             enable_predictions: Enable predictive pre-loading
-        """
+"""
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
 
@@ -156,8 +156,9 @@ class SimpleSmartCache:
         self._load_cache()
         self._load_patterns()
 
+"""
     def get():
-        """
+"""
         
         Get content from cache.
 
@@ -167,7 +168,7 @@ class SimpleSmartCache:
 
         Returns:
             Cached content or None if not found
-        """
+"""
         with self.lock:
             entry = self.cache.get(key)
 
@@ -202,6 +203,7 @@ class SimpleSmartCache:
 
             return entry.content
 
+"""
     def set(
         self,
         key: str,
@@ -224,7 +226,7 @@ class SimpleSmartCache:
 
         Returns:
             True if content was stored successfully
-        """
+"""
         with self.lock:
             try:
                 # Calculate content size
@@ -279,6 +281,7 @@ class SimpleSmartCache:
                 self.logger.error(f"Failed to cache content: {e}")
                 return False
 
+"""
     def _remove_entry(self, key: str) -> None:
         """Remove entry from cache."""
         if key in self.cache:
@@ -405,7 +408,7 @@ class SimpleSmartCache:
         return list(dict.fromkeys(reversed(predictions)))
 
     def clear():
-        """
+"""
         
         Clear cache entries.
 
@@ -414,7 +417,7 @@ class SimpleSmartCache:
 
         Returns:
             Number of entries cleared
-        """
+"""
         with self.lock:
             if pattern is None:
                 # Clear all
@@ -438,6 +441,7 @@ class SimpleSmartCache:
 
             return cleared_count
 
+"""
     def get_stats(self) -> Dict[str, Any]:
         """Get comprehensive cache statistics."""
         with self.lock:
@@ -556,7 +560,7 @@ class SimpleSmartCache:
                 self.logger.error(f"Failed to load content predictions: {e}")
 
     def cleanup():
-        """
+"""
         
         Clean up old entries.
 
@@ -565,7 +569,7 @@ class SimpleSmartCache:
 
         Returns:
             Number of entries cleaned up
-        """
+"""
         with self.lock:
             cutoff_time = datetime.now() - timedelta(hours=max_age_hours)
             old_keys = [k for k, v in self.cache.items() if v.created_at < cutoff_time]
@@ -580,6 +584,7 @@ class SimpleSmartCache:
 
 
 # Easy-to-use functions for quick integration
+"""
 def cache_content(key: str, content: Any, ttl_hours: int = 24) -> bool:
     """Quick cache function for content."""
     cache = SimpleSmartCache()

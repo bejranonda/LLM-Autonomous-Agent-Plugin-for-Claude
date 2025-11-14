@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 #     Machine Learning Optimization Engine
-    """
+"""
 Advanced ML algorithms for intelligent token optimization through
 pattern recognition, predictive analysis, and adaptive learning.
 
 Target: 15-25% additional optimization through ML-based intelligence
+"""
 import json
 import time
 import threading
@@ -282,7 +283,7 @@ class MLOptimizationEngine:
         """Initialize SQLite database for ML operations."""
         with sqlite3.connect(self.db_path) as conn:
             conn.execute(
-                """
+"""
                 CREATE TABLE IF NOT EXISTS ml_models (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT UNIQUE NOT NULL,
@@ -294,11 +295,11 @@ class MLOptimizationEngine:
                     last_trained TEXT NOT NULL,
                     is_active BOOLEAN DEFAULT 1
                 )
-            """
+"""
             )
 
             conn.execute(
-                """
+"""
                 CREATE TABLE IF NOT EXISTS training_data (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     model_name TEXT NOT NULL,
@@ -306,11 +307,11 @@ class MLOptimizationEngine:
                     target REAL NOT NULL,
                     timestamp TEXT NOT NULL
                 )
-            """
+"""
             )
 
             conn.execute(
-                """
+"""
                 CREATE TABLE IF NOT EXISTS predictions (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     model_name TEXT NOT NULL,
@@ -322,11 +323,11 @@ class MLOptimizationEngine:
                     actual_savings INTEGER DEFAULT 0,
                     timestamp TEXT NOT NULL
                 )
-            """
+"""
             )
 
             conn.execute(
-                """
+"""
                 CREATE TABLE IF NOT EXISTS model_performance (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     model_name TEXT NOT NULL,
@@ -337,11 +338,12 @@ class MLOptimizationEngine:
                     prediction_time REAL NOT NULL,
                     timestamp TEXT NOT NULL
                 )
-            """
+"""
             )
 
             conn.commit()
 
+"""
     def _initialize_default_models(self) -> None:
         """Initialize default ML models for different optimization targets."""
         default_models = [
@@ -360,11 +362,11 @@ class MLOptimizationEngine:
         """Load saved models from database."""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.execute(
-                """
+"""
                 SELECT name, model_type, parameters, accuracy, training_time, training_samples, last_trained
                 FROM ml_models
                 WHERE is_active = 1
-            """
+"""
             )
 
             models_loaded = 0
@@ -383,6 +385,7 @@ class MLOptimizationEngine:
 
             logger.info(f"Loaded {models_loaded} saved ML models")
 
+"""
     def add_training_data(self, model_name: str, features: List[float], target: float) -> None:
         """Add training data for a model."""
         with self._lock:
@@ -395,7 +398,7 @@ class MLOptimizationEngine:
             # Store in database
             with sqlite3.connect(self.db_path) as conn:
                 conn.execute(
-                    """
+"""
                     INSERT INTO training_data
                     (model_name, features, target, timestamp)
                     VALUES (?, ?, ?, ?)
@@ -430,7 +433,7 @@ class MLOptimizationEngine:
             # Save model to database
             with sqlite3.connect(self.db_path) as conn:
                 conn.execute(
-                    """
+"""
                     INSERT OR REPLACE INTO ml_models
                     (name, model_type, parameters, accuracy, training_time, training_samples, last_trained)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -504,7 +507,7 @@ class MLOptimizationEngine:
             # Save to database
             with sqlite3.connect(self.db_path) as conn:
                 conn.execute(
-                    """
+"""
                     INSERT INTO predictions
                     (model_name, target_type, predicted_value, confidence, recommendation, expected_savings, timestamp)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -799,6 +802,7 @@ def main():
     print("Target: 15-25% additional optimization through ML-based intelligence")
     print()
 
+"""
     # Initialize ML engine
     ml_engine = MLOptimizationEngine()
 

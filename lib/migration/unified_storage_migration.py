@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-    Unified Storage Migration Script
-    """
+#    Unified Storage Migration Script
+"""
 
 This script systematically replaces all legacy JSON file reading in dashboard.py
 with unified storage calls only. This aligns with the automatic learning innovation
@@ -11,15 +11,16 @@ Key Principles:
 2. Systematic Data Access: No more legacy file reading
 3. Automatic Learning Integration: Direct access to learning system data
 4. Error-Free Operation: Eliminates file-not-found and parsing errors
+"""
 import re
 import json
 from pathlib import Path
 
 
 def migrate_dashboard_to_unified_storage():
-    """
+"""
     Migrate dashboard.py to use unified storage exclusively.
-    """
+"""
 
     dashboard_file = Path("lib/dashboard.py")
     if not dashboard_file.exists():
@@ -44,26 +45,28 @@ def migrate_dashboard_to_unified_storage():
     return True
 
 
+"""
 def create_unified_storage_content():
-    """
+"""
     Create new dashboard content that uses unified storage only.
-    """
+"""
 
     return '''
 # Unified Storage-Only Dashboard Data Collector
 # This version eliminates all legacy JSON file reading
 # Uses ONLY unified parameter storage for systematic data access
 
+"""
 class DashboardDataCollector:
     """Collects and aggregates data from unified storage only."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"): ):
-        """
+"""
         Initialize with unified storage only.
 
         Args:
             patterns_dir: Legacy parameter (ignored, unified storage used instead)
-        """
+"""
         current_dir = Path(__file__).parent
         self.cache = {}
         self.cache_ttl = 60
@@ -114,12 +117,13 @@ class DashboardDataCollector:
             self.unified_storage = None
             self.use_unified_storage = False
 
+"""
     def _load_unified_data():
-        """
+"""
         
         Load data from unified parameter storage ONLY.
         This is the ONLY data source for all dashboard APIs.
-        """
+"""
         if not self.use_unified_storage or not self.unified_storage:
             print("Warning: Unified storage not available, using empty data", file=sys.stderr)
             return {
@@ -143,6 +147,7 @@ class DashboardDataCollector:
                 "agents": {"agent_effectiveness": {}}
             }
 
+"""
     def get_overview_metrics(self) -> Dict[str, Any]:
         """Get overview metrics from unified storage ONLY."""
         unified_data = self._load_unified_data()
@@ -413,6 +418,7 @@ class DashboardDataCollector:
         if len(assessment_history) < 3:
             return "insufficient_data"
 
+"""
         # Sort by timestamp
         assessment_history.sort(key=lambda x: x.get("timestamp", ""))
 

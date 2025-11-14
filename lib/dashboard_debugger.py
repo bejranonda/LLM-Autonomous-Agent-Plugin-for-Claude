@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Comprehensive Dashboard Debugger
-    """
+"""
 Implements iterative debugging loop that continues until data is shown or no failures
+"""
 import sys
 import os
 import time

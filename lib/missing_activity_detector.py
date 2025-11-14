@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 #     Missing Performance Records Detector
-    """
+"""
 
 Analyzes git history, file changes, and current activities to identify
 tasks that should be recorded in performance records but are missing.
+"""
 import json
 import os
 import subprocess

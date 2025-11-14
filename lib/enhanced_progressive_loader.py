@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 #     Enhanced Progressive Content Loader
-    """
+"""
 
 Advanced progressive content loading system with intelligent tier selection,
 user pattern learning, and real-time optimization. This system provides
 immediate 50-60% token reduction while maintaining functionality.
 
 Features:
+"""
 - Intelligent tier selection based on context and user needs
 - Real-time content analysis and prioritization
 - User behavior pattern learning
@@ -143,7 +144,7 @@ class EnhancedProgressiveLoader:
 
         Returns:
             Tuple of (optimized_content, metrics)
-        """
+"""
         start_time = time.time()
 
         # Analyze content and determine optimal tier
@@ -173,6 +174,7 @@ class EnhancedProgressiveLoader:
 
         return optimized_content, metrics
 
+"""
     def _determine_optimal_tier(
         self, content: str, context: Dict[str, Any], user_id: str, task_type: str, original_tokens: int
     )-> LoadingTier:
@@ -698,6 +700,7 @@ class EnhancedProgressiveLoader:
 
 def main():
     """CLI interface for enhanced progressive loader."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Enhanced Progressive Content Loader")

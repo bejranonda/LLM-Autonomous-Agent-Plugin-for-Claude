@@ -49,7 +49,6 @@ class QualityTracker:
     """Manages quality tracking and trend analysis."""
 
     def __init__(self, tracker_dir: str = ".claude-patterns"):
-"""
 
 # /*
 I
@@ -72,7 +71,6 @@ if not self.quality_file.exists():
     self._write_quality_records([])
 
     def _read_quality_records():
-"""
 
 
 # /*
@@ -106,7 +104,6 @@ except Exception as e:
     return []
 
     def _write_quality_records(self, records: List[Dict[str, Any]]):
-"""
 
 # /*
 W
@@ -131,7 +128,6 @@ except Exception as e:
     raise
 
     def record_quality():
-"""
 
 
 # /*
@@ -270,7 +266,6 @@ for task_type in performance:
 return performance
 
     def get_quality_trends():
-"""
 
 
 # /*
@@ -369,7 +364,6 @@ return {
 }
 
     def get_average_quality():
-"""
 
 
 # /*
@@ -405,7 +399,6 @@ total = sum(r["quality_score"] for r in records)
 return total / len(records)
 
     def get_metric_statistics():
-"""
 
 
 # /*
@@ -457,7 +450,6 @@ for metric_name, values in metric_values.items():
 return statistics
 
     def get_recent_records():
-"""
 
 
 # /*
@@ -480,7 +472,6 @@ records = self._read_quality_records()
 return list(reversed(records[-limit:])) if records else []
 
     def get_low_quality_tasks():
-"""
 
 
 # /*

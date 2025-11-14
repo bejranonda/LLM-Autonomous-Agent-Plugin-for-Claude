@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 #     Robust Dashboard Launcher for Autonomous Agent
-    """
+"""
 
 Handles dashboard startup with automatic port detection,
 health monitoring, and automatic restart capabilities.
 Prevents dashboard connectivity issues through proactive monitoring.
+"""
 import subprocess
 import sys
 import time

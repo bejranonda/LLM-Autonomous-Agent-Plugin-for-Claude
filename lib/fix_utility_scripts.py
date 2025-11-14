@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #     Systematically fix utility script syntax errors
-    """
+"""
+"""
 import re
 from pathlib import Path
 

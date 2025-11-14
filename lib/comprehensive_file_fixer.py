@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 #     Comprehensive File Fixer
-    """
+"""
 Creates clean, working versions of all 31 problematic Python files.
+"""
 import os
 from pathlib import Path
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-    Advanced Syntax Fixer for All Python Files
-    """
+#    Advanced Syntax Fixer for All Python Files
+"""
 Fixes complex syntax errors with regex patterns
+"""
 import re
 import ast
 from pathlib import Path
@@ -76,6 +77,7 @@ def fix_all_files():
         try:
             original_content = py_file.read_text(encoding="utf-8")
 
+"""
             # Skip if already valid
             if test_syntax(original_content):
                 print(f"OK {py_file.name} - Already valid")

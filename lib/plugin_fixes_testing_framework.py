@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 #     COMPREHENSIVE PLUGIN FIXES TESTING FRAMEWORK
-    """
+"""
 
 CRITICAL: This framework validates all emergency fixes work together
 to prevent system-wide Claude failure and restore plugin functionality.
 
 Testing Coverage:
+"""
 - Emergency message sanitization
 - Orchestrator agent safe operations
 - Slash command safe response generation
@@ -13,9 +14,9 @@ Testing Coverage:
 - Integration verification
 
 Usage:
-    python lib/plugin_fixes_testing_framework.py --all
-    python lib/plugin_fixes_testing_framework.py --component orchestrator
-    python lib/plugin_fixes_testing_framework.py --integration-test
+python lib/plugin_fixes_testing_framework.py --all
+python lib/plugin_fixes_testing_framework.py --component orchestrator
+python lib/plugin_fixes_testing_framework.py --integration-test
 
 Status: EMERGENCY DEPLOYMENT VERIFICATION
 Version: 1.0.0

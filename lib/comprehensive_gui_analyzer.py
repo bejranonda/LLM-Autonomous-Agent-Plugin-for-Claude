@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Comprehensive GUI Analysis Tool for Autonomous Agent Dashboard
-    """
+"""
 
 Performs complete GUI validation including:
+"""
 - Interface functionality testing
 - Performance analysis
 - API endpoint validation

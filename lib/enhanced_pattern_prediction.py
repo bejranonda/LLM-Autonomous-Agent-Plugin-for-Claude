@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 #     Enhanced Pattern Prediction System for Autonomous Claude Agent Plugin
-    """
+"""
 
 Advanced prediction system with 70% accuracy target for skill and agent selection
 based on historical patterns, context similarity, and performance metrics.
+"""
 import json
 import argparse
 import sys

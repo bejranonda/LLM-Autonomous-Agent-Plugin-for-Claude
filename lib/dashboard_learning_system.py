@@ -25,12 +25,13 @@ except ImportError:
 
 
 class DashboardLearningSystem:
-    """
+"""
     Automatic learning system for dashboard debugging and improvements.
-    """
+"""
     Captures patterns from every task to continuously enhance performance.
-    """
+"""
 
+"""
     def __init__(self):
         """Initialize the learning system."""
         self.patterns_dir = Path(".claude-patterns")
@@ -56,7 +57,7 @@ class DashboardLearningSystem:
             print("Learning system using legacy storage")
 
     def capture_debugging_pattern():
-        """
+"""
         
         Capture debugging task pattern for future learning.
 
@@ -64,7 +65,7 @@ class DashboardLearningSystem:
             task_data: Original debugging task data
             performance_metrics: Performance metrics from the task
             context: Additional context about the debugging session
-        """
+"""
         try:
             pattern = {
                 "pattern_id": f"debugging_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
@@ -125,6 +126,7 @@ class DashboardLearningSystem:
         except Exception as e:
             print(f"Error capturing debugging pattern: {e}")
 
+"""
     def _store_pattern_legacy(self, pattern: Dict) -> None:
         """Store pattern in legacy file system."""
         # Load existing patterns
@@ -312,13 +314,13 @@ class DashboardLearningSystem:
             print(f"Error updating success metrics: {e}")
 
     def get_learning_insights():
-        """
+"""
         
         Get learning insights from accumulated patterns.
 
         Returns:
             Dictionary containing learning insights and recommendations
-        """
+"""
         try:
             if self.use_unified_storage and self.unified_storage:
                 # Get insights from unified storage
@@ -340,6 +342,7 @@ class DashboardLearningSystem:
             print(f"Error getting learning insights: {e}")
             return {"error": str(e), "learning_active": False}
 
+"""
     def _get_legacy_insights(self) -> Dict[str, Any]:
         """Get insights from legacy pattern storage."""
         patterns = self._load_legacy_patterns()
@@ -399,7 +402,7 @@ class DashboardLearningSystem:
         }
 
     def auto_improve_approaches():
-        """
+"""
         
         Automatically suggest improvements based on learned patterns.
 
@@ -408,7 +411,7 @@ class DashboardLearningSystem:
 
         Returns:
             Improvement suggestions based on historical patterns
-        """
+"""
         try:
             # Get learning insights
             insights = self.get_learning_insights()
@@ -467,6 +470,7 @@ class DashboardLearningSystem:
 _learning_system = None
 
 
+"""
 def get_learning_system() -> DashboardLearningSystem:
     """Get global learning system instance."""
     global _learning_system

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-    Test Runner for Autonomous Agent Plugin
-    """
+#    Test Runner for Autonomous Agent Plugin
+"""
 
 Comprehensive test runner with cross-platform support and detailed reporting.
 Provides multiple test execution modes and comprehensive output formatting.
@@ -13,6 +13,7 @@ Usage:
     python run_tests.py --platform         # Run cross-platform tests
     python run_tests.py --report           # Generate HTML coverage report
     python run_tests.py --performance      # Run performance benchmarks
+"""
 import argparse
 import subprocess
 import sys
@@ -268,9 +269,10 @@ Examples:
   %(prog)s --quality                # Run code quality checks
   %(prog)s --report                 # Generate HTML coverage report
   %(prog)s --markers "not slow"     # Skip slow tests
-        """
+"""
     )
 
+"""
     # Test selection
     parser.add_argument('--unit', action='store_true', help='Run only unit tests')
     parser.add_argument('--integration', action='store_true', help='Run only integration tests')

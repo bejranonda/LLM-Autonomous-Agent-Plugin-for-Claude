@@ -537,6 +537,7 @@ class IntelligentAutoDeveloper:
 
 def main():
     """CLI interface for intelligent auto-development"""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Intelligent Auto-Development Workflow")

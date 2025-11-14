@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #     Neural Monitoring System
-    """
+"""
 Advanced AI-powered monitoring and analytics system with neural networks,
 predictive analytics, anomaly detection, and real-time visualization.
+"""
 import json
 import sys
 import time
@@ -75,19 +76,20 @@ class PredictiveInsight:
 
 
 class NeuralMonitoringSystem:
-    """
+"""
     Advanced AI-powered monitoring system with neural networks,
-    """
+"""
     predictive analytics, and real-time anomaly detection.
-    """
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize the neural monitoring system.
 
         Args:
             storage_dir: Directory for storing monitoring data
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.monitoring_file = self.storage_dir / "neural_monitoring.json"
         self.anomalies_file = self.storage_dir / "anomaly_detections.json"
@@ -130,6 +132,7 @@ class NeuralMonitoringSystem:
         self._initialize_monitoring_storage()
         self._load_monitoring_models()
 
+"""
     def _initialize_monitoring_storage(self):
         """Initialize monitoring storage files."""
         if not self.monitoring_file.exists():
@@ -309,13 +312,13 @@ class NeuralMonitoringSystem:
                 self._unlock_file(f)
 
     def register_monitoring_agent(self, agent_id: str, tier: str):
-        """
+"""
         Register an agent for monitoring.
 
         Args:
             agent_id: Unique agent identifier
             tier: Agent tier ("analysis" or "execution")
-        """
+"""
         self.monitoring_agents.add((agent_id, tier))
 
         # Update storage
@@ -343,6 +346,7 @@ class NeuralMonitoringSystem:
 
         print(f"Registered monitoring agent: {agent_id} ({tier})")
 
+"""
     def record_metric(
         self, metric_name: str, value: float, agent_id: str, tier: str, context: Optional[Dict[str, Any]] = None
     ):
@@ -355,7 +359,7 @@ class NeuralMonitoringSystem:
             agent_id: Agent ID
             tier: Agent tier
             context: Additional context information
-        """
+"""
         if context is None:
             context = {}
 
@@ -385,6 +389,7 @@ class NeuralMonitoringSystem:
         monitoring_data["last_updated"] = datetime.now().isoformat()
         self._write_monitoring_data(monitoring_data)
 
+"""
     def start_monitoring(self):
         """Start the neural monitoring system."""
         if self.monitoring_active:

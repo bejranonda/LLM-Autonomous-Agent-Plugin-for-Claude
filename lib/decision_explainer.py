@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 #     Decision Explainer System
-    """
+"""
 Provides detailed explanations for all decisions made by the four-tier system,
 building transparency and trust through clear reasoning.
 
 This implements the v7.1 enhancement for Decision Explainability.
+"""
 import json
 import sys
 from pathlib import Path
@@ -23,18 +24,19 @@ except ImportError:
 
 
 class DecisionExplainer:
-    """
+"""
     Explains decisions made by the strategic-planner and other Group 2 agents.
-    """
-    """
+"""
+"""
 
+"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-        """
+"""
         Initialize the decision explainer.
 
         Args:
             storage_dir: Directory for storing decision explanations
-        """
+"""
         self.storage_dir = Path(storage_dir)
         self.explanations_file = self.storage_dir / "decision_explanations.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -43,6 +45,7 @@ class DecisionExplainer:
         if not self.explanations_file.exists():
             self._initialize_storage()
 
+"""
     def _initialize_storage(self):
         """Initialize the storage with default structure."""
         initial_data = {
@@ -116,7 +119,7 @@ class DecisionExplainer:
 
         Returns:
             Comprehensive explanation dictionary
-        """
+"""
         explanation = {
             "decision_id": decision_id,
             "decision": decision,
@@ -142,6 +145,7 @@ class DecisionExplainer:
 
         return explanation
 
+"""
     def _explain_why_chosen(
         self,
         decision: str,
@@ -492,6 +496,7 @@ class DecisionExplainer:
 
 def main():
     """Command-line interface for testing the decision explainer."""
+"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Decision Explainer")

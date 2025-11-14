@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 #     Distribution Validator for Autonomous Agent Plugin
-    """
+"""
 
 Validates that the plugin is ready for public distribution by checking:
+"""
 - Path resolution works correctly
 - User-specific data is excluded
 - Scripts can be found and executed
 - Plugin structure is correct
 
 Usage:
-    python validate_distribution.py [--verbose]
+python validate_distribution.py [--verbose]
 import sys
 import os
 import json

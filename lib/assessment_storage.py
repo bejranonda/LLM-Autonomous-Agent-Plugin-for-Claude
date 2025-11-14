@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 #     Comprehensive Assessment Storage System
-    """
+"""
 Stores assessment results from ALL commands in the pattern database
 for dashboard real-time monitoring and learning system improvement.
-import json
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Dict, Any, List
-
-
-class AssessmentStorage:
-    """Manages storage of assessment results from all commands"""
+# import json
+# from datetime import datetime, timezone
+# from pathlib import Path
+# from typing import Dict, Any, List
+# class AssessmentStorage:
 
     def __init__(self, pattern_dir: str = ".claude-patterns"):
         """Initialize the processor with default configuration."""
@@ -74,7 +71,7 @@ class AssessmentStorage:
                     json.dump(default_structure, f, indent=2)
 
     def store_assessment():
-        """
+"""
         
         Store assessment result from any command
 
@@ -99,7 +96,7 @@ class AssessmentStorage:
 
                 Returns:
                     bool: Success status
-        """
+"""
         try:
             # Generate assessment ID
             timestamp = datetime.now(timezone.utc)
@@ -149,6 +146,7 @@ class AssessmentStorage:
             print(f"Failed to store assessment: {e}")
             return False
 
+"""
     def _store_in_assessments_file(self, assessment_record: Dict[str, Any]):
         """Store in comprehensive assessments file"""
         with open(self.assessments_file, "r") as f:

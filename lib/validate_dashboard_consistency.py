@@ -1,14 +1,11 @@
 """
-    Validate Dashboard Data Consistency
-    """
+#    Validate Dashboard Data Consistency
+"""
 This script verifies that the Recent Activity and Recent Performance Records
 sections in the dashboard show consistent data from the same sources.
-import requests
-from datetime import datetime
-
-
-def validate_dashboard_consistency():
-    """Validate that dashboard sections show consistent data."""
+# import requests
+# from datetime import datetime
+# def validate_dashboard_consistency():
 
     base_url = "http://127.0.0.1:5001"
 
@@ -17,6 +14,7 @@ def validate_dashboard_consistency():
     print("=" * 80)
     print()
 
+"""
     # Fetch data from both endpoints
     try:
         recent_activity_response = requests.get(f"{base_url}/api/recent-activity")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 #     Performance optimizer for dashboard concurrent operations
-    """
 import time
 import json
 import threading
