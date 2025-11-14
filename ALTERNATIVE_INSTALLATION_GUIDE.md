@@ -83,14 +83,14 @@ Change version to "7.6.7" in `~/.claude/plugins/autonomous-agent/.claude-plugin/
 In `~/.claude/plugins/autonomous-agent/agents/orchestrator.md`:
 ```bash
 # Replace these lines:
-cache_control: { type: "ephemeral" }
+/* cache_control removed for emergency fix */
 
 # With:
 /* cache_control removed for emergency fix */
 ```
 
 ### Fix 3: Fix Empty Array Returns
-In skill files, replace `return [];` with:
+In skill files, replace `return [{ note: "Emergency fallback - empty array prevented", type: "emergency" }];` with:
 ```javascript
 return [{ note: "Emergency fallback - empty array prevented", type: "emergency" }];
 ```

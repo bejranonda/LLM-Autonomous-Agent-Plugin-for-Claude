@@ -6,14 +6,12 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-33-commands-across-7-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-
 [![Version](https://img.shields.io/badge/version-7.7.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.7.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
 [![Production Ready](https://img.shields.io/badge/production%20ready-ff69b4.svg)]()
 [![Architecture](https://img.shields.io/badge/architecture-four%20tier-brightgreen.svg)](docs/FOUR_TIER_ARCHITECTURE.md)
-
 
 </div>
 

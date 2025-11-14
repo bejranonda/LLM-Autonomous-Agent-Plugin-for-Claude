@@ -1142,7 +1142,6 @@ def detect_special_command(user_input):
             'args': parse_pattern_management_args(user_input)
         }
 
-  
     # User preference commands - direct Python execution (preference management)
     if cmd.startswith('/preferences:') or cmd.startswith('/prefs:'):
         pref_action = cmd.split(':')[1].split()[0]
