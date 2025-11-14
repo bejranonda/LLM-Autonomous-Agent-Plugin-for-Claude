@@ -1,26 +1,22 @@
 {
-  "name": "LLM-Autonomous-Agent-Plugin-for-Claude",
-  "metadata": {
-    "description": "Premium marketplace for revolutionary autonomous AI agents featuring four-tier architecture, intelligent pattern learning, comprehensive quality control, and full-stack validation with 80-90% auto-fix success rates."
-  },
+  "name": "llm-autonomous-agent-plugin-for-claude",
   "owner": {
     "name": "Werapol Bejranonda",
-    "email": "contact@werapol.dev",
-    "url": "https://gitlab.com/bwerapol"
+    "email": "contact@werapol.dev"
   },
   "plugins": [
     {
       "name": "autonomous-agent",
       "source": "./",
-      "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 19 skills, and 39 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Critical cache_control error completely resolved in v7.6.7 - production ready with 60-70% cost reduction and full emergency fix deployment.",
-      "version": "7.6.7",
+      "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 21 skills, and 38 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Production ready with 60-70% token cost reduction, comprehensive quality improvement (51→62/100), and fully autonomous operation.",
+      "version": "7.14.1",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
-        "url": "https://gitlab.com/bwerapol"
+        "url": "https://github.com/ChildWerapol"
       },
-      "homepage": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin",
-      "repository": "https://gitlab.com/bwerapol/llm-autonomous-agent-plugin",
+      "homepage": "https://github.com/ChildWerapol/llm-autonomous-agent-plugin-for-claude",
+      "repository": "https://github.com/ChildWerapol/llm-autonomous-agent-plugin-for-claude",
       "license": "MIT",
       "keywords": [
         "autonomous",
