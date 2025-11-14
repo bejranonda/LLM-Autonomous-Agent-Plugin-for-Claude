@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Plugin Validator
 Basic implementation for plugin_validator.py.
+"""
 """
 
 import json

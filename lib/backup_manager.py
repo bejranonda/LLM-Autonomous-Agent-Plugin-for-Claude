@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Automated Backup System for Critical Plugin Components
 Provides versioned backups with automatic restoration capabilities.
+"""
 """
 
 import json

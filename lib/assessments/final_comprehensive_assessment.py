@@ -288,16 +288,16 @@ def main():
 
     if total_score >= 70:
         print("DEVELOPMENT READY:")
-        print("• Begin plugin installation and testing in Claude Code")
-        print("• Test core commands: /learn:init, /analyze:project, /validate:plugin")
-        print("• Set up development environment for new features")
-        print("• Start user acceptance testing with sample projects")
+        print(" Begin plugin installation and testing in Claude Code")
+        print(" Test core commands: /learn:init, /analyze:project, /validate:plugin")
+        print(" Set up development environment for new features")
+        print(" Start user acceptance testing with sample projects")
     else:
         print("IMPROVEMENT NEEDED:")
         if category_scores["test_coverage"]["score"] < 20:
-            print("• Priority: Fix failing tests to reach 70%+ pass rate")
-        print("• Complete command organization (currently shows 1, should be 40)")
-        print("• Address any remaining compilation issues")
+            print(" Priority: Fix failing tests to reach 70%+ pass rate")
+        print(" Complete command organization (currently shows 1, should be 40)")
+        print(" Address any remaining compilation issues")
 
     print("\n" + "=" * 40)
     print("CONCLUSION")

@@ -179,23 +179,23 @@ def main():
             monitoring_status = integration_results.get("monitoring_status", "unknown")
             total_samples = integration_results.get("total_samples", 0)
 
-            print(f"✅ Performance Monitoring: {'Active' if monitoring_status == 'active' else 'Inactive'}")
-            print(f"✅ Data Collection: {total_samples} samples collected")
-            print(f"✅ Alert System: {'Working' if alert_success else 'Needs attention'}")
+            print(f" Performance Monitoring: {'Active' if monitoring_status == 'active' else 'Inactive'}")
+            print(f" Data Collection: {total_samples} samples collected")
+            print(f" Alert System: {'Working' if alert_success else 'Needs attention'}")
 
             if integration_results.get("summaries", {}).get("30_minutes", {}).get("status") == "active":
                 summary = integration_results["summaries"]["30_minutes"]
                 health_score = summary.get("health_score", 0)
-                print(f"✅ System Health: {health_score}/100 ({summary.get('health_grade', 'Unknown')})")
+                print(f" System Health: {health_score}/100 ({summary.get('health_grade', 'Unknown')})")
 
                 if health_score >= 90:
-                    print("🎉 Overall Status: EXCELLENT")
+                    print(" Overall Status: EXCELLENT")
                 elif health_score >= 80:
-                    print("✅ Overall Status: GOOD")
+                    print(" Overall Status: GOOD")
                 elif health_score >= 70:
-                    print("⚠️  Overall Status: ACCEPTABLE")
+                    print("  Overall Status: ACCEPTABLE")
                 else:
-                    print("❌ Overall Status: NEEDS IMPROVEMENT")
+                    print(" Overall Status: NEEDS IMPROVEMENT")
 
         print("\nIntegration test completed successfully!")
         return True

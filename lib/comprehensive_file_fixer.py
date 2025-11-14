@@ -22,7 +22,7 @@ from pathlib import Path
 class AssessmentBackfill:
     """Backfills missing assessment data from recent command executions"""
 
-    def __init__(self, pattern_dir: str = ".claude-patterns"):
+    def __init__(self, pattern_dir: str = ): ):
         """  Init  ."""
         self.pattern_dir = Path(pattern_dir)
         self.pattern_dir.mkdir(parents=True, exist_ok=True)
@@ -66,12 +66,12 @@ from typing import Dict, List, Any
 class BackupManager:
     """Manages automated backups and restoration operations"""
 
-    def __init__(self, backup_dir: str = ".claude/backups"):
+    def __init__(self, backup_dir: str = ): ):
         """  Init  ."""
         self.backup_dir = Path(backup_dir)
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
-    def create_backup(self, operation_name: str, reason: str = "pre-operation") -> str:
+    def create_backup(self, operation_name: str, reason: str = ): ) -> str:
         """Create a backup of critical files"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         backup_id = f"{operation_name}_{timestamp}"
@@ -137,7 +137,7 @@ from pathlib import Path
 class LearningTrigger:
     """Triggers automatic learning based on activity patterns"""
 
-    def __init__(self, patterns_dir: str = ".claude-patterns"):
+    def __init__(self, patterns_dir: str = ): ):
         """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
@@ -195,7 +195,7 @@ from pathlib import Path
 class SmartAgentSuggester:
     """Suggests optimal agents for specific tasks"""
 
-    def __init__(self, patterns_dir: str = ".claude-patterns"):
+    def __init__(self, patterns_dir: str = ): ):
         """  Init  ."""
         self.patterns_dir = Path(patterns_dir)
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
@@ -272,7 +272,7 @@ from pathlib import Path
 class SimpleBackfill:
     """Simple backfill utility for missing data"""
 
-    def __init__(self, data_dir: str = ".claude-patterns"):
+    def __init__(self, data_dir: str = ): ):
         """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
@@ -340,7 +340,7 @@ from typing import Dict, Any, List
 class {filename.replace('_', '').replace('.py', '').title()}:
     """Basic implementation for {filename}"""
 
-    def __init__(self, data_dir: str = ".claude-patterns"):
+    def __init__(self, data_dir: str = ): ):
         """  Init  ."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)

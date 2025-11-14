@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Linter Orchestrator
 Basic implementation for linter_orchestrator.py.
+"""
 """
 
 import json

@@ -59,7 +59,7 @@ def create_unified_storage_content():
 class DashboardDataCollector:
     """Collects and aggregates data from unified storage only."""
 
-    def __init__(self, patterns_dir: str = ".claude-patterns"):
+    def __init__(self, patterns_dir: str = ): ):
         """
         Initialize with unified storage only.
 

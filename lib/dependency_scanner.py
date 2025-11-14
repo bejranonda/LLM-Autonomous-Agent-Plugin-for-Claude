@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Dependency Scanner
 Basic implementation for dependency_scanner.py.
+"""
 """
 
 import json

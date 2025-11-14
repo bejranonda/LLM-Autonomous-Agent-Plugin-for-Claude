@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Automatic Learning Trigger
 Triggers learning processes based on recent activity patterns.
+"""
 """
 
 import json

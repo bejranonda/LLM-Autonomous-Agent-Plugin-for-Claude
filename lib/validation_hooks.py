@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""
 Validation Hooks
 Basic implementation for validation_hooks.py.
 """
@@ -12,7 +13,7 @@ from typing import Dict, Any, List
 class Validationhooks:
     """Basic implementation for validation_hooks.py"""
 
-    def __init__(self, data_dir: str = ):
+    def __init__(self, data_dir: str = ".claude-patterns"):
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -29,10 +30,8 @@ def main():
     """Main execution function"""
     processor = Validationhooks()
     result = processor.process()
-    print(f"Processed {result['file']": {result['status']}")
+    print(f"Processed {result['file']}: {result['status']}")
 
 
 if __name__ == "__main__":
     main()
-
-"""

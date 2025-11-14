@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Dependency Graph
 Basic implementation for dependency_graph.py.
+"""
 """
 
 import json

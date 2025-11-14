@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Git Operations
 Basic implementation for git_operations.py.
+"""
 """
 
 import json

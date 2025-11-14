@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Calculate Success Rate
 Basic implementation for calculate_success_rate.py.
+"""
 """
 
 import json

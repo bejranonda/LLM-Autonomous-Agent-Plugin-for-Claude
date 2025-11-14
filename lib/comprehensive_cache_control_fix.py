@@ -238,26 +238,26 @@ def main():
     if args.analyze_only:
         files_with_issues, total_issues = analyze_plugin_for_cache_control_issues()
         if total_issues > 0:
-            print(f"\n⚠️  Found {total_issues} issues that need fixing!")
+            print(f"\n  Found {total_issues} issues that need fixing!")
             print("Run with --apply-fixes to resolve them.")
         else:
-            print("\n✅ No cache control issues found!")
+            print("\n No cache control issues found!")
         return
 
     # Default: analyze and optionally apply fixes
     files_with_issues, total_issues = analyze_plugin_for_cache_control_issues()
 
     if total_issues > 0:
-        print(f"\n🛠️  APPLYING FIXES...")
+        print(f"\n  APPLYING FIXES...")
         modified_count = 0
 
         for file_path, js_issues, message_issues in files_with_issues:
             if apply_comprehensive_fixes(file_path, dry_run=not args.apply_fixes):
                 if args.apply_fixes:
-                    print(f"  ✅ Fixed: {file_path}")
+                    print(f"   Fixed: {file_path}")
                     modified_count += 1
                 else:
-                    print(f"  📋 Would fix: {file_path}")
+                    print(f"   Would fix: {file_path}")
 
         if args.apply_fixes:
             print(f"\n[SUCCESS] Fixes applied to {modified_count} files!")

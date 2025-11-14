@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Calculate Real Performance
 Basic implementation for calculate_real_performance.py.
+"""
 """
 
 import json

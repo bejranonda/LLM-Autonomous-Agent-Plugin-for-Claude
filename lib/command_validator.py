@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Command Validator
 Basic implementation for command_validator.py.
+"""
 """
 
 import json

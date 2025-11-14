@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Recovery Manager
 Basic implementation for recovery_manager.py.
+"""
 """
 
 import json

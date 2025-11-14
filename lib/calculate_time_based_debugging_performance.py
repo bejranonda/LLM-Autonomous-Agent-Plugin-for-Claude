@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Calculate Time Based Debugging Performance
 Basic implementation for calculate_time_based_debugging_performance.py.
+"""
 """
 
 import json

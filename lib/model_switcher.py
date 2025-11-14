@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Model Switcher
 Basic implementation for model_switcher.py.
+"""
 """
 
 import json

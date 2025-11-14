@@ -481,7 +481,12 @@ class TestLearningEngine:
             stored_pattern = data["patterns"][0]["pattern"]
             assert len(stored_pattern["large_array"]) == 1000
             assert len(stored_pattern["large_string"]) == 10000
-            assert stored_pattern["nested_structure"]["level_99"]["final_value"] == "deep_value"
+
+            # Navigate the nested structure to find the final value
+            current = stored_pattern["nested_structure"]
+            for i in range(100):
+                current = current[f"level_{i}"]
+            assert current["final_value"] == "deep_value"
 
     @pytest.mark.unit
     def test_data_integrity_validation(self, learning_engine, sample_pattern_data):

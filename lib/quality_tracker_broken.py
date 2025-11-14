@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Quality Tracker Broken
 Basic implementation for quality_tracker_broken.py.
+"""
 """
 
 import json

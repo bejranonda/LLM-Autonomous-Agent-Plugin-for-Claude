@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Dashboard Compatibility
 Basic implementation for dashboard_compatibility.py.
+"""
 """
 
 import json

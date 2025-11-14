@@ -16,14 +16,14 @@ import json
 import argparse
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any
 
 
 class LearningEngine:
     """Efficient learning engine for file operations and data management"""
 
     def __init__(self, data_dir: str = ".claude-patterns"):
-        """  Init  ."""
+        """Initialize learning engine with data directory and create required files."""
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -33,8 +33,68 @@ class LearningEngine:
         self.task_queue_file = self.data_dir / "task_queue.json"
         self.config_file = self.data_dir / "config.json"
 
-    def initialize_learning_system(self, project_context: Dict[str, Any]) -> Dict[str, Any]:
+        # Initialize files if they don't exist
+        self._initialize_default_files()
+
+    def _initialize_default_files(self):
+        """Initialize default files with basic structure if they don't exist"""
+        # Initialize patterns.json with basic structure
+        if not self.patterns_file.exists():
+            patterns_data = {
+                "project_context": {},
+                "patterns": [],
+                "skill_effectiveness": {},
+                "agent_performance": {},
+                "learning_metrics": {
+                    "total_patterns": 0,
+                    "last_updated": datetime.now().isoformat(),
+                    "initialization_timestamp": datetime.now().isoformat(),
+                },
+            }
+            with open(self.patterns_file, "w") as f:
+                json.dump(patterns_data, f, indent=2)
+
+        # Initialize quality_history.json
+        if not self.quality_history_file.exists():
+            quality_data = []
+            with open(self.quality_history_file, "w") as f:
+                json.dump(quality_data, f, indent=2)
+
+        # Initialize task_queue.json
+        if not self.task_queue_file.exists():
+            task_data = {
+                "queue": [],
+                "completed": [],
+                "failed": [],
+                "status": "ready",
+                "created_at": datetime.now().isoformat(),
+            }
+            with open(self.task_queue_file, "w") as f:
+                json.dump(task_data, f, indent=2)
+
+        # Initialize config.json with defaults
+        if not self.config_file.exists():
+            config_data = {
+                "version": "1.0.0",
+                "auto_capture": True,
+                "learning_enabled": True,
+                "retention_days": 30,
+                "created_at": datetime.now().isoformat(),
+                "project_context": {},
+            }
+            with open(self.config_file, "w") as f:
+                json.dump(config_data, f, indent=2)
+
+    def initialize_learning_system(self, project_context: Dict[str, Any] = None) -> Dict[str, Any]:
         """Initialize learning system with project context"""
+        # Use default context if not provided
+        if project_context is None:
+            project_context = {
+                "type": "unknown",
+                "frameworks": [],
+                "detected_at": datetime.now().isoformat()
+            }
+
         results = {
             "status": "initialized",
             "timestamp": datetime.now().isoformat(),
@@ -58,6 +118,14 @@ class LearningEngine:
             with open(self.patterns_file, "w") as f:
                 json.dump(patterns_data, f, indent=2)
             results["files_created"].append("patterns.json")
+        else:
+            # Update existing patterns file with new project context
+            with open(self.patterns_file, "r+") as f:
+                patterns_data = json.load(f)
+                patterns_data["project_context"] = project_context
+                f.seek(0)
+                json.dump(patterns_data, f, indent=2)
+                f.truncate()
 
         # Initialize quality_history.json
         if not self.quality_history_file.exists():
@@ -100,10 +168,32 @@ class LearningEngine:
         try:
             # Load existing patterns
             if self.patterns_file.exists():
-                with open(self.patterns_file, "r") as f:
-                    patterns_data = json.load(f)
+                try:
+                    with open(self.patterns_file, "r") as f:
+                        patterns_data = json.load(f)
+                except (json.JSONDecodeError, ValueError):
+                    # File is corrupted, create new structure
+                    patterns_data = {
+                        "patterns": [],
+                        "project_context": {},
+                        "skill_effectiveness": {},
+                        "agent_performance": {},
+                        "learning_metrics": {
+                            "total_patterns": 0,
+                            "last_updated": datetime.now().isoformat(),
+                        }
+                    }
             else:
-                patterns_data = {"patterns": [], "project_context": {}, "skill_effectiveness": {}}
+                patterns_data = {
+                    "patterns": [],
+                    "project_context": {},
+                    "skill_effectiveness": {},
+                    "agent_performance": {},
+                    "learning_metrics": {
+                        "total_patterns": 0,
+                        "last_updated": datetime.now().isoformat(),
+                    }
+                }
 
             # Add new pattern with metadata
             new_pattern = {
@@ -164,8 +254,9 @@ class LearningEngine:
             if self.quality_history_file.exists():
                 with open(self.quality_history_file, "r") as f:
                     quality_data = json.load(f)
-                status["analytics"]["quality_assessments"] = len(quality_data)
+                # Only add quality_assessments to analytics if there are actual assessments
                 if quality_data:
+                    status["analytics"]["quality_assessments"] = len(quality_data)
                     status["analytics"]["latest_quality_score"] = quality_data[-1].get("quality_score", 0)
 
             return status
@@ -247,6 +338,7 @@ def main():
     except Exception as e:
         error_result = {"status": "error", "error": str(e), "command": args.command, "timestamp": datetime.now().isoformat()}
         print(json.dumps(error_result, indent=2))
+        import sys
         sys.exit(1)
 
 

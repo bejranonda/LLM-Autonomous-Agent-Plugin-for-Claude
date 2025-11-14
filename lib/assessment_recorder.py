@@ -67,7 +67,6 @@ def generate_assessment_id(task_type: str) -> str:
 
 
 def record_assessment(
-    """Record Assessment."""
     task_type: str,
     description: str,
     overall_score: int,
@@ -166,7 +165,6 @@ def record_assessment(
 
 
 def record_command_execution(
-    """Record Command Execution."""
     command_name: str,
     args: Optional[Dict[str, Any]] = None,
     result: Optional[Dict[str, Any]] = None,

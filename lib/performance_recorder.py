@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Performance Recorder
 Basic implementation for performance_recorder.py.
+"""
 """
 
 import json

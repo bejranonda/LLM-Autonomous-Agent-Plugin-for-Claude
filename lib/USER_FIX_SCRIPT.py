@@ -74,14 +74,14 @@ def main():
                 filepath, removed, remaining = fix_consecutive_empty_lines(filepath)
 
                 if removed > 0:
-                    print(f"✅ FIXED: {filepath}")
+                    print(f" FIXED: {filepath}")
                     print(f"   Removed {removed} consecutive empty line instances")
                     total_files_fixed += 1
                     total_consecutive_removed += removed
                 elif removed == 0:
-                    print(f"✅ OK: {filepath} (no consecutive empty lines)")
+                    print(f" OK: {filepath} (no consecutive empty lines)")
                 else:
-                    print(f"❌ ERROR: {filepath}")
+                    print(f" ERROR: {filepath}")
 
     print("\n" + "=" * 60)
     print("FIX SUMMARY:")
@@ -89,13 +89,13 @@ def main():
     print(f"Total consecutive empty line instances removed: {total_consecutive_removed}")
 
     if total_files_fixed > 0:
-        print("\n🎉 SUCCESS: All consecutive empty lines removed!")
+        print("\n SUCCESS: All consecutive empty lines removed!")
         print("\nNOW TEST YOUR PLUGIN:")
         print("1. Restart Claude Code")
         print("2. Run: /learn:init")
         print("3. Should work without cache_control errors!")
     else:
-        print("\n✅ No consecutive empty lines found.")
+        print("\n No consecutive empty lines found.")
 
 
 if __name__ == "__main__":

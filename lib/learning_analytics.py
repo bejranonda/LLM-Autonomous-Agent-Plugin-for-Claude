@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Learning Analytics
 Basic implementation for learning_analytics.py.
+"""
 """
 
 import json

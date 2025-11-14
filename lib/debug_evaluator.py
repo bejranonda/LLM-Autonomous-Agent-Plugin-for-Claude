@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Debug Evaluator
 Basic implementation for debug_evaluator.py.
+"""
 """
 
 import json

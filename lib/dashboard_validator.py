@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Dashboard Validator
 Basic implementation for dashboard_validator.py.
+"""
 """
 
 import json

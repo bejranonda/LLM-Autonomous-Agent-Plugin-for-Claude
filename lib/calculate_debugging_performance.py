@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+"""
 Calculate Debugging Performance
 Basic implementation for calculate_debugging_performance.py.
+"""
 """
 
 import json

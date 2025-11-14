@@ -257,18 +257,18 @@ def main():
     if total_score < 70:
         print("Priority Actions:")
         if category_scores["test_coverage"]["score"] < 20:
-            print("• Fix failing tests to improve test coverage")
+            print(" Fix failing tests to improve test coverage")
         if category_scores["code_standards"]["score"] < 20:
-            print("• Resolve compilation errors in Python files")
+            print(" Resolve compilation errors in Python files")
         if category_scores["documentation"]["score"] < 15:
-            print("• Complete missing documentation files")
+            print(" Complete missing documentation files")
     else:
         print("Recommended Actions:")
-        print("• Begin development and feature testing")
-        print("• Set up CI/CD pipeline")
-        print("• Start user acceptance testing")
+        print(" Begin development and feature testing")
+        print(" Set up CI/CD pipeline")
+        print(" Start user acceptance testing")
         if total_score >= 85:
-            print("• Prepare for production deployment")
+            print(" Prepare for production deployment")
 
     print("\n" + "=" * 60)
     print("ASSESSMENT COMPLETE")
