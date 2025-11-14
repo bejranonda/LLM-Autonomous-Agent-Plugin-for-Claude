@@ -5,6 +5,57 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.0] - 2025-11-14
+
+### Added - Research & Design Intelligence
+
+#### Research Capabilities (12 New Components)
+- **research-strategist agent** (Group 1 - Brain): Plans systematic research investigations with multi-step strategies
+- **research-executor agent** (Group 3 - Hand): Executes research plans using WebSearch/WebFetch with source credibility assessment
+- **research-validator agent** (Group 4 - Guardian): Validates research quality with 5-dimension scoring (0-100 scale)
+- **frontend-design-enhancer agent** (Group 3 - Hand): Eliminates "AI slop" aesthetics with distinctive design patterns
+- **research-methodology skill**: Structured research techniques with Tier 1-4 source credibility hierarchy
+- **source-verification skill**: Citation validation and claim-source matching verification
+- **frontend-aesthetics skill**: Design principles for distinctive typography, color schemes, and animations
+- **web-artifacts-builder skill**: React + Tailwind CSS patterns for modern web applications
+- **/autonomous-agent:research:structured command**: Execute systematic research with automatic planning and validation
+- **/autonomous-agent:design:enhance command**: Enhance frontend designs with AI Slop Score calculation (target < 30)
+- **research_planner.py utility**: Python library for research plan generation and query construction
+- **research_synthesizer.py utility**: Research report synthesis with citation management
+
+#### Key Features
+- **Quality Scoring System**: 0-100 scale across 5 dimensions (comprehensiveness, accuracy, source quality, citation validity, recency)
+- **Source Credibility Assessment**: 4-tier hierarchy (Tier 1: Official docs → Tier 4: Community forums)
+- **Citation Management**: Automatic verification, claim-source matching, broken link detection
+- **AI Slop Detection**: Identifies generic design patterns (Inter fonts, purple gradients, generic animations)
+- **Distinctive Design Enhancement**: Typography pairings, intentional color schemes, layered backgrounds, purposeful animations
+- **Pattern Learning Integration**: Stores research sources and design choices for continuous improvement
+
+#### Agent Architecture Updates
+- **Total Agents**: 27 → 31 (4 new research & design agents)
+- **Total Skills**: 19 → 23 (4 new specialized skills)
+- **Total Commands**: 38 → 40 (2 new slash commands)
+- **Total Python Utilities**: 110+ → 112+ (2 new research utilities)
+
+### Changed
+- Updated four-tier architecture documentation to reflect new research & design agents
+- Enhanced Group 1 (Brain) with research-strategist for strategic intelligence
+- Enhanced Group 3 (Hand) with research-executor and frontend-design-enhancer for execution excellence
+- Enhanced Group 4 (Guardian) with research-validator for comprehensive quality assurance
+- Improved documentation with RESEARCH_DESIGN_INTEGRATION_SUMMARY.md
+
+### Improved
+- Cross-platform emoji handling in Python scripts (Windows compatibility)
+- Quality control integration across all modified Python utilities
+- Component count accuracy in documentation (31 agents, 23 skills, 40 commands)
+
+### Documentation
+- Added RESEARCH_DESIGN_INTEGRATION_SUMMARY.md with complete component descriptions
+- Updated README.md with v7.15.0 features and research/design capabilities
+- Updated STRUCTURE.md with accurate component counts and new agent/skill listings
+- Updated CLAUDE.md version reference to v7.15.0
+- Enhanced plugin.json and marketplace.json descriptions with research & design features
+
 ## [7.14.1] - 2025-11-14
 
 ### Changed

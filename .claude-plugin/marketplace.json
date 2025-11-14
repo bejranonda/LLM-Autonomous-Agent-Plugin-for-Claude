@@ -11,8 +11,8 @@
     {
       "name": "autonomous-agent",
       "source": "./",
-      "description": "Revolutionary four-tier agent architecture with 27 specialized agents, 21 skills, and 38 commands. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Production ready with 60-70% token cost reduction, comprehensive quality improvement (51→62/100), and fully autonomous operation.",
-      "version": "7.14.1",
+      "description": "Revolutionary four-tier agent architecture with 31 specialized agents, 23 skills, and 40 commands. NEW in v7.15.0: Systematic research capabilities with quality scoring (0-100), source credibility assessment, citation management, and frontend design enhancement eliminating 'AI slop' aesthetics (distinctive typography/colors/animations). Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Production ready with 60-70% token cost reduction, comprehensive quality improvement, and fully autonomous operation.",
+      "version": "7.15.0",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
@@ -33,7 +33,15 @@
         "refactoring",
         "ai-assistant",
         "validation",
-        "error-prevention"
+        "error-prevention",
+        "systematic-research",
+        "web-research",
+        "citation-management",
+        "source-verification",
+        "frontend-design",
+        "design-enhancement",
+        "ai-slop-detection",
+        "distinctive-design"
       ],
       "category": "development",
       "tags": [
@@ -41,7 +49,9 @@
         "pattern-learning",
         "quality-assurance",
         "code-optimization",
-        "adaptive-ai"
+        "adaptive-ai",
+        "research-intelligence",
+        "design-aesthetics"
       ],
       "strict": true
     }

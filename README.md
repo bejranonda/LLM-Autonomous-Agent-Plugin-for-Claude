@@ -1,12 +1,12 @@
-# 🚀 Autonomous Agent for Claude Code v7.14.1
+# 🚀 Autonomous Agent for Claude Code v7.15.0
 
 <div align="center">
 
 > *What if your AI agent got smarter and faster with every task?*
 
-**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-33-commands-across-7-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
+**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-8-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.14.1-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.14.1)
+[![Version](https://img.shields.io/badge/version-7.15.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.15.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -44,13 +44,13 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 ### 🧠 **Core Innovation: Revolutionary Four-Tier Architecture**
 
-A **paradigm shift** from static tools to living intelligence with 27 specialized agents across 4 collaborative groups:
+A **paradigm shift** from static tools to living intelligence with **31 specialized agents** across 4 collaborative groups:
 
-**🏗️ Four-Tier Group Architecture (v7.0.0)**
-- **Group 1 - Strategic Analysis (Brain)**: 7 agents analyze and recommend with confidence scores
+**🏗️ Four-Tier Group Architecture (v7.15.0)**
+- **Group 1 - Strategic Analysis (Brain)**: 8 agents analyze and recommend with confidence scores
 - **Group 2 - Decision Making (Council)**: 2 agents evaluate and create optimal execution plans
-- **Group 3 - Execution (Hand)**: 12 agents implement with comprehensive metrics
-- **Group 4 - Validation (Guardian)**: 3 agents optimize and provide continuous feedback
+- **Group 3 - Execution (Hand)**: 14 agents implement with comprehensive metrics
+- **Group 4 - Validation (Guardian)**: 7 agents optimize and provide continuous feedback
 
 ### 🚀 **Revolutionary Breakthroughs**
 
@@ -110,7 +110,39 @@ A **paradigm shift** from static tools to living intelligence with 27 specialize
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.5.0 - Unified Dashboard Revolution** 🆕
+### 🚀 **Latest Innovation: v7.15.0 - Research & Design Intelligence** 🆕
+
+**🔬 Systematic Research Capabilities**: Multi-step web research with automatic quality validation and citation management.
+
+**🎨 Frontend Design Enhancement**: Eliminate "AI slop" aesthetics with distinctive typography, colors, and animations.
+
+**🎯 Major Features**:
+- **Structured Research Workflow**: Plan → Execute → Validate with quality scoring (0-100)
+- **Source Credibility Assessment**: Tier 1-4 hierarchy (Authoritative → Questionable)
+- **Citation Management**: URL verification, claim-source matching, contradiction resolution
+- **AI Slop Detection**: Calculate generic design patterns score, target < 30 for distinction
+- **Design Enhancement**: Distinctive fonts (not Inter/Roboto), intentional colors (not purple gradients), layered backgrounds
+- **Pattern Learning**: Research sources and design choices improve with every task
+
+**📊 Key Capabilities**:
+- 3 research agents (strategist → executor → validator) + 1 design agent
+- 4 new skills (research-methodology, source-verification, frontend-aesthetics, web-artifacts-builder)
+- 2 slash commands (`/research:structured`, `/design:enhance`)
+- Research Quality Score: Citations (25) + Source Credibility (25) + Technical Accuracy (25) + Completeness (15) + Clarity (10)
+- AI Slop Score: Detects generic fonts (+30), default colors (+25), plain backgrounds (+20), no animations (+15)
+
+**💡 Real-World Impact**:
+```bash
+# Systematic research with citations
+/research:structured "I2C vs SPI for Raspberry Pi"
+→ Quality Score: 87/100, 15 authoritative sources, trade-off matrix
+
+# Transform generic design
+/design:enhance "Landing page"
+→ AI Slop Score: 85 → 15, distinctive aesthetics applied
+```
+
+### 🚀 **v7.5.0 - Unified Dashboard Revolution**
 
 **🎯 Revolutionary Dashboard Unification**: Single comprehensive interface consolidating 5 separate dashboards.
 

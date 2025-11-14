@@ -5,9 +5,9 @@
 ```
 D:\Git\Werapol\AutonomousAgent\
 ├── .claude-plugin/
-│   └── plugin.json                          # Plugin manifest (v6.0.0)
+│   └── plugin.json                          # Plugin manifest (v7.15.0)
 │
-├── agents/                                   # 22 specialized agents
+├── agents/                                   # 31 specialized agents
 │   ├── orchestrator.md                      # Main autonomous controller
 │   ├── code-analyzer.md                     # Code analysis specialist
 │   ├── quality-controller.md                # Quality assurance & auto-fix
@@ -22,9 +22,13 @@ D:\Git\Werapol\AutonomousAgent\
 │   ├── api-contract-validator.md            # API synchronization (v2.0)
 │   ├── build-validator.md                   # Build configuration (v2.0)
 │   ├── version-release-manager.md           # Version/release management (v4.1.0)
+│   ├── research-strategist.md               # Research planning (v7.15.0)
+│   ├── research-executor.md                 # Research execution (v7.15.0)
+│   ├── research-validator.md                # Research validation (v7.15.0)
+│   ├── frontend-design-enhancer.md          # Design enhancement (v7.15.0)
 │   └── [Plus 10 additional specialized agents]
 │
-├── skills/                                   # 17 knowledge packages
+├── skills/                                   # 23 knowledge packages
 │   ├── pattern-learning/                    # Pattern recognition system
 │   ├── code-analysis/                       # Code analysis methodologies
 │   ├── quality-standards/                   # Quality benchmarks
@@ -37,9 +41,13 @@ D:\Git\Werapol\AutonomousAgent\
 │   ├── contextual-pattern-learning/         # Enhanced patterns (v3.0+)
 │   ├── ast-analyzer/                        # Abstract syntax trees (v3.0+)
 │   ├── security-patterns/                   # Security analysis (v3.0+)
+│   ├── research-methodology/                # Research techniques (v7.15.0)
+│   ├── source-verification/                 # Citation validation (v7.15.0)
+│   ├── frontend-aesthetics/                 # Design principles (v7.15.0)
+│   ├── web-artifacts-builder/               # React + Tailwind patterns (v7.15.0)
 │   └── [Plus 5 additional specialized skills]
 │
-├── commands/                                 # 39 slash commands (8 categories)
+├── commands/                                 # 40 slash commands (8 categories)
 │   ├── dev/                                 # Development workflows
 │   │   ├── auto.md                         # Autonomous development
 │   │   ├── commit.md                       # Intelligent commits (v5.4+)
@@ -71,11 +79,17 @@ D:\Git\Werapol\AutonomousAgent\
 │   │   ├── improve.md                      # Plugin improvement
 │   │   ├── update-readme.md                # Intelligent README (v5.4+)
 │   │   └── update-about.md                 # GitHub About (v5.4+)
-│   └── [Plus 4 additional command categories]
+│   ├── research/                            # Research commands (v7.15.0)
+│   │   └── structured.md                   # Systematic research
+│   ├── design/                              # Design commands (v7.15.0)
+│   │   └── enhance.md                      # Frontend enhancement
+│   └── [Plus 2 additional command categories]
 │
-├── lib/                                      # 110+ Python utilities
+├── lib/                                      # 112+ Python utilities
 │   ├── exec_plugin_script.py                # Cross-platform executor (v5.6+)
 │   ├── plugin_path_resolver.py              # Dynamic path discovery (v5.6+)
+│   ├── research_planner.py                  # Research planning utility (v7.15.0)
+│   ├── research_synthesizer.py              # Research synthesis (v7.15.0)
 │   ├── analysis/                            # Testing and analysis utilities
 │   ├── assessments/                         # Assessment scripts
 │   ├── fixes/                               # Auto-fix utilities
