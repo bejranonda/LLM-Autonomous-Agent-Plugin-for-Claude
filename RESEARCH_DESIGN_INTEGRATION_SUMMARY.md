@@ -134,7 +134,7 @@ Successfully integrated **structured research capabilities** and **frontend desi
 
 ### 3. Slash Commands (2 Total)
 
-**[commands/research-structured.md](commands/research-structured.md)** - `/autonomous-agent:research:structured`
+**[commands/research/structured.md](commands/research/structured.md)** - `/research:structured`
 - **Category**: research
 - **Workflow**:
   1. Planning (research-strategist): Analyze goal, identify gaps, create plan
@@ -146,7 +146,7 @@ Successfully integrated **structured research capabilities** and **frontend desi
   - File: Comprehensive report (`.claude/reports/research-[topic]-[timestamp].md`)
 - **Example**: `/research:structured "Compare I2C vs SPI protocols for Raspberry Pi"`
 
-**[commands/design-enhance.md](commands/design-enhance.md)** - `/autonomous-agent:design:enhance`
+**[commands/design/enhance.md](commands/design/enhance.md)** - `/design:enhance`
 - **Category**: design
 - **Workflow**:
   1. Design Audit: Calculate AI Slop Score, identify generic patterns
@@ -339,7 +339,7 @@ All Python utilities follow plugin's cross-platform guidelines:
 
 ```bash
 # Option 1: Using slash command
-/autonomous-agent:research:structured "I2C vs SPI protocols for Raspberry Pi FM radio module"
+/research:structured "I2C vs SPI protocols for Raspberry Pi FM radio module"
 
 # Option 2: Using Python utilities directly
 python lib/research_planner.py "I2C vs SPI" \
@@ -368,7 +368,7 @@ python lib/research_synthesizer.py "I2C vs SPI" \
 
 ```bash
 # Using slash command
-/autonomous-agent:design:enhance "Landing page for developer tool"
+/design:enhance "Landing page for developer tool"
 ```
 
 **Output**:
@@ -447,12 +447,12 @@ To validate integration:
 
 1. **Try Research Capabilities**:
    ```bash
-   /autonomous-agent:research:structured "Your research topic here"
+   /research:structured "Your research topic here"
    ```
 
 2. **Try Design Enhancement**:
    ```bash
-   /autonomous-agent:design:enhance "Your UI component or page"
+   /design:enhance "Your UI component or page"
    ```
 
 3. **Review Patterns**:
