@@ -132,7 +132,9 @@ Successfully integrated **structured research capabilities** and **frontend desi
 
 ---
 
-### 3. Slash Commands (2 Total)
+### 3. Slash Commands (5 Total)
+
+#### Research Commands (3)
 
 **[commands/research/structured.md](commands/research/structured.md)** - `/research:structured`
 - **Category**: research
@@ -145,6 +147,27 @@ Successfully integrated **structured research capabilities** and **frontend desi
   - Terminal: Concise summary (quality score, top 3 findings, recommendation)
   - File: Comprehensive report (`.claude/reports/research-[topic]-[timestamp].md`)
 - **Example**: `/research:structured "Compare I2C vs SPI protocols for Raspberry Pi"`
+- **Time**: 20-45 minutes
+
+**[commands/research/quick.md](commands/research/quick.md)** - `/research:quick`
+- **Category**: research
+- **Workflow**: Direct execution without planning/validation
+- **Output**: Terminal only (10 lines max, no file report)
+- **Example**: `/research:quick "Latest React version"`
+- **Time**: 1-5 minutes
+- **Use**: Simple lookups, quick references
+
+**[commands/research/compare.md](commands/research/compare.md)** - `/research:compare`
+- **Category**: research
+- **Workflow**: Decision matrix + trade-off analysis for A vs B comparisons
+- **Output**:
+  - Terminal: Decision matrix with scores, recommendation
+  - File: Comprehensive comparison (`.claude/reports/compare-A-vs-B-[timestamp].md`)
+- **Example**: `/research:compare "React vs Vue for e-commerce project"`
+- **Time**: 10-20 minutes
+- **Use**: Technology/framework choices
+
+#### Design Commands (2)
 
 **[commands/design/enhance.md](commands/design/enhance.md)** - `/design:enhance`
 - **Category**: design
@@ -159,6 +182,17 @@ Successfully integrated **structured research capabilities** and **frontend desi
   - Terminal: Concise summary (AI Slop Score before/after, improvements)
   - File: Comprehensive report (`.claude/reports/design-[topic]-[timestamp].md`)
 - **Example**: `/design:enhance "Improve landing page aesthetics"`
+- **Time**: 5-15 minutes
+
+**[commands/design/audit.md](commands/design/audit.md)** - `/design:audit`
+- **Category**: design
+- **Workflow**: Analysis only, no code changes made
+- **Output**:
+  - Terminal: AI Slop Score, top 3 recommendations
+  - File: Detailed audit report (`.claude/reports/design-audit-[timestamp].md`)
+- **Example**: `/design:audit "marketing landing page"`
+- **Time**: 1-3 minutes
+- **Use**: Understand issues before applying fixes
 
 ---
 
@@ -468,10 +502,10 @@ To validate integration:
 
 ## Summary Statistics
 
-**Total New Components**: 12
+**Total New Components**: 15
 - Agents: 4 (3 research + 1 design)
 - Skills: 4 (research-methodology, source-verification, frontend-aesthetics, web-artifacts-builder)
-- Commands: 2 (/research:structured, /design:enhance)
+- Commands: 5 (/research:structured, /research:quick, /research:compare, /design:enhance, /design:audit)
 - Python Utilities: 2 (research_planner.py, research_synthesizer.py)
 
 **Lines of Code**: ~7,500+ (agents + skills + utilities)

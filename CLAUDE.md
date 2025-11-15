@@ -100,7 +100,7 @@ agents/                              # 27 specialized agents (4 groups)
 └── [Group 4] 4 validation agents   # Validation & Optimization
 
 skills/                              # 19 knowledge packages
-commands/                            # 39 slash commands (8 categories)
+commands/                            # 42 slash commands (10 categories)
 patterns/autofix-patterns.json      # 24 auto-fix patterns
 lib/                                 # 110+ Python utilities
 ```
