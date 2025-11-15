@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.16.3] - 2025-11-15
+
+### Added - Specialized Command Variants
+
+#### New Research Command Variants
+- **`/research:quick`** - Fast lookups without planning/validation overhead
+  - Optimized workflow: Direct execution with minimal setup (1-5 min)
+  - Use case: Quick technical references, API lookups, specification checks
+  - Example: `/research:quick "What is the default timeout for HTTP requests?"`
+
+- **`/research:compare`** - Specialized A vs B comparisons with decision matrix
+  - Structured comparison workflow with decision matrix generation (10-20 min)
+  - Use case: Technology comparisons, architecture decisions, tool selection
+  - Example: `/research:compare "React vs Vue for dashboard development"`
+
+#### New Design Command Variant
+- **`/design:audit`** - Analysis-only mode without modifications
+  - Read-only design analysis with AI Slop Score calculation (1-3 min)
+  - Use case: Design assessment, aesthetic evaluation, improvement recommendations
+  - Example: `/design:audit "Analyze landing page design"`
+
+#### Command Count Update
+- **Previous**: 40 commands across 8 categories
+- **Current**: 42 commands across 10 categories
+- **Categories**: Research and Design now have independent categories with specialized variants
+
+#### Documentation Updates
+- Updated `README.md` - Command reference section (42 commands across 10 categories)
+- Updated `CLAUDE.md` - Component structure (42 slash commands)
+- Updated `RESEARCH_DESIGN_INTEGRATION_SUMMARY.md` - Complete variant documentation
+- Validated all command frontmatter for consistency
+
+### Version Updates
+- `.claude-plugin/plugin.json` - Version 7.16.3
+- `.claude-plugin/marketplace.json` - Version 7.16.3
+- `README.md` - Version 7.16.3
+- `CLAUDE.md` - Version 7.16.3
+
 ## [7.16.2] - 2025-11-15
 
 ### Fixed - Command Display in Autocomplete
