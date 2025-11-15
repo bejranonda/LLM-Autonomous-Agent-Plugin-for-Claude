@@ -1,4 +1,5 @@
 ---
+name: research:structured
 description: Conduct systematic multi-step research with planning, execution, synthesis, and validation phases - supports technical research, design exploration, idea generation, competitive analysis, and general knowledge gathering
 category: research
 ---
