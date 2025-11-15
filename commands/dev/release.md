@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:version-release-manager
 
 # Release-Dev Command
 
-## Command: `/autonomous-agent:dev:release`
+## Command: `/dev:release`
 
 **CRITICAL**: This command MUST execute ALL steps from version detection through GitHub release creation. The version-release-manager agent MUST complete the entire workflow without stopping early.
 
@@ -153,7 +153,7 @@ The workflow executes 8 MANDATORY steps in sequence:
 ### Quick Release (Recommended)
 ```bash
 # Fully automated release with smart detection
-/autonomous-agent:dev:release
+/dev:release
 
 # This will:
 # - Analyze changes and determine version bump
@@ -168,61 +168,61 @@ The workflow executes 8 MANDATORY steps in sequence:
 ### Specify Version Type
 ```bash
 # Force specific version bump
-/autonomous-agent:dev:release --patch     # Bug fixes only (x.y.Z)
-/autonomous-agent:dev:release --minor     # New features (x.Y.0)
-/autonomous-agent:dev:release --major     # Breaking changes (X.0.0)
+/dev:release --patch     # Bug fixes only (x.y.Z)
+/dev:release --minor     # New features (x.Y.0)
+/dev:release --major     # Breaking changes (X.0.0)
 
 # Specify exact version
-/autonomous-agent:dev:release --version 2.5.0
+/dev:release --version 2.5.0
 ```
 
 ### Validation Options
 ```bash
 # Skip quality validation (not recommended)
-/autonomous-agent:dev:release --skip-validation
+/dev:release --skip-validation
 
 # Set minimum quality threshold (default: 85)
-/autonomous-agent:dev:release --quality-threshold 90
+/dev:release --quality-threshold 90
 
 # Dry run (preview without making changes)
-/autonomous-agent:dev:release --dry-run
+/dev:release --dry-run
 ```
 
 ### Documentation Options
 ```bash
 # Update specific documentation
-/autonomous-agent:dev:release --update-changelog
-/autonomous-agent:dev:release --update-readme
-/autonomous-agent:dev:release --generate-release-notes
+/dev:release --update-changelog
+/dev:release --update-readme
+/dev:release --generate-release-notes
 
 # Custom release notes file
-/autonomous-agent:dev:release --release-notes ./CUSTOM_NOTES.md
+/dev:release --release-notes ./CUSTOM_NOTES.md
 ```
 
 ### Platform Options
 ```bash
 # GitHub release is now created by DEFAULT
-/autonomous-agent:dev:release               # Creates GitHub release automatically
+/dev:release               # Creates GitHub release automatically
 
 # Additional platforms (optional)
-/autonomous-agent:dev:release --npm         # Also publish to npm
-/autonomous-agent:dev:release --pypi        # Also publish to PyPI
-/autonomous-agent:dev:release --docker      # Build and push Docker image
-/autonomous-agent:dev:release --gitlab      # GitLab instead of GitHub
+/dev:release --npm         # Also publish to npm
+/dev:release --pypi        # Also publish to PyPI
+/dev:release --docker      # Build and push Docker image
+/dev:release --gitlab      # GitLab instead of GitHub
 
 # Multi-platform release
-/autonomous-agent:dev:release --npm --docker  # GitHub + npm + Docker
+/dev:release --npm --docker  # GitHub + npm + Docker
 ```
 
 ### Pre-release Options
 ```bash
 # Create pre-release versions
-/autonomous-agent:dev:release --pre-release alpha
-/autonomous-agent:dev:release --pre-release beta
-/autonomous-agent:dev:release --pre-release rc
+/dev:release --pre-release alpha
+/dev:release --pre-release beta
+/dev:release --pre-release rc
 
 # Example: v1.2.3-beta.1
-/autonomous-agent:dev:release --minor --pre-release beta
+/dev:release --minor --pre-release beta
 ```
 
 ## Workflow Stages
@@ -508,7 +508,7 @@ Links:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Monitor release metrics
-   -> /autonomous-agent:learn:performance
+   -> /learn:performance
 
 2. Announce release to team
    -> Draft announcement with highlights
@@ -618,26 +618,26 @@ The `/release-dev` command integrates with the autonomous learning system:
 ### Pre-Release Validation
 ```bash
 # Validate before releasing
-/autonomous-agent:validate:fullstack
-/autonomous-agent:analyze:quality
-/autonomous-agent:dev:release
+/validate:fullstack
+/analyze:quality
+/dev:release
 ```
 
 ### Post-Release Monitoring
 ```bash
 # Monitor after release
-/autonomous-agent:dev:release
-/autonomous-agent:learn:performance
-/autonomous-agent:learn:analytics
+/dev:release
+/learn:performance
+/learn:analytics
 ```
 
 ### Integrated Workflow
 ```bash
 # Complete development cycle
-/autonomous-agent:dev:auto "add new feature"
+/dev:auto "add new feature"
 # ... development happens ...
-/autonomous-agent:analyze:quality
-/autonomous-agent:dev:release
+/analyze:quality
+/dev:release
 ```
 
 ## Platform Requirements
@@ -681,12 +681,12 @@ glab auth status
 # For GitHub
 gh auth status
 gh repo view
-/autonomous-agent:dev:release --retry
+/dev:release --retry
 
 # For GitLab
 glab auth status
 glab repo view
-/autonomous-agent:dev:release --retry
+/dev:release --retry
 
 # For any platform
 git remote -v  # Check remote URL
@@ -696,23 +696,23 @@ git tag -l     # List existing tags
 ### Quality Check Failed
 ```bash
 # View detailed quality report
-/autonomous-agent:analyze:quality --verbose
+/analyze:quality --verbose
 
 # Fix issues and retry
-/autonomous-agent:dev:release --retry
+/dev:release --retry
 
 # Skip validation (not recommended)
-/autonomous-agent:dev:release --skip-validation --force
+/dev:release --skip-validation --force
 ```
 
 ### Version Conflict
 ```bash
 # Reset version detection
-/autonomous-agent:dev:release --version 3.4.0 --force
+/dev:release --version 3.4.0 --force
 
 # Manual version update
 edit .claude-plugin/plugin.json
-/autonomous-agent:dev:release --skip-version-update
+/dev:release --skip-version-update
 ```
 
 ### Git Operation Failed
@@ -722,7 +722,7 @@ git status
 git log --oneline -5
 
 # Retry with verbose logging
-/autonomous-agent:dev:release --verbose --retry
+/dev:release --verbose --retry
 ```
 
 ### Platform Publishing Failed
@@ -734,7 +734,7 @@ npm whoami        # npm
 docker info       # Docker
 
 # Retry specific platform
-/autonomous-agent:dev:release --github --retry
+/dev:release --github --retry
 ```
 
 ## Best Practices

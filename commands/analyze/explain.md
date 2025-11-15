@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:orchestrator
 
 # Analyze-Explain Command
 
-## Command: `/autonomous-agent:analyze:explain`
+## Command: `/analyze:explain`
 
 **Read-only analysis and explanation** - Reviews and explains tasks, events, code, or issues without making any modifications. Perfect for understanding what needs to be done before committing to changes.
 
@@ -32,46 +32,46 @@ delegates-to: autonomous-agent:orchestrator
 ### Basic Usage
 ```bash
 # Explain a feature request
-/autonomous-agent:analyze:explain "add user authentication with JWT"
+/analyze:explain "add user authentication with JWT"
 
 # Explain existing code or issue
-/autonomous-agent:analyze:explain "why is the login endpoint failing"
+/analyze:explain "why is the login endpoint failing"
 
 # Explain error or bug
-/autonomous-agent:analyze:explain "investigate memory leak in data processing"
+/analyze:explain "investigate memory leak in data processing"
 
 # Explain architectural decision
-/autonomous-agent:analyze:explain "should we use microservices or monolith for this project"
+/analyze:explain "should we use microservices or monolith for this project"
 ```
 
 ### With Context
 ```bash
 # Explain with specific file context
-/autonomous-agent:analyze:explain "how does authentication work in auth/login.py"
+/analyze:explain "how does authentication work in auth/login.py"
 
 # Explain with repository URL
-/autonomous-agent:analyze:explain "analyze authentication approach in https://github.com/user/repo"
+/analyze:explain "analyze authentication approach in https://github.com/user/repo"
 
 # Explain test failures
-/autonomous-agent:analyze:explain "why are these 5 tests failing in test_auth.py"
+/analyze:explain "why are these 5 tests failing in test_auth.py"
 
 # Explain performance issue
-/autonomous-agent:analyze:explain "what's causing slow response times in API endpoints"
+/analyze:explain "what's causing slow response times in API endpoints"
 ```
 
 ### Advanced Options
 ```bash
 # Detailed technical explanation
-/autonomous-agent:analyze:explain "explain JWT implementation" --detail-level technical
+/analyze:explain "explain JWT implementation" --detail-level technical
 
 # High-level overview
-/autonomous-agent:analyze:explain "explain authentication system" --detail-level overview
+/analyze:explain "explain authentication system" --detail-level overview
 
 # Include code examples in explanation
-/autonomous-agent:analyze:explain "how to implement caching" --include-examples
+/analyze:explain "how to implement caching" --include-examples
 
 # Compare multiple approaches
-/autonomous-agent:analyze:explain "Redis vs Memcached for caching" --compare-approaches
+/analyze:explain "Redis vs Memcached for caching" --compare-approaches
 ```
 
 ## Output Format
@@ -107,8 +107,8 @@ Recommended Approach:
 
 Next Steps:
 * Review full analysis report
-* Use /autonomous-agent:dev:auto "add JWT auth" to implement
-* Use /autonomous-agent:analyze:quality to validate after implementation
+* Use /dev:auto "add JWT auth" to implement
+* Use /analyze:quality to validate after implementation
 ```
 
 ### Detailed Report (.claude/data/reports/)
@@ -370,14 +370,14 @@ Status: ANALYSIS ONLY - NO MODIFICATIONS MADE
 =======================================================
 
 Ready to Implement?
-* Use: /autonomous-agent:dev:auto "add JWT authentication with refresh tokens"
+* Use: /dev:auto "add JWT authentication with refresh tokens"
 * Review: Read this report carefully first
 * Prepare: Backup database before migration
 
 Need More Analysis?
-* Security review: /autonomous-agent:validate:security
-* Architecture review: /autonomous-agent:analyze:project
-* Compare with existing repos: /autonomous-agent:analyze:repository <url>
+* Security review: /validate:security
+* Architecture review: /analyze:project
+* Compare with existing repos: /analyze:repository <url>
 
 Questions or Concerns?
 * Review pattern learning insights above
@@ -397,7 +397,7 @@ This is a read-only analysis report.
 
 ## Integration with Learning System
 
-The `/autonomous-agent:analyze:explain` command integrates with pattern learning:
+The `/analyze:explain` command integrates with pattern learning:
 
 **Learning from Analysis**:
 - Common task patterns and requirements
@@ -431,7 +431,7 @@ The `/autonomous-agent:analyze:explain` command integrates with pattern learning
 
 ## Agent Delegation
 
-`/autonomous-agent:analyze:explain` delegates to:
+`/analyze:explain` delegates to:
 - **orchestrator**: Main analysis coordinator
 - **code-analyzer**: Code structure and impact analysis
 - **security-auditor**: Security risk assessment
@@ -450,35 +450,35 @@ Auto-loads relevant skills:
 ### Before Implementation
 ```bash
 # Understand requirements before coding
-/autonomous-agent:analyze:explain "implement real-time notifications"
+/analyze:explain "implement real-time notifications"
 # Review the analysis
-# Then implement: /autonomous-agent:dev:auto "implement real-time notifications"
+# Then implement: /dev:auto "implement real-time notifications"
 ```
 
 ### Understanding Existing Code
 ```bash
 # Understand how something works
-/autonomous-agent:analyze:explain "how does the caching system work in cache.py"
+/analyze:explain "how does the caching system work in cache.py"
 ```
 
 ### Troubleshooting
 ```bash
 # Understand what's wrong before fixing
-/autonomous-agent:analyze:explain "why is the API returning 500 errors"
+/analyze:explain "why is the API returning 500 errors"
 # Review the analysis
-# Then fix: /autonomous-agent:dev:auto "fix API 500 errors"
+# Then fix: /dev:auto "fix API 500 errors"
 ```
 
 ### Decision Making
 ```bash
 # Compare approaches
-/autonomous-agent:analyze:explain "should we use GraphQL or REST for the new API"
+/analyze:explain "should we use GraphQL or REST for the new API"
 ```
 
 ### Learning
 ```bash
 # Learn from external repositories
-/autonomous-agent:analyze:explain "how does authentication work in https://github.com/fastapi/fastapi"
+/analyze:explain "how does authentication work in https://github.com/fastapi/fastapi"
 ```
 
 ## Best Practices
@@ -486,25 +486,25 @@ Auto-loads relevant skills:
 ### Good Explain Requests
 ```bash
 # Specific and focused
-/autonomous-agent:analyze:explain "explain JWT token refresh mechanism in auth/token.py"
+/analyze:explain "explain JWT token refresh mechanism in auth/token.py"
 
 # Clear context provided
-/autonomous-agent:analyze:explain "why are tests failing after adding authentication"
+/analyze:explain "why are tests failing after adding authentication"
 
 # Decision-oriented
-/autonomous-agent:analyze:explain "compare WebSocket vs Server-Sent Events for real-time updates"
+/analyze:explain "compare WebSocket vs Server-Sent Events for real-time updates"
 ```
 
 ### Poor Explain Requests
 ```bash
 # Too vague
-/autonomous-agent:analyze:explain "explain the code"
+/analyze:explain "explain the code"
 
 # Too broad
-/autonomous-agent:analyze:explain "explain everything about the project"
+/analyze:explain "explain everything about the project"
 
 # Not analysis-focused
-/autonomous-agent:analyze:explain "fix all bugs"  # Use /autonomous-agent:dev:auto instead
+/analyze:explain "fix all bugs"  # Use /dev:auto instead
 ```
 
 ## Output Options
@@ -520,10 +520,10 @@ Auto-loads relevant skills:
 
 ```bash
 # With code examples
-/autonomous-agent:analyze:explain "JWT implementation" --include-examples
+/analyze:explain "JWT implementation" --include-examples
 
 # Without code examples (faster)
-/autonomous-agent:analyze:explain "JWT implementation" --no-examples
+/analyze:explain "JWT implementation" --no-examples
 ```
 
 ## Performance Metrics

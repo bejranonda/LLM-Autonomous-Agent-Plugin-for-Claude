@@ -597,12 +597,12 @@ Analysis Period: Last {n} tasks
 ### Tracking Plan
 
 **Weekly Checkpoints**:
-- Run `/autonomous-agent:monitor:groups` weekly
+- Run `/monitor:groups` weekly
 - Track KPI progress
 - Adjust strategies as needed
 
 **Monthly Reviews**:
-- Run `/autonomous-agent:analyze:groups` monthly
+- Run `/analyze:groups` monthly
 - Comprehensive performance review
 - Strategic adjustments
 
@@ -670,7 +670,7 @@ TOP RECOMMENDATIONS:
 - **Prioritized**: Clear immediate, short-term, and long-term actions
 - **Data-Driven**: Based on comprehensive metrics across all systems
 - **Run Monthly**: Or when performance issues are observed
-- **Complements**: `/autonomous-agent:monitor:groups` (real-time) vs `/autonomous-agent:analyze:groups` (deep dive)
+- **Complements**: `/monitor:groups` (real-time) vs `/analyze:groups` (deep dive)
 
 ## Integration
 

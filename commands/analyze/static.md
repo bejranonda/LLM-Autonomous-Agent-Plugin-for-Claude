@@ -11,16 +11,16 @@ Execute comprehensive static analysis across your codebase using 40+ industry-st
 ## Usage
 
 ```bash
-/autonomous-agent:analyze:static [PATH] [OPTIONS]
+/analyze:static [PATH] [OPTIONS]
 ```
 
 **Examples**:
 ```bash
-/autonomous-agent:analyze:static                    # Analyze current directory
-/autonomous-agent:analyze:static src/               # Analyze specific directory
-/autonomous-agent:analyze:static src/auth.py        # Analyze specific file
-/autonomous-agent:analyze:static --quick            # Fast analysis (fewer linters)
-/autonomous-agent:analyze:static --security         # Security-focused analysis
+/analyze:static                    # Analyze current directory
+/analyze:static src/               # Analyze specific directory
+/analyze:static src/auth.py        # Analyze specific file
+/analyze:static --quick            # Fast analysis (fewer linters)
+/analyze:static --security         # Security-focused analysis
 ```
 
 ## Supported Languages and Linters
@@ -466,7 +466,7 @@ Note: Score uses weighted algorithm with diminishing returns
 ### Quick Analysis (Fast Mode)
 
 ```bash
-/autonomous-agent:analyze:static --quick
+/analyze:static --quick
 ```
 
 **Features**:
@@ -480,7 +480,7 @@ Note: Score uses weighted algorithm with diminishing returns
 ### Security-Focused Analysis
 
 ```bash
-/autonomous-agent:analyze:static --security
+/analyze:static --security
 ```
 
 **Features**:
@@ -500,17 +500,17 @@ Note: Score uses weighted algorithm with diminishing returns
 ### Category-Specific Analysis
 
 ```bash
-/autonomous-agent:analyze:static --category=typing     # Only type checking
-/autonomous-agent:analyze:static --category=style      # Only style checking
-/autonomous-agent:analyze:static --category=complexity # Only complexity analysis
+/analyze:static --category=typing     # Only type checking
+/analyze:static --category=style      # Only style checking
+/analyze:static --category=complexity # Only complexity analysis
 ```
 
 ### Output Formats
 
 ```bash
-/autonomous-agent:analyze:static --format=json         # JSON output
-/autonomous-agent:analyze:static --format=sarif        # SARIF for CI/CD
-/autonomous-agent:analyze:static --format=html         # HTML report
+/analyze:static --format=json         # JSON output
+/analyze:static --format=sarif        # SARIF for CI/CD
+/analyze:static --format=html         # HTML report
 ```
 
 ## Integration with Learning System
@@ -558,7 +558,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run Static Analysis
         run: |
-          /autonomous-agent:analyze:static --format=sarif --output=results.sarif
+          /analyze:static --format=sarif --output=results.sarif
       - name: Upload Results
         uses: github/codeql-action/upload-sarif@v2
         with:
@@ -571,7 +571,7 @@ jobs:
 static-analysis:
   stage: test
   script:
-    - /autonomous-agent:analyze:static --format=json --output=results.json
+    - /analyze:static --format=json --output=results.json
   artifacts:
     reports:
       codequality: results.json
@@ -614,7 +614,7 @@ npm install -g eslint prettier
 
 **Solution**:
 ```bash
-/autonomous-agent:analyze:static --timeout=120  # Increase timeout
+/analyze:static --timeout=120  # Increase timeout
 ```
 
 ### Issue: Too Many Style Issues
@@ -630,7 +630,7 @@ black .
 prettier --write .
 
 # Then analyze
-/autonomous-agent:analyze:static
+/analyze:static
 ```
 
 ## Best Practices

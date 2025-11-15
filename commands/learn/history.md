@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:orchestrator
 
 # Learn-History Command
 
-## Command: `/autonomous-agent:learn:history`
+## Command: `/learn:history`
 
 **Learn from repository evolution** - Analyzes commit history in external GitHub/GitLab repositories to discover successful debugging patterns, development workflows, and improvement strategies that can be applied to the current project.
 
@@ -32,43 +32,43 @@ delegates-to: autonomous-agent:orchestrator
 ### Basic Usage
 ```bash
 # Learn from repository history
-/autonomous-agent:learn:history https://github.com/username/repo
+/learn:history https://github.com/username/repo
 
 # Learn from specific branch
-/autonomous-agent:learn:history https://github.com/username/repo --branch develop
+/learn:history https://github.com/username/repo --branch develop
 
 # Learn from date range
-/autonomous-agent:learn:history https://github.com/username/repo --since "2024-01-01" --until "2024-12-31"
+/learn:history https://github.com/username/repo --since "2024-01-01" --until "2024-12-31"
 ```
 
 ### Focused Analysis
 ```bash
 # Focus on bug fixes
-/autonomous-agent:learn:history https://github.com/user/repo --focus bug-fixes
+/learn:history https://github.com/user/repo --focus bug-fixes
 
 # Focus on refactoring patterns
-/autonomous-agent:learn:history https://github.com/user/repo --focus refactoring
+/learn:history https://github.com/user/repo --focus refactoring
 
 # Focus on test improvements
-/autonomous-agent:learn:history https://github.com/user/repo --focus testing
+/learn:history https://github.com/user/repo --focus testing
 
 # Focus on performance improvements
-/autonomous-agent:learn:history https://github.com/user/repo --focus performance
+/learn:history https://github.com/user/repo --focus performance
 ```
 
 ### Advanced Options
 ```bash
 # Analyze specific contributor's patterns
-/autonomous-agent:learn:history https://github.com/user/repo --author "developer@email.com"
+/learn:history https://github.com/user/repo --author "developer@email.com"
 
 # Deep analysis with AI-powered insights
-/autonomous-agent:learn:history https://github.com/user/repo --deep-analysis
+/learn:history https://github.com/user/repo --deep-analysis
 
 # Compare with current project
-/autonomous-agent:learn:history https://github.com/user/repo --apply-to-current
+/learn:history https://github.com/user/repo --apply-to-current
 
 # Generate actionable roadmap
-/autonomous-agent:learn:history https://github.com/user/repo --generate-improvements
+/learn:history https://github.com/user/repo --generate-improvements
 ```
 
 ## Output Format
@@ -324,19 +324,19 @@ Contributors: 487
 |    Command: Configure Git hooks                      |
 |    Impact: Better changelog generation               |
 |    Effort: 30 minutes                                |
-|    Implementation: /autonomous-agent:dev:auto "add conventional commit hooks"
+|    Implementation: /dev:auto "add conventional commit hooks"
 |                                                       |
 | 2. Implement Pre-Commit Type Checking                |
 |    Command: Add mypy to pre-commit                   |
 |    Impact: Catch type errors before commit           |
 |    Effort: 1 hour                                    |
-|    Implementation: /autonomous-agent:dev:auto "add mypy pre-commit hook"
+|    Implementation: /dev:auto "add mypy pre-commit hook"
 |                                                       |
 | 3. Add Test Coverage Reporting                       |
 |    Command: Integrate coverage.py                    |
 |    Impact: Visibility into test gaps                 |
 |    Effort: 45 minutes                                |
-|    Implementation: /autonomous-agent:dev:auto "add test coverage reporting"
+|    Implementation: /dev:auto "add test coverage reporting"
 |                                                       |
 | SHORT-TERM ACTIONS (This Month):                     |
 |                                                       |
@@ -379,8 +379,8 @@ Contributors: 487
 
 Ready to Apply Learnings?
 * Start with immediate actions (easiest wins)
-* Use /autonomous-agent:dev:auto for implementation
-* Track progress with /autonomous-agent:learn:analytics
+* Use /dev:auto for implementation
+* Track progress with /learn:analytics
 
 Want More Historical Analysis?
 * Analyze another repository for comparison
@@ -429,17 +429,17 @@ Stores historical patterns for future reference:
 
 ### Learning Debug Patterns
 ```bash
-/autonomous-agent:learn:history https://github.com/user/repo --focus bug-fixes
+/learn:history https://github.com/user/repo --focus bug-fixes
 ```
 
 ### Understanding Quality Evolution
 ```bash
-/autonomous-agent:learn:history https://github.com/user/repo --focus quality-improvements
+/learn:history https://github.com/user/repo --focus quality-improvements
 ```
 
 ### Studying Refactoring Success
 ```bash
-/autonomous-agent:learn:history https://github.com/user/repo --focus refactoring
+/learn:history https://github.com/user/repo --focus refactoring
 ```
 
 ---

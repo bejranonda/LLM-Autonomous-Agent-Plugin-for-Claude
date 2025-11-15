@@ -1,7 +1,7 @@
 ---
 name: validate:commands
 description: Command validation and discoverability verification with automatic recovery
-usage: /autonomous-agent:validate:commands [options]
+usage: /validate:commands [options]
 category: validate
 subcategory: system
 ---
@@ -12,17 +12,17 @@ subcategory: system
 
 The command validation system ensures all commands exist, are discoverable, and function correctly. It validates command structure, checks discoverability, and provides automatic recovery for missing commands.
 
-This command specifically addresses issues like the missing `/autonomous-agent:monitor:dashboard` command by validating that all expected commands are present and accessible.
+This command specifically addresses issues like the missing `/monitor:dashboard` command by validating that all expected commands are present and accessible.
 
 ## Usage
 
 ```bash
-/autonomous-agent:validate:commands                                    # Validate all commands
-/autonomous-agent:validate:commands --category monitor                 # Validate specific category
-/autonomous-agent:validate:commands --missing-only                     # Show only missing commands
-/autonomous-agent:validate:commands --discoverability                  # Check discoverability features
-/autonomous-agent:validate:commands --recover                          # Auto-recover missing commands
-/autonomous-agent:validate:commands --test /autonomous-agent:monitor:dashboard          # Test specific command
+/validate:commands                                    # Validate all commands
+/validate:commands --category monitor                 # Validate specific category
+/validate:commands --missing-only                     # Show only missing commands
+/validate:commands --discoverability                  # Check discoverability features
+/validate:commands --recover                          # Auto-recover missing commands
+/validate:commands --test /monitor:dashboard          # Test specific command
 ```
 
 ## Parameters
@@ -32,40 +32,40 @@ Validate commands in a specific category only.
 
 - **Type**: String
 - **Valid values**: dev, analyze, validate, debug, learn, workspace, monitor
-- **Example**: `/autonomous-agent:validate:commands --category monitor`
+- **Example**: `/validate:commands --category monitor`
 
 ### --missing-only
 Show only missing commands, skip validation of existing commands.
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/autonomous-agent:validate:commands --missing-only`
+- **Example**: `/validate:commands --missing-only`
 
 ### --discoverability
 Focus on discoverability validation (examples, descriptions, accessibility).
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/autonomous-agent:validate:commands --discoverability`
+- **Example**: `/validate:commands --discoverability`
 
 ### --recover
 Automatically attempt to recover missing commands.
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/autonomous-agent:validate:commands --recover`
+- **Example**: `/validate:commands --recover`
 
 ### --test
 Test a specific command for validation.
 
-- **Type**: String (command format: /autonomous-agent:category:name)
-- **Example**: `/autonomous-agent:validate:commands --test /autonomous-agent:monitor:dashboard`
+- **Type**: String (command format: /category:name)
+- **Example**: `/validate:commands --test /monitor:dashboard`
 
 ## Examples
 
 ### Basic Command Validation
 ```bash
-/autonomous-agent:validate:commands
+/validate:commands
 ```
 Output:
 ```
@@ -79,7 +79,7 @@ Output:
 
 ### Category-Specific Validation
 ```bash
-/autonomous-agent:validate:commands --category monitor
+/validate:commands --category monitor
 ```
 Output:
 ```
@@ -93,17 +93,17 @@ Output:
 
 ### Missing Commands Only
 ```bash
-/autonomous-agent:validate:commands --missing-only
+/validate:commands --missing-only
 ```
 Output:
 ```
 ❌ Missing Commands Detected:
-  * /autonomous-agent:monitor:dashboard (CRITICAL)
+  * /monitor:dashboard (CRITICAL)
     Reason: File not found
     Impact: Dashboard functionality unavailable
     Recovery: Auto-recover available
 
-  * /autonomous-agent:workspace:archive (WARNING)
+  * /workspace:archive (WARNING)
     Reason: File not found
     Impact: Workspace archive functionality missing
     Recovery: Template creation available
@@ -111,7 +111,7 @@ Output:
 
 ### Auto-Recovery Mode
 ```bash
-/autonomous-agent:validate:commands --recover
+/validate:commands --recover
 ```
 Output:
 ```
@@ -119,8 +119,8 @@ Output:
 📋 Missing Commands Found: 2
 
 🔧 Recovery Progress:
-  ✅ /autonomous-agent:monitor:dashboard restored from Git (commit: a4996ed)
-  ❌ /autonomous-agent:workspace:archive recovery failed (no template available)
+  ✅ /monitor:dashboard restored from Git (commit: a4996ed)
+  ❌ /workspace:archive recovery failed (no template available)
 
 📊 Final Validation:
   * Commands Present: 24/25
@@ -129,7 +129,7 @@ Output:
 
 ### Discoverability Check
 ```bash
-/autonomous-agent:validate:commands --discoverability
+/validate:commands --discoverability
 ```
 Output:
 ```
@@ -248,7 +248,7 @@ For commands that can't be auto-recovered:
    ---
    name: monitor:dashboard
    description: Launch system monitoring dashboard
-   usage: /autonomous-agent:monitor:dashboard [options]
+   usage: /monitor:dashboard [options]
    category: monitor
    subcategory: system
    ---
@@ -285,7 +285,7 @@ Command validation score calculation:
 ### Missing Commands
 **Symptoms**: Command validation shows missing commands
 **Solutions**:
-1. Run auto-recovery: `/autonomous-agent:validate:commands --recover`
+1. Run auto-recovery: `/validate:commands --recover`
 2. Check Git history for deleted files
 3. Create from template manually
 4. Verify file system permissions
@@ -312,7 +312,7 @@ Command validation score calculation:
 1. Use proper category structure
 2. Follow naming conventions
 3. Organize with consistent patterns
-4. Run workspace organization: `/autonomous-agent:workspace:organize`
+4. Run workspace organization: `/workspace:organize`
 
 ## Best Practices
 
@@ -362,22 +362,22 @@ Automatically validates after:
 ### Custom Validation Rules
 ```bash
 # Validate with custom rules
-/autonomous-agent:validate:commands --rules custom_rules.json
+/validate:commands --rules custom_rules.json
 
 # Validate specific patterns
-/autonomous-agent:validate:commands --pattern "*/monitor/*.md"
+/validate:commands --pattern "*/monitor/*.md"
 
 # Exclude specific commands
-/autonomous-agent:validate:commands --exclude "*/test/*.md"
+/validate:commands --exclude "*/test/*.md"
 ```
 
 ### Batch Operations
 ```bash
 # Validate and fix issues
-/autonomous-agent:validate:commands --fix-discoverability --add-examples
+/validate:commands --fix-discoverability --add-examples
 
 # Validate and generate report
-/autonomous-agent:validate:commands --generate-report --output validation_report.md
+/validate:commands --generate-report --output validation_report.md
 ```
 
 ## Monitoring and Analytics
@@ -388,15 +388,15 @@ Track command system health with:
 - **Recovery Success**: Auto-recovery effectiveness
 - **Usage Patterns**: Command usage and discoverability
 
-Use `/autonomous-agent:learn:performance` for analytics and `/autonomous-agent:learn:analytics` for comprehensive reporting.
+Use `/learn:performance` for analytics and `/learn:analytics` for comprehensive reporting.
 
 ## Related Commands
 
-- `/autonomous-agent:validate:integrity` - Complete system integrity validation
-- `/autonomous-agent:validate:all` - Full system validation
-- `/autonomous-agent:workspace:organize` - Fix file organization issues
-- `/autonomous-agent:learn:analytics` - Command system analytics
-- `/autonomous-agent:monitor:recommend` - Get system improvement recommendations
+- `/validate:integrity` - Complete system integrity validation
+- `/validate:all` - Full system validation
+- `/workspace:organize` - Fix file organization issues
+- `/learn:analytics` - Command system analytics
+- `/monitor:recommend` - Get system improvement recommendations
 
 ## Configuration
 

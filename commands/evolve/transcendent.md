@@ -4,7 +4,7 @@ description: Experimental: Push AI boundaries with next-gen capabilities and rev
 delegates-to: autonomous-agent:orchestrator
 ---
 
-# /autonomous-agent:evolve:transcendent - Autonomous Transcendent Evolution Command
+# /evolve:transcendent - Autonomous Transcendent Evolution Command
 
 ## Description
 
@@ -13,7 +13,7 @@ Initiates autonomous transcendent evolution to implement next-generation AI capa
 ## Usage
 
 ```bash
-/autonomous-agent:evolve:transcendent [evolution_type] [intensity_level]
+/evolve:transcendent [evolution_type] [intensity_level]
 ```
 
 **Evolution Types**:
@@ -143,16 +143,16 @@ The detailed report includes:
 
 ```bash
 # Initiate moderate AGI architecture evolution
-/autonomous-agent:evolve:transcendent agi-architecture moderate
+/evolve:transcendent agi-architecture moderate
 
 # Begin aggressive quantum integration
-/autonomous-agent:evolve:transcendent quantum-integration aggressive
+/evolve:transcendent quantum-integration aggressive
 
 # Launch full revolutionary transcendence
-/autonomous-agent:evolve:transcendent full-transcendence revolutionary
+/evolve:transcendent full-transcendence revolutionary
 
 # Achieve ultimate omniscient evolution
-/autonomous-agent:evolve:transcendent full-transcendence omniscient
+/evolve:transcendent full-transcendence omniscient
 ```
 
 ## Integration

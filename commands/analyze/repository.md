@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:orchestrator
 
 # Analyze-Repository Command
 
-## Command: `/autonomous-agent:analyze:repository`
+## Command: `/analyze:repository`
 
 **Deep analysis of external repositories** - Explores and analyzes GitHub/GitLab repositories (by URL or local path) to identify strengths, weaknesses, features, and generate specific recommendations for enhancing this plugin based on discovered capabilities.
 
@@ -33,46 +33,46 @@ delegates-to: autonomous-agent:orchestrator
 ### Basic Usage
 ```bash
 # Analyze GitHub repository by URL
-/autonomous-agent:analyze:repository https://github.com/username/repo
+/analyze:repository https://github.com/username/repo
 
 # Analyze local repository
-/autonomous-agent:analyze:repository /path/to/local/repo
+/analyze:repository /path/to/local/repo
 
 # Analyze GitLab repository
-/autonomous-agent:analyze:repository https://gitlab.com/username/repo
+/analyze:repository https://gitlab.com/username/repo
 ```
 
 ### With Specific Focus
 ```bash
 # Focus on architecture and design
-/autonomous-agent:analyze:repository https://github.com/user/repo --focus architecture
+/analyze:repository https://github.com/user/repo --focus architecture
 
 # Focus on testing strategies
-/autonomous-agent:analyze:repository https://github.com/user/repo --focus testing
+/analyze:repository https://github.com/user/repo --focus testing
 
 # Focus on documentation approach
-/autonomous-agent:analyze:repository https://github.com/user/repo --focus documentation
+/analyze:repository https://github.com/user/repo --focus documentation
 
 # Focus on CI/CD and automation
-/autonomous-agent:analyze:repository https://github.com/user/repo --focus automation
+/analyze:repository https://github.com/user/repo --focus automation
 ```
 
 ### Advanced Options
 ```bash
 # Deep analysis with all metrics
-/autonomous-agent:analyze:repository https://github.com/user/repo --deep-analysis
+/analyze:repository https://github.com/user/repo --deep-analysis
 
 # Compare with current project
-/autonomous-agent:analyze:repository https://github.com/user/repo --compare-with-current
+/analyze:repository https://github.com/user/repo --compare-with-current
 
 # Focus on plugin enhancement opportunities
-/autonomous-agent:analyze:repository https://github.com/user/repo --plugin-enhancement-focus
+/analyze:repository https://github.com/user/repo --plugin-enhancement-focus
 
 # Include dependency analysis
-/autonomous-agent:analyze:repository https://github.com/user/repo --analyze-dependencies
+/analyze:repository https://github.com/user/repo --analyze-dependencies
 
 # Generate implementation roadmap
-/autonomous-agent:analyze:repository https://github.com/user/repo --generate-roadmap
+/analyze:repository https://github.com/user/repo --generate-roadmap
 ```
 
 ## Output Format
@@ -312,7 +312,7 @@ Branch: main | Commit: abc1234 | Stars: 68,500
 |    * Auto-analyze API endpoints in projects          |
 |    * Generate OpenAPI/Swagger documentation          |
 |    * Validate API contracts automatically            |
-|    * Integrate with /autonomous-agent:validate:fullstack              |
+|    * Integrate with /validate:fullstack              |
 |    |                                                  |
 |    Implementation Approach:                           |
 |    * Create skills/api-documentation/ skill          |
@@ -416,7 +416,7 @@ Branch: main | Commit: abc1234 | Stars: 68,500
 | Week 1-2: API Schema Generation                      |
 | +- Create api-schema-generator agent                |
 | +- Implement OpenAPI schema extraction              |
-| +- Add to /autonomous-agent:validate:fullstack command               |
+| +- Add to /validate:fullstack command               |
 | +- Test with multiple API frameworks                |
 |                                                       |
 | Week 2-3: Dependency Injection System                |
@@ -516,8 +516,8 @@ Branch: main | Commit: abc1234 | Stars: 68,500
 
 Ready to Implement Enhancements?
 * Start with Phase 1, High Priority items
-* Use: /autonomous-agent:dev:auto "implement API schema generation agent"
-* Track progress with: /autonomous-agent:learn:analytics
+* Use: /dev:auto "implement API schema generation agent"
+* Track progress with: /learn:analytics
 
 Want More Analysis?
 * Analyze similar repositories for comparison
@@ -541,7 +541,7 @@ This analysis has been stored in pattern database for future reference.
 
 ## Integration with Learning System
 
-The `/autonomous-agent:analyze:repository` command integrates with pattern learning:
+The `/analyze:repository` command integrates with pattern learning:
 
 **Learning from External Repos**:
 - Successful design patterns
@@ -575,7 +575,7 @@ The `/autonomous-agent:analyze:repository` command integrates with pattern learn
 
 ## Agent Delegation
 
-`/autonomous-agent:analyze:repository` delegates to:
+`/analyze:repository` delegates to:
 - **orchestrator**: Main analysis coordinator
 - **code-analyzer**: Repository structure analysis
 - **quality-controller**: Quality assessment
@@ -596,31 +596,31 @@ Auto-loads relevant skills:
 ### Learning from Popular Projects
 ```bash
 # Learn from FastAPI
-/autonomous-agent:analyze:repository https://github.com/tiangolo/fastapi
+/analyze:repository https://github.com/tiangolo/fastapi
 
 # Learn from Django
-/autonomous-agent:analyze:repository https://github.com/django/django
+/analyze:repository https://github.com/django/django
 
 # Learn from Flask
-/autonomous-agent:analyze:repository https://github.com/pallets/flask
+/analyze:repository https://github.com/pallets/flask
 ```
 
 ### Competitive Analysis
 ```bash
 # Compare with similar tools
-/autonomous-agent:analyze:repository https://github.com/competitor/tool --compare-with-current
+/analyze:repository https://github.com/competitor/tool --compare-with-current
 ```
 
 ### Feature Discovery
 ```bash
 # Find interesting features
-/autonomous-agent:analyze:repository https://github.com/user/repo --focus features
+/analyze:repository https://github.com/user/repo --focus features
 ```
 
 ### Plugin Enhancement Planning
 ```bash
 # Focus on plugin improvements
-/autonomous-agent:analyze:repository https://github.com/user/repo --plugin-enhancement-focus
+/analyze:repository https://github.com/user/repo --plugin-enhancement-focus
 ```
 
 ## Best Practices
@@ -628,13 +628,13 @@ Auto-loads relevant skills:
 ### Good Repository Analysis Requests
 ```bash
 # Specific focus area
-/autonomous-agent:analyze:repository https://github.com/user/repo --focus testing
+/analyze:repository https://github.com/user/repo --focus testing
 
 # With comparison
-/autonomous-agent:analyze:repository https://github.com/user/repo --compare-with-current
+/analyze:repository https://github.com/user/repo --compare-with-current
 
 # For enhancement planning
-/autonomous-agent:analyze:repository https://github.com/user/repo --plugin-enhancement-focus
+/analyze:repository https://github.com/user/repo --plugin-enhancement-focus
 ```
 
 ### Choosing Repositories to Analyze

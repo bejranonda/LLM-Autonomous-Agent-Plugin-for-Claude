@@ -22,7 +22,7 @@ Generate comprehensive performance analytics report showing learning effectivene
 ## Usage
 
 ```bash
-/autonomous-agent:learn:performance
+/learn:performance
 ```
 
 ## What You'll Get

@@ -33,7 +33,7 @@ This command delegates to the **validation-controller** agent which:
 ## Usage
 
 ```bash
-/autonomous-agent:validate:all
+/validate:all
 ```
 
 ## Expected Output (Two-Tier Presentation)
@@ -268,7 +268,7 @@ This validation compared to baseline (first validation):
 
 ## When to Use
 
-Run `/autonomous-agent:validate:all` when:
+Run `/validate:all` when:
 - Before releases or major changes
 - After significant refactoring
 - When documentation is updated
@@ -285,7 +285,7 @@ The orchestrator automatically triggers validation:
 - **Post-documentation**: After doc updates (checks consistency)
 - **Periodic**: Every 25 tasks (comprehensive audit)
 
-Users can also manually trigger full validation with `/autonomous-agent:validate:all`.
+Users can also manually trigger full validation with `/validate:all`.
 
 ## Success Criteria
 

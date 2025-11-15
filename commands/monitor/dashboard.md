@@ -8,7 +8,7 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 # Monitor Dashboard Command
 
-## Command: `/autonomous-agent:monitor:dashboard`
+## Command: `/monitor:dashboard`
 
 **Simple launcher** that starts a monitoring dashboard in the background and opens the web browser.
 
@@ -29,37 +29,37 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 ### Basic Usage
 ```bash
 # Launch monitoring dashboard in background (default)
-/autonomous-agent:monitor:dashboard
+/monitor:dashboard
 
 # Launch with custom port
-/autonomous-agent:monitor:dashboard --port 8080
+/monitor:dashboard --port 8080
 
 # Launch with external access (trusted networks only)
-/autonomous-agent:monitor:dashboard --host 0.0.0.0
+/monitor:dashboard --host 0.0.0.0
 
 # Launch with custom data directory
-/autonomous-agent:monitor:dashboard --data-dir /path/to/patterns
+/monitor:dashboard --data-dir /path/to/patterns
 
 # Check if dashboard is running
-/autonomous-agent:monitor:dashboard --status
+/monitor:dashboard --status
 
 # Stop running dashboard
-/autonomous-agent:monitor:dashboard --stop
+/monitor:dashboard --stop
 ```
 
 ### Advanced Options
 ```bash
 # Launch with debug mode (foreground for debugging)
-/autonomous-agent:monitor:dashboard --debug
+/monitor:dashboard --debug
 
 # Launch with custom refresh rate
-/autonomous-agent:monitor:dashboard --refresh-rate 30
+/monitor:dashboard --refresh-rate 30
 
 # Generate report without launching server
-/autonomous-agent:monitor:dashboard --report-only
+/monitor:dashboard --report-only
 
 # Force restart if already running
-/autonomous-agent:monitor:dashboard --restart
+/monitor:dashboard --restart
 ```
 
 **Expected Performance**: Command completes in 1-2 seconds with dashboard running in background and browser automatically opened. No console output.
@@ -125,7 +125,7 @@ if command -v bash >/dev/null 2>&1; then
             echo "[OK] Dashboard validation passed - no JavaScript errors detected"
         else
             echo "[WARN] Dashboard validation detected issues"
-            echo "[INFO] Run /autonomous-agent:validate:web http://127.0.0.1:5000 for details"
+            echo "[INFO] Run /validate:web http://127.0.0.1:5000 for details"
         fi
     fi
 
@@ -268,7 +268,7 @@ def start_dashboard(dashboard_path: str, patterns_dir: str) -> bool:
                         print('[OK] Dashboard validation passed - no JavaScript errors detected')
                     else:
                         print('[WARN] Dashboard validation detected issues')
-                        print('[INFO] Run /autonomous-agent:validate:web http://127.0.0.1:5000 for details')
+                        print('[INFO] Run /validate:web http://127.0.0.1:5000 for details')
             except Exception:
                 pass  # Validation is optional, don't fail if unavailable
 
@@ -395,13 +395,13 @@ All error handling and status information is available through the web dashboard
 
 ```bash
 # Check dashboard status
-/autonomous-agent:monitor:dashboard --status
+/monitor:dashboard --status
 
 # Stop dashboard
-/autonomous-agent:monitor:dashboard --stop
+/monitor:dashboard --stop
 
 # Restart dashboard
-/autonomous-agent:monitor:dashboard --restart
+/monitor:dashboard --restart
 ```
 
 *Process management commands are handled through the dashboard web interface.*
@@ -576,7 +576,7 @@ PATTERNS_DIR=.claude-patterns    # Pattern data directory
 ### Network Access (Use with Caution)
 ```bash
 # Enable external access (trusted networks only)
-/autonomous-agent:monitor:dashboard --host 0.0.0.0
+/monitor:dashboard --host 0.0.0.0
 
 # Add firewall rules for security
 sudo ufw allow 5000  # Linux
@@ -594,31 +594,31 @@ sudo ufw allow 5000  # Linux
 ### Pre-Dashboard Analysis
 ```bash
 # Generate comprehensive data before dashboard
-/autonomous-agent:analyze:project
-/autonomous-agent:learn:analytics
-/autonomous-agent:analyze:quality
+/analyze:project
+/learn:analytics
+/analyze:quality
 
 # Then launch dashboard
-/autonomous-agent:monitor:dashboard
+/monitor:dashboard
 ```
 
 ### Post-Dashboard Actions
 ```bash
 # Generate reports based on dashboard insights
-/autonomous-agent:workspace:reports
-/autonomous-agent:learn:performance
+/workspace:reports
+/learn:performance
 
 # Implement optimizations
-/autonomous-agent:workspace:improve
+/workspace:improve
 ```
 
 ### Continuous Monitoring
 ```bash
 # Background monitoring
-/autonomous-agent:monitor:dashboard --background
+/monitor:dashboard --background
 
 # Generate periodic reports
-/autonomous-agent:workspace:organize
+/workspace:organize
 ```
 
 ## Troubleshooting
@@ -628,7 +628,7 @@ sudo ufw allow 5000  # Linux
 **Port Already in Use**
 ```bash
 # Use different port
-/autonomous-agent:monitor:dashboard --port 8080
+/monitor:dashboard --port 8080
 
 # Kill existing process
 lsof -ti:5000 | xargs kill -9
@@ -637,10 +637,10 @@ lsof -ti:5000 | xargs kill -9
 **No Data Available**
 ```bash
 # Initialize pattern learning
-/autonomous-agent:learn:init
+/learn:init
 
 # Generate some activity
-/autonomous-agent:analyze:project
+/analyze:project
 
 # Check data directory
 ls -la .claude-patterns/
@@ -662,19 +662,19 @@ df -h    # Disk space
 **Performance Issues**
 ```bash
 # Increase cache TTL
-/autonomous-agent:monitor:dashboard --cache-ttl 120
+/monitor:dashboard --cache-ttl 120
 
 # Reduce refresh rate
-/autonomous-agent:monitor:dashboard --refresh-rate 60
+/monitor:dashboard --refresh-rate 60
 
 # Clear old data
-/autonomous-agent:monitor:dashboard --cleanup-days 7
+/monitor:dashboard --cleanup-days 7
 ```
 
 ### Debug Mode
 ```bash
 # Launch with debug output
-/autonomous-agent:monitor:dashboard --debug
+/monitor:dashboard --debug
 
 # Check log files
 tail -f .claude/logs/dashboard.log
@@ -725,17 +725,17 @@ python <plugin_path>/lib/dashboard.py --validate
 ### Basic Monitoring
 ```bash
 # Launch dashboard for local development
-/autonomous-agent:monitor:dashboard
+/monitor:dashboard
 
 # Monitor specific project
 cd /path/to/project
-/autonomous-agent:monitor:dashboard --data-dir .claude-patterns
+/monitor:dashboard --data-dir .claude-patterns
 ```
 
 ### Team Monitoring
 ```bash
 # Share dashboard with team
-/autonomous-agent:monitor:dashboard --host 0.0.0.0 --port 8080
+/monitor:dashboard --host 0.0.0.0 --port 8080
 
 # Team members access at:
 # http://your-ip:8080
@@ -744,10 +744,10 @@ cd /path/to/project
 ### Production Monitoring
 ```bash
 # Background monitoring with alerts
-/autonomous-agent:monitor:dashboard --background --email-alerts
+/monitor:dashboard --background --email-alerts
 
 # Generate daily reports
-/autonomous-agent:monitor:dashboard --report-only --email-reports
+/monitor:dashboard --report-only --email-reports
 ```
 
 ---

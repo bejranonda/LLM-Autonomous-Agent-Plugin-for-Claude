@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:git-repository-manager
 
 # Dev-Commit Command
 
-## Command: `/autonomous-agent:dev:commit`
+## Command: `/dev:commit`
 
 **Smart commit management** - Analyzes changes, generates intelligent commit messages following conventional commit standards, stages appropriate files, and creates commits with learning integration. Does NOT create releases or tags.
 
@@ -34,67 +34,67 @@ delegates-to: autonomous-agent:git-repository-manager
 ### Basic Usage
 ```bash
 # Analyze and commit all changes with smart grouping
-/autonomous-agent:dev:commit
+/dev:commit
 
 # Commit with custom message
-/autonomous-agent:dev:commit "feat: add new authentication system"
+/dev:commit "feat: add new authentication system"
 
 # Commit specific files only
-/autonomous-agent:dev:commit --files "src/auth.py,tests/test_auth.py"
+/dev:commit --files "src/auth.py,tests/test_auth.py"
 ```
 
 ### Automatic Commit Message Generation
 ```bash
 # Let the agent analyze and generate appropriate messages
-/autonomous-agent:dev:commit --auto
+/dev:commit --auto
 
 # Generate message but review before committing
-/autonomous-agent:dev:commit --auto --interactive
+/dev:commit --auto --interactive
 
 # Use conventional commit format
-/autonomous-agent:dev:commit --conventional
+/dev:commit --conventional
 ```
 
 ### Commit Grouping Options
 ```bash
 # Group all changes into single commit
-/autonomous-agent:dev:commit --single
+/dev:commit --single
 
 # Create multiple commits grouped by type
-/autonomous-agent:dev:commit --group-by-type
+/dev:commit --group-by-type
 
 # Create commit per file
-/autonomous-agent:dev:commit --per-file
+/dev:commit --per-file
 
 # Create commit per directory
-/autonomous-agent:dev:commit --per-directory
+/dev:commit --per-directory
 ```
 
 ### Push Options
 ```bash
 # Commit and push to remote
-/autonomous-agent:dev:commit --push
+/dev:commit --push
 
 # Commit and push to specific branch
-/autonomous-agent:dev:commit --push --branch feature/new-feature
+/dev:commit --push --branch feature/new-feature
 
 # Commit only (no push) - DEFAULT
-/autonomous-agent:dev:commit --no-push
+/dev:commit --no-push
 ```
 
 ### Advanced Options
 ```bash
 # Include untracked files
-/autonomous-agent:dev:commit --include-untracked
+/dev:commit --include-untracked
 
 # Exclude specific patterns
-/autonomous-agent:dev:commit --exclude "*.log,*.tmp"
+/dev:commit --exclude "*.log,*.tmp"
 
 # Verbose output with reasoning
-/autonomous-agent:dev:commit --verbose
+/dev:commit --verbose
 
 # Dry run (show what would be committed)
-/autonomous-agent:dev:commit --dry-run
+/dev:commit --dry-run
 ```
 
 ## Output Format
@@ -271,7 +271,7 @@ Triggers `refactor:` commit when:
 
 ## Integration with Learning System
 
-The `/autonomous-agent:dev:commit` command integrates with pattern learning:
+The `/dev:commit` command integrates with pattern learning:
 
 **Learning from Commits**:
 - Effective commit message patterns
@@ -350,7 +350,7 @@ Choice:
 
 ## Best Practices
 
-### When to Use `/autonomous-agent:dev:commit`
+### When to Use `/dev:commit`
 
 ✅ **Good use cases:**
 - During active development (commit frequently)
@@ -360,9 +360,9 @@ Choice:
 - When you want smart commit organization
 
 ❌ **Don't use for:**
-- Creating releases (use `/autonomous-agent:dev:release` instead)
-- Version tagging (use `/autonomous-agent:dev:release` instead)
-- Publishing to package managers (use `/autonomous-agent:dev:release`)
+- Creating releases (use `/dev:release` instead)
+- Version tagging (use `/dev:release` instead)
+- Publishing to package managers (use `/dev:release`)
 
 ### Commit Frequency
 
@@ -403,28 +403,28 @@ asdf
 ### Development Workflow
 ```bash
 # Work on feature
-/autonomous-agent:dev:auto "add new feature"
+/dev:auto "add new feature"
 
 # Commit progress regularly
-/autonomous-agent:dev:commit --auto
+/dev:commit --auto
 
 # Continue working...
-/autonomous-agent:dev:commit --auto
+/dev:commit --auto
 
 # When ready to release
-/autonomous-agent:dev:release
+/dev:release
 ```
 
 ### Pre-Release Workflow
 ```bash
 # Commit all pending changes
-/autonomous-agent:dev:commit --auto --group-by-type
+/dev:commit --auto --group-by-type
 
 # Validate quality
-/autonomous-agent:analyze:quality
+/analyze:quality
 
 # Create release
-/autonomous-agent:dev:release
+/dev:release
 ```
 
 ### Feature Branch Workflow
@@ -433,13 +433,13 @@ asdf
 git checkout -b feature/new-auth
 
 # Work and commit
-/autonomous-agent:dev:commit --auto
+/dev:commit --auto
 
 # Push to remote branch
-/autonomous-agent:dev:commit --push --branch feature/new-auth
+/dev:commit --push --branch feature/new-auth
 
 # Create PR when ready
-/autonomous-agent:dev:pr-review
+/dev:pr-review
 ```
 
 ## Troubleshooting
@@ -450,10 +450,10 @@ git checkout -b feature/new-auth
 git status
 
 # Show what would be committed
-/autonomous-agent:dev:commit --dry-run
+/dev:commit --dry-run
 
 # Include untracked files
-/autonomous-agent:dev:commit --include-untracked
+/dev:commit --include-untracked
 ```
 
 ### Commit Failed
@@ -465,7 +465,7 @@ git status
 git add <resolved-files>
 
 # Retry commit
-/autonomous-agent:dev:commit --retry
+/dev:commit --retry
 ```
 
 ### Wrong Files Staged
@@ -474,7 +474,7 @@ git add <resolved-files>
 git reset
 
 # Specify files explicitly
-/autonomous-agent:dev:commit --files "file1.py,file2.py"
+/dev:commit --files "file1.py,file2.py"
 ```
 
 ### Push Failed
@@ -486,7 +486,7 @@ git remote -v
 git pull origin main
 
 # Retry push
-/autonomous-agent:dev:commit --push --retry
+/dev:commit --push --retry
 ```
 
 ## Performance Metrics
@@ -510,7 +510,7 @@ Expected performance:
 
 ### Example 1: Auto-commit with smart grouping
 ```bash
-$ /autonomous-agent:dev:commit --auto
+$ /dev:commit --auto
 
 Analyzing changes...
 Found: 8 modified files, 4 new files
@@ -528,7 +528,7 @@ Total changes committed: 12 files
 
 ### Example 2: Custom commit with specific files
 ```bash
-$ /autonomous-agent:dev:commit "feat: implement JWT token validation" --files "src/auth/jwt.py,tests/test_jwt.py"
+$ /dev:commit "feat: implement JWT token validation" --files "src/auth/jwt.py,tests/test_jwt.py"
 
 Staging files...
 +- src/auth/jwt.py
@@ -540,7 +540,7 @@ Creating commit...
 
 ### Example 3: Interactive review mode
 ```bash
-$ /autonomous-agent:dev:commit --auto --interactive
+$ /dev:commit --auto --interactive
 
 [Shows review interface for each proposed commit]
 
@@ -555,7 +555,7 @@ Result:
 
 ### Example 4: Commit and push
 ```bash
-$ /autonomous-agent:dev:commit --auto --push
+$ /dev:commit --auto --push
 
 Creating commits...
 [PASS] 3 commits created

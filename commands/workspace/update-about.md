@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:documentation-generator
 
 # Workspace Update-About Command
 
-## Command: `/autonomous-agent:workspace:update-about`
+## Command: `/workspace:update-about`
 
 **GitHub About section optimization** - Updates the repository's About section (description, topics, website) on GitHub with current project information and optimizes for search and discovery.
 
@@ -22,19 +22,19 @@ delegates-to: autonomous-agent:documentation-generator
 
 ```bash
 # Basic update (analyzes and updates)
-/autonomous-agent:workspace:update-about
+/workspace:update-about
 
 # With custom description
-/autonomous-agent:workspace:update-about --description "AI-powered autonomous development plugin for Claude Code"
+/workspace:update-about --description "AI-powered autonomous development plugin for Claude Code"
 
 # Add/update topics
-/autonomous-agent:workspace:update-about --add-topics "ai,automation,claude,agents"
+/workspace:update-about --add-topics "ai,automation,claude,agents"
 
 # SEO focus
-/autonomous-agent:workspace:update-about --seo-optimize
+/workspace:update-about --seo-optimize
 
 # Complete refresh
-/autonomous-agent:workspace:update-about --refresh-all
+/workspace:update-about --refresh-all
 ```
 
 ## How It Works
