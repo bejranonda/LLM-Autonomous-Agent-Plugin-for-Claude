@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:orchestrator
 
 # Improve Plugin Command
 
-## Command: `/workspace:improve`
+## Command: `/autonomous-agent:workspace:improve`
 
 Analyzes user interactions with the autonomous agent plugin and automatically generates structured improvement prompts for continuous plugin development. This command implements the key innovation of automatic learning by transforming user experiences into actionable development insights.
 

@@ -11,15 +11,15 @@ Comprehensive dependency vulnerability scanning across 11 package managers and e
 ## Usage
 
 ```bash
-/analyze:dependencies [PATH] [OPTIONS]
+/autonomous-agent:analyze:dependencies [PATH] [OPTIONS]
 ```
 
 **Examples**:
 ```bash
-/analyze:dependencies                  # Scan current project
-/analyze:dependencies backend/         # Scan specific directory
-/analyze:dependencies --critical-only  # Show only critical vulnerabilities
-/analyze:dependencies --with-fixes     # Include upgrade recommendations
+/autonomous-agent:analyze:dependencies                  # Scan current project
+/autonomous-agent:analyze:dependencies backend/         # Scan specific directory
+/autonomous-agent:analyze:dependencies --critical-only  # Show only critical vulnerabilities
+/autonomous-agent:analyze:dependencies --with-fixes     # Include upgrade recommendations
 ```
 
 ## Supported Ecosystems
@@ -562,7 +562,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Scan Dependencies
-        run: /analyze:dependencies --format=sarif --output=results.sarif
+        run: /autonomous-agent:analyze:dependencies --format=sarif --output=results.sarif
       - name: Upload Results
         uses: github/codeql-action/upload-sarif@v2
         with:
@@ -589,7 +589,7 @@ jobs:
 ### Critical-Only Mode
 
 ```bash
-/analyze:dependencies --critical-only
+/autonomous-agent:analyze:dependencies --critical-only
 ```
 
 Shows only critical vulnerabilities for rapid triage.
@@ -597,7 +597,7 @@ Shows only critical vulnerabilities for rapid triage.
 ### With Fix Recommendations
 
 ```bash
-/analyze:dependencies --with-fixes
+/autonomous-agent:analyze:dependencies --with-fixes
 ```
 
 Includes detailed upgrade commands and compatibility notes.
@@ -605,7 +605,7 @@ Includes detailed upgrade commands and compatibility notes.
 ### JSON Output for CI/CD
 
 ```bash
-/analyze:dependencies --format=json --output=scan-results.json
+/autonomous-agent:analyze:dependencies --format=json --output=scan-results.json
 ```
 
 Machine-readable format for automation.
@@ -613,7 +613,7 @@ Machine-readable format for automation.
 ### SARIF Output
 
 ```bash
-/analyze:dependencies --format=sarif
+/autonomous-agent:analyze:dependencies --format=sarif
 ```
 
 Standard format for security tools integration.

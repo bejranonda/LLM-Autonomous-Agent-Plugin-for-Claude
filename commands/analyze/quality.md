@@ -49,7 +49,7 @@ Run comprehensive quality control check with autonomous fixing. This will:
 ## Usage
 
 ```bash
-/analyze:quality
+/autonomous-agent:analyze:quality
 ```
 
 ## Quality Scoring
@@ -154,5 +154,5 @@ When quality < 70, the plugin will:
 
 ## See Also
 
-- `/analyze:project` - Autonomous project analysis
-- `/learn:init` - Initialize pattern learning database
+- `/autonomous-agent:analyze:project` - Autonomous project analysis
+- `/autonomous-agent:learn:init` - Initialize pattern learning database

@@ -4,7 +4,7 @@ description: Clean and optimize repository for marketplace/public distribution
 delegates-to: autonomous-agent:workspace-organizer
 ---
 
-# Command: `/workspace:distribution-ready`
+# Command: `/autonomous-agent:workspace:distribution-ready`
 
 **Prepares the repository for public marketplace distribution** by removing all computer-specific files, local patterns, performance data, and unnecessary files while preserving local functionality.
 
@@ -158,40 +158,40 @@ The command integrates with the pattern learning system:
 ### **Basic Usage**
 ```bash
 # Prepare repository for marketplace distribution
-/workspace:distribution-ready
+/autonomous-agent:workspace:distribution-ready
 
 # Include verbose output
-/workspace:distribution-ready --verbose
+/autonomous-agent:workspace:distribution-ready --verbose
 
 # Dry run to see what would be removed
-/workspace:distribution-ready --dry-run
+/autonomous-agent:workspace:distribution-ready --dry-run
 ```
 
 ### **Advanced Options**
 ```bash
 # Prepare with specific file preservation
-/workspace:distribution-ready --keep "custom-data/"
+/autonomous-agent:workspace:distribution-ready --keep "custom-data/"
 
 # Force cleanup of additional patterns
-/workspace:distribution-ready --aggressive
+/autonomous-agent:workspace:distribution-ready --aggressive
 
 # Create backup before cleanup
-/workspace:distribution-ready --backup
+/autonomous-agent:workspace:distribution-ready --backup
 
 # Skip confirmation prompts
-/workspace:distribution-ready --force
+/autonomous-agent:workspace:distribution-ready --force
 ```
 
 ### **Analysis Mode**
 ```bash
 # Analyze only, don't make changes
-/workspace:distribution-ready --analyze-only
+/autonomous-agent:workspace:distribution-ready --analyze-only
 
 # Show detailed file classification
-/workspace:distribution-ready --classification
+/autonomous-agent:workspace:distribution-ready --classification
 
 # Generate cleanup report
-/workspace:distribution-ready --report
+/autonomous-agent:workspace:distribution-ready --report
 ```
 
 ## Output Format
@@ -273,43 +273,43 @@ Ready for: Marketplace distribution and GitHub release
 ### **Development Workflow**
 ```bash
 # Complete development work
-/dev:commit --auto
+/autonomous-agent:dev:commit --auto
 
 # Prepare for marketplace release
-/workspace:distribution-ready
+/autonomous-agent:workspace:distribution-ready
 
 # Create release
-/dev:release
+/autonomous-agent:dev:release
 
 # Validate plugin readiness
-/validate:plugin
+/autonomous-agent:validate:plugin
 ```
 
 ### **Quality Assurance**
 ```bash
 # Check code quality
-/analyze:quality
+/autonomous-agent:analyze:quality
 
 # Prepare repository
-/workspace:distribution-ready
+/autonomous-agent:workspace:distribution-ready
 
 # Validate full structure
-/validate:all
+/autonomous-agent:validate:all
 
 # Test plugin functionality
-/debug:eval plugin-installation-test
+/autonomous-agent:debug:eval plugin-installation-test
 ```
 
 ### **Continuous Integration**
 ```bash
 # Automated cleanup in CI/CD
-/workspace:distribution-ready --force
+/autonomous-agent:workspace:distribution-ready --force
 
 # Validate structure
-/validate:fullstack
+/autonomous-agent:validate:fullstack
 
 # Run tests
-/test:comprehensive
+/autonomous-agent:test:comprehensive
 ```
 
 ## Learning System Integration
@@ -380,10 +380,10 @@ Ready for: Marketplace distribution and GitHub release
 **Repository not clean enough**
 ```bash
 # Run with aggressive mode
-/workspace:distribution-ready --aggressive
+/autonomous-agent:workspace:distribution-ready --aggressive
 
 # Manually review remaining files
-/workspace:distribution-ready --classification
+/autonomous-agent:workspace:distribution-ready --classification
 ```
 
 **Essential files accidentally removed**
@@ -413,7 +413,7 @@ git reset --hard HEAD~1
 git checkout HEAD~1 -- improvements/ patterns/
 
 # Generate new patterns
-/workspace:organize --regenerate-patterns
+/autonomous-agent:workspace:organize --regenerate-patterns
 ```
 
 ## Performance Metrics
@@ -436,7 +436,7 @@ Expected performance:
 
 ### **Example 1: Standard Distribution Prep**
 ```bash
-$ /workspace:distribution-ready
+$ /autonomous-agent:workspace:distribution-ready
 
 Scanning repository...
 Found: 340 files total, 36 computer-specific
@@ -456,7 +456,7 @@ Result: ✅ Distribution ready (304 files, 12MB reduction)
 
 ### **Example 2: Analysis Mode**
 ```bash
-$ /workspace:distribution-ready --analyze-only
+$ /autonomous-agent:workspace:distribution-ready --analyze-only
 
 Repository Analysis Report:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -479,7 +479,7 @@ Recommendation: Ready for marketplace distribution cleanup
 
 ### **Example 3: Aggressive Cleanup**
 ```bash
-$ /workspace:distribution-ready --aggressive --force
+$ /autonomous-agent:workspace:distribution-ready --aggressive --force
 
 Aggressive cleanup mode enabled...
 Additional patterns detected:

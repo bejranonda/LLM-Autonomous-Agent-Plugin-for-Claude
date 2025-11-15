@@ -1,6 +1,6 @@
 ---
 name: git-release-workflow
-description: "[DEPRECATED] Redirects to dev:release - Use /dev:release instead"
+description: "[DEPRECATED] Redirects to dev:release - Use /autonomous-agent:dev:release instead"
 delegates-to: autonomous-agent:orchestrator
 deprecated: true
 redirects-to: dev:release
@@ -8,17 +8,17 @@ redirects-to: dev:release
 
 # Git Release Workflow Command [DEPRECATED]
 
-**This command has been deprecated and merged into `/dev:release`.**
+**This command has been deprecated and merged into `/autonomous-agent:dev:release`.**
 
 ## Migration Notice
 
-The `/git-release-workflow` command has been consolidated into the `/dev:release` command to provide a unified release workflow experience.
+The `/git-release-workflow` command has been consolidated into the `/autonomous-agent:dev:release` command to provide a unified release workflow experience.
 
 ### What Changed
 
 - **Old Command**: `/git-release-workflow`
-- **New Command**: `/dev:release`
-- **Status**: This command now redirects to `/dev:release`
+- **New Command**: `/autonomous-agent:dev:release`
+- **Status**: This command now redirects to `/autonomous-agent:dev:release`
 
 ### Why the Change
 
@@ -26,17 +26,17 @@ As part of the command restructuring to use category-based naming (dev:, analyze
 
 ### Migration Guide
 
-Simply replace any usage of `/git-release-workflow` with `/dev:release`:
+Simply replace any usage of `/git-release-workflow` with `/autonomous-agent:dev:release`:
 
 ```bash
 # Old (deprecated)
 /git-release-workflow
 
 # New (recommended)
-/dev:release
+/autonomous-agent:dev:release
 ```
 
-All features from `/git-release-workflow` are available in `/dev:release`, including:
+All features from `/git-release-workflow` are available in `/autonomous-agent:dev:release`, including:
 
 - Automated version detection and bumping
 - Release notes generation
@@ -51,9 +51,9 @@ See the complete documentation at: `commands/release-dev.md`
 
 Or run:
 ```bash
-/dev:release --help
+/autonomous-agent:dev:release --help
 ```
 
 ---
 
-**Note**: This redirect file will be maintained for backward compatibility but will be removed in a future major version. Please update your workflows to use `/dev:release`.
+**Note**: This redirect file will be maintained for backward compatibility but will be removed in a future major version. Please update your workflows to use `/autonomous-agent:dev:release`.

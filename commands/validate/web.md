@@ -6,42 +6,42 @@ category: validation
 
 # Validate Web Command
 
-**Slash command**: `/validate:web`
+**Slash command**: `/autonomous-agent:validate:web`
 
 Automatically validate web pages (like dashboard.py) and detect JavaScript errors, console issues, and performance problems without manual browser inspection.
 
 ## Usage
 
 ```bash
-/validate:web <URL> [options]
+/autonomous-agent:validate:web <URL> [options]
 ```
 
 ## Examples
 
 ```bash
 # Validate local dashboard
-/validate:web http://127.0.0.1:5000
+/autonomous-agent:validate:web http://127.0.0.1:5000
 
 # Validate with detailed output
-/validate:web http://127.0.0.1:5000 --verbose
+/autonomous-agent:validate:web http://127.0.0.1:5000 --verbose
 
 # Validate and auto-fix issues
-/validate:web http://127.0.0.1:5000 --auto-fix
+/autonomous-agent:validate:web http://127.0.0.1:5000 --auto-fix
 
 # Save validation report
-/validate:web http://127.0.0.1:5000 --report
+/autonomous-agent:validate:web http://127.0.0.1:5000 --report
 
 # Crawl and validate all subpages
-/validate:web http://127.0.0.1:5000 --crawl
+/autonomous-agent:validate:web http://127.0.0.1:5000 --crawl
 
 # Crawl with depth limit
-/validate:web http://127.0.0.1:5000 --crawl --max-depth 2
+/autonomous-agent:validate:web http://127.0.0.1:5000 --crawl --max-depth 2
 
 # Crawl specific subpages only
-/validate:web http://127.0.0.1:5000 --crawl --include "/api/*,/analytics/*"
+/autonomous-agent:validate:web http://127.0.0.1:5000 --crawl --include "/api/*,/analytics/*"
 
 # Exclude certain paths from crawling
-/validate:web http://127.0.0.1:5000 --crawl --exclude "/admin/*,/debug/*"
+/autonomous-agent:validate:web http://127.0.0.1:5000 --crawl --exclude "/admin/*,/debug/*"
 ```
 
 ## Implementation
@@ -694,7 +694,7 @@ playwright install chromium
 
 ## Integration with Dashboard
 
-This command is automatically invoked when starting dashboards via `/monitor:dashboard` to ensure no JavaScript errors exist before displaying to the user.
+This command is automatically invoked when starting dashboards via `/autonomous-agent:monitor:dashboard` to ensure no JavaScript errors exist before displaying to the user.
 
 ## Output Format
 
@@ -748,6 +748,6 @@ JavaScript Errors: 0
 
 ## See Also
 
-- `/monitor:dashboard` - Start dashboard with automatic validation
-- `/analyze:quality` - Comprehensive quality control including web validation
+- `/autonomous-agent:monitor:dashboard` - Start dashboard with automatic validation
+- `/autonomous-agent:analyze:quality` - Comprehensive quality control including web validation
 - Skill: web-validation - Detailed methodology and best practices

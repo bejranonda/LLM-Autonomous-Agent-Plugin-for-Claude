@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:documentation-generator
 
 # Workspace Update-README Command
 
-## Command: `/workspace:update-readme`
+## Command: `/autonomous-agent:workspace:update-readme`
 
 **Intelligent README maintenance** - Analyzes current README to understand its style, structure, and content approach, then intelligently updates it based on project changes while preserving the established voice and organization.
 
@@ -22,19 +22,19 @@ delegates-to: autonomous-agent:documentation-generator
 
 ```bash
 # Basic update (preserve style and structure)
-/workspace:update-readme
+/autonomous-agent:workspace:update-readme
 
 # With user suggestions
-/workspace:update-readme --suggestions "add installation video, improve examples"
+/autonomous-agent:workspace:update-readme --suggestions "add installation video, improve examples"
 
 # Change structure
-/workspace:update-readme --restructure "move installation first, add troubleshooting section"
+/autonomous-agent:workspace:update-readme --restructure "move installation first, add troubleshooting section"
 
 # Update specific sections only
-/workspace:update-readme --sections "features,usage,examples"
+/autonomous-agent:workspace:update-readme --sections "features,usage,examples"
 
 # Complete rewrite (keep data, new style)
-/workspace:update-readme --rewrite --style "concise and technical"
+/autonomous-agent:workspace:update-readme --rewrite --style "concise and technical"
 ```
 
 ## How It Works

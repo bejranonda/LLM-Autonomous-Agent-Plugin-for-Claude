@@ -35,40 +35,40 @@ Run comprehensive validation, debugging, and performance analysis of the entire 
 
 ```bash
 # Show help message
-/debug:gui --help
+/autonomous-agent:debug:gui --help
 
 # Complete GUI system validation (recommended for first time)
-/debug:gui
+/autonomous-agent:debug:gui
 
 # Quick health check (45 seconds)
-/debug:gui --quick-check
+/autonomous-agent:debug:gui --quick-check
 
 # Web dashboard focused validation
-/debug:gui --web-dashboard
+/autonomous-agent:debug:gui --web-dashboard
 
 # CLI interface focused validation
-/debug:gui --cli-interface
+/autonomous-agent:debug:gui --cli-interface
 
 # Visual components validation
-/debug:gui --visual-components
+/autonomous-agent:debug:gui --visual-components
 
 # Cross-platform compatibility testing
-/debug:gui --cross-platform
+/autonomous-agent:debug:gui --cross-platform
 
 # Accessibility compliance testing
-/debug:gui --accessibility
+/autonomous-agent:debug:gui --accessibility
 
 # Full system scan with detailed reporting
-/debug:gui --full-scan
+/autonomous-agent:debug:gui --full-scan
 
 # Real-time GUI monitoring mode (continuous)
-/debug:gui --monitor
+/autonomous-agent:debug:gui --monitor
 
 # Debug mode with enhanced logging
-/debug:gui --verbose
+/autonomous-agent:debug:gui --verbose
 
 # Show agent delegation process
-/debug:gui --verbose
+/autonomous-agent:debug:gui --verbose
 ```
 
 ## Help & Documentation
@@ -76,7 +76,7 @@ Run comprehensive validation, debugging, and performance analysis of the entire 
 ### `--help` Option
 ```bash
 # Display comprehensive help information
-/debug:gui --help
+/autonomous-agent:debug:gui --help
 ```
 
 The `--help` option provides:
@@ -89,7 +89,7 @@ The `--help` option provides:
 
 ### Command Syntax
 ```bash
-/debug:gui [OPTIONS]
+/autonomous-agent:debug:gui [OPTIONS]
 ```
 
 ### Agent Delegation
@@ -102,7 +102,7 @@ This command delegates to the **orchestrator** agent, which:
 
 ### Verbose Mode
 ```bash
-/debug:gui --verbose
+/autonomous-agent:debug:gui --verbose
 ```
 Shows detailed agent selection and delegation process:
 ```
@@ -114,32 +114,32 @@ Shows detailed agent selection and delegation process:
 📈 PERFORMANCE-ANALYTICS: Monitoring GUI performance metrics...
 ```
 ### Getting Started
-1. **First Time**: Run `/debug:gui` for complete system validation
-2. **Quick Check**: Use `/debug:gui --quick-check` for rapid health assessment
+1. **First Time**: Run `/autonomous-agent:debug:gui` for complete system validation
+2. **Quick Check**: Use `/autonomous-agent:debug:gui --quick-check` for rapid health assessment
 3. **Specific Issues**: Use targeted options (`--web-dashboard`, `--cli-interface`)
-4. **Monitor Mode**: Use `/debug:gui --monitor` for continuous oversight
-5. **Get Help**: Always available with `/debug:gui --help`
+4. **Monitor Mode**: Use `/autonomous-agent:debug:gui --monitor` for continuous oversight
+5. **Get Help**: Always available with `/autonomous-agent:debug:gui --help`
 
 ### Common Issues & Solutions
 
 **Dashboard Loading Problems**:
 ```bash
-/debug:gui --web-dashboard --verbose
+/autonomous-agent:debug:gui --web-dashboard --verbose
 ```
 
 **CLI Command Issues**:
 ```bash
-/debug:gui --cli-interface --verbose
+/autonomous-agent:debug:gui --cli-interface --verbose
 ```
 
 **Performance Issues**:
 ```bash
-/debug:gui --visual-components --performance
+/autonomous-agent:debug:gui --visual-components --performance
 ```
 
 **Cross-Platform Problems**:
 ```bash
-/debug:gui --cross-platform --full-scan
+/autonomous-agent:debug:gui --cross-platform --full-scan
 ```
 
 ## 🔧 Validation Options

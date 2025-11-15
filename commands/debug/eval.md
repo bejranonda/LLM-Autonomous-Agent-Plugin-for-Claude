@@ -11,7 +11,7 @@ Measures AI debugging performance by analyzing and fixing real issues in the cod
 ## Usage
 
 ```bash
-/debug:eval <target> [options]
+/autonomous-agent:debug:eval <target> [options]
 ```
 
 ### Options
@@ -28,16 +28,16 @@ Measures AI debugging performance by analyzing and fixing real issues in the cod
 
 ```bash
 # Show help
-/debug:eval --help
+/autonomous-agent:debug:eval --help
 
 # Debug with verbose output (shows agent selection)
-/debug:eval dashboard --verbose
+/autonomous-agent:debug:eval dashboard --verbose
 
 # Preview what would be fixed
-/debug:eval data-validation --dry-run
+/autonomous-agent:debug:eval data-validation --dry-run
 
 # Generate report without fixing
-/debug:eval performance-index --report-only
+/autonomous-agent:debug:eval performance-index --report-only
 ```
 
 ## How It Works

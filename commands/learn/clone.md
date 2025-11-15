@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:dev-orchestrator
 
 # Learn-Clone Command
 
-## Command: `/learn:clone`
+## Command: `/autonomous-agent:learn:clone`
 
 **Feature cloning through learning** - Analyzes features and capabilities in external GitHub/GitLab repositories, understands their implementation, and helps implement similar or equivalent functionality in the current project while respecting licenses and best practices.
 
@@ -33,40 +33,40 @@ delegates-to: autonomous-agent:dev-orchestrator
 ### Basic Usage
 ```bash
 # Clone specific feature from repository
-/learn:clone https://github.com/user/repo --feature "JWT authentication"
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "JWT authentication"
 
 # Clone multiple features
-/learn:clone https://github.com/user/repo --features "auth,caching,rate-limiting"
+/autonomous-agent:learn:clone https://github.com/user/repo --features "auth,caching,rate-limiting"
 
 # Learn implementation approach
-/learn:clone https://github.com/user/repo --feature "real-time notifications" --learn-only
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "real-time notifications" --learn-only
 ```
 
 ### With Implementation
 ```bash
 # Clone and implement immediately
-/learn:clone https://github.com/user/repo --feature "JWT auth" --implement
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "JWT auth" --implement
 
 # Clone with adaptation
-/learn:clone https://github.com/user/repo --feature "caching" --adapt-to-current
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "caching" --adapt-to-current
 
 # Clone with testing
-/learn:clone https://github.com/user/repo --feature "API validation" --include-tests
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "API validation" --include-tests
 ```
 
 ### Advanced Options
 ```bash
 # Deep learning mode (understands internals)
-/learn:clone https://github.com/user/repo --feature "auth" --deep-learning
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "auth" --deep-learning
 
 # Compare implementations
-/learn:clone https://github.com/user/repo --feature "caching" --compare-approaches
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "caching" --compare-approaches
 
 # Extract patterns only (no implementation)
-/learn:clone https://github.com/user/repo --feature "queue" --extract-patterns
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "queue" --extract-patterns
 
 # With license attribution
-/learn:clone https://github.com/user/repo --feature "parser" --add-attribution
+/autonomous-agent:learn:clone https://github.com/user/repo --feature "parser" --add-attribution
 ```
 
 ## Output Format
@@ -96,7 +96,7 @@ Implementation Strategy:
 📄 Full analysis: .claude/data/reports/learn-clone-jwt-auth-2025-10-29.md
 ⏱ Analysis completed in 2.8 minutes
 
-Next: Review analysis, then use /dev:auto to implement
+Next: Review analysis, then use /autonomous-agent:dev:auto to implement
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -321,7 +321,7 @@ Analysis Date: 2025-10-29
 Ready to Implement?
 * Review implementation roadmap above
 * Check license compliance requirements
-* Use: /dev:auto "implement JWT authentication based on learned patterns"
+* Use: /autonomous-agent:dev:auto "implement JWT authentication based on learned patterns"
 
 Need More Analysis?
 * Analyze alternative implementations
@@ -375,17 +375,17 @@ Stores learned feature patterns:
 
 ### Learning Authentication
 ```bash
-/learn:clone https://github.com/fastapi/fastapi --feature "JWT auth"
+/autonomous-agent:learn:clone https://github.com/fastapi/fastapi --feature "JWT auth"
 ```
 
 ### Learning Caching Strategies
 ```bash
-/learn:clone https://github.com/django/django --feature "caching"
+/autonomous-agent:learn:clone https://github.com/django/django --feature "caching"
 ```
 
 ### Learning Testing Approaches
 ```bash
-/learn:clone https://github.com/pytest-dev/pytest --feature "test fixtures"
+/autonomous-agent:learn:clone https://github.com/pytest-dev/pytest --feature "test fixtures"
 ```
 
 ## Best Practices

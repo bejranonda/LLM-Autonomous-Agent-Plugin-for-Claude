@@ -1,7 +1,7 @@
 ---
 name: validate:integrity
 description: Comprehensive integrity validation and automatic recovery for missing components
-usage: /validate:integrity [options]
+usage: /autonomous-agent:validate:integrity [options]
 category: validate
 subcategory: system
 ---
@@ -12,16 +12,16 @@ subcategory: system
 
 The integrity validation command provides comprehensive analysis of plugin integrity with automatic recovery capabilities. It detects missing components, validates system structure, and can automatically restore lost components using multiple recovery strategies.
 
-This command prevents issues like the missing `/monitor:dashboard` command by maintaining continuous integrity monitoring and providing immediate recovery options.
+This command prevents issues like the missing `/autonomous-agent:monitor:dashboard` command by maintaining continuous integrity monitoring and providing immediate recovery options.
 
 ## Usage
 
 ```bash
-/validate:integrity --auto-recover           # Validate and auto-recover missing components
-/validate:integrity --dry-run               # Validate without making changes
-/validate:integrity --critical-only          # Check only critical components
-/validate:integrity --detailed              # Show detailed validation results
-/validate:integrity --backup-check           # Check backup system integrity
+/autonomous-agent:validate:integrity --auto-recover           # Validate and auto-recover missing components
+/autonomous-agent:validate:integrity --dry-run               # Validate without making changes
+/autonomous-agent:validate:integrity --critical-only          # Check only critical components
+/autonomous-agent:validate:integrity --detailed              # Show detailed validation results
+/autonomous-agent:validate:integrity --backup-check           # Check backup system integrity
 ```
 
 ## Parameters
@@ -31,41 +31,41 @@ Automatically attempt to recover any missing components found during validation.
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/validate:integrity --auto-recover`
+- **Example**: `/autonomous-agent:validate:integrity --auto-recover`
 
 ### --dry-run
 Perform validation without executing any recovery operations.
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/validate:integrity --dry-run`
+- **Example**: `/autonomous-agent:validate:integrity --dry-run`
 
 ### --critical-only
 Only validate critical components (core agents, essential commands, key configs).
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/validate:integrity --critical-only`
+- **Example**: `/autonomous-agent:validate:integrity --critical-only`
 
 ### --detailed
 Show detailed validation results including all issues and recommendations.
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/validate:integrity --detailed`
+- **Example**: `/autonomous-agent:validate:integrity --detailed`
 
 ### --backup-check
 Validate the backup system integrity and check for available backups.
 
 - **Type**: Flag
 - **Default**: False
-- **Example**: `/validate:integrity --backup-check`
+- **Example**: `/autonomous-agent:validate:integrity --backup-check`
 
 ## Examples
 
 ### Basic Integrity Check
 ```bash
-/validate:integrity
+/autonomous-agent:validate:integrity
 ```
 Output:
 ```
@@ -79,17 +79,17 @@ Output:
 
 ### Auto-Recovery Mode
 ```bash
-/validate:integrity --auto-recover
+/autonomous-agent:validate:integrity --auto-recover
 ```
 Output:
 ```
 🔄 Automatic Recovery Mode
 📋 Missing Components Found:
-  * /monitor:dashboard (CRITICAL)
+  * /autonomous-agent:monitor:dashboard (CRITICAL)
   * /commands/workspace/archive (WARNING)
 
 🔧 Recovery Attempting:
-  ✅ /monitor:dashboard restored from backup (backup_20250127_143022)
+  ✅ /autonomous-agent:monitor:dashboard restored from backup (backup_20250127_143022)
   ❌ /commands/workspace:archive recovery failed (no template available)
 
 📊 Final Integrity: 98/100 (+6 points)
@@ -97,7 +97,7 @@ Output:
 
 ### Critical Components Only
 ```bash
-/validate:integrity --critical-only
+/autonomous-agent:validate:integrity --critical-only
 ```
 Output:
 ```
@@ -179,8 +179,8 @@ The validation system uses multiple recovery strategies in order of preference:
 
 ### Pre-Operation Validation
 Automatically triggered before:
-- `/workspace:improve` - Plugin modifications
-- `/dev:release` - Release preparation
+- `/autonomous-agent:workspace:improve` - Plugin modifications
+- `/autonomous-agent:dev:release` - Release preparation
 - Major command restructuring
 - Agent or skill modifications
 
@@ -220,7 +220,7 @@ Automatically triggered after:
 
 ### Recovery Failures
 When auto-recovery fails:
-1. Check backup availability: `/validate:integrity --backup-check`
+1. Check backup availability: `/autonomous-agent:validate:integrity --backup-check`
 2. Verify Git repository status: `git status`
 3. Review manual guidance provided
 4. Consider manual creation using templates
@@ -241,10 +241,10 @@ If validation is slow:
 
 ## Related Commands
 
-- `/validate:commands` - Command-specific validation
-- `/validate:all` - Full system validation
-- `/workspace:organize` - File organization fixes
-- `/dev:auto "validate integrity"` - Automated integrity management
+- `/autonomous-agent:validate:commands` - Command-specific validation
+- `/autonomous-agent:validate:all` - Full system validation
+- `/autonomous-agent:workspace:organize` - File organization fixes
+- `/autonomous-agent:dev:auto "validate integrity"` - Automated integrity management
 
 ## Configuration
 
@@ -277,22 +277,22 @@ If validation is slow:
 ### Custom Validation Profiles
 ```bash
 # Create custom validation profile
-/validate:integrity --profile production --critical-only
+/autonomous-agent:validate:integrity --profile production --critical-only
 
 # Validate specific categories
-/validate:integrity --categories commands,agents --detailed
+/autonomous-agent:validate:integrity --categories commands,agents --detailed
 
 # Validate with custom thresholds
-/validate:integrity --threshold 85 --strict-mode
+/autonomous-agent:validate:integrity --threshold 85 --strict-mode
 ```
 
 ### Batch Operations
 ```bash
 # Validate and create recovery plan
-/validate:integrity --dry-run --save-plan
+/autonomous-agent:validate:integrity --dry-run --save-plan
 
 # Execute recovery from saved plan
-/validate:integrity --execute-plan recovery_plan_20250127.json
+/autonomous-agent:validate:integrity --execute-plan recovery_plan_20250127.json
 ```
 
 ## Monitoring and Analytics
@@ -303,4 +303,4 @@ The integrity validation maintains comprehensive analytics:
 - **Recovery Success**: Monitor recovery strategy effectiveness
 - **System Health**: Overall plugin health assessment
 
-Use `/learn:performance` to view detailed analytics and `/learn:analytics` for comprehensive reporting.
+Use `/autonomous-agent:learn:performance` to view detailed analytics and `/autonomous-agent:learn:analytics` for comprehensive reporting.

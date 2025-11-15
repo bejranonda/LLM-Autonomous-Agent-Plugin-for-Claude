@@ -71,37 +71,37 @@ Time: [X] minutes
 
 **Technical Research**:
 ```
-/research:structured "Compare I2C vs SPI protocols for Raspberry Pi"
-/research:structured "Authentication best practices for Node.js applications"
-/research:structured "React Query v4 to v5 migration patterns"
+/autonomous-agent:research:structured "Compare I2C vs SPI protocols for Raspberry Pi"
+/autonomous-agent:research:structured "Authentication best practices for Node.js applications"
+/autonomous-agent:research:structured "React Query v4 to v5 migration patterns"
 ```
 
 **Design & UX Research**:
 ```
-/research:structured "Modern dashboard design trends and patterns"
-/research:structured "Command-line interface UX best practices"
-/research:structured "Accessibility best practices for developer tools"
+/autonomous-agent:research:structured "Modern dashboard design trends and patterns"
+/autonomous-agent:research:structured "Command-line interface UX best practices"
+/autonomous-agent:research:structured "Accessibility best practices for developer tools"
 ```
 
 **Idea Generation**:
 ```
-/research:structured "Innovative features in AI coding assistants"
-/research:structured "Emerging patterns in autonomous agent systems"
-/research:structured "Novel approaches to code quality automation"
+/autonomous-agent:research:structured "Innovative features in AI coding assistants"
+/autonomous-agent:research:structured "Emerging patterns in autonomous agent systems"
+/autonomous-agent:research:structured "Novel approaches to code quality automation"
 ```
 
 **Competitive Analysis**:
 ```
-/research:structured "Comparison of code quality and analysis tools"
-/research:structured "AI agent plugin marketplace landscape"
-/research:structured "Developer productivity tools feature comparison"
+/autonomous-agent:research:structured "Comparison of code quality and analysis tools"
+/autonomous-agent:research:structured "AI agent plugin marketplace landscape"
+/autonomous-agent:research:structured "Developer productivity tools feature comparison"
 ```
 
 **General Knowledge**:
 ```
-/research:structured "Best practices for plugin architecture design"
-/research:structured "Pattern learning systems in software development"
-/research:structured "User onboarding strategies for technical products"
+/autonomous-agent:research:structured "Best practices for plugin architecture design"
+/autonomous-agent:research:structured "Pattern learning systems in software development"
+/autonomous-agent:research:structured "User onboarding strategies for technical products"
 ```
 
 ## Success Criteria

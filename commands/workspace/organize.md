@@ -4,7 +4,7 @@ description: Automatically organize workspace files, consolidate reports, and va
 
 delegates-to: autonomous-agent:orchestrator
 
-# Command: `/workspace:organize`
+# Command: `/autonomous-agent:workspace:organize`
 
 Automatically organizes your workspace by moving files to appropriate directories, consolidating scattered reports, and fixing broken links. Improves project hygiene and maintains professional structure.
 

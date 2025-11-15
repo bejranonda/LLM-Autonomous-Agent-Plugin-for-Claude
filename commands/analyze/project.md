@@ -34,7 +34,7 @@ The orchestrator will make all decisions autonomously without requiring confirma
 ## Usage
 
 ```bash
-/analyze:project
+/autonomous-agent:analyze:project
 ```
 
 ## Example Output
@@ -140,6 +140,6 @@ Analysis Time: 2.3 minutes
 
 ## See Also
 
-- `/analyze:quality` - Comprehensive quality control with auto-fix
-- `/learn:init` - Initialize pattern learning database
+- `/autonomous-agent:analyze:quality` - Comprehensive quality control with auto-fix
+- `/autonomous-agent:learn:init` - Initialize pattern learning database
 ---

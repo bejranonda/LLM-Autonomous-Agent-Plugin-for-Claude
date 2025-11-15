@@ -113,28 +113,28 @@ Time: 12 minutes
 
 **Basic Enhancement**:
 ```bash
-/design:enhance "Improve landing page aesthetics"
+/autonomous-agent:design:enhance "Improve landing page aesthetics"
 # Applies balanced design improvements across all aspects
 ```
 
 **Project-Specific**:
 ```bash
-/design:enhance "Make dashboard look professional with tech-ocean color scheme"
+/autonomous-agent:design:enhance "Make dashboard look professional with tech-ocean color scheme"
 # Targets specific color mood
 
-/design:enhance "Apply editorial design to blog with Playfair Display"
+/autonomous-agent:design:enhance "Apply editorial design to blog with Playfair Display"
 # Requests specific typography category
 
-/design:enhance "React app needs distinctive design with Framer Motion"
+/autonomous-agent:design:enhance "React app needs distinctive design with Framer Motion"
 # Specifies React + motion library
 ```
 
 **Problem-Focused**:
 ```bash
-/design:enhance "Fix generic AI appearance - looks like every tutorial"
+/autonomous-agent:design:enhance "Fix generic AI appearance - looks like every tutorial"
 # Addresses AI slop problem directly
 
-/design:enhance "Too much purple gradient, needs unique identity"
+/autonomous-agent:design:enhance "Too much purple gradient, needs unique identity"
 # Tackles specific distributional default
 ```
 

@@ -6,7 +6,7 @@ delegates-to: autonomous-agent:orchestrator
 
 # Validate Full-Stack Command
 
-**Slash command**: `/validate:fullstack`
+**Slash command**: `/autonomous-agent:validate:fullstack`
 
 **Description**: Comprehensive validation workflow for full-stack applications. Automatically detects project structure, runs parallel validation for all components, validates API contracts, and auto-fixes common issues.
 
@@ -60,7 +60,7 @@ This command orchestrates a complete validation workflow for multi-component app
 ## Execution Flow
 
 ```
-User runs: /validate:fullstack
+User runs: /autonomous-agent:validate:fullstack
 
 v
 
@@ -204,15 +204,15 @@ Create `.claude/config/fullstack-validation.json` to customize:
 
 ## Integration with Other Commands
 
-**Before `/validate:fullstack`**:
-- `/learn:init` - Initialize pattern learning
+**Before `/autonomous-agent:validate:fullstack`**:
+- `/autonomous-agent:learn:init` - Initialize pattern learning
 
-**After `/validate:fullstack`**:
-- `/analyze:quality` - Deep dive into specific issues
-- `/learn:performance` - Analyze performance trends
+**After `/autonomous-agent:validate:fullstack`**:
+- `/autonomous-agent:analyze:quality` - Deep dive into specific issues
+- `/autonomous-agent:learn:performance` - Analyze performance trends
 
 **Complementary**:
-- `/monitor:recommend` - Get workflow suggestions based on validation results
+- `/autonomous-agent:monitor:recommend` - Get workflow suggestions based on validation results
 
 ## Success Criteria
 
@@ -255,7 +255,7 @@ After 5-10 runs on similar projects, validation becomes significantly faster and
 
 **Use Case 1: Pre-Deployment Check**
 ```bash
-/validate:fullstack
+/autonomous-agent:validate:fullstack
 # Wait for validation
 # Review score and recommendations
 # If score ≥ 70: Deploy
@@ -265,14 +265,14 @@ After 5-10 runs on similar projects, validation becomes significantly faster and
 **Use Case 2: CI/CD Integration**
 ```bash
 # In CI pipeline
-claude-code /validate:fullstack --ci-mode
+claude-code /autonomous-agent:validate:fullstack --ci-mode
 # Exit code 0 if score ≥ 70
 # Exit code 1 if score < 70
 ```
 
 **Use Case 3: Code Review Preparation**
 ```bash
-/validate:fullstack
+/autonomous-agent:validate:fullstack
 # Auto-fixes applied automatically
 # Review recommendations
 # Commit fixes

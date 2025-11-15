@@ -12,19 +12,19 @@ Switch between Claude and GLM models in your Claude Code environment with secure
 
 ```bash
 # Switch to GLM models (interactive setup)
-/dev:model-switch --to glm
+/autonomous-agent:dev:model-switch --to glm
 
 # Switch to Claude models (restore defaults)
-/dev:model-switch --to claude
+/autonomous-agent:dev:model-switch --to claude
 
 # Check current model configuration
-/dev:model-switch --status
+/autonomous-agent:dev:model-switch --status
 
 # Auto-switch based on task type (future feature)
-/dev:model-switch --auto
+/autonomous-agent:dev:model-switch --auto
 
 # Set up initial configuration
-/dev:model-switch --setup
+/autonomous-agent:dev:model-switch --setup
 ```
 
 ## How It Works
@@ -117,39 +117,39 @@ mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 
 ```bash
 # Switch to GLM (interactive)
-/dev:model-switch --to glm
+/autonomous-agent:dev:model-switch --to glm
 
 # Switch to Claude (restore defaults)
-/dev:model-switch --to claude
+/autonomous-agent:dev:model-switch --to claude
 ```
 
 ### Status and Information
 
 ```bash
 # Check current configuration
-/dev:model-switch --status
+/autonomous-agent:dev:model-switch --status
 
 # Show available models
-/dev:model-switch --list-models
+/autonomous-agent:dev:model-switch --list-models
 
 # Validate current configuration
-/dev:model-switch --validate
+/autonomous-agent:dev:model-switch --validate
 ```
 
 ### Advanced Options
 
 ```bash
 # Force switch without confirmation
-/dev:model-switch --to glm --force
+/autonomous-agent:dev:model-switch --to glm --force
 
 # Use specific GLM model
-/dev:model-switch --to glm --model glm-4.6
+/autonomous-agent:dev:model-switch --to glm --model glm-4.6
 
 # Backup current settings before switching
-/dev:model-switch --to glm --backup
+/autonomous-agent:dev:model-switch --to glm --backup
 
 # Dry run (show changes without applying)
-/dev:model-switch --to glm --dry-run
+/autonomous-agent:dev:model-switch --to glm --dry-run
 ```
 
 ## Model Comparison
@@ -196,7 +196,7 @@ mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 
 ```bash
 # First-time GLM setup
-/dev:model-switch --to glm
+/autonomous-agent:dev:model-switch --to glm
 
 # Interactive prompts:
 # 1. Enter your Z.AI API key: [sk-xxxxxxxx]
@@ -216,26 +216,26 @@ Last Updated: 2025-01-26 20:45:30
 
 ```bash
 # Switch to GLM for Chinese content
-/dev:model-switch --to glm --force
+/autonomous-agent:dev:model-switch --to glm --force
 
 # Switch back to Claude for code analysis
-/dev:model-switch --to claude
+/autonomous-agent:dev:model-switch --to claude
 
 # Check current status
-/dev:model-switch --status
+/autonomous-agent:dev:model-switch --status
 ```
 
 ### Advanced Configuration
 
 ```bash
 # Use specific GLM model with backup
-/dev:model-switch --to glm --model glm-4.5-air --backup
+/autonomous-agent:dev:model-switch --to glm --model glm-4.5-air --backup
 
 # Dry run to preview changes
-/dev:model-switch --to glm --dry-run
+/autonomous-agent:dev:model-switch --to glm --dry-run
 
 # Validate configuration without switching
-/dev:model-switch --validate --target glm
+/autonomous-agent:dev:model-switch --validate --target glm
 ```
 
 ## Troubleshooting
@@ -245,28 +245,28 @@ Last Updated: 2025-01-26 20:45:30
 **API Key Invalid:**
 ```bash
 # Check token format
-/dev:model-switch --validate-token sk-xxxxxxxx
+/autonomous-agent:dev:model-switch --validate-token sk-xxxxxxxx
 
 # Re-enter token
-/dev:model-switch --to glm --renew-token
+/autonomous-agent:dev:model-switch --to glm --renew-token
 ```
 
 **Configuration Not Applied:**
 ```bash
 # Check file permissions
-/dev:model-switch --check-permissions
+/autonomous-agent:dev:model-switch --check-permissions
 
 # Manually apply changes
-/dev:model-switch --to glm --manual
+/autonomous-agent:dev:model-switch --to glm --manual
 ```
 
 **Model Not Responding:**
 ```bash
 # Test API connection
-/dev:model-switch --test-connection
+/autonomous-agent:dev:model-switch --test-connection
 
 # Switch to backup model
-/dev:model-switch --fallback claude
+/autonomous-agent:dev:model-switch --fallback claude
 ```
 
 ### Platform-Specific Issues
@@ -295,13 +295,13 @@ jq --version
 
 ```bash
 # Restore from backup
-/dev:model-switch --restore-backup
+/autonomous-agent:dev:model-switch --restore-backup
 
 # Reset to defaults
-/dev:model-switch --reset-defaults
+/autonomous-agent:dev:model-switch --reset-defaults
 
 # Generate new configuration
-/dev:model-switch --generate-config
+/autonomous-agent:dev:model-switch --generate-config
 ```
 
 ## Integration with Learning System

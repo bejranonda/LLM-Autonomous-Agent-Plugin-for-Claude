@@ -11,17 +11,17 @@ Generate advanced predictive insights, optimization recommendations, and trend a
 ## Usage
 
 ```bash
-/learn:predict [OPTIONS]
+/autonomous-agent:learn:predict [OPTIONS]
 ```
 
 **Examples**:
 ```bash
-/learn:predict                              # Comprehensive predictive analytics report
-/learn:predict --action quality-trend   # Predict quality trends for next 7 days
-/learn:predict --action optimal-skills  # Recommend optimal skills for task
-/learn:predict --action learning-velocity # Predict learning acceleration
-/learn:predict --action opportunities   # Identify optimization opportunities
-/learn:predict --action accuracy       # Check prediction accuracy metrics
+/autonomous-agent:learn:predict                              # Comprehensive predictive analytics report
+/autonomous-agent:learn:predict --action quality-trend   # Predict quality trends for next 7 days
+/autonomous-agent:learn:predict --action optimal-skills  # Recommend optimal skills for task
+/autonomous-agent:learn:predict --action learning-velocity # Predict learning acceleration
+/autonomous-agent:learn:predict --action opportunities   # Identify optimization opportunities
+/autonomous-agent:learn:predict --action accuracy       # Check prediction accuracy metrics
 ```
 
 ## Advanced Analytics Features
