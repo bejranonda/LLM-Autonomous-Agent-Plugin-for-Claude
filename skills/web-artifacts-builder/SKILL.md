@@ -24,6 +24,15 @@ This skill provides comprehensive patterns and best practices for building moder
 - Vite offers excellent developer experience and fast builds
 - Modern ecosystem with active community support
 
+**Design Considerations**:
+Based on research from ["Improving frontend design through Skills"](https://claude.com/blog/improving-frontend-design-through-skills):
+- **Avoid Distributional Defaults**: Don't use Inter/Roboto/Open Sans, purple gradients, or plain backgrounds
+- **Distinctive Typography**: Use high-contrast font pairings with extreme weight variations (100-200 or 800-900)
+- **Intentional Colors**: Move beyond generic color schemes with thoughtful palettes
+- **High-Impact Motion**: One well-orchestrated page load beats a dozen random animations
+- **Motion Library**: Use Framer Motion for complex animation choreography in React
+- See `frontend-aesthetics` skill for comprehensive design guidance
+
 ## Project Structure
 
 ### Recommended Directory Layout
@@ -601,6 +610,357 @@ function Component({ items }: { items: Item[] }) {
   return <List items={sortedItems} onClick={handleClick} />
 }
 ```
+
+## Animation with Framer Motion
+
+### Installation
+
+```bash
+npm install framer-motion
+```
+
+### Core Principles
+
+**High-Impact Moments Over Random Motion**:
+- One well-orchestrated page load with staggered reveals > dozen random micro-animations
+- Focus on: page load, route transitions, major state changes
+- Use CSS for simple transitions, Framer Motion for complex choreography
+- Always respect `prefers-reduced-motion`
+
+### Page Transitions
+
+```typescript
+// app/layout.tsx or page wrapper
+import { motion, AnimatePresence } from 'framer-motion'
+
+export default function PageTransition({ children }: { children: React.ReactNode }) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{
+          duration: 0.5,
+          ease: [0.22, 1, 0.36, 1] // Custom ease (easeOutExpo)
+        }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+```
+
+### Staggered List Animation
+
+```typescript
+import { motion } from 'framer-motion'
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1 // Delay between each child animation
+    }
+  }
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+}
+
+export function StaggeredList({ items }: { items: string[] }) {
+  return (
+    <motion.ul
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="space-y-2"
+    >
+      {items.map((item, i) => (
+        <motion.li
+          key={i}
+          variants={item}
+          className="p-4 bg-card rounded-lg"
+        >
+          {item}
+        </motion.li>
+      ))}
+    </motion.ul>
+  )
+}
+```
+
+### Card Hover Effects
+
+```typescript
+import { motion } from 'framer-motion'
+
+export function AnimatedCard({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02, y: -4 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      className="rounded-xl border bg-card p-6 shadow-sm cursor-pointer"
+    >
+      {children}
+    </motion.div>
+  )
+}
+```
+
+### Layout Animations (Shared Layout)
+
+```typescript
+import { motion, LayoutGroup } from 'framer-motion'
+
+export function TabsWithAnimation({ tabs }: { tabs: Tab[] }) {
+  const [activeTab, setActiveTab] = useState(0)
+
+  return (
+    <LayoutGroup>
+      <div className="flex gap-2">
+        {tabs.map((tab, i) => (
+          <motion.button
+            key={i}
+            onClick={() => setActiveTab(i)}
+            className="relative px-4 py-2 rounded-md"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {tab.label}
+            {activeTab === i && (
+              <motion.div
+                layoutId="activeTab"
+                className="absolute inset-0 bg-primary rounded-md"
+                style={{ zIndex: -1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              />
+            )}
+          </motion.button>
+        ))}
+      </div>
+    </LayoutGroup>
+  )
+}
+```
+
+### Scroll-Based Animations
+
+```typescript
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
+
+export function ParallaxSection() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100])
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0])
+
+  return (
+    <motion.section
+      ref={ref}
+      style={{ y, opacity }}
+      className="min-h-screen flex items-center justify-center"
+    >
+      <h2 className="text-4xl font-bold">Parallax Content</h2>
+    </motion.section>
+  )
+}
+```
+
+### Modal / Dialog Animations
+
+```typescript
+import { motion, AnimatePresence } from 'framer-motion'
+
+export function AnimatedDialog({
+  open,
+  onClose,
+  children
+}: {
+  open: boolean
+  onClose: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/80 z-50"
+          />
+
+          {/* Dialog content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-background p-6 rounded-lg shadow-lg max-w-md w-full"
+          >
+            {children}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  )
+}
+```
+
+### Gesture Animations
+
+```typescript
+import { motion, useDragControls } from 'framer-motion'
+
+export function DraggableCard() {
+  const controls = useDragControls()
+
+  return (
+    <motion.div
+      drag
+      dragControls={controls}
+      dragConstraints={{ left: 0, right: 300, top: 0, bottom: 300 }}
+      dragElastic={0.1}
+      whileDrag={{ scale: 1.05, cursor: "grabbing" }}
+      className="w-32 h-32 bg-primary rounded-lg cursor-grab"
+    />
+  )
+}
+
+// Swipe to dismiss
+export function SwipeableBanner({ onDismiss }: { onDismiss: () => void }) {
+  return (
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragEnd={(e, { offset, velocity }) => {
+        if (Math.abs(offset.x) > 100 || Math.abs(velocity.x) > 500) {
+          onDismiss()
+        }
+      }}
+      className="p-4 bg-card border rounded-lg"
+    >
+      Swipe to dismiss
+    </motion.div>
+  )
+}
+```
+
+### Loading States with Animation
+
+```typescript
+import { motion } from 'framer-motion'
+
+export function LoadingSpinner() {
+  return (
+    <motion.div
+      animate={{ rotate: 360 }}
+      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+      className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full"
+    />
+  )
+}
+
+export function PulseLoader() {
+  return (
+    <div className="flex gap-2">
+      {[0, 1, 2].map((i) => (
+        <motion.div
+          key={i}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 1, 0.5]
+          }}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            delay: i * 0.2
+          }}
+          className="w-3 h-3 bg-primary rounded-full"
+        />
+      ))}
+    </div>
+  )
+}
+```
+
+### Respecting Reduced Motion
+
+```typescript
+import { motion, useReducedMotion } from 'framer-motion'
+
+export function AccessibleAnimation({ children }: { children: React.ReactNode }) {
+  const shouldReduceMotion = useReducedMotion()
+
+  return (
+    <motion.div
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+      animate={shouldReduceMotion ? false : { opacity: 1, y: 0 }}
+      transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+```
+
+### Performance Best Practices
+
+**What to Animate (GPU-Accelerated)**:
+- `opacity`
+- `transform` (translate, scale, rotate)
+- `filter` (blur, brightness)
+
+**What to Avoid Animating**:
+- `width`, `height` (causes layout thrashing)
+- `top`, `left`, `margin`, `padding` (use `transform: translate` instead)
+- `color`, `background-color` (expensive, use sparingly)
+
+**Optimization Tips**:
+```typescript
+// Use will-change for smoother animations
+<motion.div style={{ willChange: "transform" }}>
+
+// Lazy load motion components
+import { motion, LazyMotion, domAnimation } from "framer-motion"
+
+<LazyMotion features={domAnimation}>
+  <motion.div />
+</LazyMotion>
+
+// Reduce animation complexity on low-end devices
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+```
+
+### When to Use Framer Motion vs CSS
+
+**Use CSS Animations**:
+- Simple hover effects
+- Basic transitions
+- Static keyframe animations
+- Better performance for simple cases
+
+**Use Framer Motion**:
+- Complex orchestration (staggered lists, sequences)
+- Gesture-based interactions (drag, swipe)
+- Layout animations (morphing between states)
+- Scroll-based animations
+- Dynamic animations based on state
+- Need for easier control and declarative API
 
 ## When to Apply
 

@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v7.15.1
+# 🚀 Autonomous Agent for Claude Code v7.16.0
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-8-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.15.1-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.15.1)
+[![Version](https://img.shields.io/badge/version-7.16.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.16.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -46,7 +46,7 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 A **paradigm shift** from static tools to living intelligence with **31 specialized agents** across 4 collaborative groups:
 
-**🏗️ Four-Tier Group Architecture (v7.15.1)**
+**🏗️ Four-Tier Group Architecture (v7.16.0)**
 - **Group 1 - Strategic Analysis (Brain)**: 8 agents analyze and recommend with confidence scores
 - **Group 2 - Decision Making (Council)**: 2 agents evaluate and create optimal execution plans
 - **Group 3 - Execution (Hand)**: 14 agents implement with comprehensive metrics
@@ -110,7 +110,7 @@ A **paradigm shift** from static tools to living intelligence with **31 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.15.1 - Broadened Research Capabilities** 🆕
+### 🚀 **Latest Innovation: v7.16.0 - Enhanced Design Intelligence** 🆕
 
 **🔬 Comprehensive Research Capabilities**: Multi-step research across all domains—technical, creative, strategic, and general knowledge—with automatic quality validation and citation management.
 

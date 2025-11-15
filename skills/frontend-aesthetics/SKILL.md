@@ -6,9 +6,17 @@ version: 1.0.0
 
 ## Overview
 
-This skill provides specific design principles and patterns for creating distinctive, polished frontend interfaces that avoid "AI slop" - the generic, obviously-generated aesthetic that results from default AI model choices. Based on research from "Improving frontend design through Skills" by Anthropic.
+This skill provides specific design principles and patterns for creating distinctive, polished frontend interfaces that avoid "AI slop" - the generic, obviously-generated aesthetic that results from default AI model choices. Based on official research from ["Improving frontend design through Skills"](https://claude.com/blog/improving-frontend-design-through-skills) by Anthropic.
 
-**Core Insight**: AI models tend to converge on "safe defaults" (Inter fonts, purple gradients, minimal animations). This skill provides guidance to steer away from these patterns and create intentional, distinctive designs.
+**Skills Methodology**: This follows Anthropic's skills approach - reusable markdown documents that provide altitude-appropriate design guidance without permanent context overhead. Skills make effective design prompts contextual and reusable across projects.
+
+**Core Problem: Distributional Convergence**: Language models naturally sample from the high-probability center of their training data distribution. This causes them to default to statistically common "safe choices" (Inter fonts, purple gradients, minimal animations, standard grid layouts) because these patterns dominate web design datasets. The result is bland, forgettable interfaces that lack intentional design decisions.
+
+**Altitude-Appropriate Guidance**: This skill avoids both extremes:
+- **Too Specific**: Prescribing exact hex codes or pixel values limits creativity
+- **Too Vague**: Assuming models know design principles leads to generic defaults
+
+Instead, it provides **contextual principles** with concrete examples that guide toward distinctive choices while preserving flexibility.
 
 ## The "AI Slop" Problem
 
@@ -97,28 +105,48 @@ Character: Sophisticated, refined, premium feel
 
 ### Font Pairing Principles
 
+**High-Contrast Pairings** (Recommended):
+Pair fonts from different categories for maximum distinctiveness:
+- **Display + Monospace**: Playfair Display + JetBrains Mono
+- **Serif + Geometric Sans**: Crimson Pro + Space Grotesk
+- **Heavy Display + Light Sans**: Fredoka (700) + Manrope (300)
+
 **Serif + Sans Pairing**:
 - Use serif for headings (authority, elegance)
 - Use sans-serif for body (readability)
-- Ensure sufficient contrast in style
+- Ensure sufficient contrast in style (not both humanist)
 - Example: Playfair Display + Source Sans 3
 
 **Geometric + Humanist**:
 - Geometric sans for headings (modern, structured)
 - Humanist sans for body (friendly, readable)
-- Example: Space Grotesk + Inter (if Inter is necessary)
+- Example: Space Grotesk + Source Sans 3 (avoid Inter)
 
 **Monospace + Sans**:
-- Monospace for code, technical data
-- Sans for regular text
-- Unified family approach (IBM Plex, JetBrains)
+- Monospace for code, technical data, or distinctive headings
+- Geometric/humanist sans for regular text
+- Unified family approach when available (IBM Plex, JetBrains)
 - Example: JetBrains Mono + Space Grotesk
+
+**Extreme Weight Variations**:
+Create hierarchy through dramatic weight differences:
+- **Headings**: Use 100-200 (ultra-thin) OR 800-900 (extra-bold)
+- **Body**: Use 300-400 (light to regular)
+- **Avoid**: Medium weights (500-600) for headings - not distinctive enough
+- **Example**: Manrope 200 for hero headings, Manrope 400 for body
+
+**Size Jumps** (3x+ Ratio):
+Create clear hierarchy with large size differences:
+- **Hero**: 4rem (64px)
+- **H1**: 2.5rem (40px) - not quite 3x but close
+- **Body**: 1rem (16px) - 4x from hero
+- **Avoid**: Incremental 1.5x jumps (too subtle)
 
 **Variable Fonts** (Modern Approach):
 - Single font file with multiple weights/styles
 - Reduces HTTP requests
-- Enables smooth transitions
-- Example: Inter Variable (if used thoughtfully), Manrope Variable
+- Enables smooth weight transitions in animations
+- Example: Manrope Variable, Inter Variable (if used thoughtfully)
 
 ### Typography Implementation
 
@@ -312,23 +340,40 @@ Info: Blues (#3b82f6, #0891b2)
 
 ## Animation & Motion Design
 
-### Principle: Purposeful Animation
+### Principle: High-Impact Moments Over Random Motion
+
+**Core Insight**: One well-orchestrated page load with staggered reveals is worth more than a dozen random micro-animations scattered across the interface.
 
 **Avoid**:
-- Random animations everywhere
-- Slow, drawn-out transitions
-- No animations at all (static is boring)
+- Random animations everywhere without purpose
+- Slow, drawn-out transitions that delay user interaction
+- No animations at all (static interfaces feel lifeless)
+- Animations that don't respect reduced-motion preferences
 
-**Use Animations For**:
-- Page load and transitions
-- Major state changes
-- User feedback (hover, click)
-- Revealing content progressively
-- Drawing attention to important elements
+**Focus On High-Impact Moments**:
+- **Page Load**: Create memorable first impression with orchestrated entrance
+- **Major Transitions**: Route changes, modal appearances, significant state shifts
+- **Content Reveal**: Progressive disclosure as user scrolls or interacts
+- **Success Moments**: Celebrate user achievements with intentional motion
+- **Purposeful Micro-Interactions**: Hover/click feedback that reinforces UI affordances
+
+**Motion Priority**:
+1. **Page Load Animation** (highest impact) - Users see this every time
+2. **Major State Changes** (high impact) - Crucial for UX comprehension
+3. **Micro-Interactions** (supporting) - Polish, not primary focus
+4. **Decorative Motion** (lowest priority) - Use sparingly or omit
+
+### Motion Library Selection
+
+**Decision Framework**:
+- **HTML-Only Projects**: Always use CSS animations (no dependencies, better performance)
+- **React Projects**: Use [Framer Motion](https://www.framer.com/motion/) for complex choreography
+- **Simple Transitions**: CSS is sufficient even in React
+- **Complex Orchestration**: Motion library provides easier sequencing and stagger control
 
 ### Page Load Animation
 
-**CSS-Only Approach** (Preferred for Performance):
+**CSS-Only Approach** (HTML Projects, Simple React):
 ```css
 @keyframes fadeInUp {
   from {
