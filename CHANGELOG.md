@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.16.1] - 2025-11-15
+
+### Fixed - Command Structure Consistency
+
+#### Command Organization
+- **Structural Fix**: Moved commands to proper category directories for consistent naming pattern
+  - Moved `commands/design-enhance.md` to `commands/design/enhance.md`
+  - Moved `commands/research-structured.md` to `commands/research/structured.md`
+  - Result: All 40 commands now follow uniform `category:command` pattern
+
+#### Benefits
+- **Consistency**: Eliminated inconsistent command structure across the plugin
+- **Maintainability**: Category-based organization simplifies command discovery
+- **Compliance**: Aligned with plugin architecture standards
+
+### Version Updates
+- `.claude-plugin/plugin.json` - Version 7.16.1
+- `.claude-plugin/marketplace.json` - Version 7.16.1
+- `README.md` - Version 7.16.1
+- `CLAUDE.md` - Version 7.16.1
+
 ## [7.15.1] - 2025-11-15
 
 ### Enhanced - Broadened Research Capabilities
