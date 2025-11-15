@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.16.2] - 2025-11-15
+
+### Fixed - Command Display in Autocomplete
+
+#### Command Name Field Addition
+- **Autocomplete Fix**: Added explicit `name` field to command frontmatter for proper display
+  - Added `name: design:enhance` to `commands/design/enhance.md`
+  - Added `name: research:structured` to `commands/research/structured.md`
+  - Result: Commands now display as `/design:enhance` instead of `/autonomous-agent:\design:enhance` in Claude Code UI
+
+#### Benefits
+- **User Experience**: Commands now display with correct naming pattern in autocomplete
+- **Consistency**: Matches display behavior of other category-based commands
+- **Clarity**: Eliminates confusing plugin prefix in command suggestions
+
+### Version Updates
+- `.claude-plugin/plugin.json` - Version 7.16.2
+- `.claude-plugin/marketplace.json` - Version 7.16.2
+- `README.md` - Version 7.16.2
+- `CLAUDE.md` - Version 7.16.2
+
 ## [7.16.1] - 2025-11-15
 
 ### Fixed - Command Structure Consistency
