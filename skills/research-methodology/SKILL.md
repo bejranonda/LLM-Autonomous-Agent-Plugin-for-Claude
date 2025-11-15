@@ -57,32 +57,32 @@ Better Query: "I2C vs SPI trade-offs Raspberry Pi hardware communication"
 **Source Credibility Hierarchy**:
 
 **Tier 1: Authoritative (90-100 credibility)**
-- Official datasheets (manufacturer documentation)
-- IEEE, ACM, W3C, IETF standards and papers
-- Official language/framework documentation (.org sites)
-- Government research (.gov, .edu with peer review)
-- Example: NXP TEA5767 datasheet, React official docs
+- **Technical**: Official datasheets, IEEE/ACM/W3C/IETF standards, official framework docs
+- **Design/UX**: Nielsen Norman Group, Material Design, Apple HIG, WCAG standards
+- **General**: Wikipedia (for overview), Britannica, .edu/.gov with peer review
+- **Examples**: NXP datasheets, React docs, nngroup.com, Wikipedia
 
 **Tier 2: Reliable (70-89 credibility)**
-- High-reputation Stack Overflow answers (high votes, accepted)
-- Major tech company engineering blogs (Google, Microsoft, etc.)
-- Well-maintained GitHub repositories with documentation
-- Established technical publications (Embedded.com, EETimes)
-- Example: StackOverflow answer with 200+ upvotes
+- **Technical**: High-reputation Stack Overflow (200+ votes), major tech blogs, well-maintained GitHub repos
+- **Design/UX**: Smashing Magazine, A11Y Project, CSS-Tricks, established design blogs
+- **Business/Product**: Product Hunt, IndieHackers, established tech publications
+- **General**: Quality blogs with demonstrated expertise, educational content
+- **Examples**: StackOverflow accepted answers, smashingmagazine.com, css-tricks.com
 
 **Tier 3: Supplementary (50-69 credibility)**
-- Medium articles from recognized authors
-- Smaller technical blogs with expertise demonstrated
-- Forum discussions from specialized communities
-- Tutorial sites with recent content
-- Example: Medium article by experienced developer
+- **Technical**: Medium articles from recognized authors, specialized community forums
+- **Design/UX**: UX Planet, Design Modo, designer portfolios on Dribbble/Behance
+- **Business/Product**: TechCrunch, Hacker News discussions, startup blogs
+- **General**: Tutorial sites with recent content, dev.to articles
+- **Examples**: Quality Medium articles, recent tutorials, community discussions
 
 **Tier 4: Questionable (0-49 credibility)**
-- Content farms with generic information
+- Content farms with generic information (avoid)
 - Outdated tutorials (> 5 years old for fast-moving tech)
-- Yahoo Answers, Quora (variable quality)
-- Sites with no author attribution
-- Avoid: W3Schools (known for outdated info)
+- Sites with no author attribution or expertise
+- Yahoo Answers, low-quality Quora responses
+- AI-generated content without verification
+- **Note**: W3Schools (known for outdated info - use MDN instead)
 
 **Evaluation Criteria**:
 - **Authority**: Is the author/publisher an expert in this domain?
@@ -226,6 +226,89 @@ be needed for high-speed or long traces. Trust datasheet formula.
 
 **Deliverable**: Threat assessment + mitigation strategies with sources
 
+### Pattern 6: Design & UX Research
+
+**Use When**: Improving visual design, user experience, or interface patterns
+
+**Steps**:
+1. Research current design trends and best practices
+2. Gather visual examples and inspiration from leading implementations
+3. Identify UX principles and patterns for the domain
+4. Analyze competitor designs and user feedback
+5. Consult accessibility guidelines (WCAG, a11y best practices)
+6. Synthesize design recommendations with rationale
+
+**Deliverable**: Design trends analysis + UX recommendations + visual examples
+
+**Authoritative Sources**:
+- Nielsen Norman Group (nngroup.com)
+- Smashing Magazine (smashingmagazine.com)
+- Material Design (material.io)
+- Apple Human Interface Guidelines
+- A11Y Project (a11yproject.com)
+
+### Pattern 7: Idea Generation Research
+
+**Use When**: Seeking innovative features, new capabilities, or project direction
+
+**Steps**:
+1. Survey similar projects, tools, and competitors
+2. Identify unique features and innovative capabilities
+3. Research emerging technologies and industry trends
+4. Explore adjacent problem spaces and use cases
+5. Analyze user pain points and unmet needs
+6. Brainstorm novel combinations and applications
+
+**Deliverable**: Innovation opportunities + feasibility assessment + implementation paths
+
+**Useful Sources**:
+- Product Hunt (producthunt.com)
+- GitHub Trending (github.com/trending)
+- Hacker News (news.ycombinator.com)
+- IndieHackers (indiehackers.com)
+- Industry blogs and newsletters
+
+### Pattern 8: Competitive Analysis Research
+
+**Use When**: Understanding market landscape, positioning, or differentiation strategy
+
+**Steps**:
+1. Identify direct and indirect competitors
+2. Analyze feature sets, pricing, and positioning
+3. Assess strengths, weaknesses, and unique selling points
+4. Identify market gaps and opportunities
+5. Research user reviews and pain points
+6. Synthesize positioning and differentiation strategy
+
+**Deliverable**: Competitor matrix + market gap analysis + positioning recommendations
+
+**Useful Sources**:
+- G2 (g2.com)
+- Capterra (capterra.com)
+- AlternativeTo (alternativeto.net)
+- User review sites and forums
+
+### Pattern 9: General Knowledge & Learning Research
+
+**Use When**: Building understanding, learning concepts, or improving project knowledge
+
+**Steps**:
+1. Start with authoritative foundational sources (Wikipedia, educational content)
+2. Identify fundamental principles and mental models
+3. Gather diverse perspectives from multiple sources
+4. Find practical applications and real-world examples
+5. Identify common pitfalls and anti-patterns
+6. Synthesize actionable insights for project improvement
+
+**Deliverable**: Mental model + key concepts + practical applications + actionable insights
+
+**Authoritative Sources**:
+- Wikipedia (wikipedia.org)
+- Educational institutions (.edu domains)
+- Official documentation and guides
+- Established technical publications
+- Expert blog posts with demonstrated expertise
+
 ## Research Quality Metrics
 
 ### Completeness Checklist
@@ -353,13 +436,15 @@ This enables:
 ## When to Apply
 
 Use this skill when:
-- Planning comprehensive research investigations
-- Need to systematically explore a technical topic
-- Evaluating multiple options or approaches
-- Verifying technical claims and specifications
-- Learning new technologies or frameworks
-- Troubleshooting complex problems
-- Need to synthesize information from multiple sources
-- Required to provide well-cited, credible findings
+- **Technical Research**: Exploring technical topics, specifications, protocols, or implementations
+- **Design & UX Research**: Improving visual design, user experience, or interface patterns
+- **Idea Generation**: Seeking innovative features, new capabilities, or project direction
+- **Competitive Analysis**: Understanding market landscape, positioning, or differentiation
+- **General Knowledge**: Building understanding, learning concepts, or improving project knowledge
+- **Problem Solving**: Troubleshooting complex issues or finding solutions
+- **Decision Making**: Evaluating multiple options or approaches with trade-off analysis
+- **Verification**: Verifying claims, cross-referencing information, or assessing credibility
+- **Learning**: Learning new technologies, frameworks, methodologies, or best practices
+- **Synthesis**: Combining information from multiple sources into actionable insights
 
-This methodology ensures high-quality, systematic research that produces reliable, actionable insights with proper attribution and verification.
+This methodology ensures high-quality, systematic research across all domains—technical, creative, strategic, and general—producing reliable, actionable insights with proper attribution and verification.

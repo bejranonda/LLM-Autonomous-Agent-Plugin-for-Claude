@@ -1,11 +1,19 @@
 ---
-description: Conduct systematic multi-step research with planning, execution, synthesis, and validation phases - includes source credibility assessment and proper citations
+description: Conduct systematic multi-step research with planning, execution, synthesis, and validation phases - supports technical research, design exploration, idea generation, competitive analysis, and general knowledge gathering
 category: research
 ---
 
 # Structured Research Command
 
-Execute comprehensive, systematic research investigations with automatic planning, source verification, and synthesis.
+Execute comprehensive, systematic research investigations across all domains—technical, creative, strategic, and general—with automatic planning, source verification, and synthesis.
+
+## Research Types Supported
+
+- **Technical Research**: Specifications, protocols, implementations, comparisons
+- **Design & UX Research**: Visual trends, interface patterns, user experience best practices
+- **Idea Generation**: Innovative features, emerging technologies, market opportunities
+- **Competitive Analysis**: Market landscape, positioning, feature comparison
+- **General Knowledge**: Concepts, best practices, learning resources, project improvement
 
 ## Workflow
 
@@ -61,10 +69,39 @@ Time: [X] minutes
 
 ## Usage Examples
 
+**Technical Research**:
 ```
 /research:structured "Compare I2C vs SPI protocols for Raspberry Pi"
 /research:structured "Authentication best practices for Node.js applications"
 /research:structured "React Query v4 to v5 migration patterns"
+```
+
+**Design & UX Research**:
+```
+/research:structured "Modern dashboard design trends and patterns"
+/research:structured "Command-line interface UX best practices"
+/research:structured "Accessibility best practices for developer tools"
+```
+
+**Idea Generation**:
+```
+/research:structured "Innovative features in AI coding assistants"
+/research:structured "Emerging patterns in autonomous agent systems"
+/research:structured "Novel approaches to code quality automation"
+```
+
+**Competitive Analysis**:
+```
+/research:structured "Comparison of code quality and analysis tools"
+/research:structured "AI agent plugin marketplace landscape"
+/research:structured "Developer productivity tools feature comparison"
+```
+
+**General Knowledge**:
+```
+/research:structured "Best practices for plugin architecture design"
+/research:structured "Pattern learning systems in software development"
+/research:structured "User onboarding strategies for technical products"
 ```
 
 ## Success Criteria

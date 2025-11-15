@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.15.1] - 2025-11-15
+
+### Enhanced - Broadened Research Capabilities
+
+#### Research System Improvements
+- **research-strategist agent**: Enhanced to support comprehensive research across all domains (technical, design, competitive analysis, idea generation, general knowledge) beyond just academic/technical topics
+- **research-executor agent**: Added specialized workflows for non-technical research including design trends, competitive landscape, creative ideation, and general concept exploration
+- **research-methodology skill**: Expanded with 4 new research patterns:
+  - Design & UX Research (visual trends, interface patterns, design systems)
+  - Idea Generation & Innovation (emerging features, novel approaches, creative solutions)
+  - Competitive Analysis (market landscape, competitor positioning, industry trends)
+  - General Knowledge Exploration (concepts, best practices, learning resources)
+- **Source credibility updates**: Broadened to include design/UX sources (Dribbble, Behance, Awwwards), business/market sources (Gartner, Forrester, CB Insights), and general knowledge sources (academic institutions, technical blogs, established communities)
+
+#### Command Enhancements
+- **/research:structured command**: Updated to highlight 5 research types with 15+ usage examples across all domains
+
+#### Documentation Updates
+- Updated README.md to emphasize comprehensive research capabilities across all domains
+- Updated plugin.json and marketplace.json descriptions to reflect broadened research scope
+- Clarified that research system supports technical AND non-technical research needs
+
+### Key Features
+- **5 Research Types**: Technical Research, Design & UX Research, Idea Generation, Competitive Analysis, General Knowledge
+- **Expanded Source Coverage**: Technical docs + Design platforms + Business intelligence + General knowledge sources
+- **Usage Examples**: 15+ concrete examples across all 5 research types
+- **Pattern Learning Integration**: Continues to improve research source selection across all domains
+
 ## [7.15.0] - 2025-11-14
 
 ### Added - Research & Design Intelligence

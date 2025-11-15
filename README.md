@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v7.15.0
+# 🚀 Autonomous Agent for Claude Code v7.15.1
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-8-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.15.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.15.0)
+[![Version](https://img.shields.io/badge/version-7.15.1-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.15.1)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -46,7 +46,7 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 A **paradigm shift** from static tools to living intelligence with **31 specialized agents** across 4 collaborative groups:
 
-**🏗️ Four-Tier Group Architecture (v7.15.0)**
+**🏗️ Four-Tier Group Architecture (v7.15.1)**
 - **Group 1 - Strategic Analysis (Brain)**: 8 agents analyze and recommend with confidence scores
 - **Group 2 - Decision Making (Council)**: 2 agents evaluate and create optimal execution plans
 - **Group 3 - Execution (Hand)**: 14 agents implement with comprehensive metrics
@@ -110,15 +110,21 @@ A **paradigm shift** from static tools to living intelligence with **31 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.15.0 - Research & Design Intelligence** 🆕
+### 🚀 **Latest Innovation: v7.15.1 - Broadened Research Capabilities** 🆕
 
-**🔬 Systematic Research Capabilities**: Multi-step web research with automatic quality validation and citation management.
+**🔬 Comprehensive Research Capabilities**: Multi-step research across all domains—technical, creative, strategic, and general knowledge—with automatic quality validation and citation management.
 
 **🎨 Frontend Design Enhancement**: Eliminate "AI slop" aesthetics with distinctive typography, colors, and animations.
 
 **🎯 Major Features**:
 - **Structured Research Workflow**: Plan → Execute → Validate with quality scoring (0-100)
-- **Source Credibility Assessment**: Tier 1-4 hierarchy (Authoritative → Questionable)
+- **5 Research Types Supported**:
+  - **Technical Research**: Specifications, protocols, implementations, technology comparisons
+  - **Design & UX Research**: Visual trends, interface patterns, user experience best practices
+  - **Idea Generation**: Innovative features, emerging technologies, market opportunities
+  - **Competitive Analysis**: Market landscape, positioning, feature comparison matrices
+  - **General Knowledge**: Concepts, best practices, learning resources, project improvement insights
+- **Source Credibility Assessment**: Tier 1-4 hierarchy covering technical, design, business, and general sources
 - **Citation Management**: URL verification, claim-source matching, contradiction resolution
 - **AI Slop Detection**: Calculate generic design patterns score, target < 30 for distinction
 - **Design Enhancement**: Distinctive fonts (not Inter/Roboto), intentional colors (not purple gradients), layered backgrounds
@@ -133,9 +139,21 @@ A **paradigm shift** from static tools to living intelligence with **31 speciali
 
 **💡 Real-World Impact**:
 ```bash
-# Systematic research with citations
+# Technical research with citations
 /research:structured "I2C vs SPI for Raspberry Pi"
 → Quality Score: 87/100, 15 authoritative sources, trade-off matrix
+
+# Design research for project improvement
+/research:structured "Modern dashboard design trends 2024"
+→ Visual examples, UX principles, design recommendations
+
+# Idea generation for new features
+/research:structured "Innovative features in AI coding assistants"
+→ Innovation opportunities, feasibility assessment, implementation paths
+
+# Competitive analysis
+/research:structured "Code quality tools comparison"
+→ Competitor matrix, market gaps, positioning strategy
 
 # Transform generic design
 /design:enhance "Landing page"

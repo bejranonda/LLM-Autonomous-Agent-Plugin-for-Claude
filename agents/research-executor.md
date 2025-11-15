@@ -12,9 +12,11 @@ common_for:
   - Cross-referencing information for verification
 examples:
   - "Execute research plan for I2C protocol comparison → research-executor"
-  - "Gather information on React Query migration patterns → research-executor"
-  - "Research and synthesize authentication best practices → research-executor"
-  - "Find technical specifications in datasheets and forums → research-executor"
+  - "Gather design inspiration from modern dashboard implementations → research-executor"
+  - "Research emerging trends in developer tool UX → research-executor"
+  - "Synthesize competitive analysis of AI coding assistants → research-executor"
+  - "Find innovative features in similar open-source projects → research-executor"
+  - "Research and document best practices for plugin marketplaces → research-executor"
 tools: WebSearch,WebFetch,Read,Grep,Glob,Write
 model: inherit
 ---
@@ -326,15 +328,35 @@ function assessSourceCredibility(url: string): SourceCredibility {
 
   // Authoritative sources (high credibility)
   const authoritative = [
+    // Technical: Standards, official docs, academic
     "ieee.org", "acm.org", "w3.org", "ietf.org",
     ".edu", ".gov", "raspberrypi.org", "arduino.cc",
-    "developer.mozilla.org", "docs.microsoft.com"
+    "developer.mozilla.org", "docs.microsoft.com",
+
+    // Design & UX: Industry leaders
+    "nngroup.com", "smashingmagazine.com", "a11yproject.com",
+    "material.io", "developer.apple.com/design",
+
+    // General: Authoritative knowledge sources
+    "wikipedia.org", "britannica.com"
   ];
 
   // Reliable sources (medium-high credibility)
   const reliable = [
+    // Technical: Community & established platforms
     "stackoverflow.com", "github.com", "medium.com",
-    "electronics.stackexchange.com", "embedded.com"
+    "electronics.stackexchange.com", "embedded.com",
+
+    // Design & UX: Established blogs and platforms
+    "uxdesign.cc", "designsystems.com", "csswizardry.com",
+    "designmodo.com", "uxplanet.org", "interaction-design.org",
+
+    // Business & Product: Industry publications
+    "producthunt.com", "techcrunch.com", "hacker news",
+    "indiehackers.com", "stratechery.com",
+
+    // General: Quality blogs and publications
+    "css-tricks.com", "dev.to", "hashnode.com"
   ];
 
   if (authoritative.some(auth => domain.includes(auth))) {
@@ -365,6 +387,168 @@ for (const step of researchPlan.steps) {
       ]
     });
   }
+}
+```
+
+### Phase 3.5: Specialized Research Workflows
+
+**Design & UX Research Workflow**:
+```typescript
+async function executeDesignResearch(topic: string) {
+  // Step 1: Gather visual examples and inspiration
+  const designSources = await WebSearch({
+    query: `${topic} design examples 2024 best practices`,
+    allowed_domains: ["dribbble.com", "behance.net", "awwwards.com", "nngroup.com"]
+  });
+
+  // Step 2: Analyze design patterns and trends
+  const patterns = [];
+  for (const source of designSources.slice(0, 5)) {
+    const analysis = await WebFetch({
+      url: source.url,
+      prompt: `Analyze design patterns, visual elements, UX principles, and trends shown.
+               Extract: color schemes, typography, layout patterns, interaction patterns,
+               accessibility considerations. Provide specific examples.`
+    });
+    patterns.push({ source: source.url, analysis });
+  }
+
+  // Step 3: Research UX best practices
+  const uxPractices = await WebSearch({
+    query: `${topic} UX best practices user experience`
+  });
+
+  // Step 4: Synthesize design recommendations
+  return {
+    visualExamples: patterns,
+    trends: extractTrends(patterns),
+    uxPrinciples: extractPrinciples(uxPractices),
+    recommendations: generateDesignRecommendations(patterns, uxPractices)
+  };
+}
+```
+
+**Idea Generation Research Workflow**:
+```typescript
+async function executeIdeaGenerationResearch(projectContext: string) {
+  // Step 1: Survey similar projects and tools
+  const similarProjects = await WebSearch({
+    query: `${projectContext} similar projects tools alternatives`,
+    allowed_domains: ["github.com", "producthunt.com", "alternativeto.net"]
+  });
+
+  // Step 2: Identify unique features and capabilities
+  const innovativeFeatures = [];
+  for (const project of similarProjects.slice(0, 10)) {
+    const features = await WebFetch({
+      url: project.url,
+      prompt: `Identify unique features, innovative capabilities, and standout
+               functionality. What makes this project different? What problems
+               does it solve uniquely?`
+    });
+    innovativeFeatures.push({ project: project.url, features });
+  }
+
+  // Step 3: Research emerging trends and technologies
+  const emergingTrends = await WebSearch({
+    query: `${projectContext} emerging trends 2024 innovations`
+  });
+
+  // Step 4: Identify gaps and opportunities
+  const gaps = identifyMarketGaps(innovativeFeatures, emergingTrends);
+
+  // Step 5: Brainstorm combinations and novel approaches
+  return {
+    existingInnovations: innovativeFeatures,
+    trendAnalysis: emergingTrends,
+    identifiedGaps: gaps,
+    novelIdeas: brainstormNovelCombinations(innovativeFeatures, gaps),
+    feasibilityAssessment: assessFeasibility(gaps)
+  };
+}
+```
+
+**Competitive Analysis Workflow**:
+```typescript
+async function executeCompetitiveAnalysis(market: string) {
+  // Step 1: Identify direct competitors
+  const competitors = await WebSearch({
+    query: `${market} top tools products comparison`,
+    allowed_domains: ["g2.com", "capterra.com", "producthunt.com", "alternativeto.net"]
+  });
+
+  // Step 2: Analyze feature sets
+  const featureMatrix = new Map();
+  for (const competitor of competitors.slice(0, 8)) {
+    const analysis = await WebFetch({
+      url: competitor.url,
+      prompt: `Extract: key features, pricing model, target audience, unique selling
+               points, strengths, weaknesses, user reviews summary. Be specific.`
+    });
+
+    featureMatrix.set(competitor.title, {
+      features: extractFeatures(analysis),
+      strengths: extractStrengths(analysis),
+      weaknesses: extractWeaknesses(analysis),
+      pricing: extractPricing(analysis),
+      positioning: extractPositioning(analysis)
+    });
+  }
+
+  // Step 3: Identify market gaps
+  const allFeatures = Array.from(featureMatrix.values())
+    .flatMap(c => c.features);
+  const commonFeatures = findCommonFeatures(allFeatures);
+  const uniqueFeatures = findUniqueFeatures(allFeatures);
+  const missingFeatures = identifyPotentialGaps(allFeatures);
+
+  // Step 4: Generate positioning recommendations
+  return {
+    competitorMatrix: featureMatrix,
+    marketAnalysis: {
+      commonFeatures,
+      uniqueFeatures,
+      identifiedGaps: missingFeatures
+    },
+    positioningStrategy: generatePositioningStrategy(featureMatrix, missingFeatures),
+    differentiationOpportunities: identifyDifferentiation(uniqueFeatures, missingFeatures)
+  };
+}
+```
+
+**General Knowledge Research Workflow**:
+```typescript
+async function executeGeneralKnowledgeResearch(topic: string) {
+  // Step 1: Start with foundational sources
+  const foundational = await WebSearch({
+    query: `${topic} comprehensive guide overview`,
+    allowed_domains: ["wikipedia.org", ".edu", "britannica.com"]
+  });
+
+  // Step 2: Gather diverse perspectives
+  const perspectives = await WebSearch({
+    query: `${topic} best practices patterns approaches`
+  });
+
+  // Step 3: Find practical applications
+  const applications = await WebSearch({
+    query: `${topic} real-world examples use cases implementation`
+  });
+
+  // Step 4: Identify common pitfalls
+  const pitfalls = await WebSearch({
+    query: `${topic} common mistakes anti-patterns what to avoid`
+  });
+
+  // Step 5: Synthesize mental model
+  return {
+    fundamentals: synthesizeFundamentals(foundational),
+    diversePerspectives: synthesizePerspectives(perspectives),
+    practicalApplications: synthesizeApplications(applications),
+    commonPitfalls: synthesizePitfalls(pitfalls),
+    mentalModel: buildMentalModel(foundational, perspectives, applications),
+    actionableInsights: extractActionableInsights(applications, pitfalls)
+  };
 }
 ```
 

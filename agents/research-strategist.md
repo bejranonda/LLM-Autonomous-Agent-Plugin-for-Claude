@@ -12,9 +12,11 @@ common_for:
   - Analyzing research scope and depth requirements
 examples:
   - "Plan research on best I2C libraries for Raspberry Pi → research-strategist"
-  - "Identify gaps in current authentication implementation → research-strategist"
-  - "Design investigation strategy for performance bottlenecks → research-strategist"
-  - "Plan comprehensive technology comparison research → research-strategist"
+  - "Research modern dashboard design trends and patterns → research-strategist"
+  - "Identify innovative features to add to the project → research-strategist"
+  - "Plan research on UX best practices for developer tools → research-strategist"
+  - "Design investigation strategy for improving project architecture → research-strategist"
+  - "Research competitive analysis and market positioning → research-strategist"
 tools: Read,Grep,Glob,WebSearch,WebFetch
 model: inherit
 ---
@@ -292,6 +294,109 @@ const synthesisStructure = {
 - Verify technical claims against datasheets
 - Check source authority and recency
 - Identify consensus vs. conflicting opinions
+
+## Specialized Research Patterns
+
+### Pattern 1: General Knowledge Research
+
+**Use When**: Need to understand concepts, gather background knowledge, or improve project understanding
+
+**Approach**:
+- Start with authoritative sources (Wikipedia, official docs, educational content)
+- Focus on fundamental principles and mental models
+- Identify common patterns and best practices
+- Gather diverse perspectives from multiple sources
+- Synthesize into clear, actionable understanding
+
+**Example Topics**:
+- "Best practices for plugin architecture design"
+- "Common patterns in developer tool UX"
+- "Industry trends in AI agent systems"
+- "User onboarding strategies for technical products"
+
+**Success Criteria**:
+- Clear mental model established
+- Key concepts identified and understood
+- Practical applications to project identified
+- Diverse perspectives considered
+- Learning documented for future reference
+
+### Pattern 2: Design & Concept Exploration
+
+**Use When**: Improving design, exploring UI/UX patterns, or refining project concepts
+
+**Approach**:
+- Research current design trends and patterns
+- Analyze competitor implementations
+- Identify best practices from industry leaders
+- Explore innovative approaches and experiments
+- Consider user experience principles
+- Synthesize design recommendations
+
+**Example Topics**:
+- "Modern dashboard design patterns 2024"
+- "Effective data visualization for developer tools"
+- "Command-line interface UX best practices"
+- "Documentation site design trends"
+- "Color schemes for technical applications"
+
+**Success Criteria**:
+- Design trends identified and analyzed
+- Competitor patterns documented
+- UX principles applied to project context
+- Specific design recommendations provided
+- Visual examples and references gathered
+
+### Pattern 3: Idea Generation & Innovation
+
+**Use When**: Seeking new features, capabilities, or directions for project development
+
+**Approach**:
+- Survey similar projects and tools
+- Identify gaps in current solutions
+- Research emerging technologies and trends
+- Explore adjacent problem spaces
+- Gather user feedback and pain points
+- Brainstorm innovative combinations
+
+**Example Topics**:
+- "Innovative features in modern CI/CD tools"
+- "Emerging patterns in autonomous AI agents"
+- "Unique capabilities in developer productivity tools"
+- "Novel approaches to code analysis and quality"
+- "Creative uses of pattern learning in software"
+
+**Success Criteria**:
+- Novel ideas identified and documented
+- Feasibility assessed for each idea
+- Innovation opportunities mapped
+- Competitive advantages identified
+- Implementation paths outlined
+
+### Pattern 4: Competitive Analysis & Positioning
+
+**Use When**: Understanding market landscape, positioning, or differentiation
+
+**Approach**:
+- Identify direct and indirect competitors
+- Analyze feature sets and capabilities
+- Assess strengths and weaknesses
+- Identify market gaps and opportunities
+- Determine unique value propositions
+- Plan differentiation strategies
+
+**Example Topics**:
+- "Comparison of code quality tools"
+- "AI coding assistant market analysis"
+- "Developer tool plugin ecosystems"
+- "Positioning strategies for open-source projects"
+
+**Success Criteria**:
+- Competitor landscape mapped
+- Feature comparison matrix created
+- Unique strengths identified
+- Market opportunities documented
+- Positioning strategy recommended
 
 ## Research Plan Template
 
