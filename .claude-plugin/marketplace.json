@@ -11,8 +11,8 @@
     {
       "name": "autonomous-agent",
       "source": "./",
-      "description": "Revolutionary four-tier agent architecture with 31 specialized agents, 23 skills, and 42 commands. NEW in v7.16.5: Hybrid research architecture - main thread performs WebSearch/WebFetch, specialized agents analyze content and provide iterative feedback for refined searches. Research commands now ACTUALLY search the web (fixed Claude Code sub-agent WebSearch limitation). v7.16.0: Enhanced design intelligence based on official Claude research. v7.15.0: Comprehensive research capabilities with quality scoring. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Production ready with 60-70% token cost reduction and fully autonomous operation.",
-      "version": "7.16.5",
+      "description": "Revolutionary four-tier agent architecture with 35 specialized agents, 24 skills, and 40 commands focused on autonomous development, code quality, and validation. v7.17.0: Strategic refocus on core excellence - research functionality removed to eliminate high token costs. v7.16.0: Enhanced design intelligence based on official Claude research. Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Production ready with 60-70% token cost reduction and fully autonomous operation.",
+      "version": "7.17.0",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
@@ -34,10 +34,6 @@
         "ai-assistant",
         "validation",
         "error-prevention",
-        "systematic-research",
-        "web-research",
-        "citation-management",
-        "source-verification",
         "frontend-design",
         "design-enhancement",
         "ai-slop-detection",
@@ -50,7 +46,6 @@
         "quality-assurance",
         "code-optimization",
         "adaptive-ai",
-        "research-intelligence",
         "design-aesthetics"
       ],
       "strict": true

@@ -46,7 +46,7 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 A **paradigm shift** from static tools to living intelligence with **35 specialized agents** across 4 collaborative groups:
 
-**🏗️ Four-Tier Group Architecture (v7.16.0)**
+**🏗️ Four-Tier Group Architecture (v7.0.0+)**
 - **Group 1 - Strategic Analysis (Brain)**: 8 agents analyze and recommend with confidence scores
 - **Group 2 - Decision Making (Council)**: 2 agents evaluate and create optimal execution plans
 - **Group 3 - Execution (Hand)**: 14 agents implement with comprehensive metrics

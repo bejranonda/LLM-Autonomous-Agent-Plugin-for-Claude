@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.17.0] - 2025-11-20
+
+### BREAKING CHANGES - Research Functionality Removed
+
+#### Strategic Refocus on Core Excellence
+- **Removed**: All research commands and agents to eliminate high token costs
+- **Focus**: Autonomous development, code quality, and validation
+- **Benefit**: Lower token usage, clearer purpose, simpler architecture
+
+#### Removed Components
+- **Commands** (3): `/research:structured`, `/research:compare`, `/research:quick`
+- **Agents** (3): `research-strategist`, `research-executor`, `research-validator`
+- **Skills** (2): `research-methodology`, `source-verification`
+
+#### Updated Statistics
+- **Agents**: 38 → 35 (focused on code excellence)
+- **Skills**: 26 → 24 (development-focused)
+- **Commands**: 43 → 40 (across 9 categories, down from 10)
+
+#### Migration for Users
+- **Research needs**: Use natural conversation with Claude Code (WebSearch available)
+- **Token savings**: 10k-80k+ tokens per research task eliminated
+- **See**: [MIGRATION_v7.17.0.md](MIGRATION_v7.17.0.md) for complete guide
+
+#### Version Updates
+- `.claude-plugin/plugin.json` - Version 7.17.0
+- `README.md` - Version 7.17.0
+- `CLAUDE.md` - Version 7.17.0
+
+#### Documentation Added
+- `MIGRATION_v7.17.0.md` - Complete migration guide
+- `RELEASE_NOTES_v7.17.0.md` - Comprehensive release documentation
+- `CONSISTENCY_VERIFICATION_v7.17.0.md` - Verification report
+
 ## [7.16.4] - 2025-11-20
 
 ### Fixed - Agent Name References in Command Files
