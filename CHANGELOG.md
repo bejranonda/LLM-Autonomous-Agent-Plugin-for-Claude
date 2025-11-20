@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.17.1] - 2025-11-20
+
+### Fixed
+- Version consistency across all project files
+- Updated `.claude-plugin/plugin.json` to v7.17.1
+- Updated `.claude-plugin/marketplace.json` to v7.17.1
+- Updated `tests/__init__.py` to v7.17.1
+- Updated `CLAUDE.md` version reference to v7.17.1
+- Updated `README.md` title, badges, and latest innovation section to v7.17.1
+
+### Documentation
+- Ensured all version references are synchronized across the codebase
+- Maintained consistency between plugin manifest and documentation
+
 ## [7.17.0] - 2025-11-20
 
 ### BREAKING CHANGES - Research Functionality Removed

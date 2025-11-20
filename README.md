@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v7.17.0
+# 🚀 Autonomous Agent for Claude Code v7.17.1
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.17.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.17.0)
+[![Version](https://img.shields.io/badge/version-7.17.1-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.17.1)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -110,7 +110,7 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.17.0 - Focused Core Excellence** 🆕
+### 🚀 **Latest Innovation: v7.17.1 - Version Consistency** 🆕
 
 **🎯 Streamlined for Maximum Impact**: Plugin now focuses exclusively on autonomous development, code quality, and validation—its core strengths.
 

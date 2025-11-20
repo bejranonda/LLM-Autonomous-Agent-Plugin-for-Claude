@@ -24,6 +24,6 @@ Test Categories:
 - Performance and security tests
 """
 
-__version__ = "7.17.0"
+__version__ = "7.17.1"
 __author__ = "Autonomous Agent Plugin"
-__description__ = "Comprehensive test suite for v7.17.0 Four-Tier Architecture"
+__description__ = "Comprehensive test suite for v7.17.1 Four-Tier Architecture"
