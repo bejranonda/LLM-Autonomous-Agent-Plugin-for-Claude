@@ -29,7 +29,7 @@ Fast, lightweight research for quick answers and straightforward lookups. Skips 
 ## How It Works
 
 **Streamlined Workflow** (1 step vs 3 steps):
-1. **Execution Only** (research-executor): Search, gather, synthesize
+1. **Execution Only** (autonomous-agent:research-executor): Search, gather, synthesize
    - No planning phase (saves 5-10 minutes)
    - No validation phase (saves 5-10 minutes)
    - Direct search and synthesis
@@ -193,7 +193,7 @@ Over time, the system learns:
 ## Integration
 
 **Agents Used**:
-- research-executor (direct execution, no planning/validation)
+- autonomous-agent:research-executor (direct execution, no planning/validation)
 
 **Skills Auto-Loaded**:
 - research-methodology (search patterns only)

@@ -431,8 +431,8 @@ Learns:
 ## Integration
 
 **Agents Used**:
-- research-executor (with comparison-optimized workflow)
-- research-strategist (defines comparison criteria)
+- autonomous-agent:research-executor (with comparison-optimized workflow)
+- autonomous-agent:research-strategist (defines comparison criteria)
 
 **Skills Auto-Loaded**:
 - research-methodology (comparison patterns)

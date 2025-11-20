@@ -2,6 +2,7 @@
 name: research:structured
 description: Conduct systematic multi-step research with planning, execution, synthesis, and validation phases - supports technical research, design exploration, idea generation, competitive analysis, and general knowledge gathering
 category: research
+delegates-to: autonomous-agent:orchestrator
 ---
 
 # Structured Research Command
@@ -18,25 +19,25 @@ Execute comprehensive, systematic research investigations across all domains—t
 
 ## Workflow
 
-1. **Planning Phase** (research-strategist):
+1. **Planning Phase** (autonomous-agent:research-strategist):
    - Analyze research goal and context
    - Identify knowledge gaps
    - Break into specific research steps
    - Design search strategy
 
-2. **Execution Phase** (research-executor):
+2. **Execution Phase** (autonomous-agent:research-executor):
    - Execute systematic web searches
    - Gather information from authoritative sources
    - Cross-reference findings
    - Build comprehensive research report with citations
 
-3. **Validation Phase** (research-validator):
+3. **Validation Phase** (autonomous-agent:research-validator):
    - Verify all citations are accessible
    - Assess source credibility
    - Cross-check technical claims
    - Calculate quality score (0-100)
 
-4. **Synthesis** (research-executor):
+4. **Synthesis** (autonomous-agent:research-executor):
    - Create trade-off matrix if applicable
    - Generate actionable recommendations
    - Identify remaining gaps

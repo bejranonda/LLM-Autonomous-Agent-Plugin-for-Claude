@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.16.4] - 2025-11-20
+
+### Fixed - Agent Name References in Command Files
+
+#### Bug Fix: Proper Agent Name Namespacing
+- **Issue**: Command files contained incorrect agent references without the `autonomous-agent:` namespace prefix
+- **Impact**: System delegation errors when orchestrator attempted to call research and analysis agents
+- **Resolution**: Updated all agent references to use full namespaced format
+
+#### Files Updated
+- **`commands/research/structured.md`**:
+  - Added missing `delegates-to: autonomous-agent:orchestrator` field
+  - Fixed 3 agent references: `research-strategist`, `research-executor`, `research-validator`
+  - All now properly namespaced as `autonomous-agent:*`
+
+- **`commands/research/quick.md`**:
+  - Fixed 2 agent references: `research-executor` (in workflow and integration sections)
+  - Now correctly references `autonomous-agent:research-executor`
+
+- **`commands/research/compare.md`**:
+  - Fixed 2 agent references: `research-executor`, `research-strategist`
+  - Now correctly references `autonomous-agent:research-executor` and `autonomous-agent:research-strategist`
+
+- **`commands/analyze/quality.md`**:
+  - Fixed 2 agent references: `quality-controller`, `test-engineer`
+  - Now correctly references `autonomous-agent:quality-controller` and `autonomous-agent:test-engineer`
+
+- **`commands/analyze/project.md`**:
+  - Fixed 2 agent references: `code-analyzer`, `background-task-manager`
+  - Now correctly references `autonomous-agent:code-analyzer` and `autonomous-agent:background-task-manager`
+
+#### Benefits
+- **Error Prevention**: Eliminates system delegation errors when invoking agents
+- **Consistency**: All agent references now follow uniform namespacing convention
+- **Reliability**: Commands can properly delegate to specialized agents without errors
+
+### Version Updates
+- `.claude-plugin/plugin.json` - Version 7.16.4
+- `README.md` - Version 7.16.4
+- `CLAUDE.md` - Version 7.16.4
+
 ## [7.16.3] - 2025-11-15
 
 ### Added - Specialized Command Variants
