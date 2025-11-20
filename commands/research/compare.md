@@ -1,52 +1,307 @@
 ---
 name: research:compare
 description: Specialized A vs B comparison research with decision matrix, trade-off analysis, and clear recommendations - optimized for choosing between two options
-delegates-to: autonomous-agent:research-executor
+category: research
 ---
 
-# Compare Research Command
+# Compare Research Command - Hybrid Architecture
 
-**Command**: `/research:compare`
+Specialized A vs B comparison using hybrid approach: **main thread searches web**, **research-executor analyzes and builds decision matrix**, **results validated and presented**.
 
-Specialized research command optimized for comparing two options (A vs B). Produces structured comparison with decision matrix, trade-off analysis, and clear recommendation. Perfect for technology choices, framework selection, and product decisions.
+## Hybrid Comparison Workflow
 
-## When to Use
+```
+1. Main → WebSearch/WebFetch: Research Option A and Option B
+2. Main → research-executor: Analyze, build decision matrix
+3. Main → Format and present comparison results
+```
 
-**Use `/research:compare` for:**
-- Comparing exactly 2 options (A vs B)
-- Technology/framework selection decisions
-- Product/service comparisons
-- Tool/library choices
-- Platform comparisons
+## Comparison Research Workflow
 
-**Use `/research:structured` for:**
-- Comparing 3+ options
-- Open-ended research
-- Complex multi-faceted topics
-- Research without clear alternatives
+### Step 1: Parse Comparison Request (30 seconds)
 
-**Use `/research:quick` for:**
-- Simple factual lookups
-- Quick reference checks
-- Latest version queries
+Extract the two options being compared:
+```typescript
+// Parse "React vs Vue for e-commerce project"
+const optionA = "React"
+const optionB = "Vue"
+const context = "e-commerce project"
 
-## How It Works
+// Identify comparison criteria
+const criteria = [
+  "Performance", "Developer Experience", "Ecosystem",
+  "Learning Curve", "Community Size", "TypeScript Support",
+  "State Management", "Build Tooling"
+]
+```
 
-**Comparison-Optimized Workflow**:
-1. **Define Criteria**: Identify key decision factors
-2. **Research Both Options**: Gather data on A and B
-3. **Build Decision Matrix**: Score each option on criteria
-4. **Trade-off Analysis**: Identify strengths/weaknesses
-5. **Recommendation**: Clear choice with reasoning
+### Step 2: Research Both Options (Main Thread, 8-12 minutes)
 
-**Time**: 10-20 minutes (faster than `/research:structured` for 2-option comparisons)
+**Your task**: Execute searches for both options.
 
-## Usage
+```typescript
+// Search for Option A
+const optionA_queries = [
+  `${optionA} features pros cons 2025`,
+  `${optionA} ${context} best practices`,
+  `${optionA} performance benchmarks`
+]
+
+const optionA_content = []
+for (const query of optionA_queries) {
+  const results = WebSearch({ query })
+  for (const result of results.slice(0, 4)) {
+    const content = WebFetch({
+      url: result.url,
+      prompt: `Extract information about ${optionA}:
+      - Key features and capabilities
+      - Strengths and advantages
+      - Weaknesses and limitations
+      - Performance characteristics
+      - Developer experience
+      - Community and ecosystem
+      - Use cases and best practices
+
+Provide specific, factual information with numbers where possible.`
+    })
+    optionA_content.push({ url: result.url, title: result.title, content })
+  }
+}
+
+// Search for Option B (same pattern)
+const optionB_content = [] // ... same as above for Option B
+
+// Search for direct comparisons
+const comparison_queries = [`${optionA} vs ${optionB} comparison 2025`]
+const comparison_content = []
+for (const query of comparison_queries) {
+  const results = WebSearch({ query })
+  for (const result of results.slice(0, 3)) {
+    const content = WebFetch({
+      url: result.url,
+      prompt: `Extract comparison information between ${optionA} and ${optionB}:
+      - Side-by-side feature comparison
+      - Performance benchmarks
+      - When to use each option
+      - Migration considerations
+
+Focus on factual comparisons with data.`
+    })
+    comparison_content.push({ url: result.url, title: result.title, content })
+  }
+}
+```
+
+### Step 3: Build Decision Matrix (Delegate to research-executor)
+
+**Your task**: Pass all fetched content to research-executor for analysis.
+
+```typescript
+const analysis = Task({
+  subagent_type: "autonomous-agent:research-executor",
+  prompt: `Build a decision matrix comparing ${optionA} vs ${optionB} for ${context}.
+
+Fetched Content for ${optionA}:
+${optionA_content.map(c => `URL: ${c.url}\nTitle: ${c.title}\nContent: ${c.content}`).join('\n---\n')}
+
+Fetched Content for ${optionB}:
+${optionB_content.map(c => `URL: ${c.url}\nTitle: ${c.title}\nContent: ${c.content}`).join('\n---\n')}
+
+Direct Comparisons:
+${comparison_content.map(c => `URL: ${c.url}\nTitle: ${c.title}\nContent: ${c.content}`).join('\n---\n')}
+
+Please provide:
+1. **Decision Matrix**: Score each option on key criteria (0-10)
+   - Performance, Developer DX, Ecosystem, Learning Curve, etc.
+   - Justify each score with evidence from sources
+2. **Feature Comparison**: Feature-by-feature comparison table
+3. **Strengths & Weaknesses**: For each option
+4. **Use Case Recommendations**: When to choose A vs B
+5. **Overall Recommendation**: Which option for this context, with reasoning
+6. **Trade-offs**: Key trade-offs between options
+
+Return format:
+{
+  "decision_matrix": {
+    "criteria": [
+      {
+        "name": "Performance",
+        "optionA_score": 8,
+        "optionB_score": 9,
+        "winner": "B",
+        "analysis": "...",
+        "sources": ["url1", "url2"]
+      }
+    ],
+    "total_scores": { "A": 42, "B": 38 }
+  },
+  "strengths_weaknesses": {
+    "optionA": {
+      "strengths": ["...", "..."],
+      "weaknesses": ["...", "..."]
+    },
+    "optionB": {
+      "strengths": ["...", "..."],
+      "weaknesses": ["...", "..."]
+    }
+  },
+  "recommendation": {
+    "choice": "A|B|Conditional",
+    "reasoning": "...",
+    "conditions": {
+      "choose_A_if": ["...", "..."],
+      "choose_B_if": ["...", "..."]
+    }
+  },
+  "key_tradeoffs": [
+    { "factor": "...", "A": "...", "B": "..." }
+  ]
+}`
+})
+```
+
+**Agent returns**: Decision matrix and recommendation
+
+### Step 4: Present Results (Main Thread)
+
+**Your task**: Format results in two-tier format.
+
+**Terminal Output** (15-20 lines):
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPARISON: ${optionA} vs ${optionB}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Context: ${context}
+
+Decision Matrix (scored 0-10):
+
+Criterion        | ${optionA} | ${optionB} | Winner
+-----------------|------------|------------|--------
+${matrix_rows}
+-----------------|------------|------------|--------
+Total Score      | ${scoreA}  | ${scoreB}  | ${winner}
+
+Recommendation: ${recommendation.choice}
+Reason: ${recommendation.reasoning}
+
+Key Trade-offs:
+• ${optionA}: ${tradeoff1_A}
+• ${optionB}: ${tradeoff1_B}
+
+When to choose ${optionA}: ${condition_A}
+When to choose ${optionB}: ${condition_B}
+
+Full Report: .claude/reports/compare-${optionA}-vs-${optionB}-${timestamp}.md
+Sources: ${total_sources}
+Time: ${elapsed}
+```
+
+**File Report** (save to `.claude/reports/compare-[A]-vs-[B]-[timestamp].md`):
+
+```markdown
+# Comparison Research: ${optionA} vs ${optionB}
+
+**Context**: ${context}
+**Date**: ${date}
+**Time Spent**: ${elapsed}
+**Sources**: ${total_sources}
+
+---
+
+## Executive Summary
+
+${executiveSummary}
+
+**Recommendation**: ${recommendation.choice}
+
+**Reasoning**: ${recommendation.reasoning}
+
+---
+
+## Decision Matrix
+
+| Criterion | ${optionA} | ${optionB} | Winner | Analysis |
+|-----------|------------|------------|--------|----------|
+${matrix.criteria.map(c => `| ${c.name} | ${c.optionA_score} | ${c.optionB_score} | ${c.winner} | ${c.analysis} [[sources]] |`).join('\n')}
+| **Total** | **${scoreA}** | **${scoreB}** | **${winner}** | |
+
+**Sources**:
+${all_sources.map((s, i) => `[${i+1}]: ${s.url}`).join('\n')}
+
+---
+
+## Strengths & Weaknesses
+
+### ${optionA}
+
+**Strengths** ✅:
+${strengths_A.map(s => `- ${s}`).join('\n')}
+
+**Weaknesses** ❌:
+${weaknesses_A.map(w => `- ${w}`).join('\n')}
+
+### ${optionB}
+
+**Strengths** ✅:
+${strengths_B.map(s => `- ${s}`).join('\n')}
+
+**Weaknesses** ❌:
+${weaknesses_B.map(w => `- ${w}`).join('\n')}
+
+---
+
+## Use Case Recommendations
+
+### Choose ${optionA} when:
+${chooseA_conditions.map(c => `- ${c}`).join('\n')}
+
+### Choose ${optionB} when:
+${chooseB_conditions.map(c => `- ${c}`).join('\n')}
+
+---
+
+## Key Trade-offs
+
+${tradeoffs.map(t => `
+### ${t.factor}
+- **${optionA}**: ${t.A}
+- **${optionB}**: ${t.B}
+`).join('\n')}
+
+---
+
+## Sources Consulted
+
+${sources.map((s, i) => `${i+1}. [${s.title}](${s.url}) (Accessed: ${s.accessed})`).join('\n')}
+
+---
+
+*Comparison conducted using hybrid architecture: main thread web search + research-executor analysis.*
+```
+
+### Step 5: Pattern Learning (Main Thread)
+
+```bash
+python lib/exec_plugin_script.py pattern_storage.py --action store \
+  --pattern-type research_compare \
+  --data '{
+    "task_type": "research_compare",
+    "options": ["${optionA}", "${optionB}"],
+    "category": "${category}",
+    "recommendation": "${recommendation.choice}",
+    "score_difference": ${scoreDiff},
+    "sources_count": ${total_sources},
+    "time_taken": "${elapsed}"
+  }'
+```
+
+## Usage Examples
 
 ### Technology Comparisons
 ```bash
 /research:compare "React vs Vue for e-commerce project"
-/research:compare "PostgreSQL vs MongoDB for analytics app"
+/research:compare "PostgreSQL vs MongoDB for analytics"
 /research:compare "TypeScript vs JavaScript for new codebase"
 ```
 
@@ -64,413 +319,31 @@ Specialized research command optimized for comparing two options (A vs B). Produ
 /research:compare "Docker vs Podman for containers"
 ```
 
-### Platform Comparisons
-```bash
-/research:compare "AWS vs GCP for startup hosting"
-/research:compare "Vercel vs Netlify for Next.js deployment"
-/research:compare "GitHub Actions vs GitLab CI"
-```
-
-### Protocol/Standard Comparisons
+### Protocol Comparisons
 ```bash
 /research:compare "I2C vs SPI for Raspberry Pi sensors"
 /research:compare "REST vs GraphQL for mobile API"
 /research:compare "WebSocket vs Server-Sent Events"
 ```
 
-## Output Format
-
-**Terminal** (15-20 lines):
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-COMPARISON RESEARCH: A vs B
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Decision Matrix (scored 0-10):
-
-Criteria        | Option A | Option B | Winner
-----------------|----------|----------|--------
-Performance     |    8     |    9     | B
-Developer DX    |    9     |    7     | A
-Ecosystem       |    10    |    6     | A
-Learning Curve  |    7     |    9     | B
-Cost            |    8     |    8     | Tie
-----------------|----------|----------|--------
-Total Score     |   42/50  |   39/50  | A
-
-Recommendation: Option A
-Reason: [2-3 sentence reasoning]
-
-Key Trade-offs:
-• A: Better ecosystem but steeper learning curve
-• B: Faster performance but smaller community
-
-Full Report: .claude/reports/compare-A-vs-B-[timestamp].md
-Time: 12 minutes
-```
-
-**File Report** (Comprehensive):
-Saved to `.claude/reports/compare-[A]-vs-[B]-[timestamp].md`:
-- Executive summary with recommendation
-- Detailed decision matrix with scoring
-- Feature-by-feature comparison table
-- Strengths and weaknesses for each option
-- Use case recommendations (when to use A vs B)
-- Migration considerations (if switching)
-- Cost analysis (if applicable)
-- Community and support comparison
-- Future outlook and roadmap
-- Sources and citations
-
-## Decision Matrix Categories
-
-**Common Comparison Criteria**:
-
-### Technical Criteria
-- **Performance**: Speed, efficiency, benchmarks
-- **Scalability**: Handling growth, load capacity
-- **Reliability**: Stability, uptime, error rates
-- **Security**: Vulnerabilities, best practices
-- **Compatibility**: Platform support, integrations
-
-### Developer Experience
-- **Learning Curve**: Time to productivity
-- **Documentation**: Quality, completeness
-- **Developer Tools**: IDE support, debugging
-- **API Design**: Ease of use, consistency
-- **Type Safety**: TypeScript support, type inference
-
-### Ecosystem & Community
-- **Community Size**: Active users, contributors
-- **Library Ecosystem**: Available packages, plugins
-- **Corporate Backing**: Funding, maintenance
-- **Adoption Rate**: Industry usage, trends
-- **Long-term Viability**: Future outlook
-
-### Operational Criteria
-- **Cost**: Licensing, hosting, maintenance
-- **Deployment**: Ease of deployment, CI/CD
-- **Monitoring**: Observability, debugging
-- **Maintenance**: Update frequency, breaking changes
-- **Support**: Commercial support, SLAs
-
-## Examples
-
-### Example 1: Framework Comparison
-```bash
-/research:compare "Next.js vs Remix for new React project"
-```
-
-**Output**:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-COMPARISON RESEARCH: Next.js vs Remix
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Decision Matrix (scored 0-10):
-
-Criteria           | Next.js | Remix | Winner
--------------------|---------|-------|--------
-Performance        |    8    |   9   | Remix
-Developer DX       |    9    |   8   | Next.js
-Ecosystem          |    10   |   7   | Next.js
-Learning Curve     |    8    |   7   | Next.js
-Deployment Options |    10   |   8   | Next.js
-Data Loading       |    7    |   10  | Remix
-Type Safety        |    9    |   9   | Tie
-Community Size     |    10   |   6   | Next.js
--------------------|---------|-------|--------
-Total Score        |  71/80  | 64/80 | Next.js
-
-Recommendation: Next.js for most projects
-Reason: Larger ecosystem, better deployment options (Vercel),
-and gentler learning curve. Choose Remix if data loading
-patterns and nested routes are critical requirements.
-
-Key Trade-offs:
-• Next.js: More mature, better DX, easier deployment
-• Remix: Superior data loading, better performance, nested routing
-
-Use Next.js when:
-- Building with Vercel deployment
-- Need extensive plugin ecosystem
-- Team new to React frameworks
-- Want incremental adoption (can start with SSG)
-
-Use Remix when:
-- Data loading is complex and critical
-- Need nested route layouts
-- Prefer Web Platform primitives
-- Performance is top priority
-
-Full Report: .claude/reports/compare-nextjs-vs-remix-20250115.md
-Sources: 12 (official docs, benchmarks, developer surveys)
-Time: 14m 23s
-```
-
-### Example 2: Database Comparison
-```bash
-/research:compare "PostgreSQL vs MongoDB for analytics dashboard"
-```
-
-**Output**:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-COMPARISON RESEARCH: PostgreSQL vs MongoDB
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Context: Analytics Dashboard Application
-
-Decision Matrix (scored 0-10):
-
-Criteria              | PostgreSQL | MongoDB | Winner
-----------------------|------------|---------|--------
-Query Performance     |     9      |    7    | PostgreSQL
-Aggregation Pipelines |     7      |    9    | MongoDB
-ACID Compliance       |    10      |    6    | PostgreSQL
-Schema Flexibility    |     6      |   10    | MongoDB
-Scaling Strategy      |     7      |    9    | MongoDB
-Complex Joins         |    10      |    5    | PostgreSQL
-Time-series Data      |     8      |    7    | PostgreSQL
-Cost (hosting)        |     8      |    8    | Tie
-----------------------|------------|---------|--------
-Total Score           |   65/80    |  61/80  | PostgreSQL
-
-Recommendation: PostgreSQL (with TimescaleDB extension)
-Reason: Analytics dashboards benefit from complex joins,
-ACID guarantees, and SQL's analytical functions. PostgreSQL
-with TimescaleDB extension provides excellent time-series
-performance while maintaining relational integrity.
-
-Key Trade-offs:
-• PostgreSQL: Better for complex queries, joins, ACID, less flexible schema
-• MongoDB: Better for flexible schema, horizontal scaling, but weaker joins
-
-Performance Benchmarks:
-- Complex aggregations: PostgreSQL 40% faster (windowing functions)
-- Simple document retrieval: MongoDB 15% faster
-- Multi-table joins: PostgreSQL significantly faster
-
-Cost Analysis:
-- PostgreSQL: Self-hosted ~$50/mo, Managed (AWS RDS) ~$200/mo
-- MongoDB: Self-hosted ~$50/mo, Atlas ~$250/mo
-- Winner: Comparable costs
-
-Migration Considerations:
-- If switching FROM MongoDB: Schema design needed, denormalization → normalization
-- If switching FROM PostgreSQL: Convert JOINs to aggregation pipeline
-
-Full Report: .claude/reports/compare-postgresql-vs-mongodb-20250115.md
-Sources: 18 (official docs, benchmarks, case studies, DB-engines)
-Time: 16m 47s
-```
-
-### Example 3: Protocol Comparison
-```bash
-/research:compare "I2C vs SPI for Raspberry Pi sensor array"
-```
-
-**Output**:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-COMPARISON RESEARCH: I2C vs SPI
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Context: Raspberry Pi with multiple sensors
-
-Decision Matrix (scored 0-10):
-
-Criteria            | I2C  | SPI  | Winner
---------------------|------|------|--------
-Speed               |  6   |  10  | SPI
-Wire Count          |  10  |   5  | I2C (2 vs 4+)
-Multi-device        |  10  |   6  | I2C (bus)
-Complexity          |  8   |   6  | I2C
-Distance            |  7   |   5  | I2C
-Power Consumption   |  8   |   7  | I2C
-Device Support      |  9   |   8  | I2C
---------------------|------|------|--------
-Total Score         | 58/70| 47/70| I2C
-
-Recommendation: I2C for this use case
-Reason: Sensor arrays benefit from I2C's bus topology
-(connect multiple sensors with 2 wires). SPI's speed
-advantage (10MHz vs 400kHz) not critical for sensor
-polling (typically 1-10Hz sampling rate).
-
-Technical Specs:
-I2C:
-- Speed: 100kHz (standard), 400kHz (fast), 3.4MHz (high-speed)
-- Wires: 2 (SDA, SCL) + power/ground
-- Addressing: 7-bit (128 devices) or 10-bit (1024 devices)
-- Pull-up resistors: Required (2.2k-10k ohm)
-
-SPI:
-- Speed: 10MHz+ (up to 100MHz+)
-- Wires: 4 (MISO, MOSI, SCK, CS) per device + power/ground
-- Chip Select: 1 pin per device (limit: GPIO pins)
-- No pull-ups: Push-pull outputs
-
-Use I2C when:
-- Connecting 3+ sensors (shared bus)
-- Wire count matters (long distances, tight spaces)
-- Sensor sampling rate < 1kHz
-- Power efficiency important
-
-Use SPI when:
-- High-speed data transfer needed (ADC, display)
-- Connecting 1-2 devices only
-- Full-duplex communication required
-- Deterministic timing critical
-
-Wiring Example (I2C):
-```
-Raspberry Pi GPIO:
-- Pin 3 (GPIO 2) → SDA (all sensors)
-- Pin 5 (GPIO 3) → SCL (all sensors)
-- Add 2.2k pull-up resistors on both lines
-```
-
-Full Report: .claude/reports/compare-i2c-vs-spi-20250115.md
-Sources: 8 (datasheets, Raspberry Pi docs, electronics forums)
-Time: 11m 52s
-```
-
-## Comparison Table Structure
-
-**Feature-by-Feature Comparison** (in file report):
-
-```markdown
-| Feature | Option A | Option B | Analysis |
-|---------|----------|----------|----------|
-| [Feature 1] | [A's approach] | [B's approach] | [Which is better and why] |
-| [Feature 2] | [A's approach] | [B's approach] | [Which is better and why] |
-...
-```
-
-**Strengths & Weaknesses**:
-
-```markdown
-## Option A
-
-### Strengths ✅
-1. [Strength 1 with evidence]
-2. [Strength 2 with evidence]
-3. [Strength 3 with evidence]
-
-### Weaknesses ❌
-1. [Weakness 1 with impact]
-2. [Weakness 2 with impact]
-3. [Weakness 3 with impact]
-
-## Option B
-
-### Strengths ✅
-1. [Strength 1 with evidence]
-2. [Strength 2 with evidence]
-3. [Strength 3 with evidence]
-
-### Weaknesses ❌
-1. [Weakness 1 with impact]
-2. [Weakness 2 with impact]
-3. [Weakness 3 with impact]
-```
-
-## Recommendation Logic
-
-**Decision Tree**:
-
-```
-1. Calculate total scores from decision matrix
-2. Identify clear winner (score difference > 10%)
-3. If close (<10% difference):
-   - Identify context-specific criteria
-   - Provide conditional recommendations
-   - List use-case-specific guidance
-4. Provide clear action items
-```
-
-**Recommendation Format**:
-```
-Recommendation: [Option A/B/Conditional]
-
-Primary Reason: [1-2 sentences]
-
-Context Considerations:
-- Choose A if: [specific conditions]
-- Choose B if: [specific conditions]
-
-Action Items:
-1. [Next step 1]
-2. [Next step 2]
-3. [Next step 3]
-```
-
-## Pattern Learning
-
-Comparison patterns stored for optimization:
-```json
-{
-  "task_type": "research_compare",
-  "options": ["Next.js", "Remix"],
-  "category": "web_framework",
-  "recommendation": "Next.js",
-  "score_difference": 7,
-  "key_criteria": ["ecosystem", "deployment", "learning_curve"],
-  "sources_count": 12,
-  "time_taken": "14m 23s"
-}
-```
-
-Learns:
-- Effective comparison criteria by category
-- Common decision factors for each domain
-- Reliable sources for specific comparisons
-- Typical score patterns and distributions
-
-## Integration
-
-**Agents Used**:
-- autonomous-agent:research-executor (with comparison-optimized workflow)
-- autonomous-agent:research-strategist (defines comparison criteria)
-
-**Skills Auto-Loaded**:
-- research-methodology (comparison patterns)
-
-**Pattern Storage**:
-- Stores comparison outcomes in `.claude-patterns/`
-- Learns effective criteria for technology categories
-- Improves scoring accuracy over time
-
-## Best Practices
-
-**Good Comparison Queries**:
-- ✅ "A vs B for [specific use case]"
-- ✅ "[Technology A] vs [Technology B]"
-- ✅ "Should I use A or B for [project]"
-
-**Bad Comparison Queries** (use `/research:structured` instead):
-- ❌ "Best framework for web development" (too open-ended)
-- ❌ "Compare 5 databases" (use structured research for 3+)
-- ❌ "Pros and cons of A" (single option, not comparison)
-
-**Improving Comparison Quality**:
-1. Provide context: "for [use case]"
-2. Mention constraints: "low budget", "high performance"
-3. Specify priorities: "prioritize developer experience"
-
-**Example with Context**:
-```bash
-# Generic (less useful)
-/research:compare "React vs Vue"
-
-# With context (more useful)
-/research:compare "React vs Vue for e-commerce SPA with TypeScript"
-```
+## Success Criteria
+
+- Decision matrix with 6-10 criteria
+- All scores justified with sources
+- Clear recommendation with reasoning
+- Conditional guidance (when to choose each)
+- File report with comprehensive analysis
+
+## Key Benefits of Hybrid Approach
+
+1. **WebSearch works** - Main thread fetches comparison data
+2. **Expert analysis** - research-executor builds decision matrix
+3. **Structured output** - Consistent comparison format
+4. **Source-backed** - All scores justified with citations
 
 ---
 
-**Version**: 1.0.0
-**Integration**: Works with research-strategist and research-executor agents
+**Version**: 2.0.0 (Hybrid architecture with decision matrix analysis)
 **Platform**: Cross-platform (Windows, Linux, Mac)
-**Dependencies**: WebSearch, WebFetch tools
+**Architecture**: Main thread (WebSearch) + research-executor (Analysis)
+**Dependencies**: WebSearch, WebFetch, Task tool, research-executor agent
