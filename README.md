@@ -1,12 +1,12 @@
-# 🚀 Autonomous Agent for Claude Code v7.16.4
+# 🚀 Autonomous Agent for Claude Code v7.17.0
 
 <div align="center">
 
 > *What if your AI agent got smarter and faster with every task?*
 
-**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-42-commands-across-10-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
+**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.16.4-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.16.4)
+[![Version](https://img.shields.io/badge/version-7.17.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.17.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -44,7 +44,7 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 ### 🧠 **Core Innovation: Revolutionary Four-Tier Architecture**
 
-A **paradigm shift** from static tools to living intelligence with **31 specialized agents** across 4 collaborative groups:
+A **paradigm shift** from static tools to living intelligence with **35 specialized agents** across 4 collaborative groups:
 
 **🏗️ Four-Tier Group Architecture (v7.16.0)**
 - **Group 1 - Strategic Analysis (Brain)**: 8 agents analyze and recommend with confidence scores
@@ -110,54 +110,31 @@ A **paradigm shift** from static tools to living intelligence with **31 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.16.1 - Enhanced Design Intelligence** 🆕
+### 🚀 **Latest Innovation: v7.17.0 - Focused Core Excellence** 🆕
 
-**🔬 Comprehensive Research Capabilities**: Multi-step research across all domains—technical, creative, strategic, and general knowledge—with automatic quality validation and citation management.
+**🎯 Streamlined for Maximum Impact**: Plugin now focuses exclusively on autonomous development, code quality, and validation—its core strengths.
 
 **🎨 Frontend Design Enhancement**: Eliminate "AI slop" aesthetics with distinctive typography, colors, and animations.
 
-**🎯 Major Features**:
-- **Structured Research Workflow**: Plan → Execute → Validate with quality scoring (0-100)
-- **5 Research Types Supported**:
-  - **Technical Research**: Specifications, protocols, implementations, technology comparisons
-  - **Design & UX Research**: Visual trends, interface patterns, user experience best practices
-  - **Idea Generation**: Innovative features, emerging technologies, market opportunities
-  - **Competitive Analysis**: Market landscape, positioning, feature comparison matrices
-  - **General Knowledge**: Concepts, best practices, learning resources, project improvement insights
-- **Source Credibility Assessment**: Tier 1-4 hierarchy covering technical, design, business, and general sources
-- **Citation Management**: URL verification, claim-source matching, contradiction resolution
-- **AI Slop Detection**: Calculate generic design patterns score, target < 30 for distinction
-- **Design Enhancement**: Distinctive fonts (not Inter/Roboto), intentional colors (not purple gradients), layered backgrounds
-- **Pattern Learning**: Research sources and design choices improve with every task
+**🎯 What Changed**:
+- **Removed**: Research commands and agents (high token cost, better alternatives exist)
+- **Focused**: 35 specialized agents across 4 groups for code quality and autonomous development
+- **Optimized**: 40 commands across 9 categories (analyze, debug, design, dev, evolve, learn, monitor, validate, workspace)
+- **Improved**: Lower token usage, faster execution, clearer purpose
 
-**📊 Key Capabilities**:
-- 3 research agents (strategist → executor → validator) + 1 design agent
-- 4 new skills (research-methodology, source-verification, frontend-aesthetics, web-artifacts-builder)
-- 2 slash commands (`/research:structured`, `/design:enhance`)
-- Research Quality Score: Citations (25) + Source Credibility (25) + Technical Accuracy (25) + Completeness (15) + Clarity (10)
-- AI Slop Score: Detects generic fonts (+30), default colors (+25), plain backgrounds (+20), no animations (+15)
+**📊 Current Stats**:
+- **35 agents**: Across 4-tier architecture (Strategic Analysis, Decision Making, Execution, Validation)
+- **24 skills**: Focused on code analysis, quality standards, testing, validation, and design
+- **40 commands**: All dedicated to autonomous development and code excellence
+- **9 categories**: analyze, debug, design, dev, evolve, learn, monitor, validate, workspace
 
-**💡 Real-World Impact**:
+**💡 For Research Needs**:
 ```bash
-# Technical research with citations
-/research:structured "I2C vs SPI for Raspberry Pi"
-→ Quality Score: 87/100, 15 authoritative sources, trade-off matrix
+# Just ask Claude Code naturally - it will use WebSearch when appropriate
+User: "What's the latest React version and new features?"
+Claude: [Uses WebSearch automatically, provides findings]
 
-# Design research for project improvement
-/research:structured "Modern dashboard design trends 2024"
-→ Visual examples, UX principles, design recommendations
-
-# Idea generation for new features
-/research:structured "Innovative features in AI coding assistants"
-→ Innovation opportunities, feasibility assessment, implementation paths
-
-# Competitive analysis
-/research:structured "Code quality tools comparison"
-→ Competitor matrix, market gaps, positioning strategy
-
-# Transform generic design
-/design:enhance "Landing page"
-→ AI Slop Score: 85 → 15, distinctive aesthetics applied
+# More flexible, token-efficient, and conversational than automated commands
 ```
 
 ### 🚀 **v7.5.0 - Unified Dashboard Revolution**
@@ -235,7 +212,7 @@ A **paradigm shift** from static tools to living intelligence with **31 speciali
 
 ## 🎯 Quick Start
 
-*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-42-commands-across-10-categories)
+*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-40-commands-across-9-categories)
 
 ### Claude Code
 
@@ -633,7 +610,7 @@ Assessments are **automatically created** when you use plugin commands:
 
 ---
 
-## 📚 Complete Command Reference (42 Commands Across 10 Categories)
+## 📚 Complete Command Reference (40 Commands Across 9 Categories)
 
 ### 🚀 **Development Commands (5)**
 - `/dev:auto "requirement"` - Fully autonomous development from requirements to release-ready code

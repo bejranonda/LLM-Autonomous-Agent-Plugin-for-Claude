@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous AI behavior through pattern learning, skill auto-selection, background task execution, comprehensive quality control, and advanced token optimization. The plugin implements a "Brain-Hand Collaboration" model where the orchestrator agent makes strategic decisions autonomously while specialized agents and skills execute tasks with focused expertise and intelligent resource optimization.
 
 **Platform**: Claude Code CLI only (uses subagents, not compatible with claude.ai web/mobile)
-**Version**: 7.16.5 with Hybrid Research Architecture
+**Version**: 7.17.0
 
 ## Development Guidelines
 
@@ -118,74 +118,6 @@ Three-layer architecture executing Python scripts across all platforms and insta
 **Benefits**: Cross-platform (Windows/Linux/macOS), installation-agnostic, no hardcoded paths
 
 **Key Files**: `lib/exec_plugin_script.py`, `lib/plugin_path_resolver.py`, `docs/CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md`
-
-### Hybrid Research Architecture (v7.16.5)
-
-**Revolutionary solution to Claude Code sub-agent WebSearch limitation**: Research commands use a hybrid architecture where the main thread performs web searches and specialized agents analyze content with iterative feedback loops.
-
-**The Problem**: Sub-agents spawned via Task tool cannot use WebSearch/WebFetch tools due to Claude Code framework limitations (missing `input_schema` in API requests).
-
-**The Solution**: Hybrid feedback loop architecture:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│ HYBRID RESEARCH WORKFLOW                                │
-├─────────────────────────────────────────────────────────┤
-│ Phase 1: Planning                                       │
-│   Main → research-strategist agent                      │
-│   Returns: Search plan with queries                     │
-├─────────────────────────────────────────────────────────┤
-│ Phase 2: Initial Search                                 │
-│   Main thread → WebSearch/WebFetch                      │
-│   Fetches content from top results                      │
-├─────────────────────────────────────────────────────────┤
-│ Phase 3: Analysis Loop (2-4 iterations)                 │
-│   Main → research-executor agent                        │
-│   Agent analyzes content, identifies gaps               │
-│   Returns: Findings + refined search queries            │
-│   Main → Executes refined searches                      │
-│   Loop until research complete                          │
-├─────────────────────────────────────────────────────────┤
-│ Phase 4: Validation                                     │
-│   Main → research-validator agent                       │
-│   Returns: Quality score (0-100) and issues             │
-├─────────────────────────────────────────────────────────┤
-│ Phase 5: Report Generation                              │
-│   Main thread formats and presents results              │
-│   Terminal: Concise summary (15-20 lines)               │
-│   File: Comprehensive report with citations             │
-└─────────────────────────────────────────────────────────┘
-```
-
-**Three Research Commands**:
-
-1. **`/research:structured`** - Full hybrid workflow with iteration
-   - Comprehensive research with quality scoring
-   - 2-4 search iterations based on agent feedback
-   - File report with trade-off matrices and recommendations
-   - Time: 20-40 minutes
-
-2. **`/research:quick`** - Simplified hybrid (main thread only)
-   - Direct WebSearch → immediate synthesis
-   - No agent delegation for speed
-   - Terminal output only (no file report)
-   - Time: 1-5 minutes
-
-3. **`/research:compare`** - Hybrid A vs B comparison
-   - Main searches both options + direct comparisons
-   - research-executor builds decision matrix
-   - Structured output with recommendations
-   - Time: 10-20 minutes
-
-**Key Benefits**:
-- ✅ **WebSearch works** - Main thread has tool access
-- ✅ **Agent expertise** - Specialized agents analyze and guide research
-- ✅ **Iterative refinement** - Agents request specific searches to fill gaps
-- ✅ **Quality validation** - Ensures research meets standards (≥70/100)
-- ✅ **Pattern learning** - System improves over time
-- ✅ **Maintains four-tier architecture** - Groups still collaborate
-
-**Implementation**: See [commands/research/*.md](commands/research/) for detailed workflows.
 
 ## Key Architectural Principles
 
@@ -582,5 +514,3 @@ Threshold: 70/100 minimum
 - **Agent tools**: If tools not specified in frontmatter, agent inherits all tools from main thread
 - **Learning improves over time**: First 3-5 similar tasks build baseline, performance improves significantly from task 5+
 - **Validation prevents errors**: Pre-flight checks catch 87% of errors before they occur - always validate before Edit/Write
-- **Hybrid research architecture**: Research commands use main thread for WebSearch/WebFetch, then delegate analysis to specialized agents (research-strategist, research-executor, research-validator) with iterative feedback loops - this works around Claude Code sub-agent WebSearch limitation
-- **Research iteration loop**: For `/research:structured`, expect 2-4 search iterations where agents request refined queries to fill knowledge gaps - always execute the refined searches requested by agents
