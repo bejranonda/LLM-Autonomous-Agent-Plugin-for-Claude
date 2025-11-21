@@ -1,5 +1,5 @@
 """
-Test package for Autonomous Agent Plugin v7.18.0
+Test package for Autonomous Agent Plugin v7.18.1
 
 This package contains comprehensive tests for the autonomous agent plugin,
 including unit tests, integration tests, and fixtures for:
@@ -10,7 +10,7 @@ Core Utilities:
 - Plugin Path Resolver
 - Learning Engine
 - Agent Feedback System
-- Web Search Fallback System (NEW)
+- Web Search Fallback System with Automatic Failover
 
 Four-Tier Architecture:
 - Group 1: Analysis & Intelligence Agents
@@ -25,6 +25,6 @@ Test Categories:
 - Performance and security tests
 """
 
-__version__ = "7.18.0"
+__version__ = "7.18.1"
 __author__ = "Autonomous Agent Plugin"
-__description__ = "Comprehensive test suite for v7.18.0 Four-Tier Architecture with Web Search Fallback"
+__description__ = "Comprehensive test suite for v7.18.1 Four-Tier Architecture with Automatic Web Search Fallback"

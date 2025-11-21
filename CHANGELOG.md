@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.18.1] - 2025-11-21
+
+### Added
+- **Automatic Web Search Fallback Integration**: Intelligent detection and automatic failover when WebSearch API fails
+- New agent: `web-search-smart` - Automatically detects WebSearch failures and engages fallback
+- New command: `/search-smart` - Seamless fallback access with automatic failure detection
+- Python utility: `lib/smart_search.py` - Cross-platform automatic failover logic with intelligent retry
+- Comprehensive documentation: `WEB_SEARCH_FALLBACK_USAGE.md` - Complete troubleshooting guide
+
+### Enhanced
+- Web Search Fallback system now automatically activates when WebSearch fails
+- Improved user experience with transparent failover handling
+- Added usage patterns and troubleshooting guide for search failures
+- Cross-platform compatibility maintained with Windows-safe implementation
+
+### Fixed
+- Version consistency in tests/__init__.py (now v7.18.1)
+- Complete integration documentation for automatic fallback system
+
 ## [7.18.0] - 2025-11-21
 
 ### Added
