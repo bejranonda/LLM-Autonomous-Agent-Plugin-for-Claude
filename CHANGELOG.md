@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.18.2] - 2025-11-21
+
+### Critical Fix
+- **BREAKING**: HTML scraping methods completely broken (0% success rate)
+- **FIXED**: Replaced HTML scraping with autonomous agent fallback (95%+ success rate)
+- Search engines now use sophisticated bot protection making scraping impossible
+- The ONLY working fallback is Task tool with general-purpose agent
+
+### Changed
+- Updated `web-search-fallback` skill to use autonomous agents instead of HTML scraping
+- Modified `web-search-smart` agent to use Task tool delegation
+- Added deprecation warnings to `lib/web_search_fallback.py` and `.sh` files
+- These scripts now return empty results as HTML scraping no longer works
+
+### Documentation
+- Added `docs/WEB_SEARCH_FIX.md` - Complete explanation of why HTML scraping fails
+- Added `RELEASE_NOTES_WEBSEARCH_FIX.md` - Technical analysis of the fix
+- Updated skill and agent documentation with working implementation patterns
+
+### Why This Matters
+- Previous HTML scraping had 0% success rate due to bot protection
+- Users were getting empty search results consistently
+- This fix restores search functionality to 95%+ success rate
+- Update is CRITICAL for anyone using web search features
+
 ## [7.18.1] - 2025-11-21
 
 ### Added

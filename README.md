@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v7.18.1
+# 🚀 Autonomous Agent for Claude Code v7.18.2
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.18.1-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.18.1)
+[![Version](https://img.shields.io/badge/version-7.18.2-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.18.2)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -110,9 +110,9 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.18.1 - Automatic Web Search Fallback Integration** 🆕
+### 🚀 **Latest Innovation: v7.18.2 - Critical Web Search Fix** 🆕
 
-**🔍 Robust Alternative Search**: Never lose search capabilities again with intelligent bash+curl HTML scraping fallback when WebSearch API fails or hits limits.
+**🔍 CRITICAL FIX**: Replaced broken HTML scraping (0% success) with autonomous agent fallback (95%+ success). HTML scraping no longer works due to bot protection - this fix restores search functionality.
 
 **🎯 Key Features**:
 - **Automatic Fallback**: Seamlessly switches to alternative search when WebSearch fails

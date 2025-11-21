@@ -1,5 +1,5 @@
 """
-Test package for Autonomous Agent Plugin v7.18.1
+Test package for Autonomous Agent Plugin v7.18.2
 
 This package contains comprehensive tests for the autonomous agent plugin,
 including unit tests, integration tests, and fixtures for:
@@ -25,6 +25,6 @@ Test Categories:
 - Performance and security tests
 """
 
-__version__ = "7.18.1"
+__version__ = "7.18.2"
 __author__ = "Autonomous Agent Plugin"
-__description__ = "Comprehensive test suite for v7.18.1 Four-Tier Architecture with Automatic Web Search Fallback"
+__description__ = "Comprehensive test suite for v7.18.2 Four-Tier Architecture with Critical Web Search Fix"
