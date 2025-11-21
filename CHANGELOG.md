@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.18.0] - 2025-11-21
+
+### Added
+- **Web Search Fallback System**: Robust bash+curl HTML scraping alternative when WebSearch API fails or hits limits
+- New skill: `skills/web-search-fallback/` with complete documentation and integration patterns
+- Bash utility: `lib/web_search_fallback.sh` - Cross-platform implementation with caching
+- Python utility: `lib/web_search_fallback.py` - Windows-compatible with thread-safe caching
+- Multiple search engine support (DuckDuckGo, Searx) with automatic failover
+- Smart 60-minute result caching to reduce redundant searches
+- Flexible output formats: JSON, titles-only, URLs-only, or full HTML
+
+### Enhanced
+- Research capabilities now include automatic fallback when WebSearch fails
+- Cross-platform compatibility with both bash and Python implementations
+- Documentation updated with Web Search Fallback System details in CLAUDE.md
+
+### Changed
+- Skill count increased from 24 to 25 with web-search-fallback addition
+- Enhanced research resilience with multiple fallback mechanisms
+
 ## [7.17.1] - 2025-11-20
 
 ### Fixed

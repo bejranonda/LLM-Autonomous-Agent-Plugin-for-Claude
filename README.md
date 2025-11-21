@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v7.17.1
+# 🚀 Autonomous Agent for Claude Code v7.18.0
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.17.1-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.17.1)
+[![Version](https://img.shields.io/badge/version-7.18.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.18.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -110,31 +110,37 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.17.1 - Version Consistency** 🆕
+### 🚀 **Latest Innovation: v7.18.0 - Web Search Fallback System** 🆕
 
-**🎯 Streamlined for Maximum Impact**: Plugin now focuses exclusively on autonomous development, code quality, and validation—its core strengths.
+**🔍 Robust Alternative Search**: Never lose search capabilities again with intelligent bash+curl HTML scraping fallback when WebSearch API fails or hits limits.
 
-**🎨 Frontend Design Enhancement**: Eliminate "AI slop" aesthetics with distinctive typography, colors, and animations.
+**🎯 Key Features**:
+- **Automatic Fallback**: Seamlessly switches to alternative search when WebSearch fails
+- **Cross-Platform Support**: Both bash (`web_search_fallback.sh`) and Python (`web_search_fallback.py`) implementations
+- **Smart Caching**: 60-minute result caching reduces redundant searches
+- **Multiple Search Engines**: DuckDuckGo and Searx support with automatic failover
+- **Flexible Output**: JSON, titles-only, URLs-only, or full HTML formats
 
-**🎯 What Changed**:
-- **Removed**: Research commands and agents (high token cost, better alternatives exist)
-- **Focused**: 35 specialized agents across 4 groups for code quality and autonomous development
-- **Optimized**: 40 commands across 9 categories (analyze, debug, design, dev, evolve, learn, monitor, validate, workspace)
-- **Improved**: Lower token usage, faster execution, clearer purpose
+**🛡️ When It Activates**:
+- WebSearch returns validation or tool errors
+- API daily/session usage limits reached
+- Fine-grained output control needed
+- Custom filtering or data extraction required
 
 **📊 Current Stats**:
 - **35 agents**: Across 4-tier architecture (Strategic Analysis, Decision Making, Execution, Validation)
-- **24 skills**: Focused on code analysis, quality standards, testing, validation, and design
+- **25 skills**: Now includes web-search-fallback for robust research capabilities
 - **40 commands**: All dedicated to autonomous development and code excellence
 - **9 categories**: analyze, debug, design, dev, evolve, learn, monitor, validate, workspace
 
-**💡 For Research Needs**:
+**💡 Usage Example**:
 ```bash
-# Just ask Claude Code naturally - it will use WebSearch when appropriate
-User: "What's the latest React version and new features?"
-Claude: [Uses WebSearch automatically, provides findings]
+# Automatic fallback when WebSearch fails
+/analyze:research "latest React patterns"
+# If WebSearch fails → Automatically uses web-search-fallback skill
 
-# More flexible, token-efficient, and conversational than automated commands
+# Direct usage via utilities
+python lib/web_search_fallback.py "machine learning trends" --format json
 ```
 
 ### 🚀 **v7.5.0 - Unified Dashboard Revolution**
