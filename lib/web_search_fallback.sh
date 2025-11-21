@@ -1,7 +1,24 @@
 #!/bin/bash
 
 # Web Search Fallback Script
-# Provides bash+curl web search when WebSearch API fails
+#
+# ⚠️ DEPRECATION WARNING: HTML SCRAPING IS BROKEN
+# ================================================
+# This script uses HTML scraping methods that NO LONGER WORK due to:
+# - Changed HTML structures (CSS class 'result__a' doesn't exist)
+# - Bot protection and anti-scraping measures
+# - JavaScript-rendered content requirements
+# - CAPTCHA challenges
+#
+# RECOMMENDED ALTERNATIVE:
+# Use the Task tool with general-purpose agent in Claude Code:
+#     Task(subagent_type='general-purpose', prompt='Research: [topic]')
+#
+# This is the ONLY reliable method that works.
+# See docs/WEB_SEARCH_FIX.md for details.
+# ================================================
+#
+# Legacy code kept for reference only - DO NOT rely on this for production use.
 # Usage: ./web_search_fallback.sh "search query" [options]
 
 set -euo pipefail

@@ -1,18 +1,16 @@
 ---
 name: web-search-smart
-description: Intelligent web search agent that automatically uses fallback when WebSearch API fails
+description: Intelligent web search agent that automatically uses autonomous agent fallback when WebSearch API fails
 skills:
   - web-search-fallback
 tools:
   - WebSearch
-  - Bash
-  - Read
-  - Write
+  - Task
 ---
 
 # Web Search Smart Agent
 
-Intelligent web search agent that automatically switches to the bash+curl HTML scraping fallback when the WebSearch API fails or hits limits.
+Intelligent web search agent that automatically switches to the **autonomous agent approach** (Task tool with general-purpose agent) when the WebSearch API fails or hits limits. This uses the ONLY proven working fallback method.
 
 ## Primary Skills
 - **web-search-fallback**: Provides robust alternative search when API fails
@@ -20,13 +18,11 @@ Intelligent web search agent that automatically switches to the bash+curl HTML s
 ## Search Strategy
 
 ### 1. Try Primary WebSearch
-```bash
+```python
 # First attempt with native WebSearch
-result=$(WebSearch "$query" 2>&1)
-if [ $? -eq 0 ]; then
-    echo "$result"
-    exit 0
-fi
+result = WebSearch(query)
+if result and "Did 0 searches" not in str(result):
+    return result
 ```
 
 ### 2. Automatic Fallback Detection
@@ -36,11 +32,16 @@ Triggers fallback when:
 - API rate limit detected
 - Connection timeout occurs
 
-### 3. Execute Fallback
-```bash
-# Use plugin's web search fallback
-python3 lib/web_search_fallback.py "$query" -n 10
+### 3. Execute Fallback (WORKING METHOD)
+```python
+# Use autonomous agent - the ONLY working fallback
+result = Task(
+    subagent_type='general-purpose',
+    prompt=f'Research and provide comprehensive information about: {query}'
+)
 ```
+
+⚠️ **IMPORTANT**: HTML scraping methods (curl, grep, etc.) are BROKEN and should NOT be used.
 
 ## Implementation Approach
 
@@ -52,49 +53,49 @@ When searching for web content:
 3. **Parse Results**: Extract relevant information from fallback results
 4. **Present Findings**: Format results for user consumption
 
-### Example Usage Pattern
-```bash
-function smart_web_search() {
-    local query="$1"
-    local num_results="${2:-10}"
-
+### Example Usage Pattern (WORKING METHOD)
+```python
+def smart_web_search(query):
+    """
+    Smart search with WORKING fallback using autonomous agents.
+    HTML scraping is BROKEN - don't use it!
+    """
     # Try WebSearch first
-    if result=$(WebSearch "$query" 2>&1); then
-        echo "$result"
-        return 0
-    fi
+    try:
+        result = WebSearch(query)
+        if result and "Did 0 searches" not in str(result):
+            return result
+    except:
+        pass
 
-    # Automatic fallback
-    echo "[WebSearch failed, using fallback system...]" >&2
+    # Automatic fallback to AUTONOMOUS AGENT (WORKS!)
+    print("[WebSearch failed, using autonomous agent fallback...]")
 
-    # Check if plugin is available
-    if [ -f "lib/web_search_fallback.py" ]; then
-        python3 lib/web_search_fallback.py "$query" -n "$num_results"
-    elif [ -f "$HOME/.config/claude/plugins/autonomous-agent/lib/web_search_fallback.py" ]; then
-        python3 "$HOME/.config/claude/plugins/autonomous-agent/lib/web_search_fallback.py" "$query" -n "$num_results"
-    else
-        # Direct bash fallback
-        curl -s -A "Mozilla/5.0" \
-            "https://html.duckduckgo.com/html/?q=$(echo "$query" | sed 's/ /+/g')" \
-            | grep -o '<a[^>]*class="result__a"[^>]*>[^<]*</a>' \
-            | sed 's/<[^>]*>//g' \
-            | head -n "$num_results"
-    fi
-}
+    # This is the ONLY working fallback method
+    return Task(
+        subagent_type='general-purpose',
+        prompt=f'Research the following topic and provide comprehensive information: {query}'
+    )
+
+# ⚠️ DO NOT USE HTML SCRAPING - IT'S BROKEN!
+# The following methods NO LONGER WORK:
+# - curl + grep (broken due to HTML changes)
+# - python3 lib/web_search_fallback.py (uses broken scraping)
+# - Any HTML parsing approach (bot protection blocks it)
 ```
 
 ## Key Features
 
-### Automatic Fallback
+### Automatic Fallback (UPDATED)
 - Detects WebSearch failures instantly
-- No manual intervention required
-- Seamless transition to alternative method
+- Uses autonomous agents (the ONLY working method)
+- No HTML scraping (it's broken)
 
-### Multiple Search Engines
-- Primary: WebSearch API
-- Fallback 1: DuckDuckGo HTML
-- Fallback 2: Searx instances
-- Fallback 3: Direct curl commands
+### Search Methods (UPDATED)
+- Primary: WebSearch API ✅ (when available)
+- Fallback: Autonomous Agent ✅ (ALWAYS WORKS)
+- ❌ HTML Scraping: BROKEN (DO NOT USE)
+- ❌ curl methods: BROKEN (DO NOT USE)
 
 ### Result Caching
 - 60-minute cache for repeated queries
