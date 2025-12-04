@@ -1,22 +1,26 @@
 ---
 name: web-validation
-description: Comprehensive web page validation methodology including JavaScript error detection, console monitoring, and automated browser testing
-version: 1.0.0
+description: Comprehensive web page validation with authentication, screenshot capture, mobile testing, and enhanced error detection
+version: 2.0.0
 category: validation
-tags: [web, javascript, testing, validation, browser, console, debugging]
+tags: [web, javascript, testing, validation, browser, console, debugging, screenshots, mobile, authentication]
 ---
 
 # Web Validation Skill
 
 ## Overview
 
-This skill provides comprehensive methodology for validating web applications, detecting JavaScript errors, monitoring browser console output, and ensuring web page quality without manual browser inspection.
+This skill provides comprehensive methodology for validating web applications, detecting JavaScript errors, monitoring browser console output, capturing screenshots, and testing across mobile and desktop viewports with authentication support.
 
 **Key Capabilities:**
-- Automated JavaScript error detection
+- Automated JavaScript error detection with categorization
 - Browser console log capture (errors, warnings, info)
 - Network request monitoring and failure detection
 - Performance metrics collection
+- **Authentication support for protected pages** (NEW)
+- **Screenshot capture for mobile and desktop** (NEW)
+- **React hydration error detection (#185)** (NEW)
+- **Multi-viewport testing (14 device presets)** (NEW)
 - HTML/CSS validation
 - Automated testing with headless browsers
 
@@ -30,6 +34,177 @@ Use this skill when:
 - Debugging web page issues
 - Ensuring cross-browser compatibility
 - Validating after code changes to web components
+- **Testing authenticated/protected pages**
+- **Capturing visual evidence for debugging**
+- **Testing responsive design across devices**
+- **Detecting React hydration mismatches**
+
+## Authentication Support (NEW)
+
+### Form-Based Authentication
+
+Validate protected pages by automatically logging in:
+
+```python
+from lib.web_page_validator import WebPageValidator, AuthConfig
+
+auth = AuthConfig(
+    login_url="http://localhost:3000/auth/signin",
+    email="test@example.com",
+    password="TestPass123!",
+    email_selector='input[type="email"]',
+    password_selector='input[type="password"]',
+    submit_selector='button[type="submit"]',
+    post_login_wait=2.0
+)
+
+with WebPageValidator(auth_config=auth) as validator:
+    validator.authenticate()
+    result = validator.validate_url('http://localhost:3000/dashboard')
+```
+
+### Environment Variables
+
+Credentials can be set via environment variables for CI/CD:
+```bash
+export TEST_EMAIL="test@example.com"
+export TEST_PASSWORD="TestPass123!"
+```
+
+### Multi-Page Authentication Flow
+
+```python
+# Validate public and protected pages in one session
+results = validator.validate_pages_with_auth(
+    public_pages=[
+        ("http://localhost:3000/", "Home"),
+        ("http://localhost:3000/auth/signin", "Sign In"),
+    ],
+    protected_pages=[
+        ("http://localhost:3000/dashboard", "Dashboard"),
+        ("http://localhost:3000/settings", "Settings"),
+    ]
+)
+```
+
+## Screenshot Capture (NEW)
+
+### Automatic Screenshots
+
+Capture screenshots on validation for visual evidence:
+
+```python
+from lib.web_page_validator import WebPageValidator, ScreenshotConfig, ViewportConfig
+
+screenshot_config = ScreenshotConfig(
+    enabled=True,
+    output_directory=".claude/screenshots",
+    capture_on_error=True,
+    capture_on_success=False,
+    full_page=False
+)
+
+with WebPageValidator(screenshot_config=screenshot_config) as validator:
+    result = validator.validate_url('http://localhost:3000')
+    for ss in result.screenshots:
+        print(f"Screenshot: {ss.file_path}")
+```
+
+### Multi-Viewport Screenshots
+
+Capture screenshots across multiple devices:
+
+```bash
+python lib/web_page_validator.py http://localhost:3000 --viewport all --screenshot
+```
+
+### Screenshot Naming Convention
+
+Files are named: `{page_name}_{viewport}_{timestamp}.png`
+- `home_desktop_20251204_143022.png`
+- `dashboard_mobile_20251204_143025.png`
+
+## Mobile and Responsive Testing (NEW)
+
+### Available Device Presets
+
+| Viewport | Width | Height | Type | Device |
+|----------|-------|--------|------|--------|
+| desktop | 1920 | 1080 | Desktop | Full HD |
+| desktop_small | 1280 | 720 | Desktop | HD |
+| mobile | 375 | 812 | Mobile | iPhone X/12/13 |
+| mobile_small | 320 | 568 | Mobile | iPhone SE |
+| tablet | 768 | 1024 | Tablet | iPad |
+| ipad_pro | 1024 | 1366 | Tablet | iPad Pro 12.9 |
+| android_pixel | 393 | 851 | Mobile | Pixel 5 |
+| android_samsung | 360 | 800 | Mobile | Galaxy S21 |
+| android_tablet | 800 | 1280 | Tablet | Android Tablet |
+
+### Mobile-First Testing
+
+```python
+from lib.web_page_validator import WebPageValidator, ViewportConfig
+
+# Test on mobile viewport
+validator = WebPageValidator(default_viewport=ViewportConfig.mobile())
+result = validator.validate_url('http://localhost:3000')
+
+# Test all viewports
+results = validator.validate_all_viewports('http://localhost:3000')
+```
+
+### CLI Mobile Testing
+
+```bash
+# Mobile viewport
+python lib/web_page_validator.py http://localhost:3000 --viewport mobile
+
+# Tablet viewport
+python lib/web_page_validator.py http://localhost:3000 --viewport tablet
+
+# All viewports
+python lib/web_page_validator.py http://localhost:3000 --viewport all
+
+# Custom dimensions
+python lib/web_page_validator.py http://localhost:3000 --viewport-width 414 --viewport-height 896
+```
+
+## React Hydration Error Detection (NEW)
+
+### What is Hydration Error #185?
+
+React hydration errors occur when server-rendered HTML doesn't match client-rendered content. This causes:
+- Minified React error #185
+- "Something went wrong" error boundary
+- Content flickering or missing UI elements
+
+### Automatic Detection
+
+The validator automatically detects:
+1. Console messages containing "#185" or "hydration"
+2. Error boundary UI ("Something went wrong")
+3. React Error Overlay presence
+4. Next.js hydration warnings
+
+```python
+result = validator.validate_url('http://localhost:3000')
+
+if result.has_react_hydration_error:
+    print("[CRITICAL] React hydration mismatch detected!")
+
+if result.error_boundary_visible:
+    print("[WARN] Error boundary is visible to users!")
+```
+
+### Error Categories
+
+Errors are automatically categorized:
+- `REACT_HYDRATION` - React #185 and hydration mismatches
+- `JAVASCRIPT_SYNTAX` - SyntaxError
+- `JAVASCRIPT_RUNTIME` - TypeError, ReferenceError
+- `NETWORK_FAILURE` - Failed HTTP requests
+- `UNCAUGHT_EXCEPTION` - Unhandled exceptions
+- `CONSOLE_ERROR` - Generic console.error
 
 ## Validation Methodology
 

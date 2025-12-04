@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.19.0] - 2025-12-04
+
+### Added
+- **Browser Console Validation with Authentication**: Comprehensive web page validation system
+- **Authentication Support**: Form-based login for protected pages with environment variable support (TEST_EMAIL, TEST_PASSWORD)
+- **Screenshot Capture**: Automatic screenshots on validation with configurable timing (on error, on success)
+- **Multi-Viewport Testing**: 14 device presets across desktop, mobile, and tablet categories
+- **React Hydration Detection**: Automatic detection of React error #185 and error boundaries
+- **Error Categorization**: 10 error categories with severity levels (REACT_HYDRATION, JAVASCRIPT_SYNTAX, JAVASCRIPT_RUNTIME, etc.)
+
+### Device Viewports Added
+- **Desktop**: desktop (1920x1080), desktop_small (1280x720)
+- **iOS**: mobile (375x812 - iPhone X/12/13), mobile_small (320x568 - iPhone SE), tablet (768x1024 - iPad), ipad_pro (1024x1366 - iPad Pro 12.9)
+- **Android**: android_pixel (393x851 - Pixel 5), android_samsung (360x800 - Galaxy S21), android_tablet (800x1280)
+
+### Enhanced
+- `lib/web_page_validator.py` upgraded to v2.0.0 with ~400 lines of new functionality
+- Added `ViewportConfig`, `AuthConfig`, `ScreenshotConfig`, `ScreenshotResult` dataclasses
+- New methods: `authenticate()`, `capture_screenshot()`, `validate_pages_with_auth()`, `validate_all_viewports()`
+- Enhanced CLI with authentication, screenshot, and viewport argument groups
+- `skills/web-validation/SKILL.md` updated to v2.0.0 with new documentation sections
+
+### Documentation
+- Added `docs/BROWSER_CONSOLE_VALIDATION.md` - Consolidated validation guide
+- Research materials preserved in `research/Browser Console Error Validation with Authentication/`
+
 ## [7.18.2] - 2025-11-21
 
 ### Critical Fix
