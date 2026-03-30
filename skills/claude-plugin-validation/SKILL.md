@@ -1,22 +1,11 @@
 ---
-name: claude-plugin-validation
-description: Comprehensive validation system for Claude Code plugins to ensure compliance with official plugin development guidelines and prevent installation failures
-version: 1.0.0
+name: plugin-validation
+description: "Validates plugin manifest (plugin.json), directory structure, YAML frontmatter, file encoding, and cross-platform compatibility before release. Use when preparing a plugin for distribution, debugging installation failures, or checking version compatibility after structural changes."
 ---
 
-## Overview
+# Plugin Validation
 
-This skill provides comprehensive validation for Claude Code plugins to ensure they meet official development guidelines, prevent installation failures, and maintain compatibility across different versions. It focuses on critical validation areas that commonly cause plugin breakage.
-
-## When to Apply
-
-Use this skill when:
-- Preparing a plugin for release
-- Debugging plugin installation failures
-- Updating plugin structure or manifest
-- Validating compatibility with Claude Code versions
-- Conducting quality assurance checks
-- Investigating plugin loading issues
+Validates plugin packages against official development guidelines to prevent installation failures. Checks manifest fields, directory layout, YAML frontmatter syntax, UTF-8 encoding, and cross-platform path compatibility.
 
 ## Claude Code Plugin Guidelines Validation
 
@@ -315,57 +304,14 @@ else:
 - **"Skill loading failed"**: Check YAML frontmatter syntax
 - **"Command not available"**: Verify command file format
 
-## Implementation Guidelines
+## Validation Workflow
 
-### Validation Implementation Steps
+1. **Manifest** → `python -m json.tool .claude-plugin/plugin.json` — verify JSON syntax and required fields
+2. **Structure** → verify `.claude-plugin/`, `agents/`, `skills/`, `commands/` directories exist with correct naming
+3. **Content** → parse YAML frontmatter in all `.md` files, validate required fields
+4. **Encoding** → confirm all `.json`, `.md`, `.py` files are valid UTF-8
+5. **Compatibility** → check for deprecated features and cross-platform path issues
 
-1. **Manifest Schema Validation**:
-   - Load and validate JSON against known schema
-   - Check required fields and data types
-   - Validate version format and consistency
+**Error severity**: Critical (blocks install) → Warning (non-blocking) → Info (optimization suggestions).
 
-2. **Structure Validation**:
-   - Verify required directories exist
-   - Check file naming conventions
-   - Validate agent/skill/command file formats
-
-3. **Content Validation**:
-   - Parse YAML frontmatter in markdown files
-   - Validate required YAML fields
-   - Check file encoding throughout
-
-4. **Compatibility Testing**:
-   - Test with different Claude Code versions
-   - Validate cross-platform compatibility
-   - Check for deprecated feature usage
-
-### Error Handling
-
-**Error Categories**:
-- **Critical**: Installation-blocking issues (JSON syntax, missing manifest)
-- **Warning**: Non-critical issues (missing documentation, style issues)
-- **Info**: Informational findings (optimization suggestions)
-
-**Error Recovery**:
-- Auto-fix common JSON syntax issues
-- Generate missing required fields with defaults
-- Normalize file encodings automatically
-- Suggest improvements for warnings
-
-## Integration with Existing Tools
-
-This skill complements the existing `plugin_validator.py` by adding:
-
-- **Claude Code-specific** validation rules
-- **Installation failure prevention** focus
-- **Version compatibility** checking
-- **Cross-platform** compatibility validation
-- **Schema validation** for plugin manifests
-
-Use this skill together with the general plugin validator for comprehensive quality assurance.
-
----
-
-**Version**: 1.0.0
-**Last Updated**: 2025-10-23
-**Compatible With**: Claude Code Plugin System v2.0+
+Complements `lib/plugin_validator.py` with plugin-system-specific rules, installation failure prevention, and version compatibility checking.

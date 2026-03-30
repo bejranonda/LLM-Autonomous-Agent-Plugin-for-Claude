@@ -1,56 +1,11 @@
 ---
-name: Group Collaboration
-description: Best practices for inter-group communication, knowledge sharing, and collaborative workflows in four-tier architecture
-version: 7.0.0
-category: collaboration
-tags: [four-tier, inter-group, communication, knowledge-transfer, coordination]
-related_skills: [pattern-learning, contextual-pattern-learning]
+name: group-collaboration
+description: "Defines structured handoff protocols, feedback loops, and knowledge-transfer patterns between the four agent groups. Use when passing recommendations from Group 1 to Group 2, sending execution plans to Group 3, routing validation feedback from Group 4, or troubleshooting broken inter-group communication."
 ---
 
-# Group Collaboration Skill
+# Group Collaboration
 
-## Overview
-
-This skill provides guidelines, patterns, and best practices for effective collaboration between the four agent groups in the four-tier architecture. It covers communication protocols, knowledge transfer strategies, feedback mechanisms, and coordination patterns that enable autonomous learning and continuous improvement across groups.
-
-## When to Apply This Skill
-
-**Use this skill when:**
-- Implementing inter-group communication between any two groups
-- Designing handoff protocols between analysis, decision, execution, and validation phases
-- Setting up feedback loops for continuous improvement
-- Sharing knowledge and patterns across groups
-- Coordinating multi-group workflows
-- Troubleshooting collaboration issues between groups
-- Optimizing group performance through better coordination
-
-**Required for:**
-- All agents in four-tier architecture (Groups 1, 2, 3, 4)
-- Orchestrator coordination logic
-- Cross-group pattern learning
-- Workflow optimization
-
-## Four-Tier Architecture Recap
-
-**Group 1: Strategic Analysis & Intelligence (The "Brain")**
-- **Role**: Analyze and recommend
-- **Output**: Recommendations with confidence scores
-- **Key Agents**: code-analyzer, security-auditor, smart-recommender
-
-**Group 2: Decision Making & Planning (The "Council")**
-- **Role**: Evaluate and decide
-- **Output**: Execution plans with priorities
-- **Key Agents**: strategic-planner, preference-coordinator
-
-**Group 3: Execution & Implementation (The "Hand")**
-- **Role**: Execute decisions
-- **Output**: Execution results with metrics
-- **Key Agents**: quality-controller, test-engineer, documentation-generator
-
-**Group 4: Validation & Optimization (The "Guardian")**
-- **Role**: Validate and optimize
-- **Output**: Validation results and feedback
-- **Key Agents**: post-execution-validator, performance-optimizer, continuous-improvement
+Provides communication patterns, knowledge transfer strategies, and coordination workflows for the four-tier agent architecture (Brain → Council → Hand → Guardian). Each pattern includes the exact `record_communication()` or `add_feedback()` call structure and anti-patterns to avoid.
 
 ## Communication Patterns
 
@@ -621,113 +576,11 @@ print(f"Average feedback cycle time: {stats['avg_feedback_cycle_seconds']}s")
 print(f"Knowledge reuse rate: {stats['knowledge_reuse_rate']:.1%}")
 ```
 
-## Integration Examples
+## Success Metrics
 
-### Example 1: Complete Four-Tier Workflow
+- Communication flow rate > 95%
+- Feedback loop cycle time < 5 minutes
+- Knowledge reuse rate > 60%
+- Execution success rate > 90% on first attempt
 
-```python
-# Orchestrator coordinates complete workflow
-from lib.group_collaboration_system import record_communication
-from lib.agent_feedback_system import add_feedback
-from lib.inter_group_knowledge_transfer import query_knowledge, add_knowledge
-from lib.group_specialization_learner import get_recommended_group_for_task
-
-# Step 0: Get specialization recommendations
-routing = get_recommended_group_for_task(
-    task_type="refactoring",
-    complexity="medium",
-    domain="authentication"
-)
-print(f"Recommended: {routing['recommended_agents']}")
-
-# Step 1: Group 1 analyzes (code-analyzer)
-analysis = code_analyzer.analyze(task)
-
-# Query existing knowledge
-existing_patterns = query_knowledge(
-    for_group=1,
-    knowledge_type="pattern",
-    task_context={"task_type": "refactoring", "domain": "authentication"}
-)
-
-# Send findings to Group 2
-record_communication(
-    from_agent="code-analyzer",
-    to_agent="strategic-planner",
-    task_id=task_id,
-    communication_type="recommendation",
-    data=analysis
-)
-
-# Step 2: Group 2 decides (strategic-planner)
-user_prefs = preference_coordinator.load_preferences()
-plan = strategic_planner.create_plan(analysis, user_prefs)
-
-# Send plan to Group 3
-record_communication(
-    from_agent="strategic-planner",
-    to_agent="quality-controller",
-    task_id=task_id,
-    communication_type="execution_plan",
-    data=plan
-)
-
-# Step 3: Group 3 executes (quality-controller)
-results = quality_controller.execute(plan)
-
-# Send results to Group 4
-record_communication(
-    from_agent="quality-controller",
-    to_agent="post-execution-validator",
-    task_id=task_id,
-    communication_type="execution_result",
-    data=results
-)
-
-# Step 4: Group 4 validates (post-execution-validator)
-validation = post_execution_validator.validate(results)
-
-# Send feedback to Group 1
-add_feedback(
-    from_agent="post-execution-validator",
-    to_agent="code-analyzer",
-    task_id=task_id,
-    feedback_type="success",
-    message="Recommendations were 95% effective",
-    details={"quality_improvement": 18}
-)
-
-# Send feedback to Group 3
-add_feedback(
-    from_agent="post-execution-validator",
-    to_agent="quality-controller",
-    task_id=task_id,
-    feedback_type="success",
-    message="Execution was efficient and effective"
-)
-
-# Share successful pattern
-if validation.quality_score >= 90:
-    add_knowledge(
-        source_group=4,
-        knowledge_type="pattern",
-        title="Successful Authentication Refactoring Pattern",
-        description=f"Pattern used in task {task_id} achieved quality score {validation.quality_score}",
-        context={"task_type": "refactoring", "domain": "authentication"},
-        evidence={"quality_score": validation.quality_score}
-    )
-```
-
-## References
-
-**Related Systems**:
-- `lib/group_collaboration_system.py` - Communication tracking
-- `lib/agent_feedback_system.py` - Feedback management
-- `lib/inter_group_knowledge_transfer.py` - Knowledge sharing
-- `lib/group_specialization_learner.py` - Specialization tracking
-- `lib/agent_performance_tracker.py` - Performance metrics
-
-**Related Documentation**:
-- `docs/FOUR_TIER_ARCHITECTURE.md` - Complete architecture design
-- `docs/FOUR_TIER_ENHANCEMENTS.md` - Advanced features
-- `agents/orchestrator.md` - Orchestrator coordination logic
+Track via `lib/group_collaboration_system.py` using `get_group_collaboration_stats()`.

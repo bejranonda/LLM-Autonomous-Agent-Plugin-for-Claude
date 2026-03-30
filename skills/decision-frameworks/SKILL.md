@@ -1,41 +1,11 @@
 ---
-name: Decision Frameworks
-description: Decision-making methodologies, scoring frameworks, and planning strategies for Group 2 agents in four-tier architecture
-version: 7.0.0
-category: decision-making
-tags: [four-tier, group-2, strategic-planning, decision-making, prioritization, user-preferences]
-related_skills: [group-collaboration, pattern-learning, contextual-pattern-learning]
+name: decision-frameworks
+description: "Scores and ranks agent recommendations using weighted evaluation matrices, then generates prioritized execution plans. Use when the strategic-planner or preference-coordinator must choose between competing approaches, balance speed-vs-quality trade-offs, or build an incremental/parallel execution plan for Group 3."
 ---
 
-# Decision Frameworks Skill
+# Decision Frameworks
 
-## Overview
-
-This skill provides decision-making frameworks, scoring methodologies, and planning strategies specifically for **Group 2 (Decision Making & Planning)** agents in the four-tier architecture. It covers how to evaluate Group 1 recommendations, incorporate user preferences, create execution plans, and make optimal decisions that balance multiple factors.
-
-## When to Apply This Skill
-
-**Use this skill when:**
-- Evaluating recommendations from Group 1 (Strategic Analysis & Intelligence)
-- Creating execution plans for Group 3 (Execution & Implementation)
-- Prioritizing competing recommendations
-- Incorporating user preferences into decisions
-- Balancing trade-offs (speed vs quality, risk vs benefit)
-- Deciding between multiple valid approaches
-- Optimizing for specific objectives (quality, speed, cost)
-
-**Required for:**
-- strategic-planner (master decision-maker)
-- preference-coordinator (user preference specialist)
-- Any Group 2 agent making planning decisions
-
-## Group 2 Role Recap
-
-**Group 2: Decision Making & Planning (The "Council")**
-- **Input**: Recommendations from Group 1 with confidence scores
-- **Process**: Evaluate, prioritize, decide, plan
-- **Output**: Execution plans for Group 3 with priorities and preferences
-- **Key Responsibility**: Make optimal decisions balancing analysis, user preferences, historical success, and risk
+Provides scoring formulas, multi-criteria decision analysis, risk-benefit matrices, and planning templates for Group 2 (Decision Making & Planning) agents in the four-tier architecture. Evaluates Group 1 recommendations, incorporates user preferences, and outputs prioritized execution plans for Group 3.
 
 ## Decision-Making Frameworks
 
@@ -642,118 +612,15 @@ def calibrate_confidence(recommendation, context):
 
 ## Decision Explainability
 
-### Framework: Document Every Decision
+Every decision must produce a structured explanation documenting: why this option was chosen, why alternatives were rejected, trade-offs accepted, confidence factors, and user preference alignment. Use `lib/decision_explainer.py` to generate explanations via `create_explanation()`.
 
-**Purpose**: Create transparent, understandable decisions for users and learning
-
-**Implementation**:
-```python
-from lib.decision_explainer import create_explanation
-
-def create_decision_explanation(decision, recommendations, user_prefs, historical_data):
-    """
-    Create comprehensive explanation for a decision
-    """
-    explanation = create_explanation(
-        decision_id=f"decision_{task_id}",
-        decision=decision,
-        recommendations=recommendations,
-        user_preferences=user_prefs,
-        historical_data=historical_data,
-        context={
-            "task_type": "refactoring",
-            "complexity": "medium"
-        }
-    )
-
-    return explanation
-    # Returns:
-    # - why_chosen: Primary reasons for this decision
-    # - why_not_alternatives: Why other options rejected
-    # - trade_offs: What was gained vs what was sacrificed
-    # - confidence_factors: What increases/decreases confidence
-    # - user_alignment: How decision aligns with user preferences
-    # - analogy: Human-friendly comparison
-```
-
-**Example Explanation Output**:
-```markdown
-## Decision: Modular Refactoring Approach
-
-### Why This Decision?
-**Primary Reason**: Highest combined score (82.5/100) balancing quality impact, effort, and risk.
-
-**Supporting Reasons**:
-1. Strong quality improvement potential (90/100)
-2. Manageable effort (60/100 - approximately 4 hours)
-3. Low risk with clear rollback options (80/100)
-4. Excellent maintainability benefits (95/100)
-
-### Why Not Alternatives?
-**Incremental Refactoring (Score: 81.0)**: Close second, but lower quality impact (70 vs 90). Would take longer to achieve same quality level.
-
-**Complete Rewrite (Score: 63.0)**: Rejected due to:
-- Very high effort (20/100 - would take 20+ hours)
-- High risk (40/100 - could introduce many bugs)
-- Lower user alignment (60/100 - user prefers incremental changes)
-Despite perfect quality potential, the risk-benefit ratio is unfavorable.
-
-### Trade-offs Considered
-**Time vs Quality**: Choosing modular approach over quick incremental fixes means:
-- ✅ Gain: Significantly better long-term code quality
-- ⚠️ Cost: Takes 1.5x longer than incremental approach
-- ✓ Acceptable: Quality improvement worth the extra time
-
-**Risk vs Benefit**: Moderate complexity with high reward:
-- ✅ Gain: 90/100 quality improvement potential
-- ⚠️ Cost: Some architectural risk in module boundaries
-- ✓ Mitigation: Incremental implementation with validation checkpoints
-
-### Confidence Factors
-**High Confidence (0.88)**:
-- ✓ Similar pattern succeeded 5 times previously (100% success rate)
-- ✓ Strong alignment with user preferences (85/100)
-- ⚠️ Moderate complexity reduces confidence slightly (-0.05)
-
-### User Preference Alignment
-- Coding Style: ✓ Matches preference for modular, well-organized code
-- Quality Focus: ✓ User prioritizes maintainability (0.85) - this approach excels here
-- Risk Tolerance: ✓ Medium risk acceptable for high-quality outcomes
-
-### Analogy
-Like reorganizing a messy closet by sorting items into clearly labeled boxes (modular refactoring) rather than just pushing things around (incremental) or building an entirely new closet system (complete rewrite). The sorting approach takes reasonable time, dramatically improves organization, and can be done safely one section at a time.
-```
+**Explanation output structure**: `why_chosen`, `why_not_alternatives`, `trade_offs`, `confidence_factors`, `user_alignment`, `analogy`.
 
 ## Success Metrics
 
-**Effective Decision-Making Indicators**:
-- ✅ Decision confidence > 0.80 (well-supported decisions)
-- ✅ User preference alignment > 75% (decisions match user style)
-- ✅ Execution success rate > 90% (Group 3 successfully executes plans)
-- ✅ Plan adjustment rate < 20% (plans don't need major revision during execution)
-- ✅ User satisfaction > 85% (users accept decisions)
-- ✅ Decision explainability score > 80% (users understand why decisions were made)
+- Decision confidence > 0.80
+- User preference alignment > 75%
+- Execution success rate > 90% (Group 3 executes plans successfully)
+- Plan adjustment rate < 20%
 
-**Track with**:
-```python
-from lib.agent_performance_tracker import get_agent_performance
-
-performance = get_agent_performance("strategic-planner")
-print(f"Decision success rate: {performance['success_rate']:.1%}")
-print(f"Average confidence: {performance['avg_confidence']:.2f}")
-print(f"User approval rate: {performance['user_approval_rate']:.1%}")
-```
-
-## References
-
-**Related Systems**:
-- `lib/decision_explainer.py` - Decision explanation system
-- `lib/user_preference_learner.py` - User preference tracking
-- `lib/agent_performance_tracker.py` - Decision outcome tracking
-- `lib/inter_group_knowledge_transfer.py` - Historical success data
-
-**Related Documentation**:
-- `docs/FOUR_TIER_ARCHITECTURE.md` - Complete architecture
-- `agents/strategic-planner.md` - Master decision-maker agent
-- `agents/preference-coordinator.md` - User preference specialist
-- `skills/group-collaboration/SKILL.md` - Inter-group communication
+Track via `lib/agent_performance_tracker.py` using `get_agent_performance("strategic-planner")`.

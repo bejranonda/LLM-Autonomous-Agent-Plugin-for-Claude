@@ -1,21 +1,11 @@
 ---
-name: Predictive Skill Loading
-description: Anticipates and pre-loads optimal skills before task execution based on pattern matching and historical success rates
-version: 1.0.0
+name: predictive-skill-loading
+description: "Generates task fingerprints from type/language/framework, queries the pattern database for similar past tasks, and pre-loads predicted skills in parallel before execution starts. Use when initializing a new task with 3+ similar historical patterns or when optimizing skill selection latency."
 ---
 
 # Predictive Skill Loading
 
-## Overview
-
-This skill enables the autonomous agent to predict and pre-load the optimal set of skills **before** task execution begins, dramatically reducing load time from 3-5 seconds to 100-200ms and token usage by 87%.
-
-## When to Apply
-
-- **At task initialization**: Before analyzing task requirements
-- **For similar tasks**: When pattern database has 3+ similar historical tasks
-- **With high confidence**: When similarity score >= 70%
-- **Background loading**: While orchestrator analyzes task details
+Pre-loads optimal skills before task execution by fingerprinting incoming tasks, matching against `.claude-patterns/patterns.json`, and background-loading predicted skills. Reduces skill loading from 3-5s to 100-200ms and token usage by 87%.
 
 ## Core Concepts
 
@@ -381,76 +371,14 @@ learning_engine.record_pattern({
 
 ## Continuous Improvement
 
-### Learning Loop:
-1. Predict skills based on patterns
-2. Execute task with predicted skills
-3. Record actual skills needed vs predicted
-4. Update prediction accuracy metrics
-5. Adjust prediction algorithm weights
-6. Next prediction is more accurate
+1. Predict skills based on patterns → 2. Execute task → 3. Record actual vs predicted skills → 4. Update accuracy metrics → 5. Adjust weights → 6. Next prediction improves
 
-### Accuracy Tracking:
-```python
-Prediction Accuracy =
-  (Skills Predicted Correctly / Total Skills Needed) * 100
-
-Target: 95%+ accuracy
-Current: Starts at ~92%, improves to 97%+ after 20 tasks
-```
+**Accuracy target**: 95%+ (starts ~92%, reaches 97%+ after 20 tasks).
 
 ## Error Handling
 
-### No Similar Patterns Found
-**Action**: Fall back to intelligent defaults based on task type
-**Impact**: Still faster than traditional loading (no similarity calculation delay)
+- **No similar patterns**: Fall back to intelligent defaults by task type
+- **Prediction incorrect**: Lazy-load additional skills on demand; learning system adjusts
+- **Cache invalidation**: Clear cache when pattern database or skill definitions change
 
-### Prediction Incorrect
-**Action**: Load additional skills on-demand (lazy loading)
-**Impact**: Minor delay, but learning system adjusts for future
-
-### Cache Invalidation
-**Action**: Clear cache after significant pattern database changes
-**Trigger**: New patterns added, skill definitions updated
-
-## Benefits Summary
-
-**Time Savings**:
-- 95% reduction in skill loading time
-- 3-5s → 100-200ms per task
-- Cumulative: 2-4 minutes saved per 10 tasks
-
-**Token Savings**:
-- 87% reduction in token usage
-- 800-1200 → 100-150 tokens per task
-- Cumulative: 8,000-10,000 tokens saved per 10 tasks
-
-**Accuracy Improvements**:
-- 92% → 97%+ skill selection accuracy
-- Fewer missing skills, fewer unnecessary skills
-- Better task outcomes
-
-**User Experience**:
-- Feels instant (no noticeable delay)
-- Smoother workflow
-- Increased confidence in system
-
-## Prerequisites
-
-- Pattern database with 10+ patterns (for accuracy)
-- Historical task data with skills_used recorded
-- Pattern learning system operational
-
-## Related Skills
-
-- **pattern-learning**: Provides pattern database
-- **code-analysis**: Most commonly predicted skill
-- **quality-standards**: Frequently paired with code-analysis
-
-## Version History
-
-**v1.0.0** (2025-11-04):
-- Initial implementation
-- Task fingerprinting
-- Pattern matching
-- Background preloading
-- Cache strategies
+**Prerequisites**: Pattern database with 10+ entries, historical task data with `skills_used` recorded, pattern-learning system operational.
