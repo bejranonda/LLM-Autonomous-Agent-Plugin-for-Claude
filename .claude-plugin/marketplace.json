@@ -12,7 +12,7 @@
       "name": "autonomous-agent",
       "source": "./",
       "description": "Four-tier autonomous agent architecture with 35 specialized agents, 25 skills, and 40 commands for code analysis, quality control, pattern learning, and automated validation.",
-      "version": "7.19.0",
+      "version": "8.0.0",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",

@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous AI behavior through pattern learning, skill auto-selection, background task execution, comprehensive quality control, and advanced token optimization. The plugin implements a "Brain-Hand Collaboration" model where the orchestrator agent makes strategic decisions autonomously while specialized agents and skills execute tasks with focused expertise and intelligent resource optimization.
 
 **Platform**: Claude Code CLI only (uses subagents, not compatible with claude.ai web/mobile)
-**Version**: 7.19.0
+**Version**: 8.0.0
 
 ## Development Guidelines
 
@@ -69,7 +69,7 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 
 ## Architecture
 
-### Four-Tier Agent Architecture (v7.0.0)
+### Four-Tier Agent Architecture (v8.0.0)
 
 **Revolutionary architecture separating analysis, decision-making, execution, and validation into specialized collaborative groups with automatic inter-group learning.**
 
@@ -189,7 +189,7 @@ Stores project context, successful patterns, skill effectiveness, and agent perf
 **Skills**: YAML frontmatter + overview + domain sections + when to apply
 **Loading**: Three-tier system (metadata → body → resources) for efficiency
 
-## Four-Tier Learning Systems (v7.0.0+)
+## Four-Tier Learning Systems (v8.0.0+)
 
 **Comprehensive learning infrastructure supporting continuous improvement across all four agent groups.**
 

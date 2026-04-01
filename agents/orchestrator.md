@@ -14,7 +14,7 @@ examples:
   - "Run comprehensive system analysis" → orchestrator orchestrates all four groups
 tools: Task,Read,Write,Edit,Bash,Grep,Glob,TodoWrite
 model: inherit
-version: 7.0.0
+version: 8.0.0
 ---
 
 # EMERGENCY IMPORTS - Prevents system-wide Claude failure
@@ -265,7 +265,7 @@ Adapt execution targets based on model capabilities:
 
 ## Core Responsibilities
 
-### 0. Revolutionary Four-Tier Agent Architecture (v7.0.0+)
+### 0. Revolutionary Four-Tier Agent Architecture (v8.0.0+)
 
 **CRITICAL**: This plugin uses a **sophisticated four-tier group-based architecture** for optimal performance, specialized expertise, and automatic inter-group learning:
 

@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v7.19.0
+# 🚀 Autonomous Agent for Claude Code v8.0.0
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-7.19.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v7.19.0)
+[![Version](https://img.shields.io/badge/version-8.0.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.0.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -46,7 +46,7 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 A **paradigm shift** from static tools to living intelligence with **35 specialized agents** across 4 collaborative groups:
 
-**🏗️ Four-Tier Group Architecture (v7.0.0+)**
+**🏗️ Four-Tier Group Architecture (v8.0.0+)**
 - **Group 1 - Strategic Analysis (Brain)**: 8 agents analyze and recommend with confidence scores
 - **Group 2 - Decision Making (Council)**: 2 agents evaluate and create optimal execution plans
 - **Group 3 - Execution (Hand)**: 14 agents implement with comprehensive metrics
@@ -110,7 +110,7 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### 🚀 **Latest Innovation: v7.19.0 - Browser Console Validation with Authentication** 🆕
+### 🚀 **Latest Innovation: v8.0.0 - Browser Console Validation with Authentication** 🆕
 
 **🔍 Enhanced Web Validation**: Comprehensive browser console error validation with authentication support, screenshot capture, and multi-viewport testing across 14 device presets.
 
@@ -166,7 +166,7 @@ python lib/web_page_validator.py http://localhost:3000 --viewport all --screensh
 - **Achievement Rate Tracking**: Target vs. actual performance with automatic trend analysis
 - **Executive Summary Reports**: Business-focused insights for stakeholders
 
-### 🚀 **Previous Innovation: v7.0.0 - Revolutionary Four-Tier Architecture**
+### 🚀 **Previous Innovation: v8.0.0 - Revolutionary Four-Tier Architecture**
 
 **🏗️ Complete Architecture Redesign**: Evolved from two-tier to four-tier specialized agent system.
 
@@ -378,7 +378,7 @@ python <plugin_path>/lib/agent_error_helper.py --list
 /monitor:dashboard
 ```
 
-**🌍 Access URL**: http://127.0.0.1:5000 (opens automatically in default browser)
+**🌍 Access URL**: http://128.0.0.1:5000 (opens automatically in default browser)
 
 **💡 Dashboard Features:**
 - **🚀 Automatic Browser Opening**: Dashboard opens your default browser automatically
@@ -435,7 +435,7 @@ Assessments are **automatically created** when you use plugin commands:
 **🔧 Troubleshooting:**
 - If port 5000 is busy: `/monitor:dashboard --port 8080`
 - Dashboard not reachable: Run `pip install flask flask-cors` first
-- Browser doesn't open automatically: Manually navigate to http://127.0.0.1:5000
+- Browser doesn't open automatically: Manually navigate to http://128.0.0.1:5000
 - Stop dashboard: Press `Ctrl+C` in the terminal where it's running
 - No data showing: Run `/learn:init` or `/analyze:quality` first to generate assessment data
 
