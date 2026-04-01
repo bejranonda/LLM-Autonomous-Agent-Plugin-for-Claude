@@ -1504,3 +1504,11 @@ Comprehensive architectural plans exist for evolution from the current two-tier 
 *Free forever, open source, privacy-first*
 
 #ClaudeCode #OpenSource #CodeAnalysis #FreeForever #PrivacyFirst #CodeRabbitAlternative
+
+## Version 8.0.0 Architecture & Stabilization
+The plugin has undergone a massive deduplication and refactoring effort to ensure absolute compliance with the Claude Code Plugin Marketplace Schema. 62+ dead scripts have been removed, the memory mechanism uses unified environment variables ($CLAUDE_PLUGIN_DATA), and the 140KB orchestrator prompt has been effectively decoupled to reduce token usage and improve overall precision.
+
+For deep-dives into operational logic, please refer to:
+- [Approach and Method](docs/APPROACH_AND_METHOD.md)
+- [Knowledge Management](docs/KNOWLEDGE_MANAGEMENT.md)
+- [Known Issues](docs/KNOWN_ISSUES.md)
