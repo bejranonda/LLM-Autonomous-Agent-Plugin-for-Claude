@@ -5,39 +5,33 @@
     "email": "contact@werapol.dev"
   },
   "metadata": {
-    "description": "Premium marketplace for revolutionary autonomous AI agents featuring four-tier architecture, intelligent pattern learning, comprehensive quality control, and full-stack validation with 80-90% auto-fix success rates."
+    "description": "Marketplace for autonomous AI agent plugin featuring four-tier architecture, pattern learning, quality control, and full-stack validation."
   },
   "plugins": [
     {
       "name": "autonomous-agent",
       "source": "./",
-      "description": "Revolutionary four-tier agent architecture with 35 specialized agents, 25 skills, and 40 commands focused on autonomous development, code quality, and validation. v7.19.0: Enhanced Web Validation with authentication, screenshot capture, and multi-viewport testing (14 device presets). Features pattern learning, quality control, full-stack validation, intelligent automation, and 80-90% auto-fix success. Production ready with 60-70% token cost reduction and fully autonomous operation.",
+      "description": "Four-tier autonomous agent architecture with 35 specialized agents, 25 skills, and 40 commands for code analysis, quality control, pattern learning, and automated validation.",
       "version": "7.19.0",
       "author": {
         "name": "Werapol Bejranonda",
         "email": "contact@werapol.dev",
-        "url": "https://github.com/ChildWerapol"
+        "url": "https://github.com/bejranonda"
       },
-      "homepage": "https://github.com/ChildWerapol/llm-autonomous-agent-plugin-for-claude",
-      "repository": "https://github.com/ChildWerapol/llm-autonomous-agent-plugin-for-claude",
+      "homepage": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
+      "repository": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
       "license": "MIT",
       "keywords": [
         "autonomous",
         "agent",
-        "learning",
-        "patterns",
-        "quality-control",
         "code-analysis",
-        "testing",
-        "documentation",
-        "refactoring",
-        "ai-assistant",
+        "quality-control",
+        "pattern-learning",
         "validation",
-        "error-prevention",
-        "frontend-design",
-        "design-enhancement",
-        "ai-slop-detection",
-        "distinctive-design"
+        "four-tier-architecture",
+        "token-optimization",
+        "ai-assistant",
+        "open-source"
       ],
       "category": "development",
       "tags": [
@@ -45,8 +39,7 @@
         "pattern-learning",
         "quality-assurance",
         "code-optimization",
-        "adaptive-ai",
-        "design-aesthetics"
+        "adaptive-ai"
       ],
       "strict": true
     }
