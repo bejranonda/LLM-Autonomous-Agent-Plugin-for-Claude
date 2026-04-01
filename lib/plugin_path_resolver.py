@@ -1,283 +1,198 @@
-#!
-# /*/usr/bin/env python3
-# //    Plugin Path Resolver for Autonomous Agent
-# */
-# //    """
-//This module provides utilities to resolve paths to Python scripts
-within the plugin installation directory, regardless of whether
-the plugin is running in development mode or installed from marketplace.
+#!/usr/bin/env python3
+"""
+Plugin Path Resolver for Autonomous Agent Plugin.
 
+Resolves paths to plugin files regardless of installation method
+(development, marketplace, or manual). Uses the Claude Code plugin
+environment variables as the primary mechanism per the official spec:
 
-# /*
-U
-*/sage:
-    from plugin_path_resolver import get_plugin_path, get_script_path
+- ${CLAUDE_PLUGIN_ROOT}: Plugin installation directory (read-only cache)
+- ${CLAUDE_PLUGIN_DATA}: Persistent data directory (~/.claude/plugins/data/{id}/)
 
-    script_path = get_script_path("dashboard.py")
-    # Returns: /home/user/.config/claude/plugins/autonomous-agent/lib/dashboard.py
+Usage:
+    from plugin_path_resolver import get_plugin_path, get_script_path, get_data_path
 
-    plugin_path = get_plugin_path()
-    # Returns: /home/user/.config/claude/plugins/autonomous-agent/
+    plugin_root = get_plugin_path()
+    script = get_script_path("dashboard.py")
+    data_dir = get_data_path()
+"""
+
 import os
 import sys
 from pathlib import Path
 from typing import Optional
 
 
-def get_plugin_path():
-"""
+def get_plugin_path() -> Optional[Path]:
+    """
+    Get the plugin installation directory path.
 
-
-# /*
-G
-*/et the plugin installation directory path.
+    Resolution order:
+    1. CLAUDE_PLUGIN_ROOT environment variable (set by Claude Code)
+    2. Walk up from __file__ looking for .claude-plugin/plugin.json
+    3. Walk up from cwd looking for .claude-plugin/plugin.json
 
     Returns:
+        Path to plugin root directory, or None if not found.
+    """
+    # 1. Official Claude Code environment variable (primary)
+    env_root = os.environ.get("CLAUDE_PLUGIN_ROOT")
+    if env_root:
+        root = Path(env_root)
+        if root.exists():
+            return root
 
-# /*
-# P
-*/ath to plugin root directory or None if not found
-"""
-    # First, try to find plugin.json in current directory and parents
-    current = Path.cwd()
-
-    # Check if we're in development mode (plugin.json in .claude-plugin/)
+    # 2. Walk up from this file's location
+    current = Path(__file__).resolve().parent
     for parent in [current] + list(current.parents):
-plugin_json = parent / ".claude-plugin" / "plugin.json"
-if plugin_json.exists():
-    return parent
+        plugin_json = parent / ".claude-plugin" / "plugin.json"
+        if plugin_json.exists():
+            return parent
 
-    # Check if we're running from within the plugin (agents/ or commands/ dir)
-    for parent in [current] + list(current.parents):
-if parent.name in ["agents", "commands", "skills", "lib"]:
-    plugin_json = parent / ".claude-plugin" / "plugin.json"
-    if plugin_json.exists():
-        return parent
-# Also check if we're in lib directory itself
-elif parent.name == "lib":
-    plugin_dir = parent.parent
-    plugin_json = plugin_dir / ".claude-plugin" / "plugin.json"
-    if plugin_json.exists():
-        return plugin_dir
-
-    # Try environment variable
-    if "CLAUDE_PLUGIN_PATH" in os.environ:
-plugin_path = Path(os.environ["CLAUDE_PLUGIN_PATH"])
-if (plugin_path / ".claude-plugin" / "plugin.json").exists():
-    return plugin_path
-
-    # Try standard plugin locations
-    home = Path.home()
-
-    # Marketplace plugin name
-    marketplace_plugin_name = "LLM-Autonomous-Agent-Plugin-for-Claude"
-
-    plugin_locations = [
-# Development/local installations
-home / ".config" / "claude" / "plugins" / "autonomous-agent",
-home / ".claude" / "plugins" / "autonomous-agent",
-# Marketplace installations (primary)
-home / ".claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-home / ".config" / "claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-# Alternative marketplace paths
-home / ".claude" / "plugins" / "marketplace" / marketplace_plugin_name,
-home / ".config" / "claude" / "plugins" / "marketplace" / marketplace_plugin_name,
-# System-wide installations (Linux/Mac)
-
-# /*
-# P
-*/ath("/usr/local/share/claude/plugins/autonomous-agent"),
-
-# /*
-# P
-*/ath("/usr/local/share/claude/plugins/marketplaces") / marketplace_plugin_name,
-
-# /*
-# P
-*/ath("/opt/claude/plugins/autonomous-agent"),
-
-# /*
-# P
-*/ath("/opt/claude/plugins/marketplaces") / marketplace_plugin_name,
-    ]
-
-    # Windows-specific paths (using environment variables, not hardcoded)
-    if sys.platform == "win32":
-appdata = Path(os.environ.get("APPDATA", ""))
-localappdata = Path(os.environ.get("LOCALAPPDATA", ""))
-programfiles = Path(os.environ.get("PROGRAMFILES", ""))
-
-if appdata:
-    plugin_locations.extend(
-        [
-            appdata / "Claude" / "plugins" / "autonomous-agent",
-            appdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-        ]
-    )
-
-if localappdata:
-    plugin_locations.extend(
-        [
-            localappdata / "Claude" / "plugins" / "autonomous-agent",
-            localappdata / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-        ]
-    )
-
-if programfiles:
-    plugin_locations.extend(
-        [
-            programfiles / "Claude" / "plugins" / "autonomous-agent",
-            programfiles / "Claude" / "plugins" / "marketplaces" / marketplace_plugin_name,
-        ]
-    )
-
-    for location in plugin_locations:
-if location and (location / ".claude-plugin" / "plugin.json").exists():
-    return location
+    # 3. Walk up from current working directory
+    cwd = Path.cwd()
+    for parent in [cwd] + list(cwd.parents):
+        plugin_json = parent / ".claude-plugin" / "plugin.json"
+        if plugin_json.exists():
+            return parent
 
     return None
 
 
-def get_script_path():
-"""
+def get_data_path() -> Path:
+    """
+    Get the persistent data directory for this plugin.
 
+    Per the Claude Code spec, ${CLAUDE_PLUGIN_DATA} points to
+    ~/.claude/plugins/data/{id}/ which survives plugin updates.
 
-# /*
-G
-*/et the full path to a Python script in the plugin's lib directory.
-
-    Args:
-script_name: Name of the script file (e.g., "dashboard.py")
+    Falls back to .claude-patterns/ in the current working directory
+    for development mode compatibility.
 
     Returns:
+        Path to data directory (created if it doesn't exist).
+    """
+    # 1. Official Claude Code data directory
+    env_data = os.environ.get("CLAUDE_PLUGIN_DATA")
+    if env_data:
+        data_dir = Path(env_data)
+        data_dir.mkdir(parents=True, exist_ok=True)
+        return data_dir
 
-# /*
-F
-*/ull path to the script or None if not found
-"""
+    # 2. Fallback: .claude-patterns/ in cwd (development mode)
+    data_dir = Path.cwd() / ".claude-patterns"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    return data_dir
+
+
+def get_script_path(script_name: str) -> Optional[Path]:
+    """
+    Get the full path to a Python script in the plugin's lib directory.
+
+    Args:
+        script_name: Name of the script file (e.g., "dashboard.py")
+
+    Returns:
+        Full path to the script, or None if not found.
+    """
     plugin_path = get_plugin_path()
     if not plugin_path:
-return None
+        return None
 
     script_path = plugin_path / "lib" / script_name
     if script_path.exists():
-return script_path
+        return script_path
 
     return None
 
 
-"""
-def get_lib_path():
-"""
-
-
-# /*
-G
-*/et the plugin's lib directory path.
+def get_lib_path() -> Optional[Path]:
+    """
+    Get the plugin's lib directory path.
 
     Returns:
-
-# /*
-# P
-*/ath to lib directory or None if not found
-"""
+        Path to lib directory, or None if not found.
+    """
     plugin_path = get_plugin_path()
     if not plugin_path:
-return None
+        return None
 
     lib_path = plugin_path / "lib"
     if lib_path.exists():
-return lib_path
+        return lib_path
 
     return None
 
 
-"""
-def validate_plugin_installation():
-"""
-
-
-# /*
-V
-*/alidate the plugin installation and return status.
+def get_python_executable() -> str:
+    """
+    Get the appropriate Python executable for the current platform.
 
     Returns:
-
-# /*
-D
-*/ictionary with validation results
-"""
-    plugin_path = get_plugin_path()
-
-    if not plugin_path:
-return {
-    "valid": False,
-    "error": "Plugin installation not found",
-    "plugin_path": None,
-    "lib_path": None,
-    "plugin_json": None,
-}
-
-    plugin_json = plugin_path / ".claude-plugin" / "plugin.json"
-    lib_path = plugin_path / "lib"
-
-    # Check essential files
-    checks = {
-"plugin_json_exists": plugin_json.exists(),
-"lib_directory_exists": lib_path.exists(),
-"dashboard_py_exists": (lib_path / "dashboard.py").exists(),
-"pattern_storage_py_exists": (lib_path / "pattern_storage.py").exists(),
-    }
-
-    return {
-"valid": all(checks.values()),
-"plugin_path": str(plugin_path),
-"lib_path": str(lib_path) if lib_path.exists() else None,
-"plugin_json": str(plugin_json) if plugin_json.exists() else None,
-"checks": checks,
-    }
-
-
-"""
-def get_python_executable():
-"""
-
-
-# /*
-G
-*/et the appropriate Python executable for the current platform.
-
-    Returns:
-
-# /*
-# P
-*/ath to Python executable
-"""
-    # Use the same Python that's running this script
+        Path to Python executable.
+    """
     return sys.executable
 
 
-if __name__ == "__main__":
-    # Test the resolver
-    print("Plugin Path Resolver Test")
-    print("=" * 40)
+def validate_plugin_installation() -> dict:
+    """
+    Validate the plugin installation and return status.
 
-    # Test plugin path detection
+    Returns:
+        Dictionary with validation results.
+    """
+    plugin_path = get_plugin_path()
+
+    if not plugin_path:
+        return {
+            "valid": False,
+            "error": "Plugin installation not found",
+            "plugin_path": None,
+            "lib_path": None,
+            "data_path": None,
+            "plugin_json": None,
+        }
+
+    plugin_json = plugin_path / ".claude-plugin" / "plugin.json"
+    lib_path = plugin_path / "lib"
+    data_path = get_data_path()
+
+    checks = {
+        "plugin_json_exists": plugin_json.exists(),
+        "lib_directory_exists": lib_path.exists(),
+        "data_directory_exists": data_path.exists(),
+    }
+
+    return {
+        "valid": all(checks.values()),
+        "plugin_path": str(plugin_path),
+        "lib_path": str(lib_path) if lib_path.exists() else None,
+        "data_path": str(data_path),
+        "plugin_json": str(plugin_json) if plugin_json.exists() else None,
+        "checks": checks,
+        "env": {
+            "CLAUDE_PLUGIN_ROOT": os.environ.get("CLAUDE_PLUGIN_ROOT", "not set"),
+            "CLAUDE_PLUGIN_DATA": os.environ.get("CLAUDE_PLUGIN_DATA", "not set"),
+        },
+    }
+
+
+if __name__ == "__main__":
+    print("Plugin Path Resolver")
+    print("=" * 50)
+
     plugin_path = get_plugin_path()
     print(f"Plugin Path: {plugin_path}")
 
-    # Test script path resolution
-    test_scripts = ["dashboard.py", "pattern_storage.py", "learning_analytics.py"]
-    for script in test_scripts:
-script_path = get_script_path(script)
-print(f"{script}: {script_path}")
+    data_path = get_data_path()
+    print(f"Data Path:   {data_path}")
 
-    # Validate installation
+    print(f"Python:      {get_python_executable()}")
+
     validation = validate_plugin_installation()
-    print(f"\nInstallation Valid: {validation['valid']}")
+    print(f"Valid:       {validation['valid']}")
+    print(f"Env CLAUDE_PLUGIN_ROOT: {validation['env']['CLAUDE_PLUGIN_ROOT']}")
+    print(f"Env CLAUDE_PLUGIN_DATA: {validation['env']['CLAUDE_PLUGIN_DATA']}")
+
     if not validation["valid"]:
-print(f"Error: {validation.get('error', 'Unknown error')}")
-
-    print(f"\nPython Executable: {get_python_executable()}")
-
-"""
+        print(f"Error: {validation.get('error', 'Unknown')}")

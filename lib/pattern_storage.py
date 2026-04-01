@@ -1,18 +1,40 @@
 #!/usr/bin/env python3
 """
-Pattern Storage System for Autonomous Claude Agent Plugin
+Pattern Storage System for Autonomous Claude Agent Plugin.
 
 Manages pattern learning data using JSON files. Stores successful task patterns,
-retrieves similar patterns for context-aware recommendations, and
-tracks usage statistics.
+retrieves similar patterns for context-aware recommendations, and tracks usage
+statistics.
+
+Storage location uses ${CLAUDE_PLUGIN_DATA} (persistent plugin data directory)
+when running as an installed plugin, or falls back to .claude-patterns/ in the
+current working directory for development mode.
+"""
 
 import json
 import argparse
 import sys
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 import platform
+
+# Import path resolver for data directory
+try:
+    from plugin_path_resolver import get_data_path
+except ImportError:
+    # Fallback if running standalone
+    def get_data_path():
+        env_data = os.environ.get("CLAUDE_PLUGIN_DATA")
+        if env_data:
+            p = Path(env_data)
+            p.mkdir(parents=True, exist_ok=True)
+            return p
+        p = Path.cwd() / ".claude-patterns"
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+
 
 # Handle Windows compatibility for file locking
 if platform.system() == "Windows":
@@ -26,7 +48,7 @@ if platform.system() == "Windows":
         """Windows file unlocking."""
         try:
             msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
-        except:
+        except Exception:
             pass
 
 else:
@@ -44,14 +66,18 @@ else:
 class PatternStorage:
     """Manages storage and retrieval of learned patterns."""
 
-    def __init__(self, patterns_dir: str = ".claude-patterns"):
+    def __init__(self, patterns_dir: str = None):
         """
         Initialize pattern storage.
 
         Args:
-            patterns_dir: Directory path for storing patterns (default: .claude-patterns)
+            patterns_dir: Directory path for storing patterns.
+                          If None, uses ${CLAUDE_PLUGIN_DATA} or .claude-patterns/
         """
-        self.patterns_dir = Path(patterns_dir)
+        if patterns_dir:
+            self.patterns_dir = Path(patterns_dir)
+        else:
+            self.patterns_dir = get_data_path()
         self.patterns_file = self.patterns_dir / "patterns.json"
         self._ensure_directory()
 
@@ -61,23 +87,21 @@ class PatternStorage:
         if not self.patterns_file.exists():
             self._write_patterns([])
 
-    def _read_patterns(self):
+    def _read_patterns(self) -> List[Dict[str, Any]]:
         """
         Read patterns from JSON file with file locking.
 
         Returns:
-            List of pattern dictionaries
+            List of pattern dictionaries.
         """
         try:
             with open(self.patterns_file, "r", encoding="utf-8") as f:
-                # Acquire shared lock for reading
                 lock_file(f, exclusive=False)
                 try:
                     content = f.read()
                     if not content.strip():
                         return []
                     data = json.loads(content)
-                    # Handle both simple array and object with "patterns" array
                     if isinstance(data, list):
                         return data
                     elif isinstance(data, dict) and "patterns" in data:
@@ -90,25 +114,20 @@ class PatternStorage:
         except FileNotFoundError:
             return []
         except json.JSONDecodeError as e:
-            print(
-                f"Error: Malformed JSON in {self.patterns_file}: {e}",
-                file=sys.stderr,
-            )
+            print(f"Error: Malformed JSON in {self.patterns_file}: {e}", file=sys.stderr)
             return []
         except Exception as e:
             print(f"Error reading patterns: {e}", file=sys.stderr)
             return []
 
-"""
     def _write_patterns(self, patterns: List[Dict[str, Any]]):
-"""
+        """
         Write patterns to JSON file with file locking.
 
         Args:
-            patterns: List of pattern dictionaries to write
-"""
+            patterns: List of pattern dictionaries to write.
+        """
         try:
-            # Check if file exists and has existing structure
             existing_structure = None
             if self.patterns_file.exists():
                 try:
@@ -118,24 +137,20 @@ class PatternStorage:
                             data = json.loads(content)
                             if isinstance(data, dict) and "patterns" in data:
                                 existing_structure = data
-                except:
-                    pass  # Fall back to simple structure
+                except Exception:
+                    pass
 
             with open(self.patterns_file, "w", encoding="utf-8") as f:
-                # Acquire exclusive lock for writing
                 lock_file(f, exclusive=True)
                 try:
                     if existing_structure:
-                        # Preserve existing structure, update patterns array
                         existing_structure["patterns"] = patterns
-                        # Update metadata if it exists, otherwise create it
                         if "metadata" not in existing_structure:
                             existing_structure["metadata"] = {}
                         existing_structure["metadata"]["last_updated"] = datetime.now().isoformat()
                         existing_structure["metadata"]["total_patterns"] = len(patterns)
                         json.dump(existing_structure, f, indent=2, ensure_ascii=False)
                     else:
-                        # Simple array format
                         json.dump(patterns, f, indent=2, ensure_ascii=False)
                 finally:
                     unlock_file(f)
@@ -143,37 +158,29 @@ class PatternStorage:
             print(f"Error writing patterns: {e}", file=sys.stderr)
             raise
 
-"""
-    def store_pattern():
-        
+    def store_pattern(self, pattern: Dict[str, Any]) -> str:
+        """
         Store a new pattern.
 
-                Args:
-                    pattern: Pattern dictionary containing task information
+        Args:
+            pattern: Pattern dictionary containing task information.
 
-                Returns:
-                    pattern_id of the stored pattern
+        Returns:
+            pattern_id of the stored pattern.
 
-                Required pattern fields:
-                    - task_type: Type of task (
-            feature_implementation,
-            bug_fix,
-            refactoring,
-            testing,
-        )
-                    - context: Natural language description of task context
-                    - skills_used: List of skills used
-                    - approach: Detailed description of approach taken
-                    - quality_score: Quality score (0.0 to 1.0)
-"""
-        # Validate required fields
+        Required pattern fields:
+            - task_type: Type of task
+            - context: Natural language description of task context
+            - skills_used: List of skills used
+            - approach: Detailed description of approach taken
+            - quality_score: Quality score (0.0 to 1.0)
+        """
         required_fields = ["task_type", "context", "skills_used", "approach", "quality_score"]
         missing_fields = [field for field in required_fields if field not in pattern]
 
         if missing_fields:
             raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
 
-        # Validate task_type
         valid_task_types = [
             "feature_implementation",
             "bug_fix",
@@ -191,37 +198,31 @@ class PatternStorage:
         if pattern["task_type"] not in valid_task_types:
             raise ValueError(f"Invalid task_type. Must be one of: {', '.join(valid_task_types)}")
 
-        # Validate quality_score
         if not isinstance(pattern["quality_score"], (int, float)) or not (0 <= pattern["quality_score"] <= 1):
             raise ValueError("quality_score must be a number between 0 and 1")
 
-        # Generate pattern_id if not provided
         if "pattern_id" not in pattern:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             pattern["pattern_id"] = f"pattern_{timestamp}"
 
-        # Add timestamp if not provided
         if "timestamp" not in pattern:
             pattern["timestamp"] = datetime.now().isoformat()
 
-        # Initialize usage tracking
         if "usage_count" not in pattern:
             pattern["usage_count"] = 0
         if "success_rate" not in pattern:
             pattern["success_rate"] = 1.0 if pattern["quality_score"] >= 0.7 else 0.0
 
-        # Store pattern
         patterns = self._read_patterns()
         patterns.append(pattern)
         self._write_patterns(patterns)
 
         return pattern["pattern_id"]
 
-"""
     def retrieve_patterns(
         self, context: str, task_type: Optional[str] = None, min_quality: float = 0.8, limit: int = 5
-    )-> List[Dict[str, Any]]:
-"""
+    ) -> List[Dict[str, Any]]:
+        """
         Retrieve patterns matching search criteria.
 
         Args:
@@ -231,50 +232,43 @@ class PatternStorage:
             limit: Maximum number of results (default: 5)
 
         Returns:
-            List of matching patterns, sorted by relevance and quality
-"""
+            List of matching patterns, sorted by relevance and quality.
+        """
         patterns = self._read_patterns()
-
-        # Convert context to lowercase for case-insensitive matching
         search_terms = context.lower().split()
 
-        # Filter patterns
         matches = []
         for pattern in patterns:
-            # Filter by task_type if specified
             if task_type and pattern.get("task_type") != task_type:
                 continue
-
-            # Filter by quality score
             if pattern.get("quality_score", 0) < min_quality:
                 continue
 
-            # Calculate relevance score based on keyword matching
             context_text = f"{pattern.get('context', '')} {pattern.get('approach', '')}".lower()
             relevance_score = sum(1 for term in search_terms if term in context_text)
 
             if relevance_score > 0:
                 matches.append({"pattern": pattern, "relevance_score": relevance_score})
 
-        # Sort by relevance, then by quality score and usage count
         matches.sort(
-            key=lambda x: (x["relevance_score"], x["pattern"].get("quality_score", 0), x["pattern"].get("usage_count", 0)),
+            key=lambda x: (
+                x["relevance_score"],
+                x["pattern"].get("quality_score", 0),
+                x["pattern"].get("usage_count", 0),
+            ),
             reverse=True,
         )
 
-        # Return top N matches
         return [match["pattern"] for match in matches[:limit]]
 
-    # Alias for backward compatibility with tests
-"""
     def get_patterns(self) -> List[Dict[str, Any]]:
-        """Alias to get all patterns for backward compatibility."""
+        """Get all patterns."""
         return self._read_patterns()
 
     def get_similar_patterns(
         self, task_type: str = None, context: Dict[str, Any] = None, min_quality: float = 0.8, limit: int = 5
-    )-> List[Dict[str, Any]]:
-        """Get Similar Patterns. Alias for retrieve_patterns method for backward compatibility."""
+    ) -> List[Dict[str, Any]]:
+        """Alias for retrieve_patterns for backward compatibility."""
         context_str = str(context) if context else ""
         return self.retrieve_patterns(context_str, task_type, min_quality, limit)
 
@@ -292,7 +286,7 @@ class PatternStorage:
                 skill_usage += 1
                 quality_score = pattern.get("quality_score", 0)
                 total_quality += quality_score
-                if quality_score >= 0.7:  # Consider 70%+ as success
+                if quality_score >= 0.7:
                     successful_usage += 1
 
         if skill_usage == 0:
@@ -305,36 +299,31 @@ class PatternStorage:
             "avg_quality": total_quality / skill_usage,
         }
 
-    def update_usage():
-        
+    def update_usage(self, pattern_id: str, success: bool = True) -> bool:
+        """
         Update usage statistics for a pattern.
 
         Args:
-            pattern_id: ID of the pattern to update
-            success: Whether the pattern usage was successful
+            pattern_id: ID of the pattern to update.
+            success: Whether the pattern usage was successful.
 
         Returns:
-            True if pattern was found and updated, False otherwise
-"""
+            True if pattern was found and updated, False otherwise.
+        """
         patterns = self._read_patterns()
 
         for pattern in patterns:
             if pattern.get("pattern_id") == pattern_id:
-                # Increment usage count
                 pattern["usage_count"] = pattern.get("usage_count", 0) + 1
 
-                # Update success rate using running average
                 current_rate = pattern.get("success_rate", 1.0)
                 current_count = pattern.get("usage_count", 1)
 
                 if success:
-                    # Increase success rate
                     pattern["success_rate"] = (current_rate * (current_count - 1) + 1.0) / current_count
                 else:
-                    # Decrease success rate
                     pattern["success_rate"] = (current_rate * (current_count - 1)) / current_count
 
-                # Update last used timestamp
                 pattern["last_used"] = datetime.now().isoformat()
 
                 self._write_patterns(patterns)
@@ -343,34 +332,29 @@ class PatternStorage:
         print(f"Error: Pattern '{pattern_id}' not found", file=sys.stderr)
         return False
 
-"""
-    def get_statistics():
-        
+    def get_statistics(self) -> Dict[str, Any]:
+        """
         Get overall pattern statistics.
 
         Returns:
-            Dictionary with statistics about stored patterns
-"""
+            Dictionary with statistics about stored patterns.
+        """
         patterns = self._read_patterns()
 
         if not patterns:
             return {"total_patterns": 0, "average_quality": 0.0, "task_type_distribution": {}, "most_used_skills": {}}
 
-        # Calculate statistics
         task_types = {}
         skills_usage = {}
         total_quality = 0
 
         for pattern in patterns:
-            # Task type distribution
             task_type = pattern.get("task_type", "unknown")
             task_types[task_type] = task_types.get(task_type, 0) + 1
 
-            # Skills usage
             for skill in pattern.get("skills_used", []):
                 skills_usage[skill] = skills_usage.get(skill, 0) + 1
 
-            # Quality score
             total_quality += pattern.get("quality_score", 0)
 
         return {
@@ -382,14 +366,13 @@ class PatternStorage:
             ),
         }
 
-"""
-    def _load_unified_data():
-        
+    def _load_unified_data(self) -> Dict[str, Any]:
+        """
         Load unified data from unified_data.json file.
 
         Returns:
-            Unified data dictionary with default structure
-"""
+            Unified data dictionary with default structure.
+        """
         unified_file = self.patterns_dir / "unified_data.json"
 
         if not unified_file.exists():
@@ -416,22 +399,32 @@ class PatternStorage:
                     unlock_file(f)
         except Exception as e:
             print(f"Warning: Could not load unified data: {e}", file=sys.stderr)
-            return self._load_unified_data()  # Return default structure
+            # Return default structure instead of recursing
+            return {
+                "version": "1.0.0",
+                "created": datetime.now().isoformat(),
+                "last_updated": datetime.now().isoformat(),
+                "patterns": [],
+                "skill_metrics": {"skill_effectiveness": {}, "skill_usage_history": []},
+                "agent_metrics": {"agent_effectiveness": {}, "agent_performance": []},
+                "quality_history": {"quality_assessments": []},
+                "performance_records": {"records": []},
+                "model_performance": {"models": {}},
+                "system_health": {"status": "unknown"},
+                "project_context": {"detected_languages": [], "frameworks": [], "project_type": "unknown"},
+            }
 
-"""
-    def _save_unified_data():
-        
+    def _save_unified_data(self, unified_data: Dict[str, Any]) -> bool:
+        """
         Save unified data to unified_data.json file.
 
         Args:
-            unified_data: Complete unified data dictionary
+            unified_data: Complete unified data dictionary.
 
         Returns:
-            True if successful, False otherwise
-"""
+            True if successful, False otherwise.
+        """
         unified_file = self.patterns_dir / "unified_data.json"
-
-        # Update timestamp
         unified_data["last_updated"] = datetime.now().isoformat()
 
         try:
@@ -446,18 +439,17 @@ class PatternStorage:
             print(f"Error saving unified data: {e}", file=sys.stderr)
             return False
 
-"""
-    def store_to_unified():
-        
+    def store_to_unified(self, data_type: str, data: Any) -> bool:
+        """
         Store data directly to unified structure.
 
         Args:
             data_type: Type of data (skill_metrics, agent_performance, etc.)
-            data: Data to store
+            data: Data to store.
 
         Returns:
-            True if successful, False otherwise
-"""
+            True if successful, False otherwise.
+        """
         unified = self._load_unified_data()
 
         try:
@@ -504,77 +496,39 @@ class PatternStorage:
             print(f"Error storing to unified data: {e}", file=sys.stderr)
             return False
 
-"""
-    def consolidate_all_data():
-        
+    def consolidate_all_data(self) -> bool:
+        """
         Consolidate all scattered data files into unified_data.json.
 
         Returns:
-            True if successful, False otherwise
-"""
+            True if successful, False otherwise.
+        """
         try:
-            # Start with empty unified structure
             unified = self._load_unified_data()
-
-            # 1. Load patterns (already in right format)
             unified["patterns"] = self._read_patterns()
 
-            # 2. Load skill metrics
-            skill_file = self.patterns_dir / "skill_metrics.json"
-            if skill_file.exists():
-                try:
-                    with open(skill_file, "r", encoding="utf-8") as f:
-                        skill_data = json.load(f)
-                        unified["skill_metrics"] = skill_data
-                except Exception as e:
-                    print(f"Warning: Could not load skill_metrics.json: {e}", file=sys.stderr)
+            # Load auxiliary data files
+            auxiliary_files = {
+                "skill_metrics.json": "skill_metrics",
+                "agent_metrics.json": "agent_metrics",
+                "quality_history.json": "quality_history",
+                "performance_records.json": "performance_records",
+                "model_performance.json": "model_performance",
+            }
 
-            # 3. Load agent metrics
-            agent_file = self.patterns_dir / "agent_metrics.json"
-            if agent_file.exists():
-                try:
-                    with open(agent_file, "r", encoding="utf-8") as f:
-                        agent_data = json.load(f)
-                        unified["agent_metrics"] = agent_data
-                except Exception as e:
-                    print(f"Warning: Could not load agent_metrics.json: {e}", file=sys.stderr)
+            for filename, key in auxiliary_files.items():
+                filepath = self.patterns_dir / filename
+                if filepath.exists():
+                    try:
+                        with open(filepath, "r", encoding="utf-8") as f:
+                            unified[key] = json.load(f)
+                    except Exception as e:
+                        print(f"Warning: Could not load {filename}: {e}", file=sys.stderr)
 
-            # 4. Load quality history
-            quality_file = self.patterns_dir / "quality_history.json"
-            if quality_file.exists():
-                try:
-                    with open(quality_file, "r", encoding="utf-8") as f:
-                        quality_data = json.load(f)
-                        unified["quality_history"] = quality_data
-                except Exception as e:
-                    print(f"Warning: Could not load quality_history.json: {e}", file=sys.stderr)
-
-            # 5. Load performance records
-            perf_file = self.patterns_dir / "performance_records.json"
-            if perf_file.exists():
-                try:
-                    with open(perf_file, "r", encoding="utf-8") as f:
-                        perf_data = json.load(f)
-                        unified["performance_records"] = perf_data
-                except Exception as e:
-                    print(f"Warning: Could not load performance_records.json: {e}", file=sys.stderr)
-
-            # 6. Load model performance if exists
-            model_file = self.patterns_dir / "model_performance.json"
-            if model_file.exists():
-                try:
-                    with open(model_file, "r", encoding="utf-8") as f:
-                        model_data = json.load(f)
-                        unified["model_performance"] = model_data
-                except Exception as e:
-                    print(f"Warning: Could not load model_performance.json: {e}", file=sys.stderr)
-
-            # 7. Update project context from patterns
+            # Update project context from patterns
             if unified["patterns"]:
-                # Extract languages and frameworks from patterns
                 languages = set()
                 frameworks = set()
-
                 for pattern in unified["patterns"]:
                     context = pattern.get("context", {})
                     if isinstance(context, dict):
@@ -587,7 +541,7 @@ class PatternStorage:
                 unified["project_context"]["frameworks"] = list(frameworks)
                 unified["project_context"]["project_type"] = "autonomous-agent-plugin"
 
-            # 8. Update system health
+            # Update system health
             unified["system_health"] = {
                 "status": "healthy",
                 "total_patterns": len(unified["patterns"]),
@@ -596,35 +550,28 @@ class PatternStorage:
                 "last_consolidated": datetime.now().isoformat(),
             }
 
-            # Save the consolidated data
             return self._save_unified_data(unified)
 
         except Exception as e:
             print(f"Error consolidating data: {e}", file=sys.stderr)
             return False
 
-"""
-    def store_pattern_enhanced():
-        
+    def store_pattern_enhanced(self, pattern: Dict[str, Any]) -> str:
+        """
         Enhanced pattern storage that also updates unified data.
 
         Args:
-            pattern: Pattern dictionary
+            pattern: Pattern dictionary.
 
         Returns:
-            pattern_id of stored pattern
-"""
-        # Store pattern using existing method
+            pattern_id of stored pattern.
+        """
         pattern_id = self.store_pattern(pattern)
 
-        # Also update unified data
         try:
             unified = self._load_unified_data()
-
-            # Add pattern to unified structure
             unified["patterns"].append(pattern)
 
-            # Update skill metrics if pattern has skills
             if "skills_used" in pattern:
                 for skill in pattern["skills_used"]:
                     if "skill_effectiveness" not in unified["skill_metrics"]:
@@ -641,13 +588,11 @@ class PatternStorage:
                     skill_metrics = unified["skill_metrics"]["skill_effectiveness"][skill]
                     skill_metrics["total_uses"] += 1
 
-                    if pattern.get("quality_score", 0) > 0.7:  # Consider 70%+ as success
+                    if pattern.get("quality_score", 0) > 0.7:
                         skill_metrics["successful_uses"] += 1
 
-                    # Update success rate
                     skill_metrics["success_rate"] = skill_metrics["successful_uses"] / skill_metrics["total_uses"]
 
-                    # Update avg contribution score
                     current_avg = skill_metrics["avg_contribution_score"]
                     pattern_score = pattern.get("quality_score", 0)
                     skill_metrics["avg_contribution_score"] = (current_avg + pattern_score) / 2
@@ -660,14 +605,13 @@ class PatternStorage:
         return pattern_id
 
 
-"""
 def main():
     """Command-line interface for pattern storage."""
     parser = argparse.ArgumentParser(description="Pattern Storage System")
     parser.add_argument(
         "--dir",
-        default=".claude-patterns",
-        help="Patterns directory path",
+        default=None,
+        help="Patterns directory path (defaults to CLAUDE_PLUGIN_DATA or .claude-patterns/)",
     )
 
     subparsers = parser.add_subparsers(dest="action", help="Action to perform")
@@ -678,54 +622,34 @@ def main():
 
     # Retrieve action
     retrieve_parser = subparsers.add_parser("retrieve", help="Retrieve patterns")
-    retrieve_parser.add_argument(
-        "--context",
-        required=True,
-        help="Search context/keywords",
-    )
+    retrieve_parser.add_argument("--context", required=True, help="Search context/keywords")
     retrieve_parser.add_argument("--task-type", help="Filter by task type")
-    retrieve_parser.add_argument(
-        "--min-quality",
-        type=float,
-        default=0.8,
-        help="Minimum quality score",
-    )
+    retrieve_parser.add_argument("--min-quality", type=float, default=0.8, help="Minimum quality score")
     retrieve_parser.add_argument("--limit", type=int, default=5, help="Maximum results")
 
     # Update action
     update_parser = subparsers.add_parser("update", help="Update pattern usage")
     update_parser.add_argument("--pattern-id", required=True, help="Pattern ID")
-    update_parser.add_argument(
-        "--success",
-        action="store_true",
-        help="Mark as successful usage",
-    )
-    update_parser.add_argument(
-        "--failure",
-        dest="success",
-        action="store_false",
-        help="Mark as failed usage",
-    )
+    update_parser.add_argument("--success", action="store_true", help="Mark as successful usage")
+    update_parser.add_argument("--failure", dest="success", action="store_false", help="Mark as failed usage")
     update_parser.set_defaults(success=True)
 
     # Statistics action
     subparsers.add_parser("stats", help="Show pattern statistics")
 
-    # Check action - for /learn:init smart detection
+    # Check action
     subparsers.add_parser("check", help="Check if pattern database exists and is valid")
 
-    # Init action - for /learn:init initialization
+    # Init action
     init_parser = subparsers.add_parser("init", help="Initialize or update pattern database")
-    init_parser.add_argument("--version", default="7.6.7", help="Plugin version")
+    init_parser.add_argument("--version", default="7.19.0", help="Plugin version")
 
-    # Validate action - for /learn:init validation
+    # Validate action
     subparsers.add_parser("validate", help="Validate pattern database integrity")
 
     # Unified data actions
-    # Consolidate action
     subparsers.add_parser("consolidate", help="Consolidate all data into unified_data.json")
 
-    # Store to unified action
     unified_parser = subparsers.add_parser("store-unified", help="Store data to unified structure")
     unified_parser.add_argument(
         "--type",
@@ -749,7 +673,13 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    storage = PatternStorage(args.dir)
+    # Resolve patterns directory
+    patterns_dir = args.dir
+    if not patterns_dir:
+        data_path = get_data_path()
+        patterns_dir = str(data_path)
+
+    storage = PatternStorage(patterns_dir)
 
     try:
         if args.action == "store":
@@ -782,24 +712,24 @@ def main():
             data = json.loads(args.data)
             success = storage.store_to_unified(args.type, data)
             if success:
-                print(json.dumps({"success": True, "message": f"Data stored to unified structure"}, indent=2))
+                print(json.dumps({"success": True, "message": "Data stored to unified structure"}, indent=2))
             else:
                 print(json.dumps({"success": False, "error": "Failed to store data"}, indent=2))
 
         elif args.action == "check":
-            # Check if pattern database exists and is valid
-            patterns_dir = Path(args.dir)
-            patterns_file = patterns_dir / "patterns.json"
-            config_file = patterns_dir / "config.json"
+            patterns_dir_path = Path(patterns_dir)
+            patterns_file = patterns_dir_path / "patterns.json"
+            config_file = patterns_dir_path / "config.json"
 
             result = {
-                "exists": patterns_dir.exists(),
-                "patterns_file_exists": patterns_file.exists() if patterns_dir.exists() else False,
-                "config_file_exists": config_file.exists() if patterns_dir.exists() else False,
+                "exists": patterns_dir_path.exists(),
+                "patterns_file_exists": patterns_file.exists() if patterns_dir_path.exists() else False,
+                "config_file_exists": config_file.exists() if patterns_dir_path.exists() else False,
                 "complete": False,
                 "version": None,
                 "pattern_count": 0,
                 "status": "not_initialized",
+                "storage_location": str(patterns_dir_path),
             }
 
             if patterns_file.exists():
@@ -811,7 +741,7 @@ def main():
                         else:
                             patterns = data
                         result["pattern_count"] = len(patterns)
-                except:
+                except Exception:
                     result["status"] = "corrupt"
                     print(json.dumps(result, indent=2))
                     sys.exit(0)
@@ -821,17 +751,16 @@ def main():
                     with open(config_file, "r", encoding="utf-8") as f:
                         config = json.load(f)
                         result["version"] = config.get("version", "unknown")
-                except:
+                except Exception:
                     pass
 
-            # Determine status
             required_files = ["patterns.json", "task_queue.json", "quality_history.json", "config.json"]
-            all_exist = all((patterns_dir / f).exists() for f in required_files)
+            all_exist = all((patterns_dir_path / f).exists() for f in required_files)
 
             if all_exist and patterns_file.exists():
                 result["complete"] = True
                 result["status"] = "initialized"
-            elif patterns_dir.exists() and patterns_file.exists():
+            elif patterns_dir_path.exists() and patterns_file.exists():
                 result["status"] = "partial"
                 result["complete"] = False
             else:
@@ -840,27 +769,25 @@ def main():
             print(json.dumps(result, indent=2))
 
         elif args.action == "init":
-            # Initialize or update pattern database
-            patterns_dir = Path(args.dir)
-            patterns_dir.mkdir(parents=True, exist_ok=True)
+            patterns_dir_path = Path(patterns_dir)
+            patterns_dir_path.mkdir(parents=True, exist_ok=True)
 
-            # Initialize all required files
-            patterns_file = patterns_dir / "patterns.json"
+            patterns_file = patterns_dir_path / "patterns.json"
             if not patterns_file.exists():
                 with open(patterns_file, "w", encoding="utf-8") as f:
                     json.dump({"version": "1.0", "patterns": [], "skill_effectiveness": {}}, f, indent=2)
 
-            task_queue_file = patterns_dir / "task_queue.json"
+            task_queue_file = patterns_dir_path / "task_queue.json"
             if not task_queue_file.exists():
                 with open(task_queue_file, "w", encoding="utf-8") as f:
                     json.dump({"queue": []}, f, indent=2)
 
-            quality_history_file = patterns_dir / "quality_history.json"
+            quality_history_file = patterns_dir_path / "quality_history.json"
             if not quality_history_file.exists():
                 with open(quality_history_file, "w", encoding="utf-8") as f:
                     json.dump({"history": []}, f, indent=2)
 
-            config_file = patterns_dir / "config.json"
+            config_file = patterns_dir_path / "config.json"
             config = {
                 "version": args.version,
                 "initialized_at": datetime.now().isoformat(),
@@ -873,17 +800,16 @@ def main():
                 "success": True,
                 "message": "Pattern database initialized successfully",
                 "version": args.version,
+                "storage_location": str(patterns_dir_path),
                 "files_created": ["patterns.json", "task_queue.json", "quality_history.json", "config.json"],
             }
             print(json.dumps(result, indent=2))
 
         elif args.action == "validate":
-            # Validate pattern database integrity
-            patterns_dir = Path(args.dir)
+            patterns_dir_path = Path(patterns_dir)
 
             result = {"valid": True, "errors": [], "warnings": [], "files_checked": []}
 
-            # Check each required file
             required_files = {
                 "patterns.json": {"patterns": list, "skill_effectiveness": dict},
                 "task_queue.json": {"queue": list},
@@ -892,7 +818,7 @@ def main():
             }
 
             for filename, required_structure in required_files.items():
-                filepath = patterns_dir / filename
+                filepath = patterns_dir_path / filename
                 result["files_checked"].append(filename)
 
                 if not filepath.exists():
@@ -904,7 +830,6 @@ def main():
                     with open(filepath, "r", encoding="utf-8") as f:
                         data = json.load(f)
 
-                    # Check required keys and types
                     for key, expected_type in required_structure.items():
                         if key not in data:
                             result["warnings"].append(f'{filename}: missing key "{key}"')
