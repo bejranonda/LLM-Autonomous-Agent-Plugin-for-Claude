@@ -1,0 +1,50 @@
+name: Plugin CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    name: Validate and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint with Ruff
+      run: |
+        ruff check lib/ tests/
+
+    - name: Run Pytest
+      run: |
+        pytest tests/ -v
+        
+    - name: Check Plugin Structure
+      run: |
+        if [ ! -f .claude-plugin/plugin.json ]; then
+            echo "plugin.json missing!"
+            exit 1
+        fi
+        
+        # Verify required directories exist
+        for dir in commands agents skills; do
+            if [ ! -d "$dir" ]; then
+                echo "$dir directory missing!"
+                exit 1
+            fi
+        done
+        
+        echo "Plugin structure validation passed."
