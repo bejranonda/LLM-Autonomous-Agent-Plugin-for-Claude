@@ -203,16 +203,16 @@ def main():
     # Determine status
     if total_score >= 85:
         status = "EXCELLENT - Production Ready"
-        emoji = "🟢"
+        emoji = ""
     elif total_score >= 70:
         status = "GOOD - Development Ready"
-        emoji = "🟡"
+        emoji = ""
     elif total_score >= 50:
         status = "NEEDS IMPROVEMENT"
-        emoji = "🟠"
+        emoji = ""
     else:
         status = "CRITICAL ISSUES"
-        emoji = "🔴"
+        emoji = ""
 
     print(f"Status: {status}")
 

@@ -5,9 +5,9 @@ Anticipates and pre-loads optimal skills before task execution based on patterns
 
 Expected Benefits:
 """
-- Time Savings: 3-5 seconds → 100-200ms per task (95% reduction)
-- Token Savings: 800-1200 tokens → 100-150 tokens (87% reduction)
-- Accuracy: 92% → 97%+ skill selection accuracy
+- Time Savings: 3-5 seconds -> 100-200ms per task (95% reduction)
+- Token Savings: 800-1200 tokens -> 100-150 tokens (87% reduction)
+- Accuracy: 92% -> 97%+ skill selection accuracy
 import json
 import hashlib
 import time

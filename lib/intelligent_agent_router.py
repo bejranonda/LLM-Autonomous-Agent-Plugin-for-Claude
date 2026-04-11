@@ -7,7 +7,7 @@ Expected ROI: 380%
 """
 - Quality Improvement: +3-4 points (optimal agent selection)
 - Time Reduction: 15-20% faster (right agent for the job)
-- Success Rate: 98% → 99.2%+ (better matching)
+- Success Rate: 98% -> 99.2%+ (better matching)
 - Learning Velocity: 25% faster pattern acquisition (smart routing)
 import json
 import sys

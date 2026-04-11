@@ -1008,11 +1008,11 @@ class UnifiedMetricsAggregator:
         individual_kpis = dashboard_data["current_scores"]["individual_kpis"]
 
         for kpi_name, kpi_data in individual_kpis.items():
-            status_emoji = {"excellent": "🟢", "good": "🟡", "fair": "🟠", "poor": "🔴", "critical": "🚨"}.get(
-                kpi_data.get("status"), "⚪"
+            status_emoji = {"excellent": "[GREEN]", "good": "[YELLOW]", "fair": "[ORANGE]", "poor": "[RED]", "critical": "[ALERT]"}.get(
+                kpi_data.get("status"), "[--]"
             )
 
-            trend_emoji = {"improving": "[TREND]", "declining": "📉", "stable": "[RIGHT]"}.get(kpi_data.get("trend"), "❓")
+            trend_emoji = {"improving": "[TREND]", "declining": "[DOWN]", "stable": "[RIGHT]"}.get(kpi_data.get("trend"), "[?]")
 
             report += f"""
 ### {kpi_name.replace('_', ' ').title()} {status_emoji} {trend_emoji}
@@ -1076,7 +1076,7 @@ class UnifiedMetricsAggregator:
 
 def main():
     """Demonstrate the unified metrics aggregator"""
-    print("🔗 Unified Metrics Aggregator Demo")
+    print("[LINK] Unified Metrics Aggregator Demo")
     print("=" * 50)
 
     # Initialize aggregator
@@ -1100,7 +1100,7 @@ def main():
     print(f"[DATA] KPIs Tracked: {kpi_scores['total_kpis_tracked']}")
 
     # Create system snapshot
-    print("\n📸 Creating system snapshot...")
+    print("\n[SNAP] Creating system snapshot...")
     snapshot = aggregator.create_system_snapshot()
 
     print(f"[OK] System health score: {snapshot['system_health']['overall_score']:.1f}/100")
@@ -1114,7 +1114,7 @@ def main():
     print(f"[INFO] Recommendations: {dashboard_data['summary']['total_recommendations']}")
 
     # Generate performance report
-    print("\n📄 Generating performance report...")
+    print("\n[DOC] Generating performance report...")
     report = aggregator.generate_performance_report()
 
     # Save report
@@ -1125,7 +1125,7 @@ def main():
     print(f"[OK] Performance report saved to: {report_file.absolute()}")
 
     # Export metrics as JSON
-    print("\n📤 Exporting metrics as JSON...")
+    print("\n[EXPORT] Exporting metrics as JSON...")
     json_data = aggregator.export_metrics_json()
 
     json_file = Path("metrics_export.json")

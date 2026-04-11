@@ -430,6 +430,6 @@ if __name__ == "__main__":
     if report["recommendations"]:
         print("\nRecommendations:")
         for rec in report["recommendations"]:
-            print(f"  • {rec['message']}")
+            print(f"  -  {rec['message']}")
 
     print(f"\nDetailed report saved to: {optimizer.analytics_file}")

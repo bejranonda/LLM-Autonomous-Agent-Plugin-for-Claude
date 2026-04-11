@@ -518,7 +518,7 @@ class PerformanceValidationFramework:
         for i in range(50):
             # Generate random token count
             actual = random.randint(100, 1000)
-            measured = actual + random.randint(-5, 5)  # ±5 token error
+            measured = actual + random.randint(-5, 5)  # +/-5 token error
 
             actual_tokens.append(actual)
             measured_tokens.append(measured)

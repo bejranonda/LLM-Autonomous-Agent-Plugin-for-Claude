@@ -534,7 +534,7 @@ class ProductionAgentCommunicationOptimizer:
 
     def _estimate_tokens(self, text: str) -> int:
         """Estimate token count for text."""
-        # Rough estimation: 1 token ≈ 4 characters on average
+        # Rough estimation: 1 token ~ 4 characters on average
         return len(text) // 4
 
     def _update_statistics(self, optimized_message: OptimizedMessage):

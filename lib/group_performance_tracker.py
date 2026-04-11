@@ -444,7 +444,7 @@ class GroupPerformanceTracker:
 """
         perf_data = self._read_data()
 
-        # Typical workflow: G1 → G2 → G3 → G4
+        # Typical workflow: G1 -> G2 -> G3 -> G4
         # Analyze how efficiently tasks flow through groups
 
         # Get task history for all groups
@@ -476,7 +476,7 @@ class GroupPerformanceTracker:
                         "total_time": total_time,
                         "total_iterations": total_iterations,
                         "final_quality": final_quality,
-                        "workflow_pattern": " → ".join([f"G{g}" for g in groups_involved]),
+                        "workflow_pattern": " -> ".join([f"G{g}" for g in groups_involved]),
                     }
                 )
 

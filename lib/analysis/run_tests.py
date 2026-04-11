@@ -55,17 +55,17 @@ def run_command(cmd, description, capture_output=True):
         print(f"\nExecution time: {execution_time:.2f} seconds")
 
         if success:
-            print(f"✅ {description} - PASSED")
+            print(f"[OK] {description} - PASSED")
         else:
-            print(f"❌ {description} - FAILED (return code: {result.returncode})")
+            print(f"[X] {description} - FAILED (return code: {result.returncode})")
 
         return success, result, execution_time
 
     except FileNotFoundError:
-        print(f"❌ {description} - FAILED (command not found)")
+        print(f"[X] {description} - FAILED (command not found)")
         return False, None, time.time() - start_time
     except Exception as e:
-        print(f"❌ {description} - FAILED ({str(e)})")
+        print(f"[X] {description} - FAILED ({str(e)})")
         return False, None, time.time() - start_time
 
 
@@ -90,11 +90,11 @@ def check_dependencies():
             missing.append(dep_name)
 
     if missing:
-        print(f"\n❌ Missing dependencies: {', '.join(missing)}")
+        print(f"\n[X] Missing dependencies: {', '.join(missing)}")
         print("Install with: pip install -r requirements-test.txt")
         return False
 
-    print("✅ All dependencies available")
+    print("[OK] All dependencies available")
     return True
 
 
@@ -183,7 +183,7 @@ def generate_coverage_report():
     success, _, exec_time = run_command(cmd, "Generating HTML Coverage Report")
 
     if success:
-        print(f"📊 HTML coverage report generated in: htmlcov/index.html")
+        print(f" HTML coverage report generated in: htmlcov/index.html")
 
         # Also generate JSON report for CI integration
         json_cmd = [
@@ -291,7 +291,7 @@ Examples:
 
     args = parser.parse_args()
 
-    print("🧪 Autonomous Agent Plugin Test Runner")
+    print(" Autonomous Agent Plugin Test Runner")
     print("=" * 50)
 
     start_time = time.time()
@@ -308,7 +308,7 @@ Examples:
         success, exec_time = run_unit_tests(args)
         results['unit_tests'] = {'success': success, 'execution_time': exec_time}
         if not success and not args.integration:
-            print("❌ Unit tests failed - stopping execution")
+            print("[X] Unit tests failed - stopping execution")
             sys.exit(1)
 
     if args.integration or not any([args.unit, args.integration, args.platform, args.performance]):
@@ -344,22 +344,22 @@ Examples:
 
     # Print summary
     print(f"\n{'='*60}")
-    print("🏁 TEST EXECUTION SUMMARY")
+    print(" TEST EXECUTION SUMMARY")
     print(f"{'='*60}")
     print(f"Total execution time: {total_time:.2f} seconds")
-    print(f"All tests passed: {'✅ YES' if report['summary']['all_tests_passed'] else '❌ NO'}")
+    print(f"All tests passed: {'[OK] YES' if report['summary']['all_tests_passed'] else '[X] NO'}")
     print(f"Test suites run: {report['summary']['test_suites_run']}")
 
     for suite_name, result in results.items():
-        status = '✅ PASSED' if result['success'] else '❌ FAILED'
+        status = '[OK] PASSED' if result['success'] else '[X] FAILED'
         print(f"  {suite_name}: {status} ({result['execution_time']:.2f}s)")
 
     if 'coverage' in report:
         print(f"Coverage: {report['coverage']['percent_covered']:.1f}%")
 
-    print(f"\n📄 Detailed report saved to: test_report.json")
+    print(f"\n Detailed report saved to: test_report.json")
     if args.report and not args.fast:
-        print(f"📊 HTML coverage report: htmlcov/index.html")
+        print(f" HTML coverage report: htmlcov/index.html")
 
     # Exit with appropriate code
     sys.exit(0 if report['summary']['all_tests_passed'] else 1)

@@ -201,19 +201,19 @@ class AdaptiveQualityThresholds:
             try:
                 phase_enum = ProjectPhase(project_phase.lower())
                 multiplier = self.PHASE_MULTIPLIERS[phase_enum]
-                explanation_parts.append(f"Phase adjustment ({project_phase}): ×{multiplier:.2f}")
+                explanation_parts.append(f"Phase adjustment ({project_phase}): x{multiplier:.2f}")
             except ValueError:
                 pass
 
         criticality_multiplier = self.CRITICALITY_ADJUSTMENTS.get(criticality.lower(), 1.0)
         if criticality_multiplier != 1.0:
-            explanation_parts.append(f"Criticality adjustment ({criticality}): ×{criticality_multiplier:.2f}")
+            explanation_parts.append(f"Criticality adjustment ({criticality}): x{criticality_multiplier:.2f}")
 
         if is_user_facing:
-            explanation_parts.append("User-facing code: ×1.05")
+            explanation_parts.append("User-facing code: x1.05")
 
         if context and self._has_recent_failures(context):
-            explanation_parts.append("Recent failures detected: ×1.10")
+            explanation_parts.append("Recent failures detected: x1.10")
 
         return {
             "threshold": threshold,

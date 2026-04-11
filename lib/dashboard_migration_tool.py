@@ -449,9 +449,9 @@ if __name__ == "__main__":
 The individual dashboard systems have been consolidated into a single, unified dashboard.
 
 ## What Changed:
-- Multiple dashboards → Single unified dashboard
-- Separate APIs → Unified API endpoints
-- Scattered data files → Centralized data storage
+- Multiple dashboards -> Single unified dashboard
+- Separate APIs -> Unified API endpoints
+- Scattered data files -> Centralized data storage
 
 ## New Location:
 - **Unified Dashboard**: Access via `/monitor:dashboard` command

@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+python3 "${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py" "$@"

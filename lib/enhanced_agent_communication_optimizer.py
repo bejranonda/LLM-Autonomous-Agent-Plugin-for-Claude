@@ -1439,7 +1439,7 @@ class EnhancedAgentCommunicationOptimizer:
     def _estimate_tokens(self, text: str) -> int:
         """Estimate token count for text."""
         # More accurate token estimation
-        # Rough rule: 1 token ≈ 4 characters for text, 1 token per word for words
+        # Rough rule: 1 token ~ 4 characters for text, 1 token per word for words
         char_count = len(text)
         word_count = len(text.split())
         return max(char_count // 4, word_count)

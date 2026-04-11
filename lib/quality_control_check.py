@@ -519,7 +519,7 @@ class QualityController:
             if self.results["recommendations"]:
                 f.write("\n## Recommendations\n\n")
                 for rec in self.results["recommendations"]:
-                    priority_icon = {"CRITICAL": "🔴", "HIGH": "🟠", "MEDIUM": "🟡", "LOW": "⚪"}.get(rec["priority"], "⚪")
+                    priority_icon = {"CRITICAL": "[RED]", "HIGH": "[ORANGE]", "MEDIUM": "[YELLOW]", "LOW": "[--]"}.get(rec["priority"], "[--]")
                     f.write(f"{priority_icon} **{rec['priority']}** - {rec['category']}: {rec['message']}\n")
 
             # Improvement Analysis

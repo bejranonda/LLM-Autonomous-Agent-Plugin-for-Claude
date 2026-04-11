@@ -703,7 +703,7 @@ def main():
         if skills:
             print("Recommended Skills:")
             for skill, confidence in skills:
-                print(f"  • {skill} (confidence: {confidence:.2f})")
+                print(f"  -  {skill} (confidence: {confidence:.2f})")
         else:
             print("Recommended Skills: None found")
 
@@ -712,7 +712,7 @@ def main():
         if agents:
             print("Recommended Agents:")
             for agent, confidence in agents:
-                print(f"  • {agent} (confidence: {confidence:.2f})")
+                print(f"  -  {agent} (confidence: {confidence:.2f})")
         else:
             print("Recommended Agents: None found")
 

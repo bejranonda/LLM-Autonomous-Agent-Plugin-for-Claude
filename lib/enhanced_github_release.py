@@ -169,7 +169,7 @@ class EnhancedGitHubReleaseManager:
             print("[INFO] Run: gh auth login")
 
         # Method 2: API fallback
-        print("🌐 Trying API fallback...")
+        print("[WEB] Trying API fallback...")
         if self._create_release_with_curl(tag, title, notes, prerelease, draft):
             if verify and self._verify_release_exists(tag):
                 print(f"[OK] Release {tag} verified on GitHub")
@@ -305,10 +305,10 @@ def main():
 
     if success:
         print(f"[PARTY] Release {tag} completed successfully!")
-        print(f"🔗 View at: {release_manager.repo_url}/releases/tag/{tag}")
+        print(f"[LINK] View at: {release_manager.repo_url}/releases/tag/{tag}")
         sys.exit(0)
     else:
-        print(f"💥 Release {tag} failed!")
+        print(f"[!!] Release {tag} failed!")
         sys.exit(1)
 
 

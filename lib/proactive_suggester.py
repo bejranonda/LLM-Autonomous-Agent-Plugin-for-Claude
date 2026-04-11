@@ -596,7 +596,7 @@ class ProactiveSuggester:
 
     def format_suggestion_for_display(self, suggestion: Dict) -> str:
         """Format a suggestion for user display"""
-        urgency_icons = {"high": "🔴", "medium": "🟡", "low": "🟢"}
+        urgency_icons = {"high": "[RED]", "medium": "[YELLOW]", "low": "[GREEN]"}
 
         impact_icons = {"high": "[UP][UP][UP]", "medium": "[UP][UP]", "low": "[UP]"}
 
@@ -610,7 +610,7 @@ class ProactiveSuggester:
         output = []
         output.append(f"\n{category_labels.get(suggestion['category'], '[LIST] SUGGESTION')}")
         output.append(f"Priority: {suggestion['priority_score']}/100")
-        output.append(f"\n{urgency_icons.get(suggestion['urgency'], '⚪')} {suggestion['title']}")
+        output.append(f"\n{urgency_icons.get(suggestion['urgency'], '[--]')} {suggestion['title']}")
         output.append(f"\nType: {suggestion['type'].replace('_', ' ').title()}")
         output.append(f"Urgency: {suggestion['urgency'].title()}")
         output.append(
@@ -628,7 +628,7 @@ class ProactiveSuggester:
                 output.append(f"  - {file}")
 
         output.append(f"\nSuggestion ID: {suggestion['suggestion_id']}")
-        output.append("─" * 70)
+        output.append("-" * 70)
 
         return "\n".join(output)
 

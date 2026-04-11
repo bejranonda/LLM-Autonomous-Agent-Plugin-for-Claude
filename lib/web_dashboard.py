@@ -439,7 +439,7 @@ class WebDashboard:
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">System Status</span>
-                    <span class="stat-value" style="color: #48bb78;">🟢 Operational</span>
+                    <span class="stat-value" style="color: #48bb78;">[GREEN] Operational</span>
                 </div>
             </div>
         </div>
@@ -523,7 +523,7 @@ class WebDashboard:
                 print(f"[START] Token Optimization Dashboard")
                 print(f"[DATA] Server running at: http://localhost:{self.port}")
                 print(f"[RETRY] Auto-refresh every 30 seconds")
-                print(f"⏹ Press Ctrl+C to stop")
+                print(f"[STOP] Press Ctrl+C to stop")
                 print()
 
                 # Open browser automatically
@@ -532,7 +532,7 @@ class WebDashboard:
                 try:
                     httpd.serve_forever()
                 except KeyboardInterrupt:
-                    print("\n👋 Dashboard stopped")
+                    print("\n[HI] Dashboard stopped")
 
         except ImportError:
             print("Error: http.server module not available")

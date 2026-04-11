@@ -738,12 +738,12 @@ def main():
 
         print("\nScore Factors:")
         for factor in summary.get("score_factors", []):
-            print(f"  • {factor}")
+            print(f"  -  {factor}")
 
         if summary.get("recommendations"):
             print("\nRecommendations:")
             for rec in summary["recommendations"]:
-                print(f"  • {rec}")
+                print(f"  -  {rec}")
 
     return results
 

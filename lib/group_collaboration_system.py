@@ -79,14 +79,14 @@ class GroupCollaborationSystem:
 
     # Typical communication flows
     COMMUNICATION_FLOWS = [
-        (1, 2),  # Group 1 → Group 2: Analysis to Decision
-        (2, 1),  # Group 2 → Group 1: Decision to Analysis (feedback/requests)
-        (2, 3),  # Group 2 → Group 3: Decision to Execution (plans)
-        (3, 2),  # Group 3 → Group 2: Execution to Decision (results/issues)
-        (3, 4),  # Group 3 → Group 4: Execution to Validation
-        (4, 2),  # Group 4 → Group 2: Validation to Decision (approval/issues)
-        (4, 3),  # Group 4 → Group 3: Validation to Execution (minor fixes)
-        (4, 1),  # Group 4 → Group 1: Validation to Analysis (feedback)
+        (1, 2),  # Group 1 -> Group 2: Analysis to Decision
+        (2, 1),  # Group 2 -> Group 1: Decision to Analysis (feedback/requests)
+        (2, 3),  # Group 2 -> Group 3: Decision to Execution (plans)
+        (3, 2),  # Group 3 -> Group 2: Execution to Decision (results/issues)
+        (3, 4),  # Group 3 -> Group 4: Execution to Validation
+        (4, 2),  # Group 4 -> Group 2: Validation to Decision (approval/issues)
+        (4, 3),  # Group 4 -> Group 3: Validation to Execution (minor fixes)
+        (4, 1),  # Group 4 -> Group 1: Validation to Analysis (feedback)
     ]
 
 """
@@ -268,7 +268,7 @@ class GroupCollaborationSystem:
                 collab_data["group_interaction_matrix"][flow_key]["successful"] += 1
 
         # Track communication by flow
-        flow_str = f"Group {from_group} → Group {to_group}"
+        flow_str = f"Group {from_group} -> Group {to_group}"
         collab_data["metadata"]["communication_by_flow"][flow_str] = (
             collab_data["metadata"]["communication_by_flow"].get(flow_str, 0) + 1
         )
@@ -538,7 +538,7 @@ class GroupCollaborationSystem:
             success_rate = successful / total if total > 0 else 0
 
             # Extract communication flow pattern
-            flow_pattern = " → ".join([f"G{c['from_group']}" for c in comms] + [f"G{comms[-1]['to_group']}"])
+            flow_pattern = " -> ".join([f"G{c['from_group']}" for c in comms] + [f"G{comms[-1]['to_group']}"])
 
             pattern_data = {
                 "task_id": task_id,
@@ -643,7 +643,7 @@ def main():
         comms = system.get_recent_communications(args.group, limit=10)
         print(f"Recent Communications ({len(comms)}):")
         for comm in comms:
-            print(f"  [{comm['communication_type']}] {comm['from_agent']} → {comm['to_agent']}")
+            print(f"  [{comm['communication_type']}] {comm['from_agent']} -> {comm['to_agent']}")
             print(f"    {comm['message'][:80]}...")
 
     elif args.action == "analyze":

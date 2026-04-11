@@ -275,9 +275,9 @@ def main():
 
     challenges = []
     if category_scores["test_coverage"]["score"] < 20:
-        challenges.append("• Test failures need resolution (26 failing tests)")
+        challenges.append("-  Test failures need resolution (26 failing tests)")
     if category_scores["pattern_adherence"]["score"] < 12:
-        challenges.append("• Command structure organization incomplete")
+        challenges.append("-  Command structure organization incomplete")
 
     for challenge in challenges:
         print(f"  {challenge}")

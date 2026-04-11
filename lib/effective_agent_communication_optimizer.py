@@ -715,7 +715,7 @@ class EffectiveAgentCommunicationOptimizer:
 
     def _estimate_tokens(self, text: str) -> int:
         """Estimate token count for text."""
-        # Rough estimation: 1 token ≈ 4 characters on average
+        # Rough estimation: 1 token ~ 4 characters on average
         # This is a simplified estimate for demonstration
         return len(text) // 4
 

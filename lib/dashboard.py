@@ -101,7 +101,7 @@ class TokenOptimizationSection(UnifiedDashboardSection):
         return """
         <div id="tokens-section" class="dashboard-section" style="display: none;">
             <div class="section-header">
-                <h2>💰 Token Optimization</h2>
+                <h2>[COST] Token Optimization</h2>
                 <div class="section-controls">
                     <select id="token-period" class="period-selector">
                         <option value="today">Today</option>
@@ -113,7 +113,7 @@ class TokenOptimizationSection(UnifiedDashboardSection):
 
             <div class="metrics-grid">
                 <div class="metric-card token-card">
-                    <div class="metric-icon">💰</div>
+                    <div class="metric-icon">[COST]</div>
                     <div class="metric-value" id="token-savings">0</div>
                     <div class="metric-label">Tokens Saved Today</div>
                     <div class="metric-change positive" id="savings-change">+0%</div>
@@ -127,7 +127,7 @@ class TokenOptimizationSection(UnifiedDashboardSection):
                 </div>
 
                 <div class="metric-card token-card">
-                    <div class="metric-icon">💵</div>
+                    <div class="metric-icon">[COST]</div>
                     <div class="metric-value" id="cost-savings">$0</div>
                     <div class="metric-label">Cost Savings</div>
                     <div class="metric-change positive" id="cost-change">+0%</div>
@@ -218,7 +218,7 @@ class KPISection(UnifiedDashboardSection):
 
                 <div class="kpi-card">
                     <div class="kpi-header">
-                        <h3>💰 Business Impact</h3>
+                        <h3>[COST] Business Impact</h3>
                         <div class="kpi-score" id="business-score">0</div>
                     </div>
                     <div class="kpi-metrics">
@@ -338,7 +338,7 @@ class SystemHealthSection(UnifiedDashboardSection):
             </div>
 
             <div class="alerts-container">
-                <h3>🚨 System Alerts</h3>
+                <h3>[ALERT] System Alerts</h3>
                 <div id="alerts-list" class="alerts-list">
                     <!-- Alerts will be populated here -->
                 </div>
@@ -3279,7 +3279,7 @@ DASHBOARD_HTML = """
 </head>
 <body>
     <div class="container">
-        <h1>🤖 Autonomous Agent Dashboard</h1>
+        <h1>[BOT] Autonomous Agent Dashboard</h1>
         <div class="current-model" id="current-model-display" style="margin: 15px 0; padding: 10px 16px; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border-radius: 8px; display: inline-block; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <span style="opacity: 0.9;">Current Model:</span>
             <span id="current-model-name" style="font-size: 1.1em; margin-left: 8px;">Detecting...</span>
@@ -3290,13 +3290,13 @@ DASHBOARD_HTML = """
         <!-- Tabbed Navigation -->
         <div class="dashboard-tabs" id="dashboard-tabs" style="display: none;">
             <button class="tab-button active" data-tab="overview" onclick="switchTab('overview')">
-                🏠 Overview
+                [HOME] Overview
             </button>
             <button class="tab-button" data-tab="analytics" onclick="switchTab('analytics')">
                 [DATA] Analytics
             </button>
             <button class="tab-button" data-tab="tokens" onclick="switchTab('tokens')">
-                💰 Token Optimization
+                [COST] Token Optimization
             </button>
             <button class="tab-button" data-tab="kpi" onclick="switchTab('kpi')">
                 [TREND] KPI & Reports
@@ -3370,7 +3370,7 @@ DASHBOARD_HTML = """
                 </div>
                 <canvas id="debuggingPerformanceChart" style="max-height: 350px;"></canvas>
                 <div style="margin-top: 10px; font-size: 12px; color: #666; text-align: center;">
-                    🐛 Debugging performance based on Quality Improvement, Time Efficiency & Success Rate
+                    [BUG] Debugging performance based on Quality Improvement, Time Efficiency & Success Rate
                 </div>
 
                 <!-- Calculation Formulas -->
@@ -3484,11 +3484,11 @@ DASHBOARD_HTML = """
                     <strong>[CHART] quality_history.json Creation:</strong>
                     <div style="margin: 4px 0;">
                         <code style="background: #e8f8e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/learn:init</code>
-                        <span style="color: #666; font-size: 11px;">→ Creates file & structure</span>
+                        <span style="color: #666; font-size: 11px;">-> Creates file & structure</span>
                     </div>
                     <div style="margin: 4px 0;">
                         <code style="background: #e8f8e8; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/analyze:quality</code>
-                        <span style="color: #666; font-size: 11px;">→ Adds quality scores & metrics</span>
+                        <span style="color: #666; font-size: 11px;">-> Adds quality scores & metrics</span>
                     </div>
                 </div>
                 <div style="font-size: 12px; color: #888;">
@@ -3536,7 +3536,7 @@ DASHBOARD_HTML = """
                                 <th>Target</th>
                                 <th>Score</th>
                                 <th>Perf Index</th>
-                                <th>Quality Δ</th>
+                                <th>Quality delta</th>
                                 <th>Issues</th>
                                 <th>Fixes</th>
                                 <th>Success Rate</th>
@@ -3567,7 +3567,7 @@ DASHBOARD_HTML = """
             </div>
 
             <div class="refresh-info">
-                Dashboard auto-refreshes every 30 seconds • Last updated: <span id="last-update"></span>
+                Dashboard auto-refreshes every 30 seconds -  Last updated: <span id="last-update"></span>
             </div>
         </div>
     </div>
@@ -4438,7 +4438,7 @@ DASHBOARD_HTML = """
             dynamicSectionsContainer.innerHTML += `
                 <div id="tokens-section" class="dashboard-section" style="display: none;">
                     <div class="section-header">
-                        <h2>💰 Token Optimization</h2>
+                        <h2>[COST] Token Optimization</h2>
                         <div class="section-controls">
                             <select id="token-period" class="period-selector">
                                 <option value="today">Today</option>
@@ -4452,7 +4452,7 @@ DASHBOARD_HTML = """
 
                     <div class="metrics-grid">
                         <div class="metric-card token-card">
-                            <div class="metric-icon">💰</div>
+                            <div class="metric-icon">[COST]</div>
                             <div class="metric-value" id="token-savings">0</div>
                             <div class="metric-label">Tokens Saved Today</div>
                             <div class="metric-change positive" id="savings-change">+0%</div>
@@ -4466,7 +4466,7 @@ DASHBOARD_HTML = """
                         </div>
 
                         <div class="metric-card token-card">
-                            <div class="metric-icon">💵</div>
+                            <div class="metric-icon">[COST]</div>
                             <div class="metric-value" id="cost-savings">$0</div>
                             <div class="metric-label">Cost Savings</div>
                             <div class="metric-change positive" id="cost-change">+0%</div>
@@ -4534,7 +4534,7 @@ DASHBOARD_HTML = """
 
                         <div class="kpi-card">
                             <div class="kpi-header">
-                                <h3>💰 Business Impact</h3>
+                                <h3>[COST] Business Impact</h3>
                                 <div class="kpi-score" id="business-score">0</div>
                             </div>
                             <div class="kpi-metrics">
@@ -4641,7 +4641,7 @@ DASHBOARD_HTML = """
                     </div>
 
                     <div class="alerts-container">
-                        <h3>🚨 System Alerts</h3>
+                        <h3>[ALERT] System Alerts</h3>
                         <div id="alerts-list" class="alerts-list">
                             <!-- Alerts will be populated here -->
                         </div>
@@ -4713,7 +4713,7 @@ DASHBOARD_HTML = """
                             Legacy dashboards have been consolidated.
                         </p>
                     </div>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-left: 10px;">×</button>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-left: 10px;">x</button>
                 </div>
             `;
 
@@ -4903,7 +4903,7 @@ DASHBOARD_HTML = """
                 'accelerating': '[UP] Accelerating',
                 'stable': '[RIGHT] Stable',
                 'declining': '[DOWN] Declining',
-                'insufficient_data': '⏳ Learning'
+                'insufficient_data': '[TIME] Learning'
             }[data.learning_velocity];
 
             container.innerHTML = `
@@ -5684,7 +5684,7 @@ DASHBOARD_HTML = """
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
                     [TARGET] Performance Index
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
-                        (0.40 × QIS) + (0.35 × TES) + (0.25 × SR) − Penalty
+                        (0.40 x QIS) + (0.35 x TES) + (0.25 x SR) - Penalty
                     </div>
                 </td>`;
             rankings.forEach(ranking => {
@@ -5698,7 +5698,7 @@ DASHBOARD_HTML = """
                     <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
                         <div style="font-size: 14px; font-weight: bold; color: #495057;">${pi.toFixed(1)}</div>
                         <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
-                            (0.40×${qis.toFixed(1)}) + (0.35×${tes.toFixed(1)}) + (0.25×${sr.toFixed(1)}) − ${penalty.toFixed(1)}
+                            (0.40x${qis.toFixed(1)}) + (0.35x${tes.toFixed(1)}) + (0.25x${sr.toFixed(1)}) - ${penalty.toFixed(1)}
                         </div>
                     </td>
                 `;
@@ -5710,7 +5710,7 @@ DASHBOARD_HTML = """
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
                     [UP] QIS
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
-                        (0.6 × Final Quality) + (0.4 × Gap Closed %)
+                        (0.6 x Final Quality) + (0.4 x Gap Closed %)
                     </div>
                 </td>`;
             rankings.forEach(ranking => {
@@ -5722,7 +5722,7 @@ DASHBOARD_HTML = """
                     <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
                         <div style="font-size: 14px; font-weight: bold; color: #495057;">${qis.toFixed(1)}</div>
                         <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
-                            (0.6×${finalQuality.toFixed(1)}) + (0.4×${gapClosed.toFixed(1)}%)
+                            (0.6x${finalQuality.toFixed(1)}) + (0.4x${gapClosed.toFixed(1)}%)
                         </div>
                     </td>
                 `;
@@ -5775,12 +5775,12 @@ DASHBOARD_HTML = """
             });
             formulasHtml += `</tr>`;
 
-            // Row 5: Quality Improvement (Initial → Final)
+            // Row 5: Quality Improvement (Initial -> Final)
             formulasHtml += `<tr style="background-color: #ffffff; border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 8px 12px; font-weight: bold; color: #495057; background-color: #f8f9fa;">
                     [CHART] Quality Change
                     <div style="font-size: 10px; color: #6c757d; font-weight: normal; margin-top: 2px;">
-                        Initial → Final (Gap Closed %)
+                        Initial -> Final (Gap Closed %)
                     </div>
                 </td>`;
             rankings.forEach(ranking => {
@@ -5793,7 +5793,7 @@ DASHBOARD_HTML = """
                 formulasHtml += `
                     <td style="padding: 8px 12px; text-align: center; border-left: 1px solid #e9ecef;">
                         <div style="font-size: 14px; font-weight: bold; color: ${improvementColor};">
-                            ${initialQuality.toFixed(1)} → ${finalQuality.toFixed(1)}
+                            ${initialQuality.toFixed(1)} -> ${finalQuality.toFixed(1)}
                             <span style="font-size: 11px;">(${improvement > 0 ? '+' : ''}${improvement.toFixed(1)})</span>
                         </div>
                         <div style="font-size: 10px; color: #6c757d; margin-top: 2px;">
@@ -5871,8 +5871,8 @@ DASHBOARD_HTML = """
             }
             tbody.innerHTML = activities.map(activity => {
                 const statusBadge = activity.success
-                    ? '<span class="badge badge-success">✓ Success</span>'
-                    : '<span class="badge badge-danger">✗ Failed</span>';
+                    ? '<span class="badge badge-success">[OK] Success</span>'
+                    : '<span class="badge badge-danger">[FAIL] Failed</span>';
 
                 const timestamp = new Date(activity.timestamp).toLocaleString();
                 const skills = activity.skills_used.slice(0, 3).join(', ');
@@ -5964,8 +5964,8 @@ DASHBOARD_HTML = """
             tbody.innerHTML = data.records.map(record => {
                 const timestamp = new Date(record.timestamp).toLocaleString();
                 const passBadge = record.pass
-                    ? '<span class="badge badge-success">✓ Pass</span>'
-                    : '<span class="badge badge-danger">✗ Fail</span>';
+                    ? '<span class="badge badge-success">[OK] Pass</span>'
+                    : '<span class="badge badge-danger">[FAIL] Fail</span>';
 
                 const performanceIndex = record.performance_index ? record.performance_index.toFixed(1) : 'N/A';
                 const qualityImprovement = record.quality_improvement > 0 ? `+${record.quality_improvement}` : record.quality_improvement;

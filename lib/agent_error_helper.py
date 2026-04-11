@@ -202,22 +202,22 @@ def generate_helpful_error(user_input):
             error_msg += f"   {i}. **{agent}** - {description}\n"
 
     error_msg += f"\n[INFO] **Naming Convention**:\n"
-    error_msg += f"   • Use simple agent names WITHOUT 'autonomous-agent:' prefix\n"
-    error_msg += f"   • Examples: Task('description', 'orchestrator') or Task('description', 'code-analyzer')\n"
-    error_msg += f"   • For most tasks, use 'orchestrator' - it will select the right specialized agents\n"
+    error_msg += f"   -  Use simple agent names WITHOUT 'autonomous-agent:' prefix\n"
+    error_msg += f"   -  Examples: Task('description', 'orchestrator') or Task('description', 'code-analyzer')\n"
+    error_msg += f"   -  For most tasks, use 'orchestrator' - it will select the right specialized agents\n"
 
     error_msg += f"\n[RECOMMENDATION] **Quick Start Guide**:\n"
-    error_msg += f"   • General tasks & coordination -> **orchestrator**\n"
-    error_msg += f"   • Code quality & fixes -> **quality-controller**\n"
-    error_msg += f"   • Code analysis & architecture -> **code-analyzer**\n"
-    error_msg += f"   • Testing & coverage -> **test-engineer**\n"
-    error_msg += f"   • Documentation -> **documentation-generator**\n"
-    error_msg += f"   • Security scanning -> **security-auditor**\n"
-    error_msg += f"   • Validation & error prevention -> **validation-controller**\n"
+    error_msg += f"   -  General tasks & coordination -> **orchestrator**\n"
+    error_msg += f"   -  Code quality & fixes -> **quality-controller**\n"
+    error_msg += f"   -  Code analysis & architecture -> **code-analyzer**\n"
+    error_msg += f"   -  Testing & coverage -> **test-engineer**\n"
+    error_msg += f"   -  Documentation -> **documentation-generator**\n"
+    error_msg += f"   -  Security scanning -> **security-auditor**\n"
+    error_msg += f"   -  Validation & error prevention -> **validation-controller**\n"
 
     error_msg += f"\n[HELP] **Need more help?**\n"
-    error_msg += f"   • See AGENT_USAGE_GUIDE.md for complete documentation\n"
-    error_msg += f"   • Use Task('your description', 'orchestrator') for automatic agent selection\n"
+    error_msg += f"   -  See AGENT_USAGE_GUIDE.md for complete documentation\n"
+    error_msg += f"   -  Use Task('your description', 'orchestrator') for automatic agent selection\n"
 
     return error_msg
 
@@ -290,7 +290,7 @@ def list_all_agents():
         for name, info in sorted(agents):
             description = info.get("description", "No description")
             usage = info.get("usage", "General purpose")
-            result += f"   • **{name}** - {description}\n"
+            result += f"   -  **{name}** - {description}\n"
             result += f"     Best for: {usage}\n\n"
 
     result += f"[RECOMMENDATION] **Recommendation**: For most tasks, use 'orchestrator' - it automatically selects the best specialized agents.\n"

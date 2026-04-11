@@ -657,8 +657,8 @@ This release demonstrates **{"excellent" if score >= 95 else "good" if score >= 
 ## Quality Metrics
 
 - **Readiness Score**: {score:.1f}/100
-- **Pattern-Based Qualification**: {"✓ Passed" if readiness_analysis["pattern_analysis"]["qualified"] else "✗ Issues Found"}
-- **Auto-Release Eligibility**: {"✓ Yes" if readiness_analysis["auto_release_eligible"] else "✗ Not Ready"}
+- **Pattern-Based Qualification**: {"[OK] Passed" if readiness_analysis["pattern_analysis"]["qualified"] else "[FAIL] Issues Found"}
+- **Auto-Release Eligibility**: {"[OK] Yes" if readiness_analysis["auto_release_eligible"] else "[FAIL] Not Ready"}
 
 ## Key Improvements
 

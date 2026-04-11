@@ -132,7 +132,7 @@ class ClaudePluginValidator:
 
     def _validate_directory_structure(self):
         """Validate required directory structure."""
-        print("\n📁 Validating Directory Structure...")
+        print("\n[DIR] Validating Directory Structure...")
 
         # Required directories
         required_structure = {
@@ -172,7 +172,7 @@ class ClaudePluginValidator:
                         f"[WARN]  {dir_name} exists but is not a directory",
                     )
             else:
-                print(f"  ⚪ {dir_name}/: Optional ({description})")
+                print(f"  [--] {dir_name}/: Optional ({description})")
 
         # Check for plugin manifest specifically
         manifest_path = self.plugin_dir / ".claude-plugin" / "plugin.json"
@@ -183,7 +183,7 @@ class ClaudePluginValidator:
 
     def _validate_file_formats(self):
         """Validate file format compliance."""
-        print("\n📄 Validating File Formats...")
+        print("\n[DOC] Validating File Formats...")
 
         # Validate agent files
         agents_dir = self.plugin_dir / "agents"
@@ -283,7 +283,7 @@ class ClaudePluginValidator:
 
     def _validate_encoding(self):
         """Validate file encoding throughout plugin."""
-        print("\n🔤 Validating File Encoding...")
+        print("\n[ABC] Validating File Encoding...")
 
         encoding_issues = 0
         files_checked = 0
@@ -310,7 +310,7 @@ class ClaudePluginValidator:
 
     def _validate_cross_platform_compatibility(self):
         """Validate cross-platform compatibility."""
-        print("\n🌐 Validating Cross-Platform Compatibility...")
+        print("\n[WEB] Validating Cross-Platform Compatibility...")
 
         # Check for path length issues
         long_paths = []
@@ -447,16 +447,16 @@ class ClaudePluginValidator:
         lines.append(f"Issues: {len(self.issues)} | Warnings: {len(self.warnings)}")
 
         if self.issues:
-            lines.append("\n🚨 CRITICAL ISSUES (Installation Blockers):")
+            lines.append("\n[ALERT] CRITICAL ISSUES (Installation Blockers):")
             for issue in self.issues[:5]:
-                lines.append(f"  • {issue}")
+                lines.append(f"  -  {issue}")
             if len(self.issues) > 5:
                 lines.append(f"  ... and {len(self.issues) - 5} more issues")
 
         if self.warnings:
             lines.append("\n[WARN]  WARNINGS:")
             for warning in self.warnings[:3]:
-                lines.append(f"  • {warning}")
+                lines.append(f"  -  {warning}")
             if len(self.warnings) > 3:
                 lines.append(f"  ... and {len(self.warnings) - 3} more warnings")
 

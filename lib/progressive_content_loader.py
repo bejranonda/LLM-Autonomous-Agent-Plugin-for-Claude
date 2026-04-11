@@ -675,7 +675,7 @@ def initialize_content_analysis():
     if report["optimization_recommendations"]:
         print("\nRecommendations:")
         for rec in report["optimization_recommendations"]:
-            print(f"  • {rec['message']}")
+            print(f"  -  {rec['message']}")
 
 
 if __name__ == "__main__":

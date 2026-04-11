@@ -1083,7 +1083,7 @@ class RecommendationEngine:
         # Show top 3 risks
         top_risks = sorted(risks["detailed_risks"], key=lambda x: x.get("level", "LOW") == "HIGH", reverse=True)[:3]
         for risk in top_risks:
-            output.append(f"  • {risk['level']}: {risk['description']}")
+            output.append(f"  -  {risk['level']}: {risk['description']}")
             output.append(f"    -> Mitigation: {risk['mitigation']}")
 
         if risks["estimated_impact"]["time_adjustment"] != "No impact":

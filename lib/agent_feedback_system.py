@@ -408,8 +408,8 @@ for fb in feedbacks:
 stats = system.get_collaboration_stats()
 print(f"Collaboration Statistics:")
 print(f"  Total Feedbacks: {stats['total_feedbacks']}")
-print(f"  Analysis → Execution: {stats['analysis_to_execution']}")
-print(f"  Execution → Analysis: {stats['execution_to_analysis']}")
+print(f"  Analysis -> Execution: {stats['analysis_to_execution']}")
+print(f"  Execution -> Analysis: {stats['execution_to_analysis']}")
 print(f"  Feedback Effectiveness: {stats['feedback_effectiveness']:.1f}%")
 
     elif args.action == "insights":

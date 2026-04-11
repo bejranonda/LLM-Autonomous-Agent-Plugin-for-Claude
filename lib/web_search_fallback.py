@@ -3,7 +3,7 @@
 """
 Web Search Fallback Utility
 
-⚠️ DEPRECATION WARNING: HTML SCRAPING IS BROKEN
+[WARN] DEPRECATION WARNING: HTML SCRAPING IS BROKEN
 ================================================
 This script uses HTML scraping methods that NO LONGER WORK due to:
 - Changed HTML structures (CSS classes don't exist)

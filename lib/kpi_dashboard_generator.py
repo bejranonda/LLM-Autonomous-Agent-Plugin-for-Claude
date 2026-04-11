@@ -487,7 +487,7 @@ class KPIDashboardGenerator:
     <div class="container">
         <div class="header">
             <h1>Token Optimization KPI Dashboard</h1>
-            <div class="subtitle">Performance Metrics & Insights • {period.value.title()} View</div>
+            <div class="subtitle">Performance Metrics & Insights -  {period.value.title()} View</div>
         </div>
 
         <div class="summary-cards">
@@ -766,7 +766,7 @@ class KPIDashboardGenerator:
                     <div class="action-details">
                         <strong>{action['action']}</strong>
                         <div style="color: #666; margin-top: 5px;">
-                            Expected Impact: {action['expected_impact']} • Timeline: {action['timeline']}
+                            Expected Impact: {action['expected_impact']} -  Timeline: {action['timeline']}
                         </div>
                     </div>
                     <div class="action-meta">

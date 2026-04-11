@@ -413,15 +413,15 @@ class DecisionExplainer:
         if adjustments.get("phase_adjustment"):
             phase = adjustments["phase_adjustment"]["phase"]
             multiplier = adjustments["phase_adjustment"]["multiplier"]
-            explanation_parts.append(f"Phase adjustment ({phase}): ×{multiplier:.2f}")
+            explanation_parts.append(f"Phase adjustment ({phase}): x{multiplier:.2f}")
 
         if adjustments.get("criticality_adjustment"):
             criticality = adjustments["criticality_adjustment"]["criticality"]
             multiplier = adjustments["criticality_adjustment"]["multiplier"]
-            explanation_parts.append(f"Criticality adjustment ({criticality}): ×{multiplier:.2f}")
+            explanation_parts.append(f"Criticality adjustment ({criticality}): x{multiplier:.2f}")
 
         if adjustments.get("user_facing"):
-            explanation_parts.append("User-facing code: ×1.05 (stricter)")
+            explanation_parts.append("User-facing code: x1.05 (stricter)")
 
         # Add rationale
         if threshold >= 90:
@@ -466,9 +466,9 @@ class LearningVisualizer:
             LearningEventType.PATTERN_ACQUIRED: "[BRAIN]",
             LearningEventType.QUALITY_IMPROVEMENT_ACHIEVED: "[OK]",
             LearningEventType.AGENT_PERFORMANCE_IMPROVED: "[TREND]",
-            LearningEventType.USER_PREFERENCE_LEARNED: "👤",
+            LearningEventType.USER_PREFERENCE_LEARNED: "[USER]",
             LearningEventType.SPECIALIZATION_IDENTIFIED: "[TARGET]",
-            LearningEventType.COLLABORATION_INSIGHT: "🤝",
+            LearningEventType.COLLABORATION_INSIGHT: "[HANDSHAKE]",
         }
 
         emoji = emoji_map.get(event["event_type"], "[DATA]")
