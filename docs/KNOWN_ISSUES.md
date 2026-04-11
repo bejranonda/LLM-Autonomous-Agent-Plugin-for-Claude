@@ -2,6 +2,13 @@
 
 The v8.1.0 release focused on plugin specification compliance and marketplace installation reliability. Below are currently identified operational constraints:
 
+## Resolved in v8.2.0
+
+- **[FIXED] Windows UnicodeEncodeError**: All 103 non-ASCII characters removed from 25 Python scripts. Zero non-ASCII characters remain in lib/*.py.
+- **[FIXED] Oversized Agent Prompts**: learning-engine (1642→208 lines), dev-orchestrator (759→135 lines), security-auditor (755→152 lines) trimmed by 80-87%.
+- **[FIXED] Unused Scripts**: 11 unreferenced Python scripts removed from lib/ to reduce install size.
+- **[FIXED] Duplicate Skill File**: Removed redundant TRANSCENDENT_AI_SYSTEMS.md (SKILL.md already existed).
+
 ## Resolved in v8.1.0
 
 - **[FIXED] Installation Failure**: "agents: Invalid input" error caused by non-standard frontmatter keys in agent files (group, category, tier, etc.). All 36 agents now use only spec-compliant frontmatter.
@@ -22,7 +29,7 @@ The v8.1.0 release focused on plugin specification compliance and marketplace in
 - **Terminal Parsing Variations**: PowerShell/CMD output parsing differs per system. Workarounds are included but rely on standard stderr.
 
 ### Plugin Size
-- **Large lib/ Directory**: 147 Python scripts (78K lines, 6MB) are bundled. Not all are actively used by agents/commands. Future versions may prune unused utilities.
+- **Large lib/ Directory**: 124 active scripts (78K lines, 6MB) are bundled. Not all are actively used by agents/commands. Future versions may prune unused utilities.
 
 ## Reporting Issues
 If you encounter issues, ensure you are running v8.1.0+ installed via `/plugin install`. Run validation with `/validate:plugin`.

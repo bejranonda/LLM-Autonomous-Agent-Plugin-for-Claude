@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v8.1.0
+# 🚀 Autonomous Agent for Claude Code v8.2.0
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-8.1.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.1.0)
+[![Version](https://img.shields.io/badge/version-8.2.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.2.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -109,6 +109,21 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 ## 🌟 What is New?
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
+
+### v8.2.0 - Performance & Cross-Platform Excellence
+
+**Massive cleanup and modernization delivering smaller footprint and Windows reliability.**
+
+**Key Changes**:
+- **Zero Windows Crashes**: Removed all 103 non-ASCII characters (bullets, arrows, box-drawing, emoji) from 25 Python scripts — complete UnicodeEncodeError prevention
+- **Dramatically Smaller Agents**: Three oversized agents trimmed by 80-87%:
+  - `learning-engine`: 1642 → 208 lines
+  - `dev-orchestrator`: 759 → 135 lines  
+  - `security-auditor`: 755 → 152 lines
+- **CLI Executables**: New `bin/` directory — use `dashboard`, `recommend`, `pattern-storage` directly in bash without specifying the full Python path
+- **Orchestrator as Default**: New `settings.json` activates the orchestrator agent automatically when the plugin is enabled
+- **Leaner Library**: Removed 11 unused Python scripts from lib/ (124 active scripts remaining)
+- **net -7,340 lines deleted** across all changes
 
 ### v8.1.0 - Plugin Modernization & Standards Compliance
 

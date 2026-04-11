@@ -25,3 +25,10 @@ With v8.1.0, we prioritize strict compliance with Claude Code's official plugin 
 1. **Defunct Code Pruning**: Redundant fix scripts and dead code in agent prompts comprehensively pruned.
 2. **Standardized Communication**: `orchestrator.md` delegates via skills and sub-agents. No single prompt exceeds reasonable context length.
 3. **Immutable Source Pathing**: All Python libraries reference via `${CLAUDE_PLUGIN_ROOT}`. No arbitrary string injection into terminal evaluations.
+
+## Performance & Cross-Platform Design (v8.2.0)
+
+1. **ASCII-Only Python Output**: All print statements and string literals in lib/*.py use ASCII-only characters. No Unicode symbols, arrows, or emoji. This guarantees compatibility with Windows cp1252 code pages.
+2. **Concise Agent System Prompts**: Agent .md files are system prompts, not scripts. They should be focused instructions, not documentation dumps. Oversized agents are periodically audited and trimmed. Target: under 400 lines per agent.
+3. **Minimal lib/ Footprint**: Python utility scripts are audited for usage. Unreferenced scripts are removed to keep the plugin install lean.
+4. **bin/ Executables**: Key scripts exposed as bare CLI commands via bin/ so agents and users can invoke them without full Python path syntax.

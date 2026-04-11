@@ -24,6 +24,14 @@ All components are auto-discovered by Claude Code's convention-based loader:
 
 When consolidating knowledge across the Four-Tier workflow, the system uses `unified_data.json` with file-locked writes for race-free concurrency across operating systems. This reduces API payload overhead and synchronizes contextual performance data.
 
+## What Changed in v8.2.0
+
+- Purged all non-ASCII characters from 25 Python utility scripts (zero Windows encoding errors)
+- Trimmed 3 oversized agent system prompts (84% average line reduction)
+- Removed 11 unused Python scripts from lib/
+- Added bin/ executables for direct CLI access to key utilities
+- Added settings.json to activate orchestrator automatically on plugin enable
+
 ## What Changed in v8.1.0
 
 - Removed non-standard frontmatter keys from all components (they were invisible to Claude Code's plugin loader)

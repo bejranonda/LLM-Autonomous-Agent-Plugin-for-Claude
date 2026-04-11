@@ -5,7 +5,7 @@
 ```
 D:\Git\Werapol\AutonomousAgent\
 ├── .claude-plugin/
-│   └── plugin.json                          # Plugin manifest (v8.1.0)
+│   └── plugin.json                          # Plugin manifest (v8.2.0)
 │
 ├── agents/                                   # 36 specialized agents
 │   ├── orchestrator.md                      # Main autonomous controller
@@ -85,7 +85,7 @@ D:\Git\Werapol\AutonomousAgent\
 │   │   └── enhance.md                      # Frontend enhancement
 │   └── [Plus 2 additional command categories]
 │
-├── lib/                                      # 112+ Python utilities
+├── lib/                                      # 124 Python utility scripts
 │   ├── exec_plugin_script.py                # Cross-platform executor (v5.6+)
 │   ├── plugin_path_resolver.py              # Dynamic path discovery (v5.6+)
 │   ├── research_planner.py                  # Research planning utility (v7.15.0)
@@ -96,6 +96,15 @@ D:\Git\Werapol\AutonomousAgent\
 │   ├── migration/                           # Migration tools
 │   ├── scripts/                             # Test and validation scripts
 │   └── [100+ additional utility scripts]
+│
+├── bin/                                      # CLI executables (added to PATH)
+│   ├── dashboard                            # Launch monitoring dashboard
+│   ├── pattern-storage                      # Pattern database CLI
+│   ├── recommend                            # Recommendation engine CLI
+│   ├── quality-check                        # Quality tracker CLI
+│   └── learning-analytics                   # Learning analytics CLI
+│
+├── settings.json                            # Default plugin settings (orchestrator agent)
 │
 ├── patterns/                                 # Auto-fix patterns (v2.0)
 │   └── autofix-patterns.json                # 24 patterns, 89% success rate

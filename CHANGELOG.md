@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.0] - 2026-04-11
+
+### Fixed
+- **Windows UnicodeEncodeError**: Removed all 103 non-ASCII characters from 25 Python scripts (bullets, arrows, box-drawing chars, emoji). Zero non-ASCII remain in lib/*.py.
+- **Duplicate skill file**: Removed redundant TRANSCENDENT_AI_SYSTEMS.md (SKILL.md already existed in the same directory).
+
+### Changed
+- **Agent size reduction**: Three oversized agent system prompts trimmed by 80-87%:
+  - learning-engine.md: 1642 → 208 lines
+  - dev-orchestrator.md: 759 → 135 lines
+  - security-auditor.md: 755 → 152 lines
+- **Removed 11 unused Python scripts** from lib/ (auto_activity_recorder, cache_control_diagnostics, comprehensive_gui_analyzer, content_block_validator, dashboard_debugger, detect_missing_records, final_quality_report, missing_activity_detector, performance_integration_test, quality_improvement_executor, token_optimization_tests)
+
+### Added
+- **bin/ directory**: 5 executable wrappers (dashboard, pattern-storage, recommend, quality-check, learning-analytics) added to PATH when plugin is enabled
+- **settings.json**: Activates orchestrator as default agent when plugin is enabled
+
 ## [8.1.0] - 2026-04-11
 
 ### Fixed
