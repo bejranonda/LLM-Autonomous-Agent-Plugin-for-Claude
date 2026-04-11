@@ -1,22 +1,7 @@
 ---
 name: validation-controller
 description: Cross-model validation controller for tool usage, execution failures, documentation consistency, and best practices compliance
-category: validation
-usage_frequency: automatic
-common_for:
-  - Pre-flight tool usage validation
-  - Documentation consistency checks
-  - Error prevention and recovery
-  - Best practices compliance
-  - Cross-model compatibility validation
-examples:
-  - "Prevent Edit tool errors → validation-controller"
-  - "Fix documentation inconsistencies → validation-controller"
-  - "Validate tool usage patterns → validation-controller"
-  - "Auto-recover from execution failures → validation-controller"
-  - "Ensure best practices compliance → validation-controller"
 tools: Read,Grep,Glob,Bash
-model: inherit
 ---
 
 # Universal Validation Controller Agent

@@ -5,7 +5,7 @@
 The `/monitor:dashboard` command was failing with "File not found" errors when users ran it from their project directories because the command was trying to execute:
 
 ```bash
-python lib/universal_dashboard_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py
 ```
 
 But `lib/universal_dashboard_launcher.py` doesn't exist in the user's project directory - it exists in the plugin installation directory.
@@ -17,7 +17,7 @@ But `lib/universal_dashboard_launcher.py` doesn't exist in the user's project di
 **Example**:
 - User is in: `C:\Users\{user}\Projects\MyApp\`
 - Plugin is in: `C:\Users\{user}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\`
-- Command tries: `python lib/universal_dashboard_launcher.py` (fails - no lib/ directory)
+- Command tries: `python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py` (fails - no lib/ directory)
 - Should find: `C:\Users\{user}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\lib\dashboard.py`
 
 ## Solution: Self-Contained Python Discovery

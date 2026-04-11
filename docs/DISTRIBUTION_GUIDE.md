@@ -40,21 +40,21 @@ The `lib/run_script.py` wrapper ensures scripts run from the correct directory:
 
 ```bash
 # Users can run scripts directly
-python <plugin_path>/lib/run_script.py dashboard.py --port 8080
+python ${CLAUDE_PLUGIN_ROOT}/lib/run_script.py dashboard.py --port 8080
 
 # This works regardless of installation method
 ```
 
 ### Updated Slash Commands
 
-All slash commands now use `<plugin_path>` placeholders in documentation:
+All slash commands now use `${CLAUDE_PLUGIN_ROOT}` placeholders in documentation:
 
 ```bash
 # Before (development only)
-python <plugin_path>/lib/dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py
 
 # After (works everywhere)
-python <plugin_path>/lib/dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py
 ```
 
 ## Testing Distribution
@@ -65,7 +65,7 @@ Test that the plugin works in both modes:
 
 ```bash
 # Test in development mode (current repo)
-python <plugin_path>/lib/plugin_path_resolver.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_path_resolver.py
 
 # Should find current repository
 ```
@@ -92,13 +92,13 @@ Verify all Python scripts work with the new path system:
 
 ```bash
 # Test dashboard
-python <plugin_path>/lib/dashboard.py --test
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --test
 
 # Test learning analytics
-python <plugin_path>/lib/learning_analytics.py show --dir /tmp/test-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/learning_analytics.py show --dir /tmp/test-patterns
 
 # Test pattern storage
-python <plugin_path>/lib/pattern_storage.py stats
+python ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py stats
 ```
 
 ## Files Modified for Distribution
@@ -126,7 +126,7 @@ Wrapper script for proper script execution:
 - Provides error messages
 
 ### 4. Updated Slash Commands
-Changed all `python <plugin_path>/lib/` references to `python <plugin_path>/lib/`:
+Changed all `python ${CLAUDE_PLUGIN_ROOT}/lib/` references to `python ${CLAUDE_PLUGIN_ROOT}/lib/`:
 - `commands/monitor/dashboard.md`
 - `commands/learn/analytics.md`
 - Any future commands
@@ -180,7 +180,7 @@ Before releasing to public:
 - [ ] `.gitignore` excludes all user-specific data
 - [ ] `plugin_path_resolver.py` correctly detects installation
 - [ ] All Python scripts work with path resolver
-- [ ] Slash commands use `<plugin_path>` in documentation
+- [ ] Slash commands use `${CLAUDE_PLUGIN_ROOT}` in documentation
 - [ ] No hardcoded local paths remain
 - [ ] Plugin works from marketplace installation
 - [ ] Plugin works in development mode

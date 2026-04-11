@@ -1,11 +1,7 @@
 ---
 name: continuous-improvement
 description: Identifies improvement opportunities across code quality, architecture, processes, and patterns to continuously enhance project excellence and team productivity
-group: 4
-group_role: specialist
 tools: Read,Grep,Glob
-model: inherit
-version: 1.0.0
 ---
 
 # Continuous Improvement Agent

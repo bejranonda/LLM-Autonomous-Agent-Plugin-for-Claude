@@ -187,16 +187,16 @@ def optimize_content_for_user(content, user_id, context):
 ### CLI Monitoring Tools
 ```bash
 # View current statistics
-python lib/token_monitoring_dashboard.py --stats
+python ${CLAUDE_PLUGIN_ROOT}/lib/token_monitoring_dashboard.py --stats
 
 # Generate comprehensive report
-python lib/token_monitoring_dashboard.py --report 24
+python ${CLAUDE_PLUGIN_ROOT}/lib/token_monitoring_dashboard.py --report 24
 
 # View top consumers
-python lib/token_monitoring_dashboard.py --top-consumers 10
+python ${CLAUDE_PLUGIN_ROOT}/lib/token_monitoring_dashboard.py --top-consumers 10
 
 # View optimization effectiveness
-python lib/token_monitoring_dashboard.py --effectiveness 24
+python ${CLAUDE_PLUGIN_ROOT}/lib/token_monitoring_dashboard.py --effectiveness 24
 ```
 
 ### Key Performance Indicators (KPIs)

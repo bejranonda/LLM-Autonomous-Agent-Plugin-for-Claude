@@ -72,13 +72,13 @@ The enhanced Autonomous Agent Dashboard now includes comprehensive model perform
 
 ```bash
 # Basic usage (default port 5000)
-python <plugin_path>/lib/dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py
 
 # Custom port and pattern directory
-python <plugin_path>/lib/dashboard.py --port 8080 --patterns-dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 8080 --patterns-dir .claude-patterns
 
 # Allow external access
-python <plugin_path>/lib/dashboard.py --host 0.0.0.0 --port 8080
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --host 0.0.0.0 --port 8080
 ```
 
 ### Accessing the Dashboard
@@ -93,7 +93,7 @@ Open your web browser and navigate to:
 
 ```bash
 # Add a new performance score
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns add \
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns add \
   --model Claude \
   --score 92.5 \
   --task-type dashboard_enhancement \
@@ -110,24 +110,24 @@ python <plugin_path>/lib/model_performance.py --dir .claude-patterns add \
 
 ```bash
 # Generate 30 days of sample historical data
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
 ```
 
 #### Viewing Performance Summaries
 
 ```bash
 # View all models summary
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns summary
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns summary
 
 # View specific model summary
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns model-summary --model Claude
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns model-summary --model Claude
 ```
 
 #### Clearing Data
 
 ```bash
 # Clear all model performance data
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns clear
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns clear
 ```
 
 ## API Endpoints
@@ -235,7 +235,7 @@ The model performance charts integrate seamlessly with existing dashboard featur
 1. **No Model Data Displayed**:
    ```bash
    # Generate sample data
-   python <plugin_path>/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
+   python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
    ```
 
 2. **Chart Loading Errors**:

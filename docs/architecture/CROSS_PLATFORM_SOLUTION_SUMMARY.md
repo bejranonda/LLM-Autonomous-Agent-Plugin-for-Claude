@@ -2,7 +2,7 @@
 
 ## Problem Solved
 
-**Original Issue**: The plugin hardcoded script paths like `<plugin_path>/lib/dashboard.py`, which didn't work when users installed the plugin from the marketplace. Each user's installation path is different:
+**Original Issue**: The plugin hardcoded script paths like `${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py`, which didn't work when users installed the plugin from the marketplace. Each user's installation path is different:
 - Windows: `C:\Users\{username}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\`
 - Linux: `~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
 - Mac: `~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
@@ -15,7 +15,7 @@ A three-layer architecture that automatically discovers the plugin installation 
 ```
 ┌─────────────────────────────────────────┐
 │  Layer 1: Slash Commands                │
-│  Simple: python lib/exec_plugin_script.py │
+│  Simple: python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py │
 │          {script} {args}                 │
 └──────────────┬──────────────────────────┘
                │
@@ -40,7 +40,7 @@ A three-layer architecture that automatically discovers the plugin installation 
    - Wrapper that executes plugin scripts
    - Auto-finds plugin installation
    - Works on all platforms
-   - Usage: `python lib/exec_plugin_script.py dashboard.py --port 5000`
+   - Usage: `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000`
 
 2. **`docs/CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md`** (NEW)
    - Complete architecture documentation
@@ -68,8 +68,8 @@ A three-layer architecture that automatically discovers the plugin installation 
    - No hardcoded user directories
 
 2. **`commands/monitor/dashboard.md`**
-   - Updated from: `python <plugin_path>/lib/dashboard.py`
-   - Updated to: `python lib/exec_plugin_script.py dashboard.py`
+   - Updated from: `python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py`
+   - Updated to: `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py`
    - Serves as example for other commands
 
 3. **`CLAUDE.md`**
@@ -97,12 +97,12 @@ A three-layer architecture that automatically discovers the plugin installation 
 
 **Old way (doesn't work)**:
 ```bash
-python <plugin_path>/lib/dashboard.py --port 5000  # ❌ <plugin_path> is placeholder
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 5000  # ❌ ${CLAUDE_PLUGIN_ROOT} is placeholder
 ```
 
 **New way (works everywhere)**:
 ```bash
-python lib/exec_plugin_script.py dashboard.py --port 5000  # ✅ Auto-finds plugin
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000  # ✅ Auto-finds plugin
 ```
 
 ### For Claude Code (Executing Commands)
@@ -111,10 +111,10 @@ When executing a slash command that needs to run a Python script:
 
 ```python
 # The command file contains:
-# "Execute: python lib/exec_plugin_script.py dashboard.py --port 5000"
+# "Execute: python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000"
 
 # Claude Code executes via Bash tool:
-result = bash("python lib/exec_plugin_script.py dashboard.py --port 5000")
+result = bash("python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000")
 
 # The exec_plugin_script.py automatically:
 # 1. Finds the plugin installation (wherever it is)
@@ -129,7 +129,7 @@ result = bash("python lib/exec_plugin_script.py dashboard.py --port 5000")
 
 ```bash
 # From any directory
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 
 # Expected output:
 # Plugin Installation Information
@@ -145,7 +145,7 @@ python lib/exec_plugin_script.py --info
 
 ```bash
 # Test dashboard script
-python lib/exec_plugin_script.py dashboard.py --help
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --help
 
 # Should show dashboard help without errors
 ```
@@ -224,37 +224,37 @@ Both should find the plugin and show info.
 ### Command Pattern
 ```bash
 # Always use this pattern:
-python lib/exec_plugin_script.py {script_name} {arguments}
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name} {arguments}
 
 # Examples:
-python lib/exec_plugin_script.py dashboard.py --port 5000
-python lib/exec_plugin_script.py learning_analytics.py show
-python lib/exec_plugin_script.py pattern_storage.py list
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py learning_analytics.py show
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py pattern_storage.py list
 ```
 
 ### Debugging
 ```bash
 # Show plugin info
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 
 # Test script exists
-python lib/exec_plugin_script.py {script} --help
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script} --help
 
 # Set custom path
 export CLAUDE_PLUGIN_PATH=/custom/path
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 ```
 
 ### Updating Commands
 
 Find and replace in `commands/**/*.md`:
 
-**Old**: `python <plugin_path>/lib/{script}.py`
-**New**: `python lib/exec_plugin_script.py {script}.py`
+**Old**: `python ${CLAUDE_PLUGIN_ROOT}/lib/{script}.py`
+**New**: `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script}.py`
 
 ```bash
 # Bulk update (GNU sed)
-find commands -name "*.md" -exec sed -i 's|python <plugin_path>/lib/\([^[:space:]]*\)|python lib/exec_plugin_script.py \1|g' {} \;
+find commands -name "*.md" -exec sed -i 's|python ${CLAUDE_PLUGIN_ROOT}/lib/\([^[:space:]]*\)|python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py \1|g' {} \;
 ```
 
 ## Documentation
@@ -308,7 +308,7 @@ If you encounter issues:
 
 1. **Run info command**:
    ```bash
-   python lib/exec_plugin_script.py --info
+   python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
    ```
 
 2. **Check documentation**:

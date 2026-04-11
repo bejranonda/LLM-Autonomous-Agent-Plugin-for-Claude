@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.1.0] - 2026-04-11
+
+### Fixed
+- **Installation Error**: Resolved "agents: Invalid input" validation error preventing marketplace installation
+- **Agent Frontmatter**: Stripped non-standard keys (group, group_role, category, tier, version, usage_frequency, common_for, examples) from all 36 agents
+- **Command Frontmatter**: Fixed 3 commands with broken YAML (missing --- delimiter), quoted special characters, removed non-standard keys from 8 commands
+- **Skill Frontmatter**: Added missing SKILL.md for transcendent-ai-systems, removed non-standard keys from 4 skills
+- **Invalid Model Values**: Removed `model: inherit` from 25 agents (not a valid plugin spec value)
+- **YAML Parse Errors**: Fixed orchestrator.md and quality-controller.md YAML parsing failures caused by unicode arrows
+
+### Changed
+- **Path Modernization**: Replaced `python lib/` and `<plugin_path>` with `${CLAUDE_PLUGIN_ROOT}/lib/` across 81 files
+- **Orchestrator Cleanup**: Removed ~230 lines of dead Python import/subprocess code from orchestrator.md system prompt
+- **Plugin Manifest**: Removed explicit agents/commands/skills path declarations from plugin.json (relies on auto-discovery)
+- **Tool Format**: Normalized agent tools from YAML arrays to comma-separated strings
+
+### Documentation
+- Updated README.md, STRUCTURE.md, CHANGELOG.md for v8.1.0
+- Updated docs/KNOWN_ISSUES.md with resolved issues and remaining constraints
+- Updated docs/APPROACH_AND_METHOD.md with plugin specification compliance methodology
+- Updated docs/KNOWLEDGE_MANAGEMENT.md with modern path resolution documentation
+
 ## [7.19.0] - 2025-12-04
 
 ### Added
@@ -826,7 +848,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 /validate:web http://127.0.0.1:5000 --verbose --report
 
 # Programmatic validation
-python lib/web_page_validator.py http://127.0.0.1:5000 --json
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --json
 ```
 
 ## [7.5.1] - 2025-11-05

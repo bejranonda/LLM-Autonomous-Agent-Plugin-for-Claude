@@ -1,9 +1,6 @@
 ---
-name: validate:integrity
+name: "validate:integrity"
 description: Comprehensive integrity validation and automatic recovery for missing components
-usage: /validate:integrity [options]
-category: validate
-subcategory: system
 ---
 
 # Comprehensive Integrity Validation

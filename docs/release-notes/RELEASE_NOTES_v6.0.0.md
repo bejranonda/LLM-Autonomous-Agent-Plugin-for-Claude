@@ -372,7 +372,7 @@ ls -la .claude-patterns/
 **Agent Performance Tracking Not Working**:
 ```bash
 # Verify performance file creation
-python lib/agent_performance_tracker.py --storage-dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_performance_tracker.py --storage-dir .claude-patterns
 # Check file permissions
 ```
 

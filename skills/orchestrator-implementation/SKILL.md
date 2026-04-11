@@ -1275,7 +1275,7 @@ def handle_special_command(command_info):
                 ]
                 if e.stderr:
                     error_output.append(f"   Error details: {e.stderr}")
-                error_output.append(f"   Try running manually: python <plugin_path>/lib/learning_analytics.py show")
+                error_output.append(f"   Try running manually: python ${CLAUDE_PLUGIN_ROOT}/lib/learning_analytics.py show")
                 print("\n".join(error_output))
                 return False
             except Exception as e:

@@ -189,7 +189,7 @@ cd LLM-Autonomous-Agent-Plugin-for-Claude
 ### **Validation**
 ```bash
 # Run comprehensive validation
-python <plugin_path>/lib/validation_report.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/validation_report.py
 
 # Expected output: 100/100 quality score
 ```

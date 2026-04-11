@@ -137,13 +137,13 @@ close_matches = get_close_matches(user_input, all_agents, n=limit, cutoff=0.6)
 **Multiple usage modes**:
 ```bash
 # Error checking
-python <plugin_path>/lib/agent_error_helper.py "autonomous-agent"
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py "autonomous-agent"
 
 # Task-based suggestions
-python <plugin_path>/lib/agent_error_helper.py --suggest "fix code quality issues"
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "fix code quality issues"
 
 # List all agents
-python <plugin_path>/lib/agent_error_helper.py --list
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list
 ```
 
 ---
@@ -264,7 +264,7 @@ def Task(description, agent_type):
 ### 2. Interactive Agent Selection
 ```python
 # Future enhancement: interactive agent discovery
-python <plugin_path>/lib/agent_error_helper.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py
 > Interactive mode for agent exploration
 ```
 

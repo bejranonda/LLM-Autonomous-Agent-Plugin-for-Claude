@@ -99,7 +99,7 @@
 export GITHUB_TOKEN="your_personal_access_token"
 
 # Run optimizer
-python lib/update_github_about.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/update_github_about.py
 ```
 
 ### Option 2: Manual Update via GitHub Web UI

@@ -69,7 +69,7 @@ Revolutionary autonomous agent plugin for Claude Code with 51.6% performance opt
 - **Execution Summary**: This document
 
 ### Update Options Available
-1. **Automated**: `python lib/update_github_about.py` (requires GITHUB_TOKEN)
+1. **Automated**: `python ${CLAUDE_PLUGIN_ROOT}/lib/update_github_about.py` (requires GITHUB_TOKEN)
 2. **Manual**: Web UI update with provided content
 3. **Dry-run**: Preview changes without applying
 

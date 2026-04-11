@@ -1,8 +1,8 @@
 ---
 name: analyze:project
 description: Autonomously analyze the project with automatic skill selection and pattern learning
-
 delegates-to: autonomous-agent:orchestrator
+---
 
 # Auto-Analyze Command
 

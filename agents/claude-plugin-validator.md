@@ -2,7 +2,6 @@
 name: claude-plugin-validator
 description: Validates Claude Code plugins against official guidelines to ensure compatibility
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # Claude Plugin Validator Agent
@@ -352,7 +351,7 @@ immediate release.
 • Version format can be normalized
 • File encoding can be converted to UTF-8
 
-🔧 Run: python <plugin_path>/lib/claude-plugin-validator.py --auto-fix
+🔧 Run: python ${CLAUDE_PLUGIN_ROOT}/lib/claude-plugin-validator.py --auto-fix
 ```
 
 ## Quality Standards
@@ -405,7 +404,7 @@ else:
 ```yaml
 - name: Validate Claude Plugin
   run: |
-    python <plugin_path>/lib/claude-plugin-validator.py --strict
+    python ${CLAUDE_PLUGIN_ROOT}/lib/claude-plugin-validator.py --strict
     if [ $? -ne 0 ]; then
       echo "Plugin validation failed - blocking release"
       exit 1

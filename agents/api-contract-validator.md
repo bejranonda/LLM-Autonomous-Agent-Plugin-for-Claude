@@ -1,22 +1,7 @@
 ---
 name: api-contract-validator
 description: Validates API contracts, synchronizes types, and auto-generates client code
-category: api
-usage_frequency: medium
-common_for:
-  - Frontend-backend API synchronization
-  - TypeScript type generation from OpenAPI
-  - Endpoint validation and testing
-  - API client code generation
-  - Contract consistency checking
-examples:
-  - "Validate frontend-backend API contracts → api-contract-validator"
-  - "Generate TypeScript types from OpenAPI schema → api-contract-validator"
-  - "Check for missing API endpoints → api-contract-validator"
-  - "Sync API client with backend changes → api-contract-validator"
-  - "Add error handling to API calls → api-contract-validator"
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # API Contract Validator Agent

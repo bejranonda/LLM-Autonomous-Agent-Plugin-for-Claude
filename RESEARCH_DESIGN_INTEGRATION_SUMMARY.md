@@ -207,7 +207,7 @@ Successfully integrated **structured research capabilities** and **frontend desi
   - Cross-platform compatible (Windows, Linux, macOS)
 - **CLI Usage**:
   ```bash
-  python lib/research_planner.py "I2C vs SPI comparison" \
+  python ${CLAUDE_PLUGIN_ROOT}/lib/research_planner.py "I2C vs SPI comparison" \
     --context "Raspberry Pi project" \
     --criteria "Protocol selection decision" \
     --depth moderate \
@@ -223,7 +223,7 @@ Successfully integrated **structured research capabilities** and **frontend desi
   - Cross-platform compatible
 - **CLI Usage**:
   ```bash
-  python lib/research_synthesizer.py "I2C vs SPI" \
+  python ${CLAUDE_PLUGIN_ROOT}/lib/research_synthesizer.py "I2C vs SPI" \
     --findings research-findings.json \
     --output .claude/reports/research-i2c-spi.md
   ```
@@ -376,7 +376,7 @@ All Python utilities follow plugin's cross-platform guidelines:
 /research:structured "I2C vs SPI protocols for Raspberry Pi FM radio module"
 
 # Option 2: Using Python utilities directly
-python lib/research_planner.py "I2C vs SPI" \
+python ${CLAUDE_PLUGIN_ROOT}/lib/research_planner.py "I2C vs SPI" \
   --context "TEA5767 FM module + MOSFET fan control on Raspberry Pi" \
   --criteria "Protocol selection" \
   --criteria "Noise mitigation strategy" \
@@ -384,7 +384,7 @@ python lib/research_planner.py "I2C vs SPI" \
   --time-limit 30
 
 # Then synthesize findings
-python lib/research_synthesizer.py "I2C vs SPI" \
+python ${CLAUDE_PLUGIN_ROOT}/lib/research_synthesizer.py "I2C vs SPI" \
   --findings research-findings.json
 ```
 

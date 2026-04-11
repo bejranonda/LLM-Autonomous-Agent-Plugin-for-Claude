@@ -139,7 +139,7 @@ python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" lear
 ### Development Testing
 ```bash
 # Test from plugin directory
-python lib/marketplace_executor.py dashboard.py --help
+python ${CLAUDE_PLUGIN_ROOT}/lib/marketplace_executor.py dashboard.py --help
 
 # Test from different directory
 cd /tmp && python /path/to/plugin/lib/marketplace_executor.py dashboard.py --help
@@ -213,7 +213,7 @@ To apply this pattern to other commands:
    ```markdown
    **Development Mode**:
    ```bash
-   python lib/exec_plugin_script.py {script_name}
+   python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name}
    ```
    ```
 
@@ -223,7 +223,7 @@ To apply this pattern to other commands:
    python -c "exec(open(r'{PLUGIN_PATH}/lib/marketplace_executor.py').read())" {script_name} --help
 
    # Test development mode
-   python lib/exec_plugin_script.py {script_name} --help
+   python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name} --help
    ```
 
 ## Future Considerations

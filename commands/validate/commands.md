@@ -1,9 +1,6 @@
 ---
-name: validate:commands
+name: "validate:commands"
 description: Command validation and discoverability verification with automatic recovery
-usage: /validate:commands [options]
-category: validate
-subcategory: system
 ---
 
 # Command Validation and Discoverability

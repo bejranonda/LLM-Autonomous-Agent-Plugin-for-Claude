@@ -2,9 +2,6 @@
 name: Group Collaboration
 description: Best practices for inter-group communication, knowledge sharing, and collaborative workflows in four-tier architecture
 version: 7.0.0
-category: collaboration
-tags: [four-tier, inter-group, communication, knowledge-transfer, coordination]
-related_skills: [pattern-learning, contextual-pattern-learning]
 ---
 
 # Group Collaboration Skill

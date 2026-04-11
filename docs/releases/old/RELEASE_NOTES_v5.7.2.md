@@ -26,7 +26,7 @@ if [ -n "$PLUGIN_DIR" ] && [ -f "$PLUGIN_DIR/lib/dashboard.py" ]; then
 else
     # Fallback to development mode
     if [ -f "lib/dashboard.py" ]; then
-        python lib/dashboard.py --patterns-dir .claude-patterns
+        python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --patterns-dir .claude-patterns
     else
         echo "ERROR: Plugin installation not found"
         exit 1

@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous AI behavior through pattern learning, skill auto-selection, background task execution, comprehensive quality control, and advanced token optimization. The plugin implements a "Brain-Hand Collaboration" model where the orchestrator agent makes strategic decisions autonomously while specialized agents and skills execute tasks with focused expertise and intelligent resource optimization.
 
 **Platform**: Claude Code CLI only (uses subagents, not compatible with claude.ai web/mobile)
-**Version**: 8.0.0
+**Version**: 8.1.0
 
 ## Development Guidelines
 
@@ -60,7 +60,7 @@ Run `python detect_fix_emojis.py --directory lib` to check for emoji usage.
 **Testing Both Modes**:
 ```bash
 # Test development mode
-python lib/dashboard.py --no-browser --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000
 
 # Test distribution mode
 cp lib/dashboard.py .claude-patterns/dashboard.py
@@ -113,7 +113,7 @@ Three-layer architecture executing Python scripts across all platforms and insta
 
 **Layer 1**: Script executor (`lib/exec_plugin_script.py`) - finds installation, executes scripts
 **Layer 2**: Path resolver (`lib/plugin_path_resolver.py`) - discovers plugin across platforms
-**Layer 3**: Command execution - `python lib/exec_plugin_script.py {script_name} {args}`
+**Layer 3**: Command execution - `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name} {args}`
 
 **Benefits**: Cross-platform (Windows/Linux/macOS), installation-agnostic, no hardcoded paths
 
@@ -388,7 +388,7 @@ All Python scripts in `lib/` directory feature Windows compatibility (v1.4):
 
 - All scripts use `--dir` parameter to specify data directory (default: `.claude-patterns`)
 - JSON-based data storage for easy inspection and debugging
-- Each script has a complete CLI interface accessible via `python <plugin_path>/lib/<script>.py --help`
+- Each script has a complete CLI interface accessible via `python ${CLAUDE_PLUGIN_ROOT}/lib/<script>.py --help`
 - Scripts are designed to be used both programmatically and via command line
 
 ## Web Search Fallback System (v7.18.0+)
@@ -430,14 +430,14 @@ The web-search-fallback skill provides bash+curl HTML scraping as an alternative
 ./lib/web_search_fallback.sh "python async programming" -n 5
 
 # Python version (cross-platform)
-python lib/web_search_fallback.py "machine learning" -t json --no-cache
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "machine learning" -t json --no-cache
 ```
 
 **In Agents/Skills**:
 ```bash
 # Automatic fallback when WebSearch fails
 if ! result=$(WebSearch "query"); then
-    result=$(python lib/web_search_fallback.py "query" -n 10 -t json)
+    result=$(python ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "query" -n 10 -t json)
 fi
 ```
 

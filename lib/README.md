@@ -41,13 +41,13 @@ To verify if Python scripts are available:
 python3 --version
 
 # Test pattern storage
-python3 lib/pattern_storage.py stats --dir .claude-patterns
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py stats --dir .claude-patterns
 
 # Test task queue
-python3 lib/task_queue.py status --dir .claude-patterns
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py status --dir .claude-patterns
 
 # Test quality tracker
-python3 lib/quality_tracker.py average --dir .claude-patterns
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py average --dir .claude-patterns
 ```
 
 If any of these commands fail, the plugin will automatically use the pure Markdown mode.
@@ -58,7 +58,7 @@ If any of these commands fail, the plugin will automatically use the pure Markdo
 
 ```bash
 # Store a new pattern
-python3 lib/pattern_storage.py store --pattern '{
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py store --pattern '{
   "task_type": "refactoring",
   "context": "authentication module security improvements",
   "skills_used": ["code-analysis", "quality-standards"],
@@ -67,58 +67,58 @@ python3 lib/pattern_storage.py store --pattern '{
 }'
 
 # Retrieve similar patterns
-python3 lib/pattern_storage.py retrieve \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py retrieve \
   --context "authentication security" \
   --min-quality 0.8 \
   --limit 5
 
 # Update pattern usage
-python3 lib/pattern_storage.py update \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py update \
   --pattern-id pattern_20251021_143022 \
   --success
 
 # View statistics
-python3 lib/pattern_storage.py stats
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py stats
 ```
 
 ### Task Queue
 
 ```bash
 # Add a new task
-python3 lib/task_queue.py add \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py add \
   --name "code_optimization" \
   --description "Analyze and optimize database queries" \
   --priority high \
   --skills "code-analysis,pattern-learning"
 
 # Get next task to execute
-python3 lib/task_queue.py execute-next
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py execute-next
 
 # Update task status
-python3 lib/task_queue.py update \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py update \
   --task-id task_20251021_143022 \
   --status running
 
-python3 lib/task_queue.py update \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py update \
   --task-id task_20251021_143022 \
   --status completed \
   --result "Optimized 5 queries, reduced load time by 40%"
 
 # View queue status
-python3 lib/task_queue.py status
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py status
 
 # List all tasks
-python3 lib/task_queue.py list
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py list
 
 # Clear completed tasks
-python3 lib/task_queue.py clear
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py clear
 ```
 
 ### Quality Tracker
 
 ```bash
 # Record quality assessment
-python3 lib/quality_tracker.py record \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py record \
   --task-id task_20251021_143022 \
   --score 0.88 \
   --metrics '{
@@ -129,24 +129,24 @@ python3 lib/quality_tracker.py record \
   }'
 
 # View quality trends
-python3 lib/quality_tracker.py trends --days 30
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py trends --days 30
 
 # View specific metric trends
-python3 lib/quality_tracker.py trends \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py trends \
   --days 30 \
   --metric code_quality
 
 # Get average quality score
-python3 lib/quality_tracker.py average --days 30
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py average --days 30
 
 # View metric statistics
-python3 lib/quality_tracker.py stats --days 30
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py stats --days 30
 
 # Show recent quality records
-python3 lib/quality_tracker.py recent --limit 10
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py recent --limit 10
 
 # Find low quality tasks
-python3 lib/quality_tracker.py low-quality \
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py low-quality \
   --threshold 0.7 \
   --days 30
 ```
@@ -158,7 +158,7 @@ The agents automatically detect and use these scripts when available:
 ### Orchestrator Agent
 ```markdown
 # Check if Python utilities are available
-if python3 lib/pattern_storage.py stats succeeds:
+if python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py stats succeeds:
     use programmatic pattern retrieval
 else:
     use JSON file reading with Read tool
@@ -167,14 +167,14 @@ else:
 ### Learning Engine Agent
 ```markdown
 # Store patterns using best available method
-try python3 lib/pattern_storage.py store
+try python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py store
 fallback to Write tool with JSON manipulation
 ```
 
 ### Quality Controller Agent
 ```markdown
 # Track quality metrics
-try python3 lib/quality_tracker.py record
+try python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py record
 fallback to append to JSON file using Edit tool
 ```
 
@@ -264,9 +264,9 @@ Windows users should note:
 ### Cross-Platform Testing
 ```bash
 # Test on current platform
-python3 lib/pattern_storage.py stats
-python3 lib/task_queue.py status
-python3 lib/quality_tracker.py average
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py stats
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/task_queue.py status
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/quality_tracker.py average
 ```
 
 ## Troubleshooting
@@ -275,7 +275,7 @@ python3 lib/quality_tracker.py average
 If agents report that Python scripts are not available:
 1. Check Python installation: `python3 --version`
 2. Verify script permissions: `chmod +x lib/*.py`
-3. Try running directly: `python3 lib/pattern_storage.py --help`
+3. Try running directly: `python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py --help`
 4. If all fails, plugin will use pure MD mode automatically
 
 ### JSON Corruption
@@ -288,7 +288,7 @@ cp .claude-patterns/patterns.json .claude-patterns/patterns.json.backup
 rm .claude-patterns/*.json
 
 # Scripts will auto-recreate empty JSON files
-python3 lib/pattern_storage.py stats
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py stats
 ```
 
 ### Permission Issues

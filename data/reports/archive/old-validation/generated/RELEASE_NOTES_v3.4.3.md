@@ -151,13 +151,13 @@ cd ~/.config/claude/plugins/autonomous-agent
 git pull origin main
 
 # Verify updated dashboard
-python <plugin_path>/lib/dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py
 ```
 
 ### Quick Start
 ```bash
 # Launch enhanced dashboard
-python <plugin_path>/lib/dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py
 
 # Access web interface
 # Open: http://localhost:5000

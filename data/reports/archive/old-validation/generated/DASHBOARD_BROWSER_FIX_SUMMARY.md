@@ -92,7 +92,7 @@ open_browser = True (default)
 
 # Launcher does:
 1. Opens browser itself
-2. Calls: python <plugin_path>/lib/dashboard.py --host 127.0.0.1 --port 5000 --no-browser
+2. Calls: python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --host 127.0.0.1 --port 5000 --no-browser
 
 # Dashboard receives:
 auto_open_browser = False (due to --no-browser)

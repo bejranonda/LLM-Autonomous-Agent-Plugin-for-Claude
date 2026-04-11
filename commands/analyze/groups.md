@@ -1,8 +1,6 @@
 ---
-name: analyze:groups
+name: "analyze:groups"
 description: Deep analysis of four-tier group behavior, collaboration patterns, and optimization recommendations
-version: 7.0.0
-category: analysis
 ---
 
 # Analyze Groups Command

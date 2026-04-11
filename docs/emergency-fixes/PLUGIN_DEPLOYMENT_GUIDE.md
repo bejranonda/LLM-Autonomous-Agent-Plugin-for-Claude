@@ -57,7 +57,7 @@ git pull origin main
 Run the comprehensive testing framework:
 
 ```bash
-python lib/plugin_fixes_testing_framework.py --all
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_fixes_testing_framework.py --all
 ```
 
 **Expected Output**:
@@ -73,7 +73,7 @@ Test the specific command that was failing:
 
 ```bash
 # Test /learn:init command fix
-python lib/plugin_message_sanitizer.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_message_sanitizer.py
 ```
 
 **Expected Output**:
@@ -216,12 +216,12 @@ git checkout 4868748  # Before emergency fixes
 
 2. **Run quick validation**:
    ```bash
-   python lib/plugin_fixes_testing_framework.py --quick
+   python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_fixes_testing_framework.py --quick
    ```
 
 3. **Check emergency fixes status**:
    ```bash
-   python lib/plugin_message_sanitizer.py
+   python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_message_sanitizer.py
    ```
 
 **If issues persist:**

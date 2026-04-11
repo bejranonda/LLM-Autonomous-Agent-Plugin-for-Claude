@@ -1,8 +1,6 @@
 ---
-name: monitor:groups
+name: "monitor:groups"
 description: Real-time monitoring of four-tier group performance, communication, and specialization metrics
-version: 7.0.0
-category: monitoring
 ---
 
 # Monitor Groups Command

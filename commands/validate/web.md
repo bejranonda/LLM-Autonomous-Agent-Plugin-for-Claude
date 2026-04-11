@@ -1,7 +1,6 @@
 ---
-name: validate:web
+name: "validate:web"
 description: Validate web pages and detect JavaScript errors automatically using headless browser automation
-category: validation
 ---
 
 # Validate Web Command

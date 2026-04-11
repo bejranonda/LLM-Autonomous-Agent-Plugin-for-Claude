@@ -61,7 +61,7 @@ result = Task(
 # These ALL fail now
 curl "https://html.duckduckgo.com/html/?q=query" | grep 'result__a'
 curl "https://search.brave.com/search?q=query"
-python3 lib/web_search_fallback.py "query"  # Uses broken HTML scraping
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "query"  # Uses broken HTML scraping
 ```
 
 **DO THIS** (Works):

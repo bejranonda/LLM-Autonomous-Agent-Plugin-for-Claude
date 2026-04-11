@@ -67,29 +67,29 @@ The `plugin_validator.py` script provides comprehensive validation and quality a
 
 ```bash
 # Basic validation (current directory)
-python <plugin_path>/lib/plugin_validator.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py
 
 # Specific plugin directory
-python <plugin_path>/lib/plugin_validator.py --dir /path/to/plugin
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --dir /path/to/plugin
 
 # Save report with custom name
-python <plugin_path>/lib/plugin_validator.py --output my-validation-report.json
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --output my-validation-report.json
 
 # Quiet mode (summary only)
-python <plugin_path>/lib/plugin_validator.py --quiet
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --quiet
 
 # JSON output format
-python <plugin_path>/lib/plugin_validator.py --format json
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --format json
 ```
 
 ### Windows PowerShell Example
 
 ```powershell
 # Validate and save report
-python <plugin_path>/lib/plugin_validator.py --dir "." --output "validation-$(Get-Date -Format 'yyyy-MM-dd').json"
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --dir "." --output "validation-$(Get-Date -Format 'yyyy-MM-dd').json"
 
 # Quick check with exit code
-python <plugin_path>/lib/plugin_validator.py --quiet
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --quiet
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Plugin validation PASSED" -ForegroundColor Green
 } else {
@@ -101,10 +101,10 @@ if ($LASTEXITCODE -eq 0) {
 
 ```cmd
 REM Validate with timestamp
-python <plugin_path>/lib/plugin_validator.py --output "validation-%date:~-4,4%%date:~-7,2%%date:~-10,2%.json"
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --output "validation-%date:~-4,4%%date:~-7,2%%date:~-10,2%.json"
 
 REM Check validation result
-python <plugin_path>/lib/plugin_validator.py --quiet
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --quiet
 if %errorlevel% equ 0 (
     echo Plugin validation PASSED
 ) else (
@@ -213,7 +213,7 @@ jobs:
       run: pip install PyYAML
 
     - name: Validate plugin
-      run: python <plugin_path>/lib/plugin_validator.py
+      run: python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py
 
     - name: Upload validation report
       uses: actions/upload-artifact@v3
@@ -263,13 +263,13 @@ Ensure the script has read permissions for all plugin files and write permission
 
 ```bash
 # Test with quiet mode
-python <plugin_path>/lib/plugin_validator.py --quiet
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --quiet
 
 # Test JSON output
-python <plugin_path>/lib/plugin_validator.py --format json
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --format json
 
 # Test specific plugin directory
-python <plugin_path>/lib/plugin_validator.py --dir ./test-plugin
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_validator.py --dir ./test-plugin
 ```
 
 ## Troubleshooting

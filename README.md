@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v8.0.0
+# 🚀 Autonomous Agent for Claude Code v8.1.0
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-8.0.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.0.0)
+[![Version](https://img.shields.io/badge/version-8.1.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.1.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -15,7 +15,7 @@
 
 </div>
 
-🧠 **Automatic Learning System** • 🔒 **Privacy-First** • 🚀 **Production-Ready Analysis** • 📊 **Real-Time Monitoring** • 📈 **KPI Intelligence** • 🛡️ **OWASP Security** • 🔧 **Auto Fixes**
+**Automatic Learning System** | **Privacy-First** | **Production-Ready Analysis** | **Real-Time Monitoring** | **KPI Intelligence** | **OWASP Security** | **Auto Fixes**
 
 - Every Task Makes It **Smarter**
 - **No configuration** required.
@@ -110,6 +110,23 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
+### v8.1.0 - Plugin Modernization & Standards Compliance
+
+**Plugin Specification Compliance**: Complete modernization to align with current Claude Code plugin standards.
+
+**Key Changes**:
+- **Standards-Compliant Manifests**: plugin.json, all 36 agent files, 41 commands, and 27 skills validated against official Claude Code plugin schema
+- **Modern Path Resolution**: Replaced legacy find-based path discovery with `${CLAUDE_PLUGIN_ROOT}` across 81 files for reliable marketplace installation
+- **Orchestrator Cleanup**: Removed ~230 lines of non-functional Python code from orchestrator system prompt, reducing context waste
+- **Fixed Installation Error**: Resolved "agents: Invalid input" validation error that prevented marketplace installation
+- **SKILL.md Fixes**: Added missing SKILL.md for transcendent-ai-systems skill, fixed YAML frontmatter across all components
+
+**Updated Stats**:
+- 36 agents across 4-tier architecture
+- 27 skills with proper SKILL.md files
+- 41 commands across 10 categories
+- 147 Python utility scripts in lib/
+
 ### 🚀 **Latest Innovation: v8.0.0 - Browser Console Validation with Authentication** 🆕
 
 **🔍 Enhanced Web Validation**: Comprehensive browser console error validation with authentication support, screenshot capture, and multi-viewport testing across 14 device presets.
@@ -128,24 +145,24 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 - Console errors and uncaught exceptions - Medium
 
 **📊 Current Stats**:
-- **35 agents**: Across 4-tier architecture (Strategic Analysis, Decision Making, Execution, Validation)
-- **25 skills**: Enhanced web-validation skill with authentication and screenshots
-- **40 commands**: All dedicated to autonomous development and code excellence
-- **9 categories**: analyze, debug, design, dev, evolve, learn, monitor, validate, workspace
+- **36 agents**: Across 4-tier architecture (Strategic Analysis, Decision Making, Execution, Validation)
+- **27 skills**: Enhanced web-validation skill with authentication and screenshots
+- **41 commands**: All dedicated to autonomous development and code excellence
+- **10 categories**: analyze, debug, design, dev, evolve, learn, monitor, research, validate, workspace
 
 **💡 Usage Example**:
 ```bash
 # Basic validation with screenshots
-python lib/web_page_validator.py http://localhost:3000 --screenshot
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --screenshot
 
 # With authentication for protected pages
-python lib/web_page_validator.py http://localhost:3000/dashboard \
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000/dashboard \
   --auth-url http://localhost:3000/auth/signin \
   --auth-email test@example.com \
   --auth-password TestPass123!
 
 # Multi-viewport testing (all 14 presets)
-python lib/web_page_validator.py http://localhost:3000 --viewport all --screenshot
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --viewport all --screenshot
 ```
 
 ### 🚀 **v7.5.0 - Unified Dashboard Revolution**
@@ -292,13 +309,13 @@ This creates `.claude-patterns/` directory with the learning database.
 
 ```bash
 # If you're unsure which agent to use
-python <plugin_path>/lib/agent_error_helper.py --suggest "your task description"
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "your task description"
 
 # If you use wrong agent name, you'll get helpful suggestions
 Task agent="wrong-name" task description  # Shows suggestions
 
 # List all available agents
-python <plugin_path>/lib/agent_error_helper.py --list
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list
 ```
 
 ## 📚 Documentation

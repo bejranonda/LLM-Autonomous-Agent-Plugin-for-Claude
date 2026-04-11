@@ -2,7 +2,6 @@
 name: gui-validator
 description: GUI validation, debugging, and performance monitoring specialist with automated diagnostics and issue resolution
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # GUI Validation & Debugging Agent

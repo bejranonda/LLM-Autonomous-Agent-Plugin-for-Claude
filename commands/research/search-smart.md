@@ -146,7 +146,7 @@ rm -rf .claude-patterns/search-cache/
 
 ### To test fallback directly:
 ```bash
-python3 lib/web_search_fallback.py "test query" -v
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "test query" -v
 ```
 
 ## Best Practices

@@ -51,7 +51,7 @@ The plugin needs to execute Python scripts from slash commands, but faces these 
 When executing this command, run the following:
 
 ```bash
-python lib/exec_plugin_script.py dashboard.py --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000
 ```
 ```
 
@@ -77,13 +77,13 @@ python lib/exec_plugin_script.py dashboard.py --port 5000
 **Usage**:
 ```bash
 # Execute dashboard.py with arguments
-python lib/exec_plugin_script.py dashboard.py --host 0.0.0.0 --port 8080
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --host 0.0.0.0 --port 8080
 
 # Execute any lib script
-python lib/exec_plugin_script.py learning_analytics.py show
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py learning_analytics.py show
 
 # Show plugin installation info
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 ```
 
 **How It Works**:
@@ -142,7 +142,7 @@ def get_plugin_path() -> Optional[Path]:
 When executing this command, run:
 
 ```bash
-python lib/exec_plugin_script.py dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py
 ```
 ```
 
@@ -157,16 +157,16 @@ python lib/exec_plugin_script.py dashboard.py
 
 ```bash
 # Show plugin info (verify installation)
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 
 # Execute dashboard
-python lib/exec_plugin_script.py dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py
 
 # Execute with arguments
-python lib/exec_plugin_script.py dashboard.py --port 8080 --host 0.0.0.0
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 8080 --host 0.0.0.0
 
 # Execute other scripts
-python lib/exec_plugin_script.py learning_analytics.py show --dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py learning_analytics.py show --dir .claude-patterns
 ```
 
 ### Environment Variable Override
@@ -176,7 +176,7 @@ python lib/exec_plugin_script.py learning_analytics.py show --dir .claude-patter
 export CLAUDE_PLUGIN_PATH=/custom/path/to/plugin
 
 # Now all scripts use this path
-python lib/exec_plugin_script.py dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py
 ```
 
 ## Error Handling
@@ -226,7 +226,7 @@ But script not found in: D:\Git\Werapol\AutonomousAgent/lib/
 
 ### For Claude Code
 
-✅ **Simple Integration**: Just execute `python lib/exec_plugin_script.py {script}`
+✅ **Simple Integration**: Just execute `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script}`
 ✅ **No Path Resolution**: Plugin handles all path discovery
 ✅ **Error Recovery**: Clear errors if installation is broken
 ✅ **Portable**: Same command works for all users
@@ -237,10 +237,10 @@ But script not found in: D:\Git\Werapol\AutonomousAgent/lib/
 
 ```markdown
 # Old command implementation
-Execute: python <plugin_path>/lib/dashboard.py --port 5000
+Execute: python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 5000
 
 # Issues:
-# - <plugin_path> is a placeholder, Claude Code doesn't know the value
+# - ${CLAUDE_PLUGIN_ROOT} is a placeholder, Claude Code doesn't know the value
 # - Hardcoded assumptions about installation location
 # - Doesn't work with marketplace installations
 ```
@@ -249,7 +249,7 @@ Execute: python <plugin_path>/lib/dashboard.py --port 5000
 
 ```markdown
 # New command implementation
-Execute: python lib/exec_plugin_script.py dashboard.py --port 5000
+Execute: python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000
 
 # Benefits:
 # - Actual executable command, no placeholders
@@ -265,7 +265,7 @@ Execute: python lib/exec_plugin_script.py dashboard.py --port 5000
 ```bash
 # From plugin repository root
 cd /path/to/AutonomousAgent
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 
 # Should show:
 # [OK] Plugin Found: /path/to/AutonomousAgent
@@ -298,7 +298,7 @@ python ~/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/lib
 
 ### For Slash Command Authors
 
-1. **Use Executor**: Always use `python lib/exec_plugin_script.py {script}` pattern
+1. **Use Executor**: Always use `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script}` pattern
 2. **No Absolute Paths**: Never hardcode absolute paths
 3. **Relative to Plugin**: Assume commands run from plugin root
 4. **Test Everywhere**: Test in development and marketplace installations
@@ -356,7 +356,7 @@ chmod 644 lib/*.py
 export CLAUDE_PLUGIN_PATH=/custom/dev/path
 
 # All commands now use this path
-python lib/exec_plugin_script.py dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py
 ```
 
 ### Multiple Plugin Versions
@@ -364,10 +364,10 @@ python lib/exec_plugin_script.py dashboard.py
 ```bash
 # Switch between versions
 export CLAUDE_PLUGIN_PATH=~/plugins/autonomous-agent-v1
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 
 export CLAUDE_PLUGIN_PATH=~/plugins/autonomous-agent-v2
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 ```
 
 ## Architecture Diagram
@@ -383,7 +383,7 @@ User runs: /monitor:dashboard
 │ - Executes via Bash tool                 │
 └──────────┬──────────────────────────────┘
            │
-           │ python lib/exec_plugin_script.py dashboard.py
+           │ python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py
            ▼
 ┌─────────────────────────────────────────┐
 │ exec_plugin_script.py                    │

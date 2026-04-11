@@ -2,9 +2,6 @@
 name: Decision Frameworks
 description: Decision-making methodologies, scoring frameworks, and planning strategies for Group 2 agents in four-tier architecture
 version: 7.0.0
-category: decision-making
-tags: [four-tier, group-2, strategic-planning, decision-making, prioritization, user-preferences]
-related_skills: [group-collaboration, pattern-learning, contextual-pattern-learning]
 ---
 
 # Decision Frameworks Skill

@@ -5,9 +5,9 @@
 ```
 D:\Git\Werapol\AutonomousAgent\
 ├── .claude-plugin/
-│   └── plugin.json                          # Plugin manifest (v7.15.0)
+│   └── plugin.json                          # Plugin manifest (v8.1.0)
 │
-├── agents/                                   # 31 specialized agents
+├── agents/                                   # 36 specialized agents
 │   ├── orchestrator.md                      # Main autonomous controller
 │   ├── code-analyzer.md                     # Code analysis specialist
 │   ├── quality-controller.md                # Quality assurance & auto-fix
@@ -28,7 +28,7 @@ D:\Git\Werapol\AutonomousAgent\
 │   ├── frontend-design-enhancer.md          # Design enhancement (v7.15.0)
 │   └── [Plus 10 additional specialized agents]
 │
-├── skills/                                   # 23 knowledge packages
+├── skills/                                   # 27 knowledge packages
 │   ├── pattern-learning/                    # Pattern recognition system
 │   ├── code-analysis/                       # Code analysis methodologies
 │   ├── quality-standards/                   # Quality benchmarks
@@ -47,7 +47,7 @@ D:\Git\Werapol\AutonomousAgent\
 │   ├── web-artifacts-builder/               # React + Tailwind patterns (v7.15.0)
 │   └── [Plus 5 additional specialized skills]
 │
-├── commands/                                 # 40 slash commands (8 categories)
+├── commands/                                 # 41 slash commands (10 categories)
 │   ├── dev/                                 # Development workflows
 │   │   ├── auto.md                         # Autonomous development
 │   │   ├── commit.md                       # Intelligent commits (v5.4+)

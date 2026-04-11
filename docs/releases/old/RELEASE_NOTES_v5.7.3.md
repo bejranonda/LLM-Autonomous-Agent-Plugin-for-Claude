@@ -15,7 +15,7 @@ v5.7.3 introduces a **revolutionary universal dashboard launcher** that eliminat
 
 ```bash
 # Works on Windows, Linux, macOS - from ANY directory
-python lib/universal_dashboard_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py
 ```
 
 ## 🔧 Problem Solved
@@ -108,16 +108,16 @@ Using patterns from: {current_directory}\.claude-patterns
 **Basic Usage**:
 ```bash
 # From any directory on any platform
-python lib/universal_dashboard_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py
 ```
 
 **With Arguments**:
 ```bash
 # Custom port and host
-python lib/universal_dashboard_launcher.py --port 8080 --host 0.0.0.0
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py --port 8080 --host 0.0.0.0
 
 # Custom patterns directory
-python lib/universal_dashboard_launcher.py --patterns-dir /custom/path
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py --patterns-dir /custom/path
 ```
 
 ## 📊 Benefits Summary

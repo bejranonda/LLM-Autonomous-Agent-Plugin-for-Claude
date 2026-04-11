@@ -1,9 +1,7 @@
 ---
 name: git-release-workflow
 description: "[DEPRECATED] Redirects to dev:release - Use /dev:release instead"
-delegates-to: autonomous-agent:orchestrator
-deprecated: true
-redirects-to: dev:release
+delegates-to: "autonomous-agent:orchestrator"
 ---
 
 # Git Release Workflow Command [DEPRECATED]

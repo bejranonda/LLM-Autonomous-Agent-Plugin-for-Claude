@@ -81,9 +81,9 @@ The autonomous agent plugin enhancement project has been **successfully complete
 ### Smart Agent Discovery System
 ```bash
 # Available immediately for use
-python <plugin_path>/lib/agent_error_helper.py "autonomous-agent"     # Error correction
-python <plugin_path>/lib/agent_error_helper.py --suggest "task description" # Task-based
-python <plugin_path>/lib/agent_error_helper.py --list                # Agent discovery
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py "autonomous-agent"     # Error correction
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "task description" # Task-based
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list                # Agent discovery
 ```
 
 **Features**:
@@ -337,17 +337,17 @@ COMMON_MISTAKES = {
 ### For Immediate Use
 1. **Agent Discovery**:
    ```bash
-   python <plugin_path>/lib/agent_error_helper.py "wrong-name"
+   python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py "wrong-name"
    ```
 
 2. **Task-Based Recommendations**:
    ```bash
-   python <plugin_path>/lib/agent_error_helper.py --suggest "fix code quality issues"
+   python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "fix code quality issues"
    ```
 
 3. **Agent Exploration**:
    ```bash
-   python <plugin_path>/lib/agent_error_helper.py --list
+   python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list
    ```
 
 4. **Debug Command Help**:
@@ -360,7 +360,7 @@ COMMON_MISTAKES = {
    ```bash
    # Dashboard running on http://127.0.0.1:5000
    # Use --port parameter for different ports
-   python <plugin_path>/lib/dashboard.py --port 5001
+   python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 5001
    ```
 
 ### For Developers

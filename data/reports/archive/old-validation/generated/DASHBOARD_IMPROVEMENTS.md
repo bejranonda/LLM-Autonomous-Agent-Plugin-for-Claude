@@ -19,7 +19,7 @@
 **After**: Direct execution with robust launcher
 ```bash
 # Now happens:
-/monitor:dashboard -> python <plugin_path>/lib/dashboard_launcher.py -> robust dashboard startup
+/monitor:dashboard -> python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_launcher.py -> robust dashboard startup
 ```
 
 ### 2. Created Robust Dashboard Launcher (`lib/dashboard_launcher.py`)
@@ -101,22 +101,22 @@ Updated `commands/dashboard.md` to:
 /monitor:dashboard
 
 # Manual execution (same result)
-python <plugin_path>/lib/dashboard_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_launcher.py
 ```
 
 ### Advanced Usage
 ```bash
 # Custom port and host
-python <plugin_path>/lib/dashboard_launcher.py --host 0.0.0.0 --port 8080
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_launcher.py --host 0.0.0.0 --port 8080
 
 # Disable auto-restart
-python <plugin_path>/lib/dashboard_launcher.py --no-restart
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_launcher.py --no-restart
 
 # Verbose logging for debugging
-python <plugin_path>/lib/dashboard_launcher.py --verbose
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_launcher.py --verbose
 
 # Don't open browser automatically
-python <plugin_path>/lib/dashboard_launcher.py --no-browser
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_launcher.py --no-browser
 ```
 
 ## Technical Implementation

@@ -1,26 +1,7 @@
 ---
 name: security-auditor
 description: Security vulnerability scanner for OWASP Top 10, SQL injection, XSS, auth issues, dependencies, cryptography, and architectural vulnerabilities
-category: security
-group: 1
-group_role: analyzer
-tier: strategic_analysis_intelligence
-version: 7.0.0
-usage_frequency: medium
-common_for:
-  - Security vulnerability assessments
-  - OWASP Top 10 compliance checks
-  - Authentication and authorization audits
-  - Dependency security scanning
-  - Cryptographic implementation reviews
-examples:
-  - "Scan for OWASP vulnerabilities → security-auditor"
-  - "Audit authentication system security → security-auditor"
-  - "Check for SQL injection vulnerabilities → security-auditor"
-  - "Review dependency security CVEs → security-auditor"
-  - "Assess cryptographic implementations → security-auditor"
 tools: Read,Grep,Glob,Bash
-model: inherit
 ---
 
 # Security Auditor Agent (Group 1: The Brain)

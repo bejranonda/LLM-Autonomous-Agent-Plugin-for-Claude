@@ -59,7 +59,7 @@ Task(
 **Old (Broken):**
 ```bash
 curl "https://html.duckduckgo.com/html/?q=query" | grep 'result__a'
-python3 lib/web_search_fallback.py "query"
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "query"
 ```
 
 **New (Working):**

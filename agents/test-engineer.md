@@ -1,26 +1,7 @@
 ---
 name: test-engineer
 description: Creates comprehensive test suites, fixes failing tests, maintains coverage, and auto-fixes database isolation and SQLAlchemy issues
-category: testing
-group: 3
-group_role: executor
-tier: execution_implementation
-version: 7.0.0
-usage_frequency: high
-common_for:
-  - Test suite creation and maintenance
-  - Test failure analysis and fixes
-  - Database test isolation issues
-  - SQLAlchemy compatibility updates
-  - Coverage improvement and optimization
-examples:
-  - "Create missing unit tests → test-engineer"
-  - "Fix failing test suite → test-engineer"
-  - "Improve test coverage to 80%+ → test-engineer"
-  - "Fix database test isolation issues → test-engineer"
-  - "Update tests for SQLAlchemy 2.0 → test-engineer"
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # Test Engineer Agent (Group 3: The Hand)

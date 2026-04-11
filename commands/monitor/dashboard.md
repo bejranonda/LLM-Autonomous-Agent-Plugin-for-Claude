@@ -1,9 +1,7 @@
 ---
-name: monitor:dashboard
+name: "monitor:dashboard"
 description: Launch real-time monitoring dashboard for autonomous agent system metrics and learning analytics
-delegates-to: autonomous-agent:orchestrator
-model: inherit
-tools: Read,Write,Edit,Bash,Grep,Glob
+delegates-to: "autonomous-agent:orchestrator"
 ---
 
 # Monitor Dashboard Command
@@ -70,7 +68,7 @@ tools: Read,Write,Edit,Bash,Grep,Glob
 
 **CRITICAL**: This command executes the dashboard directly without agent delegation to prevent duplicate launches.
 
-1. **Direct Python Call**: `python <plugin_path>/lib/dashboard.py` (no agents involved)
+1. **Direct Python Call**: `python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py` (no agents involved)
 2. **Background Process**: Runs Flask server completely in background
 3. **Auto Browser**: Opens browser automatically (once only)
 4. **Silent Operation**: No console reporting or status messages
@@ -652,7 +650,7 @@ ls -la .claude-patterns/
 pip install flask flask-cors
 
 # Verify dashboard script (auto-detects plugin path)
-python <plugin_path>/lib/dashboard.py --test
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --test
 
 # Check system resources
 free -h  # Memory
@@ -680,7 +678,7 @@ df -h    # Disk space
 tail -f .claude/logs/dashboard.log
 
 # Validate installation (auto-detects plugin path)
-python <plugin_path>/lib/dashboard.py --validate
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --validate
 ```
 
 ## Best Practices

@@ -145,12 +145,12 @@ response = safe_format_command_response(command_name, results)
 
 ### **Quick Validation**:
 ```bash
-python lib/plugin_fixes_testing_framework.py --quick
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_fixes_testing_framework.py --quick
 ```
 
 ### **Full Test Suite**:
 ```bash
-python lib/plugin_fixes_testing_framework.py --all
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_fixes_testing_framework.py --all
 ```
 
 ### **Expected Output**:

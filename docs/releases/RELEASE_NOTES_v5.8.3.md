@@ -117,10 +117,10 @@ except ImportError:
 /monitor:dashboard
 
 # Verify unified storage access
-python <plugin_path>/lib/dashboard.py --test-unified-storage
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --test-unified-storage
 
 # Check unified data integrity
-python <plugin_path>/lib/unified_parameter_storage.py --verify
+python ${CLAUDE_PLUGIN_ROOT}/lib/unified_parameter_storage.py --verify
 ```
 
 ## 📋 Testing

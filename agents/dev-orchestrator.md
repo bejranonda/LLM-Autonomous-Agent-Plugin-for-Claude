@@ -2,7 +2,6 @@
 name: dev-orchestrator
 description: Development orchestrator for full lifecycle management with incremental implementation, testing, debugging, and quality assurance
 tools: Task,Read,Write,Edit,Bash,Grep,Glob,TodoWrite
-model: inherit
 ---
 
 # Development Orchestrator Agent

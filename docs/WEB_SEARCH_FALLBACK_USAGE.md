@@ -11,7 +11,7 @@ If you're getting WebSearch errors like:
 **Use this command instead:**
 
 ```bash
-python3 lib/web_search_fallback.py "your search query" -n 10
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "your search query" -n 10
 ```
 
 ## Automatic Usage in Claude Code
@@ -19,13 +19,13 @@ python3 lib/web_search_fallback.py "your search query" -n 10
 ### Method 1: Direct Python Command
 ```python
 # When WebSearch fails, use this:
-!python3 lib/web_search_fallback.py "AI trends 2025" -n 5
+!python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "AI trends 2025" -n 5
 ```
 
 ### Method 2: Smart Search (Automatic Fallback)
 ```python
 # This automatically uses fallback when WebSearch fails:
-!python3 lib/smart_search.py "AI trends 2025"
+!python3 ${CLAUDE_PLUGIN_ROOT}/lib/smart_search.py "AI trends 2025"
 ```
 
 ### Method 3: Using the Agent
@@ -41,7 +41,7 @@ Tell Claude: "Use the web-search-smart agent to search for X"
 ### Basic Search
 ```bash
 # Search for AI trends
-python3 lib/web_search_fallback.py "AI trends 2025" -n 5
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "AI trends 2025" -n 5
 
 # Returns:
 # 1. The 10 Biggest AI Trends Of 2025
@@ -53,7 +53,7 @@ python3 lib/web_search_fallback.py "AI trends 2025" -n 5
 ### JSON Output for Processing
 ```bash
 # Get results as JSON
-python3 lib/web_search_fallback.py "quantum computing" -t json -n 3
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "quantum computing" -t json -n 3
 
 # Returns structured JSON data
 ```
@@ -61,7 +61,7 @@ python3 lib/web_search_fallback.py "quantum computing" -t json -n 3
 ### Fresh Results (No Cache)
 ```bash
 # Skip cache for latest information
-python3 lib/web_search_fallback.py "breaking news today" --no-cache
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "breaking news today" --no-cache
 ```
 
 ## How It Works
@@ -143,7 +143,7 @@ rm -rf .claude-patterns/search-cache/
 
 ### Python Script
 ```bash
-python3 lib/web_search_fallback.py [options] query
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py [options] query
 
 Options:
   -n NUM        Number of results (default: 10)
@@ -165,7 +165,7 @@ Options:
 
 ### Smart Search
 ```bash
-python3 lib/smart_search.py [options] query
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/smart_search.py [options] query
 
 Options:
   -n NUM        Number of results

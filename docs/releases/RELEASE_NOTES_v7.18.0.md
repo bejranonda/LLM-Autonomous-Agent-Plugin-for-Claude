@@ -67,7 +67,7 @@ Never lose search capabilities again! The new fallback system automatically acti
 ./lib/web_search_fallback.sh "python async programming" -n 5
 
 # Python version (Cross-platform, including Windows)
-python lib/web_search_fallback.py "machine learning trends" --format json --no-cache
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "machine learning trends" --format json --no-cache
 ```
 
 ### Integration in Scripts
@@ -136,7 +136,7 @@ if [ -f "lib/web_search_fallback.sh" ]; then
 fi
 
 # Use with error handling
-python lib/web_search_fallback.py "query" || echo "Search failed"
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "query" || echo "Search failed"
 ```
 
 ## Statistics Update

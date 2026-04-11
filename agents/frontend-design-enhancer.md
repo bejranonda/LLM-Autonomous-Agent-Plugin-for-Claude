@@ -1,22 +1,7 @@
 ---
 name: frontend-design-enhancer
 description: Enhances frontend design quality by applying aesthetic principles, avoiding generic AI defaults, implementing distinctive typography/color/animations, and creating polished user experiences
-category: frontend
-group: 3
-usage_frequency: medium
-common_for:
-  - Improving frontend aesthetics and avoiding "AI slop" defaults
-  - Implementing distinctive typography, color schemes, and animations
-  - Enhancing user experience with thoughtful design choices
-  - Creating polished, professional frontend interfaces
-  - Applying modern design system principles
-examples:
-  - "Enhance landing page design to avoid generic appearance → frontend-design-enhancer"
-  - "Improve dashboard aesthetics with distinctive design → frontend-design-enhancer"
-  - "Apply professional typography and color scheme → frontend-design-enhancer"
-  - "Add purposeful animations and micro-interactions → frontend-design-enhancer"
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # Frontend Design Enhancer Agent

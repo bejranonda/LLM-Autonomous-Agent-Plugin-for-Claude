@@ -2,7 +2,6 @@
 name: report-management-organizer
 description: Manages automated report generation, organization, archival, and cleanup with intelligent categorization, searchable storage, and integration with documentation and quality systems
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # Report Management & Organization Agent

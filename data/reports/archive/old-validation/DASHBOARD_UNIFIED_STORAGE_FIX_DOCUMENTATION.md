@@ -227,7 +227,7 @@ python test_dashboard_unified_integration.py
 python .claude-patterns/dashboard.py --no-browser --port 5033
 
 # Test development mode unified storage
-python lib/dashboard.py --no-browser --port 5034
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5034
 ```
 
 ## Conclusion

@@ -141,9 +141,9 @@
 
 **Functions Verified**:
 ```bash
-[OK] python <plugin_path>/lib/agent_error_helper.py "autonomous-agent"     # Error correction
-[OK] python <plugin_path>/lib/agent_error_helper.py --suggest "task"       # Task-based
-[OK] python <plugin_path>/lib/agent_error_helper.py --list                # Discovery
+[OK] python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py "autonomous-agent"     # Error correction
+[OK] python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "task"       # Task-based
+[OK] python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list                # Discovery
 ```
 
 **Performance Results**:

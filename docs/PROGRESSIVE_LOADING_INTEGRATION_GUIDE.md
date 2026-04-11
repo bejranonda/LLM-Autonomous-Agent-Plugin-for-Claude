@@ -243,16 +243,16 @@ monitor_thread.start()
 
 ```bash
 # Simple optimization
-python lib/progressive_loader_integration.py --type simple "Your content here"
+python ${CLAUDE_PLUGIN_ROOT}/lib/progressive_loader_integration.py --type simple "Your content here"
 
 # File optimization
-python lib/progressive_loader_integration.py --type analysis --file document.md
+python ${CLAUDE_PLUGIN_ROOT}/lib/progressive_loader_integration.py --type analysis --file document.md
 
 # With user context
-python lib/progressive_loader_integration.py --type documentation --user-id user_123 --context '{"focus_code": true}' --file guide.md
+python ${CLAUDE_PLUGIN_ROOT}/lib/progressive_loader_integration.py --type documentation --user-id user_123 --context '{"focus_code": true}' --file guide.md
 
 # Show detailed statistics
-python lib/progressive_loader_integration.py --type analysis --stats --file large_document.md
+python ${CLAUDE_PLUGIN_ROOT}/lib/progressive_loader_integration.py --type analysis --stats --file large_document.md
 ```
 
 ## Integration with Existing Systems

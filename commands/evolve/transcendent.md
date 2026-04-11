@@ -1,6 +1,6 @@
 ---
 name: evolve:transcendent
-description: Experimental: Push AI boundaries with next-gen capabilities and revolutionary systems
+description: "Experimental: Push AI boundaries with next-gen capabilities and revolutionary systems"
 delegates-to: autonomous-agent:orchestrator
 ---
 

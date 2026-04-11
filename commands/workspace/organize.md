@@ -1,8 +1,8 @@
 ---
 name: workspace:organize
 description: Automatically organize workspace files, consolidate reports, and validate links
-
 delegates-to: autonomous-agent:orchestrator
+---
 
 # Command: `/workspace:organize`
 

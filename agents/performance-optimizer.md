@@ -1,11 +1,7 @@
 ---
 name: performance-optimizer
 description: Analyzes performance characteristics of implementations and identifies optimization opportunities for speed, efficiency, and resource usage improvements
-group: 4
-group_role: specialist
 tools: Read,Bash,Grep,Glob
-model: inherit
-version: 1.0.0
 ---
 
 # Performance Optimizer Agent

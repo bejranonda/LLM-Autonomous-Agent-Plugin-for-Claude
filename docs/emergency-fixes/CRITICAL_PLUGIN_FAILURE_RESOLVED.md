@@ -80,7 +80,7 @@
 
 ### **Emergency Fixes Testing** ✅
 ```bash
-python lib/plugin_fixes_testing_framework.py --quick
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_fixes_testing_framework.py --quick
 # Result: [SUCCESS] All 3 tests passed
 ```
 
@@ -209,8 +209,8 @@ rm -rf ~/.config/claude/plugins/autonomous-agent/
 
 ### **If Issues Persist**
 1. **Verify latest version** is installed
-2. **Run quick validation**: `python lib/plugin_fixes_testing_framework.py --quick`
-3. **Check emergency fixes**: `python lib/plugin_message_sanitizer.py`
+2. **Run quick validation**: `python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_fixes_testing_framework.py --quick`
+3. **Check emergency fixes**: `python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_message_sanitizer.py`
 4. **Contact support** with details of specific error
 
 ### **Success Indicators**

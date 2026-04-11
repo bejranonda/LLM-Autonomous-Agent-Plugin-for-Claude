@@ -10,12 +10,12 @@ This document describes the browser console error validation system with authent
 
 ### Basic Validation with Screenshots
 ```bash
-python lib/web_page_validator.py http://localhost:3000 --screenshot
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --screenshot
 ```
 
 ### Validation with Authentication
 ```bash
-python lib/web_page_validator.py http://localhost:3000/dashboard \
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000/dashboard \
   --auth-url http://localhost:3000/auth/signin \
   --auth-email test@example.com \
   --auth-password TestPass123!
@@ -23,7 +23,7 @@ python lib/web_page_validator.py http://localhost:3000/dashboard \
 
 ### Multi-Viewport Testing
 ```bash
-python lib/web_page_validator.py http://localhost:3000 --viewport all --screenshot --verbose
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --viewport all --screenshot --verbose
 ```
 
 ## Components
@@ -206,7 +206,7 @@ results = validator.validate_pages_with_auth(
 # GitHub Actions example
 - name: Validate Web App
   run: |
-    python lib/web_page_validator.py ${{ env.APP_URL }} \
+    python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py ${{ env.APP_URL }} \
       --viewport all \
       --screenshot \
       --output validation-report.txt

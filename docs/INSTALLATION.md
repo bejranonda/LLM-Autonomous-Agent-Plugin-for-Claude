@@ -295,7 +295,7 @@ After installation, verify everything works:
 - [ ] Commands available: `/auto-analyze`, `/quality-check`, `/learn-patterns`
 - [ ] Can run `/auto-analyze` in a test project
 - [ ] Pattern directory created at `.claude-patterns/`
-- [ ] Python scripts work (optional, check with `python3 lib/pattern_storage.py stats`)
+- [ ] Python scripts work (optional, check with `python3 ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py stats`)
 
 ## FAQ
 

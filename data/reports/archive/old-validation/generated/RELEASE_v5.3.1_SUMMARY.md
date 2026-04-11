@@ -109,9 +109,9 @@ Result: 1 browser window [OK]
 
 **Available Commands**
 ```bash
-python <plugin_path>/lib/agent_error_helper.py "autonomous-agent"        # Error correction
-python <plugin_path>/lib/agent_error_helper.py --suggest "task description" # Task-based recommendations
-python <plugin_path>/lib/agent_error_helper.py --list                     # Agent discovery
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py "autonomous-agent"        # Error correction
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "task description" # Task-based recommendations
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list                     # Agent discovery
 ```
 
 **Performance Metrics**

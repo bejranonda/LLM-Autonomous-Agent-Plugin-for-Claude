@@ -12,7 +12,7 @@ The Web Page Validation System provides automated JavaScript error detection, br
 
 ### Before Web Validation System
 
-1. Start dashboard: `python lib/dashboard.py`
+1. Start dashboard: `python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py`
 2. Open browser manually
 3. Navigate to http://127.0.0.1:5000
 4. Open developer console (F12)
@@ -185,7 +185,7 @@ playwright install chromium
 
 Test the installation:
 ```bash
-python lib/web_page_validator.py http://example.com
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://example.com
 ```
 
 Expected output:
@@ -201,13 +201,13 @@ Expected output:
 
 ```bash
 # Start dashboard
-python lib/dashboard.py --no-browser --port 5000 &
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000 &
 
 # Wait for server
 sleep 3
 
 # Validate
-python lib/web_page_validator.py http://127.0.0.1:5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000
 ```
 
 **Output**:
@@ -363,12 +363,12 @@ jobs:
 
       - name: Start dashboard
         run: |
-          python lib/dashboard.py --no-browser --port 5000 &
+          python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000 &
           sleep 5
 
       - name: Validate dashboard
         run: |
-          python lib/web_page_validator.py http://127.0.0.1:5000 --timeout 30
+          python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --timeout 30
 
       - name: Upload report on failure
         if: failure()
@@ -518,7 +518,7 @@ def start_dashboard():
 # .git/hooks/pre-commit
 
 if git diff --cached --name-only | grep -q "dashboard.py"; then
-    python lib/web_page_validator.py http://127.0.0.1:5555
+    python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5555
 
     if [ $? -ne 0 ]; then
         echo "ERROR: Dashboard validation failed"
@@ -596,10 +596,10 @@ Error: TimeoutException: Page load timeout
 **Solution**:
 ```bash
 # Increase timeout
-python lib/web_page_validator.py URL --timeout 60
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py URL --timeout 60
 
 # Or increase wait time
-python lib/web_page_validator.py URL --wait 10
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py URL --wait 10
 ```
 
 **4. No errors detected but page is broken**
@@ -611,17 +611,17 @@ python lib/web_page_validator.py URL --wait 10
 **Solution**:
 ```bash
 # Increase wait time for JavaScript execution
-python lib/web_page_validator.py URL --wait 10
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py URL --wait 10
 
 # Or run with visible browser to debug
-python lib/web_page_validator.py URL --no-headless
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py URL --no-headless
 ```
 
 ### Debug Mode
 
 Run with visible browser to see what's happening:
 ```bash
-python lib/web_page_validator.py http://127.0.0.1:5000 --no-headless
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --no-headless
 ```
 
 This opens a real Chrome window so you can see:

@@ -1,7 +1,6 @@
 ---
-name: design:enhance
+name: "design:enhance"
 description: Enhance frontend design by applying research-backed aesthetic principles from Claude's official design research - implements distributional convergence awareness, high-impact motion, distinctive typography, and altitude-appropriate guidance
-category: design
 ---
 
 # Frontend Design Enhancement Command

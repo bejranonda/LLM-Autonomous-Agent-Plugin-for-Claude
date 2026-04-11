@@ -1,7 +1,7 @@
 {
   "name": "autonomous-agent",
-  "version": "8.0.1",
-  "description": "Four-tier autonomous agent architecture with 35 specialized agents, 25 skills, and 40 commands for code analysis, quality control, pattern learning, and automated validation.",
+  "version": "8.1.0",
+  "description": "Four-tier autonomous agent architecture with specialized agents, skills, and commands for code analysis, quality control, pattern learning, and automated validation.",
   "author": {
     "name": "Werapol Bejranonda",
     "email": "contact@werapol.dev",
@@ -10,9 +10,6 @@
   "repository": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
   "homepage": "https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude",
   "license": "MIT",
-  "commands": "./commands/",
-  "agents": "./agents/",
-  "skills": "./skills/",
   "keywords": [
     "autonomous",
     "agent",
@@ -22,17 +19,6 @@
     "validation",
     "testing",
     "documentation",
-    "refactoring",
-    "four-tier-architecture",
-    "token-optimization",
-    "cross-platform",
-    "ai-assistant",
-    "performance-analytics",
-    "security-audit",
-    "auto-fix",
-    "dashboard",
-    "pr-review",
-    "release-automation",
-    "open-source"
+    "four-tier-architecture"
   ]
 }

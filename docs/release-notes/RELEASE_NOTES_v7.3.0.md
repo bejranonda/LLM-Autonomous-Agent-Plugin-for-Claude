@@ -170,7 +170,7 @@ End-to-end testing framework that validates:
 # No additional installation required
 
 # Generate dashboards
-python lib/kpi_dashboard_generator.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/kpi_dashboard_generator.py
 
 # Run comprehensive tests
 python test_metrics_kpi_system.py
@@ -297,7 +297,7 @@ This release represents a significant milestone in providing transparency and bu
 # New features are immediately available
 
 # Generate new dashboards
-python lib/kpi_dashboard_generator.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/kpi_dashboard_generator.py
 
 # Verify functionality
 python test_metrics_kpi_system.py

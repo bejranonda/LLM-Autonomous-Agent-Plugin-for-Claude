@@ -236,8 +236,8 @@ This smart hybrid approach establishes a pattern for future optimizations:
 **Reference Implementation** for similar optimizations:
 ```bash
 # The smart copy approach can be replicated for other performance-critical scripts
-python lib/exec_plugin_script.py copy_to_local --script dashboard.py
-python lib/exec_plugin_script.py run_local --script dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py copy_to_local --script dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py run_local --script dashboard.py
 ```
 
 ---

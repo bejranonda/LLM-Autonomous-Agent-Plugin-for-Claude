@@ -1,8 +1,6 @@
 ---
 name: web-search-fallback
 description: Autonomous agent-based web search fallback for when WebSearch API fails or hits limits
-category: research
-requires_approval: false
 ---
 
 # Web Search Fallback Skill

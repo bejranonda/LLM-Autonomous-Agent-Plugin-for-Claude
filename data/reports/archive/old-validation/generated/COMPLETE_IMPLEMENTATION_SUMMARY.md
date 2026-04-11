@@ -183,9 +183,9 @@ This project successfully addressed the critical agent selection confusion that 
 ### Smart Agent Error Helper System
 ```python
 # Intelligent agent suggestion with multiple modes
-python <plugin_path>/lib/agent_error_helper.py "autonomous-agent"     # Error correction
-python <plugin_path>/lib/agent_error_helper.py --suggest "task desc" # Task-based
-python <plugin_path>/lib/agent_error_helper.py --list                # Agent discovery
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py "autonomous-agent"     # Error correction
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "task desc" # Task-based
+python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list                # Agent discovery
 ```
 
 **Key Features**:
@@ -359,17 +359,17 @@ def Task(description, agent_type):
 ### For Immediate Use
 1. **When confused about agent names**:
    ```bash
-   python <plugin_path>/lib/agent_error_helper.py "wrong-name"
+   python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py "wrong-name"
    ```
 
 2. **When you need agent suggestions**:
    ```bash
-   python <plugin_path>/lib/agent_error_helper.py --suggest "your task description"
+   python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --suggest "your task description"
    ```
 
 3. **When you want to explore agents**:
    ```bash
-   python <plugin_path>/lib/agent_error_helper.py --list
+   python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list
    ```
 
 4. **For comprehensive documentation**:

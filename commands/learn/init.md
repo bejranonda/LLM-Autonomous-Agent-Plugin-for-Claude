@@ -5,25 +5,19 @@ description: Initialize pattern learning database
 
 EXECUTE THESE BASH COMMANDS DIRECTLY (no agents, no skills):
 
-First, find the plugin installation path:
-```bash
-PLUGIN_PATH=$(find ~/.claude -name "exec_plugin_script.py" 2>/dev/null | head -1 | sed 's|/lib/exec_plugin_script.py||')
-echo "Plugin found at: $PLUGIN_PATH"
-```
-
 Step 1 - Check status in current project directory:
 ```bash
-python3 "$PLUGIN_PATH/lib/exec_plugin_script.py" pattern_storage.py --dir ./.claude-patterns check
+python3 "${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py" --dir ./.claude-patterns check
 ```
 
 Step 2 - Initialize if needed:
 ```bash
-python3 "$PLUGIN_PATH/lib/exec_plugin_script.py" pattern_storage.py --dir ./.claude-patterns init --version 7.6.9
+python3 "${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py" --dir ./.claude-patterns init --version 8.0.1
 ```
 
 Step 3 - Validate:
 ```bash
-python3 "$PLUGIN_PATH/lib/exec_plugin_script.py" pattern_storage.py --dir ./.claude-patterns validate
+python3 "${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py" --dir ./.claude-patterns validate
 ```
 
 Step 4 - Verify patterns stored in current project:

@@ -108,7 +108,7 @@ Created `EMERGENCY_COMMAND_RESPONSE_TEMPLATE.md` with universal safety requireme
 The emergency Unicode fix script can be run to ensure all command files remain ASCII-safe:
 
 ```bash
-python lib/emergency_unicode_fix.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/emergency_unicode_fix.py
 ```
 
 ### Development Guidelines

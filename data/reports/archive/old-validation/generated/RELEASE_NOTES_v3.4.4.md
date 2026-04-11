@@ -178,7 +178,7 @@ cd /your/project
 /eval-debug dashboard
 
 # View enhanced dashboard
-python <plugin_path>/lib/dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py
 ```
 
 ### Debugging Performance Evaluation

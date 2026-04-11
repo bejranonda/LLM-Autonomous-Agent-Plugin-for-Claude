@@ -86,7 +86,7 @@ Created `lib/trigger_learning.py` to manually update learning records:
 
 ```bash
 # Run after completing important tasks
-python <plugin_path>/lib/trigger_learning.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/trigger_learning.py
 ```
 
 **Features**:
@@ -130,7 +130,7 @@ Keep direct execution for critical commands, add manual learning reminders:
 
 ```bash
 # After direct execution commands
-echo "[IDEA] Don't forget to run: python <plugin_path>/lib/trigger_learning.py"
+echo "[IDEA] Don't forget to run: python ${CLAUDE_PLUGIN_ROOT}/lib/trigger_learning.py"
 ```
 
 **Pros**: Simple, maintains current functionality
@@ -159,7 +159,7 @@ While the automatic learning system is being fixed:
 
 1. **After important tasks**, run the manual trigger:
    ```bash
-   python <plugin_path>/lib/trigger_learning.py
+   python ${CLAUDE_PLUGIN_ROOT}/lib/trigger_learning.py
    ```
 
 2. **Monitor learning activity** by checking timestamps:
@@ -269,7 +269,7 @@ grep -c "pattern_id" .claude-patterns/patterns.json
 
 The learning system issue has been **identified and documented**. The automatic learning system is functional but not being triggered due to execution path changes. A **manual workaround** is in place, and a **permanent fix** is planned for the next release.
 
-**Immediate Action**: Use `python <plugin_path>/lib/trigger_learning.py` after important tasks to maintain learning continuity.
+**Immediate Action**: Use `python ${CLAUDE_PLUGIN_ROOT}/lib/trigger_learning.py` after important tasks to maintain learning continuity.
 
 **Long-term Solution**: Restore orchestrator delegation or implement universal learning triggers.
 

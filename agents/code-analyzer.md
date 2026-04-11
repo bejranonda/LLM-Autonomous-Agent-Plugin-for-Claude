@@ -1,26 +1,7 @@
 ---
 name: code-analyzer
 description: Analyzes code structure, identifies refactoring opportunities, and assesses code quality
-category: analysis
-group: 1
-group_role: analyzer
-tier: strategic_analysis_intelligence
-version: 7.0.0
-usage_frequency: high
-common_for:
-  - Code refactoring and optimization
-  - Architecture analysis and design improvements
-  - Code quality assessment and metrics
-  - Technical debt identification
-  - Legacy code modernization
-examples:
-  - "Refactor authentication module → code-analyzer"
-  - "Analyze codebase complexity → code-analyzer"
-  - "Identify code smells and anti-patterns → code-analyzer"
-  - "Assess technical debt levels → code-analyzer"
-  - "Optimize code performance bottlenecks → code-analyzer"
 tools: Read,Grep,Glob,Bash
-model: inherit
 ---
 
 # Code Analyzer Agent (Group 1: The Brain)

@@ -2,8 +2,6 @@
 name: web-validation
 description: Comprehensive web page validation with authentication, screenshot capture, mobile testing, and enhanced error detection
 version: 2.0.0
-category: validation
-tags: [web, javascript, testing, validation, browser, console, debugging, screenshots, mobile, authentication]
 ---
 
 # Web Validation Skill
@@ -115,7 +113,7 @@ with WebPageValidator(screenshot_config=screenshot_config) as validator:
 Capture screenshots across multiple devices:
 
 ```bash
-python lib/web_page_validator.py http://localhost:3000 --viewport all --screenshot
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --viewport all --screenshot
 ```
 
 ### Screenshot Naming Convention
@@ -157,16 +155,16 @@ results = validator.validate_all_viewports('http://localhost:3000')
 
 ```bash
 # Mobile viewport
-python lib/web_page_validator.py http://localhost:3000 --viewport mobile
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --viewport mobile
 
 # Tablet viewport
-python lib/web_page_validator.py http://localhost:3000 --viewport tablet
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --viewport tablet
 
 # All viewports
-python lib/web_page_validator.py http://localhost:3000 --viewport all
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --viewport all
 
 # Custom dimensions
-python lib/web_page_validator.py http://localhost:3000 --viewport-width 414 --viewport-height 896
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --viewport-width 414 --viewport-height 896
 ```
 
 ## React Hydration Error Detection (NEW)
@@ -316,7 +314,7 @@ resources.forEach(r => {
 
 **Step 1: Start Web Server**
 ```bash
-python lib/dashboard.py --no-browser --port 5000 &
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000 &
 ```
 
 **Step 2: Wait for Server Ready**
@@ -339,7 +337,7 @@ wait_for_server('http://127.0.0.1:5000')
 
 **Step 3: Run Validation**
 ```bash
-python lib/web_page_validator.py http://127.0.0.1:5000 --verbose
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --verbose
 ```
 
 **Step 4: Analyze Results**
@@ -460,27 +458,27 @@ RECOMMENDATIONS:
 
 **Basic Validation**:
 ```bash
-python lib/web_page_validator.py http://127.0.0.1:5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000
 ```
 
 **Verbose Output**:
 ```bash
-python lib/web_page_validator.py http://127.0.0.1:5000 --verbose
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --verbose
 ```
 
 **Save Report to File**:
 ```bash
-python lib/web_page_validator.py http://127.0.0.1:5000 --output report.txt
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --output report.txt
 ```
 
 **JSON Output**:
 ```bash
-python lib/web_page_validator.py http://127.0.0.1:5000 --json > result.json
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --json > result.json
 ```
 
 **Show Browser (Debugging)**:
 ```bash
-python lib/web_page_validator.py http://127.0.0.1:5000 --no-headless
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5000 --no-headless
 ```
 
 ### Programmatic Usage
@@ -581,12 +579,12 @@ if git diff --cached --name-only | grep -q "dashboard.py"; then
     echo "Running dashboard validation..."
 
     # Start server
-    python lib/dashboard.py --no-browser --port 5555 &
+    python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5555 &
     PID=$!
     sleep 3
 
     # Validate
-    python lib/web_page_validator.py http://127.0.0.1:5555
+    python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://127.0.0.1:5555
     RESULT=$?
 
     # Cleanup
@@ -646,13 +644,13 @@ Solution: Install Google Chrome browser
 **3. Timeout errors**
 ```
 Solution: Increase timeout
-python lib/web_page_validator.py URL --timeout 60
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py URL --timeout 60
 ```
 
 **4. No errors detected but page broken**
 ```
 Solution: Increase wait time after page load
-python lib/web_page_validator.py URL --wait 10
+python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py URL --wait 10
 ```
 
 **5. Permission denied on Windows**

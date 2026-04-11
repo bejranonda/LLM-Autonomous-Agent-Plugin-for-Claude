@@ -28,7 +28,7 @@ The Autonomous Agent Plugin has been thoroughly validated and is **ready for pub
   - Provides clear error messages
 
 ### [OK] Documentation Updates
-- **Slash Commands**: All use `<plugin_path>` placeholder
+- **Slash Commands**: All use `${CLAUDE_PLUGIN_ROOT}` placeholder
   - `commands/monitor/dashboard.md` - 4 references updated
   - `commands/learn/analytics.md` - 4 references updated
 
@@ -54,15 +54,15 @@ The Autonomous Agent Plugin has been thoroughly validated and is **ready for pub
 ### Commands with Python Scripts
 | Command | Script | Status |
 |---------|--------|--------|
-| `/monitor:dashboard` | `dashboard.py` | [OK] Uses `<plugin_path>` |
-| `/learn:analytics` | `learning_analytics.py` | [OK] Uses `<plugin_path>` |
+| `/monitor:dashboard` | `dashboard.py` | [OK] Uses `${CLAUDE_PLUGIN_ROOT}` |
+| `/learn:analytics` | `learning_analytics.py` | [OK] Uses `${CLAUDE_PLUGIN_ROOT}` |
 
 ### Agents with Python Script References
 | Agent | Script | Status |
 |-------|--------|--------|
-| `claude-plugin-validator` | `claude-plugin-validator.py` | [OK] Uses `<plugin_path>` |
-| `orchestrator` | `learning_analytics.py` | [OK] Uses `<plugin_path>` |
-| `orchestrator` | `dashboard.py` | [OK] Uses `<plugin_path>` |
+| `claude-plugin-validator` | `claude-plugin-validator.py` | [OK] Uses `${CLAUDE_PLUGIN_ROOT}` |
+| `orchestrator` | `learning_analytics.py` | [OK] Uses `${CLAUDE_PLUGIN_ROOT}` |
+| `orchestrator` | `dashboard.py` | [OK] Uses `${CLAUDE_PLUGIN_ROOT}` |
 
 ### Skills with Python Scripts
 - **No skills reference Python scripts directly** [OK]
@@ -89,19 +89,19 @@ The Autonomous Agent Plugin has been thoroughly validated and is **ready for pub
 
 ### Distribution Validator
 ```bash
-python lib/validate_distribution.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/validate_distribution.py
 ```
 **Result**: All 6 validation categories passed [OK]
 
 ### Path Resolution Test
 ```bash
-python lib/plugin_path_resolver.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/plugin_path_resolver.py
 ```
 **Result**: Correctly identifies plugin path [OK]
 
 ### Script Execution Test
 ```bash
-python lib/run_script.py plugin_path_resolver.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/run_script.py plugin_path_resolver.py
 ```
 **Result**: Script executes successfully [OK]
 

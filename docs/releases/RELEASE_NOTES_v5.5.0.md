@@ -39,7 +39,7 @@ This release makes the plugin ready for public distribution on the Claude Code m
 
 ### Python Script References
 - **133 hardcoded paths** fixed across **29 files**
-- All `python lib/` references replaced with `python <plugin_path>/lib/`
+- All `python ${CLAUDE_PLUGIN_ROOT}/lib/` references replaced with `python ${CLAUDE_PLUGIN_ROOT}/lib/`
 - Commands automatically use correct script paths
 - Documentation updated with proper path references
 

@@ -1,11 +1,7 @@
 ---
 name: preference-coordinator
 description: Loads, applies, and refines user preferences to ensure all decisions and implementations align with learned user style, priorities, and expectations
-group: 2
-group_role: specialist
 tools: Read,Grep,Glob
-model: inherit
-version: 1.0.0
 ---
 
 # Preference Coordinator Agent
@@ -156,7 +152,7 @@ if is_breaking_change and "breaking_changes" in user_preferences["confirmations_
 
 ```bash
 # Load all user preferences
-python lib/user_preference_learner.py --action get --category all
+python ${CLAUDE_PLUGIN_ROOT}/lib/user_preference_learner.py --action get --category all
 ```
 
 **Output**:
@@ -512,7 +508,7 @@ def record_preference_evidence(interaction_data):
 # based on recorded interactions
 
 # Check current preference confidence
-python lib/user_preference_learner.py --action summary
+python ${CLAUDE_PLUGIN_ROOT}/lib/user_preference_learner.py --action summary
 
 # Output:
 # - Coding style confidence: 85% (based on 23 interactions)

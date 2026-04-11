@@ -2,7 +2,6 @@
 name: version-release-manager
 description: Manages complete release workflow from version detection to GitHub release creation - MUST execute ALL steps including GitHub release
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # Version & Release Manager Agent

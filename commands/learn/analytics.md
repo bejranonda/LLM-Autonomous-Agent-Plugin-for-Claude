@@ -22,7 +22,7 @@ Generate and display the learning analytics report:
 
 ```bash
 # Auto-detects plugin path whether in development or installed from marketplace
-python <plugin_path>/lib/learning_analytics.py show --dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/learning_analytics.py show --dir .claude-patterns
 ```
 
 ## Output Format
@@ -137,13 +137,13 @@ The command produces a comprehensive terminal dashboard with:
 ### Export as JSON
 ```bash
 # Auto-detects plugin path
-python <plugin_path>/lib/learning_analytics.py export-json --output data/reports/analytics.json --dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/learning_analytics.py export-json --output data/reports/analytics.json --dir .claude-patterns
 ```
 
 ### Export as Markdown
 ```bash
 # Auto-detects plugin path
-python <plugin_path>/lib/learning_analytics.py export-md --output data/reports/analytics.md --dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/learning_analytics.py export-md --output data/reports/analytics.md --dir .claude-patterns
 ```
 
 ## Usage Scenarios
@@ -158,7 +158,7 @@ Review learning progress and identify areas needing attention:
 Export comprehensive report for documentation:
 ```bash
 # Auto-detects plugin path
-python <plugin_path>/lib/learning_analytics.py export-md --output weekly_analytics.md
+python ${CLAUDE_PLUGIN_ROOT}/lib/learning_analytics.py export-md --output weekly_analytics.md
 ```
 
 ### Performance Investigation

@@ -291,15 +291,15 @@ python -m pytest tests/test_intelligent_suggestions.py
 ### Testing New Features
 ```bash
 # Test user preference system
-python <plugin_path>/lib/user_preference_memory.py --profile
-python <plugin_path>/lib/user_preference_memory.py --set --category test --key test_key --value "test_value"
+python ${CLAUDE_PLUGIN_ROOT}/lib/user_preference_memory.py --profile
+python ${CLAUDE_PLUGIN_ROOT}/lib/user_preference_memory.py --set --category test --key test_key --value "test_value"
 
 # Test task queue system
-python <plugin_path>/lib/enhanced_task_queue.py --dir .claude-test --add --name "Test Task" --description "Test"
-python <plugin_path>/lib/enhanced_task_queue.py --dir .claude-test --status
+python ${CLAUDE_PLUGIN_ROOT}/lib/enhanced_task_queue.py --dir .claude-test --add --name "Test Task" --description "Test"
+python ${CLAUDE_PLUGIN_ROOT}/lib/enhanced_task_queue.py --dir .claude-test --status
 
 # Test suggestion engine
-python <plugin_path>/lib/intelligent_suggestion_engine.py --generate --quality 75
+python ${CLAUDE_PLUGIN_ROOT}/lib/intelligent_suggestion_engine.py --generate --quality 75
 ```
 
 ## 📞 Support

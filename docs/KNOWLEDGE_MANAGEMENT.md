@@ -1,15 +1,31 @@
 # Knowledge Management Paradigm
 
-Starting in version 8.0.0, the Autonomous Agent Plugin enforces strict knowledge decentralization aligned with the Claude Code specifications.
+Starting in v8.1.0, the Autonomous Agent Plugin enforces strict knowledge decentralization aligned with Claude Code specifications.
 
-## Global Environment Isolation (`${CLAUDE_PLUGIN_DATA}`)
-Previously, data was coupled tightly to the operational paths of the working repository. The system now delegates persistent knowledge integration (such as memory vectors, decision success rates, and token histories) strictly into Claude's native data sandbox: `~/.claude/plugins/data/{plugin-id}`.
+## Environment Isolation
 
-### Component Discovery
-All logic runs independently and asynchronously.
-- **Skills:** Loaded directly via `skills/` metadata.
-- **Agents:** System prompts managed via `agents/` and referenced autonomously.
-- **Core State:** Consistently retrieved from the singleton `PatternStorage` abstraction mapping the marketplace specifications.
+### Plugin Installation (`${CLAUDE_PLUGIN_ROOT}`)
+All plugin code, agents, skills, commands, and Python utilities are installed to the plugin cache directory. Referenced via `${CLAUDE_PLUGIN_ROOT}` which Claude Code substitutes automatically.
 
-## The `unified_data.json` Mechanism
-When consolidating inter-group knowledge across our Four-Tier workflow, the system performs scheduled compactions to `unified_data.json` via file locks, ensuring race-free concurrency across operating systems. This reduces API payload overhead and securely synchronizes Contextual Performance with standard LLM contexts.
+### Persistent Data (`${CLAUDE_PLUGIN_DATA}`)
+Long-lived data (memory vectors, decision success rates, token histories) is stored in Claude's native plugin data sandbox: `~/.claude/plugins/data/{plugin-id}/`. This directory survives plugin updates.
+
+### Project Data (`.claude-patterns/`)
+Per-project learning patterns are stored in `.claude-patterns/` within the user's working directory. This is project-scoped and not part of the plugin installation.
+
+## Component Discovery
+
+All components are auto-discovered by Claude Code's convention-based loader:
+- **Skills**: `skills/<name>/SKILL.md` - loaded based on task context matching
+- **Agents**: `agents/<name>.md` - available for delegation and user invocation
+- **Commands**: `commands/<category>/<name>.md` - exposed as `/autonomous-agent:<name>` slash commands
+
+## Inter-Group Knowledge
+
+When consolidating knowledge across the Four-Tier workflow, the system uses `unified_data.json` with file-locked writes for race-free concurrency across operating systems. This reduces API payload overhead and synchronizes contextual performance data.
+
+## What Changed in v8.1.0
+
+- Removed non-standard frontmatter keys from all components (they were invisible to Claude Code's plugin loader)
+- Replaced `<plugin_path>` and `python lib/` references with `${CLAUDE_PLUGIN_ROOT}/lib/` for marketplace compatibility
+- Cleaned dead Python import code from agent system prompts

@@ -256,7 +256,7 @@ assessment_id = record_task_performance(task_data, "Claude Sonnet 4.5")
 ## [DATA] Dashboard Usage
 
 ### Viewing Performance Records
-1. **Launch Dashboard**: `python <plugin_path>/lib/dashboard.py`
+1. **Launch Dashboard**: `python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py`
 2. **Navigate**: Scroll to "Recent Performance Records" section
 3. **Analyze**: View all task types with auto/manual indicators
 4. **Filter**: Use period selector for time-based analysis

@@ -127,7 +127,7 @@ git clone <repository-url>
 cd <repository-name>
 
 # Work with development version
-python lib/dashboard.py --no-browser --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000
 ```
 
 ### 2. Making Changes
@@ -137,7 +137,7 @@ python lib/dashboard.py --no-browser --port 5000
 vim lib/dashboard.py
 
 # Test changes locally
-python lib/dashboard.py --no-browser --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000
 
 # Run API tests
 curl http://127.0.0.1:5000/api/overview
@@ -278,7 +278,7 @@ for path in paths_to_check:
 
 ```bash
 # Test development mode
-python lib/dashboard.py --no-browser --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000
 curl http://127.0.0.1:5000/api/overview
 
 # Verify unified storage integration
@@ -301,7 +301,7 @@ curl http://127.0.0.1:5001/api/unified/quality  # Should handle missing storage 
 
 ```bash
 # Test both modes in sequence
-python lib/dashboard.py --no-browser --port 5000 &
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --no-browser --port 5000 &
 sleep 2
 python .claude-patterns/dashboard.py --no-browser --port 5001 &
 sleep 2

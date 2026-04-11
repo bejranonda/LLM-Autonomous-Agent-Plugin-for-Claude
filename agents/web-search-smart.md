@@ -1,11 +1,7 @@
 ---
 name: web-search-smart
 description: Intelligent web search agent that automatically uses autonomous agent fallback when WebSearch API fails
-skills:
-  - web-search-fallback
-tools:
-  - WebSearch
-  - Task
+tools: WebSearch,Task
 ---
 
 # Web Search Smart Agent
@@ -80,7 +76,7 @@ def smart_web_search(query):
 # ⚠️ DO NOT USE HTML SCRAPING - IT'S BROKEN!
 # The following methods NO LONGER WORK:
 # - curl + grep (broken due to HTML changes)
-# - python3 lib/web_search_fallback.py (uses broken scraping)
+# - python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py (uses broken scraping)
 # - Any HTML parsing approach (bot protection blocks it)
 ```
 

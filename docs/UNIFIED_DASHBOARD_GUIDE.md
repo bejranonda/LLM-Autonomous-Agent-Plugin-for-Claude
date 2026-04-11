@@ -153,7 +153,7 @@ If you're upgrading from previous dashboard versions:
 **Dashboard doesn't load:**
 ```bash
 # Check if port is available
-python lib/dashboard.py --status
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --status
 
 # Try different port
 /monitor:dashboard --port 5001
@@ -253,9 +253,9 @@ GET /api/sections/<section_name>
 **Old Approach:**
 ```bash
 # Multiple dashboard calls
-python lib/token_dashboard.py
-python lib/kpi_dashboard.py
-python lib/system_health.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/token_dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/kpi_dashboard.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/system_health.py
 ```
 
 **New Approach:**

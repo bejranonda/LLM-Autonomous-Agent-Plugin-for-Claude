@@ -18,7 +18,7 @@ Instead of complex shell scripting, we created a **single Python launcher** that
 
 ```bash
 # Works on Windows, Linux, macOS - ANY directory
-python lib/universal_dashboard_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py
 ```
 
 ### How It Works
@@ -84,22 +84,22 @@ The launcher searches for plugin installations in this order:
 **Basic Usage**:
 ```bash
 # From any directory on any platform
-python lib/universal_dashboard_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py
 ```
 
 **With Arguments**:
 ```bash
 # Custom port and host
-python lib/universal_dashboard_launcher.py --port 8080 --host 0.0.0.0
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py --port 8080 --host 0.0.0.0
 
 # Custom patterns directory
-python lib/universal_dashboard_launcher.py --patterns-dir /custom/path
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py --patterns-dir /custom/path
 ```
 
 **Development Mode**:
 ```bash
 # When running from plugin source code
-python lib/universal_dashboard_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_dashboard_launcher.py
 # Automatically detects development environment
 ```
 
@@ -167,8 +167,8 @@ The same launcher pattern can be applied to other plugin commands:
 
 ```bash
 # Example for other scripts
-python lib/universal_learning_analytics_launcher.py
-python lib/universal_quality_control_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_learning_analytics_launcher.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/universal_quality_control_launcher.py
 ```
 
 ### With Plugin Architecture

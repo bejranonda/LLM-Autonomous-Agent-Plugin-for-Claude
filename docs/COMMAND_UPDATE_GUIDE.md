@@ -5,18 +5,18 @@
 ### Old Pattern (❌ Don't Use)
 
 ```markdown
-Execute: python <plugin_path>/lib/dashboard.py --port 5000
+Execute: python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 5000
 ```
 
 **Problems**:
-- `<plugin_path>` is a placeholder that doesn't resolve
+- `${CLAUDE_PLUGIN_ROOT}` is a placeholder that doesn't resolve
 - Doesn't work with marketplace installations
 - Not cross-platform compatible
 
 ### New Pattern (✅ Use This)
 
 ```markdown
-Execute: python lib/exec_plugin_script.py dashboard.py --port 5000
+Execute: python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000
 ```
 
 **Benefits**:
@@ -28,8 +28,8 @@ Execute: python lib/exec_plugin_script.py dashboard.py --port 5000
 
 For each command file in `commands/`:
 
-- [ ] Search for `<plugin_path>` placeholders
-- [ ] Replace with `python lib/exec_plugin_script.py {script_name}`
+- [ ] Search for `${CLAUDE_PLUGIN_ROOT}` placeholders
+- [ ] Replace with `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name}`
 - [ ] Keep all script arguments unchanged
 - [ ] Test the command works
 - [ ] Update documentation if needed
@@ -41,14 +41,14 @@ For each command file in `commands/`:
 **Before**:
 ```markdown
 ```bash
-python <plugin_path>/lib/dashboard.py --host 127.0.0.1 --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --host 127.0.0.1 --port 5000
 ```
 ```
 
 **After**:
 ```markdown
 ```bash
-python lib/exec_plugin_script.py dashboard.py --host 127.0.0.1 --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --host 127.0.0.1 --port 5000
 ```
 ```
 
@@ -57,14 +57,14 @@ python lib/exec_plugin_script.py dashboard.py --host 127.0.0.1 --port 5000
 **Before**:
 ```markdown
 ```bash
-python <plugin_path>/lib/learning_analytics.py show --dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/learning_analytics.py show --dir .claude-patterns
 ```
 ```
 
 **After**:
 ```markdown
 ```bash
-python lib/exec_plugin_script.py learning_analytics.py show --dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py learning_analytics.py show --dir .claude-patterns
 ```
 ```
 
@@ -74,10 +74,10 @@ python lib/exec_plugin_script.py learning_analytics.py show --dir .claude-patter
 ```markdown
 ```bash
 # First script
-python <plugin_path>/lib/script1.py --option value
+python ${CLAUDE_PLUGIN_ROOT}/lib/script1.py --option value
 
 # Second script
-python <plugin_path>/lib/script2.py --other-option
+python ${CLAUDE_PLUGIN_ROOT}/lib/script2.py --other-option
 ```
 ```
 
@@ -85,20 +85,20 @@ python <plugin_path>/lib/script2.py --other-option
 ```markdown
 ```bash
 # First script
-python lib/exec_plugin_script.py script1.py --option value
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py script1.py --option value
 
 # Second script
-python lib/exec_plugin_script.py script2.py --other-option
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py script2.py --other-option
 ```
 ```
 
 ## Commands That Need Updating
 
-### Priority 1: Commands with `<plugin_path>`
+### Priority 1: Commands with `${CLAUDE_PLUGIN_ROOT}`
 
-Search for files containing `<plugin_path>`:
+Search for files containing `${CLAUDE_PLUGIN_ROOT}`:
 ```bash
-grep -r "<plugin_path>" commands/
+grep -r "${CLAUDE_PLUGIN_ROOT}" commands/
 ```
 
 **Found in**:
@@ -122,25 +122,25 @@ When you (Claude Code) encounter a slash command with Python script execution:
 ### Step 1: Identify the Pattern
 
 Look for:
-- `python <plugin_path>/lib/{script}.py`
+- `python ${CLAUDE_PLUGIN_ROOT}/lib/{script}.py`
 - `python {absolute_path}/lib/{script}.py`
 - Direct Python script calls
 
 ### Step 2: Transform to New Pattern
 
 ```python
-# Old: python <plugin_path>/lib/dashboard.py --port 5000
-# New: python lib/exec_plugin_script.py dashboard.py --port 5000
+# Old: python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 5000
+# New: python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000
 
 # Pattern:
-# python lib/exec_plugin_script.py {script_name} {all_original_arguments}
+# python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name} {all_original_arguments}
 ```
 
 ### Step 3: Execute via Bash Tool
 
 ```python
 # In your code
-bash_command = "python lib/exec_plugin_script.py dashboard.py --port 5000"
+bash_command = "python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000"
 result = execute_bash(bash_command)
 ```
 
@@ -150,13 +150,13 @@ After updating a command, test it:
 
 ```bash
 # 1. Show plugin info (verify setup)
-python lib/exec_plugin_script.py --info
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py --info
 
 # 2. Test the command
-python lib/exec_plugin_script.py {script_name} --help
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name} --help
 
 # 3. Test with actual arguments
-python lib/exec_plugin_script.py {script_name} {actual_args}
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script_name} {actual_args}
 ```
 
 ## Common Issues and Solutions
@@ -205,14 +205,14 @@ For updating multiple commands at once:
 # Create backup
 cp -r commands commands.backup
 
-# Find all files with <plugin_path>
-grep -l "<plugin_path>" commands/**/*.md
+# Find all files with ${CLAUDE_PLUGIN_ROOT}
+grep -l "${CLAUDE_PLUGIN_ROOT}" commands/**/*.md
 
 # Replace pattern (GNU sed)
-find commands -name "*.md" -type f -exec sed -i 's|python <plugin_path>/lib/\([^[:space:]]*\)|python lib/exec_plugin_script.py \1|g' {} \;
+find commands -name "*.md" -type f -exec sed -i 's|python ${CLAUDE_PLUGIN_ROOT}/lib/\([^[:space:]]*\)|python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py \1|g' {} \;
 
 # Replace pattern (macOS sed)
-find commands -name "*.md" -type f -exec sed -i '' 's|python <plugin_path>/lib/\([^[:space:]]*\)|python lib/exec_plugin_script.py \1|g' {} \;
+find commands -name "*.md" -type f -exec sed -i '' 's|python ${CLAUDE_PLUGIN_ROOT}/lib/\([^[:space:]]*\)|python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py \1|g' {} \;
 ```
 
 ## Verification
@@ -220,8 +220,8 @@ find commands -name "*.md" -type f -exec sed -i '' 's|python <plugin_path>/lib/\
 After updates, verify all commands:
 
 ```bash
-# Check no <plugin_path> placeholders remain
-grep -r "<plugin_path>" commands/
+# Check no ${CLAUDE_PLUGIN_ROOT} placeholders remain
+grep -r "${CLAUDE_PLUGIN_ROOT}" commands/
 
 # Should return empty or only documentation references
 ```
@@ -259,8 +259,8 @@ After updating commands, also update:
 
 ## Success Criteria
 
-- ✅ All commands use `python lib/exec_plugin_script.py` pattern
-- ✅ No `<plugin_path>` placeholders in command files
+- ✅ All commands use `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py` pattern
+- ✅ No `${CLAUDE_PLUGIN_ROOT}` placeholders in command files
 - ✅ All commands tested on Windows (minimum)
 - ✅ Documentation updated
 - ✅ No hardcoded absolute paths
@@ -269,7 +269,7 @@ After updating commands, also update:
 
 When creating new slash commands:
 
-1. **Always use executor**: `python lib/exec_plugin_script.py {script}`
+1. **Always use executor**: `python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py {script}`
 2. **Never hardcode paths**: Let the resolver find the plugin
 3. **Test cross-platform**: Verify on Windows at minimum
 4. **Document clearly**: Show exact command syntax

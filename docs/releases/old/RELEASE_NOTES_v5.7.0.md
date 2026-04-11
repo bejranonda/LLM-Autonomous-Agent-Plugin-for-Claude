@@ -9,7 +9,7 @@ This release represents a **fundamental architectural breakthrough** that solves
 ## 🚀 Key Innovation: Three-Layer Cross-Platform Architecture
 
 ### The Problem We Solved
-Before v5.7.0, plugin commands used hardcoded paths like `<plugin_path>/lib/dashboard.py` that failed with marketplace installations because each user's installation path is different:
+Before v5.7.0, plugin commands used hardcoded paths like `${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py` that failed with marketplace installations because each user's installation path is different:
 
 - **Windows**: `C:\Users\{username}\.claude\plugins\marketplaces\LLM-Autonomous-Agent-Plugin-for-Claude\`
 - **Linux**: `/home/{username}/.claude/plugins/marketplaces/LLM-Autonomous-Agent-Plugin-for-Claude/`
@@ -40,10 +40,10 @@ Before v5.7.0, plugin commands used hardcoded paths like `<plugin_path>/lib/dash
 #### Updated Command Execution Pattern
 ```bash
 # Old pattern (broken with marketplace):
-python <plugin_path>/lib/dashboard.py --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 5000
 
 # New universal pattern (works everywhere):
-python lib/exec_plugin_script.py dashboard.py --port 5000
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py dashboard.py --port 5000
 ```
 
 ### 🆕 Documentation Suite
@@ -126,7 +126,7 @@ Update your custom commands to use the new universal pattern:
 python /path/to/plugin/lib/script.py
 
 # With universal execution:
-python lib/exec_plugin_script.py script.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/exec_plugin_script.py script.py
 ```
 
 ## 🚀 Future Enhancements

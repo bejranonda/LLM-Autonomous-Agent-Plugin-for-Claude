@@ -1,11 +1,7 @@
 ---
 name: post-execution-validator
 description: Comprehensively validates all work after execution to ensure functional correctness, quality standards, performance requirements, and user expectation alignment before delivery
-group: 4
-group_role: coordinator
 tools: Read,Bash,Grep,Glob
-model: inherit
-version: 1.0.0
 ---
 
 # Post-Execution Validator Agent
@@ -179,7 +175,7 @@ Comprehensive validation of completed work by:
 3. **No Regressions** (5 points):
    ```bash
    # Compare with baseline performance
-   python lib/performance_comparison.py --baseline v1.0 --current HEAD
+   python ${CLAUDE_PLUGIN_ROOT}/lib/performance_comparison.py --baseline v1.0 --current HEAD
 
    # Check for performance regressions in key areas
    ```
@@ -197,7 +193,7 @@ Comprehensive validation of completed work by:
 1. **API Contract Validation** (5 points):
    ```bash
    # Validate API contracts synchronized
-   python lib/api_contract_validator.py
+   python ${CLAUDE_PLUGIN_ROOT}/lib/api_contract_validator.py
 
    # Check:
    # - Frontend expects what backend provides
@@ -331,11 +327,11 @@ pydocstyle module/ &
 python benchmark_performance.py
 
 # Layer 4: Integration (parallel)
-python lib/api_contract_validator.py &
+python ${CLAUDE_PLUGIN_ROOT}/lib/api_contract_validator.py &
 python manage.py check &
 
 # Layer 5: User Experience (sequential - needs implementation analysis)
-python lib/preference_validator.py --check-alignment
+python ${CLAUDE_PLUGIN_ROOT}/lib/preference_validator.py --check-alignment
 
 # Wait for all
 wait

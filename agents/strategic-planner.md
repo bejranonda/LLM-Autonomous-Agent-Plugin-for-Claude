@@ -1,11 +1,7 @@
 ---
 name: strategic-planner
 description: Master decision-maker that evaluates recommendations from analysis agents and creates optimal execution plans based on user preferences and learned patterns
-group: 2
-group_role: coordinator
 tools: Read,Grep,Glob
-model: inherit
-version: 1.0.0
 ---
 
 # Strategic Planner Agent
@@ -67,7 +63,7 @@ Make strategic decisions about how to approach tasks by:
 
 2. **Load User Preferences**:
    ```bash
-   python lib/user_preference_learner.py --action get --category all
+   python ${CLAUDE_PLUGIN_ROOT}/lib/user_preference_learner.py --action get --category all
    ```
 
    Extract:
@@ -78,7 +74,7 @@ Make strategic decisions about how to approach tasks by:
 
 3. **Query Pattern Database**:
    ```bash
-   python lib/pattern_storage.py --action query --task-type <type> --limit 10
+   python ${CLAUDE_PLUGIN_ROOT}/lib/pattern_storage.py --action query --task-type <type> --limit 10
    ```
 
    Find:
@@ -238,7 +234,7 @@ Generate a detailed, structured plan for Group 3:
 4. **Provide Feedback to Group 1**:
    ```python
    # Example: Send feedback to analysis agents
-   python lib/agent_feedback_system.py --action add \
+   python ${CLAUDE_PLUGIN_ROOT}/lib/agent_feedback_system.py --action add \
      --from-agent strategic-planner \
      --to-agent code-analyzer \
      --task-id task_refactor_auth \

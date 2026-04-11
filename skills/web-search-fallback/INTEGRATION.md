@@ -17,7 +17,7 @@ if result=$(WebSearch "$search_query"); then
     echo "$result"
 else
     # Fallback to bash+curl method
-    result=$(python3 lib/web_search_fallback.py "$search_query" -n 10 -t json)
+    result=$(python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$search_query" -n 10 -t json)
     echo "$result"
 fi
 ```
@@ -58,7 +58,7 @@ trigger_conditions:
 ```bash
 # For bulk searches, use fallback with delays
 for query in "${queries[@]}"; do
-    python3 lib/web_search_fallback.py "$query" -n 5
+    python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" -n 5
     sleep 2  # Prevent rate limiting
 done
 ```
@@ -69,7 +69,7 @@ done
 # Detect platform and use appropriate method
 if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]]; then
     # Windows - use Python
-    python3 lib/web_search_fallback.py "$query"
+    python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query"
 else
     # Unix-like - use bash or Python
     bash lib/web_search_fallback.sh "$query"
@@ -80,10 +80,10 @@ fi
 
 ```bash
 # Extract only titles
-titles=$(python3 lib/web_search_fallback.py "$query" -t titles)
+titles=$(python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" -t titles)
 
 # Get JSON for programmatic use
-json_results=$(python3 lib/web_search_fallback.py "$query" -t json)
+json_results=$(python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" -t json)
 
 # Parse JSON with jq if available
 echo "$json_results" | jq '.[] | .title'
@@ -109,9 +109,9 @@ search_result=""
 # Level 1: WebSearch API
 if ! search_result=$(WebSearch "$query" 2>/dev/null); then
     # Level 2: DuckDuckGo
-    if ! search_result=$(python3 lib/web_search_fallback.py "$query" -e duckduckgo 2>/dev/null); then
+    if ! search_result=$(python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" -e duckduckgo 2>/dev/null); then
         # Level 3: Searx
-        if ! search_result=$(python3 lib/web_search_fallback.py "$query" -e searx 2>/dev/null); then
+        if ! search_result=$(python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" -e searx 2>/dev/null); then
             # Level 4: Return error message
             search_result="All search methods failed. Please try again later."
         fi
@@ -127,13 +127,13 @@ echo "$search_result"
 
 ```bash
 # Use cache for repeated queries
-python3 lib/web_search_fallback.py "$query"  # First query cached
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query"  # First query cached
 
 # Subsequent queries use cache (60 min TTL)
-python3 lib/web_search_fallback.py "$query"  # Returns instantly
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query"  # Returns instantly
 
 # Force fresh results when needed
-python3 lib/web_search_fallback.py "$query" --no-cache
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" --no-cache
 ```
 
 ### Parallel Searches
@@ -143,7 +143,7 @@ python3 lib/web_search_fallback.py "$query" --no-cache
 search_terms=("term1" "term2" "term3")
 
 for term in "${search_terms[@]}"; do
-    python3 lib/web_search_fallback.py "$term" -n 5 &
+    python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$term" -n 5 &
 done
 wait  # Wait for all searches to complete
 ```
@@ -157,8 +157,8 @@ wait  # Wait for all searches to complete
 research_topic="quantum computing applications"
 
 # Get multiple perspectives
-ddg_results=$(python3 lib/web_search_fallback.py "$research_topic" -e duckduckgo -n 15)
-searx_results=$(python3 lib/web_search_fallback.py "$research_topic" -e searx -n 10)
+ddg_results=$(python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$research_topic" -e duckduckgo -n 15)
+searx_results=$(python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$research_topic" -e searx -n 10)
 
 # Combine and deduplicate results
 echo "$ddg_results" > /tmp/research_results.txt
@@ -170,7 +170,7 @@ echo "$searx_results" >> /tmp/research_results.txt
 ```bash
 # Non-blocking search in background
 {
-    python3 lib/web_search_fallback.py "$query" -n 20 > search_results.txt
+    python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" -n 20 > search_results.txt
     echo "Search completed: $(wc -l < search_results.txt) results found"
 } &
 
@@ -187,14 +187,14 @@ echo "Search running in background..."
 test_query="test search fallback"
 
 # Test Python implementation
-python3 lib/web_search_fallback.py "$test_query" -n 1 -v
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$test_query" -n 1 -v
 
 # Test bash implementation
 bash lib/web_search_fallback.sh "$test_query" -n 1
 
 # Test cache functionality
-python3 lib/web_search_fallback.py "$test_query"  # Creates cache
-python3 lib/web_search_fallback.py "$test_query"  # Uses cache
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$test_query"  # Creates cache
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$test_query"  # Uses cache
 
 # Verify cache file exists
 ls -la .claude-patterns/search-cache/
@@ -212,7 +212,7 @@ function test_search_with_fallback() {
         echo "WebSearch result"
     else
         echo "WebSearch failed, using fallback..." >&2
-        python3 lib/web_search_fallback.py "$query" -n 3 -t titles
+        python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "$query" -n 3 -t titles
     fi
 }
 
@@ -261,15 +261,15 @@ Monitor these metrics in the pattern database:
 
 ```bash
 # Enable verbose output for debugging
-python3 lib/web_search_fallback.py "debug query" -v
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "debug query" -v
 
 # Check cache status
 ls -la .claude-patterns/search-cache/
 find .claude-patterns/search-cache/ -type f -mmin -60  # Files < 60 min old
 
 # Test specific search engine
-python3 lib/web_search_fallback.py "test" -e duckduckgo -v
-python3 lib/web_search_fallback.py "test" -e searx -v
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "test" -e duckduckgo -v
+python3 ${CLAUDE_PLUGIN_ROOT}/lib/web_search_fallback.py "test" -e searx -v
 ```
 
 ### Common Issues

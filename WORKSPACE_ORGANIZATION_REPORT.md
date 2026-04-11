@@ -113,13 +113,13 @@ AutonomousAgent/
 **Testing Commands** (Updated Paths):
 ```bash
 # Run tests with new path
-python lib/analysis/run_tests.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py
 
 # Install test dependencies
 pip install -r config/requirements-test.txt
 
 # Analyze coverage
-python lib/analysis/analyze_coverage.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/analyze_coverage.py
 ```
 
 **Database Access**:

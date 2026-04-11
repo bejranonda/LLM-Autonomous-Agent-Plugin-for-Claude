@@ -181,10 +181,10 @@ grep "timestamp" .claude-patterns/performance_records.json | tail -3
 ### **If Learning Stops Working**
 1. **Check orchestrator delegation**: Ensure commands have `delegates-to: autonomous-agent:orchestrator`
 2. **Verify pattern directory**: Ensure `.claude-patterns/` exists and is writable
-3. **Manual trigger fallback**: Use `python <plugin_path>/lib/trigger_learning.py` as backup
+3. **Manual trigger fallback**: Use `python ${CLAUDE_PLUGIN_ROOT}/lib/trigger_learning.py` as backup
 
 ### **If Dashboard Issues Occur**
-1. **Use robust launcher directly**: `python <plugin_path>/lib/dashboard_launcher.py`
+1. **Use robust launcher directly**: `python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_launcher.py`
 2. **Check port availability**: Use `--port 5001` if 5000 is occupied
 3. **Verbose logging**: Use `--verbose` flag for detailed diagnostics
 

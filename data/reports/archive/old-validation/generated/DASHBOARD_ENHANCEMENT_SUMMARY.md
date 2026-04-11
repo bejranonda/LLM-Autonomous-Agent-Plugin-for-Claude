@@ -72,7 +72,7 @@ Successfully enhanced the autonomous-agent dashboard with advanced visualization
 ### Starting the Dashboard
 ```bash
 # Basic start
-python <plugin_path>/lib/dashboard.py --port 8080 --patterns-dir .claude-patterns
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard.py --port 8080 --patterns-dir .claude-patterns
 
 # Access at: http://localhost:8080
 ```
@@ -80,22 +80,22 @@ python <plugin_path>/lib/dashboard.py --port 8080 --patterns-dir .claude-pattern
 ### Managing Model Performance Data
 ```bash
 # Generate sample data for testing
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns generate-sample --days 30
 
 # Add performance score manually
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns add --model Claude --score 92.5 --task-type testing --contribution 28.3
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns add --model Claude --score 92.5 --task-type testing --contribution 28.3
 
 # View performance summary
-python <plugin_path>/lib/model_performance.py --dir .claude-patterns summary
+python ${CLAUDE_PLUGIN_ROOT}/lib/model_performance.py --dir .claude-patterns summary
 ```
 
 ### Checking Compatibility
 ```bash
 # Check if existing data is compatible
-python <plugin_path>/lib/dashboard_compatibility.py --dir .claude-patterns --check
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_compatibility.py --dir .claude-patterns --check
 
 # Perform migration if needed
-python <plugin_path>/lib/dashboard_compatibility.py --dir .claude-patterns --migrate
+python ${CLAUDE_PLUGIN_ROOT}/lib/dashboard_compatibility.py --dir .claude-patterns --migrate
 ```
 
 ## [DATA] Chart Features

@@ -137,41 +137,41 @@ pip install -r config/requirements-test.txt
 
 ```bash
 # Run all tests with coverage
-python lib/analysis/run_tests.py
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py
 
 # Run only unit tests
-python lib/analysis/run_tests.py --unit
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --unit
 
 # Run only integration tests
-python lib/analysis/run_tests.py --integration
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --integration
 
 # Run tests without coverage (faster)
-python lib/analysis/run_tests.py --fast
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --fast
 
 # Run cross-platform tests
-python lib/analysis/run_tests.py --platform
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --platform
 
 # Run performance benchmarks
-python lib/analysis/run_tests.py --performance
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --performance
 
 # Generate HTML coverage report
-python lib/analysis/run_tests.py --report
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --report
 ```
 
 ### Advanced Usage
 
 ```bash
 # Run with specific markers
-python lib/analysis/run_tests.py --markers "not slow"
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --markers "not slow"
 
 # Run code quality checks
-python lib/analysis/run_tests.py --quality
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --quality
 
 # Verbose output
-python lib/analysis/run_tests.py --verbose
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --verbose
 
 # Skip dependency checking
-python lib/analysis/run_tests.py --no-deps-check
+python ${CLAUDE_PLUGIN_ROOT}/lib/analysis/run_tests.py --no-deps-check
 ```
 
 ### Direct pytest Usage

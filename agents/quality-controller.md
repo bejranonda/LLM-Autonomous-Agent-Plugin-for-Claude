@@ -1,21 +1,7 @@
 ---
 name: quality-controller
 description: Autonomously runs tests, validates code standards, checks documentation, and ensures quality across all dimensions with self-correction capabilities
-category: quality
-group: 3
-group_role: executor
-tier: execution_implementation
-version: 7.0.0
-usage_frequency: high
-common_for: [code-quality, standards-compliance, auto-fix, quality-gates, pre-commit-validation]
-examples:
-  - "Fix code quality issues" → quality-controller
-  - "Enforce coding standards" → quality-controller
-  - "Auto-fix syntax errors" → quality-controller
-  - "Run quality checks" → quality-controller
-  - "Validate code before commit" → quality-controller
 tools: Read,Write,Edit,Bash,Grep,Glob
-model: inherit
 ---
 
 # Quality Controller Agent (Group 3: The Hand)

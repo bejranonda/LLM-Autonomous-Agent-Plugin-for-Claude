@@ -1,17 +1,27 @@
 # Operational Approach and Methods
 
-This document defines the underlying execution paradigm of the Autonomous Agent Plugin (v8.0.0+).
+This document defines the execution paradigm of the Autonomous Agent Plugin (v8.1.0+).
 
 ## The Four-Tier Coordination Method
-We avoid monolithic decision making structures by compartmentalizing tasks into specialized execution groups:
 
-1. **Group 1: Strategic Analysis** - Operates at a high-level abstraction. Uses the `Project Analysis` skills to map the user's workspace before making decisions.
-2. **Group 2: The Orchestrator** - Takes the structural analysis and determines the required sequence of tool executions and subsequent routing protocols. 
-3. **Group 3: Execution Engine** - Contains deterministic rules and highly localized shell commands. They carry out isolated steps without worrying about overall system alignment.
-4. **Group 4: Quality & Validation** - Performs aggressive checking. They cross-verify the execution states against the initially proposed approach plan from Group 1.
+We compartmentalize tasks into specialized execution groups:
 
-## Stabilization & De-Risking Methods
-With version 8.0.0, we prioritize stability over sheer feature output.
-1. **Defunct Code Pruning:** Redundant fix scripts have been comprehensively pruned to strictly minimize API confusion.
-2. **Standardized Communication:** `orchestrator.md` handles cross-agent sub-prompt delegation (extracted to Reference Skills), so no single generation sequence surpasses 128KB in context length arbitrarily.
-3. **Immutable Source Pathing:** All internal Python libraries reference via strict environment variables `$CLAUDE_PLUGIN_ROOT`. Code explicitly never injects arbitrary strings into terminal evaluations without rigorous formatting.
+1. **Group 1: Strategic Analysis** - High-level abstraction. Uses analysis skills to map the workspace before making decisions.
+2. **Group 2: The Orchestrator** - Takes structural analysis and determines execution sequencing and routing.
+3. **Group 3: Execution Engine** - Deterministic rules and localized commands. Isolated step execution.
+4. **Group 4: Quality & Validation** - Aggressive cross-verification against the initially proposed approach from Group 1.
+
+## Plugin Specification Compliance (v8.1.0)
+
+With v8.1.0, we prioritize strict compliance with Claude Code's official plugin specification:
+
+1. **Schema-Compliant Frontmatter**: All agents use only officially documented keys (`name`, `description`, `tools`, `model`, `effort`, `maxTurns`, `disallowedTools`, `skills`, `memory`, `background`, `isolation`). Custom metadata moved to markdown body.
+2. **Modern Path Resolution**: All script references use `${CLAUDE_PLUGIN_ROOT}/lib/` instead of legacy `find`-based discovery or relative `lib/` paths. This ensures scripts work correctly when installed from any marketplace.
+3. **Auto-Discovery Over Explicit Paths**: Plugin relies on Claude Code's convention-based discovery (`agents/`, `skills/`, `commands/` directories) rather than explicit path declarations in `plugin.json`.
+4. **Clean System Prompts**: Agent markdown files contain only system prompt instructions. Executable Python/JavaScript code has been removed from markdown files since it was never executed (agents are prompts, not scripts).
+
+## Stabilization Methods
+
+1. **Defunct Code Pruning**: Redundant fix scripts and dead code in agent prompts comprehensively pruned.
+2. **Standardized Communication**: `orchestrator.md` delegates via skills and sub-agents. No single prompt exceeds reasonable context length.
+3. **Immutable Source Pathing**: All Python libraries reference via `${CLAUDE_PLUGIN_ROOT}`. No arbitrary string injection into terminal evaluations.
