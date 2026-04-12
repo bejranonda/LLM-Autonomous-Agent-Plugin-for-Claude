@@ -1,6 +1,6 @@
 {
   "name": "autonomous-agent",
-  "version": "8.3.0",
+  "version": "8.3.1",
   "description": "Four-tier autonomous agent architecture with specialized agents, skills, and commands for code analysis, quality control, pattern learning, and automated validation.",
   "author": {
     "name": "Werapol Bejranonda",
