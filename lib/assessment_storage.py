@@ -3,11 +3,14 @@
 """
 Stores assessment results from ALL commands in the pattern database
 for dashboard real-time monitoring and learning system improvement.
-# import json
-# from datetime import datetime, timezone
-# from pathlib import Path
-# from typing import Dict, Any, List
-# class AssessmentStorage:
+"""
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Dict, Any, List
+
+
+class AssessmentStorage:
 
     def __init__(self, pattern_dir: str = ".claude-patterns"):
         """Initialize the processor with default configuration."""
@@ -70,33 +73,27 @@ for dashboard real-time monitoring and learning system improvement.
                 with open(file_path, "w") as f:
                     json.dump(default_structure, f, indent=2)
 
-    def store_assessment():
-"""
-        
-        Store assessment result from any command
+    def store_assessment(self, assessment_data: Dict[str, Any]) -> bool:
+        """Store assessment result from any command.
 
-                Args:
-                    assessment_data: Dict containing: - command_name: str (e.g., 'validate-claude-plugin', 'gui-debug')
-                        - assessment_type: str (
-            e.g.,
-            'validation',
-            'quality-control',
-            'gui-analysis',
-        )
-                        - overall_score: int (0-100)
-                        - "breakdown": Dict[str, int] (score breakdown)
-                        - "details": Dict[str, Any] (detailed findings)
-                        - "issues_found": List[str]
-                        - "recommendations": List[str]
-                        - "agents_used": List[str] (optional)
-                        - "skills_used": List[str] (optional)
-                        - execution_time: float (optional, in minutes)
-                        - pass_threshold_met: bool (optional)
-                        - "additional_metrics": Dict[str, Any] (optional)
+        Args:
+            assessment_data: Dict containing:
+                - command_name: str (e.g., 'validate-claude-plugin', 'gui-debug')
+                - assessment_type: str (e.g., 'validation', 'quality-control', 'gui-analysis')
+                - overall_score: int (0-100)
+                - breakdown: Dict[str, int] (score breakdown)
+                - details: Dict[str, Any] (detailed findings)
+                - issues_found: List[str]
+                - recommendations: List[str]
+                - agents_used: List[str] (optional)
+                - skills_used: List[str] (optional)
+                - execution_time: float (optional, in minutes)
+                - pass_threshold_met: bool (optional)
+                - additional_metrics: Dict[str, Any] (optional)
 
-                Returns:
-                    bool: Success status
-"""
+        Returns:
+            bool: Success status
+        """
         try:
             # Generate assessment ID
             timestamp = datetime.now(timezone.utc)
@@ -146,7 +143,6 @@ for dashboard real-time monitoring and learning system improvement.
             print(f"Failed to store assessment: {e}")
             return False
 
-"""
     def _store_in_assessments_file(self, assessment_record: Dict[str, Any]):
         """Store in comprehensive assessments file"""
         with open(self.assessments_file, "r") as f:

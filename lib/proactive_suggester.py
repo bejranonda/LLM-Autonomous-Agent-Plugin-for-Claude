@@ -137,9 +137,8 @@ class ProactiveSuggester:
         context: Optional[Dict] = None,
         related_files: Optional[List[str]] = None,
         related_patterns: Optional[List[str]] = None,
-    )-> str:
-        """Create Suggestion."""
-        Create a new proactive suggestion
+    ) -> str:
+        """Create a new proactive suggestion.
 
         Args:
             suggestion_type: Type of suggestion (security, performance, quality, documentation, testing, technical_debt)
@@ -155,7 +154,7 @@ class ProactiveSuggester:
 
         Returns:
             Suggestion ID
-"""
+        """
         data = self._read_data()
 
         # Generate suggestion ID
@@ -221,7 +220,6 @@ class ProactiveSuggester:
         self._write_data(data)
         return suggestion_id
 
-"""
     def get_suggestions(
         self,
         status: Optional[str] = None,
@@ -230,9 +228,8 @@ class ProactiveSuggester:
         category: Optional[str] = None,
         min_priority_score: Optional[float] = None,
         limit: int = 10,
-    )-> List[Dict]:
-        """Get Suggestions."""
-        Get suggestions with optional filtering
+    ) -> List[Dict]:
+        """Get suggestions with optional filtering.
 
         Args:
             status: Filter by status (pending, accepted, rejected, ignored, implemented)
@@ -244,7 +241,7 @@ class ProactiveSuggester:
 
         Returns:
             List of suggestions sorted by priority score (descending)
-"""
+        """
         data = self._read_data()
         suggestions = data["suggestions"]
 
@@ -265,16 +262,14 @@ class ProactiveSuggester:
 
         return suggestions[:limit]
 
-"""
     def record_acceptance(self, suggestion_id: str, acceptance_status: str, feedback: Optional[str] = None):
-"""
-        Record user's response to a suggestion
+        """Record user response to a suggestion.
 
         Args:
             suggestion_id: ID of the suggestion
             acceptance_status: User response (accepted, rejected, ignored)
             feedback: Optional user feedback
-"""
+        """
         data = self._read_data()
 
         for suggestion in data["suggestions"]:
@@ -306,7 +301,6 @@ class ProactiveSuggester:
         self._write_data(data)
         self._update_user_preferences()
 
-"""
     def record_implementation_outcome(
         self,
         suggestion_id: str,
@@ -316,8 +310,7 @@ class ProactiveSuggester:
         quality_improvement: Optional[float] = None,
         notes: Optional[str] = None,
     ):
-        """Record Implementation Outcome."""
-        Record the outcome of implementing a suggestion
+        """Record the outcome of implementing a suggestion.
 
         Args:
             suggestion_id: ID of the suggestion
@@ -326,7 +319,7 @@ class ProactiveSuggester:
             actual_effort_hours: Actual hours spent (vs estimated)
             quality_improvement: Quality score improvement (if applicable)
             notes: Additional notes about implementation
-"""
+        """
         data = self._read_data()
 
         for suggestion in data["suggestions"]:
@@ -369,7 +362,6 @@ class ProactiveSuggester:
 
         self._write_data(data)
 
-"""
     def _update_user_preferences(self):
         """Update user preferences based on acceptance patterns"""
         data = self._read_data()
@@ -415,10 +407,8 @@ class ProactiveSuggester:
 
         self._write_data(data)
 
-    def get_top_suggestions():
-"""
-        
-        Get top priority suggestions, optionally considering user preferences
+    def get_top_suggestions(self, count: int = 5, consider_preferences: bool = True):
+        """Get top priority suggestions, optionally considering user preferences.
 
         Args:
             count: Number of suggestions to return
@@ -426,7 +416,7 @@ class ProactiveSuggester:
 
         Returns:
             List of top suggestions
-"""
+        """
         data = self._read_data()
         suggestions = [s for s in data["suggestions"] if s["status"] == "pending"]
 
@@ -446,7 +436,6 @@ class ProactiveSuggester:
 
         return suggestions[:count]
 
-"""
     def get_statistics(self) -> Dict:
         """Get comprehensive statistics about suggestions"""
         data = self._read_data()
@@ -494,9 +483,8 @@ class ProactiveSuggester:
         patterns_data: Optional[Dict] = None,
         quality_data: Optional[Dict] = None,
         performance_data: Optional[Dict] = None,
-    )-> List[str]:
-        """Analyze Project And Suggest."""
-        Analyze project state and generate suggestions automatically
+    ) -> List[str]:
+        """Analyze project state and generate suggestions automatically.
 
         Args:
             project_context: Current project context (languages, frameworks, etc.)
@@ -506,7 +494,7 @@ class ProactiveSuggester:
 
         Returns:
             List of suggestion IDs created
-"""
+        """
         suggestion_ids = []
 
         # Analyze code quality trends
@@ -523,7 +511,6 @@ class ProactiveSuggester:
 
         return suggestion_ids
 
-"""
     def _analyze_quality_trends(self, quality_data: Dict, context: Dict) -> List[str]:
         """Analyze quality trends and generate suggestions"""
         suggestion_ids = []
@@ -596,7 +583,7 @@ class ProactiveSuggester:
 
     def format_suggestion_for_display(self, suggestion: Dict) -> str:
         """Format a suggestion for user display"""
-        urgency_icons = {"high": "[RED]", "medium": "[YELLOW]", "low": "[GREEN]"}
+        urgency_icons = {"high": "", "medium": "", "low": ""}
 
         impact_icons = {"high": "[UP][UP][UP]", "medium": "[UP][UP]", "low": "[UP]"}
 
@@ -610,7 +597,7 @@ class ProactiveSuggester:
         output = []
         output.append(f"\n{category_labels.get(suggestion['category'], '[LIST] SUGGESTION')}")
         output.append(f"Priority: {suggestion['priority_score']}/100")
-        output.append(f"\n{urgency_icons.get(suggestion['urgency'], '[--]')} {suggestion['title']}")
+        output.append(f"\n{urgency_icons.get(suggestion['urgency'], '')} {suggestion['title']}")
         output.append(f"\nType: {suggestion['type'].replace('_', ' ').title()}")
         output.append(f"Urgency: {suggestion['urgency'].title()}")
         output.append(

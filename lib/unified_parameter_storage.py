@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-#     Unified Parameter Storage System for Autonomous Agent Plugin
-"""
+"""Unified Parameter Storage System for Autonomous Agent Plugin.
 
 Centralizes all parameter storage including quality scores, model performance,
 success rates, learning patterns, and dashboard metrics. Provides thread-safe
 access, backward compatibility, and migration capabilities.
 
 Features:
-"""
 - Thread-safe read/write operations with file locking
 - Version-controlled parameter schemas
 - Automatic migration from scattered storage
@@ -18,6 +16,7 @@ Features:
 
 Version: 1.0.0
 Author: Autonomous Agent Development Team
+"""
 import json
 import sys
 import threading
@@ -137,23 +136,18 @@ class ParameterSchema:
 
 
 class UnifiedParameterStorage:
-"""
-    Centralized parameter storage system for the Autonomous Agent Plugin.
-"""
+    """Centralized parameter storage system for the Autonomous Agent Plugin.
 
     Provides thread-safe access to all parameters with automatic migration
-"""
     from legacy storage systems.
-"""
+    """
 
-"""
     def __init__(self, storage_dir: str = ".claude-unified"):
-"""
-        Initialize unified parameter storage.
+        """Initialize unified parameter storage.
 
         Args:
             storage_dir: Directory for unified parameter storage
-"""
+        """
         self.storage_dir = Path(storage_dir)
         self.storage_file = self.storage_dir / "unified_parameters.json"
         self.backup_dir = self.storage_dir / "backups"
@@ -171,7 +165,6 @@ class UnifiedParameterStorage:
         self._ensure_directories()
         self._initialize_storage()
 
-"""
     def _ensure_directories(self):
         """Create necessary directories."""
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -233,17 +226,15 @@ class UnifiedParameterStorage:
             }
             self._write_data(default_data)
 
-    def _read_data():
-"""
-        
-        Read unified parameter data with caching support.
+    def _read_data(self, use_cache: bool = True):
+        """Read unified parameter data with caching support.
 
         Args:
             use_cache: Whether to use cached data if available
 
         Returns:
             Dictionary containing unified parameters
-"""
+        """
         current_time = time.time()
 
         # Check cache
@@ -274,15 +265,13 @@ class UnifiedParameterStorage:
                 print(f"Error reading unified parameters: {e}", file=sys.stderr)
                 return self._get_default_data()
 
-"""
     def _write_data(self, data: Dict[str, Any], create_backup: bool = True):
-"""
-        Write unified parameter data with backup support.
+        """Write unified parameter data with backup support.
 
         Args:
             data: Parameter data to write
             create_backup: Whether to create backup before writing
-"""
+        """
         with self._lock:
             try:
                 # Create backup if requested
@@ -306,7 +295,6 @@ class UnifiedParameterStorage:
                 print(f"Error writing unified parameters: {e}", file=sys.stderr)
                 raise
 
-"""
     def _create_backup(self):
         """Create a backup of the current storage file."""
         if not self.storage_file.exists():
@@ -332,14 +320,12 @@ class UnifiedParameterStorage:
                 except Exception as e:
                     print(f"Warning: Failed to delete old backup {old_backup}: {e}", file=sys.stderr)
 
-    def _restore_from_backup():
-"""
-        
-        Restore data from the most recent backup.
+    def _restore_from_backup(self):
+        """Restore data from the most recent backup.
 
         Returns:
             True if restoration was successful
-"""
+        """
         backups = sorted(self.backup_dir.glob("unified_parameters_*.json"))
         if not backups:
             return False
@@ -353,7 +339,6 @@ class UnifiedParameterStorage:
             print(f"Failed to restore from backup: {e}", file=sys.stderr)
             return False
 
-"""
     def _get_default_data(self) -> Dict[str, Any]:
         """Get default parameter structure."""
         return {
@@ -374,13 +359,12 @@ class UnifiedParameterStorage:
 
     # Quality parameter methods
     def set_quality_score(self, score: float, metrics: Dict[str, float] = None):
-"""
-        Set current quality score with optional detailed metrics.
+        """Set current quality score with optional detailed metrics.
 
         Args:
             score: Quality score (0-100)
             metrics: Optional detailed metrics dictionary
-"""
+        """
         if not isinstance(score, (int, float)) or not (0 <= score <= 100):
             raise ValueError("Quality score must be a number between 0 and 100")
 
@@ -406,23 +390,20 @@ class UnifiedParameterStorage:
 
         self._write_data(data)
 
-"""
     def get_quality_score(self) -> float:
         """Get current quality score."""
         data = self._read_data()
         return data["parameters"]["quality"]["scores"]["current"]
 
-    def get_quality_history():
-"""
-        
-        Get quality score history.
+    def get_quality_history(self, days: int = 30):
+        """Get quality score history.
 
         Args:
             days: Number of days to include in history
 
         Returns:
             List of historical quality records
-"""
+        """
         data = self._read_data()
         all_history = data["parameters"]["quality"]["scores"]["history"]
 
@@ -440,14 +421,12 @@ class UnifiedParameterStorage:
         return filtered_history
 
     # Model parameter methods
-"""
     def set_active_model(self, model: str):
-"""
-        Set the currently active model.
+        """Set the currently active model.
 
         Args:
             model: Model name (e.g., "Claude", "OpenAI", "GLM")
-"""
+        """
         data = self._read_data()
 
         # Track model switch if different from current
@@ -460,21 +439,19 @@ class UnifiedParameterStorage:
 
         self._write_data(data)
 
-"""
     def get_active_model(self) -> str:
         """Get the currently active model."""
         data = self._read_data()
         return data["parameters"]["models"]["active_model"]
 
     def update_model_performance(self, model: str, score: float, task_type: str = "unknown"):
-"""
-        Update performance metrics for a specific model.
+        """Update performance metrics for a specific model.
 
         Args:
             model: Model name
             score: Performance score (0-100)
             task_type: Type of task performed
-"""
+        """
         if not isinstance(score, (int, float)) or not (0 <= score <= 100):
             raise ValueError("Performance score must be a number between 0 and 100")
 
@@ -509,18 +486,15 @@ class UnifiedParameterStorage:
 
         self._write_data(data)
 
-"""
-    def get_model_performance():
-"""
-        
-        Get performance data for a specific model.
+    def get_model_performance(self, model: str):
+        """Get performance data for a specific model.
 
         Args:
             model: Model name
 
         Returns:
             Dictionary with model performance data
-"""
+        """
         data = self._read_data()
 
         if model not in data["parameters"]["models"]["performance"]:
@@ -529,21 +503,18 @@ class UnifiedParameterStorage:
         return data["parameters"]["models"]["performance"][model]
 
     # Dashboard parameter methods
-"""
     def update_dashboard_metrics(self, metrics: Dict[str, Any]):
-"""
-        Update dashboard metrics.
+        """Update dashboard metrics.
 
         Args:
             metrics: Dictionary of dashboard metrics to update
-"""
+        """
         data = self._read_data()
         data["parameters"]["dashboard"]["metrics"].update(metrics)
         data["parameters"]["dashboard"]["real_time"]["last_activity"] = datetime.now().isoformat()
 
         self._write_data(data)
 
-"""
     def get_dashboard_data(self) -> Dict[str, Any]:
         """Get all dashboard data."""
         data = self._read_data()
@@ -556,18 +527,16 @@ class UnifiedParameterStorage:
 
     # Learning parameter methods
     def update_learning_patterns(self, patterns: Dict[str, Any]):
-"""
-        Update learning patterns data.
+        """Update learning patterns data.
 
         Args:
             patterns: Learning patterns data
-"""
+        """
         data = self._read_data()
         data["parameters"]["learning"]["patterns"].update(patterns)
 
         self._write_data(data)
 
-"""
     def get_learning_patterns(self) -> Dict[str, Any]:
         """Get learning patterns data."""
         data = self._read_data()
@@ -575,35 +544,31 @@ class UnifiedParameterStorage:
 
     # Auto-fix parameter methods
     def update_autofix_patterns(self, patterns: Dict[str, Any]):
-"""
-        Update auto-fix patterns data.
+        """Update auto-fix patterns data.
 
         Args:
             patterns: Auto-fix patterns data
-"""
+        """
         data = self._read_data()
         data["parameters"]["autofix"]["patterns"].update(patterns)
 
         self._write_data(data)
 
-"""
     def get_autofix_patterns(self) -> Dict[str, Any]:
         """Get auto-fix patterns data."""
         data = self._read_data()
         return data["parameters"]["autofix"]["patterns"]
 
     # Migration methods
-    def migrate_from_legacy_storage():
-"""
-        
-        Migrate data from legacy storage systems.
+    def migrate_from_legacy_storage(self, force: bool = False):
+        """Migrate data from legacy storage systems.
 
         Args:
             force: Force migration even if already completed
 
         Returns:
             Migration result dictionary
-"""
+        """
         if self._migration_completed and not force:
             return {"status": "already_completed", "migrated_items": 0}
 
@@ -657,7 +622,6 @@ class UnifiedParameterStorage:
 
         return migration_result
 
-"""
     def _migrate_quality_history(self, source_path: Path, data: Dict[str, Any], result: Dict[str, Any]):
         """Migrate quality history from legacy file."""
         try:
@@ -788,10 +752,8 @@ class UnifiedParameterStorage:
 
         return validation_result
 
-    def export_data():
-"""
-        
-        Export unified data to external file.
+    def export_data(self, export_path: str, format: str = "json"):
+        """Export unified data to external file.
 
         Args:
             export_path: Path to export file
@@ -799,7 +761,7 @@ class UnifiedParameterStorage:
 
         Returns:
             True if export was successful
-"""
+        """
         try:
             data = self._read_data()
             export_file = Path(export_path)
@@ -809,7 +771,6 @@ class UnifiedParameterStorage:
                     json.dump(data, f, indent=2, ensure_ascii=False)
             elif format.lower() == "csv":
                 # Export quality scores as CSV
-"""
                 import csv
 
                 with open(export_file, "w", newline="", encoding="utf-8") as f:
@@ -827,10 +788,8 @@ class UnifiedParameterStorage:
             print(f"Export failed: {e}", file=sys.stderr)
             return False
 
-    def import_data():
-"""
-        
-        Import data from external file.
+    def import_data(self, import_path: str, merge_strategy: str = "merge"):
+        """Import data from external file.
 
         Args:
             import_path: Path to import file
@@ -838,7 +797,7 @@ class UnifiedParameterStorage:
 
         Returns:
             True if import was successful
-"""
+        """
         try:
             import_file = Path(import_path)
             if not import_file.exists():
@@ -871,7 +830,6 @@ class UnifiedParameterStorage:
             print(f"Import failed: {e}", file=sys.stderr)
             return False
 
-"""
     def _deep_merge(self, base: Dict[str, Any], update: Dict[str, Any]):
         """Deep merge two dictionaries."""
         for key, value in update.items():
@@ -883,7 +841,6 @@ class UnifiedParameterStorage:
 
 def main():
     """Command-line interface for unified parameter storage."""
-"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Unified Parameter Storage System")

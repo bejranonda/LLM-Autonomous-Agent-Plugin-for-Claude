@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # Inter-Group Knowledge Transfer System
 # Automatically propagates knowledge, patterns, and insights between the four agent groups
-for accelerated learning and continuous improvement.
-
+# for accelerated learning and continuous improvement.
+#
 # Groups:
 # - Group 1: Strategic Analysis & Intelligence
 # - Group 2: Decision Making & Planning
@@ -19,18 +19,15 @@ from collections import defaultdict
 try:
     import msvcrt  # Windows
 
-#     PLATFORM = "windows"
+    PLATFORM = "windows"
 except ImportError:
     import fcntl  # Unix/Linux/Mac
 
-#     PLATFORM = "unix"
+    PLATFORM = "unix"
 
 
 class InterGroupKnowledgeTransfer:
-"""
-    Manages automatic knowledge propagation between agent groups.
-"""
-"""
+    """Manages automatic knowledge propagation between agent groups."""
 
     # Group definitions
     GROUPS = {
@@ -54,14 +51,13 @@ class InterGroupKnowledgeTransfer:
         "performance_tip",  # Performance improvement tip
     ]
 
-"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-"""
+        """
         Initialize the knowledge transfer system.
 
         Args:
             storage_dir: Directory for storing knowledge data
-"""
+        """
         self.storage_dir = Path(storage_dir)
         self.knowledge_file = self.storage_dir / "inter_group_knowledge.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -70,7 +66,6 @@ class InterGroupKnowledgeTransfer:
         if not self.knowledge_file.exists():
             self._initialize_knowledge_storage()
 
-"""
     def _initialize_knowledge_storage(self):
         """Initialize the knowledge storage with default structure."""
         initial_data = {
@@ -157,8 +152,8 @@ class InterGroupKnowledgeTransfer:
         context: Optional[Dict[str, Any]] = None,
         evidence: Optional[Dict[str, Any]] = None,
         applicable_to_groups: Optional[List[int]] = None,
-    )-> str:
-        """Add Knowledge."""
+    ) -> str:
+        """
         Add new knowledge to the system.
 
         Args:
@@ -172,7 +167,7 @@ class InterGroupKnowledgeTransfer:
 
         Returns:
             Knowledge ID
-"""
+        """
         if knowledge_type not in self.KNOWLEDGE_TYPES:
             raise ValueError(f"Invalid knowledge type: {knowledge_type}")
 
@@ -213,7 +208,6 @@ class InterGroupKnowledgeTransfer:
 
         return knowledge_id
 
-"""
     def _trigger_automatic_transfer(self, knowledge_id: str, target_groups: List[int]):
         """Automatically transfer knowledge to target groups."""
         knowledge_data = self._read_data()
@@ -278,7 +272,7 @@ class InterGroupKnowledgeTransfer:
         impact: Optional[str] = None,
         notes: Optional[str] = None,
     ):
-        """Record Knowledge Application."""
+        """
         Record that knowledge was applied by a group.
 
         Args:
@@ -287,7 +281,7 @@ class InterGroupKnowledgeTransfer:
             success: Whether application was successful
             impact: Impact description (e.g., "quality +10 points")
             notes: Additional notes
-"""
+        """
         knowledge_data = self._read_data()
 
         # Update knowledge item
@@ -332,11 +326,10 @@ class InterGroupKnowledgeTransfer:
 
         self._write_data(knowledge_data)
 
-"""
     def query_knowledge(
         self, for_group: int, knowledge_type: Optional[str] = None, min_confidence: float = 0.7, limit: int = 10
-    )-> List[Dict[str, Any]]:
-        """Query Knowledge."""
+    ) -> List[Dict[str, Any]]:
+        """
         Query knowledge relevant to a specific group.
 
         Args:
@@ -347,7 +340,7 @@ class InterGroupKnowledgeTransfer:
 
         Returns:
             List of relevant knowledge items
-"""
+        """
         knowledge_data = self._read_data()
 
         # Filter knowledge
@@ -372,7 +365,6 @@ class InterGroupKnowledgeTransfer:
 
         return relevant_knowledge[:limit]
 
-"""
     def get_group_expertise(self, group_num: int) -> Dict[str, Any]:
         """Get expertise profile for a group."""
         knowledge_data = self._read_data()
@@ -462,8 +454,8 @@ class InterGroupKnowledgeTransfer:
 
     def suggest_knowledge_for_task(
         self, for_group: int, task_type: str, task_context: Optional[Dict[str, Any]] = None
-    )-> List[Dict[str, Any]]:
-        """Suggest Knowledge For Task."""
+    ) -> List[Dict[str, Any]]:
+        """
         Suggest relevant knowledge for a specific task.
 
         Args:
@@ -473,7 +465,7 @@ class InterGroupKnowledgeTransfer:
 
         Returns:
             List of suggested knowledge items
-"""
+        """
         # Query high-confidence knowledge
         knowledge = self.query_knowledge(for_group=for_group, min_confidence=0.75, limit=20)
 
@@ -521,10 +513,8 @@ class InterGroupKnowledgeTransfer:
         ]
 
 
-"""
 def main():
     """Command-line interface for testing the knowledge transfer system."""
-"""
     import argparse
 
     parser = argparse.ArgumentParser(description="Inter-Group Knowledge Transfer")

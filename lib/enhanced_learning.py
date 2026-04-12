@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-#     Enhanced Learning Engine for Autonomous Claude Agent Plugin
-"""
+"""Enhanced Learning Engine for Autonomous Claude Agent Plugin.
 
 Advanced pattern learning system with contextual understanding, confidence scoring,
 skill effectiveness tracking, and cross-project pattern transfer capabilities.
@@ -48,12 +47,11 @@ class EnhancedLearningEngine:
     """Advanced learning engine with contextual pattern recognition and predictive capabilities."""
 
     def __init__(self, patterns_dir: str = ".claude-patterns"):
-"""
-        Initialize enhanced learning engine.
+        """Initialize enhanced learning engine.
 
         Args:
             patterns_dir: Directory path for storing patterns (default: .claude-patterns)
-"""
+        """
         self.patterns_dir = Path(patterns_dir)
         self.patterns_file = self.patterns_dir / "patterns.json"
         self.cache = {}
@@ -61,9 +59,8 @@ class EnhancedLearningEngine:
         self.last_update = {}
         self._ensure_directory()
 
-"""
     def _ensure_directory(self):
-        """Create patterns directory if it doesn't exist."""
+        """Create patterns directory if it does not exist."""
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
         if not self.patterns_file.exists():
             self._write_patterns(
@@ -80,14 +77,12 @@ class EnhancedLearningEngine:
                 }
             )
 
-    def _read_patterns():
-"""
-        
-        Read patterns from JSON file with file locking.
+    def _read_patterns(self):
+        """Read patterns from JSON file with file locking.
 
         Returns:
             Dictionary containing patterns data
-"""
+        """
         try:
             with open(self.patterns_file, "r", encoding="utf-8") as f:
                 lock_file(f, exclusive=False)
@@ -107,14 +102,12 @@ class EnhancedLearningEngine:
             print(f"Error reading patterns: {e}", file=sys.stderr)
             return {"patterns": [], "skill_effectiveness": {}, "agent_effectiveness": {}}
 
-"""
     def _write_patterns(self, patterns_data: Dict[str, Any]):
-"""
-        Write patterns to JSON file with file locking.
+        """Write patterns to JSON file with file locking.
 
         Args:
             patterns_data: Dictionary containing patterns data to write
-"""
+        """
         try:
             with open(self.patterns_file, "w", encoding="utf-8") as f:
                 lock_file(f, exclusive=True)
@@ -127,7 +120,6 @@ class EnhancedLearningEngine:
             print(f"Error writing patterns: {e}", file=sys.stderr)
             raise
 
-"""
     def record_pattern(
         self,
         task_type: str,
@@ -135,9 +127,8 @@ class EnhancedLearningEngine:
         execution: Dict[str, Any],
         outcome: Dict[str, Any],
         confidence: float = 1.0,
-    )-> bool:
-        """Record Pattern."""
-        Record a new pattern for learning.
+    ) -> bool:
+        """Record a new pattern for learning.
 
         Args:
             task_type: Type of task performed
@@ -148,7 +139,7 @@ class EnhancedLearningEngine:
 
         Returns:
             True on success
-"""
+        """
         # Validate inputs
         if not isinstance(confidence, (int, float)) or not (0 <= confidence <= 1):
             raise ValueError("confidence must be a number between 0 and 1")
@@ -184,7 +175,6 @@ class EnhancedLearningEngine:
         self._write_patterns(patterns_data)
         return True
 
-"""
     def _generate_pattern_id(self, task_type: str, context: Dict[str, Any]) -> str:
         """Generate unique pattern ID based on task type and context."""
         content = f"{task_type}_{json.dumps(context, sort_keys=True)}"
@@ -192,9 +182,8 @@ class EnhancedLearningEngine:
 
     def find_similar_patterns(
         self, task_type: str, context: Dict[str, Any], limit: int = 5, min_confidence: float = 0.5
-    )-> List[Dict[str, Any]]:
-        """Find Similar Patterns."""
-        Find patterns similar to the given task type and context.
+    ) -> List[Dict[str, Any]]:
+        """Find patterns similar to the given task type and context.
 
         Args:
             task_type: Type of task to find patterns for
@@ -204,7 +193,7 @@ class EnhancedLearningEngine:
 
         Returns:
             List of similar patterns sorted by relevance
-"""
+        """
         patterns_data = self._read_patterns()
         all_patterns = patterns_data.get("patterns", [])
 
@@ -223,7 +212,6 @@ class EnhancedLearningEngine:
         scored_patterns.sort(key=lambda x: x[1], reverse=True)
         return [pattern for pattern, score in scored_patterns[:limit]]
 
-"""
     def _calculate_relevance(self, pattern: Dict[str, Any], context: Dict[str, Any]) -> float:
         """Calculate relevance score of a pattern to given context."""
         pattern_context = pattern.get("context", {})
@@ -264,14 +252,13 @@ class EnhancedLearningEngine:
         return similarity_score / total_factors if total_factors > 0 else 0.0
 
     def update_pattern_usage(self, pattern_id: str, success: bool = True, quality_score: float = None):
-"""
-        Update pattern usage statistics.
+        """Update pattern usage statistics.
 
         Args:
             pattern_id: ID of the pattern to update
             success: Whether the pattern was successfully applied
             quality_score: Quality score achieved (optional)
-"""
+        """
         patterns_data = self._read_patterns()
 
         # Find the pattern
@@ -293,15 +280,12 @@ class EnhancedLearningEngine:
 
         self._write_patterns(patterns_data)
 
-"""
-    def get_skill_effectiveness():
-"""
-        
-        Calculate effectiveness scores for all skills.
+    def get_skill_effectiveness(self):
+        """Calculate effectiveness scores for all skills.
 
         Returns:
             Dictionary mapping skill names to effectiveness metrics
-"""
+        """
         patterns_data = self._read_patterns()
         patterns = patterns_data.get("patterns", [])
 
@@ -334,15 +318,12 @@ class EnhancedLearningEngine:
 
         return effectiveness
 
-"""
-    def get_agent_effectiveness():
-"""
-        
-        Calculate effectiveness scores for all agents.
+    def get_agent_effectiveness(self):
+        """Calculate effectiveness scores for all agents.
 
         Returns:
             Dictionary mapping agent names to effectiveness metrics
-"""
+        """
         patterns_data = self._read_patterns()
         patterns = patterns_data.get("patterns", [])
 
@@ -375,15 +356,12 @@ class EnhancedLearningEngine:
 
         return effectiveness
 
-"""
-    def get_learning_statistics():
-"""
-        
-        Get comprehensive learning statistics.
+    def get_learning_statistics(self):
+        """Get comprehensive learning statistics.
 
         Returns:
             Dictionary containing learning statistics
-"""
+        """
         patterns_data = self._read_patterns()
         patterns = patterns_data.get("patterns", [])
 
@@ -422,14 +400,12 @@ class EnhancedLearningEngine:
             "last_updated": datetime.now().isoformat(),
         }
 
-"""
     def cleanup_old_patterns(self, days_threshold: int = 90):
-"""
-        Remove old patterns that haven't been used recently.
+        """Remove old patterns that have not been used recently.
 
         Args:
             days_threshold: Remove patterns older than this many days if not reused
-"""
+        """
         patterns_data = self._read_patterns()
         patterns = patterns_data.get("patterns", [])
 
@@ -459,7 +435,6 @@ class EnhancedLearningEngine:
         self._write_patterns(patterns_data)
 
 
-"""
 def main():
     """Command-line interface for enhanced learning engine."""
     parser = argparse.ArgumentParser(description="Enhanced Learning Engine")

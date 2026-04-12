@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # Claude Plugin Validator - Official Guidelines Compliance Checker
 
-#     Comprehensive validation for Claude Code plugins to prevent installation failures
-"""
-
+"""Comprehensive validation for Claude Code plugins to prevent installation failures
 and ensure compliance with official plugin development guidelines.
 """
 import json
@@ -126,13 +124,12 @@ class ClaudePluginValidator:
             print(f"  [OK] File size: {file_size} bytes")
 
         self.fixes.append(
-            "manifest_validated",
-            "Plugin manifest validated against Claude Code guidelines",
+            "Plugin manifest validated against Claude Code guidelines"
         )
 
     def _validate_directory_structure(self):
         """Validate required directory structure."""
-        print("\n[DIR] Validating Directory Structure...")
+        print("\n Validating Directory Structure...")
 
         # Required directories
         required_structure = {
@@ -172,7 +169,7 @@ class ClaudePluginValidator:
                         f"[WARN]  {dir_name} exists but is not a directory",
                     )
             else:
-                print(f"  [--] {dir_name}/: Optional ({description})")
+                print(f"   {dir_name}/: Optional ({description})")
 
         # Check for plugin manifest specifically
         manifest_path = self.plugin_dir / ".claude-plugin" / "plugin.json"
@@ -183,7 +180,7 @@ class ClaudePluginValidator:
 
     def _validate_file_formats(self):
         """Validate file format compliance."""
-        print("\n[DOC] Validating File Formats...")
+        print("\n Validating File Formats...")
 
         # Validate agent files
         agents_dir = self.plugin_dir / "agents"
@@ -252,8 +249,7 @@ class ClaudePluginValidator:
                             )
                         if "description" not in frontmatter:
                             self.warnings.append(
-                                f"[WARN]  Missing description in {file_type}: {
-                                    file_path.name}",
+                                f"[WARN]  Missing description in {file_type}: {file_path.name}",
                             )
                         if file_type == "skill" and "version" not in frontmatter:
                             self.warnings.append(
@@ -283,7 +279,7 @@ class ClaudePluginValidator:
 
     def _validate_encoding(self):
         """Validate file encoding throughout plugin."""
-        print("\n[ABC] Validating File Encoding...")
+        print("\n Validating File Encoding...")
 
         encoding_issues = 0
         files_checked = 0
@@ -310,7 +306,7 @@ class ClaudePluginValidator:
 
     def _validate_cross_platform_compatibility(self):
         """Validate cross-platform compatibility."""
-        print("\n[WEB] Validating Cross-Platform Compatibility...")
+        print("\n Validating Cross-Platform Compatibility...")
 
         # Check for path length issues
         long_paths = []
@@ -322,8 +318,7 @@ class ClaudePluginValidator:
 
         if long_paths:
             self.warnings.append(
-                f"[WARN]  Long file paths found (Windows limit 260 chars): {
-                    len(long_paths)} files",
+                f"[WARN]  Long file paths found (Windows limit 260 chars): {len(long_paths)} files",
             )
         else:
             print("  [OK] Path lengths: All under limits")
@@ -350,8 +345,7 @@ class ClaudePluginValidator:
                     content = f.read()
                     if b"\r\n" in content:
                         self.warnings.append(
-                            f"[WARN]  CRLF line endings in {
-                                script_file.name} (should be LF)",
+                            f"[WARN]  CRLF line endings in {script_file.name} (should be LF)",
                         )
             except BaseException:
                 pass
@@ -447,7 +441,7 @@ class ClaudePluginValidator:
         lines.append(f"Issues: {len(self.issues)} | Warnings: {len(self.warnings)}")
 
         if self.issues:
-            lines.append("\n[ALERT] CRITICAL ISSUES (Installation Blockers):")
+            lines.append("\n CRITICAL ISSUES (Installation Blockers):")
             for issue in self.issues[:5]:
                 lines.append(f"  -  {issue}")
             if len(self.issues) > 5:
@@ -490,7 +484,6 @@ def main():
         print(results["summary"])
         print("=" * 60)
 
-"""
         # Exit code based on results
         if args.strict and results["warnings"]:
             print("\n[ERROR] Validation failed (strict mode - warnings treated as errors)")

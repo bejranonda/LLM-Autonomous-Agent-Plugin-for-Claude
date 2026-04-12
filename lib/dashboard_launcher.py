@@ -267,6 +267,7 @@ API Access:
 - Overview: {dashboard_url}/api/overview
 - System Health: {dashboard_url}/api/system-health
 - Quality Trends: {dashboard_url}/api/quality-trends
+"""
             print(success_message)
             logger.info(f"Dashboard running at {dashboard_url}")
 

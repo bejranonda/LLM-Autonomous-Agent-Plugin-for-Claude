@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-#     Smart Recommendation Engine for Autonomous Agent Plugin
-"""
+"""Smart Recommendation Engine for Autonomous Agent Plugin.
 
 Provides intelligent workflow and optimization recommendations based on learned patterns.
 Lightweight alternative to complex agent delegation system.
 
 Features:
-"""
 - Pattern-based skill recommendations
 - Success rate calculations
 - Quality predictions
@@ -15,6 +13,7 @@ Features:
 
 Version: 1.0.0
 Compatible with: v7.6.9+ architecture
+"""
 import json
 import argparse
 import sys
@@ -39,17 +38,15 @@ class RecommendationEngine:
         """Initialize recommendation engine."""
         self.storage = PatternStorage(patterns_dir)
 
-    def analyze_task():
-"""
-        
-        Enhanced task analysis with sophisticated classification and context detection.
+    def analyze_task(self, task_description: str = "") -> Dict[str, Any]:
+        """Enhanced task analysis with sophisticated classification and context detection.
 
         Args:
-            task_description: User's task description
+            task_description: User task description
 
         Returns:
             Enhanced task analysis dictionary
-"""
+        """
         if not task_description:
             return {
                 "type": "general",
@@ -182,17 +179,15 @@ class RecommendationEngine:
             "confidence_scores": type_scores,
         }
 
-    def get_pattern_recommendations():
-"""
-        
-        Get recommendations based on similar patterns.
+    def get_pattern_recommendations(self, task_analysis: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Get recommendations based on similar patterns.
 
         Args:
             task_analysis: Task analysis dictionary
 
         Returns:
             List of pattern-based recommendations
-"""
+        """
         # Search for similar patterns
         patterns = self.storage.get_similar_patterns(
             task_type=task_analysis["type"], context={"keywords": task_analysis["keywords"]}, limit=5
@@ -220,7 +215,6 @@ class RecommendationEngine:
         recommendations.sort(key=lambda x: x["recommendation_score"], reverse=True)
         return recommendations
 
-"""
     def _calculate_recommendation_score(self, pattern: Dict[str, Any], task_analysis: Dict[str, Any]) -> float:
         """Calculate recommendation score for a pattern."""
         score = 0.0
@@ -253,9 +247,8 @@ class RecommendationEngine:
 
     def generate_intelligent_skill_recommendations(
         self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]]
-    )-> Dict[str, Any]:
-        """Generate Intelligent Skill Recommendations."""
-        Generate intelligent skill recommendations based on task analysis and patterns.
+    ) -> Dict[str, Any]:
+        """Generate intelligent skill recommendations based on task analysis and patterns.
 
         Args:
             task_analysis: Enhanced task analysis results
@@ -263,7 +256,7 @@ class RecommendationEngine:
 
         Returns:
             Comprehensive skill recommendations with reasoning
-"""
+        """
         task_type = task_analysis["type"]
         complexity = task_analysis["complexity"]
         domain = task_analysis["domain"]
@@ -444,9 +437,8 @@ class RecommendationEngine:
         task_analysis: Dict[str, Any],
         pattern_recommendations: List[Dict[str, Any]],
         skill_recommendations: Dict[str, Any],
-    )-> Dict[str, Any]:
-        """Assess Enhanced Risks."""
-        Enhanced risk assessment with comprehensive analysis.
+    ) -> Dict[str, Any]:
+        """Enhanced risk assessment with comprehensive analysis.
 
         Args:
             task_analysis: Enhanced task analysis results
@@ -455,7 +447,7 @@ class RecommendationEngine:
 
         Returns:
             Comprehensive risk assessment with actionable mitigations
-"""
+        """
         risks = []
         risk_score = 0
         mitigations = []
@@ -722,17 +714,15 @@ class RecommendationEngine:
             "risk_summary": f"{risk_level} risk ({risk_score}/100) with {len(risks)} identified risk factors",
         }
 
-    def generate_enhanced_recommendations():
-"""
-        
-        Generate enhanced, comprehensive recommendations with improved analysis.
+    def generate_enhanced_recommendations(self, task_description: str = "") -> Dict[str, Any]:
+        """Generate enhanced, comprehensive recommendations with improved analysis.
 
         Args:
-            task_description: User's task description
+            task_description: User task description
 
         Returns:
             Complete enhanced recommendation report
-"""
+        """
         # Enhanced task analysis
         task_analysis = self.analyze_task(task_description)
 
@@ -779,7 +769,6 @@ class RecommendationEngine:
             "generated_at": datetime.now().isoformat(),
         }
 
-"""
     def _generate_predictions(self, recommendations: List[Dict[str, Any]], risks: Dict[str, Any]) -> Dict[str, Any]:
         """Generate quality and time predictions."""
         if not recommendations:
@@ -815,8 +804,8 @@ class RecommendationEngine:
 
     def _generate_enhanced_predictions(
         self, task_analysis: Dict[str, Any], pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]
-    )-> Dict[str, Any]:
-        """ Generate Enhanced Predictions."""Generate enhanced quality and time predictions."""
+    ) -> Dict[str, Any]:
+        """Generate enhanced quality and time predictions."""
         complexity = task_analysis["complexity"]
         urgency = task_analysis["urgency"]
 
@@ -868,8 +857,8 @@ class RecommendationEngine:
 
     def _generate_actionable_alternatives(
         self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]
-    )-> List[Dict[str, Any]]:
-        """ Generate Actionable Alternatives."""Generate actionable alternative approaches."""
+    ) -> List[Dict[str, Any]]:
+        """Generate actionable alternative approaches."""
         alternatives = []
         risk_level = risk_assessment.get("overall_level", "MEDIUM")
 
@@ -921,8 +910,8 @@ class RecommendationEngine:
 
     def _calculate_overall_confidence(
         self, pattern_recommendations: List[Dict[str, Any]], risk_assessment: Dict[str, Any]
-    )-> Dict[str, Any]:
-        """ Calculate Overall Confidence."""Calculate overall confidence in recommendations."""
+    ) -> Dict[str, Any]:
+        """Calculate overall confidence in recommendations."""
         pattern_confidence = min(90, len(pattern_recommendations) * 20)  # Up to 90% from patterns
         risk_penalty = risk_assessment.get("overall_score", 0) * 0.3  # Penalty for risk
 
@@ -952,8 +941,8 @@ class RecommendationEngine:
 
     def _generate_action_plan(
         self, task_analysis: Dict[str, Any], skill_recommendations: Dict[str, Any], risk_assessment: Dict[str, Any]
-    )-> Dict[str, Any]:
-        """ Generate Action Plan."""Generate actionable next steps."""
+    ) -> Dict[str, Any]:
+        """Generate actionable next steps."""
         steps = []
 
         # Step 1: Preparation

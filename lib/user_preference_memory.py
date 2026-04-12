@@ -1,36 +1,44 @@
 #!/usr/bin/env python3
-#     User Preference Memory System for Autonomous Agent Plugin
-"""
+"""User Preference Memory System for Autonomous Agent Plugin.
 
 Captures, stores, and learns from user preferences and system environments
 to provide personalized development guidance and intelligent suggestions.
 
 Features:
-# - User preference storage with cross-platform compatibility
-# - System environment detection and fingerprinting
-# - Intelligent suggestion generation based on preferences
-# - Pattern learning from user choices and behaviors
-# - Cross-project preference synchronization
-# - Privacy-first design with optional data sharing
-# Version: 1.0.0
-# Author: Autonomous Agent Development Team
-# import json
-# import sys
-# import threading
-# import time
-# import shutil
-# import platform
-# import subprocess
-# from pathlib import Path
-# from datetime import datetime, timedelta
-# from typing import Dict, List, Any, Optional, Union, Callable
-# from collections import defaultdict
-# import psutil
-# import os
-# # Handle Windows compatibility for file locking
-# if platform.system() == "Windows":
-# import msvcrt
-# def lock_file(f, exclusive=False):
+- User preference storage with cross-platform compatibility
+- System environment detection and fingerprinting
+- Intelligent suggestion generation based on preferences
+- Pattern learning from user choices and behaviors
+- Cross-project preference synchronization
+- Privacy-first design with optional data sharing
+
+Version: 1.0.0
+Author: Autonomous Agent Development Team
+"""
+import json
+import sys
+import threading
+import time
+import shutil
+import platform
+import subprocess
+from pathlib import Path
+from datetime import datetime, timedelta
+from typing import Dict, List, Any, Optional, Union, Callable
+from collections import defaultdict
+import os
+
+try:
+    import psutil
+except ImportError:
+    psutil = None
+
+# Handle Windows compatibility for file locking
+if platform.system() == "Windows":
+    import msvcrt
+
+    def lock_file(f, exclusive=False):
+        """Windows file locking using msvcrt."""
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK if exclusive else msvcrt.LK_NBLCK, 1)
 
     def unlock_file(f):
@@ -59,14 +67,12 @@ class SystemProfiler:
         self.profile_cache = {}
         self.cache_ttl = 3600  # 1 hour cache
 
-    def get_system_fingerprint():
-"""
-        
-        Generate comprehensive system fingerprint for environment identification.
+    def get_system_fingerprint(self):
+        """Generate comprehensive system fingerprint for environment identification.
 
         Returns:
             Dictionary containing system environment details
-"""
+        """
         current_time = time.time()
 
         # Check cache
@@ -87,7 +93,6 @@ class SystemProfiler:
 
         return fingerprint
 
-"""
     def _get_system_info(self) -> Dict[str, Any]:
         """Get basic system information."""
         return {
@@ -319,22 +324,18 @@ class SystemProfiler:
 
 
 class UserPreferenceMemory:
-"""
-    User Preference Memory System for storing and learning from user behavior.
-"""
+    """User Preference Memory System for storing and learning from user behavior.
 
     Maintains user preferences, system environment data, and generates
     intelligent suggestions based on patterns and historical data.
-"""
+    """
 
-"""
     def __init__(self, storage_dir: str = ".claude-preferences"):
-"""
-        Initialize user preference memory system.
+        """Initialize user preference memory system.
 
         Args:
             storage_dir: Directory for preference storage
-"""
+        """
         self.storage_dir = Path(storage_dir)
         self.preferences_file = self.storage_dir / "user_preferences.json"
         self.environment_file = self.storage_dir / "system_environment.json"
@@ -353,7 +354,6 @@ class UserPreferenceMemory:
         self._ensure_directories()
         self._initialize_storage()
 
-"""
     def _ensure_directories(self):
         """Create necessary directories."""
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -613,17 +613,15 @@ class UserPreferenceMemory:
 
     # Public API methods
 
-    def update_system_profile():
-"""
-        
-        Update system environment profile.
+    def update_system_profile(self, force: bool = False):
+        """Update system environment profile.
 
         Args:
             force: Force update even if recent profile exists
 
         Returns:
             Updated profile data
-"""
+        """
         env_data = self._read_environment()
         current_profile = self.profiler.get_system_fingerprint()
 
@@ -647,16 +645,14 @@ class UserPreferenceMemory:
         self._write_environment(env_data)
         return current_profile
 
-"""
     def set_preference(self, category: str, key: str, value: Any):
-"""
-        Set a user preference.
+        """Set a user preference.
 
         Args:
             category: Preference category (e.g., 'development', 'workflow', 'ui')
             key: Preference key
             value: Preference value
-"""
+        """
         preferences = self._read_preferences()
 
         if category not in preferences["preferences"]:
@@ -665,37 +661,32 @@ class UserPreferenceMemory:
         preferences["preferences"][category][key] = value
         self._write_preferences(preferences)
 
-"""
-    def get_preference():
-"""
-        
-        Get a user preference.
+    def get_preference(self, category: str, key: str, default: Any = None):
+        """Get a user preference.
 
         Args:
             category: Preference category
             key: Preference key
-            default: Default value if preference doesn't exist
+            default: Default value if preference does not exist
 
         Returns:
             Preference value or default
-"""
+        """
         preferences = self._read_preferences()
         return preferences["preferences"].get(category, {}).get(key, default)
 
-"""
     def get_all_preferences(self) -> Dict[str, Any]:
         """Get all user preferences."""
         preferences = self._read_preferences()
         return preferences.get("preferences", {})
 
     def record_command_usage(self, command: str, context: Dict[str, Any] = None):
-"""
-        Record command usage for learning patterns.
+        """Record command usage for learning patterns.
 
         Args:
             command: Command that was used
             context: Additional context about command usage
-"""
+        """
         preferences = self._read_preferences()
 
         usage_record = {"command": command, "timestamp": datetime.now().isoformat(), "context": context or {}}
@@ -726,17 +717,15 @@ class UserPreferenceMemory:
 
         self._write_preferences(preferences)
 
-"""
     def record_task_completion(self, task_type: str, success: bool, quality_score: float, context: Dict[str, Any] = None):
-"""
-        Record task completion for learning patterns.
+        """Record task completion for learning patterns.
 
         Args:
             task_type: Type of task completed
             success: Whether task was successful
             quality_score: Quality score achieved (0-100)
             context: Additional context about the task
-"""
+        """
         preferences = self._read_preferences()
 
         task_record = {
@@ -755,16 +744,14 @@ class UserPreferenceMemory:
 
         self._write_preferences(preferences)
 
-"""
     def record_suggestion_response(self, suggestion: str, accepted: bool, context: Dict[str, Any] = None):
-"""
-        Record user response to suggestions for learning.
+        """Record user response to suggestions for learning.
 
         Args:
             suggestion: Suggestion that was made
             accepted: Whether user accepted the suggestion
             context: Additional context
-"""
+        """
         preferences = self._read_preferences()
         suggestions_data = self._read_suggestions()
 
@@ -807,15 +794,12 @@ class UserPreferenceMemory:
         self._write_preferences(preferences)
         self._write_suggestions(suggestions_data)
 
-"""
-    def get_user_profile():
-"""
-        
-        Get comprehensive user profile.
+    def get_user_profile(self):
+        """Get comprehensive user profile.
 
         Returns:
             Dictionary containing user preferences and environment data
-"""
+        """
         preferences = self._read_preferences()
         environment = self._read_environment()
 
@@ -834,11 +818,8 @@ class UserPreferenceMemory:
             },
         }
 
-"""
-    def export_preferences():
-"""
-        
-        Export user preferences to file.
+    def export_preferences(self, export_path: str, include_sensitive: bool = False):
+        """Export user preferences to file.
 
         Args:
             export_path: Path to export file
@@ -846,7 +827,7 @@ class UserPreferenceMemory:
 
         Returns:
             True if export was successful
-"""
+        """
         try:
             profile = self.get_user_profile()
 
@@ -863,11 +844,8 @@ class UserPreferenceMemory:
             print(f"Export failed: {e}", file=sys.stderr)
             return False
 
-"""
-    def import_preferences():
-"""
-        
-        Import user preferences from file.
+    def import_preferences(self, import_path: str, merge_strategy: str = "merge"):
+        """Import user preferences from file.
 
         Args:
             import_path: Path to import file
@@ -875,7 +853,7 @@ class UserPreferenceMemory:
 
         Returns:
             True if import was successful
-"""
+        """
         try:
             import_file = Path(import_path)
             if not import_file.exists():
@@ -910,7 +888,6 @@ class UserPreferenceMemory:
             print(f"Import failed: {e}", file=sys.stderr)
             return False
 
-"""
     def _filter_sensitive_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Filter out potentially sensitive data."""
         filtered = data.copy()
@@ -942,7 +919,6 @@ class UserPreferenceMemory:
 
 def main():
     """Command-line interface for user preference memory."""
-"""
     import argparse
 
     parser = argparse.ArgumentParser(description="User Preference Memory System")

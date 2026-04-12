@@ -23,23 +23,21 @@ except ImportError:
 
 
 class AgentPerformanceTracker:
-"""
+    """
     Tracks performance metrics for individual agents to enable:
-"""
     - Performance trend analysis
     - Specialization identification
     - Weak agent detection
     - Optimal agent selection
-"""
+    """
 
-"""
     def __init__(self, storage_dir: str = ".claude-patterns"):
-"""
+        """
         Initialize the agent performance tracker.
 
         Args:
             storage_dir: Directory for storing performance data
-"""
+        """
         self.storage_dir = Path(storage_dir)
         self.performance_file = self.storage_dir / "agent_performance.json"
         self.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -48,7 +46,6 @@ class AgentPerformanceTracker:
         if not self.performance_file.exists():
             self._initialize_performance_storage()
 
-"""
     def _initialize_performance_storage(self):
         """Initialize the performance storage with default structure."""
         initial_data = {
@@ -117,7 +114,7 @@ class AgentPerformanceTracker:
         iterations: int = 1,
         context: Optional[Dict[str, Any]] = None,
     ):
-        """Record Task Execution."""
+        """
         Record a task execution for performance tracking.
 
         Args:
@@ -131,7 +128,7 @@ class AgentPerformanceTracker:
             auto_fix_applied: Whether auto-fix was applied (for execution agents)
             iterations: Number of iterations required
             context: Additional context data
-"""
+        """
         perf_data = self._read_data()
 
         # Initialize agent metrics if not exists
@@ -227,7 +224,6 @@ class AgentPerformanceTracker:
         # Update specializations asynchronously
         self._update_specializations(agent_name)
 
-"""
     def get_agent_performance(self, agent_name: str) -> Dict[str, Any]:
         """Get performance metrics for a specific agent."""
         perf_data = self._read_data()
@@ -258,9 +254,8 @@ class AgentPerformanceTracker:
 
         return all_performances
 
-    def get_top_performers():
-"""
-        
+    def get_top_performers(self, metric: str = "quality_score", limit: int = 5) -> List[Dict[str, Any]]:
+        """
         Get top performing agents by metric.
 
         Args:
@@ -269,7 +264,7 @@ class AgentPerformanceTracker:
 
         Returns:
             List of top performers
-"""
+        """
         perf_data = self._read_data()
 
         performers = []
@@ -291,10 +286,8 @@ class AgentPerformanceTracker:
 
         return sorted(performers, key=lambda x: x["score"], reverse=True)[:limit]
 
-"""
-    def get_weak_performers():
-"""
-        
+    def get_weak_performers(self, threshold: float = 70.0) -> List[Dict[str, Any]]:
+        """
         Identify agents performing below threshold.
 
         Args:
@@ -302,7 +295,7 @@ class AgentPerformanceTracker:
 
         Returns:
             List of weak performers
-"""
+        """
         perf_data = self._read_data()
 
         weak_performers = []
@@ -323,7 +316,6 @@ class AgentPerformanceTracker:
 
         return sorted(weak_performers, key=lambda x: x["average_quality_score"])
 
-"""
     def _calculate_performance_rating(self, metrics: Dict[str, Any]) -> str:
         """Calculate overall performance rating."""
         if metrics["total_tasks"] < 3:

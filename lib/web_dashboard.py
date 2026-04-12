@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-#     Web Dashboard for Token Monitoring
-"""
+"""Web Dashboard for Token Monitoring.
+
 Simple web interface for the token monitoring dashboard that provides
 real-time visualization of optimization performance and metrics.
 
 Features:
-"""
 - Real-time statistics display
 - Interactive charts and graphs
 - Alert management
@@ -15,6 +14,7 @@ Features:
 
 Version: 1.0.0 - Production Ready
 Author: Autonomous Agent Development Team
+"""
 import json
 import time
 from datetime import datetime, timedelta
@@ -439,7 +439,7 @@ class WebDashboard:
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">System Status</span>
-                    <span class="stat-value" style="color: #48bb78;">[GREEN] Operational</span>
+                    <span class="stat-value" style="color: #48bb78;"> Operational</span>
                 </div>
             </div>
         </div>
@@ -466,7 +466,6 @@ class WebDashboard:
 """
         return html_content
 
-"""
     def _generate_alerts_html(self, alerts) -> str:
         """Generate HTML for alerts section."""
         if not alerts:
@@ -490,7 +489,6 @@ class WebDashboard:
 
         return alerts_html
 
-"""
     def start_server(self):
         """Start the web server."""
         try:
@@ -532,7 +530,7 @@ class WebDashboard:
                 try:
                     httpd.serve_forever()
                 except KeyboardInterrupt:
-                    print("\n[HI] Dashboard stopped")
+                    print("\n Dashboard stopped")
 
         except ImportError:
             print("Error: http.server module not available")
