@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v8.2.0
+# 🚀 Autonomous Agent for Claude Code v8.3.0
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-8.2.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.2.0)
+[![Version](https://img.shields.io/badge/version-8.3.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.3.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -110,7 +110,7 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
-### v8.2.0 - Performance & Cross-Platform Excellence
+### v8.3.0 - Performance & Cross-Platform Excellence
 
 **Massive cleanup and modernization delivering smaller footprint and Windows reliability.**
 
@@ -336,9 +336,11 @@ python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list
 ## 📚 Documentation
 
 - **[Four-Tier Architecture](docs/FOUR_TIER_ARCHITECTURE.md)** - Complete architectural design (40+ pages) 🆕
-- **[Unified Dashboard Guide](docs/UNIFIED_DASHBOARD_GUIDE.md)** - Complete unified dashboard documentation (NEW v7.5.0) 🆕
-- **[Migration Tool](lib/dashboard_migration_tool.py)** - Automated dashboard migration with backup (NEW v7.5.0) 🆕
-- **[Implementation Summary](UNIFIED_DASHBOARD_SUMMARY.md)** - Complete project overview and achievements (NEW v7.5.0) 🆕
+- **[Dashboard](lib/dashboard.py)** - Simplified 4-tab dashboard with Chart.js (rewritten v8.3.0)
+- **[Known Issues](docs/KNOWN_ISSUES.md)** - Current issues and stabilization roadmap
+- **[Approach & Method](docs/APPROACH_AND_METHOD.md)** - Execution paradigm and design principles
+- **[Knowledge Management](docs/KNOWLEDGE_MANAGEMENT.md)** - Data storage and component discovery
+- **[Development & Distribution](docs/DEVELOPMENT_DISTRIBUTION_ARCHITECTURE.md)** - Dual-mode dashboard architecture
 - **[Cross-Platform Compatibility Guide](emoji_prevention_guide.md)** - Windows encoding compatibility and emoji prevention (v7.4.1) ✨
 - **[Emoji Detection Tool](detect_fix_emojis.py)** - Automated emoji detection and fixing for cross-platform compatibility (v7.4.1) ✨
 - **[Upgrade Guide v6.x → v7.0](UPGRADE_GUIDE.md)** - Zero-effort migration guide 🆕

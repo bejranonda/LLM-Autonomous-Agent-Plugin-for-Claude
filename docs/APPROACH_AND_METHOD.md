@@ -32,3 +32,10 @@ With v8.1.0, we prioritize strict compliance with Claude Code's official plugin 
 2. **Concise Agent System Prompts**: Agent .md files are system prompts, not scripts. They should be focused instructions, not documentation dumps. Oversized agents are periodically audited and trimmed. Target: under 400 lines per agent.
 3. **Minimal lib/ Footprint**: Python utility scripts are audited for usage. Unreferenced scripts are removed to keep the plugin install lean.
 4. **bin/ Executables**: Key scripts exposed as bare CLI commands via bin/ so agents and users can invoke them without full Python path syntax.
+
+## Dashboard Simplicity (v8.3.0)
+
+1. **Direct JSON Reads**: Dashboard loads `.claude-patterns/*.json` files directly. No intermediate data collector classes, no complex class hierarchies. Each data function is a standalone helper that reads one JSON file and returns a dict.
+2. **Flask App Factory**: `create_app(patterns_dir)` produces a configured Flask app. This pattern supports testing, multiple instances, and clean startup. The `dashboard_launcher.py` wrapper provides auto-restart and health monitoring on top.
+3. **Zero Local Imports**: The dashboard depends only on Flask and stdlib. Previously it imported deleted modules causing immediate ImportError. This isolation means the dashboard cannot break due to changes elsewhere in lib/.
+4. **CDN-Based UI**: Chart.js loaded from jsdelivr CDN. No bundled JS dependencies to maintain. Dark theme with auto-refresh keeps the UI functional without external CSS frameworks.

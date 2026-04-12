@@ -1,6 +1,14 @@
-# Known Issues & Stabilization Roadmap (v8.1.0+)
+# Known Issues & Stabilization Roadmap (v8.3.0+)
 
-The v8.1.0 release focused on plugin specification compliance and marketplace installation reliability. Below are currently identified operational constraints:
+The v8.3.0 release focused on dashboard reliability and dead code removal. Below are currently identified operational constraints:
+
+## Resolved in v8.3.0
+
+- **[FIXED] Dashboard Syntax Error**: `lib/dashboard.py` had an unterminated triple-quoted string (197 quotes, odd count) causing SyntaxError at line 6835. Complete rewrite reduced it to 534 working lines.
+- **[FIXED] Dashboard Import Failures**: Dashboard imported deleted modules (`parameter_compatibility`, `unified_parameter_storage`, `detect_current_model` at import time). Rewrite uses zero local module dependencies - reads JSON directly.
+- **[FIXED] Flask App Not Starting**: `app = Flask(__name__)` was commented out. New version uses Flask app factory pattern (`create_app()`).
+- **[FIXED] Dashboard HTML Bloat**: 3655 lines of inline HTML replaced with 190-line dark-theme template using Chart.js from CDN.
+- **[FIXED] Broken API Endpoints**: 30+ endpoints (many returning 404 or errors) consolidated to 11 working endpoints.
 
 ## Resolved in v8.2.0
 

@@ -32,6 +32,15 @@ When consolidating knowledge across the Four-Tier workflow, the system uses `uni
 - Added bin/ executables for direct CLI access to key utilities
 - Added settings.json to activate orchestrator automatically on plugin enable
 
+## What Changed in v8.3.0
+
+- Rewrote `lib/dashboard.py` from 6835 broken lines to 534 working lines (92% reduction)
+- Dashboard now reads JSON data directly from `.claude-patterns/` with no intermediate data classes
+- Removed all imports of deleted modules (`parameter_compatibility`, `unified_parameter_storage`, etc.)
+- Flask app factory pattern (`create_app()`) replaces global app instance
+- 11 working API endpoints replace 30+ broken ones
+- 4-tab dark-theme dashboard with Chart.js visualizations and auto-refresh
+
 ## What Changed in v8.1.0
 
 - Removed non-standard frontmatter keys from all components (they were invisible to Claude Code's plugin loader)

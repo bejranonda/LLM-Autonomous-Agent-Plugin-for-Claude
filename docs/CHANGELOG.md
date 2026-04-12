@@ -2,6 +2,28 @@
 
 All notable changes to the Autonomous Claude Agent Plugin will be documented in this file.
 
+## [8.3.0] - 2026-04-12
+
+### Dashboard Rewrite
+
+- Rewrote `lib/dashboard.py` from 6835 broken lines to 534 working lines (92% reduction)
+- Fixed SyntaxError caused by unterminated triple-quoted string (197 quotes, odd count)
+- Fixed ImportError from importing deleted modules (`parameter_compatibility`, `unified_parameter_storage`)
+- Fixed Flask app not starting (`app = Flask(__name__)` was commented out)
+- Replaced 3655-line inline HTML with 190-line dark-theme template using Chart.js CDN
+- Consolidated 30+ broken API endpoints to 11 working endpoints
+- Added Flask app factory pattern (`create_app()`) for testability
+- Added 5-second in-memory JSON cache for API performance
+- Dashboard now has zero local module dependencies (only Flask + stdlib)
+
+### Documentation
+
+- Updated version references to 8.3.0 across plugin.json, CLAUDE.md, README.md
+- Updated KNOWN_ISSUES.md with dashboard fix details
+- Updated APPROACH_AND_METHOD.md with dashboard simplicity section
+- Updated KNOWLEDGE_MANAGEMENT.md with v8.3.0 changes
+- Added release notes for v8.3.0
+
 ## [5.3.4] - 2025-10-29
 
 ### 🔧 Maintenance Release

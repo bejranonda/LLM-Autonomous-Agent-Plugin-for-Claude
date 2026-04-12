@@ -1,5 +1,7 @@
 # Development and Distribution Architecture
 
+> **Note (v8.3.0)**: The dashboard was completely rewritten. It no longer uses `DashboardDataCollector`, `UnifiedDashboardSection` classes, or `unified_parameter_storage`. Instead, it reads JSON files directly from `.claude-patterns/` using standalone data functions. The dual-mode architecture (dev/distribution) still applies but the internal implementation is vastly simplified. See `lib/dashboard.py` for current code.
+
 ## Overview
 
 This document describes the dual-mode architecture for the dashboard system, which supports both development environments and user distribution through a smart hybrid approach.
