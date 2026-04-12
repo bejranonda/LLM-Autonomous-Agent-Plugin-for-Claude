@@ -344,7 +344,7 @@ def main():
     elif args.explain:
         result = system.get_threshold_with_explanation(args.task_type, args.phase, args.criticality, args.user_facing)
         print(f"Quality Threshold: {result['threshold']}/100")
-        print(f"\nCalculation:")
+        print("\nCalculation:")
         for step in result["explanation"]:
             print(f"  {step}")
         print(f"\nRationale: {result['rationale']}")

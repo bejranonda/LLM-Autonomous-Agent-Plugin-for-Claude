@@ -161,7 +161,7 @@ def run_final_performance_validation():
 def main():
     """Main execution"""
     try:
-        certification = run_final_performance_validation()
+        run_final_performance_validation()
         print()
         print("=" * 60)
         print("FINAL VALIDATION: SUCCESS")

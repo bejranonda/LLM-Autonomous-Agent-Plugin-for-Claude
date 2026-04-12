@@ -7,7 +7,6 @@ building transparency and trust through clear reasoning.
 This implements the v7.1 enhancement for Decision Explainability.
 """
 import json
-import sys
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any, Optional

@@ -4,7 +4,6 @@
 """
 import time
 import json
-import threading
 from pathlib import Path
 from typing import Dict, Any, List
 from concurrent.futures import ThreadPoolExecutor, as_completed

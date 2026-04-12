@@ -9,8 +9,6 @@ import pytest
 import json
 import os
 import time
-from unittest.mock import patch, mock_open
-from datetime import datetime, timezone
 
 # Import the module under test
 import sys
@@ -432,7 +430,6 @@ class TestContextAwareSkillRecommendations:
 
     def test_performance_optimization(self, recommendation_system, base_recommendations, sample_task_info, sample_context):
         """Test performance of recommendation generation"""
-        import time
 
         start_time = time.time()
         recommendations = recommendation_system.recommend_skills_with_context(

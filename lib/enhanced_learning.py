@@ -11,10 +11,9 @@ import hashlib
 from datetime import datetime, timedelta
 from pathlib import Path
 import platform
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Any
 from collections import defaultdict
 import statistics
-import os
 
 # Handle Windows compatibility for file locking
 if platform.system() == "Windows":
@@ -457,7 +456,7 @@ def main():
     find_parser.add_argument("--limit", type=int, default=5, help="Maximum patterns to return")
 
     # Stats action
-    stats_parser = subparsers.add_parser("stats", help="Show learning statistics")
+    subparsers.add_parser("stats", help="Show learning statistics")
 
     # Cleanup action
     cleanup_parser = subparsers.add_parser("cleanup", help="Clean up old patterns")

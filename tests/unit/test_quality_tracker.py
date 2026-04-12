@@ -10,12 +10,10 @@ Tests the quality tracking functionality including:
 
 import pytest
 import json
-import tempfile
-import shutil
 import os
 import sys
 from pathlib import Path
-from unittest.mock import patch, mock_open
+from unittest.mock import patch
 from datetime import datetime, timedelta
 
 # Add lib directory to path for testing

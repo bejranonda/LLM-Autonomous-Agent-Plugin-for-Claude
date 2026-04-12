@@ -10,11 +10,8 @@ Usage:
 
 import argparse
 import json
-import os
 import socket
-import sys
 import webbrowser
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -498,10 +495,10 @@ def run_dashboard(
     port = _find_port(port, host)
     url = f"http://{host}:{port}"
 
-    print(f"[START] Autonomous Agent Dashboard")
+    print("[START] Autonomous Agent Dashboard")
     print(f"[URL]   {url}")
     print(f"[DATA]  {patterns_dir}")
-    print(f"[STOP]  Press Ctrl+C to stop")
+    print("[STOP]  Press Ctrl+C to stop")
     print()
 
     if open_browser:

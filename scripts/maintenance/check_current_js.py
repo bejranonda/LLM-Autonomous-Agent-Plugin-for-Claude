@@ -31,9 +31,9 @@ def check_current_js():
 
                     # Check for issues
                     if '=>' in line_content:
-                        print(f'         ^ Arrow function found!')
+                        print('         ^ Arrow function found!')
                     if '`' in line_content:
-                        print(f'         ^ Template literal found!')
+                        print('         ^ Template literal found!')
             else:
                 print(f'JavaScript section has only {len(js_lines)} lines (less than 1827)')
 
@@ -41,7 +41,7 @@ def check_current_js():
             template_literal_count = js_content.count('`')
             arrow_function_count = js_content.count('=>')
 
-            print(f'\\nJavaScript issue summary:')
+            print('\\nJavaScript issue summary:')
             print(f'Template literals: {template_literal_count}')
             print(f'Arrow functions: {arrow_function_count}')
 

@@ -116,7 +116,7 @@ Error recovery procedures help users recover from system failures and data corru
 
     original_tokens = len(sample_content.split())
 
-    print(f"Original Content Analysis:")
+    print("Original Content Analysis:")
     print(f"   Original tokens: {original_tokens:,}")
     print(f"   Content length: {len(sample_content):,} characters")
     print(f"   Sections: {sample_content.count('##')}")
@@ -139,7 +139,7 @@ Error recovery procedures help users recover from system failures and data corru
         tokens_saved = stats['original_tokens'] - stats['optimized_tokens']
         reduction_percentage = (tokens_saved / stats['original_tokens']) * 100
 
-        print(f"   📊 Results:")
+        print("   📊 Results:")
         print(f"      Tokens used: {stats['optimized_tokens']:,}")
         print(f"      Tokens saved: {tokens_saved:,}")
         print(f"      Reduction: {reduction_percentage:.1f}%")
@@ -161,7 +161,7 @@ Error recovery procedures help users recover from system failures and data corru
 
     # Show overall performance
     summary = optimizer.get_performance_summary()
-    print(f"📈 Performance Summary:")
+    print("📈 Performance Summary:")
     print(f"   Total optimizations: {summary['total_loads']}")
     if summary['total_loads'] > 0:
         print(f"   Average compression: {summary['compression_statistics']['average_ratio']:.1%}")

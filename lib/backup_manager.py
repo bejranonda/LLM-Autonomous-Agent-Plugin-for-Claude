@@ -4,7 +4,6 @@ Automated Backup System for Critical Plugin Components
 Provides versioned backups with automatic restoration capabilities.
 """
 import json
-import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any

@@ -11,7 +11,6 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from lib.ml_optimization_engine import MLOptimizationEngine, OptimizationTarget
-import time
 import random
 import statistics
 
@@ -206,7 +205,7 @@ def test_ml_optimization_pipeline():
         # Calculate scenario summary
         total_savings = sum(p.expected_savings for p in scenario_predictions)
         avg_confidence = statistics.mean([p.confidence for p in scenario_predictions])
-        print(f"   Scenario Summary:")
+        print("   Scenario Summary:")
         print(f"     Total potential savings: {total_savings:,} tokens")
         print(f"     Average confidence: {avg_confidence:.1f}%")
 
@@ -278,7 +277,7 @@ def test_ml_optimization_pipeline():
     print(f"Average confidence: {avg_confidence:.1f}%")
     print(f"Realizable savings (confidence-adjusted): {realizable_savings:,} tokens")
 
-    print(f"\nSavings by target:")
+    print("\nSavings by target:")
     for target, analysis in target_analysis.items():
         print(f"   {target.replace('_', ' ').title()}:")
         print(f"     Potential: {analysis['savings']:,} tokens")
@@ -297,14 +296,14 @@ def test_ml_optimization_pipeline():
 
     report = ml_engine.generate_ml_report(hours=1)
 
-    print(f"Report Summary:")
+    print("Report Summary:")
     print(f"   Report period: {report['report_period_hours']} hours")
     print(f"   Total predictions: {report['summary']['total_predictions']}")
     print(f"   Average confidence: {report['summary']['average_confidence']:.1f}%")
     print(f"   Total potential savings: {report['summary']['total_potential_savings']:,} tokens")
     print(f"   Active models: {report['summary']['active_models']}")
 
-    print(f"\nTop Recommendations from Report:")
+    print("\nTop Recommendations from Report:")
     for i, rec in enumerate(report['top_recommendations'], 1):
         print(f"   {i}. {rec['target'].replace('_', ' ').title()}")
         print(f"      Improvement: {rec['predicted_value']:.1f}%")
@@ -315,7 +314,7 @@ def test_ml_optimization_pipeline():
 
     # Target Achievement Assessment
     print("=== Target Achievement Assessment ===")
-    print(f"Target: 15-25% additional optimization through ML")
+    print("Target: 15-25% additional optimization through ML")
 
     # Calculate realistic optimization impact
     if realizable_savings > 0:

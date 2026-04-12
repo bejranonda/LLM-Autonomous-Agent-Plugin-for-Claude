@@ -9,7 +9,6 @@ import pytest
 import json
 import os
 import time
-from unittest.mock import patch, mock_open
 from datetime import datetime, timezone
 
 # Import the module under test
@@ -241,7 +240,7 @@ class TestAgentFeedbackSystem:
     def test_feedback_filtering(self, feedback_system):
         """Test filtering feedback by agent and time"""
         # Add feedback at different times
-        base_time = datetime.now(timezone.utc)
+        datetime.now(timezone.utc)
 
         feedback_entries = [
             {

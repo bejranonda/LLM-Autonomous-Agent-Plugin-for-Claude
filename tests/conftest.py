@@ -13,7 +13,6 @@ import tempfile
 import shutil
 import json
 import os
-from pathlib import Path
 from unittest.mock import Mock, patch
 import sys
 
@@ -252,7 +251,7 @@ def mock_file_lock():
             }
     else:
         with patch('fcntl.flock') as mock_lock, \
-             patch('os.O_LOCK') as mock_lock_flag:
+             patch('os.O_LOCK'):
             yield {
                 'lock': mock_lock,
                 'platform': 'Unix'
@@ -330,7 +329,6 @@ def mock_agent_groups():
 @pytest.fixture
 def optimizer():
     """Mock agent communication optimizer fixture for testing"""
-    from unittest.mock import Mock
 
     mock_optimizer = Mock()
     mock_optimizer.optimize_communication.return_value = {
@@ -352,7 +350,6 @@ def optimizer():
 @pytest.fixture
 def budget_manager():
     """Mock dynamic budget manager fixture for testing"""
-    from unittest.mock import Mock
 
     mock_budget_manager = Mock()
     mock_budget_manager.total_budget = 1000.0
@@ -385,7 +382,6 @@ def preference_learner(temp_directory):
 @pytest.fixture
 def intelligent_agent_router(temp_directory):
     """Mock IntelligentAgentRouter fixture for testing"""
-    from unittest.mock import Mock
 
     mock_router = Mock()
     mock_router.route_task.return_value = {
@@ -405,7 +401,6 @@ def intelligent_agent_router(temp_directory):
 @pytest.fixture
 def learning_visualizer(temp_directory):
     """Mock LearningVisualizer fixture for testing"""
-    from unittest.mock import Mock
 
     mock_visualizer = Mock()
     mock_visualizer.record_learning_event.return_value = True
@@ -420,7 +415,6 @@ def learning_visualizer(temp_directory):
 @pytest.fixture
 def predictive_skill_loader(temp_directory):
     """Mock PredictiveSkillLoader fixture for testing"""
-    from unittest.mock import Mock
 
     mock_loader = Mock()
     mock_loader.predict_skills.return_value = [

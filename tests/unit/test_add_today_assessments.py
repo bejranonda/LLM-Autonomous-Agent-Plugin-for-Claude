@@ -9,7 +9,7 @@ import tempfile
 import shutil
 import json
 from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import patch
 import sys
 import os
 from datetime import datetime

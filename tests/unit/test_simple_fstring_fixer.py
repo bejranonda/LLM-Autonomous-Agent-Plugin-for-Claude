@@ -2,7 +2,6 @@
 Tests for simple_fstring_fixer.py utility
 """
 
-import pytest
 import sys
 import os
 

@@ -372,7 +372,7 @@ def main():
 
     elif args.action == "stats":
         stats = system.get_collaboration_stats()
-        print(f"Collaboration Statistics:")
+        print("Collaboration Statistics:")
         print(f"  Total Feedbacks: {stats['total_feedbacks']}")
         print(f"  Analysis -> Execution: {stats['analysis_to_execution']}")
         print(f"  Execution -> Analysis: {stats['execution_to_analysis']}")

@@ -5,9 +5,7 @@ This module validates the structure and completeness of the test suite
 for the 8 Phase 1 learning systems.
 """
 
-import os
 import ast
-import json
 from pathlib import Path
 
 
@@ -208,20 +206,20 @@ def main():
 
     # Summary
     summary = report["validation_summary"]
-    print(f"SUMMARY:")
+    print("SUMMARY:")
     print(f"   Total Systems Expected: {summary['total_systems_expected']}")
     print(f"   Test Files Found: {summary['test_files_found']}")
     print(f"   Completion: {summary['completion_percentage']:.1f}%")
 
     # Quality Assessment
     quality = report["quality_assessment"]
-    print(f"\nQUALITY ASSESSMENT:")
+    print("\nQUALITY ASSESSMENT:")
     print(f"   Quality Score: {quality['quality_score']}/{quality['max_possible_score']}")
     print(f"   Quality Percentage: {quality['quality_percentage']:.1f}%")
     print(f"   Grade: {quality['grade']}")
 
     # Detailed Results
-    print(f"\nDETAILED RESULTS:")
+    print("\nDETAILED RESULTS:")
     for system in validator.expected_systems:
         if system in report["detailed_results"]["test_methods"]:
             method_count = report["detailed_results"]["test_methods"][system]
@@ -236,7 +234,7 @@ def main():
             print(f"   [MISSING] {system}: Missing test file")
 
     # Recommendations
-    print(f"\nRECOMMENDATIONS:")
+    print("\nRECOMMENDATIONS:")
     for i, rec in enumerate(report["recommendations"], 1):
         priority_marker = {"HIGH": "[HIGH]", "MEDIUM": "[MED]", "INFO": "[INFO]"}.get(rec["priority"], "[???]")
         print(f"   {i}. {priority_marker} {rec['description']}")
@@ -245,9 +243,9 @@ def main():
     if summary["completion_percentage"] == 100:
         print(f"\nEXCELLENT: All {summary['total_systems_expected']} learning systems have comprehensive test suites!")
         if quality["quality_percentage"] >= 80:
-            print(f"READY FOR PRODUCTION: High-quality test coverage achieved.")
+            print("READY FOR PRODUCTION: High-quality test coverage achieved.")
         else:
-            print(f"ALMOST READY: Consider addressing quality recommendations.")
+            print("ALMOST READY: Consider addressing quality recommendations.")
     else:
         missing = summary['total_systems_expected'] - summary['test_files_found']
         print(f"\nWORK IN PROGRESS: {missing} test file(s) still needed.")

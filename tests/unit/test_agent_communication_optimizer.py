@@ -7,9 +7,8 @@ Boosts test coverage by focusing on communication optimization and token efficie
 import pytest
 import tempfile
 import shutil
-import json
 from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import patch, MagicMock
 import sys
 import os
 import time
@@ -26,7 +25,6 @@ from agent_communication_optimizer import (
     MessagePriority,
     CompressionType,
     OptimizedMessage,
-    CommunicationProtocol,
     get_communication_optimizer
 )
 
@@ -456,7 +454,7 @@ class TestAgentCommunicationOptimizer:
         initial_stats = self.optimizer.stats.copy()
 
         # Optimize a message
-        optimized = self.optimizer.optimize_message(
+        self.optimizer.optimize_message(
             sender="agent1",
             receiver="agent2",
             message=message

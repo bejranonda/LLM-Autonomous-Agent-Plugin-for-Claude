@@ -8,9 +8,6 @@ and provides personalized experience.
 import pytest
 import json
 import os
-import time
-from unittest.mock import patch, mock_open
-from datetime import datetime, timezone
 
 # Import the module under test
 import sys

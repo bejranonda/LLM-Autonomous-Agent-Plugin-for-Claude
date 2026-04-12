@@ -142,8 +142,6 @@ class TestAgentErrorHelper:
 
     def test_agent_categories_consistency(self):
         """Test that all agents have valid categories"""
-        valid_categories = {"core", "analysis", "quality", "validation", "learning",
-                          "testing", "security", "documentation", "performance", "coordination"}
 
         for agent_name, agent_info in AVAILABLE_AGENTS.items():
             category = agent_info.get("category", "")

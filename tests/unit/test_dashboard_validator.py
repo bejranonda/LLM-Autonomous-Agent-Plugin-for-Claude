@@ -5,9 +5,7 @@ Tests for dashboard_validator.py
 import pytest
 import os
 import sys
-import json
 from unittest.mock import patch, mock_open
-from pathlib import Path
 
 # Add lib to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))
@@ -141,13 +139,6 @@ def missing_imports_function():
 
     def test_check_dashboard_health_healthy(self):
         """Test dashboard health check for healthy dashboard"""
-        health_checks = {
-            "file_exists": True,
-            "imports_valid": True,
-            "dependencies_available": True,
-            "syntax_valid": True,
-            "version_compatible": True
-        }
 
         with patch("dashboard_validator.validate_dashboard_imports", return_value={"valid": True}):
             with patch("dashboard_validator.validate_dashboard_dependencies", return_value={"all_available": True}):

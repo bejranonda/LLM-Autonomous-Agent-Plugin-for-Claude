@@ -23,7 +23,7 @@ def fix_comment_line_issue():
     if old_comment in content:
         content = content.replace(old_comment, new_comment)
         fixes_applied += 1
-        print(f"Fixed comment line quotes issue")
+        print("Fixed comment line quotes issue")
 
     # Also check for any other similar quote issues in comments nearby
     comment_fixes = [

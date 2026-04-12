@@ -11,9 +11,9 @@ import traceback
 import gc
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List, Tuple, Optional
+from typing import Dict, Any
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 import subprocess
 import statistics
@@ -259,7 +259,6 @@ class PerformanceTestSuite:
         """Test resource utilization during command execution"""
         print("Testing resource utilization...")
 
-        resource_samples = []
 
         # Select a representative medium command for resource testing
         test_command = "python lib/comprehensive_quality_analysis.py --dir ."

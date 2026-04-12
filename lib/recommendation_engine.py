@@ -19,9 +19,7 @@ import argparse
 import sys
 import re
 from datetime import datetime
-from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
-from collections import defaultdict, Counter
+from typing import Dict, List, Any
 
 # Import pattern storage
 try:
@@ -1017,7 +1015,7 @@ class RecommendationEngine:
         task = recommendations["task_analysis"]["original"]
         task_analysis = recommendations["task_analysis"]
         primary = recommendations["primary_recommendation"]
-        skills = recommendations["skill_recommendations"]
+        recommendations["skill_recommendations"]
         risks = recommendations["risk_assessment"]
         patterns = recommendations["pattern_insights"]
         alternatives = recommendations["alternatives"]
@@ -1156,7 +1154,7 @@ def format_recommendations_text(recs: Dict[str, Any]) -> str:
 
     # Top recommendation
     if recs["recommendations"]:
-        top = recs["recommendations"][0]
+        recs["recommendations"][0]
         output.append("+- [RECOMMENDED] APPROACH ({}% confidence) -------------+".format(int(predictions["confidence"])))
         output.append("|                                                         |")
         output.append(

@@ -52,7 +52,7 @@ def main():
             print(f"  {skill_dir.name}/SKILL.md: {status} - {msg}")
 
     total_errors = agent_errors + skill_errors
-    print(f"\n=== SUMMARY ===")
+    print("\n=== SUMMARY ===")
     print(f"Agent files checked: {len(agent_files)}")
     print(f'Skill files checked: {len([d for d in skill_dirs if (d / "SKILL.md").exists()])}')
     print(f"Errors found: {total_errors}")

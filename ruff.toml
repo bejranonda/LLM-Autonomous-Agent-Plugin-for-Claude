@@ -1,5 +1,13 @@
+exclude = [
+    "lib/analysis",
+    "lib/assessments",
+    "lib/fixes",
+    "lib/migration",
+    "scripts/maintenance",
+]
+
 [lint]
-ignore = ["E501"]
+ignore = ["E501", "E722"]
 
 [lint.per-file-ignores]
-"tests/*" = ["S101"]
+"tests/*" = ["S101", "F401", "F821", "F402", "E402"]

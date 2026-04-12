@@ -10,7 +10,7 @@ with open('data/data/data/reports/coverage.json') as f:
 
 print("[COVERAGE ANALYSIS]")
 print(f"Total Coverage: {data['totals']['percent_covered']:.2f}%")
-print(f"Target: 80.00%")
+print("Target: 80.00%")
 print(f"Gap: {80.00 - data['totals']['percent_covered']:.2f}%\n")
 
 # Find files with low coverage

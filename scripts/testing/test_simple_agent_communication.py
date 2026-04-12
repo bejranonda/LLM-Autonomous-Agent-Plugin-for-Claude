@@ -6,10 +6,9 @@ Tests the basic functionality without complex dependencies
 
 import sys
 import time
-import json
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Dict, Any
 
 # Add lib directory to path
 sys.path.append(str(Path(__file__).parent / "lib"))
@@ -50,7 +49,7 @@ def test_basic_communication_optimization():
         # Optimize the message
         optimized = optimizer.optimize_message(sender, receiver, test_message)
 
-        print(f"[OK] Message optimized successfully:")
+        print("[OK] Message optimized successfully:")
         print(f"   Original tokens: {optimized['original_tokens']}")
         print(f"   Optimized tokens: {optimized['optimized_tokens']}")
         print(f"   Savings: {optimized['tokens_saved']} ({optimized['savings_percentage']:.1f}%)")
@@ -69,7 +68,7 @@ def test_basic_communication_optimization():
             len(decompressed_content.get("requirements", {})) > 0
         )
 
-        print(f"[OK] Message decompression successful:")
+        print("[OK] Message decompression successful:")
         print(f"   Content integrity: {'✅ Maintained' if content_match else '❌ Lost'}")
 
         # Test multiple message optimization
@@ -134,7 +133,7 @@ def test_basic_communication_optimization():
         total_savings = total_original - total_optimized
         total_savings_pct = (total_savings / total_original * 100) if total_original > 0 else 0
 
-        print(f"\n[OK] Multi-message optimization:")
+        print("\n[OK] Multi-message optimization:")
         print(f"   Messages processed: {len(optimized_messages)}")
         print(f"   Total original tokens: {total_original}")
         print(f"   Total optimized tokens: {total_optimized}")
@@ -282,7 +281,7 @@ def test_performance():
 
             # Measure decompression time
             start_time = time.time()
-            decompressed = optimizer.decompress_message(result)
+            optimizer.decompress_message(result)
             decompression_time = (time.time() - start_time) * 1000
 
             performance_result = {
@@ -309,10 +308,10 @@ def test_performance():
             avg_savings = sum(r["savings_percentage"] for r in performance_results) / len(performance_results)
             avg_time = sum(r["total_time_ms"] for r in performance_results) / len(performance_results)
 
-            print(f"\n[OK] Performance Summary:")
+            print("\n[OK] Performance Summary:")
             print(f"   Average savings: {avg_savings:.1f}%")
             print(f"   Average time: {avg_time:.2f}ms")
-            print(f"   Performance target: <10ms")
+            print("   Performance target: <10ms")
 
             return {
                 "success": True,
@@ -482,24 +481,24 @@ def main():
     success_rate = (successful_tests / total_tests) * 100
 
     print(f"\n{'='*60}")
-    print(f"TEST SUITE COMPLETED")
+    print("TEST SUITE COMPLETED")
     print(f"{'='*60}")
 
-    print(f"\nOverall Results:")
+    print("\nOverall Results:")
     print(f"   Tests passed: {successful_tests}/{total_tests}")
     print(f"   Success rate: {success_rate:.1f}%")
 
     if success_rate >= 80:
-        print(f"   Status: [OK] AGENT COMMUNICATION OPTIMIZER READY")
-        print(f"   Expected token reduction: 25-35% in inter-agent communication")
+        print("   Status: [OK] AGENT COMMUNICATION OPTIMIZER READY")
+        print("   Expected token reduction: 25-35% in inter-agent communication")
     else:
-        print(f"   Status: [WARN] NEEDS ATTENTION")
+        print("   Status: [WARN] NEEDS ATTENTION")
 
     # Show key metrics
     if basic_test.get("success"):
         single_msg = basic_test["single_message"]
         multi_msg = basic_test["multi_message"]
-        print(f"\nKey Metrics:")
+        print("\nKey Metrics:")
         print(f"   Single message compression: {single_msg['savings_percentage']:.1f}%")
         print(f"   Multi-message optimization: {multi_msg['total_savings_percentage']:.1f}%")
 

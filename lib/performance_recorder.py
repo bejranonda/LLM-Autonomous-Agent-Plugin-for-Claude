@@ -62,7 +62,7 @@ class PerformanceRecorder:
 
 def main():
     """Main execution function"""
-    processor = Performancerecorder()
+    processor = PerformanceRecorder()
     result = processor.process()
     print(f"Processed {result['file']}: {result['status']}")
 

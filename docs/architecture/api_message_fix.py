@@ -135,4 +135,4 @@ if __name__ == "__main__":
     for i, block in enumerate(sanitized[0]['content']):
         print(f"  Block {i}: {block.get('text', repr(block))[:30]}...")
 
-    print(f"\n[OK] Fix applied successfully!")
+    print("\n[OK] Fix applied successfully!")

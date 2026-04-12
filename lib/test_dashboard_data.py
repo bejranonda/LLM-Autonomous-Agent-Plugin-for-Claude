@@ -2,8 +2,6 @@
 #     Test script to check dashboard data access
 """
 """
-import sys
-import os
 import json
 from pathlib import Path
 

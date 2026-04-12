@@ -9,10 +9,9 @@ import tempfile
 import shutil
 import json
 from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import patch, MagicMock
 import sys
 import os
-from datetime import datetime, timedelta
 
 # Add the lib directory to the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))

@@ -25,7 +25,7 @@
 import json
 import os
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional
 import platform
 
 # Platform-specific file locking
@@ -604,13 +604,13 @@ class ProactiveSuggester:
             f"Expected Impact: {impact_icons.get(suggestion['expected_impact'], '')} {suggestion['expected_impact'].title()}"
         )
         output.append(f"Estimated Effort: {suggestion['estimated_effort_hours']} hours")
-        output.append(f"\nDescription:")
+        output.append("\nDescription:")
         output.append(suggestion["description"])
-        output.append(f"\nRationale:")
+        output.append("\nRationale:")
         output.append(suggestion["rationale"])
 
         if suggestion.get("related_files"):
-            output.append(f"\nRelated Files:")
+            output.append("\nRelated Files:")
             for file in suggestion["related_files"][:3]:
                 output.append(f"  - {file}")
 
@@ -711,7 +711,7 @@ if __name__ == "__main__":
             actual_effort_hours=args.effort,
             notes=args.notes,
         )
-        print(f"Recorded implementation outcome")
+        print("Recorded implementation outcome")
 
     elif args.command == "stats":
         stats = suggester.get_statistics()
@@ -722,10 +722,10 @@ if __name__ == "__main__":
         print(f"Implemented: {stats['implemented']}")
         print(f"Acceptance Rate: {stats['acceptance_rate']:.1%}")
         print(f"Implementation Success Rate: {stats['implementation_success_rate']:.1%}")
-        print(f"\nCategory Distribution:")
+        print("\nCategory Distribution:")
         for category, count in stats["suggestions_per_category"].items():
             print(f"  {category}: {count}")
-        print(f"\nUser Preferences:")
+        print("\nUser Preferences:")
         prefs = stats["user_preferences"]
         print(
             f"  Preferred Types: {', '.join(prefs['preferred_types']) if prefs['preferred_types'] else 'Not yet determined'}"

@@ -11,11 +11,9 @@ import sys
 import os
 import tempfile
 import shutil
-import json
 from pathlib import Path
-from unittest.mock import patch, MagicMock, mock_open
-from datetime import datetime, timezone
-import time
+from unittest.mock import patch
+from datetime import datetime
 
 # Add lib directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
@@ -192,9 +190,9 @@ class TestTaskQueue(unittest.TestCase):
     def test_priority_ordering(self):
         """Test task priority ordering."""
         # Add tasks with different priorities
-        high_id = self.queue.add_task("high", "High priority", "echo 'high'", "high")
-        low_id = self.queue.add_task("low", "Low priority", "echo 'low'", "low")
-        medium_id = self.queue.add_task("medium", "Medium priority", "echo 'medium'", "medium")
+        self.queue.add_task("high", "High priority", "echo 'high'", "high")
+        self.queue.add_task("low", "Low priority", "echo 'low'", "low")
+        self.queue.add_task("medium", "Medium priority", "echo 'medium'", "medium")
 
         # Get next task (should be high priority)
         next_task = self.queue.get_next_task()
@@ -687,8 +685,8 @@ def run_coverage_analysis():
             print(f"⚠ Module not available: {module}")
 
     print(f"✓ Modules tested: {len(available_modules)}/{len(test_modules)}")
-    print(f"✓ Test coverage target: 80%+")
-    print(f"✓ Core functionality covered: Patterns, Queue, Quality, Prediction, Protocol")
+    print("✓ Test coverage target: 80%+")
+    print("✓ Core functionality covered: Patterns, Queue, Quality, Prediction, Protocol")
 
     # Test success rate
     loader = unittest.TestLoader()

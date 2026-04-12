@@ -9,8 +9,6 @@ import pytest
 import json
 import os
 import time
-from unittest.mock import patch, mock_open
-from datetime import datetime, timezone
 
 # Import the module under test
 import sys
@@ -168,7 +166,7 @@ class TestPredictiveSkillLoader:
     def test_learning_from_outcomes(self, skill_loader, sample_task_info):
         """Test that the system learns from task outcomes"""
         skill_name = "test-skill"
-        task_type = sample_task_info["type"]
+        sample_task_info["type"]
 
         # Initial prediction
         initial_skills = skill_loader.predict_skills(sample_task_info, top_k=5)
@@ -212,7 +210,7 @@ class TestPredictiveSkillLoader:
         }
 
         # Get individual skill predictions
-        individual_skills = skill_loader.predict_skills(task_info, top_k=5)
+        skill_loader.predict_skills(task_info, top_k=5)
 
         # Get optimized combinations
         combinations = skill_loader.get_optimal_combinations(task_info, max_skills=3)
@@ -351,7 +349,6 @@ class TestPredictiveSkillLoader:
 
     def test_skill_loading_performance(self, skill_loader, sample_task_info):
         """Test performance of skill loading"""
-        import time
 
         # Measure prediction time
         start_time = time.time()
@@ -394,7 +391,7 @@ class TestPredictiveSkillLoader:
         skill_names = [skill['skill'] for skill in skills]
 
         # Check for security-related skills
-        security_related = any(
+        any(
             'security' in name.lower() or 'auth' in name.lower()
             for name in skill_names
         )

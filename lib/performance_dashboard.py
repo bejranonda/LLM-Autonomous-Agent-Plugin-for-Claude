@@ -4,10 +4,9 @@ import json
 import time
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List
-import statistics
+from typing import Dict, Any
 
 
 class PerformanceDashboard:
@@ -405,14 +404,14 @@ class PerformanceDashboard:
             if resource_perf.get("memory_stats"):
                 memory_stats = resource_perf["memory_stats"]
                 growth_mb = memory_stats.get("growth", 0) / 1024 / 1024
-                report_lines.append(f"\nResource Utilization:")
+                report_lines.append("\nResource Utilization:")
                 report_lines.append(f"  Memory Growth: {growth_mb:.2f} MB")
                 report_lines.append(f"  Peak CPU: {resource_perf.get('cpu_stats', {}).get('peak', 0):.1f}%")
 
             # Scalability
             scalability = test_results.get("scalability_tests", {})
             if scalability:
-                report_lines.append(f"\nScalability:")
+                report_lines.append("\nScalability:")
                 for config, perf in scalability.items():
                     report_lines.append(f"  {config}: {perf.get('commands_per_second', 0):.2f} cmd/sec")
 
@@ -420,14 +419,14 @@ class PerformanceDashboard:
             memory_tests = test_results.get("memory_leak_tests", {})
             if memory_tests:
                 leak_status = "DETECTED" if memory_tests.get("leak_detected", False) else "CLEAN"
-                report_lines.append(f"\nMemory Analysis:")
+                report_lines.append("\nMemory Analysis:")
                 report_lines.append(f"  Memory Leaks: {leak_status}")
                 report_lines.append(f"  Memory Growth: {memory_tests.get('memory_growth_mb', 0):.3f} MB")
                 report_lines.append(f"  Memory Trend: {memory_tests.get('memory_trend', 'unknown').upper()}")
 
         # Recommendations
         if cert and cert.get("recommendations"):
-            report_lines.append(f"\nRecommendations:")
+            report_lines.append("\nRecommendations:")
             for i, rec in enumerate(cert["recommendations"], 1):
                 report_lines.append(f"  {i}. {rec}")
 

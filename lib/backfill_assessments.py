@@ -5,7 +5,7 @@ Assessment Backfill System
 Backfills missing assessments for pattern learning and quality tracking.
 Ensures all tasks have proper quality assessments for learning system optimization.
 """
-from typing import List, Dict, Any
+from typing import Dict, Any
 from pathlib import Path
 
 

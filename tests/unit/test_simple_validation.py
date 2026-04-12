@@ -5,9 +5,7 @@ Tests for simple_validation.py
 import pytest
 import os
 import sys
-import json
 from unittest.mock import patch, mock_open
-from pathlib import Path
 
 # Add lib to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))

@@ -6,11 +6,10 @@ Analyzes project quality across multiple dimensions without external dependencie
 import ast
 import json
 import os
-import re
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Tuple
+from typing import Dict, Any
 
 
 class QualityController:
@@ -433,7 +432,7 @@ class QualityController:
 
         # Comparison with previous (simulated)
         print("Improvement Analysis:")
-        print(f"  - Previous Score: 58/100")
+        print("  - Previous Score: 58/100")
         print(f"  - Current Score: {self.results['overall_score']}/100")
         improvement = self.results["overall_score"] - 58
         print(f"  - Improvement: +{improvement} points ({improvement/58*100:.1f}%)")
@@ -488,7 +487,7 @@ class QualityController:
             f.write(f"**File Coverage:** {structure_results.get('required_files', {}).get('coverage', 0):.1f}%\n")
 
             component_counts = structure_results.get("component_counts", {})
-            f.write(f"\n**Component Counts:**\n")
+            f.write("\n**Component Counts:**\n")
             f.write(f"- Agents: {component_counts.get('agents', 0)}\n")
             f.write(f"- Skills: {component_counts.get('skills', 0)}\n")
             f.write(f"- Commands: {component_counts.get('commands', 0)}\n")
@@ -524,7 +523,7 @@ class QualityController:
 
             # Improvement Analysis
             f.write("\n## Improvement Analysis\n\n")
-            f.write(f"- **Previous Score:** 58/100\n")
+            f.write("- **Previous Score:** 58/100\n")
             f.write(f"- **Current Score:** {self.results['overall_score']}/100\n")
             improvement = self.results["overall_score"] - 58
             f.write(f"- **Improvement:** +{improvement} points ({improvement/58*100:.1f}%)\n")

@@ -8,7 +8,6 @@ Automatically uses web_search_fallback when WebSearch fails
 import sys
 import os
 import json
-from pathlib import Path
 
 # Add current directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

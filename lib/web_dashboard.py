@@ -15,9 +15,6 @@ Features:
 Version: 1.0.0 - Production Ready
 Author: Autonomous Agent Development Team
 """
-import json
-import time
-from datetime import datetime, timedelta
 from pathlib import Path
 import sys
 
@@ -25,7 +22,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 
 try:
-    from token_monitoring_dashboard import TokenMonitoringDashboard, MetricType
+    from token_monitoring_dashboard import TokenMonitoringDashboard
 except ImportError:
     print("Error: Token monitoring dashboard not found.")
     sys.exit(1)
@@ -518,10 +515,10 @@ class WebDashboard:
 
             # Start server
             with socketserver.TCPServer(("", self.port), handler_class) as httpd:
-                print(f"[START] Token Optimization Dashboard")
+                print("[START] Token Optimization Dashboard")
                 print(f"[DATA] Server running at: http://localhost:{self.port}")
-                print(f"[RETRY] Auto-refresh every 30 seconds")
-                print(f"[STOP] Press Ctrl+C to stop")
+                print("[RETRY] Auto-refresh every 30 seconds")
+                print("[STOP] Press Ctrl+C to stop")
                 print()
 
                 # Open browser automatically
@@ -556,7 +553,7 @@ def main():
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(html_content)
         print(f"HTML dashboard saved to: {output_file.absolute()}")
-        print(f"Open in browser to view the dashboard")
+        print("Open in browser to view the dashboard")
     else:
         # Start web server
         dashboard.start_server()

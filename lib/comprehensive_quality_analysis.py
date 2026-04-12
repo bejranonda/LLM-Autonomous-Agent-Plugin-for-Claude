@@ -5,10 +5,7 @@
 import json
 import yaml
 import sys
-import os
 from pathlib import Path
-from typing import Dict, List, Tuple
-import subprocess
 
 
 class QualityAnalyzer:
@@ -485,9 +482,9 @@ def main():
     report_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(report_file, "w", encoding="utf-8") as f:
-        f.write(f"# Quality Analysis Report\n\n")
-        f.write(f"**Generated:** 2025-10-30T12:00:00Z\n")
-        f.write(f"**Project:** Autonomous Agent Plugin v5.5.1\n")
+        f.write("# Quality Analysis Report\n\n")
+        f.write("**Generated:** 2025-10-30T12:00:00Z\n")
+        f.write("**Project:** Autonomous Agent Plugin v5.5.1\n")
         f.write(f"**Quality Score:** {report['quality_score']['total']}/100\n\n")
 
         f.write("## Metrics Summary\n\n")

@@ -4,7 +4,6 @@ Find the exact JavaScript syntax error at line 1875:118
 """
 
 import urllib.request
-import re
 
 def find_js_error():
     try:
@@ -30,7 +29,7 @@ def find_js_error():
         # Look around line 1875 (but relative to JS start)
         js_line_1875 = js_start + 1875
         if js_line_1875 < len(lines):
-            print(f"\nJavaScript line 1875:")
+            print("\nJavaScript line 1875:")
             print(f"Line {js_line_1875 + 1}: {lines[js_line_1875]}")
 
             # Check character 118

@@ -6,9 +6,8 @@ Tests all components working together for complete token optimization monitoring
 
 import sys
 import time
-import json
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # Add lib directory to path
 sys.path.append(str(Path(__file__).parent / "lib"))
@@ -81,7 +80,7 @@ This content provides a good test case for the optimization system as it contain
         # Get performance summary
         summary = loader.get_performance_summary()
 
-        print(f"[OK] Progressive Loader Test Results:")
+        print("[OK] Progressive Loader Test Results:")
         print(f"   Original tokens: {metrics.original_tokens:,}")
         print(f"   Optimized tokens: {metrics.optimized_tokens:,}")
         print(f"   Compression ratio: {metrics.compression_ratio:.2f}")
@@ -132,7 +131,7 @@ def test_smart_cache_metrics():
         # Get stats
         stats = cache.get_stats()
 
-        print(f"[OK] Smart Cache Test Results:")
+        print("[OK] Smart Cache Test Results:")
         print(f"   Hit rate: {stats.get('hit_rate', 0):.2f}")
         print(f"   Total hits: {stats.get('hit_count', 0)}")
         print(f"   Total misses: {stats.get('miss_count', 0)}")
@@ -177,9 +176,9 @@ def test_token_monitoring_metrics():
         stats = monitor.get_dashboard_stats()
 
         # Get optimization effectiveness
-        effectiveness = monitor.get_optimization_effectiveness(24)
+        monitor.get_optimization_effectiveness(24)
 
-        print(f"[OK] Token Monitoring Test Results:")
+        print("[OK] Token Monitoring Test Results:")
         print(f"   Total tokens used: {stats.total_tokens_used:,}")
         print(f"   Total tokens saved: {stats.total_tokens_saved:,}")
         print(f"   Total cost savings: ${stats.total_cost_savings:.2f}")
@@ -224,9 +223,9 @@ def test_unified_metrics_aggregator():
         snapshot = aggregator.create_system_snapshot()
 
         # Get dashboard data
-        dashboard_data = aggregator.get_kpi_dashboard_data(MetricPeriod.DAILY)
+        aggregator.get_kpi_dashboard_data(MetricPeriod.DAILY)
 
-        print(f"[OK] Unified Metrics Aggregator Test Results:")
+        print("[OK] Unified Metrics Aggregator Test Results:")
         print(f"   Systems monitored: {len([k for k, v in metrics.items() if k != 'timestamp' and 'error' not in v])}")
         print(f"   Overall KPI score: {kpi_scores['overall_score']:.1f}/100")
         print(f"   KPIs tracked: {kpi_scores['total_kpis_tracked']}")
@@ -237,7 +236,7 @@ def test_unified_metrics_aggregator():
         # Show aggregated metrics
         aggregated = metrics.get("aggregated", {})
         if aggregated:
-            print(f"\n   Aggregated Metrics:")
+            print("\n   Aggregated Metrics:")
             print(f"     Total tokens processed: {aggregated.get('total_tokens_processed', 0):,}")
             print(f"     Total tokens saved: {aggregated.get('total_tokens_saved', 0):,}")
             print(f"     Overall savings rate: {aggregated.get('overall_savings_rate', 0):.1f}%")
@@ -280,7 +279,7 @@ def test_kpi_dashboard_generator():
         dashboard_exists = dashboard_path.exists() and dashboard_path.stat().st_size > 1000
         summary_exists = summary_path.exists() and summary_path.stat().st_size > 1000
 
-        print(f"[OK] KPI Dashboard Generator Test Results:")
+        print("[OK] KPI Dashboard Generator Test Results:")
         print(f"   Dashboard file: {dashboard_file}")
         print(f"   Dashboard created: {dashboard_exists}")
         print(f"   Dashboard size: {dashboard_path.stat().st_size if dashboard_exists else 0:,} bytes")
@@ -327,22 +326,22 @@ def test_integration_workflow():
         successful_tests = len([r for r in results.values() if r.get('success', False)])
         success_rate = (successful_tests / total_tests) * 100
 
-        print(f"\nIntegration Workflow Summary:")
+        print("\nIntegration Workflow Summary:")
         print(f"   Total tests: {total_tests}")
         print(f"   Successful tests: {successful_tests}")
         print(f"   Success rate: {success_rate:.1f}%")
 
         if success_rate >= 80:
-            print(f"   Status: [OK] INTEGRATION SUCCESS")
+            print("   Status: [OK] INTEGRATION SUCCESS")
         elif success_rate >= 60:
-            print(f"   Status: [WARN] PARTIAL SUCCESS")
+            print("   Status: [WARN] PARTIAL SUCCESS")
         else:
-            print(f"   Status: [FAIL] INTEGRATION FAILED")
+            print("   Status: [FAIL] INTEGRATION FAILED")
 
         # Show combined metrics if available
         if results['unified_aggregator'].get('success'):
             agg = results['unified_aggregator']
-            print(f"\nCombined System Metrics:")
+            print("\nCombined System Metrics:")
             print(f"   Systems integrated: {agg.get('systems_monitored', 0)}")
             print(f"   Overall performance score: {agg.get('overall_score', 0):.1f}/100")
             print(f"   KPIs tracked: {agg.get('total_kpis', 0)}")
@@ -476,7 +475,7 @@ def main():
     report_file = generate_test_report(test_results)
 
     # Final summary
-    print(f"\nTest Suite Completed!")
+    print("\nTest Suite Completed!")
     print(f"   Success Rate: {test_results['success_rate']:.1f}%")
     print(f"   Status: {'READY FOR PRODUCTION' if test_results['success'] else 'NEEDS ATTENTION'}")
     print(f"   Report: {report_file}")
@@ -488,7 +487,7 @@ def main():
         "metrics_kpi_test_report.md"
     ]
 
-    print(f"\nGenerated Files:")
+    print("\nGenerated Files:")
     for file_name in generated_files:
         file_path = Path(file_name)
         if file_path.exists():

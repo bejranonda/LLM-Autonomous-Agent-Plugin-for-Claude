@@ -11,7 +11,6 @@ This ensures the dashboard always shows the correct current model.
 """
 import json
 import os
-import sys
 from pathlib import Path
 from datetime import datetime
 

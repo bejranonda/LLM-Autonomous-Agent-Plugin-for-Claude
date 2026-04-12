@@ -23,9 +23,8 @@ import shutil
 import platform
 import subprocess
 from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Union, Callable
-from collections import defaultdict
+from datetime import datetime
+from typing import Dict, List, Any, Optional
 import os
 
 try:
@@ -168,7 +167,6 @@ class SystemProfiler:
             "pip": self._get_tool_version("pip --version"),
             "docker": self._get_tool_version("docker --version"),
             "vscode": self._detect_vscode(),
-            "git": self._get_tool_version("git --version"),
         }
 
         # Filter out tools that aren't installed

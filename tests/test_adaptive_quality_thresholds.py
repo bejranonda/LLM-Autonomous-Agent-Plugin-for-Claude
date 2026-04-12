@@ -8,9 +8,6 @@ based on project context, complexity, and historical performance.
 import pytest
 import json
 import os
-import time
-from unittest.mock import patch, mock_open
-from datetime import datetime, timezone
 
 # Import the module under test
 import sys
@@ -364,7 +361,7 @@ class TestAdaptiveQualityThresholds:
 
     def test_threshold_recommendations(self, quality_thresholds):
         """Test threshold recommendations and explanations"""
-        threshold = quality_thresholds.get_threshold(
+        quality_thresholds.get_threshold(
             task_type="security",
             project_phase="pre-release",
             criticality="critical",

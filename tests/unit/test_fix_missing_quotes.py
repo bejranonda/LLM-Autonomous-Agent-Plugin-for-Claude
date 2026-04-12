@@ -2,11 +2,8 @@
 Tests for fix_missing_quotes.py utility
 """
 
-import pytest
 from unittest.mock import patch, mock_open
-import tempfile
 import os
-from pathlib import Path
 import sys
 
 # Add lib to path for imports
@@ -21,11 +18,10 @@ class TestFixMissingQuotes:
     def test_fix_version_with_quotes(self):
         """Test fixing version number without quotes"""
         content = "{\n    version: 2.0.0,\n    name: test\n}"
-        expected = '{\n    "version": 2.0.0,\n    name: test\n}'
 
         with patch("builtins.open", mock_open(read_data=content)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_missing_quotes("test.py")
+                fix_missing_quotes("test.py")
 
         # Check file was written
         mock_file.assert_called()
@@ -39,7 +35,7 @@ class TestFixMissingQuotes:
 
         with patch("builtins.open", mock_open(read_data=content)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_missing_quotes("test.py")
+                fix_missing_quotes("test.py")
 
         handle = mock_file.return_value.__enter__.return_value
         written_data = ''.join(call[0][0] for call in handle.write.call_args_list)
@@ -51,7 +47,7 @@ class TestFixMissingQuotes:
 
         with patch("builtins.open", mock_open(read_data=content)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_missing_quotes("test.py")
+                fix_missing_quotes("test.py")
 
         handle = mock_file.return_value.__enter__.return_value
         written_data = ''.join(call[0][0] for call in handle.write.call_args_list)
@@ -60,11 +56,10 @@ class TestFixMissingQuotes:
     def test_fix_ferror_statements(self):
         """Test fixing fERROR statements"""
         content = 'print(fERROR storing data: {e})'
-        expected = 'print(f"ERROR storing data: {e}")'
 
         with patch("builtins.open", mock_open(read_data=content)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_missing_quotes("test.py")
+                fix_missing_quotes("test.py")
 
         handle = mock_file.return_value.__enter__.return_value
         written_data = ''.join(call[0][0] for call in handle.write.call_args_list)
@@ -76,7 +71,7 @@ class TestFixMissingQuotes:
 
         with patch("builtins.open", mock_open(read_data=content)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_missing_quotes("test.py")
+                fix_missing_quotes("test.py")
 
         handle = mock_file.return_value.__enter__.return_value
         written_data = ''.join(call[0][0] for call in handle.write.call_args_list)
@@ -152,7 +147,7 @@ class TestFixMissingQuotes:
 
         with patch("builtins.open", mock_open(read_data=content)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_missing_quotes("test.py")
+                fix_missing_quotes("test.py")
 
         handle = mock_file.return_value.__enter__.return_value
         written_data = ''.join(call[0][0] for call in handle.write.call_args_list)

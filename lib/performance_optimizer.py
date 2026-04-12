@@ -4,9 +4,8 @@ import time
 import json
 import threading
 from pathlib import Path
-from typing import Dict, Any, List, Optional
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from functools import lru_cache
+from typing import Dict, Any, Optional
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 
 

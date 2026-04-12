@@ -177,11 +177,6 @@ class TestMobileResponsiveness(unittest.TestCase):
             content = f.read()
 
         # Check for dark mode mobile optimizations
-        dark_mode_mobile = [
-            "[data-theme=\"dark\"]",
-            "@media (max-width: 768px)",
-            "background: linear-gradient"
-        ]
 
         # Dark mode should be optimized for mobile
         self.assertIn("[data-theme=\"dark\"]", content,
@@ -297,7 +292,7 @@ def run_mobile_compatibility_check():
     total_features = len(features)
     compatibility_score = (passed_features / total_features) * 100
 
-    print(f"Mobile Compatibility Features:")
+    print("Mobile Compatibility Features:")
     for feature, passed in features.items():
         status = "[PASS]" if passed else "[FAIL]"
         print(f"  {status} {feature}")
@@ -320,7 +315,7 @@ def run_mobile_compatibility_check():
     comprehensive_total = len(comprehensive_checks)
     comprehensive_score = (comprehensive_passed / comprehensive_total) * 100
 
-    print(f"\nComprehensive Mobile Support:")
+    print("\nComprehensive Mobile Support:")
     for check, passed in comprehensive_checks.items():
         status = "[PASS]" if passed else "[FAIL]"
         print(f"  {status} {check}")

@@ -20,13 +20,10 @@ Author: Autonomous Agent Development Team
 import json
 import sys
 import threading
-import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Set
-from collections import defaultdict, Counter
-import re
-import hashlib
+from typing import Dict, List, Any, Optional, Tuple
+from collections import Counter
 
 # Import our custom modules
 try:
@@ -550,7 +547,7 @@ class IntelligentSuggestionEngine:
         try:
             # Get dashboard data
             dashboard_data = self.parameter_storage.get_dashboard_data()
-            quality_score = dashboard_data.get("quality", {}).get("scores", {}).get("current", 0)
+            dashboard_data.get("quality", {}).get("scores", {}).get("current", 0)
 
             # System-specific suggestions
             if context.system_environment.get("system", {}).get("platform") == "Windows":

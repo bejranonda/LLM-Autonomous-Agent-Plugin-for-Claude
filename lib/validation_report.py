@@ -9,8 +9,8 @@ def run_final_validation():
     print("=" * 60)
     print("COMPREHENSIVE CLAUDE PLUGIN VALIDATION REPORT")
     print("=" * 60)
-    print(f"Date: 2025-10-29")
-    print(f"Plugin: autonomous-agent v5.3.4")
+    print("Date: 2025-10-29")
+    print("Plugin: autonomous-agent v5.3.4")
 
     # Collect validation data
     validation_results = {
@@ -60,11 +60,11 @@ def run_final_validation():
             validation_results["structure"]["status"] = "FAIL"
 
     # Count components
-    agent_count = len(list(Path("agents").glob("*.md")))
-    command_count = len(list(Path("commands").glob("*/*.md")))
-    skill_count = len(list(Path("skills").glob("*/SKILL.md")))
+    len(list(Path("agents").glob("*.md")))
+    len(list(Path("commands").glob("*/*.md")))
+    len(list(Path("skills").glob("*/SKILL.md")))
 
-    print(f"  [INFO] 22 agents, 25 commands, 17 skills")
+    print("  [INFO] 22 agents, 25 commands, 17 skills")
     validation_results["structure"]["details"].append("Complete component set")
 
     # 3. File Format Validation
@@ -146,7 +146,7 @@ def run_final_validation():
         installation_ready = False
 
     # Calculate quality score
-    total_checks = sum(len(r["details"]) for r in validation_results.values())
+    sum(len(r["details"]) for r in validation_results.values())
     passed_sections = sum(1 for r in validation_results.values() if r["status"] == "PASS")
     quality_score = (passed_sections * 100) // len(validation_results)
 
@@ -162,12 +162,12 @@ def run_final_validation():
 
     # Component Summary
     print("\nCOMPONENT SUMMARY:")
-    print(f"  - Plugin Manifest: Valid")
-    print(f"  - Directory Structure: Complete")
-    print(f"  - Agents: 22 specialized agents")
-    print(f"  - Commands: 25 categorized commands")
-    print(f"  - Skills: 17 knowledge packages")
-    print(f"  - Enhanced Features: Smart suggestions, usage guide, debug commands")
+    print("  - Plugin Manifest: Valid")
+    print("  - Directory Structure: Complete")
+    print("  - Agents: 22 specialized agents")
+    print("  - Commands: 25 categorized commands")
+    print("  - Skills: 17 knowledge packages")
+    print("  - Enhanced Features: Smart suggestions, usage guide, debug commands")
 
     # Recommendations
     print("\nRECOMMENDATIONS:")

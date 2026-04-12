@@ -11,10 +11,7 @@ import sys
 import os
 import tempfile
 import shutil
-import json
 from pathlib import Path
-from datetime import datetime, timezone
-import time
 
 # Add lib directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
@@ -508,7 +505,7 @@ if __name__ == '__main__':
     coverage = calculate_coverage()
 
     # Final summary
-    print(f"\nFINAL RESULTS:")
+    print("\nFINAL RESULTS:")
     print(f"Tests run: {result.testsRun}")
     print(f"Failures: {len(result.failures)}")
     print(f"Errors: {len(result.errors)}")

@@ -397,7 +397,7 @@ class ClaudePluginValidator:
         """Generate validation results."""
         total_issues = len(self.issues)
         total_warnings = len(self.warnings)
-        total_fixes = len(self.fixes)
+        len(self.fixes)
 
         # Calculate score
         score = 100

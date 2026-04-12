@@ -11,13 +11,10 @@ Tests the learning engine functionality including:
 
 import pytest
 import json
-import tempfile
-import shutil
 import os
 import sys
 from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
-from datetime import datetime, timedelta
+from unittest.mock import patch
 
 # Add lib directory to path for testing
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))

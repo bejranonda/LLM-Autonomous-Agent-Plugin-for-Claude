@@ -8,8 +8,6 @@ that provides transparent decision-making explanations.
 import pytest
 import json
 import os
-import time
-from unittest.mock import patch, mock_open
 from datetime import datetime, timezone
 
 # Import the module under test
@@ -247,7 +245,7 @@ class TestLearningVisualizer:
     def test_real_time_learning_dashboard(self, learning_visualizer):
         """Test real-time learning dashboard data"""
         # Record recent events
-        current_time = datetime.now(timezone.utc)
+        datetime.now(timezone.utc)
         for i in range(20):
             event = {
                 "event_type": ["skill_selection", "agent_routing", "quality_assessment"][i % 3],

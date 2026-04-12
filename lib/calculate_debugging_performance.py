@@ -3,10 +3,9 @@
 Calculate Debugging Performance
 Analyzes debugging performance metrics and generates insights for improvement.
 """
-import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 
 class Calculatedebuggingperformance:

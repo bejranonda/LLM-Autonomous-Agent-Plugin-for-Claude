@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Core functionality for the autonomous agent system."""
 
-import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 
 class Calculatetimebaseddebuggingperformance:

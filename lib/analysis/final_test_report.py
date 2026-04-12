@@ -26,7 +26,7 @@ print()
 print("[COVERAGE SUMMARY]")
 print(f"Total Coverage:      {total_coverage:.2f}%")
 print(f"Lines Covered:       {covered_lines:,}/{total_lines:,}")
-print(f"Coverage Target:     80.00%")
+print("Coverage Target:     80.00%")
 print(f"Gap to Target:       {80.0 - total_coverage:.2f}%")
 print()
 

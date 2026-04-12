@@ -8,9 +8,6 @@ tasks based on performance metrics and specialization.
 import pytest
 import json
 import os
-import time
-from unittest.mock import patch, mock_open
-from datetime import datetime, timezone
 
 # Import the module under test
 import sys
@@ -247,7 +244,7 @@ class TestIntelligentAgentRouter:
     def test_routing_learning(self, agent_router, sample_task_info):
         """Test that routing learns from outcomes"""
         agent_name = "learning-test-agent"
-        task_type = sample_task_info["type"]
+        sample_task_info["type"]
 
         # Record successful outcomes for specific agent
         for i in range(5):

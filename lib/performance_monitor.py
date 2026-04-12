@@ -5,11 +5,9 @@ import json
 import psutil
 import threading
 import statistics
-import os
-import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Callable
+from typing import Dict, Any, List, Callable
 from dataclasses import dataclass, asdict
 from collections import deque
 import logging

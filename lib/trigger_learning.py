@@ -20,7 +20,7 @@ class LearningTrigger:
         # Simple heuristic - trigger if enough activity
         return True
 
-    def record_learning_event(self) -> None:
+    def record_learning_event(self, event_type: str, data: dict) -> None:
         """Record a learning event"""
         event = {"type": event_type, "data": data, "timestamp": datetime.now().isoformat()}
 

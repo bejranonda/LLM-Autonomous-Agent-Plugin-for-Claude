@@ -21,9 +21,7 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Any, Optional
-import hashlib
-import platform
+from typing import List
 
 
 def get_current_model():

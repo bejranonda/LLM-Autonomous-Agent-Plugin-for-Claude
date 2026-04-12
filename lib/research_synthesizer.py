@@ -9,7 +9,6 @@ Cross-platform compatible (Windows, Linux, macOS).
 """
 
 import json
-import sys
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Any

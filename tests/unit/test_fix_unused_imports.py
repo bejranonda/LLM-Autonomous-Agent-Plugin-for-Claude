@@ -2,8 +2,6 @@
 Tests for fix_unused_imports.py utility
 """
 
-import pytest
-import ast
 import sys
 import os
 from unittest.mock import patch, mock_open
@@ -11,7 +9,7 @@ from unittest.mock import patch, mock_open
 # Add lib to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))
 
-from fix_unused_imports import find_unused_imports, remove_unused_imports, main
+from fix_unused_imports import find_unused_imports, main
 
 
 class TestFixUnusedImports:
@@ -118,7 +116,7 @@ def main():
 """
         with patch("builtins.open", mock_open(read_data=code)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_unused_imports("test.py")
+                fix_unused_imports("test.py")
 
         handle = mock_file.return_value.__enter__.return_value
         written_data = ''.join(call[0][0] for call in handle.write.call_args_list)
@@ -143,7 +141,7 @@ def main():
 
         with patch("builtins.open", mock_open(read_data=code)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_unused_imports("test.py")
+                fix_unused_imports("test.py")
 
         # Should return False if no changes made
         handle = mock_file.return_value.__enter__.return_value
@@ -164,7 +162,7 @@ def main():
 
         with patch("builtins.open", mock_open(read_data=code)) as mock_file:
             with patch("pathlib.Path.exists", return_value=True):
-                result = fix_unused_imports("test.py")
+                fix_unused_imports("test.py")
 
         handle = mock_file.return_value.__enter__.return_value
         written_data = ''.join(call[0][0] for call in handle.write.call_args_list)
@@ -182,7 +180,7 @@ def broken_syntax(
     # Missing closing parenthesis
 """
 
-        with patch("builtins.open", mock_open(read_data=code)) as mock_file:
+        with patch("builtins.open", mock_open(read_data=code)):
             with patch("pathlib.Path.exists", return_value=True):
                 # Should not crash on syntax error
                 result = fix_unused_imports("test.py")
@@ -205,7 +203,6 @@ def broken_syntax(
         mock_fix.return_value = True
         mock_path.return_value.exists.return_value = True
 
-        from fix_unused_imports import main
         main()
 
         # Should process files

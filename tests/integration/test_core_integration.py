@@ -11,13 +11,10 @@ Tests the integration between:
 
 import pytest
 import json
-import tempfile
-import shutil
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import sys
 import os
-from datetime import datetime, timedelta
 
 # Add lib directory to path for testing
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))
@@ -26,7 +23,6 @@ from pattern_storage import PatternStorage
 from quality_tracker import QualityTracker
 from learning_engine import LearningEngine
 from agent_feedback_system import AgentFeedbackSystem
-from plugin_path_resolver import get_plugin_path, get_script_path
 
 
 class TestCoreIntegration:

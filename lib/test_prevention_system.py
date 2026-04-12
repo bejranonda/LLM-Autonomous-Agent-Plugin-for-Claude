@@ -14,7 +14,7 @@ def test_command_validation():
     try:
         from lib.command_validator import CommandValidator
 
-        validator = CommandValidator(".")
+        CommandValidator(".")
 
         # Check critical commands
         expected_commands = {
@@ -49,7 +49,7 @@ def test_command_validation():
         print(f"  Success Rate: {success_rate:.1f}%")
 
         if missing_critical:
-            print(f"  Missing Commands:")
+            print("  Missing Commands:")
             for cmd in missing_critical:
                 print(f"    - {cmd}")
 
@@ -82,7 +82,7 @@ def test_file_structure():
     print(f"  Missing Directories: {len(missing_dirs)}")
 
     if missing_dirs:
-        print(f"  Missing:")
+        print("  Missing:")
         for dir_path in missing_dirs:
             print(f"    - {dir_path}")
 
@@ -111,7 +111,7 @@ def test_lib_components():
     print(f"  Missing Library Files: {len(missing_libs)}")
 
     if missing_libs:
-        print(f"  Missing:")
+        print("  Missing:")
         for lib_file in missing_libs:
             print(f"    - {lib_file}")
 
@@ -142,7 +142,7 @@ def test_validation_commands():
     print(f"  Missing Validation Commands: {len(missing_commands)}")
 
     if missing_commands:
-        print(f"  Missing:")
+        print("  Missing:")
         for cmd_file in missing_commands:
             print(f"    - {cmd_file}")
 

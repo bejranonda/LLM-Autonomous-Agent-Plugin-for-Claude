@@ -23,22 +23,20 @@ import argparse
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, asdict
 from enum import Enum
-import subprocess
 import urllib.request
 import urllib.error
 import os
-from collections import defaultdict
 
 # Try to import Selenium for browser automation
 try:
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options as ChromeOptions
-    from selenium.webdriver.chrome.service import Service as ChromeService
+    from selenium.webdriver.chrome.service import Service as ChromeService  # noqa: F401
     from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import WebDriverWait  # noqa: F401
+    from selenium.webdriver.support import expected_conditions as EC  # noqa: F401
     from selenium.common.exceptions import TimeoutException, WebDriverException
 
     SELENIUM_AVAILABLE = True
@@ -440,7 +438,6 @@ class WebPageValidator:
             time.sleep(1)  # Wait for form to load
 
             # Find and fill email
-            from selenium.webdriver.common.keys import Keys
             email_input = self.driver.find_element(By.CSS_SELECTOR, self.auth_config.email_selector)
             email_input.clear()
             for char in self.auth_config.email:
@@ -1103,7 +1100,7 @@ class WebPageValidator:
                     page_title=page_title,
                     status_code=status_code,
                     timestamp=datetime.now().isoformat(),
-                    error_summary=f"Basic validation only (browser automation unavailable)",
+                    error_summary="Basic validation only (browser automation unavailable)",
                 )
 
         except urllib.error.HTTPError as e:
@@ -1279,7 +1276,7 @@ def format_validation_report(result: ValidationResult, verbose: bool = False) ->
     if result.viewport_tested:
         lines.append(f"Viewport: {result.viewport_tested}")
     if result.authenticated:
-        lines.append(f"Authenticated: Yes")
+        lines.append("Authenticated: Yes")
     lines.append("")
 
     # Summary
@@ -1290,9 +1287,9 @@ def format_validation_report(result: ValidationResult, verbose: bool = False) ->
     lines.append(f"JavaScript Errors: {len(result.javascript_errors)}")
     lines.append(f"Network Errors: {len(result.network_errors)}")
     if result.has_react_hydration_error:
-        lines.append(f"React Hydration Error: [CRITICAL] DETECTED")
+        lines.append("React Hydration Error: [CRITICAL] DETECTED")
     if result.error_boundary_visible:
-        lines.append(f"Error Boundary: [WARN] VISIBLE")
+        lines.append("Error Boundary: [WARN] VISIBLE")
     lines.append(f"Status: {result.error_summary}")
     lines.append("")
 

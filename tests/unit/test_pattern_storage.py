@@ -10,11 +10,9 @@ Tests the core pattern learning functionality including:
 
 import pytest
 import json
-import tempfile
-import shutil
 import os
 from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import patch
 import sys
 
 # Add lib directory to path for testing
@@ -96,7 +94,7 @@ class TestPatternStorage:
     @pytest.mark.unit
     def test_store_pattern_adds_metadata(self, pattern_storage, valid_pattern):
         """Test that store_pattern adds required metadata"""
-        pattern_id = pattern_storage.store_pattern(valid_pattern)
+        pattern_storage.store_pattern(valid_pattern)
 
         patterns = pattern_storage._read_patterns()
         stored_pattern = patterns[0]

@@ -4,7 +4,7 @@ Smart Agent Suggester
 Suggests optimal agents for specific tasks based on historical performance.
 """
 import json
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from pathlib import Path
 
 

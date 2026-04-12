@@ -127,7 +127,6 @@ def test_optimization_strategies(budget_manager: DynamicBudgetManager):
 
         # Calculate savings
         total_possible = metrics.total_budget
-        actual_used = metrics.used_tokens
         waste_reduction = metrics.waste_percentage
         estimated_savings = int(total_possible * (waste_reduction / 100) * 0.3)  # 30% of waste can be recovered
 
@@ -241,7 +240,7 @@ def main():
     print(f"Estimated cost reduction: {total_reduction:.1f}%")
 
     # Component breakdown
-    print(f"\n=== Component Performance Breakdown ===")
+    print("\n=== Component Performance Breakdown ===")
     for component_id, component in budget_manager.components.items():
         print(f"{component.name}:")
         print(f"   Allocation: {component.allocated_tokens:,} tokens")
@@ -259,13 +258,13 @@ def main():
     print(f"Tokens reallocated: {report['rebalancing_summary']['total_tokens_reallocated']:,}")
     print(f"Average efficiency gain: {report['rebalancing_summary']['average_efficiency_gain']:.2f}%")
 
-    print(f"\nTop Recommendations:")
+    print("\nTop Recommendations:")
     for i, rec in enumerate(report['recommendations'][:3], 1):
         print(f"   {i}. {rec}")
 
     # Verify target achievement
-    print(f"\n=== Target Achievement ===")
-    print(f"Target reduction: 15-20%")
+    print("\n=== Target Achievement ===")
+    print("Target reduction: 15-20%")
     print(f"Achieved reduction: {total_reduction:.1f}%")
     print(f"Target achieved: {'YES' if 15 <= total_reduction <= 25 else 'NO'}")
 

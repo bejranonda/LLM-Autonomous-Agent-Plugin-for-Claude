@@ -4,10 +4,8 @@ Tests for pattern_storage.py - Basic functionality tests
 
 import pytest
 import json
-import tempfile
 import os
 import sys
-from pathlib import Path
 from unittest.mock import patch, mock_open, MagicMock
 
 # Add lib to path for imports
@@ -28,7 +26,7 @@ class TestPatternStorage:
 
     def test_init_default_directory(self):
         """Test initialization with default directory"""
-        with patch("pathlib.Path.mkdir") as mock_mkdir:
+        with patch("pathlib.Path.mkdir"):
             with patch("pathlib.Path.exists", return_value=False):
                 storage = PatternStorage()
 
@@ -37,7 +35,7 @@ class TestPatternStorage:
 
     def test_init_custom_directory(self):
         """Test initialization with custom directory"""
-        with patch("pathlib.Path.mkdir") as mock_mkdir:
+        with patch("pathlib.Path.mkdir"):
             with patch("pathlib.Path.exists", return_value=False):
                 storage = PatternStorage("/tmp/test-patterns")
 
@@ -58,7 +56,7 @@ class TestPatternStorage:
 
     def test_read_patterns_empty_file(self):
         """Test reading from empty patterns file"""
-        with patch("builtins.open", mock_open(read_data="")) as mock_file:
+        with patch("builtins.open", mock_open(read_data="")):
             with patch("pathlib.Path.exists", return_value=True):
                 with patch("lib.pattern_storage.lock_file"):
                     with patch("lib.pattern_storage.unlock_file"):
@@ -74,7 +72,7 @@ class TestPatternStorage:
             {"id": 2, "type": "test", "data": "sample2"}
         ]
 
-        with patch("builtins.open", mock_open(read_data=json.dumps(test_patterns))) as mock_file:
+        with patch("builtins.open", mock_open(read_data=json.dumps(test_patterns))):
             with patch("pathlib.Path.exists", return_value=True):
                 with patch("lib.pattern_storage.lock_file"):
                     with patch("lib.pattern_storage.unlock_file"):
@@ -98,14 +96,13 @@ class TestPatternStorage:
         """Test that patterns are written as valid JSON"""
         test_patterns = [{"id": 1, "type": "test", "data": "sample"}]
 
-        with patch("builtins.open", mock_open()) as mock_file:
+        with patch("builtins.open", mock_open()):
             with patch("lib.pattern_storage.lock_file"):
                     with patch("lib.pattern_storage.unlock_file"):
                         storage = PatternStorage()
                         storage._write_patterns(test_patterns)
 
         # Check that json.dump was called (mocked)
-        handle = mock_file.return_value.__enter__.return_value
 
     def test_store_pattern(self):
         """Test storing a new pattern"""

@@ -9,7 +9,7 @@ import tempfile
 import shutil
 import ast
 from pathlib import Path
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import patch
 import sys
 import os
 
@@ -368,7 +368,7 @@ def test():
             f.write(content)
 
         # This should fail to fix completely and report error line
-        with patch('sys.stderr') as mock_stderr:
+        with patch('sys.stderr'):
             self.fixer.fix_file(test_file)
 
         # The error should be reported (though we can't easily capture stderr in this test)

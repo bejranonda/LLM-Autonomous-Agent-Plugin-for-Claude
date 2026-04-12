@@ -15,7 +15,7 @@ import argparse
 from pathlib import Path
 import signal
 import logging
-from typing import Tuple, Optional
+from typing import Tuple
 
 # Ensure log directory exists
 log_dir = Path(".claude/logs")

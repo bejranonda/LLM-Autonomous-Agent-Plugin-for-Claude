@@ -22,11 +22,11 @@ def fix_line_1876():
 
                 # Check for malformed escape sequences
                 if '\\n' in line and line.count("'") % 2 != 0:
-                    print(f"  -> Potential unmatched quote issue")
+                    print("  -> Potential unmatched quote issue")
                 elif line.endswith(' + \'\\n\''):
-                    print(f"  -> Correctly escaped newline")
+                    print("  -> Correctly escaped newline")
                 else:
-                    print(f"  -> Checking syntax...")
+                    print("  -> Checking syntax...")
 
             # Look for any remaining template literals or syntax issues
             if '`' in line and ('${' in line or line.count('`') % 2 != 0):

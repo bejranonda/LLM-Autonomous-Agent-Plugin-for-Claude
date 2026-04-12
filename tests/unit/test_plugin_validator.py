@@ -7,7 +7,6 @@ import os
 import sys
 import json
 from unittest.mock import patch, mock_open
-from pathlib import Path
 
 # Add lib to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))
@@ -214,12 +213,6 @@ Test command description for validation.
 
     def test_validate_plugin_structure_complete(self):
         """Test validating complete plugin structure"""
-        required_files = [
-            ".claude-plugin/plugin.json",
-            "agents/",
-            "skills/",
-            "commands/"
-        ]
 
         existing_files = {
             ".claude-plugin/plugin.json": True,

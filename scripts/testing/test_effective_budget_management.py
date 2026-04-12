@@ -10,7 +10,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from lib.dynamic_budget_manager import DynamicBudgetManager, PriorityLevel, BudgetStrategy
+from lib.dynamic_budget_manager import DynamicBudgetManager, BudgetStrategy
 import time
 
 def test_realistic_budget_optimization():

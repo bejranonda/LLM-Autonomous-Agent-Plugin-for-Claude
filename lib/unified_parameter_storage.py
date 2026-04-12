@@ -24,8 +24,7 @@ import time
 import shutil
 from pathlib import Path
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Union, Callable
-from collections import defaultdict
+from typing import Dict, Any
 import platform
 
 # Handle Windows compatibility for file locking

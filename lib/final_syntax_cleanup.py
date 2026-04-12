@@ -4,7 +4,6 @@ Final aggressive syntax cleanup for critical files.
 Focuses on high-priority files that are likely imported.
 """
 
-import sys
 from pathlib import Path
 import re
 
@@ -21,7 +20,6 @@ def aggressive_fix(file_path: Path) -> bool:
 
         new_lines = []
         skip_until_import = False
-        found_shebang = False
         found_first_import = False
 
         for i, line in enumerate(lines):
@@ -30,7 +28,6 @@ def aggressive_fix(file_path: Path) -> bool:
             # Always keep shebang
             if line.startswith('#!'):
                 new_lines.append(line)
-                found_shebang = True
                 continue
 
             # Keep normal comments after shebang
@@ -75,7 +72,7 @@ def aggressive_fix(file_path: Path) -> bool:
 
         return False
 
-    except Exception as e:
+    except Exception:
         return False
 
 
