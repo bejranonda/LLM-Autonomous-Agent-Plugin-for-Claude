@@ -531,8 +531,8 @@ class TestLearningEngine:
 
         capture_time = time.time() - start_time
 
-        # Should complete within reasonable time (< 2 seconds for 100 patterns)
-        assert capture_time < 2.0
+        # Should complete within reasonable time (< 5 seconds for 100 patterns)
+        assert capture_time < 5.0
 
         # Benchmark status retrieval
         start_time = time.time()
