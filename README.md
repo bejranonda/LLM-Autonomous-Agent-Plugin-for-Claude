@@ -365,6 +365,7 @@ python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list
 - **[Approach & Method](docs/APPROACH_AND_METHOD.md)** - Execution paradigm and design principles
 - **[Knowledge Management](docs/KNOWLEDGE_MANAGEMENT.md)** - Data storage and component discovery
 - **[Brain MCP Integration Guidelines](docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md)** - Optional external Brain MCP server integration (cross-project knowledge persistence, retrieval-path differences, classifier guardrails) 🆕 v8.4.5
+- **[Session Start Checklist](docs/guidelines/SESSION_START_CHECKLIST.md)** - Pre-flight checks for new sessions (Brain MCP connectivity probe, validator sweep, release readiness) 🆕 v8.4.5
 - **[Development & Distribution](docs/DEVELOPMENT_DISTRIBUTION_ARCHITECTURE.md)** - Dual-mode dashboard architecture
 - **[Cross-Platform Compatibility Guide](emoji_prevention_guide.md)** - Windows encoding compatibility and emoji prevention (v7.4.1) ✨
 - **[Emoji Detection Tool](detect_fix_emojis.py)** - Automated emoji detection and fixing for cross-platform compatibility (v7.4.1) ✨

@@ -304,6 +304,7 @@ This repository contains **configuration files** (Markdown + JSON), not executab
 - **Retrieval caveat**: `brain_ask_oracle` under-ranks newly-taught project-scoped items (cold-start + scope filter). Use `brain_retrieve_knowledge(query, projectId=<id>)` to verify new items; oracle ranking improves as items accrue `usageCount`
 - **Permission guardrail**: agents cannot edit `~/.claude/settings.json` to add `mcp__brain__*` to `permissions.allow` (auto-mode classifier blocks permission self-grants). User must apply such edits manually.
 - **Transport recovery**: Brain MCP client does not auto-reconnect on drop. Use `/mcp` -> reconnect, or fully restart Claude Code (not just `/compact`).
+- **Pre-flight at session start**: probe Brain connectivity with `brain_get_user_style` before relying on it. See `docs/guidelines/SESSION_START_CHECKLIST.md` for the full session-start checklist.
 - See: `docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md` for full protocol
 
 ### Pattern Database ↔ All Components
