@@ -1,107 +1,90 @@
 # Documentation Index
 
-This directory contains organized documentation for the Autonomous Agent Plugin.
+This directory contains organized documentation for the Autonomous Agent Plugin (v8.4.5). For the most current version, always check the [root `CHANGELOG.md`](../CHANGELOG.md) and [`plugin.json`](../.claude-plugin/plugin.json).
 
-## 📁 Directory Structure
+## Directory Structure
 
-### 📊 **docs/reports/** - Generated Reports and Validation Results
-- [`VALIDATION_COMPLETE.md`](reports/VALIDATION_COMPLETE.md) - Plugin validation complete report
-- [`PLUGIN_VALIDATION_REPORT.md`](reports/generated/PLUGIN_VALIDATION_REPORT.md) - Comprehensive plugin validation analysis
-- [`FULL_STACK_VALIDATION_REPORT.md`](reports/FULL_STACK_VALIDATION_REPORT.md) - Full-stack validation example report
-- [`GUI_VALIDATION_REPORT.md`](reports/GUI_VALIDATION_REPORT.md) - GUI validation and debugging report
-- [`LEARNING_ANALYTICS_REPORT.md`](reports/LEARNING_ANALYTICS_REPORT.md) - Learning analytics example
-- [`PERFORMANCE_ANALYTICS_REPORT.md`](reports/PERFORMANCE_ANALYTICS_REPORT.md) - Performance analytics example
-- `auto-analyze-*.md` - Autonomous analysis reports (auto-generated)
-- `quality-check-*.md` - Quality control reports (auto-generated)
-- `validation-*.md` - Validation audit reports (auto-generated)
-- **generated/** - Historical validation and analysis reports
+### `docs/guidelines/` - Operational Guidelines and Best Practices
+- [`BRAIN_MCP_INTEGRATION_GUIDELINES.md`](guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md) - External Brain MCP server integration protocol, retrieval-path differences, classifier guardrails, recovery procedures (v8.4.5)
+- [`SESSION_START_CHECKLIST.md`](guidelines/SESSION_START_CHECKLIST.md) - Pre-flight checks for new sessions: Brain MCP probe, validator sweep, release readiness, plugin reload (v8.4.5)
+- [`RESULT_PRESENTATION_GUIDELINES.md`](guidelines/RESULT_PRESENTATION_GUIDELINES.md) - Two-tier result presentation standards for slash commands (terminal summary + file report)
+- [`MODEL_COMMUNICATION_GUIDELINE.md`](guidelines/MODEL_COMMUNICATION_GUIDELINE.md) - Cross-model communication standards and capability adaptation
+- [`prompt-agent-creating.md`](guidelines/prompt-agent-creating.md) - Guide for creating new agents
 
-### 🔧 **docs/implementation/** - Implementation Documentation
-- [`PHASE1_OPTIMIZATION_COMPLETE.md`](implementation/PHASE1_OPTIMIZATION_COMPLETE.md) - **🆕 Complete Phase 1 v6.0.0 Two-Tier Architecture Documentation**
-- [`IMPLEMENTATION_SUMMARY.md`](implementation/IMPLEMENTATION_SUMMARY.md) - Complete implementation overview and architecture
-- [`LEARNING_SYSTEM_IMPLEMENTATION.md`](implementation/LEARNING_SYSTEM_IMPLEMENTATION.md) - Learning engine implementation details
-- [`FULL_STACK_VALIDATION_IMPLEMENTATION.md`](implementation/FULL_STACK_VALIDATION_IMPLEMENTATION.md) - Full-stack validation system implementation
-- [`ARCHITECTURE_EVOLUTION.md`](implementation/ARCHITECTURE_EVOLUTION.md) - Architecture evolution and version history
-- [`PATTERN_LEARNING_ANALYSIS.md`](implementation/PATTERN_LEARNING_ANALYSIS.md) - Pattern learning system analysis
-- [`QUALITY_SYSTEM_IMPLEMENTATION.md`](implementation/QUALITY_SYSTEM_IMPLEMENTATION.md) - Quality control system implementation
-- [`PERFORMANCE_IMPLEMENTATION.md`](implementation/PERFORMANCE_IMPLEMENTATION.md) - Performance analytics implementation
-- [`GUI_ARCHITECTURE.md`](implementation/GUI_ARCHITECTURE.md) - GUI system architecture and components
+### `docs/release-notes/` - Release Notes (v6.0+)
+- [`RELEASE_NOTES.md`](release-notes/RELEASE_NOTES.md) - General release notes index
+- [`RELEASE_NOTES_v8.4.5.md`](release-notes/RELEASE_NOTES_v8.4.5.md) - Latest release (quality metric correctness, Brain MCP documentation)
+- [`RELEASE_NOTES_v8.3.0.md`](release-notes/RELEASE_NOTES_v8.3.0.md) - Dashboard rewrite
+- [`RELEASE_NOTES_v7.x.md`](release-notes/) - v7.1.0 through v7.6.3 release notes
+- [`RELEASE_NOTES_v6.x.md`](release-notes/) - v6.0.0 and v6.1.1 release notes
 
-### 📋 **docs/releases/** - Release Documentation
-- [`RELEASE_NOTES_V3.3.0.md`](releases/RELEASE_NOTES_V3.3.0.md) - Version 3.3.0 release notes
-- [`CHANGELOG.md`](releases/CHANGELOG.md) - Complete changelog history
-- [`RELEASE_NOTES_V2.2.0.md`](releases/RELEASE_NOTES_V2.2.0.md) - Version 2.2.0 release notes
-- [`RELEASE_NOTES_V2.1.0.md`](releases/RELEASE_NOTES_V2.1.0.md) - Version 2.1.0 release notes
-- [`RELEASE_NOTES_V2.0.0.md`](releases/RELEASE_NOTES_V2.0.0.md) - Version 2.0.0 release notes
-- [`RELEASE_NOTES_V1.1.0.md`](releases/RELEASE_NOTES_V1.1.0.md) - Version 1.1.0 release notes
-- [`VERSION_1_0_0_RELEASE.md`](releases/VERSION_1_0_0_RELEASE.md) - Version 1.0.0 release notes
+### `docs/releases/` - Historical Release Notes (v2.0-v8.0)
+- [`RELEASE_NOTES_v8.x.md`](releases/) - v8.0.0 and v8.0.1 release notes
+- [`RELEASE_NOTES_v7.x.md`](releases/) - v7.10.0 through v7.19.0 release notes
+- [`RELEASE_NOTES_v6.x.md`](releases/) - v6.0.1, v6.1.0, v6.2.0 release notes
+- [`RELEASE_NOTES_v5.x.md`](releases/) - v5.3.0 through v5.8.3 release notes
+- [`RELEASE_NOTES_v4.x.md`](releases/) - v4.4.0, v4.4.1, v4.11.0 release notes
+- [`RELEASE_NOTES_v2.x` and `v3.x`](releases/) - Earlier release notes
 
-### 📖 **docs/guidelines/** - Guidelines and Best Practices
-- [`RESULT_PRESENTATION_GUIDELINES.md`](guidelines/RESULT_PRESENTATION_GUIDELINES.md) - Result presentation standards for slash commands
-- [`DASHBOARD_VALIDATION_STANDARD.md`](guidelines/DASHBOARD_VALIDATION_STANDARD.md) - Dashboard validation standards and procedures
-- [`PERFORMANCE_GUIDELINES.md`](guidelines/PERFORMANCE_GUIDELINES.md) - Performance optimization guidelines
-- [`LEARNING_GUIDELINES.md`](guidelines/LEARNING_GUIDELINES.md) - Pattern learning system guidelines
+### `docs/architecture/` - Architecture Documentation
+- [`FOUR_TIER_SUMMARY.md`](architecture/FOUR_TIER_SUMMARY.md) - Four-tier agent architecture summary
+- [`V6_2_FOUR_TIER_ARCHITECTURE.md`](architecture/V6_2_FOUR_TIER_ARCHITECTURE.md) - Four-tier architecture design
+- [`V6_TWO_TIER_ARCHITECTURE.md`](architecture/V6_TWO_TIER_ARCHITECTURE.md) - Original two-tier architecture
+- [`TOKEN_EFFICIENT_ARCHITECTURE.md`](architecture/TOKEN_EFFICIENT_ARCHITECTURE.md) - Token optimization architecture
+- [`CROSS_PLATFORM_DASHBOARD_SOLUTION.md`](architecture/CROSS_PLATFORM_DASHBOARD_SOLUTION.md) - Cross-platform dashboard resolution
+- Other architecture analysis and fix reports
 
-## 🚀 Quick Navigation
+### `docs/implementation/` - Implementation Documentation
+- [`IMPLEMENTATION_SUMMARY.md`](implementation/IMPLEMENTATION_SUMMARY.md) - Complete implementation overview
+- [`PHASE1_OPTIMIZATION_COMPLETE.md`](implementation/PHASE1_OPTIMIZATION_COMPLETE.md) - Phase 1 architecture documentation
+- [`COMMAND_MIGRATION_GUIDE_v4.0.0.md`](implementation/COMMAND_MIGRATION_GUIDE_v4.0.0.md) - Command migration guide
+- [`SLASH_COMMAND_CATEGORIES.md`](implementation/SLASH_COMMAND_CATEGORIES.md) - Slash command category reference
+- Other implementation phase summaries and improvement plans
+
+### `docs/analysis/` - Analysis Reports
+- [`COMMAND_COVERAGE_ANALYSIS.md`](analysis/COMMAND_COVERAGE_ANALYSIS.md) - Command coverage analysis
+- [`ARGUMENT_PARSER_IMPROVEMENTS.md`](analysis/ARGUMENT_PARSER_IMPROVEMENTS.md) - Argument parser improvement analysis
+
+### `docs/emergency-fixes/` - Emergency Fix Documentation
+- Historical emergency bug reports and deployment guides
+
+## Key Documents (Root of `docs/`)
+
+| Document | Purpose |
+|----------|---------|
+| [`APPROACH_AND_METHOD.md`](APPROACH_AND_METHOD.md) | Methodology and design principles (11 bullets, v8.4.5) |
+| [`KNOWN_ISSUES.md`](KNOWN_ISSUES.md) | Current known issues and workarounds |
+| [`KNOWLEDGE_MANAGEMENT.md`](KNOWLEDGE_MANAGEMENT.md) | Knowledge management paradigm and storage layers |
+| [`FOUR_TIER_ARCHITECTURE.md`](FOUR_TIER_ARCHITECTURE.md) | Complete four-tier architecture documentation (36 agents, 4 groups) |
+| [`FULL_STACK_VALIDATION.md`](FULL_STACK_VALIDATION.md) | Full-stack validation system with auto-fix patterns |
+| [`LEARNING_SYSTEMS.md`](LEARNING_SYSTEMS.md) | Four-tier learning infrastructure |
+| [`CHANGELOG.md`](CHANGELOG.md) | Detailed changelog (v1.0.0-v8.3.0; v8.4.0+ in root `../CHANGELOG.md`) |
+| [`CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md`](CROSS_PLATFORM_PLUGIN_ARCHITECTURE.md) | Three-layer cross-platform plugin path resolution |
+| [`INSTALLATION.md`](INSTALLATION.md) | Installation guide |
+| [`WEB_VALIDATION_SYSTEM.md`](WEB_VALIDATION_SYSTEM.md) | Web validation system documentation |
+
+## Quick Navigation
 
 ### For Users
-- **Getting Started**: Start with [README.md](../README.md) in the root directory
-- **Usage Guide**: See [USAGE_GUIDE.md](../USAGE_GUIDE.md) in the root directory
-- **Latest Release**: Check [RELEASE_NOTES_V3.3.0.md](releases/RELEASE_NOTES_V3.3.0.md)
+- **Getting Started**: [README.md](../README.md) in the root directory
+- **Latest Release**: [`RELEASE_NOTES_v8.4.5.md`](release-notes/RELEASE_NOTES_v8.4.5.md)
+- **Known Issues**: [`KNOWN_ISSUES.md`](KNOWN_ISSUES.md)
+- **Brain MCP Integration**: [`guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md`](guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md)
 
 ### For Developers
-- **Architecture Overview**: [IMPLEMENTATION_SUMMARY.md](implementation/IMPLEMENTATION_SUMMARY.md)
-- **Learning System**: [LEARNING_SYSTEM_IMPLEMENTATION.md](implementation/LEARNING_SYSTEM_IMPLEMENTATION.md)
-- **Validation System**: [FULL_STACK_VALIDATION_IMPLEMENTATION.md](implementation/FULL_STACK_VALIDATION_IMPLEMENTATION.md)
-- **Result Presentation**: [RESULT_PRESENTATION_GUIDELINES.md](guidelines/RESULT_PRESENTATION_GUIDELINES.md)
+- **Architecture**: [`FOUR_TIER_ARCHITECTURE.md`](FOUR_TIER_ARCHITECTURE.md)
+- **Methodology**: [`APPROACH_AND_METHOD.md`](APPROACH_AND_METHOD.md)
+- **Session Startup**: [`guidelines/SESSION_START_CHECKLIST.md`](guidelines/SESSION_START_CHECKLIST.md)
+- **Result Presentation**: [`guidelines/RESULT_PRESENTATION_GUIDELINES.md`](guidelines/RESULT_PRESENTATION_GUIDELINES.md)
+- **Testing**: [`../TESTING.md`](../TESTING.md)
 
 ### For Troubleshooting
-- **Validation Reports**: [reports/](reports/) directory for latest validation results
-- **GUI Issues**: [GUI_VALIDATION_REPORT.md](reports/GUI_VALIDATION_REPORT.md)
-- **Performance Issues**: [PERFORMANCE_ANALYTICS_REPORT.md](reports/PERFORMANCE_ANALYTICS_REPORT.md)
-
-## 📈 Report Categories
-
-### Auto-Generated Reports (in `docs/reports/`)
-- **Quality Assessments**: `quality-check-YYYY-MM-DD.md`
-- **Autonomous Analysis**: `auto-analyze-YYYY-MM-DD.md`
-- **Validation Audits**: `validation-YYYY-MM-DD.md`
-- **Learning Analytics**: `learning-analytics-YYYY-MM-DD.md`
-- **Performance Reports**: `performance-report-YYYY-MM-DD.md`
-
-### Static Documentation
-- **Implementation**: Detailed technical architecture and system design
-- **Releases**: Version history and release notes
-- **Guidelines**: Best practices and standards
-
-## 🔍 Finding Information
-
-| Looking for... | Location |
-|----------------|----------|
-| **How to use the plugin** | [README.md](../README.md) |
-| **🆕 Two-Tier Architecture (v6.0.0)** | [PHASE1_OPTIMIZATION_COMPLETE.md](implementation/PHASE1_OPTIMIZATION_COMPLETE.md) |
-| **System architecture** | [IMPLEMENTATION_SUMMARY.md](implementation/IMPLEMENTATION_SUMMARY.md) |
-| **Latest features** | [CHANGELOG.md](releases/CHANGELOG.md) (v6.0.0) |
-| **Validation results** | [reports/](reports/) directory |
-| **Implementation details** | [implementation/](implementation/) directory |
-| **Best practices** | [guidelines/](guidelines/) directory |
-| **Version history** | [CHANGELOG.md](releases/CHANGELOG.md) |
-| **Learning system details** | [LEARNING_SYSTEM_IMPLEMENTATION.md](implementation/LEARNING_SYSTEM_IMPLEMENTATION.md) |
-| **Quality system details** | [QUALITY_SYSTEM_IMPLEMENTATION.md](implementation/QUALITY_SYSTEM_IMPLEMENTATION.md) |
-| **GUI system details** | [GUI_ARCHITECTURE.md](implementation/GUI_ARCHITECTURE.md) |
-
-## 📝 Documentation Standards
-
-All documentation follows these principles:
-- **Clear Structure**: Consistent formatting and organization
-- **Comprehensive Coverage**: Complete information for each topic
-- **Practical Examples**: Real-world usage examples
-- **Version Tracking**: Clear version information and dates
-- **Cross-References**: Related documents linked appropriately
+- **Known Issues**: [`KNOWN_ISSUES.md`](KNOWN_ISSUES.md)
+- **Emergency Fixes**: [`emergency-fixes/`](emergency-fixes/)
+- **Session Recovery**: [`guidelines/SESSION_START_CHECKLIST.md`](guidelines/SESSION_START_CHECKLIST.md)
 
 ---
 
-**Last Updated**: 2025-01-04
-**Plugin Version**: 6.0.0
-**Total Documents**: 50+ files across 4 directories
-**🆕 Latest Addition**: Complete Phase 1 Two-Tier Architecture Documentation
+**Last Updated**: 2026-06-21
+**Plugin Version**: 8.4.5
+**Canonical Changelog**: [`../CHANGELOG.md`](../CHANGELOG.md) (root, Keep a Changelog format)
