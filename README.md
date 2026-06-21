@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v8.4.4
+# 🚀 Autonomous Agent for Claude Code v8.4.5
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-8.4.4-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.4.4)
+[![Version](https://img.shields.io/badge/version-8.4.5-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.4.5)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -109,6 +109,15 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 ## 🌟 What is New?
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
+
+### v8.4.5 - Quality Metrics Correctness
+
+- Fixed `quality_control_check.py` reporting `Successful Imports: 1` (out of ~82) due to a `sys.path`-sensitive `importlib.import_module` call. Replaced with file-based `importlib.util.spec_from_file_location`, so imports resolve by absolute path regardless of how the script is launched. Metric now correctly reports `82`; `Overall Score: 100/100` unchanged (score uses `ast.parse`, not imports).
+- Same file's command count was off by the v8.4.1 non-recursive-glob bug (`*.md` missed the 10 category subfolders) - now reports `41 commands` (was `1`). Documentation coverage formula also stopped counting archived reports under `data/reports/archive/` against the active-docs percentage.
+- `pattern_storage.py` `_ensure_directory()` no longer writes a bare `[]` that pre-empts the `init` command's correct dict-wrapped schema, eliminating a spurious validate warning on fresh `learn:init`.
+- `dashboard.py` favicon 404 suppressed via an empty-data-URI `<link rel="icon">` in the HTML head.
+- `commands/debug/eval.md` marked the stale `random.uniform() in dashboard.py:710-712` citation as `(RESOLVED in v8.3.0)` - dashboard.py is now 452 lines with no `random` usage; target retained only as a worked example for the QIS/TES methodology.
+- `docs/KNOWN_ISSUES.md` documents the Semgrep Guardian `PreToolUse` hook as a *separate* user-level plugin (`semgrep@claude-plugins-official`) - not part of this plugin. Includes disable instructions (`"semgrep@claude-plugins-official": false`) for users who hit fail-closed login prompts.
 
 ### v8.4.4 - Documentation Accuracy
 

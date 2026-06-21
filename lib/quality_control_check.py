@@ -5,6 +5,7 @@ Analyzes project quality across multiple dimensions without external dependencie
 """
 import ast
 import importlib
+import importlib.util
 import json
 import os
 import sys
@@ -51,16 +52,35 @@ class QualityController:
                         # Remove .py extension for import
                         module_name = str(py_file.relative_to(self.project_root).with_suffix(""))
                         # Convert path separators to dots
-                        module_name = module_name.replace(os.sep, ".")
+                        module_name = module_name.replace(os.sep, ".").replace("/", ".")
 
                         # Skip problematic modules
                         if any(x in module_name for x in ["__pycache__", "site-packages"]):
                             continue
 
-                        importlib.import_module(module_name)
-                        successful_imports += 1
+                        # Use file-based spec loading so imports work regardless of
+                        # sys.path configuration. The previous importlib.import_module
+                        # call relied on sys.path containing both the project root (for
+                        # `lib.X` namespace) and lib/ (for top-level module names), and
+                        # silently failed for ~99% of files when that wasn't the case.
+                        spec = importlib.util.spec_from_file_location(module_name, py_file)
+                        if spec is not None and spec.loader is not None:
+                            module = importlib.util.module_from_spec(spec)
+                            # Suppress stdout/stderr during exec_module: some modules
+                            # (dashboard.py, web_page_validator.py) print diagnostic info
+                            # at top level on import, which polluted the quality report.
+                            with open(os.devnull, "w") as devnull:
+                                old_stdout, old_stderr = sys.stdout, sys.stderr
+                                sys.stdout = sys.stderr = devnull
+                                try:
+                                    spec.loader.exec_module(module)
+                                finally:
+                                    sys.stdout, sys.stderr = old_stdout, old_stderr
+                            successful_imports += 1
                     except Exception as e:
-                        if "ModuleNotFoundError" not in str(e):
+                        # Suppress noisy ModuleNotFoundError since most lib/ modules
+                        # legitimately depend on third-party packages; surface other errors.
+                        if "ModuleNotFoundError" not in str(e) and "ImportError" not in str(e):
                             import_errors.append(f"{py_file}: {str(e)[:100]}")
 
             except SyntaxError as e:
@@ -108,7 +128,7 @@ class QualityController:
             len(list((self.project_root / "skills").glob("*/SKILL.md"))) if (self.project_root / "skills").exists() else 0
         )
         command_count = (
-            len(list((self.project_root / "commands").glob("*.md"))) if (self.project_root / "commands").exists() else 0
+            len(list((self.project_root / "commands").glob("**/*.md"))) if (self.project_root / "commands").exists() else 0
         )
 
         return {
@@ -173,12 +193,25 @@ class QualityController:
 
         total_markdown = len(markdown_files)
 
+        # Scale against the maximum achievable score (README + every agent + every skill),
+        # not against the total count of markdown files anywhere in the repo - that previously
+        # crushed the percentage toward 0% as docs/ and data/reports/ grew, independent of how
+        # well-documented the actual components (README, agents, skills) were.
+        agent_total = len(list((self.project_root / "agents").glob("*.md"))) if (self.project_root / "agents").exists() else 0
+        skill_total = (
+            len([d for d in (self.project_root / "skills").iterdir() if d.is_dir()])
+            if (self.project_root / "skills").exists()
+            else 0
+        )
+        max_possible = 100 + (agent_total * 10) + (skill_total * 10)
+        documentation_coverage_pct = (readme_score + (agent_docs * 10) + (skill_docs * 10)) / max(1, max_possible) * 100
+
         return {
             "total_markdown_files": total_markdown,
             "readme_score": readme_score,
             "documented_agents": agent_docs,
             "documented_skills": skill_docs,
-            "documentation_coverage": (readme_score + (agent_docs * 10) + (skill_docs * 10)) / max(1, total_markdown),
+            "documentation_coverage": min(100, documentation_coverage_pct),
         }
 
     def analyze_patterns(self) -> Dict[str, Any]:
@@ -254,9 +287,7 @@ class QualityController:
             .get("structure", {})
             .get("required_directories", {})
             .get("coverage", 0),
-            "documentation": min(
-                100, self.results["component_scores"].get("documentation", {}).get("documentation_coverage", 0) * 10
-            ),
+            "documentation": self.results["component_scores"].get("documentation", {}).get("documentation_coverage", 0),
             "functionality": self.results["component_scores"].get("functionality", {}).get("functionality_score", 0),
         }
 
@@ -382,7 +413,7 @@ class QualityController:
         structure_score = (
             self.results["component_scores"].get("structure", {}).get("required_directories", {}).get("coverage", 0)
         )
-        doc_score = min(100, self.results["component_scores"].get("documentation", {}).get("documentation_coverage", 0) * 10)
+        doc_score = self.results["component_scores"].get("documentation", {}).get("documentation_coverage", 0)
         func_score = self.results["component_scores"].get("functionality", {}).get("functionality_score", 0)
 
         print(f"  - Syntax: {syntax_score:.1f}%")

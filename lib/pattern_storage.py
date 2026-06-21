@@ -85,7 +85,14 @@ class PatternStorage:
         """Create patterns directory if it does not exist."""
         self.patterns_dir.mkdir(parents=True, exist_ok=True)
         if not self.patterns_file.exists():
-            self._write_patterns([])
+            # Write the canonical dict-wrapped schema (matches what `init` writes
+            # and what `validate` expects) instead of a bare list. Previously this
+            # wrote `[]` via _write_patterns([]), which pre-empted init's own
+            # correctly-structured write (guarded by `if not patterns_file.exists()`)
+            # since the constructor always runs before any action handler -
+            # every fresh /learn:init produced 2 spurious validate() warnings.
+            with open(self.patterns_file, "w", encoding="utf-8") as f:
+                json.dump({"version": "1.0", "patterns": [], "skill_effectiveness": {}}, f, indent=2)
 
     def _read_patterns(self) -> List[Dict[str, Any]]:
         """

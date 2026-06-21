@@ -88,12 +88,12 @@ When using `--verbose` flag, you'll see:
 
 ## Available Targets
 
-### `dashboard`
+### `dashboard` (RESOLVED in v8.3.0 - kept as a worked example)
 - **Issue**: Quality Score Timeline chart data inconsistency
-- **Symptom**: Chart values change when switching time periods and returning
-- **Root Cause**: `random.uniform()` without deterministic seeding in `dashboard.py:710-712`
-- **Expected Fix**: Replace random generation with deterministic seeded calculation
-- **Complexity**: Medium (requires code modification and testing)
+- **Symptom**: Chart values changed when switching time periods and returning
+- **Root Cause**: `random.uniform()` without deterministic seeding (in the pre-v8.3.0 dashboard.py, which was 6835 lines)
+- **Resolution**: `dashboard.py` was rewritten in v8.3.0 to 452 lines with zero local module dependencies, reading JSON directly with no randomized fallback data. Verified: no `random` usage remains in the current `lib/dashboard.py`.
+- **Note**: Running `/debug:eval dashboard` today will correctly report this target as already resolved - it is retained here only to illustrate the QIS/TES/Performance Index methodology below.
 
 ### `performance-index`
 - **Issue**: AI Debugging Performance Index calculation accuracy

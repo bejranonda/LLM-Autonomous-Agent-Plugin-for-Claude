@@ -2,6 +2,16 @@
 
 The v8.3.0 release focused on dashboard reliability and dead code removal. Below are currently identified operational constraints:
 
+## Resolved in v8.4.5
+
+- **[FIXED] Misleading `Successful Imports` metric**: `quality_control_check.py` reported `Successful Imports: 1` out of ~82 importable `lib/` modules. The loop computed `module_name = "lib.dashboard"` and called `importlib.import_module()`, which only resolves when both the project root is on `sys.path` and `lib` is importable as a package - neither was guaranteed when launched as `py lib/quality_control_check.py`. Replaced with `importlib.util.spec_from_file_location` + `exec_module` (file-based, `sys.path`-independent) and added stdout/stderr redirection during `exec_module` so top-level prints from `dashboard.py`/`web_page_validator.py` no longer pollute the report. Metric now correctly reports `82`; the 100/100 score was unaffected because scoring uses `ast.parse()`-based `syntax_success_rate`.
+- **[FIXED] Non-recursive command glob in quality_check**: same class of bug as v8.4.1's `validate-claude-plugin.py` fix - `glob("*.md")` on `commands/` missed the 10 category subfolders. Now `glob("**/*.md")`, reporting `41 commands` (was `1`).
+- **[FIXED] `documentation_coverage` denominator**: previously divided the README + agents + skills score by the total count of *all* markdown files in the repo (including archived reports), driving the percentage toward 0% as docs grew. Renormalized against `100 + (agents * 10) + (skills * 10)` so the percentage reflects component documentation quality, not repo markdown volume.
+- **[FIXED] `pattern_storage.py` bootstrap schema**: `_ensure_directory()` wrote a bare `[]` when the patterns file was missing, which pre-empted `init`'s correct dict-wrapped schema and produced a spurious validate warning on fresh `/learn:init`. Bootstrap write now uses the same dict shape as `init`.
+- **[FIXED] Dashboard favicon 404**: `dashboard.py` HTML head now includes `<link rel="icon" href="data:,">`, eliminating the per-page-load `favicon.ico` 404 in the browser console. `web_page_validator.py` reports `0 errors detected`.
+- **[FIXED] Stale bug citation**: `commands/debug/eval.md` referenced `random.uniform() in dashboard.py:710-712` but `dashboard.py` was rewritten in v8.3.0 (6835 -> 452 lines) and has no `random` usage. Target marked `(RESOLVED in v8.3.0 - kept as a worked example)`.
+- **[DOCUMENTED] Semgrep Guardian `PreToolUse` hook**: expanded the existing one-line note (see "Data & Tooling Integrity" below) with concrete disable instructions, after a session-long investigation confirmed the hook is the separate user-level `semgrep@claude-plugins-official` plugin, not anything shipped by this plugin.
+
 ## Resolved in v8.4.4
 
 - **[FIXED] Misleading shipped-component claim**: `CLAUDE.md` listed `patterns/autofix-patterns.json` in the shipped directory-structure diagram and claimed a fixed "24 Auto-Fix Patterns" feature, but the file is gitignored, optional, computer-specific seed data - a fresh marketplace install has no `patterns/` directory at all. Found by validating a clean cache install (419 tracked files) instead of the long-lived dev directory, which had a stale untracked copy from 2025-10-22.
@@ -67,7 +77,7 @@ The v8.3.0 release focused on dashboard reliability and dead code removal. Below
 ### Data & Tooling Integrity
 - **Auto-fix pattern count mismatch**: `patterns/autofix-patterns.json` declares `statistics.total_patterns: 24`, but only 19 patterns are actually defined across the category arrays (typescript 5, python 5, javascript 3, build_config 3, api_contract 3). Either 5 patterns are unwritten or the statistics block is stale.
 - **Stale manual test script**: `scripts/testing/test_metrics_kpi_system.py` still has one deferred reference to the deleted `token_monitoring_dashboard` and a `sys.path` that assumes repo root. It is a standalone manual script (not part of the `pytest` suite), kept pending a decision on the token-monitoring feature.
-- **Editor hook may block edits**: A Semgrep Guardian `PreToolUse` hook can fail closed when unauthenticated, blocking file edits/deletes in some environments. Authenticate or disable it if operations are unexpectedly rejected.
+- **Editor hook may block edits (NOT part of this plugin)**: The official `semgrep@claude-plugins-official` Claude Code plugin installs a Semgrep Guardian `PreToolUse` hook that fails *closed* when unauthenticated, blocking all `Bash`/`Edit`/`Write` operations in the session with `Not logged into Semgrep Guardian. Ask the guardian mcp to login.` This plugin ships no `PreToolUse` hooks at all. To restore tool access: either (a) log in via `/mcp` -> Semgrep Guardian -> Login, or (b) disable the plugin by setting `"semgrep@claude-plugins-official": false` in `~/.claude/settings.json` and restarting Claude Code.
 
 ## Reporting Issues
 If you encounter issues, ensure you are running v8.1.0+ installed via `/plugin install`. Run validation with `/validate:plugin`.

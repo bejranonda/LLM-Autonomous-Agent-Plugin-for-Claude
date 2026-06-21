@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.5] - 2026-06-21
+
+### Fixed
+- `quality_control_check.py` reported a misleading `Successful Imports: 1` metric for the entire `lib/` tree (out of ~82 importable modules). Root cause: the loop computed `module_name = "lib.dashboard"` then called `importlib.import_module(module_name)`, which only resolves when the project root is on `sys.path` AND `lib` is importable as a package - neither was guaranteed when the script was launched as `py lib/quality_control_check.py` (which puts `lib/` on `sys.path`, not the project root). Replaced with `importlib.util.spec_from_file_location` + `exec_module` so imports resolve by absolute path regardless of `sys.path`. Also redirected stdout/stderr to `/dev/null` during `exec_module` because several modules (`dashboard.py`, `web_page_validator.py`) emit diagnostic prints at top level on import, which previously polluted the quality report. Metric now correctly reports `Successful Imports: 82` (was `1`); `Overall Score: 100/100` is unchanged because the score uses `ast.parse()`-based `syntax_success_rate`, not the import counter.
+- `quality_control_check.py` also undercounted commands (`commands` directory) for the same non-recursive-glob reason as v8.4.1's `validate-claude-plugin.py` fix: `glob("*.md")` saw only 1 file at the top of `commands/`, missing the 10 category subfolders. Now uses `glob("**/*.md")`, reporting `41 commands` (was `1`).
+- `quality_control_check.py` `documentation_coverage` formula divided the README + agents + skills score by the total count of *all* markdown files in the repo (including archived reports under `data/reports/archive/`), which drove the percentage toward 0% as the docs corpus grew - independent of how well the actual components were documented. Renormalized against the maximum achievable score `100 + (agents * 10) + (skills * 10)`, so the coverage percentage now reflects component documentation quality rather than repo markdown volume.
+- `pattern_storage.py` `_ensure_directory()` wrote a bare `[]` array via `self._write_patterns([])` when the patterns file did not exist. This pre-empted the `init` command's correct dict-wrapped schema (`{"version": "1.0", "patterns": [], "skill_effectiveness": {}}`), so a subsequent `init` produced a validate warning about a missing `version` key. The bootstrap write now uses the correct dict shape, matching the schema written by `init`.
+- `dashboard.py` emitted a `favicon.ico` 404 in the browser console on every page load. Added an empty-data-URI `<link rel="icon" href="data:,">` to the HTML head. `web_page_validator.py` now reports `[OK] PASSED - 0 errors detected` against the dashboard.
+- `commands/debug/eval.md` cited `random.uniform() in dashboard.py:710-712` as the example bug target, but `dashboard.py` was rewritten in v8.3.0 from 6835 lines to 452 lines and contains no `random` usage. Marked the target as `(RESOLVED in v8.3.0 - kept as a worked example)` and updated the surrounding text to explain the target is retained only to illustrate the QIS/TES/Performance-Index methodology.
+
+### Added
+- `docs/KNOWN_ISSUES.md` now documents the Semgrep Guardian `PreToolUse` hook as a separate, user-level plugin (`semgrep@claude-plugins-official` in `~/.claude/settings.json`), distinct from this plugin. The hook fails closed when unauthenticated and blocks all `Bash`/`Edit`/`Write` operations in the session; this plugin ships no `PreToolUse` hooks at all. Includes the disable command (`"semgrep@claude-plugins-official": false`) and the alternative (`/mcp` -> Login).
+
 ## [8.4.4] - 2026-06-21
 
 ### Fixed
