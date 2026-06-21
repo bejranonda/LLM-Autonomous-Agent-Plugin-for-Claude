@@ -9,7 +9,7 @@ import ast
 from pathlib import Path
 
 
-class TestSuiteValidator:
+class SuiteValidator:
     """Validates the test suite structure and completeness"""
 
     def __init__(self, tests_dir="tests"):
@@ -198,7 +198,7 @@ class TestSuiteValidator:
 
 def main():
     """Main validation function"""
-    validator = TestSuiteValidator()
+    validator = SuiteValidator()
     report = validator.generate_validation_report()
 
     print("AUTONOMOUS AGENT PLUGIN v6.0.0 - TEST SUITE VALIDATION")

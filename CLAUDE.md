@@ -90,7 +90,7 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest (v7.1.0)
+.claude-plugin/plugin.json          # Plugin manifest (v8.3.3)
 
 agents/                              # 27 specialized agents (4 groups)
 ├── orchestrator.md                 # Four-tier coordinator
