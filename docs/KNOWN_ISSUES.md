@@ -2,6 +2,9 @@
 
 The v8.3.0 release focused on dashboard reliability and dead code removal. Below are currently identified operational constraints:
 
+## Resolved in v8.4.4
+
+- **[FIXED] Misleading shipped-component claim**: `CLAUDE.md` listed `patterns/autofix-patterns.json` in the shipped directory-structure diagram and claimed a fixed "24 Auto-Fix Patterns" feature, but the file is gitignored, optional, computer-specific seed data - a fresh marketplace install has no `patterns/` directory at all. Found by validating a clean cache install (419 tracked files) instead of the long-lived dev directory, which had a stale untracked copy from 2025-10-22.
 ## Resolved in v8.4.3
 
 - **[FIXED] Marketplace version drift (again)**: the 8.4.2 version bump updated `plugin.json`/`CLAUDE.md`/`README.md` but missed `marketplace.json`, immediately reintroducing the v8.4.2 fix. `validate-claude-plugin.py` now checks `marketplace.json` against `plugin.json` and warns on drift, so this is caught automatically going forward.

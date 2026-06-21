@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.4] - 2026-06-21
+
+### Fixed
+- `CLAUDE.md` described `patterns/autofix-patterns.json` as a shipped component in the directory-structure diagram and claimed a fixed "24 Auto-Fix Patterns" feature. In reality `patterns/` is gitignored ("Local patterns and performance data, computer-specific") and is treated by `unified_parameter_storage.py` as optional legacy seed data that migrates into `.claude-patterns/` if present - a fresh install has no `patterns/` directory at all. Reworded both references to describe it accurately as optional, locally-seeded, not-bundled data. Found by testing a clean cache install (419 tracked files) rather than the long-lived dev working directory (which had an old untracked copy of the file from 2025-10-22).
 ## [8.4.3] - 2026-06-21
 
 ### Fixed
