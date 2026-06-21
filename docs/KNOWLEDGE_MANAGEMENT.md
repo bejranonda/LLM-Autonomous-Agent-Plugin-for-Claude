@@ -24,6 +24,28 @@ All components are auto-discovered by Claude Code's convention-based loader:
 
 When consolidating knowledge across the Four-Tier workflow, the system uses `unified_data.json` with file-locked writes for race-free concurrency across operating systems. This reduces API payload overhead and synchronizes contextual performance data.
 
+## External Brain MCP Integration (Optional, v8.4.5)
+
+This plugin can optionally integrate with an **external Brain MCP server** (a separate project-memory service, not part of this plugin) for cross-project knowledge persistence. The Brain stores durable rules, recipes, anti-patterns, and reflexes indexed by project + user.
+
+> **Naming clarity**: The plugin's internal "Brain" (Group 1: Strategic Analysis & Intelligence - 7 analysis agents) is **unrelated** to the external Brain MCP server. Internal Brain = agent group. External Brain = MCP service.
+
+### Two storage layers, two scopes
+
+| Layer | Location | Scope | Survives |
+|---|---|---|---|
+| Internal pattern storage | `.claude-patterns/` in project dir | Per-project | Project lifetime |
+| External Brain MCP | External MCP server | User and/or project | Across sessions + repos |
+
+### When to use which
+
+- **Use `.claude-patterns/`** for transient runtime data: task queue, quality history, recent agent performance, dashboard data.
+- **Use Brain MCP** for distilled durable rules: root-cause lessons, anti-patterns, procedures, security practices, environment quirks.
+
+### Full integration guidelines
+
+See [`docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md`](guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md) for the complete connection protocol, retrieval-path differences, classifier guardrails, and recovery procedures.
+
 ## What Changed in v8.4.5
 
 - Fixed `quality_control_check.py` reporting `Successful Imports: 1` out of ~82 importable `lib/` modules. The dotted-path `importlib.import_module("lib.X")` call was sys.path-sensitive and silently swallowed `ModuleNotFoundError`; replaced with `importlib.util.spec_from_file_location` (file-based, sys.path-independent). Diagnostic prints from `dashboard.py` and `web_page_validator.py` are now redirected to `/dev/null` during `exec_module` so they don't pollute the report. Metric now reads `82` (was `1`).

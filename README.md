@@ -118,6 +118,7 @@ A **paradigm shift** from static tools to living intelligence with **36 speciali
 - `dashboard.py` favicon 404 suppressed via an empty-data-URI `<link rel="icon">` in the HTML head.
 - `commands/debug/eval.md` marked the stale `random.uniform() in dashboard.py:710-712` citation as `(RESOLVED in v8.3.0)` - dashboard.py is now 452 lines with no `random` usage; target retained only as a worked example for the QIS/TES methodology.
 - `docs/KNOWN_ISSUES.md` documents the Semgrep Guardian `PreToolUse` hook as a *separate* user-level plugin (`semgrep@claude-plugins-official`) - not part of this plugin. Includes disable instructions (`"semgrep@claude-plugins-official": false`) for users who hit fail-closed login prompts.
+- **Brain MCP integration documentation added**: new `docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md` covering optional external Brain MCP server integration. Documents the retrieval-path distinction (`brain_ask_oracle` cross-project ranking vs `brain_retrieve_knowledge` project-scoped vector search), the cold-start penalty on new project-scoped items, the auto-mode classifier's permission-self-grant guardrail (agents cannot widen their own `permissions.allow`), and the no-auto-reconnect recovery procedure. Sections added to `docs/KNOWLEDGE_MANAGEMENT.md`, `docs/KNOWN_ISSUES.md`, and `docs/APPROACH_AND_METHOD.md` (methodology bullets #9-#11).
 
 ### v8.4.4 - Documentation Accuracy
 
@@ -363,6 +364,7 @@ python ${CLAUDE_PLUGIN_ROOT}/lib/agent_error_helper.py --list
 - **[Known Issues](docs/KNOWN_ISSUES.md)** - Current issues and stabilization roadmap
 - **[Approach & Method](docs/APPROACH_AND_METHOD.md)** - Execution paradigm and design principles
 - **[Knowledge Management](docs/KNOWLEDGE_MANAGEMENT.md)** - Data storage and component discovery
+- **[Brain MCP Integration Guidelines](docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md)** - Optional external Brain MCP server integration (cross-project knowledge persistence, retrieval-path differences, classifier guardrails) 🆕 v8.4.5
 - **[Development & Distribution](docs/DEVELOPMENT_DISTRIBUTION_ARCHITECTURE.md)** - Dual-mode dashboard architecture
 - **[Cross-Platform Compatibility Guide](emoji_prevention_guide.md)** - Windows encoding compatibility and emoji prevention (v7.4.1) ✨
 - **[Emoji Detection Tool](detect_fix_emojis.py)** - Automated emoji detection and fixing for cross-platform compatibility (v7.4.1) ✨

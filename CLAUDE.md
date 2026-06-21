@@ -298,6 +298,14 @@ This repository contains **configuration files** (Markdown + JSON), not executab
 - Skills are loaded via progressive disclosure
 - Skills provide domain knowledge without context isolation
 
+### Plugin ↔ External Brain MCP (Optional, v8.4.5)
+- This plugin can optionally integrate with an **external Brain MCP server** (separate service, not shipped) for cross-project knowledge persistence
+- Internal `.claude-patterns/` (runtime data) and external Brain (distilled durable rules) are complementary layers, not redundant
+- **Retrieval caveat**: `brain_ask_oracle` under-ranks newly-taught project-scoped items (cold-start + scope filter). Use `brain_retrieve_knowledge(query, projectId=<id>)` to verify new items; oracle ranking improves as items accrue `usageCount`
+- **Permission guardrail**: agents cannot edit `~/.claude/settings.json` to add `mcp__brain__*` to `permissions.allow` (auto-mode classifier blocks permission self-grants). User must apply such edits manually.
+- **Transport recovery**: Brain MCP client does not auto-reconnect on drop. Use `/mcp` -> reconnect, or fully restart Claude Code (not just `/compact`).
+- See: `docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md` for full protocol
+
 ### Pattern Database ↔ All Components
 - All agents contribute to pattern storage
 - Orchestrator queries patterns for decision-making
