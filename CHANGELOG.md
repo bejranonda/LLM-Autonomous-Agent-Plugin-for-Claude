@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.3] - 2026-06-21
+
+### Fixed
+- `marketplace.json` version had drifted to 8.4.1 during the 8.4.2 bump (the bump script updated `plugin.json`/`CLAUDE.md`/`README.md` but missed `marketplace.json`). Synced to 8.4.3.
+
+### Added
+- `validate-claude-plugin.py` now checks that `marketplace.json`'"'"'s listed version matches `plugin.json` and emits a warning on drift, so this class of bug is caught automatically on every future release instead of requiring manual discovery.
 ## [8.4.2] - 2026-06-21
 
 ### Fixed

@@ -2,6 +2,10 @@
 
 The v8.3.0 release focused on dashboard reliability and dead code removal. Below are currently identified operational constraints:
 
+## Resolved in v8.4.3
+
+- **[FIXED] Marketplace version drift (again)**: the 8.4.2 version bump updated `plugin.json`/`CLAUDE.md`/`README.md` but missed `marketplace.json`, immediately reintroducing the v8.4.2 fix. `validate-claude-plugin.py` now checks `marketplace.json` against `plugin.json` and warns on drift, so this is caught automatically going forward.
+
 ## Resolved in v8.4.2
 
 - **[FIXED] Stale marketplace listing**: `.claude-plugin/marketplace.json` (the listing shown when browsing/installing from the marketplace) was stuck at `version: 8.0.0` with stale component counts — nine releases behind `plugin.json`. Synced to the current release with accurate counts.

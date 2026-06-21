@@ -120,6 +120,52 @@ def validate_directory_structure(plugin_dir):
     return issues, warnings
 
 
+def validate_marketplace_sync(plugin_dir):
+    """Validate that marketplace.json's listed version matches plugin.json.
+
+    marketplace.json is the listing shown when browsing/installing from a
+    marketplace, but nothing enforces that its version field tracks
+    plugin.json - it has drifted silently in the past (e.g. stuck at 8.0.0
+    for nine releases). This check makes that drift visible instead of silent.
+    """
+    issues = []
+    warnings = []
+
+    manifest_path = plugin_dir / ".claude-plugin" / "plugin.json"
+    marketplace_path = plugin_dir / ".claude-plugin" / "marketplace.json"
+
+    if not marketplace_path.exists():
+        return issues, warnings
+
+    print("\nValidating Marketplace Sync...")
+
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        marketplace = json.loads(marketplace_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, FileNotFoundError, OSError) as e:
+        warnings.append(f"Could not read plugin.json/marketplace.json for sync check: {e}")
+        return issues, warnings
+
+    plugin_name = manifest.get("name")
+    plugin_version = str(manifest.get("version", ""))
+
+    entry = next((p for p in marketplace.get("plugins", []) if p.get("name") == plugin_name), None)
+    if entry is None:
+        warnings.append(f"marketplace.json has no listing for plugin '{plugin_name}'")
+        return issues, warnings
+
+    listed_version = str(entry.get("version", ""))
+    if listed_version != plugin_version:
+        warnings.append(
+            f"marketplace.json version ({listed_version}) does not match "
+            f"plugin.json version ({plugin_version}) - update marketplace.json"
+        )
+    else:
+        print(f"  [OK] marketplace.json version matches plugin.json: {plugin_version}")
+
+    return issues, warnings
+
+
 def validate_file_formats(plugin_dir):
     """Validate file formats."""
     print("\nValidating File Formats...")
@@ -181,6 +227,9 @@ def main():
     all_issues.extend(issues)
     all_warnings.extend(warnings)
 
+    issues, warnings = validate_marketplace_sync(plugin_dir)
+    all_issues.extend(issues)
+    all_warnings.extend(warnings)
     issues, warnings = validate_file_formats(plugin_dir)
     all_issues.extend(issues)
     all_warnings.extend(warnings)
