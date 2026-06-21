@@ -99,12 +99,20 @@ def validate_directory_structure(plugin_dir):
     else:
         issues.append("Missing plugin.json in .claude-plugin/")
 
-    # Optional directories
-    optional_dirs = ["agents", "skills", "commands", "lib", "patterns"]
-    for dir_name in optional_dirs:
+    # Optional directories. Glob patterns are recursive where components live in
+    # subdirectories (commands/<category>/*.md, skills/<name>/SKILL.md) so the
+    # count reflects actual files, not just top-level directory entries.
+    optional_dirs = {
+        "agents": "*.md",
+        "skills": "**/SKILL.md",
+        "commands": "**/*.md",
+        "lib": "*.py",
+        "patterns": "*",
+    }
+    for dir_name, pattern in optional_dirs.items():
         dir_path = plugin_dir / dir_name
         if dir_path.exists() and dir_path.is_dir():
-            file_count = len(list(dir_path.glob("*")))
+            file_count = len(list(dir_path.glob(pattern)))
             print(f"  [OK] {dir_name}/: {file_count} files (optional)")
         else:
             print(f"  [INFO] {dir_name}/: Not present (optional)")

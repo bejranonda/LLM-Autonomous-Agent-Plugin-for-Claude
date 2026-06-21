@@ -451,7 +451,7 @@ class QualityController:
         """Save detailed report to file"""
         if output_file is None:
             timestamp = datetime.now().strftime("%Y-%m-%d")
-            output_file = self.project_root / f".claude/data/data/data/reports/quality-control-{timestamp}.md"
+            output_file = self.project_root / f".claude/reports/quality-control-{timestamp}.md"
 
         # Ensure directory exists
         output_file.parent.mkdir(parents=True, exist_ok=True)
