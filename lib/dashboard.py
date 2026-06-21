@@ -9,6 +9,7 @@ Usage:
 """
 
 import argparse
+import html
 import json
 import socket
 import webbrowser
@@ -419,7 +420,7 @@ def create_app(patterns_dir: str = ".claude-patterns") -> Flask:
 
     @app.route("/")
     def index():
-        return DASHBOARD_HTML.replace("{{PATTERNS_DIR}}", patterns_dir)
+        return DASHBOARD_HTML.replace("{{PATTERNS_DIR}}", html.escape(patterns_dir))
 
     @app.route("/api/overview")
     def api_overview():

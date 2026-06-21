@@ -40,7 +40,10 @@ class BackupManager:
 
     def restore_backup(self, backup_id: str) -> Dict[str, Any]:
         """Restore files from a backup"""
-        backup_path = self.backup_dir / backup_id
+        # Guard against path traversal: the resolved path must stay inside backup_dir.
+        backup_path = (self.backup_dir / backup_id).resolve()
+        if not backup_path.is_relative_to(self.backup_dir.resolve()):
+            raise ValueError(f"Invalid backup_id (path traversal attempt): {backup_id!r}")
         if not backup_path.exists():
             raise FileNotFoundError(f"Backup not found: {backup_id}")
 

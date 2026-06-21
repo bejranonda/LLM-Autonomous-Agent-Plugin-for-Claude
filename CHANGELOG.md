@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.0] - 2026-06-21
+
+### Security
+- Removed an `exec()` code-injection primitive in `lib/quality_control_check.py`. Two `exec(f"...import...")` calls that built executable code from filename-derived strings are now direct `importlib.import_module()` calls; a crafted `.py` filename could otherwise execute arbitrary code when the scanner is pointed at an untrusted repository.
+- Added path-traversal protection to `BackupManager.restore_backup()`: a `backup_id` that escapes the backup directory (e.g. contains `..`) now raises `ValueError` before any filesystem access. Legitimate missing IDs still raise `FileNotFoundError`.
+- HTML-escaped the `patterns_dir` value interpolated into the dashboard page (`lib/dashboard.py`) as defense-in-depth.
+
+### Fixed
+- **Test-suite integrity**: the unit suite reported `77 passed / 96 skipped`, but every skip was a `try/except ImportError -> @pytest.mark.skipif` guard silently swallowing a real failure. Rewrote `test_detect_current_model` (21 tests) and `test_agent_error_helper` (15 tests) against the actual module APIs with no skip guard, so a renamed/removed symbol now fails loudly. Suite now: `113 passed, 0 skipped, 0 warnings`.
+- Renamed the `TestSuiteValidator` utility class to `SuiteValidator` so pytest no longer warns about (and refuses to collect) it.
+- Corrected plugin-manifest version drift in `CLAUDE.md`.
+
+### Removed
+- Deleted unimportable orphaned modules and tests that referenced deleted code: `lib/web_dashboard.py` (imported the missing `token_monitoring_dashboard` and called `sys.exit(1)` at import), `lib/debug_timeline.py` (imported the removed `DashboardDataCollector`), `lib/test_basic_functionality.py`, `scripts/testing/test_monitoring.py`, and three orphaned unit-test files (`test_plugin_validator`, `test_dashboard_validator`, `test_simple_validation`).
+
+### Changed
+- Updated documented component counts to match reality: 36 agents, 27 skills, 41 commands.
+
+### Verification
+- `ruff check .` clean; `pytest` 113 passed / 0 skipped / 0 warnings; all 60 `lib` modules import with 0 failures and 0 import-time exits.
 ## [8.2.0] - 2026-04-11
 
 ### Fixed

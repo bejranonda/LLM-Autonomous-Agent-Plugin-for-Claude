@@ -39,3 +39,11 @@ With v8.1.0, we prioritize strict compliance with Claude Code's official plugin 
 2. **Flask App Factory**: `create_app(patterns_dir)` produces a configured Flask app. This pattern supports testing, multiple instances, and clean startup. The `dashboard_launcher.py` wrapper provides auto-restart and health monitoring on top.
 3. **Zero Local Imports**: The dashboard depends only on Flask and stdlib. Previously it imported deleted modules causing immediate ImportError. This isolation means the dashboard cannot break due to changes elsewhere in lib/.
 4. **CDN-Based UI**: Chart.js loaded from jsdelivr CDN. No bundled JS dependencies to maintain. Dark theme with auto-refresh keeps the UI functional without external CSS frameworks.
+
+## Test Integrity & Security (v8.4.0)
+
+1. **Tests Fail Loudly**: Test files import the module under test unconditionally (after putting `lib/` on `sys.path`). The `try/except ImportError -> IMPORTS_AVAILABLE = False -> @pytest.mark.skipif` idiom is banned: it converts a renamed or deleted API into a silently-skipped (green) test, hiding real breakage. A test that cannot import its subject must fail at collection, not skip.
+2. **Verify the Whole Surface, Not Just Syntax**: `py_compile` proves a module parses; it does not prove its `from sibling import name` statements resolve. Releases run an import-resolution sweep that actually imports every `lib/*.py` module and classifies failures as real drift vs. merely-missing optional dependencies. Modules must not call `sys.exit()` at import time.
+3. **No exec() for Imports**: Dynamic imports use `importlib.import_module()`, never `exec()` of an f-string-built statement. Building executable code from filename- or path-derived strings is a code-injection primitive.
+4. **Containment Before Filesystem Access**: Functions that resolve a caller-supplied identifier into a path validate that the resolved path stays inside the intended root (`is_relative_to`) before touching the filesystem.
+5. **Documentation Reflects Reality**: Component counts and version strings are verified against the actual repository on each release, not carried forward by assumption.

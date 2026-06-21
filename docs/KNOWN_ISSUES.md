@@ -2,6 +2,15 @@
 
 The v8.3.0 release focused on dashboard reliability and dead code removal. Below are currently identified operational constraints:
 
+## Resolved in v8.4.0
+
+- **[FIXED] Test-suite false confidence**: The unit suite reported `77 passed / 96 skipped`, but every skip was a `try/except ImportError -> @pytest.mark.skipif` guard that silently turned a real failure into a green skip. `test_detect_current_model` and `test_agent_error_helper` imported renamed/removed symbols; `test_plugin_validator`, `test_dashboard_validator`, and `test_simple_validation` tested deleted modules. The two live-module tests were rewritten against the real API (no skip guard); the three orphaned files were removed. Suite now: `113 passed, 0 skipped, 0 warnings`.
+- **[FIXED] exec() code-injection primitive**: `quality_control_check.py` built import statements from filename-derived strings and ran them via `exec()`. Replaced with `importlib.import_module()`.
+- **[FIXED] Backup path traversal (latent)**: `BackupManager.restore_backup()` now rejects a `backup_id` that escapes the backup directory before any filesystem access (legitimate missing IDs still raise `FileNotFoundError`).
+- **[FIXED] Unimportable dead modules**: `lib/web_dashboard.py` (called `sys.exit(1)` at import) and `lib/debug_timeline.py` (imported the removed `DashboardDataCollector`) deleted; both referenced deleted code with no live callers.
+- **[FIXED] pytest collection warning**: utility class `TestSuiteValidator` renamed to `SuiteValidator` so pytest stops trying to collect it.
+- **[FIXED] Documentation drift**: corrected component counts (36 agents, 27 skills, 41 commands) and the plugin-manifest version reference in CLAUDE.md.
+
 ## Resolved in v8.3.0
 
 - **[FIXED] Dashboard Syntax Error**: `lib/dashboard.py` had an unterminated triple-quoted string (197 quotes, odd count) causing SyntaxError at line 6835. Complete rewrite reduced it to 534 working lines.
@@ -38,6 +47,11 @@ The v8.3.0 release focused on dashboard reliability and dead code removal. Below
 
 ### Plugin Size
 - **Large lib/ Directory**: 124 active scripts (78K lines, 6MB) are bundled. Not all are actively used by agents/commands. Future versions may prune unused utilities.
+
+### Data & Tooling Integrity
+- **Auto-fix pattern count mismatch**: `patterns/autofix-patterns.json` declares `statistics.total_patterns: 24`, but only 19 patterns are actually defined across the category arrays (typescript 5, python 5, javascript 3, build_config 3, api_contract 3). Either 5 patterns are unwritten or the statistics block is stale.
+- **Stale manual test script**: `scripts/testing/test_metrics_kpi_system.py` still has one deferred reference to the deleted `token_monitoring_dashboard` and a `sys.path` that assumes repo root. It is a standalone manual script (not part of the `pytest` suite), kept pending a decision on the token-monitoring feature.
+- **Editor hook may block edits**: A Semgrep Guardian `PreToolUse` hook can fail closed when unauthenticated, blocking file edits/deletes in some environments. Authenticate or disable it if operations are unexpectedly rejected.
 
 ## Reporting Issues
 If you encounter issues, ensure you are running v8.1.0+ installed via `/plugin install`. Run validation with `/validate:plugin`.

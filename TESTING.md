@@ -6,6 +6,39 @@ This document provides comprehensive information about the testing infrastructur
 
 The plugin includes a comprehensive testing suite designed to ensure reliability, cross-platform compatibility, and maintainability. The testing framework covers unit tests, integration tests, performance benchmarks, and security validation.
 
+## Testing Guidelines: Fail Loudly (v8.4.0)
+
+The single most important rule for this suite: **a test that cannot exercise its subject must FAIL, not skip.**
+
+Do NOT use this pattern:
+
+```python
+try:
+    from my_module import thing
+    IMPORTS_AVAILABLE = True
+except ImportError:
+    IMPORTS_AVAILABLE = False
+
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="my_module not available")
+class TestThing:
+    ...
+```
+
+It looks defensive, but it converts a renamed or deleted API into a green skip. In v8.4.0 this idiom was hiding 96 non-running tests (the suite reported "77 passed, 96 skipped" while those 96 tested nothing). Instead, import unconditionally at the top of the file (after putting `lib/` on `sys.path`):
+
+```python
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "lib"))
+from my_module import thing   # a missing/renamed symbol now fails at collection, loudly
+```
+
+Additional rules:
+
+- **No OS-dependent assertions**: do not assert environment-variable case sensitivity. Windows `os.getenv` is case-insensitive, so such a test passes on Linux and fails on Windows. Test module logic, not OS behavior.
+- **Utility classes in tests must not be named Test***: `pytest.ini` sets `python_classes = Test*`, so a `Test*`-named helper with an `__init__` triggers a `PytestCollectionWarning` and is never run. Name it `SomethingValidator`, not `TestSomethingValidator`.
+- **Isolate state**: use `monkeypatch` for env vars and `tmp_path` + `monkeypatch.chdir` for anything that reads relative paths, so tests are deterministic regardless of the host.
+
 ## Test Structure
 
 ```

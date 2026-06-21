@@ -24,6 +24,13 @@ All components are auto-discovered by Claude Code's convention-based loader:
 
 When consolidating knowledge across the Four-Tier workflow, the system uses `unified_data.json` with file-locked writes for race-free concurrency across operating systems. This reduces API payload overhead and synchronizes contextual performance data.
 
+## What Changed in v8.4.0
+
+- Restored unit-test integrity: a `try/except ImportError -> @pytest.mark.skipif` pattern across five files was silently skipping 96 tests (every "covered" test was a no-op). Tests of live modules were rewritten against the real API with unconditional imports; tests of deleted modules were removed. The suite now fails loudly on a missing symbol instead of skipping.
+- Hardened security: removed an `exec()` import primitive (`quality_control_check.py`), added path-traversal validation to `BackupManager.restore_backup()`, and HTML-escaped dashboard output.
+- Pruned unimportable dead modules (`web_dashboard.py`, `debug_timeline.py`) that referenced deleted code.
+- Reconciled documented component counts (36 agents, 27 skills, 41 commands) with actual repository contents.
+
 ## What Changed in v8.2.0
 
 - Purged all non-ASCII characters from 25 Python utility scripts (zero Windows encoding errors)

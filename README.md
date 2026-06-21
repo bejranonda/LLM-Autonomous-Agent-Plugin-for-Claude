@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v8.3.3
+# 🚀 Autonomous Agent for Claude Code v8.4.0
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-8.3.3-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.3.3)
+[![Version](https://img.shields.io/badge/version-8.4.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.4.0)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -84,7 +84,7 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 | **Intelligence** | Static analysis | ✅ **Living AI that evolves** |
 | **Autonomy** | Semi-automated | ✅ **Complete independence** |
 | **Learning** | Fixed patterns | ✅ **Exponential improvement** |
-| **Coordination** | Single tools | ✅ **27 agent ecosystem (4 groups)** |
+| **Coordination** | Single tools | ✅ **36 agent ecosystem (4 groups)** |
 | **Analytics** | Basic metrics | ✅ **Comprehensive KPI intelligence** |
 | **Validation** | Manual checks | ✅ **80-90% auto-fix + 5-layer validation** |
 | **Privacy** | Cloud processing | ✅ **100% local processing** |
@@ -110,6 +110,12 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
+### v8.4.0 - Test Integrity & Security Hardening
+
+- **Test suite restored**: eliminated a silent skip-on-import anti-pattern that hid 96 non-running unit tests. The suite now reports `113 passed, 0 skipped, 0 warnings` (was `77 passed, 96 skipped`).
+- **Security hardening**: removed an `exec()` code-injection primitive in `quality_control_check.py`, added path-traversal protection to backup restore, and HTML-escaped dashboard output.
+- **Dead-code cleanup**: removed orphaned modules/tests that referenced deleted components (`token_monitoring_dashboard`, `DashboardDataCollector`).
+- **Documentation accuracy**: corrected component counts (36 agents, 27 skills, 41 commands) and manifest version drift.
 ### v8.3.3 - Performance & Cross-Platform Excellence
 
 **Massive cleanup and modernization delivering smaller footprint and Windows reliability.**
@@ -1209,7 +1215,7 @@ v3.3.0 includes **40+ organized documentation files** across multiple directorie
 
 ### 📊 **Command Documentation**
 
-All 42 commands across 10 categories have comprehensive documentation with:
+All 41 commands across 10 categories have comprehensive documentation with:
 - Usage examples
 - Options and parameters
 - Expected outputs
@@ -1495,7 +1501,7 @@ claude
 ✅ **⚡ 90% Performance Boost** - Intelligent caching and optimized data access
 ✅ **🔒 100% Data Integrity** - Perfect migration with zero data loss across 73 records
 ✅ **📈 Real-Time Consistency** - Dashboard charts and tables perfectly synchronized
-✅ **Revolutionary Command Organization** - 10 logical categories, 42 commands total
+✅ **Revolutionary Command Organization** - 10 logical categories, 41 commands total
 ✅ **Automatic Learning** - Every task makes the agent smarter (85-90% accuracy)
 ✅ **Free Forever** - Complete access to all features without subscription
 ✅ **100% Privacy** - All processing local, no data leaves your machine

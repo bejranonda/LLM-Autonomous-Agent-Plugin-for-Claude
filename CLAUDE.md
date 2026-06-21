@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an **Autonomous Claude Agent Plugin** that demonstrates true autonomous AI behavior through pattern learning, skill auto-selection, background task execution, comprehensive quality control, and advanced token optimization. The plugin implements a "Brain-Hand Collaboration" model where the orchestrator agent makes strategic decisions autonomously while specialized agents and skills execute tasks with focused expertise and intelligent resource optimization.
 
 **Platform**: Claude Code CLI only (uses subagents, not compatible with claude.ai web/mobile)
-**Version**: 8.3.3
+**Version**: 8.4.0
 
 ## Development Guidelines
 
@@ -80,7 +80,7 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 - **Group 4 (Guardian)**: Validation & Optimization - Validates and provides feedback
 
 #### Key Features
-- 27 specialized agents across 4 groups + 1 orchestrator
+- 36 specialized agents across the four-tier architecture (incl. orchestrator)
 - Automatic inter-group learning and feedback loops
 - User preference integration and pattern learning
 - Five-layer validation framework (Functional, Quality, Performance, Integration, UX)
@@ -90,19 +90,19 @@ python .claude-patterns/dashboard.py --no-browser --port 5001
 ### Component Structure
 
 ```
-.claude-plugin/plugin.json          # Plugin manifest (v8.3.3)
+.claude-plugin/plugin.json          # Plugin manifest (v8.4.0)
 
-agents/                              # 27 specialized agents (4 groups)
+agents/                              # 36 specialized agents (4 groups)
 ├── orchestrator.md                 # Four-tier coordinator
 ├── [Group 1] 7 analysis agents     # Strategic Analysis & Intelligence
 ├── [Group 2] 2 decision agents     # Decision Making & Planning
 ├── [Group 3] 12 execution agents   # Execution & Implementation
 └── [Group 4] 4 validation agents   # Validation & Optimization
 
-skills/                              # 19 knowledge packages
-commands/                            # 42 slash commands (10 categories)
+skills/                              # 27 knowledge packages
+commands/                            # 41 slash commands (10 categories)
 patterns/autofix-patterns.json      # 24 auto-fix patterns
-lib/                                 # 110+ Python utilities
+lib/                                 # 60+ Python utilities
 ```
 
 **See**: [Component Structure Details](docs/FOUR_TIER_ARCHITECTURE.md) for complete agent/skill/command listings.
