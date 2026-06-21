@@ -24,6 +24,21 @@ All components are auto-discovered by Claude Code's convention-based loader:
 
 When consolidating knowledge across the Four-Tier workflow, the system uses `unified_data.json` with file-locked writes for race-free concurrency across operating systems. This reduces API payload overhead and synchronizes contextual performance data.
 
+## What Changed in v8.4.5
+
+- Fixed `quality_control_check.py` reporting `Successful Imports: 1` out of ~82 importable `lib/` modules. The dotted-path `importlib.import_module("lib.X")` call was sys.path-sensitive and silently swallowed `ModuleNotFoundError`; replaced with `importlib.util.spec_from_file_location` (file-based, sys.path-independent). Diagnostic prints from `dashboard.py` and `web_page_validator.py` are now redirected to `/dev/null` during `exec_module` so they don't pollute the report. Metric now reads `82` (was `1`).
+- Same file's `documentation_coverage` formula stopped dividing by total-repo markdown count (which included archived reports under `data/reports/archive/` and crushed the percentage toward 0%). Denominator is now `100 + (agents*10) + (skills*10)`, reflecting component documentation quality rather than repo markdown volume.
+- `pattern_storage.py` `_ensure_directory()` no longer pre-empts the `init` command's dict-wrapped schema by writing a bare `[]`. Fresh `/learn:init` is warning-free.
+- Documented that the Semgrep Guardian `PreToolUse` hook is a separate user-level plugin (`semgrep@claude-plugins-official`), not anything this plugin ships. `docs/KNOWN_ISSUES.md` includes concrete disable instructions.
+
+## What Changed in v8.4.4
+
+- Corrected `CLAUDE.md`'s directory-structure diagram and feature claims about `patterns/autofix-patterns.json`. The file is gitignored, optional, computer-specific seed data - a fresh marketplace install has no `patterns/` directory at all.
+
+## What Changed in v8.4.3
+
+- Fixed `marketplace.json` version drift (re-introduced when v8.4.2 missed `marketplace.json` on the bump). `validate-claude-plugin.py` now self-checks that `marketplace.json` matches `plugin.json` and warns on drift.
+
 ## What Changed in v8.4.2
 
 - Synced `.claude-plugin/marketplace.json` version and component-count description to the current release; it had drifted nine releases behind `plugin.json`.

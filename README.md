@@ -4,7 +4,7 @@
 
 > *What if your AI agent got smarter and faster with every task?*
 
-**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
+**[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-41-commands-across-10-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
 [![Version](https://img.shields.io/badge/version-8.4.5-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.4.5)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -44,7 +44,7 @@ The autonomous agent is now smarter and more organized than ever, with **revolut
 
 ### 🧠 **Core Innovation: Revolutionary Four-Tier Architecture**
 
-A **paradigm shift** from static tools to living intelligence with **35 specialized agents** across 4 collaborative groups:
+A **paradigm shift** from static tools to living intelligence with **36 specialized agents** across 4 collaborative groups (including the master orchestrator):
 
 **🏗️ Four-Tier Group Architecture (v8.0.0+)**
 - **Group 1 - Strategic Analysis (Brain)**: 8 agents analyze and recommend with confidence scores
@@ -278,7 +278,7 @@ python ${CLAUDE_PLUGIN_ROOT}/lib/web_page_validator.py http://localhost:3000 --v
 
 ## 🎯 Quick Start
 
-*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-40-commands-across-9-categories)
+*To see the full description of all commands* > [📚 Complete Command Reference](#-complete-command-reference-41-commands-across-10-categories)
 
 ### Claude Code
 
@@ -678,7 +678,7 @@ Assessments are **automatically created** when you use plugin commands:
 
 ---
 
-## 📚 Complete Command Reference (40 Commands Across 9 Categories)
+## 📚 Complete Command Reference (41 Commands Across 10 Categories)
 
 ### 🚀 **Development Commands (5)**
 - `/dev:auto "requirement"` - Fully autonomous development from requirements to release-ready code
@@ -1088,7 +1088,7 @@ ls data/reports/ | wc -l
 |----------------|-------|--------|-------------|
 | **Agents** | **20** | ✅ Active | Two-tier specialized agents (7 analysis + 12 execution + 1 orchestrator) |
 | **Skills** | **17** | ✅ Validated | Domain knowledge packages |
-| **Commands** | **42** | ✅ Active | User-facing slash commands (10 categories) |
+| **Commands** | **41** | ✅ Active | User-facing slash commands (10 categories) |
 | **Python Libraries** | **15+** | ✅ Validated | Utility and analysis tools |
 | **Documentation** | **50+** | ✅ Validated | Comprehensive guides |
 | **Total Lines of Code** | **22,000+** | ✅ Production | Enterprise-grade |

@@ -39,6 +39,23 @@ Additional rules:
 - **Utility classes in tests must not be named Test***: `pytest.ini` sets `python_classes = Test*`, so a `Test*`-named helper with an `__init__` triggers a `PytestCollectionWarning` and is never run. Name it `SomethingValidator`, not `TestSomethingValidator`.
 - **Isolate state**: use `monkeypatch` for env vars and `tmp_path` + `monkeypatch.chdir` for anything that reads relative paths, so tests are deterministic regardless of the host.
 
+## Metrics Must Mean What Their Name Says (v8.4.5)
+
+A metric that silently reports the wrong number is worse than no metric at all - it looks authoritative while being misleading. The `quality_control_check.py` `Successful Imports` counter reported `1` for ~18 months because:
+
+1. The loop computed `module_name = "lib.dashboard"` (a dotted path).
+2. It called `importlib.import_module(module_name)`, which only resolves when the project root is on `sys.path` AND `lib` is importable as a package.
+3. Neither was guaranteed when launched as `py lib/quality_control_check.py` (which puts `lib/` on `sys.path`, not the project root).
+4. The resulting `ModuleNotFoundError` was caught and silently swallowed by an `except` clause.
+5. Only files importable as top-level modules from `lib/` succeeded - hence `1`.
+
+The score itself was unaffected (it uses `ast.parse()`-based `syntax_success_rate`, not the import counter), so the bug was invisible to anyone watching the score. Three lessons, now encoded in `docs/APPROACH_AND_METHOD.md`:
+
+- **When a metric depends on environment state** (`sys.path`, env vars, CWD), prefer an API that takes the path explicitly (`importlib.util.spec_from_file_location`) over one that does implicit resolution (`importlib.import_module`).
+- **Don't swallow exceptions in counters** - the silent `except` was the reason the bug survived every code review. If you must swallow, log to a separate diagnostics channel that someone might read.
+- **Cross-check displayed metrics against ground truth** periodically. Running the validator once on a fresh checkout and reading *all* of its output (not just the score) would have caught this in 30 seconds.
+
+
 ## Test Structure
 
 ```
