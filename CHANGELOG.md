@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.1] - 2026-06-21
+
+### Fixed
+- `quality_control_check.py` wrote its detailed report to the literal path `.claude/data/data/data/reports/...` (a tripled `data/` segment) instead of the documented `.claude/reports/...` convention used by every other report in the repo.
+- `validate-claude-plugin.py` counted optional component directories with a non-recursive `glob("*")`, so `commands/` (organized into 10 category subfolders) reported 11 "files" instead of the actual 41 command definitions. Counting is now recursive per component type (`commands/**/*.md`, `skills/**/SKILL.md`), so the validator's printed counts match reality (36 agents, 27 skills, 41 commands, Score: 100/100).
 ## [8.4.0] - 2026-06-21
 
 ### Security

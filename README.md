@@ -1,4 +1,4 @@
-# 🚀 Autonomous Agent for Claude Code v8.4.0
+# 🚀 Autonomous Agent for Claude Code v8.4.1
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 **[🚀 Installation](#-installation-guide)** • **[🎯 Quick Start](#-quick-start)** • **[📚 Commands](#-complete-command-reference-40-commands-across-9-categories)** • **[🛠️ Features](#-key-features)** • **[📊 Dashboard](#-access-the-dashboard)**
 
-[![Version](https://img.shields.io/badge/version-8.4.0-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.4.0)
+[![Version](https://img.shields.io/badge/version-8.4.1-brightgreen.svg)](https://github.com/bejranonda/LLM-Autonomous-Agent-Plugin-for-Claude/releases/tag/v8.4.1)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Mac-lightgrey.svg)]()
 [![Models](https://img.shields.io/badge/models-Claude%20%7C%20GLM-blue)]()
@@ -110,6 +110,10 @@ A **paradigm shift** from static tools to living intelligence with **35 speciali
 
 **EVOLUTION OF EXCELLENCE: From Basic Analysis to Enterprise-Grade Autonomous Intelligence**
 
+### v8.4.1 - Validator & Reporting Fixes
+
+- Fixed `quality_control_check.py` writing reports to a malformed triple-nested `.claude/data/data/data/reports/` path instead of the documented `.claude/reports/` location.
+- Fixed `validate-claude-plugin.py` undercounting `commands/` (10 category subfolders) by using a non-recursive glob; it now reports accurate counts for every component type.
 ### v8.4.0 - Test Integrity & Security Hardening
 
 - **Test suite restored**: eliminated a silent skip-on-import anti-pattern that hid 96 non-running unit tests. The suite now reports `113 passed, 0 skipped, 0 warnings` (was `77 passed, 96 skipped`).
