@@ -24,6 +24,15 @@ All components are auto-discovered by Claude Code's convention-based loader:
 
 When consolidating knowledge across the Four-Tier workflow, the system uses `unified_data.json` with file-locked writes for race-free concurrency across operating systems. This reduces API payload overhead and synchronizes contextual performance data.
 
+## What Changed in v8.4.2
+
+- Synced `.claude-plugin/marketplace.json` version and component-count description to the current release; it had drifted nine releases behind `plugin.json`.
+
+## What Changed in v8.4.1
+
+- Fixed the plugin'"'"'s own quality-check report path (was writing to a malformed triple-nested directory).
+- Fixed the plugin'"'"'s own structure validator undercounting `commands/` due to a non-recursive glob.
+
 ## What Changed in v8.4.0
 
 - Restored unit-test integrity: a `try/except ImportError -> @pytest.mark.skipif` pattern across five files was silently skipping 96 tests (every "covered" test was a no-op). Tests of live modules were rewritten against the real API with unconditional imports; tests of deleted modules were removed. The suite now fails loudly on a missing symbol instead of skipping.

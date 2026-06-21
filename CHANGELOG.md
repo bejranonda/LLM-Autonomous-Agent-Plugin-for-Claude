@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.2] - 2026-06-21
+
+### Fixed
+- `marketplace.json` (the plugin listing shown when browsing/installing from the marketplace) was stuck at `version: 8.0.0` with stale counts ("35 specialized agents, 25 skills, and 40 commands") — nine releases behind `plugin.json`. Synced to 8.4.2 with accurate counts (36 agents, 27 skills, 41 commands).
 ## [8.4.1] - 2026-06-21
 
 ### Fixed

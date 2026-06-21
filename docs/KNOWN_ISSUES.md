@@ -2,6 +2,15 @@
 
 The v8.3.0 release focused on dashboard reliability and dead code removal. Below are currently identified operational constraints:
 
+## Resolved in v8.4.2
+
+- **[FIXED] Stale marketplace listing**: `.claude-plugin/marketplace.json` (the listing shown when browsing/installing from the marketplace) was stuck at `version: 8.0.0` with stale component counts — nine releases behind `plugin.json`. Synced to the current release with accurate counts.
+
+## Resolved in v8.4.1
+
+- **[FIXED] Malformed report path**: `quality_control_check.py` wrote its detailed report to a literal triple-nested path `.claude/data/data/data/reports/...` instead of the documented `.claude/reports/...` convention.
+- **[FIXED] Undercounted commands**: `validate-claude-plugin.py` used a non-recursive `glob("*")` on `commands/`, which is organized into 10 category subfolders, so it reported 11 "files" instead of the actual 41 command definitions. Counting is now recursive per component type.
+
 ## Resolved in v8.4.0
 
 - **[FIXED] Test-suite false confidence**: The unit suite reported `77 passed / 96 skipped`, but every skip was a `try/except ImportError -> @pytest.mark.skipif` guard that silently turned a real failure into a green skip. `test_detect_current_model` and `test_agent_error_helper` imported renamed/removed symbols; `test_plugin_validator`, `test_dashboard_validator`, and `test_simple_validation` tested deleted modules. The two live-module tests were rewritten against the real API (no skip guard); the three orphaned files were removed. Suite now: `113 passed, 0 skipped, 0 warnings`.
