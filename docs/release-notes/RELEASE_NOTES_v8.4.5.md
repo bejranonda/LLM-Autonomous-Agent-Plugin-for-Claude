@@ -51,11 +51,25 @@ Investigation confirmed the Semgrep Guardian hook that blocked all `Bash`/`Edit`
 
 ## Methodology Documentation
 
-Two new bullets in `docs/APPROACH_AND_METHOD.md`:
+Five new bullets in `docs/APPROACH_AND_METHOD.md`:
 
 7. **Metrics Must Mean What Their Name Says (v8.4.5)**: When a metric depends on environment state (`sys.path`, env vars, CWD), prefer an API that takes the path explicitly over one that does implicit resolution. Also: redirect `stdout`/`stderr` during `exec_module` so diagnostic prints from imported modules don't pollute the report.
 
 8. **User-Level Hooks Are Not Plugin Bugs (v8.4.5)**: When a session is paralyzed by a `PreToolUse` hook, check (a) `.claude-plugin/plugin.json` for a `hooks` block, (b) user-level `~/.claude/settings.json` for `enabledPlugins`, and (c) whether the error string names a specific vendor before claiming a hook-related bug in any plugin.
+
+9. **Two Retrieval Paths, Two Different Failure Modes (v8.4.5)**: When an external knowledge store exposes both a ranking-based oracle and a vector-similarity scoped search, they fail differently. Always probe the unranked path before declaring data loss.
+
+10. **Permission Self-Grants Are Not For Agents To Make (v8.4.5)**: The auto-mode classifier denies agent attempts to widen its own `permissions.allow` list, even when the user said "continue all as suggested." This is a load-bearing safety property. Surface the desired change to the user with exact JSON.
+
+11. **Authorization Framing Affects Batch Operations (v8.4.5)**: Bulk MCP operations delegated to subagents should not put authorization claims in the task prompt's prose — the classifier treats self-authored framing as suspicious. Let each call stand on its own.
+
+## Post-Release Documentation Sync
+
+Three follow-up commits on `main` (after the v8.4.5 tag at `b0de056`) extend documentation without changing plugin code:
+
+- **`768dc69`** — Comprehensive v8.4.5 doc sync + GitHub SEO: `Metrics Must Mean What Their Name Says` section in `TESTING.md`; methodology bullets #7-#8 in `APPROACH_AND_METHOD.md`; `What Changed in v8.4.5`/`v8.4.4`/`v8.4.3` backfill in `KNOWLEDGE_MANAGEMENT.md`; README count corrections (35→36 agents, 40→41 commands, 9→10 categories); GitHub repo description and 20-topic SEO curation.
+- **`74fe9ff`** — Brain MCP integration documentation: new `docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md` (7.5 KB); methodology bullets #9-#11; three new `KNOWN_ISSUES.md` entries; cross-references from `KNOWLEDGE_MANAGEMENT.md`, `README.md`, `CLAUDE.md`.
+- **`ecff327`** — Session Start Checklist: new `docs/guidelines/SESSION_START_CHECKLIST.md` pre-flight procedure (Brain MCP probe, validator/pytest/ruff sweeps, release readiness, plugin reload, recovery tables); cross-linked from `README.md` and `CLAUDE.md`.
 
 ## Verification
 

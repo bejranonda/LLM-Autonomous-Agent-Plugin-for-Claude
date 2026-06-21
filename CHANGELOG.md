@@ -22,6 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `docs/KNOWN_ISSUES.md` now documents the Semgrep Guardian `PreToolUse` hook as a separate, user-level plugin (`semgrep@claude-plugins-official` in `~/.claude/settings.json`), distinct from this plugin. The hook fails closed when unauthenticated and blocks all `Bash`/`Edit`/`Write` operations in the session; this plugin ships no `PreToolUse` hooks at all. Includes the disable command (`"semgrep@claude-plugins-official": false`) and the alternative (`/mcp` -> Login).
 
+### Added (post-release documentation sync)
+Three follow-up commits on `main` (after the v8.4.5 tag at `b0de056`) extend documentation without changing plugin code:
+- **`docs/guidelines/SESSION_START_CHECKLIST.md`** (`ecff327`): new pre-flight checklist for new sessions covering (a) triage (version/clean-tree/unpushed), (b) Brain MCP connectivity probe with recovery table, (c) validator/pytest/ruff sweeps with expected outputs, (d) release readiness with the 5-place version lockstep, (e) plugin reload into workspace (3-layer marketplace/cache/registry), (f) testing commands without restart, (g) Semgrep Guardian hook recovery, and (h) the permission self-grant guardrail. Cross-linked from `README.md` (Documentation section) and `CLAUDE.md` (Plugin ↔ External Brain MCP section) so it is surfaced at every session start.
+- **`TESTING.md`** and **`docs/APPROACH_AND_METHOD.md`** methodology additions (`768dc69`): new `Metrics Must Mean What Their Name Says` section in `TESTING.md`; two new methodology bullets in `APPROACH_AND_METHOD.md` (#7 metrics truthfulness, #8 user-level hooks aren't plugin bugs). Backfilled `What Changed in v8.4.5` / `v8.4.4` / `v8.4.3` sections in `docs/KNOWLEDGE_MANAGEMENT.md`. Corrected stale README component counts (35→36 agents, 40→41 commands, 9→10 categories). Curated 20 GitHub repo topics for SEO (added `subagents`, `multi-agent-system`, `agent-framework`, `llm`, `large-language-models`); corrected repo description (removed inaccurate "40+ linters / CodeRabbit PR reviews").
+- **`docs/APPROACH_AND_METHOD.md`** methodology bullets #9-#11 (`74fe9ff`): #9 two retrieval paths (oracle vs scoped search fail differently), #10 permission self-grants are not for agents to make, #11 authorization framing affects batch MCP operations.
+
 ## [8.4.4] - 2026-06-21
 
 ### Fixed

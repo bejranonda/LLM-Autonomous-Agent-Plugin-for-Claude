@@ -2,6 +2,51 @@
 
 All notable changes to the Autonomous Claude Agent Plugin will be documented in this file.
 
+> **Note (v8.4.0+)**: The canonical changelog is now the root [`CHANGELOG.md`](../CHANGELOG.md), which follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format. This `docs/CHANGELOG.md` retains the older v1.0.0-v8.3.0 history. Brief summaries of v8.4.x releases are included below for discoverability; full details are in the root changelog.
+
+## [8.4.5] - 2026-06-21
+
+### Quality Metric Correctness & Documentation
+- Fixed `quality_control_check.py` reporting `Successful Imports: 1` (sys.path-sensitive `importlib.import_module` replaced with file-based `spec_from_file_location`). Metric now reads `82`.
+- Fixed command undercount (non-recursive glob, v8.4.1 bug class). Fixed `documentation_coverage` formula. Fixed `pattern_storage.py` bootstrap schema. Fixed dashboard favicon 404. Marked stale `/debug:eval` citation as resolved.
+- Documented Semgrep Guardian `PreToolUse` hook as a separate user-level plugin (not shipped by this plugin).
+- **Post-release doc sync**: Brain MCP integration guideline (`docs/guidelines/BRAIN_MCP_INTEGRATION_GUIDELINES.md`), Session Start Checklist (`docs/guidelines/SESSION_START_CHECKLIST.md`), methodology bullets #7-#11 in `APPROACH_AND_METHOD.md`, `TESTING.md` metrics section, GitHub SEO update.
+- See root [`CHANGELOG.md`](../CHANGELOG.md) for full details.
+
+## [8.4.4] - 2026-06-21
+
+### Documentation Accuracy
+- Corrected `CLAUDE.md` directory-structure diagram and feature claims about `patterns/autofix-patterns.json` (gitignored, optional, computer-specific seed data — not bundled).
+- See root [`CHANGELOG.md`](../CHANGELOG.md) for full details.
+
+## [8.4.3] - 2026-06-21
+
+### Marketplace Sync Self-Check
+- Fixed `marketplace.json` version drift (re-introduced when v8.4.2 missed `marketplace.json`).
+- `validate-claude-plugin.py` now self-checks that `marketplace.json` matches `plugin.json` and warns on drift.
+- See root [`CHANGELOG.md`](../CHANGELOG.md) for full details.
+
+## [8.4.2] - 2026-06-21
+
+### Marketplace Sync
+- Synced `.claude-plugin/marketplace.json` version and component-count description (was stuck at 8.0.0, nine releases behind `plugin.json`).
+- See root [`CHANGELOG.md`](../CHANGELOG.md) for full details.
+
+## [8.4.1] - 2026-06-21
+
+### Validator Fixes
+- Fixed the plugin's own quality-check report path (was writing to a malformed triple-nested directory).
+- Fixed the plugin's own structure validator undercounting `commands/` due to a non-recursive glob.
+- See root [`CHANGELOG.md`](../CHANGELOG.md) for full details.
+
+## [8.4.0] - 2026-04-13
+
+### Test Integrity & Security Hardening
+- Restored unit-test integrity: a `try/except ImportError -> @pytest.mark.skipif` pattern across five files was silently skipping 96 tests. Tests rewritten against the real API.
+- Removed an `exec()` import primitive, added path-traversal validation to `BackupManager.restore_backup()`, HTML-escaped dashboard output.
+- Pruned unimportable dead modules (`web_dashboard.py`, `debug_timeline.py`). Reconciled documented component counts with actual repo contents.
+- See root [`CHANGELOG.md`](../CHANGELOG.md) for full details.
+
 ## [8.3.0] - 2026-04-12
 
 ### Dashboard Rewrite
