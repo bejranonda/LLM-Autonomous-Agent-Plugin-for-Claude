@@ -4,6 +4,7 @@
 Analyzes project quality across multiple dimensions without external dependencies
 """
 import ast
+import importlib
 import json
 import os
 import sys
@@ -56,7 +57,7 @@ class QualityController:
                         if any(x in module_name for x in ["__pycache__", "site-packages"]):
                             continue
 
-                        exec(f"import importlib; importlib.import_module('{module_name}')")
+                        importlib.import_module(module_name)
                         successful_imports += 1
                     except Exception as e:
                         if "ModuleNotFoundError" not in str(e):
@@ -225,7 +226,9 @@ class QualityController:
                 module_file = lib_dir / f"{module}.py"
                 if module_file.exists():
                     try:
-                        exec(f"import sys; sys.path.append('{lib_dir}'); import {module}")
+                        if str(lib_dir) not in sys.path:
+                            sys.path.append(str(lib_dir))
+                        importlib.import_module(module)
                         functional_tests.append(
                             {"component": module, "status": "PASS", "message": "Module imports successfully"}
                         )
